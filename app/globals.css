@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Mountain Studios - Aerial Style ===== */
+
+/* Background scroll - translates by 66.666% (2 of 3 images) then loops seamlessly */
+@keyframes bg-scroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-66.666%, 0, 0); }
+}
+
+/* Wrapper fade in */
+@keyframes wrapper-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Overlay fade in */
+@keyframes overlay-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Header slide up */
+@keyframes header-reveal {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Nav icon pop in */
+@keyframes icon-reveal {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
