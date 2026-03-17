@@ -152,7 +152,7 @@ export default function About() {
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a
-              href="/cast-your-line"
+              href="/start-your-project"
               style={{
                 padding: '0.6rem 1.5rem',
                 borderRadius: '9999px',

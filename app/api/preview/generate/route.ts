@@ -1,0 +1,1137 @@
+import { NextRequest, NextResponse } from 'next/server'
+import Anthropic from '@anthropic-ai/sdk'
+import { presetContent, PresetContent } from './content'
+
+type BusinessCategory =
+  | 'food-hospitality' | 'retail' | 'trades-construction' | 'health-wellness'
+  | 'professional' | 'creative' | 'fitness-sport' | 'home-services'
+  | 'education' | 'automotive' | 'property' | 'events-entertainment'
+  | 'tech-digital' | 'pets' | 'other'
+
+type TemplateVariant = 'visual' | 'service' | 'portfolio'
+
+const categoryVariant: Record<BusinessCategory, TemplateVariant> = {
+  'food-hospitality': 'visual',
+  'retail': 'visual',
+  'health-wellness': 'visual',
+  'fitness-sport': 'visual',
+  'pets': 'visual',
+  'events-entertainment': 'visual',
+  'tech-digital': 'service',
+  'professional': 'service',
+  'trades-construction': 'service',
+  'home-services': 'service',
+  'education': 'service',
+  'automotive': 'service',
+  'other': 'service',
+  'creative': 'portfolio',
+  'property': 'portfolio',
+}
+
+interface CategoryPreset {
+  heroFocus: string
+  ctaText: string
+  sections: { name: string; description: string }[]
+  tone: string
+  imageSubjects: string[]
+  unsplashQueries: { hero: string; cards: string[]; avatar: string }
+}
+
+const categoryPresets: Record<BusinessCategory, CategoryPreset> = {
+  'food-hospitality': {
+    heroFocus: 'Warm, inviting atmosphere with emphasis on the dining experience',
+    ctaText: 'Reserve a Table',
+    sections: [
+      { name: 'Menu Highlights', description: '3-4 cards showing signature dishes' },
+      { name: 'About / Story', description: 'Restaurant story or chef bio' },
+      { name: 'Hours & Location', description: 'Opening hours and address' },
+    ],
+    tone: 'Warm, inviting, sensory',
+    imageSubjects: ['restaurant food plating', 'dining table restaurant interior'],
+    unsplashQueries: { hero: 'restaurant,interior,dining', cards: ['plated-food', 'pasta-dish', 'dessert-plate', 'cocktail-drink'], avatar: 'chef,portrait' },
+  },
+  'retail': {
+    heroFocus: 'Product showcase with a promotional banner feel',
+    ctaText: 'Shop Now',
+    sections: [
+      { name: 'Featured Products', description: '4 product cards in a grid' },
+      { name: 'Categories', description: '3-4 category tiles' },
+      { name: 'Why Shop With Us', description: '3 feature blocks' },
+    ],
+    tone: 'Confident, trend-aware, conversion-focused',
+    imageSubjects: ['retail store display', 'shopping boutique interior'],
+    unsplashQueries: { hero: 'retail,store,shopping', cards: ['product-display', 'fashion-clothing', 'accessories-jewelry', 'gift-wrapped'], avatar: 'shopkeeper,portrait' },
+  },
+  'trades-construction': {
+    heroFocus: 'Bold, trustworthy — emphasize reliability and experience',
+    ctaText: 'Get a Free Quote',
+    sections: [
+      { name: 'Services', description: '4-6 service cards' },
+      { name: 'Projects / Portfolio', description: '3 project cards' },
+      { name: 'Stats & Trust', description: 'Counter-style stats row' },
+    ],
+    tone: 'Solid, dependable, no-nonsense',
+    imageSubjects: ['construction building site', 'home renovation finished'],
+    unsplashQueries: { hero: 'construction,building,site', cards: ['house-renovation', 'plumbing-tools', 'electrical-work', 'finished-building'], avatar: 'construction-worker,portrait' },
+  },
+  'health-wellness': {
+    heroFocus: 'Clean, calming — emphasis on care and expertise',
+    ctaText: 'Book an Appointment',
+    sections: [
+      { name: 'Services / Treatments', description: '3-4 service cards' },
+      { name: 'Meet the Team', description: '2-3 practitioner cards' },
+      { name: 'Testimonials', description: '2-3 testimonial quotes' },
+    ],
+    tone: 'Caring, professional, reassuring',
+    imageSubjects: ['spa wellness treatment room', 'medical clinic clean interior'],
+    unsplashQueries: { hero: 'wellness,spa,calm', cards: ['massage-therapy', 'dental-clinic', 'yoga-wellness', 'skincare-treatment'], avatar: 'doctor,portrait,professional' },
+  },
+  'professional': {
+    heroFocus: 'Confident, outcome-focused — emphasize expertise and results',
+    ctaText: 'Book a Consultation',
+    sections: [
+      { name: 'Services', description: '3-4 service cards' },
+      { name: 'How We Work', description: '3-step process flow' },
+      { name: 'Credentials & Trust', description: 'Professional bodies and experience' },
+    ],
+    tone: 'Authoritative, measured, trustworthy',
+    imageSubjects: ['modern office workspace', 'business meeting professional'],
+    unsplashQueries: { hero: 'office,professional,business', cards: ['business-meeting', 'office-interior', 'handshake-deal', 'laptop-work'], avatar: 'business,portrait,professional' },
+  },
+  'creative': {
+    heroFocus: 'Portfolio-first — let the work speak',
+    ctaText: 'View My Work',
+    sections: [
+      { name: 'Portfolio Grid', description: '6 portfolio items in a masonry grid' },
+      { name: 'About / Bio', description: 'Short creative bio' },
+      { name: 'Services & Pricing', description: '3 pricing tier cards' },
+    ],
+    tone: 'Creative, confident, personal',
+    imageSubjects: ['photography studio creative', 'design studio workspace'],
+    unsplashQueries: { hero: 'creative,studio,photography', cards: ['photography-camera', 'design-workspace', 'art-painting', 'creative-work'], avatar: 'artist,portrait,creative' },
+  },
+  'fitness-sport': {
+    heroFocus: 'High-energy, motivational — bold headline and trial CTA',
+    ctaText: 'Start Your Free Trial',
+    sections: [
+      { name: 'Classes / Programs', description: '4 class cards' },
+      { name: 'Trainers', description: '2-3 trainer cards' },
+      { name: 'Membership Pricing', description: '3 pricing columns' },
+    ],
+    tone: 'Energetic, motivational, bold',
+    imageSubjects: ['gym fitness training', 'group workout class'],
+    unsplashQueries: { hero: 'gym,fitness,training', cards: ['weightlifting', 'yoga-class', 'running-exercise', 'boxing-gym'], avatar: 'fitness-trainer,portrait' },
+  },
+  'home-services': {
+    heroFocus: 'Clean, trustworthy — emphasize convenience and reliability',
+    ctaText: 'Get a Quote',
+    sections: [
+      { name: 'Services', description: '4-6 service cards' },
+      { name: 'How It Works', description: '3-step process' },
+      { name: 'Reviews', description: '3 customer review cards' },
+    ],
+    tone: 'Friendly, reliable, straightforward',
+    imageSubjects: ['clean modern home interior', 'house cleaning service'],
+    unsplashQueries: { hero: 'clean,home,interior', cards: ['cleaning-service', 'garden-landscaping', 'house-interior', 'laundry-clean'], avatar: 'cleaner,worker,portrait' },
+  },
+  'education': {
+    heroFocus: 'Inspiring, knowledge-focused — emphasize learning outcomes',
+    ctaText: 'Enroll Now',
+    sections: [
+      { name: 'Courses / Programs', description: '3-4 course cards' },
+      { name: 'Why Choose Us', description: '4 feature blocks' },
+      { name: 'Instructors', description: '2-3 instructor cards' },
+    ],
+    tone: 'Encouraging, professional, aspirational',
+    imageSubjects: ['modern classroom education', 'students studying together'],
+    unsplashQueries: { hero: 'education,classroom,learning', cards: ['students-studying', 'library-books', 'teacher-classroom', 'graduation-cap'], avatar: 'teacher,portrait,professional' },
+  },
+  'automotive': {
+    heroFocus: 'Bold, industrial — expertise and fast turnaround',
+    ctaText: 'Book a Service',
+    sections: [
+      { name: 'Services', description: '4-6 service cards' },
+      { name: 'Why Us', description: 'Stats row and trust indicators' },
+      { name: 'Testimonials', description: '2-3 customer quotes' },
+    ],
+    tone: 'Direct, confident, no-frills',
+    imageSubjects: ['auto repair workshop garage', 'car engine mechanic'],
+    unsplashQueries: { hero: 'auto,mechanic,workshop', cards: ['car-engine', 'tyre-wheel', 'car-wash', 'mechanic-tools'], avatar: 'mechanic,worker,portrait' },
+  },
+  'property': {
+    heroFocus: 'Aspirational, clean — property search-focused',
+    ctaText: 'View Properties',
+    sections: [
+      { name: 'Featured Listings', description: '3 property cards' },
+      { name: 'Services', description: '3 service blocks' },
+      { name: 'Agent Profiles', description: '2-3 agent cards' },
+    ],
+    tone: 'Polished, aspirational, trustworthy',
+    imageSubjects: ['modern architecture exterior', 'luxury house interior design'],
+    unsplashQueries: { hero: 'luxury,house,real-estate', cards: ['house-exterior', 'living-room-interior', 'kitchen-modern', 'apartment-building'], avatar: 'real-estate-agent,portrait' },
+  },
+  'events-entertainment': {
+    heroFocus: 'Vibrant, exciting — bold visuals with booking CTA',
+    ctaText: 'Book Now',
+    sections: [
+      { name: 'Services / Packages', description: '3-4 package cards' },
+      { name: 'Past Events Gallery', description: '4-6 gallery tiles' },
+      { name: 'Testimonials', description: '2-3 client quotes' },
+    ],
+    tone: 'Exciting, vibrant, memorable',
+    imageSubjects: ['elegant event decoration', 'wedding reception venue'],
+    unsplashQueries: { hero: 'event,celebration,party', cards: ['wedding-venue', 'concert-crowd', 'birthday-party', 'conference-event'], avatar: 'dj,entertainer,portrait' },
+  },
+  'tech-digital': {
+    heroFocus: 'Sleek, modern — product/service showcase',
+    ctaText: 'Get Started',
+    sections: [
+      { name: 'Services / Features', description: '3-4 feature cards' },
+      { name: 'Process', description: '4-step horizontal flow' },
+      { name: 'Tech Stack / Tools', description: 'Expertise areas' },
+    ],
+    tone: 'Sharp, forward-thinking, solution-oriented',
+    imageSubjects: ['technology laptop workspace', 'software development office'],
+    unsplashQueries: { hero: 'technology,computer,code', cards: ['laptop-coding', 'app-mobile', 'server-data', 'team-office'], avatar: 'developer,portrait,tech' },
+  },
+  'pets': {
+    heroFocus: 'Warm, friendly — emphasis on pet care and trust',
+    ctaText: 'Book a Visit',
+    sections: [
+      { name: 'Services', description: '4 service cards' },
+      { name: 'About Us', description: 'Warm paragraph about love for animals' },
+      { name: 'Happy Customers', description: '3 review cards' },
+    ],
+    tone: 'Warm, playful, trustworthy',
+    imageSubjects: ['cute dog pet portrait', 'dog grooming salon'],
+    unsplashQueries: { hero: 'dog,pet,cute', cards: ['puppy-dog', 'cat-kitten', 'pet-grooming', 'golden-retriever'], avatar: 'veterinarian,portrait' },
+  },
+  'other': {
+    heroFocus: 'Clean, versatile — strong headline with enquiry CTA',
+    ctaText: 'Get in Touch',
+    sections: [
+      { name: 'Services', description: '3-4 service cards' },
+      { name: 'About', description: 'Mission and what sets it apart' },
+      { name: 'Contact', description: 'Contact details and form' },
+    ],
+    tone: 'Professional, approachable, clear',
+    imageSubjects: ['modern business storefront', 'professional team office'],
+    unsplashQueries: { hero: 'business,office,professional', cards: ['office-workspace', 'team-meeting', 'handshake-business', 'laptop-desk'], avatar: 'business,portrait' },
+  },
+}
+
+// ---------- Font pairings per category ----------
+const fontPairings: Record<BusinessCategory, { heading: string; headingFamily: string }> = {
+  'food-hospitality':      { heading: 'Cormorant+Garamond:wght@400;600;700', headingFamily: "'Cormorant Garamond', Georgia, serif" },
+  'retail':                { heading: 'DM+Sans:wght@400;500;700', headingFamily: "'DM Sans', sans-serif" },
+  'trades-construction':   { heading: 'Oswald:wght@400;500;700', headingFamily: "'Oswald', sans-serif" },
+  'health-wellness':       { heading: 'Lora:wght@400;500;700', headingFamily: "'Lora', Georgia, serif" },
+  'professional':          { heading: 'Playfair+Display:wght@400;500;700', headingFamily: "'Playfair Display', Georgia, serif" },
+  'creative':              { heading: 'Space+Grotesk:wght@400;500;700', headingFamily: "'Space Grotesk', sans-serif" },
+  'fitness-sport':         { heading: 'Bebas+Neue', headingFamily: "'Bebas Neue', sans-serif" },
+  'home-services':         { heading: 'Poppins:wght@400;500;700', headingFamily: "'Poppins', sans-serif" },
+  'education':             { heading: 'Merriweather:wght@400;700', headingFamily: "'Merriweather', Georgia, serif" },
+  'automotive':            { heading: 'Barlow+Condensed:wght@400;500;700', headingFamily: "'Barlow Condensed', sans-serif" },
+  'property':              { heading: 'Playfair+Display:wght@400;500;700', headingFamily: "'Playfair Display', Georgia, serif" },
+  'events-entertainment':  { heading: 'Cormorant+Garamond:wght@400;600;700', headingFamily: "'Cormorant Garamond', Georgia, serif" },
+  'tech-digital':          { heading: 'Space+Grotesk:wght@400;500;700', headingFamily: "'Space Grotesk', sans-serif" },
+  'pets':                  { heading: 'Nunito:wght@400;600;700', headingFamily: "'Nunito', sans-serif" },
+  'other':                 { heading: 'DM+Sans:wght@400;500;700', headingFamily: "'DM Sans', sans-serif" },
+}
+
+// ---------- Stock images ----------
+interface StockImages {
+  hero: string
+  cards: string[]
+  avatar: string
+}
+
+interface ImageQueries {
+  heroImageQuery?: string
+  heroBgImageQuery?: string
+  serviceImageQueries?: string[]
+  galleryImageQueries?: string[]
+  aboutImageQuery?: string
+}
+
+async function fetchPexelsImage(query: string, apiKey: string, orientation: string = 'landscape'): Promise<string | null> {
+  try {
+    const res = await fetch(
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=${orientation}`,
+      { headers: { Authorization: apiKey } },
+    )
+    const data = await res.json()
+    const photo = data.photos?.[0]
+    return photo?.src?.landscape || photo?.src?.large2x || photo?.src?.large || null
+  } catch {
+    return null
+  }
+}
+
+async function fetchStockImages(category: BusinessCategory, businessType: string, queries?: ImageQueries): Promise<StockImages> {
+  const apiKey = process.env.PEXELS_API_KEY
+  const typeName = businessType.split('/')[0].trim()
+
+  if (!apiKey) {
+    return {
+      hero: `https://picsum.photos/seed/${category}-hero/1200/600`,
+      cards: [0, 1, 2, 3, 4, 5, 6].map(i => `https://picsum.photos/seed/${category}-card${i}/600/400`),
+      avatar: `https://picsum.photos/seed/${category}-avatar/200/200`,
+    }
+  }
+
+  const headers = { Authorization: apiKey }
+
+  // If we have specific queries from preset content, use them for targeted results
+  if (queries?.heroImageQuery || queries?.serviceImageQueries?.length || queries?.galleryImageQueries?.length) {
+    const allFetches: Promise<string | null>[] = []
+
+    // Hero image (prefer heroBgImageQuery for service variants — moody/dark background shots)
+    allFetches.push(fetchPexelsImage(queries.heroBgImageQuery || queries.heroImageQuery || typeName, apiKey))
+
+    // Service images (up to 3)
+    const svcQueries = queries.serviceImageQueries || []
+    for (let i = 0; i < 3; i++) {
+      allFetches.push(fetchPexelsImage(svcQueries[i] || typeName, apiKey))
+    }
+
+    // Gallery images (up to 4)
+    const galQueries = queries.galleryImageQueries || []
+    for (let i = 0; i < 4; i++) {
+      allFetches.push(fetchPexelsImage(galQueries[i] || typeName, apiKey))
+    }
+
+    const results = await Promise.all(allFetches)
+    const fallback = (i: number, seed: string) => results[i] || `https://picsum.photos/seed/${seed}/600/400`
+
+    return {
+      hero: fallback(0, `${typeName}-hero`),
+      cards: [
+        fallback(1, `${typeName}-svc0`),
+        fallback(2, `${typeName}-svc1`),
+        fallback(3, `${typeName}-svc2`),
+        fallback(4, `${typeName}-gal0`),
+        fallback(5, `${typeName}-gal1`),
+        fallback(6, `${typeName}-gal2`),
+        fallback(7, `${typeName}-gal3`),
+      ],
+      avatar: `https://picsum.photos/seed/${typeName}-avatar/200/200`,
+    }
+  }
+
+  // Fallback: generic search by business type name
+  const res = await fetch(
+    `https://api.pexels.com/v1/search?query=${encodeURIComponent(typeName)}&per_page=15&orientation=landscape`,
+    { headers },
+  )
+  const data = await res.json()
+  const photos = data.photos || []
+
+  const heroUrl = photos[0]?.src?.landscape || photos[0]?.src?.large2x || `https://picsum.photos/seed/${typeName}-hero/1200/600`
+
+  const cardUrls: string[] = []
+  for (let i = 1; i < photos.length && cardUrls.length < 7; i++) {
+    cardUrls.push(photos[i].src?.medium || photos[i].src?.large)
+  }
+  while (cardUrls.length < 7) {
+    cardUrls.push(`https://picsum.photos/seed/${typeName}-card${cardUrls.length}/600/400`)
+  }
+
+  const avatarUrl = photos[1]?.src?.tiny || `https://picsum.photos/seed/${typeName}-avatar/200/200`
+
+  return { hero: heroUrl, cards: cardUrls, avatar: avatarUrl }
+}
+
+// ---------- Content JSON from Claude ----------
+interface GeneratedContent {
+  heroEyebrow: string
+  tagline: string
+  heroSubtitle: string
+  ctaPrimary: string
+  ctaSecondary: string
+  servicesHeading: string
+  services: { name: string; description: string; tags: string[]; icon?: string; serviceImageQuery?: string }[]
+  galleryHeading: string
+  aboutHeading: string
+  aboutText: string
+  stats: { value: string; label: string; sublabel?: string }[]
+  contactHeading: string
+  contactHours?: string
+  processSteps?: { step: string; title: string; description: string }[]
+  projectCaptions?: string[]
+  // Extended fields from preset content
+  heroAccent?: string
+  ctaNote?: string
+  badge?: string
+  aboutMission?: string
+  testimonial?: { quote: string; author: string; rating: number }
+  imageMood?: string
+  heroImageQuery?: string
+  aboutImageQuery?: string
+  galleryImageQueries?: string[]
+}
+
+function buildContentPrompt(data: {
+  businessName: string
+  businessType: string
+  businessCategory: BusinessCategory
+  pages: string[]
+  variant: TemplateVariant
+}): string {
+  const { businessName, businessType, businessCategory, pages, variant } = data
+  const preset = categoryPresets[businessCategory] || categoryPresets['other']
+
+  let variantFields = ''
+  if (variant === 'service') {
+    variantFields = `
+  "processSteps": [
+    { "step": "1", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" },
+    { "step": "2", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" },
+    { "step": "3", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" }
+  ],`
+  } else if (variant === 'portfolio') {
+    variantFields = `
+  "projectCaptions": ["Caption for project 1, 3-5 words", "Caption for project 2, 3-5 words", "Caption for project 3, 3-5 words", "Caption for project 4, 3-5 words"],`
+  }
+
+  let variantHint = ''
+  if (variant === 'service') {
+    variantHint = '\nThis is a SERVICE business — no photos will be shown on cards. Services should focus on outcomes and value, not visual descriptions.'
+  } else if (variant === 'portfolio') {
+    variantHint = '\nThis is a PORTFOLIO/VISUAL business — the layout will be gallery-focused. Keep service descriptions minimal and punchy.'
+  }
+
+  return `Generate JSON content for a ${businessType} called "${businessName}".
+Tone: ${preset.tone}
+CTA text: "${preset.ctaText}"
+Pages the user selected: ${pages.join(', ')}${variantHint}
+
+Return ONLY valid JSON (no markdown, no backticks, no explanation). Start with { and end with }.
+{
+  "heroEyebrow": "Short uppercase label, 3-5 words, e.g. 'Premium ${businessType} Experience'",
+  "tagline": "Compelling headline, 6-10 words. Use <em> on one word for italic accent.",
+  "heroSubtitle": "One sentence, 10-18 words, expanding on the tagline",
+  "ctaPrimary": "${preset.ctaText}",
+  "ctaSecondary": "Secondary CTA text, 2-3 words like 'Our Portfolio' or 'Learn More'",
+  "servicesHeading": "Section heading for the services area, 2-4 words",
+  "services": [
+    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] },
+    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] },
+    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] }
+  ],${variantFields}
+  "galleryHeading": "Short gallery section heading, 2-4 words",
+  "aboutHeading": "About section heading with <em> on one word for italic accent, 4-8 words",
+  "aboutText": "Two short paragraphs about the business separated by \\n\\n. Total 40-60 words.",
+  "stats": [
+    { "value": "15+", "label": "Years Experience" },
+    { "value": "500+", "label": "Relevant metric for a ${businessType}" },
+    { "value": "50+", "label": "Another relevant metric" },
+    { "value": "98%", "label": "Client Satisfaction" }
+  ],
+  "contactHeading": "Contact section heading as a question, 5-8 words"
+}
+
+Make all content specific and authentic for a ${businessType}. No generic placeholder text.`
+}
+
+// ---------- Shared template helpers ----------
+
+interface TemplateData {
+  content: GeneratedContent
+  businessName: string
+  businessCategory: BusinessCategory
+  primaryColor: string
+  secondaryColor: string
+  pages: string[]
+  images: string[]
+  stockImages: StockImages
+  variant: TemplateVariant
+}
+
+// Determines which extra nav links to show (selected pages beyond Home).
+// All sections always render on the home page regardless.
+function resolveNavLinks(pages: string[]) {
+  const lowerPages = pages.map(p => p.toLowerCase())
+  return {
+    navServices: lowerPages.some(p => ['services', 'menu', 'treatments', 'classes', 'courses', 'products'].some(k => p.includes(k))),
+    navGallery: lowerPages.some(p => ['gallery', 'portfolio', 'work', 'projects'].some(k => p.includes(k))),
+    navAbout: lowerPages.some(p => p.includes('about')),
+    navContact: lowerPages.some(p => ['contact', 'booking', 'appointment'].some(k => p.includes(k))),
+  }
+}
+
+type Theme = 'dark' | 'light'
+
+function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, secondaryColor: string, theme: Theme = 'dark'): string {
+  const vars = theme === 'light' ? `
+      --bg: #fafafa;
+      --bg-alt: #f0f0f0;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);` : `
+      --bg: #0f0f0f;
+      --bg-alt: #141414;
+      --card-bg: #1a1a1a;
+      --text: #f5f5f0;
+      --text-muted: #a3a3a0;
+      --border: rgba(255,255,255,0.08);`
+
+  return `
+    :root {
+      --heading-font: ${fonts.headingFamily};
+      --body-font: 'Inter', sans-serif;
+      --primary: ${primaryColor};
+      --secondary: ${secondaryColor};${vars}
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }`
+}
+
+function buildNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
+  // Nav links — only pages the user selected show here
+  const navLinks: string[] = []
+  if (navFlags.navServices) navLinks.push('<a href="#services" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">Services</a>')
+  if (navFlags.navGallery) navLinks.push('<a href="#gallery" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">Gallery</a>')
+  if (navFlags.navAbout) navLinks.push('<a href="#about" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">About</a>')
+  if (navFlags.navContact) navLinks.push('<a href="#contact" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">Contact</a>')
+
+  return `
+  <nav style="position:absolute;top:0;left:0;right:0;z-index:100;padding:0 2rem">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.35rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${navLinks.join('\n        ')}
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </nav>`
+}
+
+function buildFooter(businessName: string, content: GeneratedContent, theme: Theme = 'dark'): string {
+  const serviceLinks = content.services.map(s =>
+    `<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">${s.name}</a>`
+  ).join('\n            ')
+
+  return `
+  <footer style="padding:4rem 2rem 2rem;background:${theme === 'light' ? '#f0f0f0' : '#0a0a0a'};border-top:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div>
+        ${serviceLinks}
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">About Us</a>
+        <a href="#gallery" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Gallery</a>
+        <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Privacy Policy</a>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Terms of Service</a>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
+      <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
+    </div>
+  </footer>`
+}
+
+function buildAboutSection(content: GeneratedContent): string {
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+
+  const testimonialHtml = content.testimonial ? `
+          <div style="margin-top:2rem;padding:1.5rem;background:var(--card-bg);border-radius:12px;border:1px solid var(--border)">
+            <div style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:0.75rem">"${content.testimonial.quote}"</div>
+            <div style="display:flex;align-items:center;gap:0.5rem">
+              <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">${content.testimonial.author}</div>
+              ${content.testimonial.rating ? `<div style="color:#f59e0b;font-size:0.8rem">${'★'.repeat(content.testimonial.rating)}</div>` : ''}
+            </div>
+          </div>` : ''
+
+  return `
+    <section id="about" style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+        <div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 2rem 0">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1rem;color:var(--primary);line-height:1.6;font-style:italic;margin:0 0 2rem 0">${content.aboutMission}</p>` : ''}
+          ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0">${p}</p>`).join('')}
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;padding-top:1rem">
+            ${content.stats.slice(0, 4).map(s => `
+              <div>
+                <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:var(--text)">${s.value}</div>
+                <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted)">${s.label}</div>
+                ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.15rem">${s.sublabel}</div>` : ''}
+              </div>
+            `).join('')}
+          </div>${testimonialHtml}
+        </div>
+      </div>
+    </section>`
+}
+
+function buildContactSection(content: GeneratedContent): string {
+  const hasHours = !!content.contactHours
+
+  if (!hasHours) {
+    // Simple centered layout (no hours info)
+    return `
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:600px;margin:0 auto;padding:0 2rem;text-align:center">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
+        <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+          </div>
+          <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+          <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+        </form>
+      </div>
+    </section>`
+  }
+
+  // 2-column layout: left = info + hours, right = form
+  return `
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">123 Main Road, Cape Town, 8001</p>
+            </div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.co.za<br />021 000 0000</p>
+            </div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${content.contactHours.replace(/ · /g, '<br />')}</p>
+            </div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>`
+}
+
+function buildHead(businessName: string, fonts: { heading: string; headingFamily: string }, primaryColor: string, secondaryColor: string, theme: Theme = 'dark'): string {
+  const fontImportUrl = `https://fonts.googleapis.com/css2?family=${fonts.heading}&family=Inter:wght@300;400;500;600&display=swap`
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${businessName}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="${fontImportUrl}" rel="stylesheet" />
+  <style>${buildCssVars(fonts, primaryColor, secondaryColor, theme)}
+  </style>
+</head>
+<body>`
+}
+
+// ---------- Visual Template (photo-heavy) ----------
+function buildVisualTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+  ]
+
+  const servicesSection = `
+    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <p style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font)">${content.heroEyebrow}</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+          ${content.services.map((s, i) => `
+            <div style="border-radius:16px;overflow:hidden;background:var(--card-bg);border:1px solid var(--border)">
+              <div style="height:200px;overflow:hidden">
+                <img src="${serviceImgs[i] || serviceImgs[0]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
+              </div>
+              <div style="padding:1.5rem">
+                <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.6;margin:0 0 1rem 0">${s.description}</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid var(--border)">${t}</span>`).join('')}
+                </div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const gallerySection = `
+    <section id="gallery" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
+        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;grid-template-rows:auto auto">
+          <div style="grid-row:1/3;border-radius:16px;overflow:hidden;min-height:400px">
+            <img src="${galleryImgs[0]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="border-radius:16px;overflow:hidden;min-height:190px">
+            <img src="${galleryImgs[1]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="border-radius:16px;overflow:hidden;min-height:190px">
+            <img src="${galleryImgs[2]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+        </div>
+      </div>
+    </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+
+${buildNav(businessName, content, navFlags)}
+
+  <!-- Hero -->
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.4) 50%,rgba(0,0,0,0.65) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem;width:100%">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      <div style="display:flex;gap:1rem;align-items:center">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+      </div>
+      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:1rem">${content.ctaNote}</p>` : ''}
+    </div>
+  </section>
+
+  ${servicesSection}
+  ${gallerySection}
+  ${buildAboutSection(content)}
+  ${buildContactSection(content)}
+
+${buildFooter(businessName, content)}
+
+</body>
+</html>`
+}
+
+// ---------- Service Template (icon cards, process section) ----------
+// Light theme for most service businesses; dark for tech-digital
+function buildServiceTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+  const theme: Theme = businessCategory === 'tech-digital' ? 'dark' : 'light'
+
+  const defaultServiceIcons = ['&#9670;', '&#9674;', '&#9656;', '&#9632;', '&#9678;', '&#9733;']
+  const iconMap: Record<string, string> = {
+    droplet: '&#128167;', flame: '&#128293;', tool: '&#9874;', zap: '&#9889;', cpu: '&#9881;',
+    sun: '&#9728;', home: '&#8962;', shield: '&#128737;', layers: '&#9776;', grid: '&#9638;',
+    box: '&#9634;', star: '&#9733;', maximize: '&#10697;', map: '&#9873;', edit: '&#9998;',
+    'edit-2': '&#9998;', square: '&#9633;', key: '&#128273;', lock: '&#128274;', truck: '&#128666;',
+    'trash-2': '&#9249;', wind: '&#127788;', settings: '&#9881;', 'chevrons-down': '&#8650;',
+    'cloud-rain': '&#127783;', 'battery-charging': '&#128267;', 'align-left': '&#9776;',
+    'file-text': '&#128196;', book: '&#128214;', users: '&#128101;', target: '&#9678;',
+    'trending-up': '&#8599;', 'trending-down': '&#8600;', clock: '&#128336;', briefcase: '&#128188;',
+    camera: '&#128247;', mic: '&#127908;', user: '&#128100;', 'user-check': '&#128100;',
+    award: '&#127942;', 'check-square': '&#9745;', 'check-circle': '&#10004;', stamp: '&#128203;',
+    package: '&#128230;', send: '&#10148;', scissors: '&#9986;', feather: '&#10047;',
+    thermometer: '&#127777;', video: '&#128249;', 'alert-triangle': '&#9888;',
+    activity: '&#9829;', 'bar-chart-2': '&#128200;', circle: '&#9679;', 'credit-card': '&#128179;',
+    'edit-3': '&#9998;', globe: '&#127760;', 'message-circle': '&#128172;', monitor: '&#128187;',
+    repeat: '&#128257;', 'shopping-cart': '&#128722;', smartphone: '&#128241;',
+    clipboard: '&#128203;', film: '&#127902;', play: '&#9654;', radio: '&#128251;',
+    'refresh-cw': '&#128260;', sliders: '&#9776;',
+  }
+
+  const pr = parseInt(primaryColor.slice(1, 3), 16)
+  const pg = parseInt(primaryColor.slice(3, 5), 16)
+  const pb = parseInt(primaryColor.slice(5, 7), 16)
+
+  // Light cards get a subtle shadow; dark cards get border
+  const cardStyle = theme === 'light'
+    ? 'border-radius:16px;background:var(--card-bg);box-shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);padding:2rem'
+    : 'border-radius:16px;background:var(--card-bg);border:1px solid var(--border);padding:2rem'
+
+  const servicesSection = `
+    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <p style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font)">${content.heroEyebrow}</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+          ${content.services.map((s, i) => `
+            <div style="${cardStyle}">
+              <div style="width:48px;height:48px;border-radius:12px;background:rgba(${pr},${pg},${pb},0.12);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+                <span style="font-size:1.25rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
+              </div>
+              <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  // "How It Works" process section instead of gallery
+  const steps = content.processSteps || [
+    { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+    { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+    { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+  ]
+
+  const processSection = `
+    <section id="gallery" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);text-align:center;margin-bottom:4rem;max-width:500px;margin-left:auto;margin-right:auto">A simple, straightforward process designed around you.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;text-align:center">
+          ${steps.map(s => `
+            <div>
+              <div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;margin:0 auto 1.5rem">${s.step}</div>
+              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.title}</h3>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${s.description}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, theme)}
+
+${buildNav(businessName, content, navFlags)}
+
+  <!-- Hero -->
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
+    ${theme === 'dark' ? '' : `<div style="position:absolute;inset:0">
+      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.55) 50%,rgba(0,0,0,0.75) 100%)"></div>
+    </div>`}
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem;width:100%">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:#f5f5f0;line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.15rem;color:#a3a3a0;max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      <div style="display:flex;gap:1rem;align-items:center;margin-bottom:${content.ctaNote ? '0.75rem' : '4rem'}">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+      </div>
+      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:4rem">${content.ctaNote}</p>` : ''}
+      <!-- Stats row -->
+      <div style="display:flex;gap:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.12)">
+        ${content.stats.slice(0, 4).map(s => `
+          <div>
+            <div style="font-family:var(--heading-font);font-size:2.25rem;font-weight:700;color:#f5f5f0">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.85rem;color:#a3a3a0;margin-top:0.25rem">${s.label}</div>
+            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:0.15rem">${s.sublabel}</div>` : ''}
+          </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  ${servicesSection}
+  ${processSection}
+  ${buildAboutSection(content)}
+  ${buildContactSection(content)}
+
+${buildFooter(businessName, content, theme)}
+
+</body>
+</html>`
+}
+
+// ---------- Portfolio Template (gallery-focused) ----------
+function buildPortfolioTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const galleryImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+    images[4] || stockImages.cards[3],
+  ]
+
+  const captions = content.projectCaptions || ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design']
+
+  const servicesSection = `
+    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.servicesHeading}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;text-align:center">
+          ${content.services.map(s => `
+            <div style="padding:1rem">
+              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const gallerySection = `
+    <section id="gallery" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
+        <div style="columns:2;column-gap:1.5rem">
+          ${galleryImgs.map((img, i) => `
+            <div style="break-inside:avoid;margin-bottom:1.5rem;border-radius:16px;overflow:hidden;position:relative">
+              <img src="${img}" alt="${captions[i] || 'Project'}" style="width:100%;display:block;${i % 2 === 0 ? 'aspect-ratio:4/5' : 'aspect-ratio:3/4'};object-fit:cover" />
+              <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem;background:linear-gradient(transparent,rgba(0,0,0,0.7))">
+                <span style="font-family:var(--body-font);font-size:0.9rem;color:#fff;font-weight:500">${captions[i] || 'Project'}</span>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+
+${buildNav(businessName, content, navFlags)}
+
+  <!-- Hero — dramatic full-bleed with heavier gradient -->
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.7) 60%,rgba(0,0,0,0.85) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:800px;margin:0 auto;padding:0 2rem">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5.5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;margin:0 auto ${content.heroAccent ? '1rem' : '2.5rem'};line-height:1.7">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      <div style="display:flex;gap:1rem;justify-content:center">
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+      </div>
+      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:1rem">${content.ctaNote}</p>` : ''}
+    </div>
+  </section>
+
+  ${servicesSection}
+  ${gallerySection}
+  ${buildAboutSection(content)}
+  ${buildContactSection(content)}
+
+${buildFooter(businessName, content)}
+
+</body>
+</html>`
+}
+
+// ---------- POST handler ----------
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images } = body
+
+    if (!businessName || !businessType) {
+      return NextResponse.json(
+        { success: false, error: 'businessName and businessType are required' },
+        { status: 400 },
+      )
+    }
+
+    const primary = noColors ? '#2563EB' : (primaryColor || '#6C5CE7')
+    const secondary = noColors ? '#10B981' : (secondaryColor || '#00CEC9')
+    const category: BusinessCategory = businessCategory || 'other'
+    const variant = categoryVariant[category] || 'service'
+
+    // Check for pre-written content first
+    const preset: PresetContent | undefined = presetContent[businessType]
+
+    // Build image queries from preset content if available
+    const imageQueries: ImageQueries | undefined = preset ? {
+      heroImageQuery: preset.heroImageQuery,
+      heroBgImageQuery: preset.heroBgImageQuery,
+      serviceImageQueries: preset.services.map(s => s.serviceImageQuery),
+      galleryImageQueries: preset.galleryImageQueries,
+      aboutImageQuery: preset.aboutImageQuery,
+    } : undefined
+
+    // Fetch stock images (with specific queries if preset content exists)
+    const stockImgs = await fetchStockImages(category, businessType, imageQueries)
+
+    let content: GeneratedContent
+
+    if (preset) {
+      // Use pre-written content — no Claude API call needed
+      content = {
+        heroEyebrow: preset.heroEyebrow,
+        tagline: preset.tagline,
+        heroSubtitle: preset.heroSubtitle,
+        ctaPrimary: preset.ctaPrimary,
+        ctaSecondary: preset.ctaSecondary,
+        servicesHeading: preset.servicesHeading,
+        services: preset.services,
+        galleryHeading: preset.galleryHeading,
+        aboutHeading: preset.aboutHeading,
+        aboutText: preset.aboutText,
+        stats: preset.stats,
+        contactHeading: preset.contactHeading,
+        contactHours: preset.contactHours,
+        processSteps: preset.processSteps,
+        heroAccent: preset.heroAccent,
+        ctaNote: preset.ctaNote,
+        badge: preset.badge,
+        aboutMission: preset.aboutMission,
+        testimonial: preset.testimonial,
+        imageMood: preset.imageMood,
+        heroImageQuery: preset.heroImageQuery,
+        aboutImageQuery: preset.aboutImageQuery,
+        galleryImageQueries: preset.galleryImageQueries,
+      }
+    } else {
+      // Ask Claude for content JSON
+      const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+
+      const claudeRes = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 768,
+        messages: [
+          {
+            role: 'user',
+            content: buildContentPrompt({
+              businessName,
+              businessType,
+              businessCategory: category,
+              pages: pages || ['Home', 'About', 'Services', 'Contact'],
+              variant,
+            }),
+          },
+        ],
+      })
+
+      let jsonString = ''
+      if (claudeRes.content[0]?.type === 'text') {
+        jsonString = claudeRes.content[0].text
+      }
+
+      // Strip markdown fences if present
+      jsonString = jsonString.trim()
+      if (jsonString.startsWith('```')) {
+        jsonString = jsonString.slice(jsonString.indexOf('\n') + 1)
+      }
+      if (jsonString.endsWith('```')) {
+        jsonString = jsonString.slice(0, jsonString.lastIndexOf('```'))
+      }
+      jsonString = jsonString.trim()
+
+      try {
+        content = JSON.parse(jsonString)
+      } catch {
+        // Retry: extract JSON between first { and last }
+        try {
+          const firstBrace = jsonString.indexOf('{')
+          const lastBrace = jsonString.lastIndexOf('}')
+          if (firstBrace !== -1 && lastBrace > firstBrace) {
+            content = JSON.parse(jsonString.slice(firstBrace, lastBrace + 1))
+          } else {
+            throw new Error('No JSON object found')
+          }
+        } catch {
+          // Fallback content
+          const catPreset = categoryPresets[category] || categoryPresets['other']
+          content = {
+            heroEyebrow: `Premium ${businessType}`,
+            tagline: `Welcome to <em>${businessName}</em>`,
+            heroSubtitle: `Experience the finest ${businessType.toLowerCase()} services in your area.`,
+            ctaPrimary: catPreset.ctaText,
+            ctaSecondary: 'Learn More',
+            servicesHeading: 'What We Offer',
+            services: [
+              { name: 'Consultation', description: `Get expert ${businessType.toLowerCase()} advice tailored to your specific needs and goals.`, tags: ['Featured'] },
+              { name: 'Full Service', description: `Comprehensive ${businessType.toLowerCase()} solutions from start to finish, handled with care.`, tags: ['Popular'] },
+              { name: 'Ongoing Support', description: `Continued partnership to ensure lasting results and your complete satisfaction.`, tags: ['Trusted'] },
+            ],
+            galleryHeading: 'Our Work',
+            aboutHeading: `Where quality meets <em>excellence</em>`,
+            aboutText: `At ${businessName}, we bring years of dedicated experience to every project.\n\nOur commitment to quality and client satisfaction drives everything we do.`,
+            stats: [
+              { value: '10+', label: 'Years Experience' },
+              { value: '500+', label: 'Happy Clients' },
+              { value: '50+', label: 'Projects Completed' },
+              { value: '100%', label: 'Satisfaction' },
+            ],
+            contactHeading: 'Ready to get started?',
+            processSteps: [
+              { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+              { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+              { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+            ],
+            projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
+          }
+        }
+      }
+    }
+
+    const templateData: TemplateData = {
+      content,
+      businessName,
+      businessCategory: category,
+      primaryColor: primary,
+      secondaryColor: secondary,
+      pages: pages || ['Home', 'About', 'Services', 'Contact'],
+      images: Array.isArray(images) ? images : [],
+      stockImages: stockImgs,
+      variant,
+    }
+
+    let htmlString: string
+    switch (variant) {
+      case 'visual':
+        htmlString = buildVisualTemplate(templateData)
+        break
+      case 'portfolio':
+        htmlString = buildPortfolioTemplate(templateData)
+        break
+      case 'service':
+      default:
+        htmlString = buildServiceTemplate(templateData)
+        break
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: { html: htmlString },
+    })
+  } catch (err) {
+    console.error('[preview/generate] error:', err)
+    return NextResponse.json(
+      { success: false, error: 'Failed to generate preview' },
+      { status: 500 },
+    )
+  }
+}

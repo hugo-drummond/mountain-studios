@@ -99,7 +99,19 @@ export interface Brief {
   logo_storage_path?: string
   social_handles?: SocialHandles
   reference_sites?: string[]
+  reference_site_notes?: Record<string, string>
   additional_notes?: string
+  tagline?: string
+  tone?: string
+  target_audience?: string
+  cta_goals?: string[]
+  services?: { name: string; description: string }[]
+  page_sections_data?: Record<string, { id: string; title: string; content: string; image_description: string }[]>
+  contact_email?: string
+  contact_phone?: string
+  contact_address?: string
+  business_hours?: string
+  content_visual_ratio?: number
   base_price_gbp?: number
   exchange_rate?: number
   final_price_local?: number

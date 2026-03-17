@@ -3,7 +3,8 @@ import { supabaseAdmin } from '@/lib/supabase-admin'
 import { createNotification } from '@/lib/notifications'
 import { sendSiteGeneratedAlert } from '@/lib/email'
 import { requireAdmin } from '@/lib/auth'
-import type { Brief, PageSelection } from '@/types'
+import { buildGenerationPrompt } from '@/lib/build-prompt'
+import type { Brief } from '@/types'
 const config = require('@/config/config')
 
 // ---------------------------------------------------------------------------
@@ -27,32 +28,7 @@ function buildSlug(businessName: string): string {
     .replace(/[^a-z0-9-]/g, '')
 }
 
-function buildPrompt(brief: Brief): string {
-  const pages = (brief.pages as PageSelection[] | null) ?? []
-  const pageList = pages
-    .map((p) => `  - ${p.name} (${p.sections} section${p.sections !== 1 ? 's' : ''})`)
-    .join('\n')
-
-  const social = brief.social_handles
-    ? Object.entries(brief.social_handles)
-        .filter(([, v]) => v)
-        .map(([k, v]) => `${k}: ${v}`)
-        .join(', ')
-    : 'none provided'
-
-  const refs = Array.isArray(brief.reference_sites) && brief.reference_sites.length > 0
-    ? brief.reference_sites.join(', ')
-    : 'none provided'
-
-  return [
-    `Build a modern ${brief.style ?? 'clean'} website for ${brief.business_name ?? 'the client'}, a ${brief.business_type ?? 'business'} business.`,
-    `Primary colour: ${brief.primary_colour ?? 'not specified'}. Secondary colour: ${brief.secondary_colour ?? 'not specified'}.`,
-    `Pages needed:\n${pageList || '  - Home'}`,
-    `Social: ${social}.`,
-    `Reference sites: ${refs}.`,
-    `Additional notes: ${brief.additional_notes ?? 'none'}.`,
-  ].join('\n')
-}
+// buildPrompt moved to lib/build-prompt.ts (buildGenerationPrompt)
 
 async function pollV0Generation(generationId: string): Promise<Record<string, unknown>> {
   const apiKey = process.env.VERCEL_V0_API_KEY ?? ''
@@ -305,8 +281,9 @@ export async function POST(
       )
     }
 
-    // ── 3. Build prompt ───────────────────────────────────────────────────────
-    const generationPrompt: string = brief.generated_prompt ?? buildPrompt(brief as Brief)
+    // ── 3. Build prompt (includes transcript insights from meetings) ─────────
+    const generationPrompt: string =
+      brief.generated_prompt ?? await buildGenerationPrompt(brief as Brief)
 
     // ── Insert generated_sites row with status='generating' ───────────────────
     const { data: generatedSite, error: gsInsertError } = await supabaseAdmin

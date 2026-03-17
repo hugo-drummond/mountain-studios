@@ -17,6 +17,20 @@ const ALLOWED_FIELDS = [
   'social_handles',
   'reference_sites',
   'additional_notes',
+  'tagline',
+  'tone',
+  'target_audience',
+  'cta_goals',
+  'services',
+  'page_sections_data',
+  'contact_email',
+  'contact_phone',
+  'contact_address',
+  'business_hours',
+  'reference_site_notes',
+  'content_visual_ratio',
+  'region',
+  'decision_status',
 ] as const
 
 type AllowedField = (typeof ALLOWED_FIELDS)[number]

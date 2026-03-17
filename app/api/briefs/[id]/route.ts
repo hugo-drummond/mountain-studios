@@ -31,7 +31,7 @@ export async function GET(
     // ── 2. Fetch partial lead data ────────────────────────────────────────────
     const { data: lead, error: leadError } = await supabaseAdmin
       .from('leads')
-      .select('id, business_name, email, full_name, region, currency_code')
+      .select('id, business_name, business_type, email, full_name, phone, region, currency_code, style, primary_colour, secondary_colour, content_visual_ratio, pages_selected')
       .eq('id', brief.lead_id)
       .single()
 
@@ -59,10 +59,17 @@ export async function GET(
         lead: {
           id: lead.id,
           business_name: lead.business_name,
+          business_type: lead.business_type,
           email: lead.email,
           full_name: lead.full_name,
+          phone: lead.phone,
           region: lead.region,
           currency_code: lead.currency_code,
+          style: lead.style,
+          primary_colour: lead.primary_colour,
+          secondary_colour: lead.secondary_colour,
+          content_visual_ratio: lead.content_visual_ratio,
+          pages_selected: lead.pages_selected,
         },
         current_rate: currentRate,
         is_rate_locked: brief.rate_locked,

@@ -6,7 +6,7 @@ import NavBar from '../components/site/NavBar'
 const navLinks = [
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Start a Project', href: '/cast-your-line' },
+  { label: 'Start a Project', href: '/start-your-project' },
   { label: 'Contact', href: '/contact' },
 ]
 

@@ -4,6 +4,6 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'cklxsdlmdbdlkuywcooh.supabase.co' }
     ]
-  }
+  },
 }
 module.exports = nextConfig
