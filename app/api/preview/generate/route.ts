@@ -254,15 +254,25 @@ interface ImageQueries {
   aboutImageQuery?: string
 }
 
-async function fetchPexelsImage(query: string, apiKey: string, orientation: string = 'landscape'): Promise<string | null> {
+async function fetchPexelsImage(query: string, apiKey: string, orientation: string = 'landscape', usedUrls?: Set<string>): Promise<string | null> {
   try {
     const res = await fetch(
-      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=${orientation}`,
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=8&orientation=${orientation}`,
       { headers: { Authorization: apiKey } },
     )
     const data = await res.json()
-    const photo = data.photos?.[0]
-    return photo?.src?.landscape || photo?.src?.large2x || photo?.src?.large || null
+    const photos = data.photos || []
+    // Pick the first photo whose URL hasn't been used yet
+    for (const photo of photos) {
+      const url = photo?.src?.landscape || photo?.src?.large2x || photo?.src?.large
+      if (url && (!usedUrls || !usedUrls.has(url))) {
+        usedUrls?.add(url)
+        return url
+      }
+    }
+    // Fallback to first result if all are "used"
+    const fallback = photos[0]
+    return fallback?.src?.landscape || fallback?.src?.large2x || fallback?.src?.large || null
   } catch {
     return null
   }
@@ -282,38 +292,38 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
 
   const headers = { Authorization: apiKey }
 
+  // Shared set to track used URLs and prevent duplicates across all images
+  const usedUrls = new Set<string>()
+
   // If we have specific queries from preset content, use them for targeted results
   if (queries?.heroImageQuery || queries?.serviceImageQueries?.length || queries?.galleryImageQueries?.length) {
-    const allFetches: Promise<string | null>[] = []
+    // Fetch sequentially to allow deduplication via usedUrls
+    const heroUrl = await fetchPexelsImage(queries.heroBgImageQuery || queries.heroImageQuery || typeName, apiKey, 'landscape', usedUrls)
 
-    // Hero image (prefer heroBgImageQuery for service variants — moody/dark background shots)
-    allFetches.push(fetchPexelsImage(queries.heroBgImageQuery || queries.heroImageQuery || typeName, apiKey))
-
-    // Service images (up to 3)
     const svcQueries = queries.serviceImageQueries || []
+    const svcResults: (string | null)[] = []
     for (let i = 0; i < 3; i++) {
-      allFetches.push(fetchPexelsImage(svcQueries[i] || typeName, apiKey))
+      svcResults.push(await fetchPexelsImage(svcQueries[i] || `${typeName} ${i}`, apiKey, 'landscape', usedUrls))
     }
 
-    // Gallery images (up to 4)
     const galQueries = queries.galleryImageQueries || []
+    const galResults: (string | null)[] = []
     for (let i = 0; i < 4; i++) {
-      allFetches.push(fetchPexelsImage(galQueries[i] || typeName, apiKey))
+      galResults.push(await fetchPexelsImage(galQueries[i] || `${typeName} space ${i}`, apiKey, 'landscape', usedUrls))
     }
 
-    const results = await Promise.all(allFetches)
-    const fallback = (i: number, seed: string) => results[i] || `https://picsum.photos/seed/${seed}/600/400`
+    const fallback = (url: string | null, seed: string) => url || `https://picsum.photos/seed/${seed}/600/400`
 
     return {
-      hero: fallback(0, `${typeName}-hero`),
+      hero: fallback(heroUrl, `${typeName}-hero`),
       cards: [
-        fallback(1, `${typeName}-svc0`),
-        fallback(2, `${typeName}-svc1`),
-        fallback(3, `${typeName}-svc2`),
-        fallback(4, `${typeName}-gal0`),
-        fallback(5, `${typeName}-gal1`),
-        fallback(6, `${typeName}-gal2`),
-        fallback(7, `${typeName}-gal3`),
+        fallback(svcResults[0], `${typeName}-svc0`),
+        fallback(svcResults[1], `${typeName}-svc1`),
+        fallback(svcResults[2], `${typeName}-svc2`),
+        fallback(galResults[0], `${typeName}-gal0`),
+        fallback(galResults[1], `${typeName}-gal1`),
+        fallback(galResults[2], `${typeName}-gal2`),
+        fallback(galResults[3], `${typeName}-gal3`),
       ],
       avatar: `https://picsum.photos/seed/${typeName}-avatar/200/200`,
     }
@@ -327,17 +337,23 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
   const data = await res.json()
   const photos = data.photos || []
 
+  // Deduplicate: pick unique photos only
   const heroUrl = photos[0]?.src?.landscape || photos[0]?.src?.large2x || `https://picsum.photos/seed/${typeName}-hero/1200/600`
+  usedUrls.add(heroUrl)
 
   const cardUrls: string[] = []
   for (let i = 1; i < photos.length && cardUrls.length < 7; i++) {
-    cardUrls.push(photos[i].src?.medium || photos[i].src?.large)
+    const url = photos[i].src?.landscape || photos[i].src?.large || photos[i].src?.medium
+    if (url && !usedUrls.has(url)) {
+      usedUrls.add(url)
+      cardUrls.push(url)
+    }
   }
   while (cardUrls.length < 7) {
     cardUrls.push(`https://picsum.photos/seed/${typeName}-card${cardUrls.length}/600/400`)
   }
 
-  const avatarUrl = photos[1]?.src?.tiny || `https://picsum.photos/seed/${typeName}-avatar/200/200`
+  const avatarUrl = photos[photos.length > 8 ? 8 : 1]?.src?.tiny || `https://picsum.photos/seed/${typeName}-avatar/200/200`
 
   return { hero: heroUrl, cards: cardUrls, avatar: avatarUrl }
 }
