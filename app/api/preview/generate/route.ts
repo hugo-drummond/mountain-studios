@@ -1264,6 +1264,243 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Food-Hospitality Template (Crafto Restaurant–inspired) ----------
+function buildFoodHospitalityTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+    stockImages.cards[6],
+  ]
+
+  const foodBg = '#ffffff'
+  const foodText = '#232323'
+  const foodMuted = '#777777'
+  const foodOlive = '#7a8a2a'
+  const foodGold = '#c9a030'
+
+  // Nav — logo left, uppercase links center, dark CTA right
+  const foodNavLinks: string[] = []
+  if (navFlags.navServices) foodNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.8rem;color:${foodText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Menu</a>`)
+  if (navFlags.navGallery) foodNavLinks.push(`<a href="#gallery" style="font-family:var(--body-font);font-size:0.8rem;color:${foodText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Gallery</a>`)
+  if (navFlags.navAbout) foodNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.8rem;color:${foodText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">About</a>`)
+  if (navFlags.navContact) foodNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;color:${foodText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Contact</a>`)
+
+  const foodNav = `
+  <nav style="background:${foodBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${foodText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${foodNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.7rem 1.5rem;background:${foodText};color:#fff;border-radius:4px;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Hero — full-bleed food photo with gold circle overlay + heading
+  const heroSection = `
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
+    </div>
+    <div style="position:relative;text-align:center;z-index:2">
+      <div style="width:clamp(350px,50vw,550px);height:clamp(350px,50vw,550px);border-radius:50%;background:${foodGold};display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto;padding:3rem">
+        <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:#fff;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">${content.heroEyebrow}</p>
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.04em">${content.tagline}</h1>
+        <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.85rem 2rem;background:${foodText};color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'View Menu'} &rarr;</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: About split — large plate photo left, heading + text right
+  const aboutSplit = `
+  <section id="about" style="padding:100px 2rem;background:${foodBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div style="position:relative">
+        <div style="border-radius:50%;overflow:hidden;width:90%;aspect-ratio:1;margin:0 auto">
+          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+          <span style="display:block;width:30px;height:2px;background:${foodGold}"></span>
+          <span style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodGold};letter-spacing:0.12em;text-transform:uppercase">${content.badge || content.heroEyebrow}</span>
+        </div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase">${content.aboutHeading}</h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${foodMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-top:2rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.85rem 2rem;background:${foodText};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: 3-column trust bar — icons + text
+  const trustBar = `
+  <section style="padding:60px 2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+      ${content.stats.slice(0, 3).map(s => `
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <div style="width:64px;height:64px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <span style="font-size:1.3rem;color:${foodText}">${s.value.charAt(0) === '&' ? s.value : '&#9733;'}</span>
+        </div>
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${foodText};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.25rem">${s.label}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${s.sublabel || s.value}</p>
+        </div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: Menu — olive label + heading + service items as menu rows
+  const menuSection = `
+  <section id="services" style="padding:80px 2rem;background:${foodBg}">
+    <div style="max-width:1000px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.heroEyebrow} -</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem">
+        ${content.services.map((s, i) => `
+        <div style="display:flex;align-items:center;gap:1rem;text-align:left">
+          <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.25rem">
+              <h3 style="font-family:var(--heading-font);font-size:0.95rem;font-weight:600;color:${foodText}">${s.name}</h3>
+            </div>
+            <p style="font-family:var(--body-font);font-size:0.8rem;color:${foodMuted};line-height:1.6">${s.description}</p>
+            <div style="display:flex;gap:0.5rem;margin-top:0.35rem">
+              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;color:${foodOlive}">${t}</span>`).join(' <span style="color:rgba(0,0,0,0.2)">&#8226;</span> ')}
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 5: Gallery — olive label + heading + photo grid
+  const gallerySection = `
+  <section id="gallery" style="padding:80px 2rem;background:${foodBg}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.badge || 'Specials Choice'} -</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${galleryImgs.slice(0, 3).map(img => `
+        <div style="border-radius:12px;overflow:hidden;height:300px">
+          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 6: Testimonial — large quote
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${foodBg}">
+    <div style="max-width:900px;margin:0 auto;text-align:center">
+      <div style="width:64px;height:64px;border-radius:50%;background:${foodGold};display:flex;align-items:center;justify-content:center;margin:0 auto 2rem">
+        <span style="font-size:1.5rem;color:#fff">&#10077;</span>
+      </div>
+      <p style="font-family:var(--heading-font);font-size:clamp(1.1rem,2vw,1.4rem);font-weight:600;color:${foodText};line-height:1.7;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1.5rem">${content.testimonial.quote}</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
+        <span style="font-family:var(--body-font);font-size:0.85rem;font-style:italic;color:${foodGold}">${content.testimonial.author}</span>
+        ${content.testimonial.rating ? `<span style="color:#f59e0b;font-size:0.85rem">${'&#9733;'.repeat(content.testimonial.rating)}</span>` : ''}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 7: Review strip
+  const reviewStrip = `
+  <section style="padding:1.5rem 2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:1rem">
+      <div style="display:flex;gap:0.15rem">
+        ${[1,2,3,4,5].map(() => `<span style="color:${foodGold};font-size:1.1rem">&#9733;</span>`).join('')}
+      </div>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:${foodText}"><strong>${content.stats[0]?.value || '500+'}</strong> ${content.stats[0]?.label || 'happy customers'}</p>
+    </div>
+  </section>`
+
+  // Section 8: Full-width food image
+  const fullImage = `
+  <section style="padding:0;height:50vh;overflow:hidden">
+    <img src="${galleryImgs[3] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  </section>`
+
+  // Section 9: 4-column contact footer
+  const contactRow = `
+  <section style="padding:60px 2rem;background:${foodBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+      <div>
+        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
+        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About ${businessName}</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9742;</div>
+        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Let's Talk</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">021 000 0000</p>
+      </div>
+      <div>
+        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
+        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.ctaPrimary}</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+      </div>
+      <div>
+        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9906;</div>
+        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Visit Us</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">123 Main Road, Cape Town</p>
+      </div>
+    </div>
+  </section>`
+
+  // Footer
+  const foodFooter = `
+  <footer style="padding:2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);text-align:center">
+    <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${foodText};margin-bottom:0.5rem">${businessName}</div>
+    <p style="font-family:var(--body-font);font-size:0.75rem;color:${foodMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${foodBg};
+      --bg-alt: #f9f7f4;
+      --card-bg: ${foodBg};
+      --text: ${foodText};
+      --text-muted: ${foodMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${foodNav}
+
+  ${heroSection}
+  ${aboutSplit}
+  ${trustBar}
+  ${menuSection}
+  ${gallerySection}
+  ${testimonialSection}
+  ${reviewStrip}
+  ${fullImage}
+  ${buildContactSection(content)}
+  ${contactRow}
+
+${foodFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Health-Wellness Template (ivee–inspired) ----------
 function buildHealthWellnessTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -2659,6 +2896,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildHomeServicesTemplate(templateData)
     } else if (category === 'health-wellness') {
       htmlString = buildHealthWellnessTemplate(templateData)
+    } else if (category === 'food-hospitality') {
+      htmlString = buildFoodHospitalityTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
