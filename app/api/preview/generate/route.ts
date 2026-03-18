@@ -1264,6 +1264,264 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Health-Wellness Template (ivee–inspired) ----------
+function buildHealthWellnessTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+  ]
+
+  const hwBg = '#ffffff'
+  const hwAlt = '#e8f0f4'
+  const hwText = '#1a3a4a'
+  const hwMuted = '#5a7280'
+  const hwGreen = '#5a7a5a'
+  const hwCoral = '#e8734a'
+
+  // Nav — logo left, links center, two CTAs right
+  const hwNavLinks: string[] = []
+  if (navFlags.navServices) hwNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.8rem;color:${hwText};text-decoration:none;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">Services</a>`)
+  if (navFlags.navAbout) hwNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.8rem;color:${hwText};text-decoration:none;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">About</a>`)
+  if (navFlags.navContact) hwNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;color:${hwText};text-decoration:none;font-weight:500;letter-spacing:0.08em;text-transform:uppercase">Contact</a>`)
+
+  const hwNav = `
+  <nav style="background:${hwBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${hwText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${hwNavLinks.join('\n        ')}
+      </div>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.6rem 1.25rem;background:${hwCoral};color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.6rem 1.25rem;border:1px solid ${hwText};color:${hwText};border-radius:6px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${content.ctaSecondary || 'Call Us'}</a>
+      </div>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — photo left, heading + CTA right
+  const heroSection = `
+  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh;background:${hwAlt}">
+    <div style="overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:400;color:${hwText};line-height:1.2;margin-bottom:1.25rem">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${hwText};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2rem;line-height:1.7">${content.heroSubtitle}</p>
+      <a href="#contact" style="display:block;text-align:center;max-width:350px;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2rem;background:${hwCoral};color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 2: Stats row — large serif numbers
+  const statsSection = `
+  <section style="padding:80px 2rem;background:${hwBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${hwText};line-height:1;margin-bottom:0.5rem">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;color:${hwMuted};letter-spacing:0.12em;text-transform:uppercase;font-weight:500">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 3: Centered statement — green label + serif heading + paragraph
+  const statementSection = `
+  <section style="padding:80px 2rem;background:${hwBg};text-align:center">
+    <div style="max-width:750px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">${content.badge || 'Our Approach'}</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${hwText};line-height:1.3;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${hwMuted};line-height:1.8">${content.aboutMission || content.heroSubtitle}</p>
+    </div>
+  </section>`
+
+  // Section 4: Service cards — 2-column, pastel bg + description + CTA
+  const serviceCards = `
+  <section id="services" style="padding:60px 2rem;background:${hwBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:3rem">
+        <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">${content.heroEyebrow}</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${hwText};line-height:1.3">${content.servicesHeading}</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        ${content.services.map((s, i) => `
+        <div style="display:grid;grid-template-columns:1fr 1fr;border-radius:16px;overflow:hidden;min-height:350px;border:1px solid rgba(0,0,0,0.06)">
+          <div style="padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:space-between">
+            <div>
+              <p style="font-family:var(--body-font);font-size:0.7rem;font-weight:600;color:${hwGreen};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">${s.tags[0] || 'Service'}</p>
+              <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.7rem);font-weight:400;color:${hwText};line-height:1.25;margin-bottom:0.75rem">${s.name}</h3>
+              <p style="font-family:var(--body-font);font-size:0.9rem;color:${hwMuted};line-height:1.7">${s.description}</p>
+            </div>
+            <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.7rem 1.5rem;background:${hwCoral};color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;margin-top:1.5rem;align-self:flex-start">${content.ctaSecondary || 'Learn More'}</a>
+          </div>
+          <div style="overflow:hidden;background:${i % 2 === 0 ? '#f0d9cc' : hwAlt}">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 5: 50/50 mission — photo left, text right
+  const missionSection = `
+  <section id="about" style="padding:100px 2rem;background:${hwAlt}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div style="overflow:hidden;border-radius:16px;height:500px">
+        <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">Our Mission</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${hwText};line-height:1.3;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.85rem 2rem;background:${hwCoral};color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;margin-top:1rem">${content.ctaSecondary || 'Learn More'}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 6: Testimonial color cards
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${hwBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">What Others Say About ${businessName}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${[
+          { bg: '#f0ddd0', color: hwText },
+          { bg: '#1a5a6a', color: '#fff' },
+          { bg: '#e8ddd0', color: hwText },
+        ].map((card, i) => {
+          const quote = i === 0 && content.testimonial ? content.testimonial.quote : (content.services[i]?.description || content.heroSubtitle)
+          const author = i === 0 && content.testimonial ? content.testimonial.author : (content.services[i]?.name || 'Happy Client')
+          return `
+        <div style="background:${card.bg};border-radius:16px;padding:2.5rem 2rem;min-height:350px;display:flex;flex-direction:column;justify-content:space-between">
+          <p style="font-family:var(--body-font);font-size:1.05rem;color:${card.color};line-height:1.7">${quote}</p>
+          <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${card.color};letter-spacing:0.1em;text-transform:uppercase;margin-top:2rem">${author}</p>
+        </div>`
+        }).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 7: Team / process steps
+  const teamSection = content.processSteps ? `
+  <section style="padding:80px 2rem;background:${hwBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start">
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwGreen};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">How It Works</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${hwText};line-height:1.3;margin-bottom:1.5rem">${content.galleryHeading || 'Your Journey With Us'}</h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.8">${content.aboutMission || content.heroSubtitle}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        ${content.processSteps.map(step => `
+        <div style="background:${hwAlt};border-radius:16px;padding:2rem;text-align:center">
+          <p style="font-family:var(--body-font);font-size:0.7rem;font-weight:600;color:${hwGreen};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Step ${step.step}</p>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${hwText};margin-bottom:0.5rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${hwMuted};line-height:1.7">${step.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 8: 3-column contact cards
+  const contactCards = `
+  <section id="contact" style="padding:80px 2rem;background:${hwBg}">
+    <div style="max-width:900px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${hwText};margin-bottom:1rem">${content.contactHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.7;margin-bottom:3rem;max-width:600px;margin-left:auto;margin-right:auto">${content.aboutMission || content.heroSubtitle}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:3rem">
+        <div style="background:${hwAlt};border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
+          <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Phone</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary)">021 000 0000</p>
+        </div>
+        <div style="background:${hwAlt};border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
+          <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Address</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary)">123 Main Road, Cape Town</p>
+        </div>
+        <div style="background:${hwAlt};border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
+          <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${hwText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Email</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary)">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        </div>
+      </div>
+      <form style="display:flex;flex-direction:column;gap:1.25rem;max-width:600px;margin:0 auto" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:${hwAlt};border:1px solid rgba(0,0,0,0.06);border-radius:12px;color:${hwText};font-size:0.95rem;outline:none" />
+          <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:${hwAlt};border:1px solid rgba(0,0,0,0.06);border-radius:12px;color:${hwText};font-size:0.95rem;outline:none" />
+        </div>
+        <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:${hwAlt};border:1px solid rgba(0,0,0,0.06);border-radius:12px;color:${hwText};font-size:0.95rem;outline:none;resize:none"></textarea>
+        <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:${hwCoral};color:#fff;border:none;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;letter-spacing:0.06em;text-transform:uppercase">${content.ctaPrimary}</button>
+      </form>
+    </div>
+  </section>`
+
+  // Footer — dark teal bg
+  const hwFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${hwText};color:#fff">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:1rem">Stay in the loop</h3>
+        <form style="display:flex;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.2);max-width:320px" onsubmit="return false">
+          <input type="email" placeholder="Your email address" style="flex:1;font-family:var(--body-font);padding:0.75rem 1rem;background:transparent;border:none;color:#fff;font-size:0.85rem;outline:none;letter-spacing:0.04em;text-transform:uppercase" />
+          <button type="submit" style="padding:0.75rem;background:transparent;border:none;color:#fff;cursor:pointer;font-size:1rem">&#10132;</button>
+        </form>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Popular</div>
+        ${content.services.slice(0, 3).map(s => `<a href="#services" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;display:block;margin-bottom:0.5rem;letter-spacing:0.04em;text-transform:uppercase">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Learn More</div>
+        <a href="#about" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;display:block;margin-bottom:0.5rem;letter-spacing:0.04em;text-transform:uppercase">About Us</a>
+        <a href="#contact" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;display:block;margin-bottom:0.5rem;letter-spacing:0.04em;text-transform:uppercase">Contact Us</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Fine Print</div>
+        <a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;display:block;margin-bottom:0.5rem;letter-spacing:0.04em;text-transform:uppercase">Privacy Policy</a>
+        <a href="#" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.8rem;display:block;margin-bottom:0.5rem;letter-spacing:0.04em;text-transform:uppercase">Terms of Service</a>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.4)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${hwBg};
+      --bg-alt: ${hwAlt};
+      --card-bg: ${hwBg};
+      --text: ${hwText};
+      --text-muted: ${hwMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${hwNav}
+
+  ${heroSection}
+  ${statsSection}
+  ${statementSection}
+  ${serviceCards}
+  ${missionSection}
+  ${testimonialSection}
+  ${teamSection}
+  ${contactCards}
+
+${hwFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Home-Services Template (Helpling–inspired) ----------
 function buildHomeServicesTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -2399,6 +2657,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildTradesTemplate(templateData)
     } else if (category === 'home-services') {
       htmlString = buildHomeServicesTemplate(templateData)
+    } else if (category === 'health-wellness') {
+      htmlString = buildHealthWellnessTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
