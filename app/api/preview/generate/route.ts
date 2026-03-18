@@ -1030,6 +1030,240 @@ ${buildFooter(businessName, content)}
 </html>`
 }
 
+// ---------- Property Template (505 State Street–inspired) ----------
+function buildPropertyTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+    stockImages.cards[6],
+  ]
+
+  // Property nav uses pill buttons instead of plain links
+  const propNavLinks: string[] = []
+  if (navFlags.navServices) propNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">Services</a>`)
+  if (navFlags.navGallery) propNavLinks.push(`<a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">Gallery</a>`)
+  if (navFlags.navAbout) propNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">About</a>`)
+
+  const propNav = `
+  <nav style="position:absolute;top:0;left:0;right:0;z-index:100;padding:0 2rem">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        ${propNavLinks.join('\n        ')}
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.5rem 1.25rem;background:#fff;color:#111;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed hero with headline overlay
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,0.7) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem 6rem;width:100%">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:400;color:#fff;line-height:1.1;margin-bottom:1.25rem;max-width:700px">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.75);max-width:500px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;text-decoration:none;transition:all 0.2s;display:inline-block">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 2: Full-width atmospheric photo
+  const atmosphericPhoto = `
+  <section style="height:70vh;overflow:hidden">
+    <img src="${galleryImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  </section>`
+
+  // Section 3: Large statement text
+  const statementText = content.aboutMission || content.heroSubtitle
+  const statementSection = `
+  <section style="padding:100px 2rem;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto">
+      <p style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.35;max-width:900px">${statementText}</p>
+    </div>
+  </section>`
+
+  // Section 4: Services — 60/40 split (photo left, text right)
+  const featuresSection = `
+  <section id="services" style="padding:100px 0;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:start;margin-bottom:5rem">
+        <div style="overflow:hidden;border-radius:0;height:600px">
+          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="padding-top:2rem">
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-weight:600">${content.heroEyebrow}</p>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1.5rem">${content.servicesHeading}</h2>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:2rem">${content.services[0]?.description || ''}</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.75rem;background:var(--text);color:var(--bg);border-radius:999px;text-decoration:none;display:inline-block;transition:opacity 0.2s">More Details</a>
+        </div>
+      </div>
+      ${content.services.slice(1).map((s, i) => `
+      <div style="display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};gap:4rem;align-items:start;margin-bottom:${i < content.services.length - 2 ? '5rem' : '0'}">
+        ${i % 2 === 0 ? `
+        <div style="padding-top:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.35rem 0.85rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div style="overflow:hidden;height:450px">
+          <img src="${serviceImgs[(i + 1) % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>` : `
+        <div style="overflow:hidden;height:450px">
+          <img src="${serviceImgs[(i + 1) % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="padding-top:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.35rem 0.85rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
+          </div>
+        </div>`}
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 5: Lifestyle statement image with text overlay
+  const lifestyleSection = `
+  <section style="position:relative;height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35)"></div>
+    </div>
+    <div style="position:relative;text-align:center;max-width:900px;padding:0 2rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:#fff;line-height:1.15">${content.aboutHeading}</h2>
+    </div>
+  </section>`
+
+  // Section 6: Stats row
+  const statsSection = `
+  <section style="padding:80px 2rem;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
+      ${content.stats.slice(0, 4).map(s => `
+        <div style="text-align:center;flex:1">
+          <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--text);margin-bottom:0.5rem">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">${s.label}</div>
+          ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+        </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 7: Gallery — photo grid (asymmetric, 505-style)
+  const gallerySection = `
+  <section id="gallery" style="padding:100px 0;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.galleryHeading}</h2>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div style="overflow:hidden;height:420px">
+          <img src="${galleryImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="overflow:hidden;height:420px">
+          <img src="${galleryImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem">
+        <div style="overflow:hidden;height:350px">
+          <img src="${galleryImgs[3]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="overflow:hidden;height:350px">
+          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 8: About — text left, testimonial right
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const testimonialHtml = content.testimonial ? `
+    <div style="margin-top:2.5rem;padding:2rem;background:var(--card-bg);border-left:3px solid var(--primary)">
+      <p style="font-family:var(--body-font);font-size:1rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:0.75rem">"${content.testimonial.quote}"</p>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <span style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">${content.testimonial.author}</span>
+        ${content.testimonial.rating ? `<span style="color:#f59e0b;font-size:0.8rem">${'★'.repeat(content.testimonial.rating)}</span>` : ''}
+      </div>
+    </div>` : ''
+
+  const aboutSection = `
+  <section id="about" style="padding:100px 0;background:var(--bg-alt)">
+    <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start">
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-weight:600">About</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:2rem">${content.aboutHeading}</h2>
+        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+      </div>
+      <div>
+        <div style="overflow:hidden;height:400px;margin-bottom:0">
+          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>${testimonialHtml}
+      </div>
+    </div>
+  </section>`
+
+  // Property footer — giant brand name style
+  const propFooter = `
+  <footer style="padding:5rem 2rem 2rem;background:#0a0a0a;border-top:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto">
+      <div style="font-family:var(--heading-font);font-size:clamp(3rem,8vw,7rem);font-weight:700;color:var(--text);line-height:1;margin-bottom:3rem;letter-spacing:-0.02em">${businessName}</div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-top:2rem;border-top:1px solid var(--border)">
+        <div>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
+        </div>
+        <div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div>
+          ${content.services.map(s => `<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">${s.name}</a>`).join('')}
+        </div>
+        <div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
+          <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">About Us</a>
+          <a href="#gallery" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Gallery</a>
+          <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
+          <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Privacy Policy</a>
+          <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Terms of Service</a>
+        </div>
+      </div>
+      <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
+        <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+
+${propNav}
+
+  ${heroSection}
+  ${atmosphericPhoto}
+  ${statementSection}
+  ${featuresSection}
+  ${lifestyleSection}
+  ${statsSection}
+  ${gallerySection}
+  ${aboutSection}
+  ${buildContactSection(content)}
+
+${propFooter}
+
+</body>
+</html>`
+}
+
 // ---------- POST handler ----------
 export async function POST(req: NextRequest) {
   try {
@@ -1196,17 +1430,22 @@ export async function POST(req: NextRequest) {
     }
 
     let htmlString: string
-    switch (variant) {
-      case 'visual':
-        htmlString = buildVisualTemplate(templateData)
-        break
-      case 'portfolio':
-        htmlString = buildPortfolioTemplate(templateData)
-        break
-      case 'service':
-      default:
-        htmlString = buildServiceTemplate(templateData)
-        break
+    // Property gets its own dedicated template
+    if (category === 'property') {
+      htmlString = buildPropertyTemplate(templateData)
+    } else {
+      switch (variant) {
+        case 'visual':
+          htmlString = buildVisualTemplate(templateData)
+          break
+        case 'portfolio':
+          htmlString = buildPortfolioTemplate(templateData)
+          break
+        case 'service':
+        default:
+          htmlString = buildServiceTemplate(templateData)
+          break
+      }
     }
 
     return NextResponse.json({
