@@ -1264,6 +1264,237 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Retail Template (Public Pool–inspired) ----------
+function buildRetailTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+    stockImages.cards[6],
+  ]
+
+  // Retail uses a warm light theme
+  const retailBg = '#f5f0eb'
+  const retailCardBg = '#ffffff'
+  const retailText = '#1a1a1a'
+  const retailMuted = '#6b6560'
+
+  // Retail nav — categories left, centered brand, icons right
+  const retailNavLinks: string[] = []
+  if (navFlags.navServices) retailNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${content.servicesHeading || 'Shop'}</a>`)
+  if (navFlags.navAbout) retailNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">About</a>`)
+  if (navFlags.navContact) retailNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">Contact</a>`)
+
+  const retailNav = `
+  <div style="background:var(--primary);padding:0.5rem 0;text-align:center;overflow:hidden">
+    <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:#fff;letter-spacing:0.08em;white-space:nowrap">${content.badge || content.heroEyebrow || 'Free Delivery on All Orders Over R500'}</p>
+  </div>
+  <nav style="background:${retailBg};border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:70px;padding:0 2rem">
+      <div style="display:flex;align-items:center;gap:1.5rem">
+        ${retailNavLinks.join('\n        ')}
+      </div>
+      <a href="#" style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:var(--primary);text-decoration:none;letter-spacing:0.02em;text-align:center">${businessName}</a>
+      <div style="display:flex;align-items:center;justify-content:flex-end;gap:1rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed hero — huge heading overlay on lifestyle photo
+  const heroSection = `
+  <section style="position:relative;min-height:85vh;display:flex;align-items:center;overflow:hidden;background:${retailBg}">
+    <div style="position:absolute;inset:1rem;border-radius:20px;overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.35) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 3rem;width:100%;text-align:center">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.85);max-width:500px;margin:0 auto 2rem;line-height:1.6">${content.heroSubtitle}</p>
+      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:transform 0.2s">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 2: "Jump In" — centered heading + subtitle + 3 product circles
+  const collectionSection = `
+  <section style="padding:100px 2rem;background:${retailBg};text-align:center">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.servicesHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:${retailMuted};line-height:1.7;max-width:500px;margin:0 auto 2rem">${content.aboutMission || content.heroSubtitle}</p>
+      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem">${content.ctaSecondary || 'Shop All'}</a>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem">
+        ${serviceImgs.map((img, i) => `
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div style="width:280px;height:280px;border-radius:50%;overflow:hidden;border:2px solid var(--primary);margin-bottom:1rem">
+            <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase">${content.services[i]?.name || ''}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: 50/50 split — overlapping photos left, heading + CTA right
+  const splitSection = `
+  <section style="padding:80px 2rem;background:${retailBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center">
+      <div style="position:relative;min-height:500px">
+        <div style="position:absolute;top:0;left:0;width:65%;height:75%;border-radius:16px;overflow:hidden;z-index:1">
+          <img src="${galleryImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;bottom:0;right:0;width:55%;height:65%;border-radius:16px;overflow:hidden;z-index:2;box-shadow:0 8px 30px rgba(0,0,0,0.1)">
+          <img src="${galleryImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div style="text-align:center;padding:2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.aboutHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${retailMuted};line-height:1.7;margin-bottom:2rem">${content.aboutText.split('\n')[0]}</p>
+        <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 4: Full-width product image — rounded corners, soft bg
+  const fullWidthImage = `
+  <section style="padding:40px 2rem;background:${retailBg}">
+    <div style="max-width:1200px;margin:0 auto;border-radius:24px;overflow:hidden;height:60vh">
+      <img src="${galleryImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    </div>
+  </section>`
+
+  // Section 5: Colored feature section — bold bg, heading, product center, 4 numbered features
+  const featureSection = `
+  <section style="padding:80px 2rem;background:var(--primary);border-radius:24px;margin:40px 1rem;text-align:center">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase">${content.galleryHeading || 'Why Choose Us'}</h2>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;max-width:550px;margin:0 auto 3rem">${content.services[0]?.description || content.heroSubtitle}</p>
+      <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem;align-items:center;max-width:900px;margin:0 auto">
+        <div>
+          ${content.stats.slice(0, 2).map((s, i) => `
+          <div style="margin-bottom:${i === 0 ? '3rem' : '0'};text-align:center">
+            <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:700;color:rgba(255,255,255,0.3);line-height:1">${i + 1}</div>
+            <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.25rem">${s.label}</p>
+          </div>`).join('')}
+        </div>
+        <div style="border-radius:16px;overflow:hidden">
+          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:auto;display:block" />
+        </div>
+        <div>
+          ${content.stats.slice(2, 4).map((s, i) => `
+          <div style="margin-bottom:${i === 0 ? '3rem' : '0'};text-align:center">
+            <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:700;color:rgba(255,255,255,0.3);line-height:1">${i + 3}</div>
+            <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.25rem">${s.label}</p>
+          </div>`).join('')}
+        </div>
+      </div>
+      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:3rem">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 6: Service / product cards — 3 items with images and names
+  const productCards = `
+  <section id="services" style="padding:80px 2rem;background:${retailBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+      ${content.services.map((s, i) => `
+      <div style="text-align:center">
+        <div style="border-radius:50%;overflow:hidden;width:100%;aspect-ratio:1;border:2px solid rgba(0,0,0,0.06);margin-bottom:1.25rem">
+          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${s.description}</p>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 7: About — full-bleed textured photo with heading overlay + CTA
+  const aboutSection = `
+  <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 1rem;border-radius:24px">
+    <div style="position:absolute;inset:0">
+      <img src="${galleryImgs[3] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35)"></div>
+    </div>
+    <div style="position:relative;text-align:center;padding:3rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:900;color:#fff;line-height:0.95;text-transform:uppercase;margin-bottom:2rem">About<br />${businessName}</h2>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2.5rem;border:2px solid #fff;color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'Learn More'}</a>
+    </div>
+  </section>`
+
+  // Section 8: Community / social strip
+  const communitySection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${retailBg}">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:var(--primary);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem">#${businessName.replace(/\s/g, '').toUpperCase()}</p>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:${retailMuted};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
+      <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailText};font-weight:600">— ${content.testimonial.author}</p>
+    </div>
+  </section>` : ''
+
+  // Retail footer — centered logo, links, newsletter, socials
+  const retailFooter = `
+  <footer style="padding:60px 2rem 30px;background:${retailBg};border-top:1px solid rgba(0,0,0,0.08)">
+    <div style="max-width:600px;margin:0 auto;text-align:center">
+      <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:1.5rem">${businessName}</div>
+      <div style="display:flex;justify-content:center;gap:2rem;margin-bottom:2rem">
+        ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${s.name}</a>`).join('')}
+        <a href="#about" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">About</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">Contact</a>
+      </div>
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Join Our Newsletter</p>
+      <form style="display:flex;max-width:400px;margin:0 auto 2rem;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.1)" onsubmit="return false">
+        <input type="email" placeholder="Your email..." style="flex:1;font-family:var(--body-font);padding:0.75rem 1.25rem;border:none;background:${retailCardBg};color:${retailText};font-size:0.85rem;outline:none;letter-spacing:0.06em;text-transform:uppercase" />
+        <button type="submit" style="font-family:var(--body-font);padding:0.75rem 1.5rem;background:var(--secondary);color:#fff;border:none;font-size:0.75rem;font-weight:700;cursor:pointer;letter-spacing:0.1em;text-transform:uppercase">Sign Up</button>
+      </form>
+      <div style="padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.06)">
+        <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:0.75rem">
+          <a href="#" style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Privacy Policy</a>
+          <a href="#" style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Terms &amp; Conditions</a>
+        </div>
+        <p style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};letter-spacing:0.06em;text-transform:uppercase">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>`
+
+  // Retail uses a custom light palette — override CSS vars
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${retailBg};
+      --bg-alt: #ebe6e0;
+      --card-bg: ${retailCardBg};
+      --text: ${retailText};
+      --text-muted: ${retailMuted};
+      --border: rgba(0,0,0,0.08);
+    }
+  </style>
+
+${retailNav}
+
+  ${heroSection}
+  ${collectionSection}
+  ${splitSection}
+  ${fullWidthImage}
+  ${featureSection}
+  ${productCards}
+  ${aboutSection}
+  ${communitySection}
+  ${buildContactSection(content)}
+
+${retailFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Tech-Digital Template (Plain.com–inspired) ----------
 function buildTechDigitalTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -1658,6 +1889,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildPropertyTemplate(templateData)
     } else if (category === 'tech-digital') {
       htmlString = buildTechDigitalTemplate(templateData)
+    } else if (category === 'retail') {
+      htmlString = buildRetailTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
