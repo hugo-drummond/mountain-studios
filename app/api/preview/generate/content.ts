@@ -18,8 +18,9 @@ export interface PresetContent {
   aboutMission: string
   stats: { value: string; label: string; sublabel: string }[]
   contactHeading: string
-  contactHours: string
+  contactHours?: string
   processSteps?: { step: string; title: string; description: string }[]
+  projectCaptions?: string[]
   testimonial: { quote: string; author: string; rating: number }
   imageMood: string
   heroImageQuery: string
@@ -48,7 +49,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Dining",
           "Seasonal Menu"
         ],
-        "serviceImageQuery": "elegant plated restaurant dish fine dining"
+        "serviceImageQuery": "fine dining plated dish white tablecloth restaurant"
       },
       {
         "name": "Private Functions",
@@ -57,7 +58,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Hire",
           "Events"
         ],
-        "serviceImageQuery": "private dining room candles elegant table setting"
+        "serviceImageQuery": "private dining room long table set for event"
       },
       {
         "name": "Wine Pairing",
@@ -66,7 +67,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sommelier",
           "Cape Wines"
         ],
-        "serviceImageQuery": "sommelier pouring wine restaurant table"
+        "serviceImageQuery": "wine bottle glasses poured at restaurant table"
       }
     ],
     "galleryHeading": "From Our Kitchen",
@@ -102,14 +103,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, moody, intimate",
-    "heroImageQuery": "fine dining restaurant interior candlelight evening",
-    "ogImageQuery": "beautifully plated gourmet dish restaurant",
-    "aboutImageQuery": "chef plating dish restaurant kitchen",
+    "heroImageQuery": "restaurant dining table plates wine glasses candlelight evening",
+    "ogImageQuery": "fine dining table set white plates wine restaurant",
+    "aboutImageQuery": "chef plating food kitchen restaurant close-up",
     "galleryImageQueries": [
-      "restaurant amuse bouche elegant plating",
-      "wine cellar restaurant bottles",
-      "private dining room evening candles",
-      "fresh local produce chef kitchen"
+      "restaurant interior booth seating warm pendant lights",
+      "grilled steak plated garnished fine dining",
+      "cocktails bar counter restaurant evening",
+      "restaurant outdoor terrace dining table set"
     ],
     "contactHours": "Mon\u2013Sat: 12:00\u201322:30 \u00b7 Sun: 12:00\u201321:00 \u00b7 Closed Tuesdays"
   },
@@ -131,7 +132,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Single Origin",
           "Flat White"
         ],
-        "serviceImageQuery": "specialty espresso flat white latte art coffee cup"
+        "serviceImageQuery": "espresso machine pouring shot coffee café"
       },
       {
         "name": "All-Day Brunch",
@@ -140,7 +141,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Brunch",
           "Baked Fresh"
         ],
-        "serviceImageQuery": "cafe brunch avocado toast pastry plate"
+        "serviceImageQuery": "café display cabinet pastries sandwiches glass counter"
       },
       {
         "name": "Retail Beans",
@@ -149,7 +150,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Take-Home",
           "Gift Bags"
         ],
-        "serviceImageQuery": "coffee beans retail bag specialty roast"
+        "serviceImageQuery": "coffee beans roasted bag scoop wooden surface"
       }
     ],
     "galleryHeading": "Life at the Counter",
@@ -185,14 +186,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, cosy, textured",
-    "heroImageQuery": "specialty coffee shop interior warm light barista counter",
-    "ogImageQuery": "latte art flat white coffee cup overhead cafe",
-    "aboutImageQuery": "barista behind coffee counter smiling cafe",
+    "heroImageQuery": "coffee shop counter espresso machine barista pouring latte",
+    "ogImageQuery": "cappuccino latte art ceramic cup café table",
+    "aboutImageQuery": "barista pouring latte art coffee cup close-up",
     "galleryImageQueries": [
-      "espresso machine steam pull closeup",
-      "cafe pastry display glass counter",
-      "coffee shop window seat morning light",
-      "coffee beans roasting tray"
+      "café interior wooden tables pendant lights cosy",
+      "croissant pastry plate coffee cup café table",
+      "espresso machine portafilter coffee beans close-up",
+      "iced coffee glass straw café counter summer"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:00 \u00b7 Sat\u2013Sun: 08:00\u201315:00"
   },
@@ -214,7 +215,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sourdough",
           "Stone-Baked"
         ],
-        "serviceImageQuery": "artisan sourdough bread loaf sliced rustic bakery"
+        "serviceImageQuery": "artisan sourdough loaf crusty golden bakery"
       },
       {
         "name": "Pastries & Viennoiserie",
@@ -223,7 +224,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Croissants",
           "French Butter"
         ],
-        "serviceImageQuery": "croissant viennoiserie pastry tray bakery golden"
+        "serviceImageQuery": "decorated wedding cake tiered white flowers bakery"
       },
       {
         "name": "Custom Celebration Cakes",
@@ -232,7 +233,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom Cakes",
           "Wedding Cakes"
         ],
-        "serviceImageQuery": "custom celebration layered cake decorated bakery"
+        "serviceImageQuery": "pastry croissant danish display tray bakery"
       }
     ],
     "galleryHeading": "This Morning's Bake",
@@ -268,14 +269,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, golden, rustic",
-    "heroImageQuery": "artisan bakery sourdough bread morning golden light",
-    "ogImageQuery": "fresh baked bread loaves bakery display counter",
-    "aboutImageQuery": "baker flouring bread dough hands close up",
+    "heroImageQuery": "artisan bread loaves sourdough display shelf bakery",
+    "ogImageQuery": "fresh baked bread loaves bakery shelf morning",
+    "aboutImageQuery": "baker kneading dough flour wooden table hands",
     "galleryImageQueries": [
-      "sourdough loaf sliced open crumb texture",
-      "croissants golden tray bakery oven",
-      "custom decorated celebration cake tier",
-      "baker kneading dough early morning"
+      "bakery display case cupcakes pastries croissants glass",
+      "sourdough bread sliced cutting board rustic table",
+      "cinnamon rolls tray fresh baked golden icing",
+      "bakery interior counter shelves bread warm light"
     ],
     "contactHours": "Tue\u2013Fri: 07:00\u201315:00 \u00b7 Sat\u2013Sun: 07:00\u201312:00 \u00b7 Closed Mon"
   },
@@ -297,7 +298,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Craft Beer",
           "Local Breweries"
         ],
-        "serviceImageQuery": "craft beer tap bar pint pouring"
+        "serviceImageQuery": "craft beer taps row bar counter pouring glass"
       },
       {
         "name": "Pub Kitchen",
@@ -306,7 +307,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pub Grub",
           "Burgers"
         ],
-        "serviceImageQuery": "pub food burger chips basket bar food"
+        "serviceImageQuery": "cocktail mixing bartender shaker bar counter"
       },
       {
         "name": "Live Sport & Events",
@@ -315,7 +316,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Live Sport",
           "Quiz Night"
         ],
-        "serviceImageQuery": "bar sports big screen crowd watching rugby"
+        "serviceImageQuery": "bar food burger fries plate pub table"
       }
     ],
     "galleryHeading": "Nights at the Bar",
@@ -351,14 +352,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "dark, warm, lively",
-    "heroImageQuery": "craft beer bar interior evening warm lights crowd",
-    "ogImageQuery": "craft beer pint glass bar counter close up",
-    "aboutImageQuery": "bartender behind bar smiling pouring beer",
+    "heroImageQuery": "bar counter cocktails glasses neon light evening interior",
+    "ogImageQuery": "craft beer tap handles bar counter glasses",
+    "aboutImageQuery": "bartender mixing cocktail shaker bar counter close-up",
     "galleryImageQueries": [
-      "craft beer taps row bar",
-      "pub food burger loaded nachos",
-      "bar crowd watching sport big screen",
-      "live music pub evening performance"
+      "pub interior wooden bar stools warm lighting",
+      "cocktail glasses garnished bar counter colourful drinks",
+      "craft beer flight tasting glasses wooden paddle",
+      "bar snacks platter nachos wings table"
     ],
     "contactHours": "Mon\u2013Thu: 12:00\u201300:00 \u00b7 Fri\u2013Sat: 12:00\u201302:00 \u00b7 Sun: 12:00\u201322:00"
   },
@@ -380,7 +381,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dry-Aged",
           "Free-Range"
         ],
-        "serviceImageQuery": "butcher premium beef cuts dry aged counter"
+        "serviceImageQuery": "fresh meat cuts steak butcher counter display"
       },
       {
         "name": "House Charcuterie",
@@ -389,7 +390,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Biltong",
           "Boerewors"
         ],
-        "serviceImageQuery": "charcuterie biltong cured meats deli counter"
+        "serviceImageQuery": "deli sandwich prepared counter meats cheeses"
       },
       {
         "name": "Deli & Platters",
@@ -398,7 +399,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cheese Board",
           "Antipasti"
         ],
-        "serviceImageQuery": "deli cheese board charcuterie platter artisan"
+        "serviceImageQuery": "biltong dried meat South African snack display"
       }
     ],
     "galleryHeading": "From the Block",
@@ -434,14 +435,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "rich, rustic, earthy",
-    "heroImageQuery": "artisan butcher shop counter premium meat cuts display",
-    "ogImageQuery": "premium beef cuts butcher block dry aged",
-    "aboutImageQuery": "master butcher trimming meat counter apron",
+    "heroImageQuery": "butcher shop counter fresh meat cuts display refrigerated",
+    "ogImageQuery": "premium steak cuts displayed butcher counter",
+    "aboutImageQuery": "butcher cutting meat cleaver wooden block apron",
     "galleryImageQueries": [
-      "dry aged beef hanging butcher cold room",
-      "boerewors biltong charcuterie display",
-      "cheese board deli platter artisan",
-      "fresh cuts butcher block display"
+      "deli counter meats cheeses display glass case",
+      "raw steak cuts marbled beef wooden board",
+      "sausages hanging butcher shop cured meats",
+      "butcher shop interior counter scale refrigerator"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 07:30\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -463,7 +464,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Buffet"
         ],
-        "serviceImageQuery": "corporate catering buffet event professional setup"
+        "serviceImageQuery": "corporate catering buffet platters conference room"
       },
       {
         "name": "Wedding & Private Events",
@@ -472,7 +473,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding",
           "Table Service"
         ],
-        "serviceImageQuery": "wedding catering elegant table service reception"
+        "serviceImageQuery": "wedding reception dinner table set flowers candles"
       },
       {
         "name": "Cocktail & Canape Parties",
@@ -481,7 +482,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Canapes",
           "Cocktail Events"
         ],
-        "serviceImageQuery": "catering canapes finger food elegant tray cocktail party"
+        "serviceImageQuery": "canapes finger food platter served catering event"
       }
     ],
     "galleryHeading": "Events We've Fed",
@@ -517,14 +518,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, abundant, professional",
-    "heroImageQuery": "catering event elegant buffet setup professional",
-    "ogImageQuery": "catering wedding reception food display elegant",
-    "aboutImageQuery": "catering chef team preparing food event kitchen",
+    "heroImageQuery": "catering buffet table elegant setup platters trays event",
+    "ogImageQuery": "catering event buffet table platters serving dishes",
+    "aboutImageQuery": "catering chef plating food kitchen preparation trays",
     "galleryImageQueries": [
-      "wedding reception catering table setting",
-      "corporate buffet catering professional spread",
-      "catering canapes tray cocktail party",
-      "outdoor catering event marquee guests"
+      "catering setup banquet table plates cutlery glasses",
+      "canapes appetizers platter served event catering",
+      "wedding catering table long reception dinner plates",
+      "chef preparing food catering kitchen stainless steel"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Consultations by appointment \u00b7 Events 7 days"
   },
@@ -546,7 +547,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Signature",
           "Daily Fresh"
         ],
-        "serviceImageQuery": "fast food fresh meal combo hot takeaway"
+        "serviceImageQuery": "burger meal fries drink fast food combo"
       },
       {
         "name": "Family Packs",
@@ -555,7 +556,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Family Value",
           "Bulk Orders"
         ],
-        "serviceImageQuery": "takeaway family pack meal deal food box"
+        "serviceImageQuery": "pizza box open takeaway delivery pepperoni"
       },
       {
         "name": "Delivery & Collect",
@@ -564,7 +565,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery",
           "Click & Collect"
         ],
-        "serviceImageQuery": "food delivery takeaway bag motorbike fast"
+        "serviceImageQuery": "chicken wrap burrito fast food foil packaging"
       }
     ],
     "galleryHeading": "Hot Off the Grill",
@@ -600,14 +601,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, appetising",
-    "heroImageQuery": "fresh fast food takeaway meal vibrant hot food",
-    "ogImageQuery": "takeaway meal hot fresh food box close up",
-    "aboutImageQuery": "fast food kitchen staff cooking preparing fresh",
+    "heroImageQuery": "burger fries takeaway container fast food close-up",
+    "ogImageQuery": "burger and fries takeaway box fast food",
+    "aboutImageQuery": "fast food kitchen grill preparation counter",
     "galleryImageQueries": [
-      "fast food burger fries fresh hot",
-      "takeaway meal deal combo box",
-      "fast food kitchen grill cooking",
-      "delivery motorbike food bag street"
+      "takeaway counter ordering screen fast food restaurant",
+      "loaded burger cheese bacon close-up bun",
+      "fried chicken wings crispy plate dipping sauce",
+      "milkshake tall glass straw fast food counter"
     ],
     "contactHours": "Mon\u2013Sun: 10:00\u201322:00 \u00b7 Delivery until 21:30"
   },
@@ -629,7 +630,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rotating Menu",
           "Seasonal"
         ],
-        "serviceImageQuery": "food truck signature dish street food creative plating"
+        "serviceImageQuery": "food truck burger served window outdoor market"
       },
       {
         "name": "Market Weekends",
@@ -638,7 +639,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Markets",
           "Weekend"
         ],
-        "serviceImageQuery": "food truck market weekend queue street food"
+        "serviceImageQuery": "food truck tacos street food plated"
       },
       {
         "name": "Private Events & Catering",
@@ -647,7 +648,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Hire",
           "Events"
         ],
-        "serviceImageQuery": "food truck private event catering outdoor party"
+        "serviceImageQuery": "food truck coffee served window latte cup"
       }
     ],
     "galleryHeading": "From the Window",
@@ -683,14 +684,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "vibrant, casual, energetic",
-    "heroImageQuery": "food truck street food window serving market",
-    "ogImageQuery": "food truck close up window food being served",
-    "aboutImageQuery": "food truck chef cooking inside kitchen window",
+    "heroImageQuery": "food truck serving window customers street food market",
+    "ogImageQuery": "food truck street vendor serving customers queue",
+    "aboutImageQuery": "food truck chef cooking grill serving window",
     "galleryImageQueries": [
-      "food truck market weekend crowd queue",
-      "street food dish creative plating close up",
-      "food truck exterior colourful branding",
-      "street food market Cape Town atmosphere"
+      "food truck parked colourful painted exterior market",
+      "street tacos plate food truck served",
+      "food truck festival night lights crowd eating",
+      "food truck menu board handwritten specials"
     ],
     "contactHours": "Sat\u2013Sun: 09:00\u201315:00 at markets \u00b7 Weekday locations on Instagram"
   },
@@ -712,7 +713,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cold-Pressed",
           "Raw"
         ],
-        "serviceImageQuery": "cold pressed juice green juice bottle fresh"
+        "serviceImageQuery": "fresh pressed juice bottles green orange colourful"
       },
       {
         "name": "Superfood Smoothies",
@@ -721,7 +722,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Smoothie Bowl",
           "Protein"
         ],
-        "serviceImageQuery": "superfood smoothie bowl acai fresh fruit toppings"
+        "serviceImageQuery": "smoothie bowl acai topped berries granola"
       },
       {
         "name": "Wellness Shots & Cleanses",
@@ -730,7 +731,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Immunity Shots",
           "Cleanse"
         ],
-        "serviceImageQuery": "wellness shot ginger turmeric immunity small bottle"
+        "serviceImageQuery": "detox juice cleanse bottles labelled refrigerator"
       }
     ],
     "galleryHeading": "Fresh Every Morning",
@@ -766,14 +767,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, bright, clean",
-    "heroImageQuery": "cold pressed juice bar fresh fruits vegetables bright",
-    "ogImageQuery": "cold pressed green juice bottle fresh vibrant",
-    "aboutImageQuery": "juice bar staff pressing fresh juice counter",
+    "heroImageQuery": "fresh juice glasses colourful smoothie bowls fruit counter",
+    "ogImageQuery": "colourful smoothie glasses fruit garnish juice bar",
+    "aboutImageQuery": "blender smoothie preparation fresh fruit counter juice bar",
     "galleryImageQueries": [
-      "cold pressed juice bottles row colourful",
-      "smoothie bowl acai toppings overhead",
-      "wellness shots ginger turmeric row",
-      "fresh fruit vegetables produce juice bar"
+      "juice bar counter fresh fruit display blender",
+      "acai bowl topped granola banana berries",
+      "green juice celery spinach glass fresh pressed",
+      "smoothie bottles colourful lined up refrigerator"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -795,7 +796,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Neapolitan",
           "Wood-Fired"
         ],
-        "serviceImageQuery": "neapolitan pizza wood fired oven fresh basil"
+        "serviceImageQuery": "neapolitan pizza margherita basil fresh oven"
       },
       {
         "name": "Specialty & Seasonal Pies",
@@ -804,7 +805,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Seasonal",
           "Creative"
         ],
-        "serviceImageQuery": "gourmet pizza specialty toppings close up"
+        "serviceImageQuery": "pizza delivery box opened pepperoni cheese"
       },
       {
         "name": "Dine-In & Takeaway",
@@ -813,7 +814,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dine-In",
           "Takeaway"
         ],
-        "serviceImageQuery": "pizzeria interior relaxed dine in table pizza"
+        "serviceImageQuery": "calzone folded pizza plate Italian restaurant"
       }
     ],
     "galleryHeading": "From the Oven",
@@ -849,14 +850,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "rustic, warm, Italian",
-    "heroImageQuery": "neapolitan pizza wood fired oven restaurant rustic",
-    "ogImageQuery": "wood fired pizza fresh basil mozzarella close up",
-    "aboutImageQuery": "pizza chef stretching dough wood fired oven",
+    "heroImageQuery": "pizza wood fired oven flames stretching dough",
+    "ogImageQuery": "neapolitan pizza fresh out oven charred bubbles",
+    "aboutImageQuery": "pizza chef stretching dough flour kitchen wood oven",
     "galleryImageQueries": [
-      "pizza dough stretching hand toss close up",
-      "wood fired pizza oven flames interior",
-      "neapolitan pizza fresh basil overhead",
-      "pizzeria interior rustic warm evening"
+      "pizza oven interior flames brick wood fired",
+      "margherita pizza fresh basil mozzarella close-up",
+      "pizza slices box takeaway delivery",
+      "pizza restaurant interior tables red checked cloth"
     ],
     "contactHours": "Tue\u2013Sun: 11:30\u201322:00 \u00b7 Delivery until 21:30 \u00b7 Closed Mondays"
   },
@@ -878,7 +879,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Nigiri",
           "Sashimi"
         ],
-        "serviceImageQuery": "sashimi nigiri sushi platter fresh fish Japanese"
+        "serviceImageQuery": "sushi nigiri salmon tuna rice plate"
       },
       {
         "name": "Specialty Rolls & Maki",
@@ -887,7 +888,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Maki",
           "Specialty Rolls"
         ],
-        "serviceImageQuery": "sushi rolls maki specialty close up platter"
+        "serviceImageQuery": "dim sum bamboo steamer dumplings Asian"
       },
       {
         "name": "Omakase Experience",
@@ -896,7 +897,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Omakase",
           "Chef's Choice"
         ],
-        "serviceImageQuery": "omakase sushi chef counter Japanese restaurant"
+        "serviceImageQuery": "stir fry wok noodles vegetables Asian kitchen"
       }
     ],
     "galleryHeading": "From the Counter",
@@ -932,14 +933,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "minimal, precise, elegant",
-    "heroImageQuery": "Japanese sushi restaurant interior minimal elegant counter",
-    "ogImageQuery": "sushi platter nigiri sashimi overhead restaurant",
-    "aboutImageQuery": "sushi chef preparing nigiri counter close up",
+    "heroImageQuery": "sushi platter nigiri sashimi rolls wooden board",
+    "ogImageQuery": "sushi plate nigiri maki rolls wasabi ginger",
+    "aboutImageQuery": "sushi chef preparing fish knife cutting board",
     "galleryImageQueries": [
-      "sashimi platter fresh fish Japanese restaurant",
-      "sushi roll maki close up overhead",
-      "omakase counter sushi chef plating",
-      "Japanese restaurant interior minimal dark"
+      "sushi restaurant interior counter seats minimal Japanese",
+      "sashimi platter fresh fish sliced ice",
+      "ramen bowl noodles soup chopsticks steam",
+      "maki rolls platter soy sauce chopsticks"
     ],
     "contactHours": "Mon\u2013Sun: 12:00\u201322:00 \u00b7 Last orders 21:30 \u00b7 Omakase by reservation"
   },
@@ -961,7 +962,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Italian Method",
           "Classic Flavours"
         ],
-        "serviceImageQuery": "artisan gelato display cabinet colourful scoops"
+        "serviceImageQuery": "gelato scoops tray display cabinet flavours"
       },
       {
         "name": "Seasonal & Creative Flavours",
@@ -970,7 +971,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Seasonal",
           "Creative"
         ],
-        "serviceImageQuery": "gelato scoop seasonal fruit flavour close up"
+        "serviceImageQuery": "ice cream sundae bowl toppings chocolate"
       },
       {
         "name": "Cakes & Catering",
@@ -979,7 +980,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gelato Cakes",
           "Wholesale"
         ],
-        "serviceImageQuery": "gelato cake celebration dessert decorated"
+        "serviceImageQuery": "frozen yogurt cup toppings fruit sprinkles"
       }
     ],
     "galleryHeading": "Today's Cabinet",
@@ -1015,14 +1016,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, joyful, colourful",
-    "heroImageQuery": "gelato shop display cabinet colourful scoops bright",
-    "ogImageQuery": "gelato scoop cone waffle fresh colourful",
-    "aboutImageQuery": "gelato maker churning ice cream artisan kitchen",
+    "heroImageQuery": "gelato display cabinet colourful scoops metal trays",
+    "ogImageQuery": "ice cream scoops colourful cone waffle",
+    "aboutImageQuery": "gelato scooped waffle cone hand serving counter",
     "galleryImageQueries": [
-      "gelato display cabinet colourful flavours close up",
-      "gelato scoop waffle cone outdoor",
-      "seasonal fruit gelato flavour vibrant",
-      "gelato cake decorated celebration"
+      "gelato shop interior display case colourful flavours",
+      "ice cream sundae glass toppings chocolate sauce",
+      "waffle cone scoops ice cream hand close-up",
+      "milkshake tall glass cream topping straw"
     ],
     "contactHours": "Mon\u2013Sun: 10:00\u201321:00 \u00b7 Extended hours Dec\u2013Feb"
   },
@@ -1044,7 +1045,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cape Wine",
           "Fine Wine"
         ],
-        "serviceImageQuery": "wine shop south african bottles display cellar"
+        "serviceImageQuery": "wine bottles rack red white wooden shelf"
       },
       {
         "name": "Imported & Craft Spirits",
@@ -1053,7 +1054,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Imports",
           "Craft Spirits"
         ],
-        "serviceImageQuery": "liquor store spirits whisky gin bottles display"
+        "serviceImageQuery": "whisky bourbon bottles shelf bar display"
       },
       {
         "name": "Wine Tastings & Gifting",
@@ -1062,7 +1063,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Tastings",
           "Gift Boxes"
         ],
-        "serviceImageQuery": "wine tasting glasses bottles in store event"
+        "serviceImageQuery": "wine tasting event glasses pouring cellar"
       }
     ],
     "galleryHeading": "In the Cellar",
@@ -1098,14 +1099,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "rich, warm, sophisticated",
-    "heroImageQuery": "wine shop interior bottles display warm lighting cellar",
-    "ogImageQuery": "south african wine bottles cellar display close up",
-    "aboutImageQuery": "wine shop owner sommelier recommending bottle",
+    "heroImageQuery": "wine bottles rack cellar wooden shelves display",
+    "ogImageQuery": "wine bottles displayed wooden shelf cellar",
+    "aboutImageQuery": "sommelier holding wine bottle examining label cellar",
     "galleryImageQueries": [
-      "wine bottle labels south africa close up",
-      "wine tasting glasses estate outdoor",
-      "liquor store craft spirits display shelf",
-      "wine gift box wrapped bottles"
+      "wine shop interior bottles shelves wooden racks",
+      "wine tasting glasses poured red white cellar",
+      "whisky bottles displayed shelf bar amber",
+      "craft gin bottles displayed shelf labels"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201319:00 \u00b7 Sat: 09:00\u201317:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1127,7 +1128,7 @@ export const presetContent: Record<string, PresetContent> = {
           "En-Suite",
           "Mountain View"
         ],
-        "serviceImageQuery": "guest house bedroom en suite stylish Cape Town"
+        "serviceImageQuery": "guest house bedroom double bed white linen"
       },
       {
         "name": "Full Cooked Breakfast",
@@ -1136,7 +1137,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Full Breakfast",
           "Home-Cooked"
         ],
-        "serviceImageQuery": "bed breakfast morning full cooked breakfast table"
+        "serviceImageQuery": "breakfast spread table croissants fruit juice"
       },
       {
         "name": "Concierge & Local Tips",
@@ -1145,7 +1146,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Concierge",
           "Airport Transfer"
         ],
-        "serviceImageQuery": "guest house garden pool Cape Town sunny"
+        "serviceImageQuery": "guest house pool garden loungers outdoor"
       }
     ],
     "galleryHeading": "Your Home Away",
@@ -1181,14 +1182,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, inviting, Cape Dutch",
-    "heroImageQuery": "Cape Town guest house garden exterior morning sun",
-    "ogImageQuery": "guest house bedroom en suite stylish Cape Town",
-    "aboutImageQuery": "guest house owner breakfast table host welcoming",
+    "heroImageQuery": "guest house bedroom interior white linen pillows cosy",
+    "ogImageQuery": "guest house exterior garden Cape Town",
+    "aboutImageQuery": "bed and breakfast garden patio outdoor seating morning",
     "galleryImageQueries": [
-      "guest house en suite bedroom Cape Town",
-      "full cooked breakfast table morning",
-      "guest house garden pool exterior",
-      "Table Mountain view Cape Town morning"
+      "guest house bedroom white sheets wooden headboard",
+      "breakfast table set fruit pastries coffee morning",
+      "guest house garden path flowers outdoor seating",
+      "guest house bathroom freestanding bath towels"
     ],
     "contactHours": "Check-in: 14:00\u201320:00 \u00b7 Check-out: 07:00\u201310:30 \u00b7 Reception 24hrs"
   },
@@ -1210,7 +1211,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Luxury Rooms",
           "City Views"
         ],
-        "serviceImageQuery": "luxury hotel room suite Cape Town modern interior"
+        "serviceImageQuery": "hotel suite bedroom luxury bed city view"
       },
       {
         "name": "Rooftop Pool & Bar",
@@ -1219,7 +1220,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rooftop Pool",
           "Table Mountain Views"
         ],
-        "serviceImageQuery": "hotel rooftop pool Cape Town Table Mountain view"
+        "serviceImageQuery": "hotel conference room meeting table chairs"
       },
       {
         "name": "Fine Dining Restaurant",
@@ -1228,7 +1229,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Restaurant",
           "Fine Dining"
         ],
-        "serviceImageQuery": "hotel fine dining restaurant breakfast elegant interior"
+        "serviceImageQuery": "hotel spa pool indoor treatment wellness"
       }
     ],
     "galleryHeading": "Life at the Hotel",
@@ -1264,18 +1265,134 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "luxurious, airy, South African",
-    "heroImageQuery": "luxury hotel Cape Town rooftop pool Table Mountain",
-    "ogImageQuery": "luxury hotel room suite Cape Town interior elegant",
-    "aboutImageQuery": "hotel concierge staff welcoming lobby Cape Town",
+    "heroImageQuery": "hotel room luxury bed white sheets city view window",
+    "ogImageQuery": "luxury hotel room bed city view Cape Town",
+    "aboutImageQuery": "hotel lobby interior modern reception desk marble",
     "galleryImageQueries": [
-      "hotel rooftop pool Cape Town city view",
-      "luxury hotel suite bedroom interior",
-      "hotel restaurant fine dining breakfast",
-      "Table Mountain view hotel balcony"
+      "hotel room interior bed luxury pillows lamps",
+      "hotel rooftop pool loungers city skyline view",
+      "hotel restaurant dining table set fine dining",
+      "hotel spa treatment room candles towels relaxation"
     ],
     "contactHours": "Check-in: 14:00 \u00b7 Check-out: 11:00 \u00b7 Front desk & concierge 24hrs"
   },
-  "Retail Store": {
+  "Clothing / Fashion Retail": {
+    "heroEyebrow": "FASHION RETAIL CAPE TOWN",
+    "heroAccent": "New season arrivals in store now",
+    "tagline": "Style that speaks before you <em>do</em>",
+    "heroSubtitle": "A curated collection of clothing, shoes, and accessories for people who care about how they show up in the world.",
+    "ctaPrimary": "Shop Now",
+    "ctaSecondary": "New Arrivals",
+    "ctaNote": "Free shipping over R500 \u00b7 Easy returns within 14 days \u00b7 Gift wrapping available",
+    "badge": "Cape Town Fashion Retailers Association",
+    "servicesHeading": "What We Carry",
+    "services": [
+      {
+        "name": "Women's & Men's Collections",
+        "description": "Seasonal clothing lines from emerging and established designers, refreshed monthly.",
+        "tags": ["Women's", "Men's"],
+        "serviceImageQuery": "women fashion clothing rack dresses hanging store"
+      },
+      {
+        "name": "Shoes & Accessories",
+        "description": "Curated footwear, bags, jewellery, and accessories to complete every outfit.",
+        "tags": ["Shoes", "Accessories"],
+        "serviceImageQuery": "men clothing store shirts folded display"
+      },
+      {
+        "name": "Personal Styling",
+        "description": "Complimentary personal styling consultations in-store \u2014 we help you find what works for you.",
+        "tags": ["Styling", "Consultation"],
+        "serviceImageQuery": "accessories jewellery sunglasses display retail counter"
+      }
+    ],
+    "galleryHeading": "In the Store",
+    "aboutHeading": "Fashion with <em>intention</em>",
+    "aboutText": "We opened this store because we believe clothing should make you feel something. Our rails are edited, not endless \u2014 every piece earned its place.\n\nWe work directly with designers and local labels. If it's on our floor, we chose it because we'd wear it ourselves.",
+    "aboutMission": "We believe getting dressed should feel like an act of self-expression, not a chore.",
+    "stats": [
+      { "value": "11+", "label": "Years in Fashion", "sublabel": "since 2013" },
+      { "value": "40+", "label": "Designers Stocked", "sublabel": "local & international" },
+      { "value": "Monthly", "label": "New Arrivals", "sublabel": "seasonal collections" },
+      { "value": "4.9\u2605", "label": "Google Rating", "sublabel": "from 400+ reviews" }
+    ],
+    "contactHeading": "Looking for something specific?",
+    "testimonial": {
+      "quote": "The styling advice alone is worth the visit. Left with a wardrobe I actually love.",
+      "author": "Samantha K., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "stylish, warm, curated",
+    "heroImageQuery": "clothing store interior hanging rails garments organised racks",
+    "ogImageQuery": "clothing rack fashion store garments hanging",
+    "aboutImageQuery": "fashion retail folded clothes table display store",
+    "galleryImageQueries": [
+      "clothing store interior racks hangers organised",
+      "fashion accessories display scarves bags shelf",
+      "fitting room mirror clothing store curtain",
+      "clothing store window display mannequins dressed"
+    ],
+    "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
+  },
+  "Food & Grocery Retail": {
+    "heroEyebrow": "FRESH GROCERY CAPE TOWN",
+    "heroAccent": "Farm-fresh daily. Local first.",
+    "tagline": "Groceries chosen with the same care you'd <em>choose</em> yourself",
+    "heroSubtitle": "Fresh produce, artisan goods, and everyday essentials from local farms and trusted suppliers \u2014 no compromise on quality.",
+    "ctaPrimary": "Shop Online",
+    "ctaSecondary": "Visit Us",
+    "ctaNote": "Same-day delivery available \u00b7 Fresh produce daily \u00b7 Loyalty rewards",
+    "badge": "Cape Town Fresh Produce Market Member",
+    "servicesHeading": "What We Stock",
+    "services": [
+      {
+        "name": "Fresh Produce & Dairy",
+        "description": "Locally sourced fruit, vegetables, free-range eggs, and artisan dairy delivered fresh every morning.",
+        "tags": ["Fresh Produce", "Dairy"],
+        "serviceImageQuery": "fresh produce fruit vegetables displayed grocery"
+      },
+      {
+        "name": "Artisan & Specialty Goods",
+        "description": "Craft breads, local honey, preserves, coffee, and specialty foods you won't find in chain stores.",
+        "tags": ["Artisan", "Specialty"],
+        "serviceImageQuery": "deli counter prepared meals salads grocery"
+      },
+      {
+        "name": "Everyday Essentials",
+        "description": "Pantry staples, household goods, and everyday groceries at fair prices with no membership needed.",
+        "tags": ["Pantry", "Household"],
+        "serviceImageQuery": "grocery delivery bags packed products doorstep"
+      }
+    ],
+    "galleryHeading": "Fresh from the Shelves",
+    "aboutHeading": "Groceries done <em>properly</em>",
+    "aboutText": "We started because our neighbourhood deserved a grocery store that actually cares about what it sells. Our produce comes from farms we've visited. Our suppliers are people we know by name.\n\nWe're not a supermarket \u2014 we're a grocery shop that treats food with the respect it deserves.",
+    "aboutMission": "We believe fresh, honest food should be available to everyone \u2014 not just at farmers' markets on Saturdays.",
+    "stats": [
+      { "value": "8+", "label": "Years Trading", "sublabel": "since 2016" },
+      { "value": "30+", "label": "Local Suppliers", "sublabel": "Western Cape farms" },
+      { "value": "Daily", "label": "Fresh Deliveries", "sublabel": "produce & dairy" },
+      { "value": "4.8\u2605", "label": "Google Rating", "sublabel": "from 350+ reviews" }
+    ],
+    "contactHeading": "Want to order for delivery?",
+    "testimonial": {
+      "quote": "The freshest tomatoes in Cape Town. Haven't bought produce from a chain since I found this place.",
+      "author": "Karen P., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "fresh, natural, inviting",
+    "heroImageQuery": "grocery store fresh produce fruit vegetables display shelves",
+    "ogImageQuery": "grocery store produce aisle fresh vegetables fruit",
+    "aboutImageQuery": "fresh fruit vegetables market display colourful stacked",
+    "galleryImageQueries": [
+      "grocery store interior aisles shelves stocked products",
+      "fresh vegetables crates market display tomatoes peppers",
+      "deli counter meats cheeses grocery store",
+      "bakery section bread loaves grocery store"
+    ],
+    "contactHours": "Mon\u2013Sat: 07:00\u201319:00 \u00b7 Sun: 08:00\u201315:00 \u00b7 Delivery Mon\u2013Sat"
+  },
+  "General Retail Store": {
     "heroEyebrow": "CAPE TOWN INDEPENDENT RETAIL",
     "heroAccent": "Curated with care, not algorithms",
     "tagline": "Shopping the way it was <em>meant</em> to be",
@@ -1289,29 +1406,20 @@ export const presetContent: Record<string, PresetContent> = {
       {
         "name": "In-Store Shopping",
         "description": "Browse our curated floor personally and get genuine recommendations from our team.",
-        "tags": [
-          "In-Store",
-          "Expert Advice"
-        ],
-        "serviceImageQuery": "independent retail store interior curated display"
+        "tags": ["In-Store", "Expert Advice"],
+        "serviceImageQuery": "retail products displayed shelves organised store"
       },
       {
         "name": "Online Store",
         "description": "Shop our full range online with fast dispatch and free delivery on orders over R500.",
-        "tags": [
-          "Online",
-          "Fast Delivery"
-        ],
-        "serviceImageQuery": "online retail shopping product packaging delivery"
+        "tags": ["Online", "Fast Delivery"],
+        "serviceImageQuery": "gift wrapping counter retail store packaging"
       },
       {
         "name": "Gift Wrapping & Cards",
         "description": "Complimentary gift wrapping and personalised cards on any in-store or online purchase.",
-        "tags": [
-          "Gift Wrap",
-          "Personalised"
-        ],
-        "serviceImageQuery": "gift wrapping retail store bow ribbon present"
+        "tags": ["Gift Wrap", "Personalised"],
+        "serviceImageQuery": "retail delivery packages boxed products"
       }
     ],
     "galleryHeading": "In the Shop",
@@ -1319,26 +1427,10 @@ export const presetContent: Record<string, PresetContent> = {
     "aboutText": "We opened because we were tired of shopping in spaces that felt like warehouses. Our store is small by design \u2014 we'd rather stock 200 things we love than 2,000 things we don't.\n\nEvery product on our shelves was chosen for a reason. Ask us about any of them.",
     "aboutMission": "We believe the best retail experience is one where you leave with something that genuinely excites you.",
     "stats": [
-      {
-        "value": "9+",
-        "label": "Years Trading",
-        "sublabel": "since 2015"
-      },
-      {
-        "value": "500+",
-        "label": "Products Stocked",
-        "sublabel": "curated & rotating"
-      },
-      {
-        "value": "80+",
-        "label": "Local Suppliers",
-        "sublabel": "SA-made where possible"
-      },
-      {
-        "value": "4.8\u2605",
-        "label": "Google Rating",
-        "sublabel": "from 300+ reviews"
-      }
+      { "value": "9+", "label": "Years Trading", "sublabel": "since 2015" },
+      { "value": "500+", "label": "Products Stocked", "sublabel": "curated & rotating" },
+      { "value": "80+", "label": "Local Suppliers", "sublabel": "SA-made where possible" },
+      { "value": "4.8\u2605", "label": "Google Rating", "sublabel": "from 300+ reviews" }
     ],
     "contactHeading": "Looking for something specific?",
     "testimonial": {
@@ -1347,14 +1439,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, curated, inviting",
-    "heroImageQuery": "independent retail store interior curated display warm",
-    "ogImageQuery": "retail store display products curated shelves",
-    "aboutImageQuery": "retail store owner staff helping customer",
+    "heroImageQuery": "retail shop interior shelves products display counter",
+    "ogImageQuery": "retail shop interior display shelves products",
+    "aboutImageQuery": "retail store owner behind counter serving customer",
     "galleryImageQueries": [
-      "retail store shelf product display curated",
-      "retail packaging gift wrap counter",
-      "independent store interior boutique Cape Town",
-      "retail product close up detail quality"
+      "retail store interior shelves products organised display",
+      "shop counter cash register products display",
+      "retail store window display products storefront",
+      "customer shopping retail store browsing shelves"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1376,7 +1468,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Local Designers",
           "Limited Pieces"
         ],
-        "serviceImageQuery": "boutique fashion store clothing rail interior elegant"
+        "serviceImageQuery": "boutique clothing rack curated dresses elegant"
       },
       {
         "name": "Accessories & Jewellery",
@@ -1385,7 +1477,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Accessories",
           "Jewellery"
         ],
-        "serviceImageQuery": "boutique accessories jewellery display fashion store"
+        "serviceImageQuery": "personal styling consultation fashion boutique"
       },
       {
         "name": "Personal Styling",
@@ -1394,7 +1486,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Styling",
           "Wardrobe Edit"
         ],
-        "serviceImageQuery": "personal styling session fashion boutique fitting"
+        "serviceImageQuery": "boutique accessories display jewellery scarves"
       }
     ],
     "galleryHeading": "The Current Edit",
@@ -1430,14 +1522,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, minimal, editorial",
-    "heroImageQuery": "boutique fashion store interior minimal elegant clothing rail",
-    "ogImageQuery": "boutique clothing display independent designer Cape Town",
-    "aboutImageQuery": "boutique store owner styling client fashion",
+    "heroImageQuery": "boutique interior clothing rack elegant minimal hangers",
+    "ogImageQuery": "boutique fashion store interior clothing display",
+    "aboutImageQuery": "fashion boutique folded clothes display table curated",
     "galleryImageQueries": [
-      "boutique clothing rail detail fabric close up",
-      "fashion accessories display jewellery boutique",
-      "boutique store interior editorial styling",
-      "local designer fashion lookbook Cape Town"
+      "boutique interior minimal clothing rack hangers",
+      "designer handbags displayed shelf boutique store",
+      "boutique fitting room mirror curtain elegant",
+      "boutique window display mannequin dressed storefront"
     ],
     "contactHours": "Mon\u2013Fri: 09:30\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1459,7 +1551,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Same-Day",
           "Hand-Tied"
         ],
-        "serviceImageQuery": "florist hand tied bouquet fresh flowers seasonal"
+        "serviceImageQuery": "fresh flower bouquet wrapped hand delivery"
       },
       {
         "name": "Wedding & Event Florals",
@@ -1468,7 +1560,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding Flowers",
           "Event Design"
         ],
-        "serviceImageQuery": "wedding floral arrangement arch flowers event"
+        "serviceImageQuery": "wedding flowers bouquet arrangement ceremony"
       },
       {
         "name": "Weekly Flower Subscriptions",
@@ -1477,7 +1569,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Subscription",
           "Weekly Delivery"
         ],
-        "serviceImageQuery": "flower subscription bouquet delivery home fresh"
+        "serviceImageQuery": "corporate flower arrangement vase office reception"
       }
     ],
     "galleryHeading": "In Bloom",
@@ -1513,14 +1605,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "lush, romantic, botanical",
-    "heroImageQuery": "florist fresh flower arrangement studio Cape Town lush",
-    "ogImageQuery": "florist hand tied bouquet fresh seasonal flowers",
-    "aboutImageQuery": "florist arranging flowers studio hands close up",
+    "heroImageQuery": "florist shop buckets fresh flowers roses tulips colourful",
+    "ogImageQuery": "flower bouquet roses wrapped florist shop",
+    "aboutImageQuery": "florist arranging bouquet hands flowers ribbon table",
     "galleryImageQueries": [
-      "wedding floral arch installation ceremony flowers",
-      "fresh bouquet hand tied seasonal blooms",
-      "flower subscription arrangement home vase",
-      "florist studio bucket flowers market fresh"
+      "florist shop interior buckets flowers display",
+      "wedding bouquet white roses greenery ribbon",
+      "flower arrangement vase table centrepiece",
+      "dried flower bouquet wrapped kraft paper"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 Sun: By appointment"
   },
@@ -1542,7 +1634,7 @@ export const presetContent: Record<string, PresetContent> = {
           "SA-Made",
           "Curated"
         ],
-        "serviceImageQuery": "gift shop curated display SA made products homeware"
+        "serviceImageQuery": "gift hamper basket wrapped products ribbon"
       },
       {
         "name": "Custom Gift Boxes",
@@ -1551,7 +1643,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gift Boxes",
           "Personalised"
         ],
-        "serviceImageQuery": "custom gift box curated products ribbon wrap"
+        "serviceImageQuery": "scented candles display jars gift shop shelf"
       },
       {
         "name": "Corporate Gifting",
@@ -1560,7 +1652,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate Gifts",
           "Bulk Orders"
         ],
-        "serviceImageQuery": "corporate gift box branded packaging business"
+        "serviceImageQuery": "personalised gifts engraved mugs frames"
       }
     ],
     "galleryHeading": "Worth Giving",
@@ -1596,14 +1688,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, curated, celebratory",
-    "heroImageQuery": "gift shop interior curated display homeware candles Cape Town",
-    "ogImageQuery": "gift box curated products SA made ribbon wrap",
-    "aboutImageQuery": "gift shop owner wrapping present personalised",
+    "heroImageQuery": "gift shop interior shelves candles homeware mugs display",
+    "ogImageQuery": "gift shop interior curated display homeware",
+    "aboutImageQuery": "gift shop display curated items candles ceramics",
     "galleryImageQueries": [
-      "gift shop product display curated ceramics candles",
-      "custom gift box wrapped ribbon bow",
-      "corporate gift boxes branded bulk",
-      "SA made products gift shop display"
+      "gift shop shelves products candles ceramics",
+      "greeting cards display rack gift shop",
+      "gift wrapping ribbon bows tissue paper table",
+      "handmade crafts pottery display gift shop"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1625,7 +1717,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Bespoke",
           "Engagement"
         ],
-        "serviceImageQuery": "bespoke engagement ring gold diamond close up jeweller"
+        "serviceImageQuery": "engagement ring diamond gold jewellery close-up"
       },
       {
         "name": "Fine Jewellery Collection",
@@ -1634,7 +1726,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Jewellery",
           "Ethical Stones"
         ],
-        "serviceImageQuery": "fine jewellery collection display gold silver rings necklace"
+        "serviceImageQuery": "custom jewellery design workshop goldsmith bench"
       },
       {
         "name": "Repairs & Remodelling",
@@ -1643,7 +1735,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Repairs",
           "Heirloom Reset"
         ],
-        "serviceImageQuery": "jewellery repair bench tools goldsmith workshop"
+        "serviceImageQuery": "jewellery repair polishing tools workbench"
       }
     ],
     "galleryHeading": "From the Bench",
@@ -1679,14 +1771,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "luxurious, intimate, precise",
-    "heroImageQuery": "jewellery studio Cape Town fine goldsmith bench workshop",
-    "ogImageQuery": "bespoke engagement ring diamond gold close up sparkle",
-    "aboutImageQuery": "goldsmith jeweller crafting ring bench tools close up",
+    "heroImageQuery": "jewellery display case rings necklaces velvet tray",
+    "ogImageQuery": "diamond ring jewellery display velvet box",
+    "aboutImageQuery": "jeweller goldsmith workbench tools magnifier close-up",
     "galleryImageQueries": [
-      "engagement ring diamond setting close up",
-      "fine jewellery display gold necklace earrings",
-      "goldsmith workshop bench tools rings",
-      "jewellery collection display case elegant"
+      "jewellery store display case rings gold silver",
+      "engagement ring diamond close-up velvet box",
+      "gold necklace pendant chain jewellery display",
+      "jeweller workshop tools bench magnifier lamp"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201313:00 \u00b7 Consultations by appointment"
   },
@@ -1708,7 +1800,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Solid Wood",
           "Handcrafted"
         ],
-        "serviceImageQuery": "furniture store showroom living room dining table solid wood"
+        "serviceImageQuery": "living room sofa armchair coffee table showroom"
       },
       {
         "name": "Custom Orders",
@@ -1717,7 +1809,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom",
           "Bespoke"
         ],
-        "serviceImageQuery": "custom furniture workshop carpenter solid wood making"
+        "serviceImageQuery": "custom furniture workshop carpenter wood crafting"
       },
       {
         "name": "Interior Styling",
@@ -1726,7 +1818,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Styling",
           "Space Planning"
         ],
-        "serviceImageQuery": "interior styling furniture arrangement room design consultation"
+        "serviceImageQuery": "furniture delivery truck unloading sofa home"
       }
     ],
     "galleryHeading": "In the Showroom",
@@ -1762,14 +1854,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, natural, crafted",
-    "heroImageQuery": "furniture showroom interior Cape Town solid wood contemporary",
-    "ogImageQuery": "solid wood dining table furniture Cape Town crafted",
-    "aboutImageQuery": "furniture craftsman workshop solid wood sanding Cape Town",
+    "heroImageQuery": "furniture showroom sofa dining table chairs display",
+    "ogImageQuery": "furniture showroom interior sofa table chairs",
+    "aboutImageQuery": "solid wood dining table chairs craftsman workshop",
     "galleryImageQueries": [
-      "solid wood dining table chairs showroom",
-      "custom furniture workshop craftsman Cape Town",
-      "living room sofa furniture display showroom",
-      "bedroom furniture solid wood contemporary"
+      "furniture showroom living room sofa coffee table",
+      "dining table solid wood chairs set showroom",
+      "bedroom furniture bed headboard side tables",
+      "outdoor furniture patio table chairs garden"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201314:00 \u00b7 Sun: By appointment"
   },
@@ -1791,7 +1883,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Power Tools",
           "Professional Grade"
         ],
-        "serviceImageQuery": "hardware store power tools display Bosch Makita shelf"
+        "serviceImageQuery": "power tools drill saw display hardware shelf"
       },
       {
         "name": "Fixings, Paint & Materials",
@@ -1800,7 +1892,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fixings",
           "Paint Range"
         ],
-        "serviceImageQuery": "hardware store paint mixing counter fixings display"
+        "serviceImageQuery": "paint mixing machine colour matching hardware store"
       },
       {
         "name": "Trade Accounts & Delivery",
@@ -1809,7 +1901,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Trade Accounts",
           "Delivery"
         ],
-        "serviceImageQuery": "hardware trade delivery van supplies building site"
+        "serviceImageQuery": "key cutting machine hardware store counter"
       }
     ],
     "galleryHeading": "In the Store",
@@ -1845,14 +1937,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "industrial, practical, reliable",
-    "heroImageQuery": "hardware store interior shelves tools stock Cape Town",
-    "ogImageQuery": "power tools display hardware store professional",
-    "aboutImageQuery": "hardware store staff advising customer tools",
+    "heroImageQuery": "hardware store interior shelves tools drills screws",
+    "ogImageQuery": "hardware store tools display shelves organised",
+    "aboutImageQuery": "hardware store aisle tools organised shelves pegboard",
     "galleryImageQueries": [
-      "power tools display Bosch Makita shelf hardware",
-      "paint mixing counter hardware store",
-      "fixings bolts screws bins hardware store",
-      "trade delivery hardware supplies building"
+      "hardware store shelves power tools drills saws",
+      "paint cans colour swatches display hardware store",
+      "plumbing fittings pipes shelf hardware store",
+      "nuts bolts screws organised bins hardware"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:30 \u00b7 Sat: 07:00\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -1874,7 +1966,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Literary Fiction",
           "African Lit"
         ],
-        "serviceImageQuery": "independent bookshop shelves curated books warm"
+        "serviceImageQuery": "book display stack new releases table"
       },
       {
         "name": "Staff Picks & Events",
@@ -1883,7 +1975,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Staff Picks",
           "Author Events"
         ],
-        "serviceImageQuery": "bookshop author event reading evening customers"
+        "serviceImageQuery": "children story time reading bookshop corner"
       },
       {
         "name": "Special Orders & Gift Cards",
@@ -1892,7 +1984,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Special Orders",
           "Gift Cards"
         ],
-        "serviceImageQuery": "bookshop gift card special order counter"
+        "serviceImageQuery": "book gift wrapped ribbon bow"
       }
     ],
     "galleryHeading": "In the Stacks",
@@ -1928,14 +2020,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, literary, inviting",
-    "heroImageQuery": "independent bookshop interior warm shelves Cape Town",
-    "ogImageQuery": "bookshop shelves books warm light independent",
-    "aboutImageQuery": "bookshop staff recommending book to customer",
+    "heroImageQuery": "bookshop interior shelves books stacked warm light cosy",
+    "ogImageQuery": "bookshop shelves books stacked warm lighting",
+    "aboutImageQuery": "person reading book armchair bookshop cosy corner",
     "galleryImageQueries": [
-      "independent bookshop shelves close up spines",
-      "author event bookshop evening reading",
-      "bookshop cosy reading corner armchair",
-      "African literature bookshop display Cape Town"
+      "bookshop interior shelves floor ceiling books",
+      "book display table new releases bestsellers",
+      "children books section colourful bookshop shelf",
+      "book stack reading glasses coffee table"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1957,7 +2049,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dispensing",
           "Medicine Counselling"
         ],
-        "serviceImageQuery": "pharmacy dispensary counter pharmacist dispensing prescription"
+        "serviceImageQuery": "prescription medicine bottles pharmacy counter"
       },
       {
         "name": "Chronic Medication Management",
@@ -1966,7 +2058,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Chronic Meds",
           "Home Delivery"
         ],
-        "serviceImageQuery": "pharmacy chronic medication management counter patient"
+        "serviceImageQuery": "vitamins supplements shelf display pharmacy"
       },
       {
         "name": "Health Screenings",
@@ -1975,7 +2067,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Blood Pressure",
           "Glucose"
         ],
-        "serviceImageQuery": "pharmacy health screening blood pressure patient"
+        "serviceImageQuery": "pharmacist blood pressure check health screening"
       }
     ],
     "galleryHeading": "Your Health, Our Priority",
@@ -2011,14 +2103,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, trustworthy, professional",
-    "heroImageQuery": "pharmacy interior clean professional dispensary counter",
-    "ogImageQuery": "pharmacist dispensing prescription medicine counter",
-    "aboutImageQuery": "pharmacist consulting patient counter pharmacy",
+    "heroImageQuery": "pharmacy interior shelves medicine counter dispensary clean",
+    "ogImageQuery": "pharmacy counter dispensary shelves medicine",
+    "aboutImageQuery": "pharmacist dispensing medicine counter patient consultation",
     "galleryImageQueries": [
-      "pharmacy dispensary shelves medicine organised",
-      "pharmacist blood pressure screening patient",
-      "pharmacy product display health OTC",
-      "pharmacy team staff professional counter"
+      "pharmacy interior clean shelves products organised",
+      "pharmacist consultation counter patient medicine",
+      "vitamins supplements display shelf pharmacy",
+      "prescription medication bottles pharmacy dispensary"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:30\u201313:00 \u00b7 Sun: 09:00\u201312:00"
   },
@@ -2040,7 +2132,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Educational",
           "STEM"
         ],
-        "serviceImageQuery": "toy store educational toys building blocks creative display"
+        "serviceImageQuery": "stuffed animals teddy bears display toy shelf"
       },
       {
         "name": "Games & Puzzles",
@@ -2049,7 +2141,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Board Games",
           "Puzzles"
         ],
-        "serviceImageQuery": "toy store board games puzzles display family"
+        "serviceImageQuery": "educational STEM toys building blocks display"
       },
       {
         "name": "Birthday Gifting",
@@ -2058,7 +2150,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Birthday Gifts",
           "Wrapping"
         ],
-        "serviceImageQuery": "toy store gift wrap birthday present children"
+        "serviceImageQuery": "toy gift wrapped ribbon box birthday"
       }
     ],
     "galleryHeading": "The Toy Box",
@@ -2094,14 +2186,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, playful, warm",
-    "heroImageQuery": "toy store interior colourful educational toys display children",
-    "ogImageQuery": "toy store children educational building blocks creative",
-    "aboutImageQuery": "toy store staff child playing educational toy",
+    "heroImageQuery": "toy store interior shelves colourful toys stuffed animals display",
+    "ogImageQuery": "toy store shelves colourful toys display",
+    "aboutImageQuery": "children toys educational blocks puzzles colourful display",
     "galleryImageQueries": [
-      "educational wooden toys display store bright",
-      "board games puzzles family display toy store",
-      "children building blocks STEM toy play",
-      "toy store birthday gift wrap display"
+      "toy store interior colourful shelves stuffed animals",
+      "board games puzzles stacked display shelf",
+      "educational toys building blocks LEGO display",
+      "toy store window display children dolls cars"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2123,7 +2215,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Apple",
           "Samsung"
         ],
-        "serviceImageQuery": "electronics store smartphone laptop display in store"
+        "serviceImageQuery": "laptop computers display electronics store counter"
       },
       {
         "name": "Smart Home & Accessories",
@@ -2132,7 +2224,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Smart Home",
           "Accessories"
         ],
-        "serviceImageQuery": "smart home devices electronics display speaker router"
+        "serviceImageQuery": "phone repair technician tools screen electronics"
       },
       {
         "name": "Repairs & Trade-Ins",
@@ -2141,7 +2233,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Repairs",
           "Trade-Ins"
         ],
-        "serviceImageQuery": "electronics repair technician screen repair phone laptop"
+        "serviceImageQuery": "home entertainment TV display electronics showroom"
       }
     ],
     "galleryHeading": "In the Store",
@@ -2177,14 +2269,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, modern, technical",
-    "heroImageQuery": "electronics store interior clean modern display devices Cape Town",
-    "ogImageQuery": "electronics store smartphone laptop display counter",
-    "aboutImageQuery": "electronics repair technician working on device bench",
+    "heroImageQuery": "electronics store display laptops phones tablets counter",
+    "ogImageQuery": "electronics store laptops phones display counter",
+    "aboutImageQuery": "electronics shelf headphones speakers gadgets display",
     "galleryImageQueries": [
-      "electronics store display phones laptops shelves",
-      "smart home devices display speaker earbuds",
-      "electronics repair technician close up phone",
-      "electronics store staff customer demo device"
+      "electronics store interior displays screens phones",
+      "laptop display open screens electronics counter",
+      "headphones speakers audio display shelf electronics",
+      "smartphone accessories cases chargers display rack"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2206,7 +2298,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Running Shoes",
           "Gait Analysis"
         ],
-        "serviceImageQuery": "sports store running shoes trail display fitting"
+        "serviceImageQuery": "running shoes training sneakers display shelf"
       },
       {
         "name": "Outdoor & Adventure",
@@ -2215,7 +2307,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hiking",
           "Trail"
         ],
-        "serviceImageQuery": "outdoor sports store hiking pack trail gear display"
+        "serviceImageQuery": "sports clothing activewear rack display store"
       },
       {
         "name": "Team Sport Equipment",
@@ -2224,7 +2316,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Team Sport",
           "Cricket"
         ],
-        "serviceImageQuery": "sports store team sport equipment display rugby cricket"
+        "serviceImageQuery": "outdoor camping gear backpacks tents display"
       }
     ],
     "galleryHeading": "Get Out There",
@@ -2260,14 +2352,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, technical, outdoors",
-    "heroImageQuery": "sports store Cape Town running outdoor gear display",
-    "ogImageQuery": "sports store running shoes display close up technical",
-    "aboutImageQuery": "sports store staff fitting customer running shoes",
+    "heroImageQuery": "sports store interior running shoes display shelves gear",
+    "ogImageQuery": "sports gear shoes equipment store display",
+    "aboutImageQuery": "running shoes display wall sports store shelves",
     "galleryImageQueries": [
-      "running shoes display sports store trail road",
-      "hiking outdoor gear pack display store",
-      "sports store team equipment rugby cricket",
-      "trail running Cape Town mountain athlete"
+      "sports store running shoes wall display shelves",
+      "cycling gear helmets bikes sports store",
+      "fitness equipment dumbbells mats sports store",
+      "outdoor hiking backpacks camping gear display"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2289,7 +2381,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Local Produce",
           "Daily Delivery"
         ],
-        "serviceImageQuery": "supermarket fresh produce vegetables fruit display"
+        "serviceImageQuery": "fresh produce vegetables fruit supermarket display"
       },
       {
         "name": "In-Store Butchery & Bakery",
@@ -2298,7 +2390,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Butchery",
           "In-Store Bakery"
         ],
-        "serviceImageQuery": "supermarket butchery counter meat fresh service"
+        "serviceImageQuery": "grocery delivery bags doorstep packed products"
       },
       {
         "name": "Online Shopping & Delivery",
@@ -2307,7 +2399,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery",
           "Click & Collect"
         ],
-        "serviceImageQuery": "grocery delivery shopping bag online order home"
+        "serviceImageQuery": "deli counter prepared food supermarket"
       }
     ],
     "galleryHeading": "In the Aisles",
@@ -2343,14 +2435,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, abundant, community",
-    "heroImageQuery": "supermarket fresh produce aisle colourful vegetables fruit",
-    "ogImageQuery": "supermarket fresh produce vegetables fruit display",
-    "aboutImageQuery": "supermarket butchery counter staff serving customer",
+    "heroImageQuery": "supermarket produce aisle fresh vegetables fruit display",
+    "ogImageQuery": "supermarket interior aisles shelves produce",
+    "aboutImageQuery": "fresh produce market vegetables stacked colourful crates",
     "galleryImageQueries": [
-      "supermarket produce fresh colourful display",
-      "in store butchery counter meat cuts",
-      "supermarket bakery fresh bread display",
-      "grocery delivery bags home doorstep"
+      "supermarket aisles stocked shelves products overhead",
+      "fresh bakery section bread loaves supermarket",
+      "meat counter butcher supermarket display fresh",
+      "checkout counter supermarket cashier scanning"
     ],
     "contactHours": "Mon\u2013Sun: 07:30\u201320:00 \u00b7 Public holidays: 08:00\u201317:00"
   },
@@ -2372,7 +2464,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vintage",
           "Pre-Loved"
         ],
-        "serviceImageQuery": "thrift store vintage clothing rail curated second hand"
+        "serviceImageQuery": "vintage clothing rack browse thrift store"
       },
       {
         "name": "Furniture & Homeware",
@@ -2381,7 +2473,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vintage Furniture",
           "Homeware"
         ],
-        "serviceImageQuery": "thrift store vintage furniture homeware display"
+        "serviceImageQuery": "second-hand furniture table chairs thrift"
       },
       {
         "name": "Buy, Sell & Consign",
@@ -2390,7 +2482,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Buy & Sell",
           "Consignment"
         ],
-        "serviceImageQuery": "thrift store consignment drop off second hand selling"
+        "serviceImageQuery": "retro vinyl records crate browsing thrift"
       }
     ],
     "galleryHeading": "Recent Finds",
@@ -2426,14 +2518,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "eclectic, warm, nostalgic",
-    "heroImageQuery": "thrift store vintage clothing curated second hand interior",
-    "ogImageQuery": "vintage clothing thrift store rail curated second hand",
-    "aboutImageQuery": "thrift store owner sorting vintage clothing rail",
+    "heroImageQuery": "thrift store interior clothing racks vintage shelves",
+    "ogImageQuery": "thrift store vintage clothing racks display",
+    "aboutImageQuery": "vintage clothing rack thrift store browse hangers",
     "galleryImageQueries": [
-      "vintage clothing rail second hand curated",
-      "thrift store vintage furniture homeware display",
-      "vintage ceramics homeware thrift store",
-      "second hand clothes Cape Town sustainable"
+      "thrift store interior vintage clothing racks browse",
+      "second-hand books vinyl records shelf display",
+      "vintage furniture lamp vase thrift store",
+      "retro clothing denim jacket rack thrift store"
     ],
     "contactHours": "Mon\u2013Sat: 09:00\u201317:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2455,7 +2547,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fynbos",
           "Indigenous"
         ],
-        "serviceImageQuery": "garden nursery indigenous fynbos plants Cape Town"
+        "serviceImageQuery": "potted plants flowers display garden centre shelf"
       },
       {
         "name": "Garden Design & Planting",
@@ -2464,7 +2556,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Garden Design",
           "Planting Plan"
         ],
-        "serviceImageQuery": "landscape garden design consultation planting outdoor"
+        "serviceImageQuery": "landscaping garden design outdoor plants installed"
       },
       {
         "name": "Pots, Soil & Garden Supplies",
@@ -2473,7 +2565,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pots",
           "Compost"
         ],
-        "serviceImageQuery": "garden centre pots soil supplies terracotta display"
+        "serviceImageQuery": "garden tools soil bags fertiliser display shelf"
       }
     ],
     "galleryHeading": "In the Nursery",
@@ -2509,14 +2601,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "lush, natural, botanical",
-    "heroImageQuery": "garden nursery Cape Town indigenous fynbos plants display",
-    "ogImageQuery": "fynbos protea plants garden nursery Cape Town",
-    "aboutImageQuery": "garden nursery horticulturist advising customer plants",
+    "heroImageQuery": "garden centre plants pots greenhouse shelves rows",
+    "ogImageQuery": "garden centre nursery potted plants rows greenhouse",
+    "aboutImageQuery": "garden nursery potted plants succulents hands repotting",
     "galleryImageQueries": [
-      "fynbos indigenous plants nursery Cape Town",
-      "garden design planting landscape consultation",
-      "terracotta pots garden supplies nursery display",
-      "protea restio succulent nursery Western Cape"
+      "garden centre greenhouse plants rows shelves",
+      "potted succulents cacti display garden nursery",
+      "garden tools watering cans pots display shelf",
+      "outdoor trees shrubs garden centre yard"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201317:30 \u00b7 Sat: 07:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -2538,7 +2630,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Check-Ups",
           "Family Dentistry"
         ],
-        "serviceImageQuery": "dentist examination patient chair dental practice"
+        "serviceImageQuery": "dental examination patient chair dentist tools"
       },
       {
         "name": "Cosmetic & Whitening",
@@ -2547,7 +2639,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Whitening",
           "Veneers"
         ],
-        "serviceImageQuery": "cosmetic dental whitening smile makeover patient"
+        "serviceImageQuery": "teeth whitening treatment dental chair UV light"
       },
       {
         "name": "Implants & Orthodontics",
@@ -2556,7 +2648,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Implants",
           "Clear Aligners"
         ],
-        "serviceImageQuery": "dental implants orthodontics clear aligner consultation"
+        "serviceImageQuery": "dental implant model jaw close-up"
       }
     ],
     "galleryHeading": "Smile Transformations",
@@ -2592,14 +2684,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
-    "heroImageQuery": "dental practice clean modern interior Cape Town",
-    "ogImageQuery": "dentist dental chair clean professional practice",
-    "aboutImageQuery": "dentist smiling patient consultation Cape Town",
+    "heroImageQuery": "dental chair practice interior clean modern equipment",
+    "ogImageQuery": "dental practice chair equipment clean modern",
+    "aboutImageQuery": "dentist examining patient chair dental light tools",
     "galleryImageQueries": [
-      "dental practice modern clean interior",
-      "cosmetic dentistry smile transformation before after",
-      "dental implants clear aligner treatment",
-      "dentist team professional practice staff"
+      "dental practice waiting room chairs modern clean",
+      "dentist tools mirror scaler tray sterile close-up",
+      "dental x-ray screen teeth scan display",
+      "dentist consulting patient chair examination"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 Emergencies by call"
   },
@@ -2621,7 +2713,7 @@ export const presetContent: Record<string, PresetContent> = {
           "GP Consultations",
           "Chronic Care"
         ],
-        "serviceImageQuery": "GP doctor consultation patient examination room"
+        "serviceImageQuery": "doctor examining patient stethoscope consultation room"
       },
       {
         "name": "Chronic Disease Management",
@@ -2630,7 +2722,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes",
           "Hypertension"
         ],
-        "serviceImageQuery": "doctor chronic disease management consultation patient"
+        "serviceImageQuery": "blood test sample tubes laboratory medical"
       },
       {
         "name": "Occupational & Travel Health",
@@ -2639,7 +2731,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Travel Vaccines",
           "Medicals"
         ],
-        "serviceImageQuery": "doctor travel vaccination medical certificate consultation"
+        "serviceImageQuery": "vaccination injection arm doctor patient clinic"
       }
     ],
     "galleryHeading": "Your Health Matters",
@@ -2675,14 +2767,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, clean, professional",
-    "heroImageQuery": "GP doctor practice consultation room clean professional",
-    "ogImageQuery": "doctor GP consultation patient examination professional",
-    "aboutImageQuery": "GP doctor consulting patient warm professional Cape Town",
+    "heroImageQuery": "doctor consultation desk stethoscope patient examination room",
+    "ogImageQuery": "doctor stethoscope consultation examination room",
+    "aboutImageQuery": "doctor stethoscope white coat consulting patient desk",
     "galleryImageQueries": [
-      "GP practice reception clean welcoming",
-      "doctor patient consultation examination room",
-      "medical practice team doctors professional",
-      "doctor chronic care management prescription patient"
+      "doctor office consultation desk computer monitor",
+      "blood pressure check cuff arm doctor patient",
+      "medical waiting room chairs reception desk",
+      "doctor examining patient stethoscope clinic"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:30 \u00b7 Emergencies: walk-in welcome"
   },
@@ -2704,7 +2796,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Rehab",
           "Runners"
         ],
-        "serviceImageQuery": "physiotherapist sports injury treatment athlete rehab"
+        "serviceImageQuery": "sports physiotherapy knee treatment athlete"
       },
       {
         "name": "Chronic Pain & Back Care",
@@ -2713,7 +2805,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck"
         ],
-        "serviceImageQuery": "physiotherapist back pain treatment manual therapy patient"
+        "serviceImageQuery": "back pain physio treatment massage table"
       },
       {
         "name": "Post-Surgical Rehabilitation",
@@ -2722,7 +2814,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Op Rehab",
           "Orthopaedic"
         ],
-        "serviceImageQuery": "physiotherapy rehabilitation exercise post surgery patient"
+        "serviceImageQuery": "rehabilitation exercises physio patient gym equipment"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2758,14 +2850,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clinical, active, professional",
-    "heroImageQuery": "physiotherapy practice treatment room Cape Town professional",
-    "ogImageQuery": "physiotherapist treating patient manual therapy sports",
-    "aboutImageQuery": "physiotherapist team practice Cape Town professional",
+    "heroImageQuery": "physiotherapist treating patient shoulder massage therapy bed",
+    "ogImageQuery": "physiotherapy treatment bed patient therapist hands",
+    "aboutImageQuery": "physio stretching patient leg rehabilitation exercise",
     "galleryImageQueries": [
-      "physiotherapy manual therapy back treatment patient",
-      "sports rehabilitation exercise athlete physiotherapy",
-      "physio practice treatment room modern",
-      "physiotherapist patient rehab exercise programme"
+      "physiotherapy clinic treatment bed equipment room",
+      "physio exercise ball patient rehabilitation gym",
+      "ultrasound therapy machine physiotherapist treating knee",
+      "resistance band exercise patient physio clinic"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
@@ -2787,7 +2879,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Adjustments",
           "Spinal Health"
         ],
-        "serviceImageQuery": "chiropractor spinal adjustment patient treatment table"
+        "serviceImageQuery": "spinal adjustment chiropractor patient table hands"
       },
       {
         "name": "Back & Neck Pain",
@@ -2796,7 +2888,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck Pain"
         ],
-        "serviceImageQuery": "chiropractic neck back pain treatment patient care"
+        "serviceImageQuery": "posture assessment chiropractor patient standing"
       },
       {
         "name": "Paediatric & Family Chiropractic",
@@ -2805,7 +2897,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Family",
           "Paediatric"
         ],
-        "serviceImageQuery": "chiropractor family paediatric gentle child treatment"
+        "serviceImageQuery": "chiropractic treatment table clinic room equipment"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2841,14 +2933,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, clinical, calming",
-    "heroImageQuery": "chiropractic practice clean professional treatment room Cape Town",
-    "ogImageQuery": "chiropractor spinal adjustment patient treatment",
-    "aboutImageQuery": "chiropractor consultation patient spine examination",
+    "heroImageQuery": "chiropractor adjusting patient spine treatment table hands",
+    "ogImageQuery": "chiropractor spine adjustment patient treatment room",
+    "aboutImageQuery": "chiropractic adjustment back patient treatment table",
     "galleryImageQueries": [
-      "chiropractic adjustment spine treatment table",
-      "chiropractic back neck pain treatment patient",
-      "chiropractic practice interior clean modern",
-      "chiropractor family patient children care"
+      "chiropractic clinic interior treatment table room",
+      "spine model vertebrae chiropractor desk display",
+      "chiropractor examining patient posture standing",
+      "chiropractic neck adjustment patient treatment"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -2870,7 +2962,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Eye Health",
           "Glaucoma Screening"
         ],
-        "serviceImageQuery": "optometrist eye examination slit lamp patient professional"
+        "serviceImageQuery": "eye test phoropter optometrist patient lenses"
       },
       {
         "name": "Designer Frames & Lenses",
@@ -2879,7 +2971,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Designer Frames",
           "Varifocals"
         ],
-        "serviceImageQuery": "optometrist designer glasses frames display eyewear"
+        "serviceImageQuery": "eyeglasses frames display rack optometrist shop"
       },
       {
         "name": "Contact Lens Fitting",
@@ -2888,7 +2980,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contact Lenses",
           "Dry Eye"
         ],
-        "serviceImageQuery": "optometrist contact lens fitting patient trial"
+        "serviceImageQuery": "contact lens case solution close-up"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2924,14 +3016,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, precise, modern",
-    "heroImageQuery": "optometrist practice modern clean Cape Town eyecare",
-    "ogImageQuery": "optometrist eye examination slit lamp patient professional",
-    "aboutImageQuery": "optometrist consultation patient frames selection eyewear",
+    "heroImageQuery": "optometrist eye test equipment phoropter patient chair",
+    "ogImageQuery": "optometrist eye test equipment chair patient",
+    "aboutImageQuery": "eye examination optometrist phoropter patient lenses",
     "galleryImageQueries": [
-      "designer glasses frames display optometrist",
-      "eye examination slit lamp optometrist",
-      "contact lens fitting optometrist patient",
-      "optometrist practice interior modern clean"
+      "eyeglasses frames display wall optometrist shop",
+      "eye test chart letters optometrist wall",
+      "contact lens fitting optometrist patient close-up",
+      "optometrist using slit lamp eye examination"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:30 \u00b7 Sat: 08:30\u201313:00 \u00b7 By appointment"
   },
@@ -2953,7 +3045,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Precision Cut",
           "Natural Hair"
         ],
-        "serviceImageQuery": "hair salon stylist precision cut client chair"
+        "serviceImageQuery": "haircut scissors comb stylist cutting client hair"
       },
       {
         "name": "Colour & Balayage",
@@ -2962,7 +3054,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Balayage",
           "Colour Correction"
         ],
-        "serviceImageQuery": "hair salon balayage colour treatment foils client"
+        "serviceImageQuery": "hair colour highlights foils salon treatment"
       },
       {
         "name": "Treatments & Keratin",
@@ -2971,7 +3063,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Keratin",
           "Scalp Treatment"
         ],
-        "serviceImageQuery": "hair salon keratin treatment blow dry styling"
+        "serviceImageQuery": "beard trim barber razor client chair"
       }
     ],
     "galleryHeading": "From the Chair",
@@ -3007,14 +3099,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "stylish, warm, creative",
-    "heroImageQuery": "hair salon interior stylish Cape Town modern warm",
-    "ogImageQuery": "hair salon balayage colour client styled result",
-    "aboutImageQuery": "hair stylist consultation client chair salon",
+    "heroImageQuery": "hair salon interior chairs mirrors stations styling",
+    "ogImageQuery": "hair salon chairs mirrors styling stations interior",
+    "aboutImageQuery": "hairdresser cutting hair scissors client salon chair",
     "galleryImageQueries": [
-      "hair salon colour balayage result client",
-      "precision haircut styling salon Cape Town",
-      "salon interior modern stylish mirrors",
-      "keratin treatment blow dry hair salon"
+      "barber shop chair mirror vintage interior",
+      "hair colouring foils stylist salon client",
+      "hair wash basin shampoo salon client reclined",
+      "hairstylist blow drying hair brush client salon"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 08:30\u201316:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -3036,7 +3128,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Environ",
           "Anti-Ageing"
         ],
-        "serviceImageQuery": "beauty spa facial treatment room client relaxing"
+        "serviceImageQuery": "facial treatment client spa bed aesthetician hands"
       },
       {
         "name": "Body Treatments & Wraps",
@@ -3045,7 +3137,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Body Wraps",
           "Scrubs"
         ],
-        "serviceImageQuery": "spa body treatment wrap massage table relaxation"
+        "serviceImageQuery": "manicure pedicure nail salon hands polish"
       },
       {
         "name": "Nails & Waxing",
@@ -3054,7 +3146,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gel Nails",
           "Waxing"
         ],
-        "serviceImageQuery": "nail salon gel manicure pedicure beauty spa"
+        "serviceImageQuery": "body massage oil hands spa treatment table"
       }
     ],
     "galleryHeading": "Your Escape Awaits",
@@ -3090,14 +3182,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "serene, luxurious, warm",
-    "heroImageQuery": "beauty spa interior serene luxury Cape Town treatment room",
-    "ogImageQuery": "spa treatment room candles relaxation serene",
-    "aboutImageQuery": "beauty spa therapist facial treatment client relaxed",
+    "heroImageQuery": "beauty salon facial treatment bed towels candles relaxation",
+    "ogImageQuery": "beauty salon treatment room bed candles towels",
+    "aboutImageQuery": "spa treatment facial mask client lying bed towels",
     "galleryImageQueries": [
-      "spa facial treatment room serene candles",
-      "beauty salon nail manicure pedicure",
-      "spa body treatment massage table",
-      "beauty salon interior warm luxury Cape Town"
+      "spa reception desk flowers candles interior",
+      "manicure nail polish hands nail technician salon",
+      "facial treatment mask client spa bed towels",
+      "massage stones hot towels spa treatment room"
     ],
     "contactHours": "Mon\u2013Sat: 09:00\u201319:00 \u00b7 Sun: 10:00\u201316:00 \u00b7 Evening slots available"
   },
@@ -3119,7 +3211,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Deep Tissue",
           "Remedial"
         ],
-        "serviceImageQuery": "remedial massage therapist deep tissue treatment client"
+        "serviceImageQuery": "deep tissue massage back therapist hands pressure"
       },
       {
         "name": "Swedish & Relaxation",
@@ -3128,7 +3220,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Swedish",
           "Relaxation"
         ],
-        "serviceImageQuery": "relaxation massage therapist Swedish treatment calm"
+        "serviceImageQuery": "hot stone massage placement back spa"
       },
       {
         "name": "Sports & Recovery",
@@ -3137,7 +3229,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Recovery",
           "Athletes"
         ],
-        "serviceImageQuery": "sports massage therapy recovery athlete treatment"
+        "serviceImageQuery": "sports massage leg athlete therapy treatment"
       }
     ],
     "galleryHeading": "A Space to Unwind",
@@ -3173,14 +3265,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, healing",
-    "heroImageQuery": "massage therapy treatment room Cape Town calm serene",
-    "ogImageQuery": "massage therapist treatment back relaxation professional",
-    "aboutImageQuery": "massage therapist hands back client treatment warm",
+    "heroImageQuery": "massage therapy treatment room table towels candles oil",
+    "ogImageQuery": "massage treatment table room towels oil candles",
+    "aboutImageQuery": "massage therapist hands back client treatment table",
     "galleryImageQueries": [
-      "massage therapy room candles oil calm",
-      "deep tissue remedial massage back treatment",
-      "sports massage athlete recovery treatment",
-      "massage studio interior serene Cape Town"
+      "massage treatment room table dim candles towels",
+      "hot stone massage back client spa",
+      "massage oil bottles towels spa treatment setup",
+      "deep tissue massage therapist hands shoulder"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201319:00 \u00b7 Sat: 09:00\u201317:00 \u00b7 By appointment only"
   },
@@ -3202,7 +3294,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Weight Management",
           "Metabolic"
         ],
-        "serviceImageQuery": "dietitian nutrition consultation weight health client"
+        "serviceImageQuery": "meal plan printed paper desk healthy food"
       },
       {
         "name": "Chronic Disease Nutrition",
@@ -3211,7 +3303,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes Nutrition",
           "Cardiac Diet"
         ],
-        "serviceImageQuery": "dietitian chronic disease nutrition consultation medical"
+        "serviceImageQuery": "body composition measurement nutritionist patient"
       },
       {
         "name": "Sports & Performance Nutrition",
@@ -3220,7 +3312,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Nutrition",
           "Endurance"
         ],
-        "serviceImageQuery": "sports nutrition dietitian consultation athlete meal plan"
+        "serviceImageQuery": "healthy food preparation kitchen vegetables cutting board"
       }
     ],
     "galleryHeading": "Your Nutrition Journey",
@@ -3256,14 +3348,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, warm, nourishing",
-    "heroImageQuery": "dietitian nutrition consultation Cape Town professional warm",
-    "ogImageQuery": "registered dietitian consultation client nutrition",
-    "aboutImageQuery": "dietitian nutritionist consultation patient meal planning",
+    "heroImageQuery": "nutritionist consultation desk fruits vegetables meal plan",
+    "ogImageQuery": "dietitian consultation desk healthy food fruits vegetables",
+    "aboutImageQuery": "healthy food plate balanced meal vegetables grains protein",
     "galleryImageQueries": [
-      "dietitian consultation client nutrition planning",
-      "healthy food fresh produce nutrition",
-      "sports nutrition athlete meal strategy",
-      "dietitian chronic disease consultation professional"
+      "healthy meal prep containers vegetables rice chicken",
+      "nutritionist measuring tape fruit desk consultation",
+      "smoothie bowl berries seeds granola breakfast healthy",
+      "grocery shopping fresh vegetables basket healthy food"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Telehealth available evenings \u00b7 By appointment"
   },
@@ -3285,7 +3377,7 @@ export const presetContent: Record<string, PresetContent> = {
           "CBT",
           "Trauma Therapy"
         ],
-        "serviceImageQuery": "psychologist therapist consultation room professional calm"
+        "serviceImageQuery": "therapy session client therapist seated office"
       },
       {
         "name": "Couples Therapy",
@@ -3294,7 +3386,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Couples",
           "Relationships"
         ],
-        "serviceImageQuery": "couples therapy consultation room professional psychologist"
+        "serviceImageQuery": "couple therapy session two people therapist"
       },
       {
         "name": "Child & Adolescent Therapy",
@@ -3303,7 +3395,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Child Therapy",
           "Adolescent"
         ],
-        "serviceImageQuery": "child therapist play therapy young patient professional"
+        "serviceImageQuery": "group therapy circle chairs meeting room"
       }
     ],
     "galleryHeading": "A Safe Space",
@@ -3339,14 +3431,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, safe, warm",
-    "heroImageQuery": "psychology therapy practice calm professional office warm Cape Town",
-    "ogImageQuery": "therapy consultation room armchair calm professional",
-    "aboutImageQuery": "psychologist therapist warm professional consultation room",
+    "heroImageQuery": "therapy office comfortable couch armchair warm lamp",
+    "ogImageQuery": "psychology office comfortable chair desk lamp warm",
+    "aboutImageQuery": "therapist notepad pen consultation warm office chair",
     "galleryImageQueries": [
-      "therapy consultation room calm armchair warm",
-      "psychologist professional office Cape Town",
-      "couples therapy room professional consultation",
-      "therapy session calm light window professional"
+      "therapy room comfortable sofa cushions warm light",
+      "therapist consultation client seated office chairs",
+      "journal writing hands pen notebook therapy",
+      "meditation mindfulness person seated calm peaceful"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Telehealth available"
   },
@@ -3368,7 +3460,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Language Delay",
           "Literacy"
         ],
-        "serviceImageQuery": "speech therapist child language therapy session play"
+        "serviceImageQuery": "child speech therapy session therapist cards"
       },
       {
         "name": "Stuttering & Fluency",
@@ -3377,7 +3469,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fluency",
           "Stuttering"
         ],
-        "serviceImageQuery": "speech therapy fluency stuttering adult session professional"
+        "serviceImageQuery": "adult speech therapy stroke rehabilitation exercises"
       },
       {
         "name": "Voice & Swallowing",
@@ -3386,7 +3478,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Voice Therapy",
           "Dysphagia"
         ],
-        "serviceImageQuery": "speech therapist voice therapy adult professional session"
+        "serviceImageQuery": "speech therapy assessment child microphone recording"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3422,14 +3514,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, professional, encouraging",
-    "heroImageQuery": "speech therapy practice Cape Town professional warm child",
-    "ogImageQuery": "speech therapist child language therapy session",
-    "aboutImageQuery": "speech therapist professional session child adult Cape Town",
+    "heroImageQuery": "speech therapist session child cards flashcards table",
+    "ogImageQuery": "speech therapist session child flashcards table",
+    "aboutImageQuery": "speech therapy exercises child therapist mirror mouth",
     "galleryImageQueries": [
-      "speech therapy child session play communication",
-      "speech therapist adult professional consultation",
-      "speech therapy practice interior warm professional",
-      "child literacy language therapy session Cape Town"
+      "speech therapy room colourful child-friendly table chairs",
+      "flashcards picture cards speech therapy child",
+      "therapist child speech exercise mirror tongue",
+      "speech therapy toys puppets child engagement"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3451,7 +3543,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sensory Processing",
           "Fine Motor"
         ],
-        "serviceImageQuery": "occupational therapist child sensory play therapy session"
+        "serviceImageQuery": "hand therapy exercises occupational therapist patient"
       },
       {
         "name": "Neurological Rehabilitation",
@@ -3460,7 +3552,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Stroke",
           "Neuro Rehab"
         ],
-        "serviceImageQuery": "occupational therapy neurological rehabilitation adult patient"
+        "serviceImageQuery": "child sensory therapy play occupational therapist"
       },
       {
         "name": "Ergonomic & Workplace Assessment",
@@ -3469,7 +3561,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ergonomics",
           "Workstation"
         ],
-        "serviceImageQuery": "occupational therapy ergonomic assessment workstation office"
+        "serviceImageQuery": "occupational therapy rehabilitation walking aids"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3505,14 +3597,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, enabling, professional",
-    "heroImageQuery": "occupational therapy Cape Town practice professional warm",
-    "ogImageQuery": "occupational therapist child sensory play therapy",
-    "aboutImageQuery": "occupational therapist patient session professional warm",
+    "heroImageQuery": "occupational therapy session patient hand exercises tools",
+    "ogImageQuery": "occupational therapy hand exercises patient tools",
+    "aboutImageQuery": "OT therapist helping patient daily tasks kitchen",
     "galleryImageQueries": [
-      "occupational therapy child sensory play session",
-      "OT neurological rehab adult patient",
-      "occupational therapy ergonomic assessment office",
-      "OT practice treatment room Cape Town"
+      "occupational therapy clinic room equipment exercises",
+      "hand therapy putty squeeze exercise close-up",
+      "child occupational therapy sensory play activities",
+      "occupational therapist patient kitchen daily living"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3534,7 +3626,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Test",
           "Diagnostic"
         ],
-        "serviceImageQuery": "audiologist hearing test assessment booth patient professional"
+        "serviceImageQuery": "hearing test headphones patient audiologist booth"
       },
       {
         "name": "Hearing Aid Fitting",
@@ -3543,7 +3635,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Aids",
           "Phonak"
         ],
-        "serviceImageQuery": "audiologist hearing aid fitting patient professional"
+        "serviceImageQuery": "hearing aid fitting ear patient audiologist"
       },
       {
         "name": "Tinnitus Management",
@@ -3552,7 +3644,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Tinnitus",
           "Sound Therapy"
         ],
-        "serviceImageQuery": "audiologist tinnitus consultation patient professional"
+        "serviceImageQuery": "ear examination otoscope audiologist patient"
       }
     ],
     "galleryHeading": "Hear Better. Live Better.",
@@ -3588,14 +3680,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
-    "heroImageQuery": "audiology practice professional Cape Town hearing care",
-    "ogImageQuery": "audiologist hearing test patient booth professional",
-    "aboutImageQuery": "audiologist hearing aid fitting patient professional Cape Town",
+    "heroImageQuery": "audiologist hearing test headphones patient booth equipment",
+    "ogImageQuery": "audiologist hearing test equipment headphones patient",
+    "aboutImageQuery": "hearing aid fitting audiologist patient ear close-up",
     "galleryImageQueries": [
-      "audiologist hearing test soundproof booth",
-      "hearing aid device close up Phonak modern",
-      "audiologist consultation patient professional",
-      "audiology practice interior clean Cape Town"
+      "audiology booth hearing test patient headphones",
+      "hearing aids displayed cases small devices",
+      "audiologist otoscope ear examination patient",
+      "hearing test audiogram results screen display"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Sat: 08:30\u201312:00 \u00b7 By appointment"
   },
@@ -3617,7 +3709,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Plantar Fasciitis",
           "Orthotics"
         ],
-        "serviceImageQuery": "podiatrist foot assessment biomechanics orthotics patient"
+        "serviceImageQuery": "podiatrist foot examination patient treatment chair"
       },
       {
         "name": "Nail & Skin Conditions",
@@ -3626,7 +3718,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ingrown Toenails",
           "Fungal"
         ],
-        "serviceImageQuery": "podiatrist nail condition treatment ingrown toenail professional"
+        "serviceImageQuery": "custom orthotics insoles shoes fitting display"
       },
       {
         "name": "Diabetic Foot Care",
@@ -3635,7 +3727,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetic Foot",
           "Risk Assessment"
         ],
-        "serviceImageQuery": "podiatrist diabetic foot care assessment specialist"
+        "serviceImageQuery": "diabetic foot care screening podiatrist examination"
       }
     ],
     "galleryHeading": "Back on Your Feet",
@@ -3671,14 +3763,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, professional, clinical",
-    "heroImageQuery": "podiatry practice professional Cape Town foot care clean",
-    "ogImageQuery": "podiatrist foot assessment treatment professional patient",
-    "aboutImageQuery": "podiatrist consultation patient foot examination professional",
+    "heroImageQuery": "podiatrist examining foot patient treatment chair clinic",
+    "ogImageQuery": "podiatrist foot examination treatment patient chair",
+    "aboutImageQuery": "podiatry treatment foot care instruments patient chair",
     "galleryImageQueries": [
-      "podiatry treatment room professional clean",
-      "foot assessment biomechanics gait analysis",
-      "orthotics custom insole podiatrist",
-      "diabetic foot care podiatrist specialist"
+      "podiatry clinic treatment chair foot examination",
+      "orthotics insoles custom fitted shoes display",
+      "foot care tools instruments podiatry tray",
+      "podiatrist examining foot patient treatment room"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3700,7 +3792,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Acupuncture",
           "TCM"
         ],
-        "serviceImageQuery": "acupuncture treatment needles patient calm relaxation"
+        "serviceImageQuery": "acupuncture needles treatment patient table back"
       },
       {
         "name": "Homeopathy & Naturopathy",
@@ -3709,7 +3801,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Homeopathy",
           "Naturopathy"
         ],
-        "serviceImageQuery": "naturopath homeopathy consultation herbs remedies patient"
+        "serviceImageQuery": "herbal tinctures bottles natural medicine shelf"
       },
       {
         "name": "Reflexology & Energy Work",
@@ -3718,7 +3810,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reflexology",
           "Reiki"
         ],
-        "serviceImageQuery": "reflexology foot massage therapy treatment calm"
+        "serviceImageQuery": "reiki energy healing hands hovering patient"
       }
     ],
     "galleryHeading": "Your Healing Space",
@@ -3754,14 +3846,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, earthy, healing",
-    "heroImageQuery": "holistic health practice Cape Town calm earthy herbs natural",
-    "ogImageQuery": "acupuncture treatment needles patient calm holistic",
-    "aboutImageQuery": "holistic health practitioner consultation herbs patient warm",
+    "heroImageQuery": "acupuncture needles back treatment table holistic clinic",
+    "ogImageQuery": "holistic health treatment acupuncture herbs natural",
+    "aboutImageQuery": "herbal medicine bottles tinctures natural remedies shelf",
     "galleryImageQueries": [
-      "acupuncture treatment needles patient serene",
-      "holistic health herbs remedies natural",
-      "reflexology foot treatment therapy calm",
-      "naturopath consultation patient herbs Cape Town"
+      "acupuncture treatment needles back patient table",
+      "herbal medicine dried herbs jars wooden shelf",
+      "cupping therapy back round cups treatment",
+      "holistic clinic interior plants warm natural light"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 09:00\u201314:00 \u00b7 By appointment"
   },
@@ -3783,7 +3875,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Customised",
           "One-on-One"
         ],
-        "serviceImageQuery": "personal trainer one on one session gym training"
+        "serviceImageQuery": "personal training session client dumbbells gym"
       },
       {
         "name": "Online Coaching",
@@ -3792,7 +3884,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Online Coaching",
           "Remote"
         ],
-        "serviceImageQuery": "online personal training coaching programme digital"
+        "serviceImageQuery": "outdoor bootcamp group fitness training park"
       },
       {
         "name": "Body Transformation",
@@ -3801,7 +3893,7 @@ export const presetContent: Record<string, PresetContent> = {
           "12-Week",
           "Body Composition"
         ],
-        "serviceImageQuery": "body transformation training programme fitness results"
+        "serviceImageQuery": "nutrition plan healthy meal prep trainer"
       }
     ],
     "galleryHeading": "Clients in Action",
@@ -3837,14 +3929,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, motivating, dynamic",
-    "heroImageQuery": "personal trainer client session outdoor Cape Town fitness",
-    "ogImageQuery": "personal training gym session results transformation",
-    "aboutImageQuery": "personal trainer coaching client gym weights session",
+    "heroImageQuery": "personal trainer coaching client dumbbell gym weights",
+    "ogImageQuery": "personal trainer client weights gym workout",
+    "aboutImageQuery": "personal trainer demonstrating exercise client gym",
     "galleryImageQueries": [
-      "personal trainer gym session weights training",
-      "outdoor personal training Cape Town parks",
-      "body transformation fitness results programme",
-      "personal trainer coaching client motivation"
+      "gym weight training dumbbells rack equipment",
+      "personal training session squat barbell client",
+      "outdoor fitness training park bodyweight exercise",
+      "stretching cool down mat personal trainer client"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 By appointment"
   },
@@ -3866,7 +3958,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vinyasa",
           "Power Yoga"
         ],
-        "serviceImageQuery": "vinyasa yoga class studio flowing poses warm"
+        "serviceImageQuery": "yoga class group mats studio instructor"
       },
       {
         "name": "Yin & Restorative Yoga",
@@ -3875,7 +3967,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Yin Yoga",
           "Restorative"
         ],
-        "serviceImageQuery": "yin yoga restorative pose bolster studio calm"
+        "serviceImageQuery": "private yoga session instructor student pose"
       },
       {
         "name": "Yoga Teacher Training",
@@ -3884,7 +3976,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Teacher Training",
           "200hr"
         ],
-        "serviceImageQuery": "yoga teacher training group workshop studio"
+        "serviceImageQuery": "meditation class seated cushions candles peaceful"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -3920,14 +4012,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, natural light",
-    "heroImageQuery": "yoga studio interior Cape Town warm natural light class",
-    "ogImageQuery": "yoga class vinyasa studio Cape Town natural light",
-    "aboutImageQuery": "yoga instructor teaching class studio warm",
+    "heroImageQuery": "yoga studio class mats people poses wooden floor",
+    "ogImageQuery": "yoga studio class mats poses peaceful",
+    "aboutImageQuery": "yoga instructor demonstrating pose studio class students",
     "galleryImageQueries": [
-      "yoga vinyasa class studio flowing pose",
-      "yin yoga restorative bolster calm studio",
-      "yoga studio interior wood floor natural light",
-      "yoga teacher training group workshop Cape Town"
+      "yoga studio interior mats blocks props wooden",
+      "yoga class downward dog pose students studio",
+      "meditation seated pose candles incense calm studio",
+      "yoga stretch warrior pose instructor studio"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201320:00 \u00b7 Sat: 07:00\u201315:00 \u00b7 Sun: 08:00\u201313:00"
   },
@@ -3949,7 +4041,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Free Weights",
           "Cardio"
         ],
-        "serviceImageQuery": "gym floor equipment free weights cardio machines"
+        "serviceImageQuery": "weight training gym barbells bench press equipment"
       },
       {
         "name": "Group Fitness Classes",
@@ -3958,7 +4050,7 @@ export const presetContent: Record<string, PresetContent> = {
           "HIIT",
           "Cycling"
         ],
-        "serviceImageQuery": "gym group fitness class HIIT indoor cycling"
+        "serviceImageQuery": "group fitness class spinning studio gym"
       },
       {
         "name": "Personal Training & Biokinetics",
@@ -3967,7 +4059,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Training",
           "Biokinetics"
         ],
-        "serviceImageQuery": "gym personal training session coach weights client"
+        "serviceImageQuery": "gym cardio treadmill running machines row"
       }
     ],
     "galleryHeading": "In the Gym",
@@ -4003,14 +4095,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
-    "heroImageQuery": "gym fitness centre interior Cape Town equipment motivating",
-    "ogImageQuery": "gym floor free weights equipment clean professional",
-    "aboutImageQuery": "gym coach training client weights session professional",
+    "heroImageQuery": "gym interior equipment weights machines treadmills rows",
+    "ogImageQuery": "gym interior weights machines equipment modern",
+    "aboutImageQuery": "gym floor equipment weights benches mirrors modern",
     "galleryImageQueries": [
-      "gym free weights floor clean equipment",
-      "group fitness HIIT class indoor gym",
-      "gym cardio machines treadmill row",
-      "personal training gym session coach client"
+      "gym weight room dumbbells barbells racks mirrors",
+      "treadmill cardio machines row gym equipment",
+      "group fitness class spinning bikes gym studio",
+      "gym stretching area mats foam rollers"
     ],
     "contactHours": "Mon\u2013Fri: 05:30\u201321:00 \u00b7 Sat: 07:00\u201318:00 \u00b7 Sun: 08:00\u201314:00"
   },
@@ -4032,7 +4124,7 @@ export const presetContent: Record<string, PresetContent> = {
           "BJJ",
           "Grappling"
         ],
-        "serviceImageQuery": "brazilian jiu jitsu class BJJ training gi grappling"
+        "serviceImageQuery": "karate class students uniforms belts training dojo"
       },
       {
         "name": "Muay Thai & Kickboxing",
@@ -4041,7 +4133,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Muay Thai",
           "Striking"
         ],
-        "serviceImageQuery": "muay thai kickboxing class pad work training gym"
+        "serviceImageQuery": "boxing training gloves bag gym workout"
       },
       {
         "name": "Kids Martial Arts",
@@ -4050,7 +4142,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Kids Classes",
           "Confidence"
         ],
-        "serviceImageQuery": "kids martial arts class children karate focus training"
+        "serviceImageQuery": "children martial arts class kids uniforms dojo"
       }
     ],
     "galleryHeading": "On the Mats",
@@ -4086,14 +4178,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "intense, disciplined, powerful",
-    "heroImageQuery": "martial arts gym dojo Cape Town training MMA BJJ",
-    "ogImageQuery": "BJJ martial arts training mats sparring Cape Town",
-    "aboutImageQuery": "martial arts instructor teaching class students mats",
+    "heroImageQuery": "martial arts dojo training mats kicks students uniforms",
+    "ogImageQuery": "martial arts dojo training students uniforms kicks",
+    "aboutImageQuery": "martial arts instructor demonstrating kick students dojo",
     "galleryImageQueries": [
-      "BJJ grappling class training mats",
-      "muay thai pad work striking class gym",
-      "kids martial arts class Cape Town focus",
-      "martial arts competition medal podium"
+      "martial arts dojo training mats mirrors wall",
+      "karate kick practice student uniform belt",
+      "boxing gloves punching bag training gym",
+      "martial arts sparring students protective gear"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:30 \u00b7 Sat: 08:00\u201314:00 \u00b7 Class times on schedule"
   },
@@ -4115,7 +4207,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Salsa",
           "Ballroom"
         ],
-        "serviceImageQuery": "ballroom latin dance class salsa couple studio"
+        "serviceImageQuery": "ballet class students barre pointe shoes studio"
       },
       {
         "name": "Contemporary & Jazz",
@@ -4124,7 +4216,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contemporary",
           "Jazz"
         ],
-        "serviceImageQuery": "contemporary dance class jazz studio performance"
+        "serviceImageQuery": "contemporary dance class students studio movement"
       },
       {
         "name": "Children's Dance",
@@ -4133,7 +4225,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ballet",
           "Children"
         ],
-        "serviceImageQuery": "children dance class ballet studio Cape Town"
+        "serviceImageQuery": "children dance class kids studio instructor"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -4169,14 +4261,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "expressive, warm, energetic",
-    "heroImageQuery": "dance studio Cape Town class adult ballet warm light",
-    "ogImageQuery": "dance class studio Cape Town latin ballroom couple",
-    "aboutImageQuery": "dance instructor teaching adult class studio Cape Town",
+    "heroImageQuery": "dance studio mirror barre dancers practising wooden floor",
+    "ogImageQuery": "dance studio interior mirror barre wooden floor",
+    "aboutImageQuery": "dance class students instructor studio mirror barre",
     "galleryImageQueries": [
-      "latin salsa ballroom dance class couple studio",
-      "contemporary dance class studio performance",
-      "children ballet dance class Cape Town",
-      "dance studio interior mirror sprung floor"
+      "dance studio interior mirror barre wooden floor",
+      "ballet dancers pointe shoes practice studio",
+      "hip hop dance class students studio urban",
+      "ballroom dance partners studio elegance"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:00 \u00b7 Sat: 08:00\u201316:00 \u00b7 Class schedule on website"
   },
@@ -4198,7 +4290,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Learn to Swim",
           "Water Safety"
         ],
-        "serviceImageQuery": "children swimming lessons pool learn to swim instructor"
+        "serviceImageQuery": "swimming lessons pool instructor student lane"
       },
       {
         "name": "Adult Swimming Lessons",
@@ -4207,7 +4299,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Adult Lessons",
           "Beginner"
         ],
-        "serviceImageQuery": "adult swimming lesson pool instructor technique"
+        "serviceImageQuery": "aqua aerobics group exercise pool water"
       },
       {
         "name": "Competitive Squad Training",
@@ -4216,7 +4308,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Squad Training",
           "Competition"
         ],
-        "serviceImageQuery": "competitive swimming squad training pool race"
+        "serviceImageQuery": "competitive swimming lane freestyle stroke pool"
       }
     ],
     "galleryHeading": "In the Pool",
@@ -4252,14 +4344,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, bright, aquatic",
-    "heroImageQuery": "swim school pool Cape Town children swimming lessons instructor",
-    "ogImageQuery": "children swimming pool lesson instructor Cape Town",
-    "aboutImageQuery": "swim instructor child pool lesson one on one",
+    "heroImageQuery": "swimming pool lanes blue water indoor facility",
+    "ogImageQuery": "swimming pool lanes blue water indoor clean",
+    "aboutImageQuery": "swimming coach teaching lane pool goggles cap",
     "galleryImageQueries": [
-      "children swimming lesson pool Cape Town",
-      "adult swimming lesson pool instructor",
-      "competitive swim squad training race pool",
-      "heated indoor pool swim school Cape Town"
+      "swimming pool indoor lanes blue water overhead",
+      "swimmer diving blocks starting position pool",
+      "children swimming lesson pool instructor kids",
+      "aqua aerobics class pool exercise group"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -4281,7 +4373,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Golf Lessons",
           "Video Analysis"
         ],
-        "serviceImageQuery": "golf lesson coach driving range student swing analysis"
+        "serviceImageQuery": "golf lesson instruction swing coach driving range"
       },
       {
         "name": "Club Fitting",
@@ -4290,7 +4382,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Club Fitting",
           "Trackman"
         ],
-        "serviceImageQuery": "golf club fitting Trackman launch monitor professional"
+        "serviceImageQuery": "golf clubs bags display pro shop rack"
       },
       {
         "name": "Pro Shop & Equipment",
@@ -4299,7 +4391,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pro Shop",
           "Titleist"
         ],
-        "serviceImageQuery": "golf pro shop equipment display Titleist TaylorMade"
+        "serviceImageQuery": "golf driving range practice balls mats"
       }
     ],
     "galleryHeading": "On the Range",
@@ -4335,14 +4427,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "green, classic, precision",
-    "heroImageQuery": "golf coach lesson driving range Cape Town professional",
-    "ogImageQuery": "golf lesson swing coaching driving range professional",
-    "aboutImageQuery": "PGA golf coach student lesson video analysis",
+    "heroImageQuery": "golf course green fairway flag pin blue sky",
+    "ogImageQuery": "golf course green fairway clubs equipment",
+    "aboutImageQuery": "golf pro shop interior clubs bags equipment display",
     "galleryImageQueries": [
-      "golf driving range lesson coach student swing",
-      "Trackman club fitting golf professional",
-      "golf pro shop equipment display",
-      "golf course Cape Town green beautiful"
+      "golf course fairway green trees scenic",
+      "golf club driver ball tee close-up",
+      "golf pro shop interior clubs bags display rack",
+      "golf putting green flag hole close-up"
     ],
     "contactHours": "Mon\u2013Sun: 07:00\u201318:00 \u00b7 Lessons by appointment \u00b7 Pro shop open daily"
   },
@@ -4364,7 +4456,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Youth Sport",
           "Multi-Sport"
         ],
-        "serviceImageQuery": "youth sports coaching children development outdoor"
+        "serviceImageQuery": "sports coaching session athletes field drills"
       },
       {
         "name": "Individual Performance Coaching",
@@ -4373,7 +4465,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Performance",
           "Competitive"
         ],
-        "serviceImageQuery": "sports coach athlete individual training performance"
+        "serviceImageQuery": "strength conditioning gym athletes training weights"
       },
       {
         "name": "School Holiday Camps",
@@ -4382,7 +4474,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Holiday Camps",
           "Skills"
         ],
-        "serviceImageQuery": "sports holiday camp children outdoor activity team"
+        "serviceImageQuery": "team strategy whiteboard coach sports meeting"
       }
     ],
     "galleryHeading": "In Action",
@@ -4418,14 +4510,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "active, outdoor, energetic",
-    "heroImageQuery": "sports coaching youth outdoor Cape Town active training",
-    "ogImageQuery": "sports coach athlete training outdoor Cape Town",
-    "aboutImageQuery": "sports coach youth group training outdoor field",
+    "heroImageQuery": "sports coaching training field athletes running cones drills",
+    "ogImageQuery": "sports coaching athletes field training drills",
+    "aboutImageQuery": "coach clipboard team huddle sports field training",
     "galleryImageQueries": [
-      "youth sports coaching outdoor children active",
-      "sports camp kids activities outdoor",
-      "athlete individual performance coaching training",
-      "sports coaching team outdoor Cape Town"
+      "sports training field athletes running drills cones",
+      "coach demonstrating technique athletes field training",
+      "team sports practice field balls equipment",
+      "athletics track running training coach athletes"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Holiday camps seasonal"
   },
@@ -4447,7 +4539,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Full Groom",
           "Breed Specific"
         ],
-        "serviceImageQuery": "dog groomer full groom breed specific clipping"
+        "serviceImageQuery": "dog bath grooming tub shampoo wash"
       },
       {
         "name": "Bath & Brush",
@@ -4456,7 +4548,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Bath & Brush",
           "De-shed"
         ],
-        "serviceImageQuery": "dog bath brush groomer clean happy dog"
+        "serviceImageQuery": "dog haircut clippers trim grooming table"
       },
       {
         "name": "Puppy's First Groom",
@@ -4465,7 +4557,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Puppy Groom",
           "First Visit"
         ],
-        "serviceImageQuery": "puppy first groom groomer gentle anxious"
+        "serviceImageQuery": "dog nail trimming groomer hands close-up"
       }
     ],
     "galleryHeading": "Happy, Clean Dogs",
@@ -4501,14 +4593,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, clean",
-    "heroImageQuery": "dog groomer Cape Town happy clean dog grooming",
-    "ogImageQuery": "dog grooming professional before after clean happy",
-    "aboutImageQuery": "dog groomer handling dog gentle professional",
+    "heroImageQuery": "dog groomer bathing fluffy dog grooming table salon",
+    "ogImageQuery": "dog grooming salon bath fluffy dog wet",
+    "aboutImageQuery": "dog being groomed clippers fur trimming table salon",
     "galleryImageQueries": [
-      "dog grooming full groom before after",
-      "groomer bathing dog wash salon",
-      "puppy first groom gentle groomer",
-      "happy dog after groom clean styled"
+      "dog grooming salon interior bath table equipment",
+      "fluffy dog after grooming bow tie clean",
+      "dog being bathed tub shampoo groomer hands",
+      "small dog haircut trim grooming table clippers"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
@@ -4530,7 +4622,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Raw Food",
           "Grain-Free"
         ],
-        "serviceImageQuery": "pet shop premium dog cat food display range"
+        "serviceImageQuery": "dog food bags premium brands shelf pet shop"
       },
       {
         "name": "Toys, Beds & Accessories",
@@ -4539,7 +4631,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Enrichment Toys",
           "Beds"
         ],
-        "serviceImageQuery": "pet shop dog toys beds accessories display"
+        "serviceImageQuery": "pet toys accessories display shelf colourful"
       },
       {
         "name": "Small Animals & Birds",
@@ -4548,7 +4640,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Birds",
           "Fish"
         ],
-        "serviceImageQuery": "pet shop bird fish small animals enclosure display"
+        "serviceImageQuery": "aquarium fish tanks tropical pet shop"
       }
     ],
     "galleryHeading": "Pet Heaven",
@@ -4584,14 +4676,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, colourful",
-    "heroImageQuery": "pet shop Cape Town interior display dog cat food accessories",
-    "ogImageQuery": "pet shop display premium dog food accessories",
-    "aboutImageQuery": "pet shop owner staff with dog friendly Cape Town",
+    "heroImageQuery": "pet shop interior shelves food toys accessories display",
+    "ogImageQuery": "pet shop interior shelves food toys pets",
+    "aboutImageQuery": "pet shop staff holding puppy customer counter",
     "galleryImageQueries": [
-      "pet shop premium food display range shelves",
-      "dog toys beds accessories pet shop",
-      "pet shop small animals birds fish",
-      "pet shop Cape Town friendly staff dog"
+      "pet shop interior shelves food treats organised",
+      "aquarium fish tanks display pet shop",
+      "dog toys display shelf pet shop colourful",
+      "pet food bags stacked shelf display varieties"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 08:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -4613,7 +4705,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Individual Runs",
           "Daily Exercise"
         ],
-        "serviceImageQuery": "dog kennels boarding individual run outdoor clean"
+        "serviceImageQuery": "dog boarding kennel room comfortable bed blanket"
       },
       {
         "name": "Cat Boarding",
@@ -4622,7 +4714,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cat Condos",
           "Private"
         ],
-        "serviceImageQuery": "cat cattery boarding private condo clean indoor"
+        "serviceImageQuery": "cat boarding cattery room climbing tree cosy"
       },
       {
         "name": "Day Care",
@@ -4631,7 +4723,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Day Care",
           "Socialisation"
         ],
-        "serviceImageQuery": "dog daycare outdoor play socialisation group"
+        "serviceImageQuery": "dog daycare dogs playing together outdoor yard"
       }
     ],
     "galleryHeading": "Home Away From Home",
@@ -4667,14 +4759,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, safe",
-    "heroImageQuery": "dog kennels boarding facility clean outdoor runs Cape Town",
-    "ogImageQuery": "dog kennel boarding individual run outdoor clean",
-    "aboutImageQuery": "kennels staff with dogs boarding facility Cape Town",
+    "heroImageQuery": "dog kennel facility outdoor run dogs playing yard",
+    "ogImageQuery": "dog kennel facility dogs outdoor yard",
+    "aboutImageQuery": "dogs playing together kennel outdoor yard daycare",
     "galleryImageQueries": [
-      "dog kennels individual run clean boarding",
-      "cat cattery private condo clean Cape Town",
-      "dog daycare outdoor play group socialising",
-      "kennels staff walking dogs exercise"
+      "kennel facility outdoor dog run play yard",
+      "cat cattery room climbing tree scratching post",
+      "dog sleeping comfortable kennel bed indoor",
+      "kennel reception area counter pet check-in"
     ],
     "contactHours": "Mon\u2013Sun: 07:30\u201318:00 \u00b7 Drop-off & collection daily \u00b7 Emergency line available"
   },
@@ -4696,7 +4788,7 @@ export const presetContent: Record<string, PresetContent> = {
           "GPS Tracking",
           "Daily Walks"
         ],
-        "serviceImageQuery": "dog walker group walk Cape Town outdoor park"
+        "serviceImageQuery": "dog walking group dogs park leashes path"
       },
       {
         "name": "Home Pet Sitting",
@@ -4705,7 +4797,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Home Sitting",
           "Overnight"
         ],
-        "serviceImageQuery": "pet sitter home sitting cat dog comfortable"
+        "serviceImageQuery": "pet sitting cat home comfortable couch lap"
       },
       {
         "name": "Check-In Visits",
@@ -4714,7 +4806,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Check-Ins",
           "Feeding"
         ],
-        "serviceImageQuery": "dog walker home visit pet check in feeding"
+        "serviceImageQuery": "puppy visit check-in home pet sitter"
       }
     ],
     "galleryHeading": "Happy Walks",
@@ -4750,14 +4842,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, active",
-    "heroImageQuery": "dog walker Cape Town outdoor park group dogs leash",
-    "ogImageQuery": "dog walker group dogs outdoor Cape Town happy",
-    "aboutImageQuery": "dog walker sitting with dogs park outdoor Cape Town",
+    "heroImageQuery": "dog walker multiple dogs leashes park path walking",
+    "ogImageQuery": "dog walking multiple dogs leashes park path",
+    "aboutImageQuery": "person walking dogs park trail leashes happy dogs",
     "galleryImageQueries": [
-      "group dog walk Cape Town outdoor park",
-      "dog walker GPS tracking update phone",
-      "pet sitter home dog cat comfortable",
-      "dog happy walk outdoor nature Cape Town"
+      "dogs walking together park trail leashes group",
+      "happy dog running park field off-leash play",
+      "pet sitter cat home couch relaxed cuddle",
+      "dog walker beach dogs running sand water"
     ],
     "contactHours": "Mon\u2013Fri: 06:30\u201318:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Weekend sitting by arrangement"
   },
@@ -4779,7 +4871,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Puppy Class",
           "Socialisation"
         ],
-        "serviceImageQuery": "puppy preschool training class socialisation group"
+        "serviceImageQuery": "puppy training class obedience sit treats"
       },
       {
         "name": "Obedience & Manners",
@@ -4788,7 +4880,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Obedience",
           "Leash Manners"
         ],
-        "serviceImageQuery": "dog obedience training recall outdoor class"
+        "serviceImageQuery": "dog agility obstacle jump training course"
       },
       {
         "name": "Behaviour & Reactivity",
@@ -4797,7 +4889,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reactivity",
           "Behaviour"
         ],
-        "serviceImageQuery": "dog trainer reactive dog behaviour specialist session"
+        "serviceImageQuery": "behavioural training dog calm relaxed command"
       }
     ],
     "galleryHeading": "Good Dogs in the Making",
@@ -4833,14 +4925,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, trust-building",
-    "heroImageQuery": "dog trainer positive reinforcement outdoor training Cape Town",
-    "ogImageQuery": "dog training obedience Cape Town outdoor positive",
-    "aboutImageQuery": "dog trainer with happy dog outdoor positive reward",
+    "heroImageQuery": "dog trainer teaching sit command treats outdoor field",
+    "ogImageQuery": "dog training obedience commands outdoor field",
+    "aboutImageQuery": "dog training session obedience sit stay command",
     "galleryImageQueries": [
-      "puppy preschool class socialisation positive",
-      "dog obedience training outdoor recall",
-      "reactive dog trainer behaviour specialist session",
-      "dog trainer happy dog reward treat positive"
+      "dog training class outdoor field group dogs",
+      "puppy training treats reward obedience sit",
+      "agility training dog jumping obstacle course",
+      "dog and trainer bond leash walk heel"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 By appointment only"
   },
@@ -4862,7 +4954,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Grooming",
           "Pamper"
         ],
-        "serviceImageQuery": "pet services grooming dog cat professional"
+        "serviceImageQuery": "pet grooming dog bath shampoo tub"
       },
       {
         "name": "Daycare & Socialisation",
@@ -4871,7 +4963,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Daycare",
           "Socialisation"
         ],
-        "serviceImageQuery": "dog daycare socialisation outdoor play group"
+        "serviceImageQuery": "pet transport carrier crate safe travel"
       },
       {
         "name": "Pet Accessories & Food",
@@ -4880,7 +4972,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Premium Food",
           "Accessories"
         ],
-        "serviceImageQuery": "pet accessories food toys premium display shop"
+        "serviceImageQuery": "pet photography portrait dog studio backdrop"
       }
     ],
     "galleryHeading": "Happy Pets",
@@ -4916,14 +5008,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, welcoming, animal-loving",
-    "heroImageQuery": "pet services Cape Town dog cat grooming daycare centre",
-    "ogImageQuery": "pet service centre grooming daycare happy dog",
-    "aboutImageQuery": "pet services staff with dog happy Cape Town",
+    "heroImageQuery": "pet care grooming bath dog hands gentle wash",
+    "ogImageQuery": "pet grooming care dog bath clean",
+    "aboutImageQuery": "pet services happy dog groomed bow tie clean",
     "galleryImageQueries": [
-      "dog daycare outdoor socialisation play",
-      "pet grooming salon dog cat professional",
-      "pet accessories food display premium shop",
-      "happy pets service centre Cape Town"
+      "pet grooming dog bath tub wash hands",
+      "cat grooming brush fur pet care gentle",
+      "pet transport crate carrier car travel safe",
+      "pet photography dog portrait studio cute"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -4945,7 +5037,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vaccinations",
           "Wellness"
         ],
-        "serviceImageQuery": "veterinarian wellness exam dog cat vaccination professional"
+        "serviceImageQuery": "vet examining dog stethoscope clinic table"
       },
       {
         "name": "Soft Tissue & Orthopaedic Surgery",
@@ -4954,7 +5046,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Surgery",
           "Desexing"
         ],
-        "serviceImageQuery": "veterinarian surgery operating theatre animal professional"
+        "serviceImageQuery": "pet vaccination injection vet clinic cat"
       },
       {
         "name": "Diagnostics & Imaging",
@@ -4963,7 +5055,7 @@ export const presetContent: Record<string, PresetContent> = {
           "X-Ray",
           "Ultrasound"
         ],
-        "serviceImageQuery": "vet diagnostic X-ray ultrasound imaging animal clinic"
+        "serviceImageQuery": "pet surgery vet operating room equipment"
       }
     ],
     "galleryHeading": "In the Clinic",
@@ -4999,14 +5091,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, professional",
-    "heroImageQuery": "veterinary clinic Cape Town professional caring dog cat",
-    "ogImageQuery": "vet examining dog cat clinic professional Cape Town",
-    "aboutImageQuery": "veterinarian consulting pet owner Cape Town clinic",
+    "heroImageQuery": "veterinarian examining dog stethoscope vet clinic table",
+    "ogImageQuery": "veterinarian dog stethoscope examination clinic",
+    "aboutImageQuery": "vet holding cat examination table clinic gentle",
     "galleryImageQueries": [
-      "vet examination dog cat consultation table",
-      "veterinary surgery theatre professional",
-      "vet diagnostic X-ray imaging clinic",
-      "vet clinic team staff professional Cape Town"
+      "vet clinic interior examination room table equipment",
+      "veterinarian examining dog stethoscope table",
+      "cat vet check-up vaccination injection clinic",
+      "vet surgery operating room equipment sterile"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Emergency line 24hrs"
   },
@@ -5028,7 +5120,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Gala Dinners"
         ],
-        "serviceImageQuery": "corporate event planning gala dinner Cape Town elegant"
+        "serviceImageQuery": "corporate event setup stage podium conference room"
       },
       {
         "name": "Private Functions",
@@ -5037,7 +5129,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Functions",
           "Milestones"
         ],
-        "serviceImageQuery": "private event party planning birthday celebration elegant"
+        "serviceImageQuery": "wedding event setup decorated tables flowers"
       },
       {
         "name": "Concept & Design",
@@ -5046,7 +5138,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Event Design",
           "Creative"
         ],
-        "serviceImageQuery": "event design concept decor planning creative setup"
+        "serviceImageQuery": "birthday party setup balloons cake decorations"
       }
     ],
     "galleryHeading": "Events We've Created",
@@ -5082,14 +5174,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, dramatic, celebratory",
-    "heroImageQuery": "event planning Cape Town elegant gala dinner setup",
-    "ogImageQuery": "event planning Cape Town setup table design elegant",
-    "aboutImageQuery": "event planner coordinating setup Cape Town function",
+    "heroImageQuery": "event setup decorated tables flowers balloons venue hall",
+    "ogImageQuery": "event decorated venue tables flowers setup",
+    "aboutImageQuery": "event planner arranging table setup flowers venue",
     "galleryImageQueries": [
-      "corporate event gala dinner Cape Town elegant",
-      "private birthday party decoration setup",
-      "event design concept decor table flowers",
-      "event planner coordination day of setup"
+      "event venue setup decorated tables chairs flowers",
+      "corporate event conference stage podium screen",
+      "outdoor event tent marquee fairy lights evening",
+      "event decor centrepiece flowers candles table"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:00 \u00b7 Weekend consultations available \u00b7 By appointment"
   },
@@ -5111,7 +5203,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding DJ",
           "MC"
         ],
-        "serviceImageQuery": "wedding DJ MC decks reception dance floor"
+        "serviceImageQuery": "DJ decks mixer performing event party lights"
       },
       {
         "name": "Corporate Events",
@@ -5120,7 +5212,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Gala Dinner"
         ],
-        "serviceImageQuery": "corporate event DJ decks lighting professional"
+        "serviceImageQuery": "wedding DJ dance floor guests dancing"
       },
       {
         "name": "Sound & Lighting",
@@ -5129,7 +5221,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sound System",
           "Lighting"
         ],
-        "serviceImageQuery": "DJ sound system lighting rig event professional setup"
+        "serviceImageQuery": "corporate event MC microphone stage presenter"
       }
     ],
     "galleryHeading": "On the Decks",
@@ -5165,14 +5257,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, nightlife, electric",
-    "heroImageQuery": "DJ decks event Cape Town dance floor lights energy",
-    "ogImageQuery": "DJ decks wedding reception dance floor lights",
-    "aboutImageQuery": "DJ behind decks mixing event Cape Town professional",
+    "heroImageQuery": "DJ mixing decks turntables headphones club lights",
+    "ogImageQuery": "DJ turntables mixer headphones club lights",
+    "aboutImageQuery": "DJ performing mixer deck crowd dance floor lights",
     "galleryImageQueries": [
-      "DJ wedding reception dance floor lights",
-      "DJ corporate event gala professional setup",
-      "DJ decks sound system lighting rig",
-      "dance floor crowd DJ event Cape Town"
+      "DJ booth setup turntables mixer lights club",
+      "dance floor crowd party lights DJ event",
+      "MC microphone stage event speaker audience",
+      "sound equipment speakers amplifier DJ setup"
     ],
     "contactHours": "Available 7 days for events \u00b7 Consultations Mon\u2013Fri 10:00\u201318:00"
   },
@@ -5194,7 +5286,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Exclusive Use",
           "Coordination"
         ],
-        "serviceImageQuery": "wedding venue Cape Town estate exclusive outdoor ceremony"
+        "serviceImageQuery": "wedding ceremony setup arch flowers outdoor venue"
       },
       {
         "name": "Catering & Bar",
@@ -5203,7 +5295,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Catering",
           "Open Bar"
         ],
-        "serviceImageQuery": "wedding reception catering table service elegant Cape Town"
+        "serviceImageQuery": "wedding reception dinner tables decorated elegant"
       },
       {
         "name": "Ceremony & Chapel",
@@ -5212,7 +5304,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Garden Ceremony",
           "Chapel"
         ],
-        "serviceImageQuery": "wedding ceremony outdoor garden arch flowers Cape Town"
+        "serviceImageQuery": "wedding planning documents rings flowers flat lay"
       }
     ],
     "galleryHeading": "Your Day, Our Backdrop",
@@ -5248,14 +5340,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "romantic, golden, Cape",
-    "heroImageQuery": "wedding venue Cape Town estate outdoor ceremony golden hour",
-    "ogImageQuery": "wedding venue Cape Town outdoor ceremony flowers arch",
-    "aboutImageQuery": "wedding venue coordinator couple planning Cape Town",
+    "heroImageQuery": "wedding venue ceremony aisle flowers arch chairs outdoor",
+    "ogImageQuery": "wedding ceremony aisle flowers arch venue outdoor",
+    "aboutImageQuery": "wedding reception table set flowers candles elegant",
     "galleryImageQueries": [
-      "wedding ceremony outdoor arch flowers Cape Town",
-      "wedding reception table elegant candles Cape Town",
-      "wedding venue estate exterior golden hour",
-      "bride groom Cape Town venue garden"
+      "wedding ceremony outdoor arch flowers aisle chairs",
+      "wedding reception hall decorated tables centrepieces",
+      "wedding cake tiered white flowers elegant display",
+      "wedding dance floor couple first dance lights"
     ],
     "contactHours": "Mon\u2013Sun: 09:00\u201317:00 \u00b7 Venue viewings by appointment \u00b7 Events 7 days"
   },
@@ -5277,7 +5369,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Mirror Booth",
           "Open Air"
         ],
-        "serviceImageQuery": "photo booth mirror open air event wedding instant print"
+        "serviceImageQuery": "photo booth setup backdrop lights event venue"
       },
       {
         "name": "360\u00b0 Video Booth",
@@ -5286,7 +5378,7 @@ export const presetContent: Record<string, PresetContent> = {
           "360 Booth",
           "Slow Motion"
         ],
-        "serviceImageQuery": "360 photo booth spinning video social media event"
+        "serviceImageQuery": "photo booth props signs moustache glasses fun"
       },
       {
         "name": "Custom Branding & Props",
@@ -5295,7 +5387,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Branded",
           "Prop Box"
         ],
-        "serviceImageQuery": "photo booth branded corporate props fun guests"
+        "serviceImageQuery": "photo strip prints event party keepsake"
       }
     ],
     "galleryHeading": "In the Booth",
@@ -5331,14 +5423,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fun, vibrant, celebratory",
-    "heroImageQuery": "photo booth event Cape Town fun guests prints wedding",
-    "ogImageQuery": "photo booth instant print wedding event guests fun",
-    "aboutImageQuery": "photo booth attendant setup event Cape Town",
+    "heroImageQuery": "photo booth backdrop props guests posing party fun",
+    "ogImageQuery": "photo booth backdrop props party guests fun",
+    "aboutImageQuery": "photo booth setup props signs party fun event",
     "galleryImageQueries": [
-      "mirror photo booth wedding event guests posing",
-      "360 video booth spinning slow motion event",
-      "photo booth branded corporate logo event",
-      "photo booth props guests laughing event"
+      "photo booth backdrop lights setup event venue",
+      "photo booth props signs guests posing fun",
+      "photo strip prints collected party event",
+      "inflatable photo booth setup event outdoor tent"
     ],
     "contactHours": "Available 7 days for events \u00b7 Bookings & admin Mon\u2013Fri 09:00\u201317:00"
   },
@@ -5360,7 +5452,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Balloon Arch",
           "Garlands"
         ],
-        "serviceImageQuery": "balloon installation arch garland organic party decor"
+        "serviceImageQuery": "balloon arch decoration party entrance colourful"
       },
       {
         "name": "Party Packs & Tableware",
@@ -5369,7 +5461,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Party Packs",
           "Tableware"
         ],
-        "serviceImageQuery": "party supplies tableware themed birthday pack display"
+        "serviceImageQuery": "party table setting themed decorations plates cups"
       },
       {
         "name": "Backdrop & D\u00e9cor Hire",
@@ -5378,7 +5470,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Backdrop Hire",
           "Neon Signs"
         ],
-        "serviceImageQuery": "event backdrop hire neon sign foliage wall party"
+        "serviceImageQuery": "party hire chairs tables linen event setup"
       }
     ],
     "galleryHeading": "Party Moments",
@@ -5414,14 +5506,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "colourful, festive, joyful",
-    "heroImageQuery": "party supplies Cape Town balloon arch decor colourful",
-    "ogImageQuery": "balloon arch installation party decor colourful event",
-    "aboutImageQuery": "party supplies staff balloon installation Cape Town",
+    "heroImageQuery": "party supplies balloons decorations streamers colourful display",
+    "ogImageQuery": "party supplies balloons streamers decorations colourful",
+    "aboutImageQuery": "party decorations table set balloons banners colourful",
     "galleryImageQueries": [
-      "balloon arch garland organic party installation",
-      "party supplies tableware themed birthday",
-      "neon sign backdrop hire event party",
-      "balloon column tower party event Cape Town"
+      "party shop interior balloons banners shelves display",
+      "balloon arch decoration entrance event colourful",
+      "party table setup plates cups napkins themed",
+      "birthday decorations bunting cake topper balloons"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201314:00 \u00b7 Same-day collection available"
   },
@@ -5443,7 +5535,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Live Music",
           "Jazz"
         ],
-        "serviceImageQuery": "live band performance event Cape Town music stage"
+        "serviceImageQuery": "live music band stage performance event"
       },
       {
         "name": "Corporate Entertainment",
@@ -5452,7 +5544,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate Acts",
           "Emcee"
         ],
-        "serviceImageQuery": "corporate entertainment performance event keynote stage"
+        "serviceImageQuery": "magician magic show stage trick audience"
       },
       {
         "name": "Children's Entertainment",
@@ -5461,7 +5553,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Magician",
           "Children's Parties"
         ],
-        "serviceImageQuery": "children entertainment magician party Cape Town kids"
+        "serviceImageQuery": "children party entertainer balloon animals kids"
       }
     ],
     "galleryHeading": "In Performance",
@@ -5497,14 +5589,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "vibrant, live, celebratory",
-    "heroImageQuery": "live entertainment performer event Cape Town stage",
-    "ogImageQuery": "live band performance event Cape Town stage music",
-    "aboutImageQuery": "live music performer stage event Cape Town professional",
+    "heroImageQuery": "stage performer spotlight microphone audience live show",
+    "ogImageQuery": "performer stage spotlight microphone live show",
+    "aboutImageQuery": "entertainer performing stage audience lights show",
     "galleryImageQueries": [
-      "live band event Cape Town stage performance",
-      "corporate entertainment emcee event stage",
-      "children magician party performance Cape Town",
-      "jazz quartet event dinner performance"
+      "stage performance lights performer audience live",
+      "magician performing trick audience amazed show",
+      "live band performing instruments stage concert",
+      "children entertainer party balloon animal making"
     ],
     "contactHours": "Available 7 days for events \u00b7 Bookings Mon\u2013Fri 09:00\u201317:00"
   },
@@ -5526,7 +5618,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Boardroom",
           "AV Equipped"
         ],
-        "serviceImageQuery": "corporate meeting room boardroom AV equipped modern"
+        "serviceImageQuery": "conference venue meeting room screen projector"
       },
       {
         "name": "Event Hall & Function Room",
@@ -5535,7 +5627,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Event Hall",
           "Flexible Layout"
         ],
-        "serviceImageQuery": "event venue function hall flexible layout Cape Town"
+        "serviceImageQuery": "wedding venue hall decorated tables reception"
       },
       {
         "name": "Outdoor Terrace & Garden",
@@ -5544,7 +5636,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Outdoor",
           "Sundowner"
         ],
-        "serviceImageQuery": "venue outdoor terrace garden event Cape Town sundowner"
+        "serviceImageQuery": "outdoor venue garden event marquee fairy lights"
       }
     ],
     "galleryHeading": "Our Spaces",
@@ -5580,14 +5672,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "versatile, elegant, professional",
-    "heroImageQuery": "event venue hire Cape Town elegant flexible space",
-    "ogImageQuery": "event venue function hall Cape Town elegant setup",
-    "aboutImageQuery": "venue hire team staff setup event Cape Town",
+    "heroImageQuery": "event venue empty hall set chairs tables elegant",
+    "ogImageQuery": "venue hire hall interior chairs tables setup",
+    "aboutImageQuery": "function venue interior tables chairs setup event",
     "galleryImageQueries": [
-      "event venue function hall setup elegant Cape Town",
-      "corporate meeting room boardroom AV",
-      "outdoor venue terrace garden event sundowner",
-      "venue hire flexible space dinner layout"
+      "venue hall interior empty chairs tables setup",
+      "conference room projector screen chairs meeting",
+      "outdoor venue garden marquee tent evening lights",
+      "venue cocktail area lounge seating evening"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201317:00 \u00b7 Events & functions 7 days"
   },
@@ -12376,1659 +12468,1659 @@ export const presetContent: Record<string, PresetContent> = {
       ]
   },
   "Photographer": {
-      "heroEyebrow": "PHOTOGRAPHY CAPE TOWN",
-      "heroAccent": "Portrait, commercial & editorial",
-      "tagline": "Moments made <em>permanent</em>",
-      "heroSubtitle": "Professional photography for portraits, brands, events, and editorial \u2014 images that do justice to what you're showing the world.",
-      "ctaPrimary": "Book a Session",
-      "ctaSecondary": "View Portfolio",
-      "ctaNote": "Free pre-shoot consultation \u00b7 Digital gallery within 7 days \u00b7 Commercial licensing",
-      "badge": "PSSA Professional Photographers of SA",
-      "servicesHeading": "What We Shoot",
-      "services": [
-          {
-              "name": "Portrait & Personal Branding",
-              "description": "Professional headshots, personal brand portraits, and family sessions that capture genuine character.",
-              "tags": [
-                  "Headshots",
-                  "Personal Brand"
-              ],
-              "icon": "user",
-              "serviceImageQuery": "professional portrait headshot photography studio Cape Town"
-          },
-          {
-              "name": "Commercial & Product Photography",
-              "description": "Product, food, architectural, and commercial photography for brands, agencies, and e-commerce.",
-              "tags": [
-                  "Commercial",
-                  "Product"
-              ],
-              "icon": "camera",
-              "serviceImageQuery": "commercial product photography studio Cape Town professional"
-          },
-          {
-              "name": "Events & Corporate",
-              "description": "Conference, awards, and corporate event coverage with same-week turnaround on edited selects.",
-              "tags": [
-                  "Events",
-                  "Corporate"
-              ],
-              "icon": "users",
-              "serviceImageQuery": "corporate event photography Cape Town professional conference"
-          }
-      ],
-      "galleryHeading": "From the Portfolio",
-      "aboutHeading": "Photography that <em>means</em> something",
-      "aboutText": "I've been photographing people, places, and products in Cape Town for 14 years. The best images happen when the subject relaxes, the light cooperates, and the photographer is prepared for both.\n\nI shoot on medium-format and full-frame digital. Every image delivered has been individually retouched \u2014 not batch-processed.",
-      "aboutMission": "We believe a great photograph is one where the viewer forgets it was taken and simply feels something.",
-      "stats": [
-          {
-              "value": "14+",
-              "label": "Years Shooting",
-              "sublabel": "since 2010"
-          },
-          {
-              "value": "500+",
-              "label": "Shoots Delivered",
-              "sublabel": "portrait to commercial"
-          },
-          {
-              "value": "7",
-              "label": "Day Gallery Turnaround",
-              "sublabel": "fully retouched"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 300+ reviews"
-          }
-      ],
-      "contactHeading": "Ready to book a shoot?",
-      "contactHours": "Shoots available 7 days \u00b7 Bookings & admin Mon\u2013Fri 09:00\u201317:00",
-      "projectCaptions": [
-          "The light before golden hour",
-          "Brand portrait, Sea Point studio",
-          "Product table, natural light",
-          "Corporate event, CTICC"
-      ],
-      "testimonial": {
-          "quote": "The images were everything I hoped for. I've used them across every platform.",
-          "author": "Zara T., Cape Town",
-          "rating": 5
+    "heroEyebrow": "PHOTOGRAPHY CAPE TOWN",
+    "heroAccent": "Portrait, commercial & editorial",
+    "tagline": "Moments made <em>permanent</em>",
+    "heroSubtitle": "Professional photography for portraits, brands, events, and editorial — images that do justice to what you’re showing the world.",
+    "ctaPrimary": "Book a Session",
+    "ctaSecondary": "View Portfolio",
+    "ctaNote": "Free pre-shoot consultation · Digital gallery within 7 days · Commercial licensing",
+    "badge": "PSSA Professional Photographers of SA",
+    "servicesHeading": "What We Shoot",
+    "services": [
+      {
+        "name": "Portrait & Personal Branding",
+        "description": "Professional headshots, personal brand portraits, and family sessions that capture genuine character.",
+        "tags": [
+          "Headshots",
+          "Personal Brand"
+        ],
+        "icon": "user",
+        "serviceImageQuery": "professional portrait headshot photography studio Cape Town"
       },
-      "imageMood": "cinematic, natural light, intimate",
-      "heroImageQuery": "photographer professional portrait studio Cape Town natural light",
-      "ogImageQuery": "professional photographer Cape Town portrait commercial",
-      "aboutImageQuery": "photographer behind camera professional Cape Town shoot",
-      "galleryImageQueries": [
-          "professional portrait photography Cape Town studio",
-          "commercial product photography Cape Town studio",
-          "corporate event photography Cape Town conference",
-          "landscape fine art photography Cape Town"
-      ]
+      {
+        "name": "Commercial & Product Photography",
+        "description": "Product, food, architectural, and commercial photography for brands, agencies, and e-commerce.",
+        "tags": [
+          "Commercial",
+          "Product"
+        ],
+        "icon": "camera",
+        "serviceImageQuery": "commercial product photography studio Cape Town professional"
+      },
+      {
+        "name": "Events & Corporate",
+        "description": "Conference, awards, and corporate event coverage with same-week turnaround on edited selects.",
+        "tags": [
+          "Events",
+          "Corporate"
+        ],
+        "icon": "users",
+        "serviceImageQuery": "corporate event photography Cape Town professional conference"
+      }
+    ],
+    "galleryHeading": "From the Portfolio",
+    "aboutHeading": "Photography that <em>means</em> something",
+    "aboutText": "I’ve been photographing people, places, and products in Cape Town for 14 years. The best images happen when the subject relaxes, the light cooperates, and the photographer is prepared for both.\n\nI shoot on medium-format and full-frame digital. Every image delivered has been individually retouched — not batch-processed.",
+    "aboutMission": "We believe a great photograph is one where the viewer forgets it was taken and simply feels something.",
+    "stats": [
+      {
+        "value": "14+",
+        "label": "Years Shooting",
+        "sublabel": "since 2010"
+      },
+      {
+        "value": "500+",
+        "label": "Shoots Delivered",
+        "sublabel": "portrait to commercial"
+      },
+      {
+        "value": "7",
+        "label": "Day Gallery Turnaround",
+        "sublabel": "fully retouched"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 300+ reviews"
+      }
+    ],
+    "contactHeading": "Ready to book a shoot?",
+    "contactHours": "Shoots available 7 days · Bookings & admin Mon–Fri 09:00–17:00",
+    "projectCaptions": [
+      "The light before golden hour",
+      "Brand portrait, Sea Point studio",
+      "Product table, natural light",
+      "Corporate event, CTICC"
+    ],
+    "testimonial": {
+      "quote": "The images were everything I hoped for. I’ve used them across every platform.",
+      "author": "Zara T., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "cinematic, natural light, intimate",
+    "heroImageQuery": "photographer adjusting camera natural light portrait studio bokeh",
+    "ogImageQuery": "professional camera lens portrait photography bokeh shallow depth",
+    "aboutImageQuery": "photographer holding camera smiling behind the scenes shoot",
+    "galleryImageQueries": [
+      "woman portrait natural light studio close up professional",
+      "product flat lay coffee table styled photography overhead",
+      "couple laughing candid outdoor lifestyle photography",
+      "photographer camera behind scenes shooting model studio"
+    ]
   },
   "Videographer": {
-      "heroEyebrow": "VIDEO PRODUCTION CAPE TOWN",
-      "heroAccent": "Brand films, events & social content",
-      "tagline": "Stories told in the most <em>powerful</em> format",
-      "heroSubtitle": "Professional video production for brand films, social content, event coverage, and documentary \u2014 crafted from shoot to final edit.",
-      "ctaPrimary": "Get a Quote",
-      "ctaSecondary": "Watch Showreel",
-      "ctaNote": "Creative brief included \u00b7 Licensed music \u00b7 Delivery within 10 days",
-      "badge": "SASFED Registered Film Producer",
-      "servicesHeading": "What We Produce",
-      "services": [
-          {
-              "name": "Brand & Corporate Films",
-              "description": "Compelling brand films, testimonial videos, and corporate stories for websites and campaigns.",
-              "tags": [
-                  "Brand Film",
-                  "Corporate"
-              ],
-              "icon": "film",
-              "serviceImageQuery": "brand film corporate video production Cape Town professional"
-          },
-          {
-              "name": "Social Media Content",
-              "description": "Vertical and horizontal short-form video for Instagram, YouTube, and TikTok \u2014 edited and branded.",
-              "tags": [
-                  "Social Content",
-                  "Reels"
-              ],
-              "icon": "smartphone",
-              "serviceImageQuery": "social media video content production professional Cape Town"
-          },
-          {
-              "name": "Event & Documentary Coverage",
-              "description": "Multi-camera event coverage, conference recordings, and documentary-style narrative films.",
-              "tags": [
-                  "Events",
-                  "Documentary"
-              ],
-              "icon": "video",
-              "serviceImageQuery": "event video coverage documentary production professional Cape Town"
-          }
-      ],
-      "galleryHeading": "From the Edit Suite",
-      "aboutHeading": "Video crafted with <em>intention</em>",
-      "aboutText": "A video that no one watches is a waste of budget. We approach every production with a clear brief, a strong narrative strategy, and a post-production process that delivers content that performs.\n\nWe shoot on cinema-grade cameras with professional lighting, sound, and drone where needed.",
-      "aboutMission": "We believe the best brand videos are the ones people choose to watch \u2014 not the ones they skip.",
-      "stats": [
-          {
-              "value": "12+",
-              "label": "Years in Production",
-              "sublabel": "since 2012"
-          },
-          {
-              "value": "300+",
-              "label": "Videos Produced",
-              "sublabel": "brand to social"
-          },
-          {
-              "value": "4K",
-              "label": "All Footage Shot In",
-              "sublabel": "cinema-grade cameras"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 200+ reviews"
-          }
-      ],
-      "contactHeading": "Have a video project in mind?",
-      "contactHours": "Shoots available 7 days \u00b7 Bookings & admin Mon\u2013Fri 08:30\u201317:30",
-      "projectCaptions": [
-          "Brand film, V&A Waterfront",
-          "Social reel, Camps Bay",
-          "Event highlights, CTICC",
-          "Documentary, Winelands"
-      ],
-      "testimonial": {
-          "quote": "The brand film has been the best marketing investment we've made in 5 years.",
-          "author": "Marcus H., Cape Town",
-          "rating": 5
+    "heroEyebrow": "VIDEO PRODUCTION CAPE TOWN",
+    "heroAccent": "Brand films, events & social content",
+    "tagline": "Stories told in the most <em>powerful</em> format",
+    "heroSubtitle": "Professional video production for brand films, social content, event coverage, and documentary — crafted from shoot to final edit.",
+    "ctaPrimary": "Get a Quote",
+    "ctaSecondary": "Watch Showreel",
+    "ctaNote": "Creative brief included · Licensed music · Delivery within 10 days",
+    "badge": "SASFED Registered Film Producer",
+    "servicesHeading": "What We Produce",
+    "services": [
+      {
+        "name": "Brand & Corporate Films",
+        "description": "Compelling brand films, testimonial videos, and corporate stories for websites and campaigns.",
+        "tags": [
+          "Brand Film",
+          "Corporate"
+        ],
+        "icon": "film",
+        "serviceImageQuery": "brand film corporate video production Cape Town professional"
       },
-      "imageMood": "cinematic, moody, professional",
-      "heroImageQuery": "videographer professional film production Cape Town cinematic",
-      "ogImageQuery": "video production professional Cape Town brand film cinematic",
-      "aboutImageQuery": "videographer professional camera rig Cape Town shoot",
-      "galleryImageQueries": [
-          "brand film production Cape Town professional",
-          "social media video shoot professional Cape Town",
-          "event video coverage multi-camera professional",
-          "documentary film Cape Town professional cinematic"
-      ]
+      {
+        "name": "Social Media Content",
+        "description": "Vertical and horizontal short-form video for Instagram, YouTube, and TikTok — edited and branded.",
+        "tags": [
+          "Social Content",
+          "Reels"
+        ],
+        "icon": "smartphone",
+        "serviceImageQuery": "social media video content production professional Cape Town"
+      },
+      {
+        "name": "Event & Documentary Coverage",
+        "description": "Multi-camera event coverage, conference recordings, and documentary-style narrative films.",
+        "tags": [
+          "Events",
+          "Documentary"
+        ],
+        "icon": "video",
+        "serviceImageQuery": "event video coverage documentary production professional Cape Town"
+      }
+    ],
+    "galleryHeading": "From the Edit Suite",
+    "aboutHeading": "Video crafted with <em>intention</em>",
+    "aboutText": "A video that no one watches is a waste of budget. We approach every production with a clear brief, a strong narrative strategy, and a post-production process that delivers content that performs.\n\nWe shoot on cinema-grade cameras with professional lighting, sound, and drone where needed.",
+    "aboutMission": "We believe the best brand videos are the ones people choose to watch — not the ones they skip.",
+    "stats": [
+      {
+        "value": "12+",
+        "label": "Years in Production",
+        "sublabel": "since 2012"
+      },
+      {
+        "value": "300+",
+        "label": "Videos Produced",
+        "sublabel": "brand to social"
+      },
+      {
+        "value": "4K",
+        "label": "All Footage Shot In",
+        "sublabel": "cinema-grade cameras"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 200+ reviews"
+      }
+    ],
+    "contactHeading": "Have a video project in mind?",
+    "contactHours": "Shoots available 7 days · Bookings & admin Mon–Fri 08:30–17:30",
+    "projectCaptions": [
+      "Brand film, V&A Waterfront",
+      "Social reel, Camps Bay",
+      "Event highlights, CTICC",
+      "Documentary, Winelands"
+    ],
+    "testimonial": {
+      "quote": "The brand film has been the best marketing investment we’ve made in 5 years.",
+      "author": "Marcus H., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "cinematic, moody, professional",
+    "heroImageQuery": "videographer professional film production Cape Town cinematic",
+    "ogImageQuery": "video production professional Cape Town brand film cinematic",
+    "aboutImageQuery": "videographer professional camera rig Cape Town shoot",
+    "galleryImageQueries": [
+      "brand film production Cape Town professional",
+      "social media video shoot professional Cape Town",
+      "event video coverage multi-camera professional",
+      "documentary film Cape Town professional cinematic"
+    ]
   },
   "Graphic Designer": {
-      "heroEyebrow": "GRAPHIC DESIGN CAPE TOWN",
-      "heroAccent": "Brand identity, print & digital design",
-      "tagline": "Design that communicates before a word is <em>read</em>",
-      "heroSubtitle": "Strategic graphic design for brand identity, marketing collateral, packaging, and digital assets from a Cape Town design studio.",
-      "ctaPrimary": "Start a Project",
-      "ctaSecondary": "View Portfolio",
-      "ctaNote": "NDA on all briefs \u00b7 Fixed project quotes \u00b7 3 revision rounds included",
-      "badge": "CGDA Graphic Design Association Member",
-      "servicesHeading": "What We Design",
-      "services": [
-          {
-              "name": "Brand Identity & Logo Design",
-              "description": "Brand strategy, logo design, colour systems, and brand guidelines built for long-term consistency.",
-              "tags": [
-                  "Logo Design",
-                  "Brand Guidelines"
-              ],
-              "icon": "star",
-              "serviceImageQuery": "graphic designer brand identity logo Cape Town professional"
-          },
-          {
-              "name": "Print & Packaging Design",
-              "description": "Brochures, packaging, annual reports, and high-end print collateral designed for impact.",
-              "tags": [
-                  "Packaging",
-                  "Print"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "graphic design print packaging professional Cape Town studio"
-          },
-          {
-              "name": "Digital & Social Design",
-              "description": "Social media templates, website UI, email design, and digital ad creative at scale.",
-              "tags": [
-                  "Social Media",
-                  "UI Design"
-              ],
-              "icon": "monitor",
-              "serviceImageQuery": "digital design social media UI professional Cape Town"
-          }
-      ],
-      "galleryHeading": "Selected Work",
-      "aboutHeading": "Design rooted in <em>strategy</em>",
-      "aboutText": "Good design isn't decoration \u2014 it's communication. We start every project by understanding the audience, the message, and the context before picking up a pen.\n\nWe're a boutique design studio in Cape Town, established in 2008. Our clients range from local startups to international brands.",
-      "aboutMission": "We believe design is the most efficient communication tool a business has \u2014 and every pixel should earn its place.",
-      "stats": [
-          {
-              "value": "16+",
-              "label": "Years Designing",
-              "sublabel": "since 2008"
-          },
-          {
-              "value": "300+",
-              "label": "Brand Projects",
-              "sublabel": "identity to campaign"
-          },
-          {
-              "value": "4",
-              "label": "Loerie Awards",
-              "sublabel": "shortlisted & awarded"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 200+ reviews"
-          }
-      ],
-      "contactHeading": "Have a design project? Let's talk.",
-      "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Remote collaboration available \u00b7 Projects by quote",
-      "projectCaptions": [
-          "Brand identity, Woodstock studio",
-          "Packaging design, local producer",
-          "Annual report, corporate client",
-          "Social template system, lifestyle brand"
-      ],
-      "testimonial": {
-          "quote": "The rebrand completely changed how people perceive us. Best creative decision we made.",
-          "author": "Sophie W., Cape Town",
-          "rating": 5
+    "heroEyebrow": "GRAPHIC DESIGN CAPE TOWN",
+    "heroAccent": "Brand identity, print & digital design",
+    "tagline": "Design that communicates before a word is <em>read</em>",
+    "heroSubtitle": "Strategic graphic design for brand identity, marketing collateral, packaging, and digital assets from a Cape Town design studio.",
+    "ctaPrimary": "Start a Project",
+    "ctaSecondary": "View Portfolio",
+    "ctaNote": "NDA on all briefs · Fixed project quotes · 3 revision rounds included",
+    "badge": "CGDA Graphic Design Association Member",
+    "servicesHeading": "What We Design",
+    "services": [
+      {
+        "name": "Brand Identity & Logo Design",
+        "description": "Brand strategy, logo design, colour systems, and brand guidelines built for long-term consistency.",
+        "tags": [
+          "Logo Design",
+          "Brand Guidelines"
+        ],
+        "icon": "star",
+        "serviceImageQuery": "graphic designer brand identity logo Cape Town professional"
       },
-      "imageMood": "bold, minimal, considered",
-      "heroImageQuery": "graphic designer studio Cape Town professional brand identity",
-      "ogImageQuery": "graphic design brand identity professional Cape Town studio",
-      "aboutImageQuery": "graphic designer professional studio Cape Town working",
-      "galleryImageQueries": [
-          "brand identity logo design professional Cape Town",
-          "packaging design print Cape Town studio",
-          "digital social media design professional",
-          "graphic design portfolio branding Cape Town"
-      ]
+      {
+        "name": "Print & Packaging Design",
+        "description": "Brochures, packaging, annual reports, and high-end print collateral designed for impact.",
+        "tags": [
+          "Packaging",
+          "Print"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "graphic design print packaging professional Cape Town studio"
+      },
+      {
+        "name": "Digital & Social Design",
+        "description": "Social media templates, website UI, email design, and digital ad creative at scale.",
+        "tags": [
+          "Social Media",
+          "UI Design"
+        ],
+        "icon": "monitor",
+        "serviceImageQuery": "digital design social media UI professional Cape Town"
+      }
+    ],
+    "galleryHeading": "Selected Work",
+    "aboutHeading": "Design rooted in <em>strategy</em>",
+    "aboutText": "Good design isn’t decoration — it’s communication. We start every project by understanding the audience, the message, and the context before picking up a pen.\n\nWe’re a boutique design studio in Cape Town, established in 2008. Our clients range from local startups to international brands.",
+    "aboutMission": "We believe design is the most efficient communication tool a business has — and every pixel should earn its place.",
+    "stats": [
+      {
+        "value": "16+",
+        "label": "Years Designing",
+        "sublabel": "since 2008"
+      },
+      {
+        "value": "300+",
+        "label": "Brand Projects",
+        "sublabel": "identity to campaign"
+      },
+      {
+        "value": "4",
+        "label": "Loerie Awards",
+        "sublabel": "shortlisted & awarded"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 200+ reviews"
+      }
+    ],
+    "contactHeading": "Have a design project? Let’s talk.",
+    "contactHours": "Mon–Fri: 09:00–17:30 · Remote collaboration available · Projects by quote",
+    "projectCaptions": [
+      "Brand identity, Woodstock studio",
+      "Packaging design, local producer",
+      "Annual report, corporate client",
+      "Social template system, lifestyle brand"
+    ],
+    "testimonial": {
+      "quote": "The rebrand completely changed how people perceive us. Best creative decision we made.",
+      "author": "Sophie W., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "bold, minimal, considered",
+    "heroImageQuery": "graphic designer studio Cape Town professional brand identity",
+    "ogImageQuery": "graphic design brand identity professional Cape Town studio",
+    "aboutImageQuery": "graphic designer professional studio Cape Town working",
+    "galleryImageQueries": [
+      "brand identity logo design professional Cape Town",
+      "packaging design print Cape Town studio",
+      "digital social media design professional",
+      "graphic design portfolio branding Cape Town"
+    ]
   },
   "Interior Designer": {
-      "heroEyebrow": "INTERIOR DESIGN CAPE TOWN",
-      "heroAccent": "Residential, commercial & hospitality",
-      "tagline": "Spaces designed for the way you actually <em>live</em>",
-      "heroSubtitle": "Professional interior design for residential and commercial spaces \u2014 from concept and mood boards to furniture procurement and installation.",
-      "ctaPrimary": "Book a Consultation",
-      "ctaSecondary": "Our Portfolio",
-      "ctaNote": "Initial consultation R800 \u00b7 Full project management \u00b7 Trade pricing passed on",
-      "badge": "SADI Registered Interior Designer",
-      "servicesHeading": "What We Design",
-      "services": [
-          {
-              "name": "Full Interior Design",
-              "description": "End-to-end interior design including concept, space planning, specification, and project management.",
-              "tags": [
-                  "Full Design",
-                  "Project Management"
-              ],
-              "icon": "home",
-              "serviceImageQuery": "interior design professional residential Cape Town living room"
-          },
-          {
-              "name": "Furniture & D\u00e9cor Sourcing",
-              "description": "Custom and sourced furniture, rugs, lighting, and art curated and coordinated for your space.",
-              "tags": [
-                  "Furniture",
-                  "Sourcing"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "interior designer furniture sourcing d\u00e9cor Cape Town professional"
-          },
-          {
-              "name": "Commercial & Hospitality Design",
-              "description": "Office interiors, retail design, and hospitality fit-outs that balance aesthetics with function.",
-              "tags": [
-                  "Commercial",
-                  "Hospitality"
-              ],
-              "icon": "briefcase",
-              "serviceImageQuery": "commercial interior design office hospitality professional Cape Town"
-          }
-      ],
-      "galleryHeading": "Spaces We've Designed",
-      "aboutHeading": "Interiors designed with <em>purpose</em>",
-      "aboutText": "Great interior design isn't about trends \u2014 it's about understanding how a person or organisation uses a space and creating an environment that serves that use beautifully.\n\nI am a SADI-registered interior designer with 17 years of experience across residential, hospitality, and commercial projects in Cape Town and beyond.",
-      "aboutMission": "We believe a well-designed interior doesn't just look right \u2014 it makes you feel right the moment you walk in.",
-      "stats": [
-          {
-              "value": "17+",
-              "label": "Years Designing",
-              "sublabel": "since 2007"
-          },
-          {
-              "value": "200+",
-              "label": "Projects Completed",
-              "sublabel": "residential to commercial"
-          },
-          {
-              "value": "SADI",
-              "label": "Registered Designer",
-              "sublabel": "professional body member"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 250+ reviews"
-          }
-      ],
-      "contactHeading": "Want to transform your space?",
-      "contactHours": "Mon\u2013Fri: 09:00\u201317:00 \u00b7 Site visits by appointment \u00b7 Virtual consultations available",
-      "projectCaptions": [
-          "Cape Town apartment, full design",
-          "Franschhoek guesthouse, hospitality fit-out",
-          "Bespoke kitchen, Constantia",
-          "Retail fit-out, V&A Waterfront"
-      ],
-      "testimonial": {
-          "quote": "Our home looks like a magazine shoot every day. She understood exactly what we wanted.",
-          "author": "Kate & Jon A., Cape Town",
-          "rating": 5
+    "heroEyebrow": "INTERIOR DESIGN CAPE TOWN",
+    "heroAccent": "Residential, commercial & hospitality",
+    "tagline": "Spaces designed for the way you actually <em>live</em>",
+    "heroSubtitle": "Professional interior design for residential and commercial spaces — from concept and mood boards to furniture procurement and installation.",
+    "ctaPrimary": "Book a Consultation",
+    "ctaSecondary": "Our Portfolio",
+    "ctaNote": "Initial consultation R800 · Full project management · Trade pricing passed on",
+    "badge": "SADI Registered Interior Designer",
+    "servicesHeading": "What We Design",
+    "services": [
+      {
+        "name": "Full Interior Design",
+        "description": "End-to-end interior design including concept, space planning, specification, and project management.",
+        "tags": [
+          "Full Design",
+          "Project Management"
+        ],
+        "icon": "home",
+        "serviceImageQuery": "interior design professional residential Cape Town living room"
       },
-      "imageMood": "elegant, considered, natural light",
-      "heroImageQuery": "interior design professional residential Cape Town living room elegant",
-      "ogImageQuery": "interior designer professional Cape Town residential project",
-      "aboutImageQuery": "interior designer professional working Cape Town space",
-      "galleryImageQueries": [
-          "residential interior design Cape Town living room",
-          "kitchen interior design professional Cape Town",
-          "commercial office interior design professional",
-          "hospitality interior design Cape Town professional"
-      ]
+      {
+        "name": "Furniture & Décor Sourcing",
+        "description": "Custom and sourced furniture, rugs, lighting, and art curated and coordinated for your space.",
+        "tags": [
+          "Furniture",
+          "Sourcing"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "interior designer furniture sourcing décor Cape Town professional"
+      },
+      {
+        "name": "Commercial & Hospitality Design",
+        "description": "Office interiors, retail design, and hospitality fit-outs that balance aesthetics with function.",
+        "tags": [
+          "Commercial",
+          "Hospitality"
+        ],
+        "icon": "briefcase",
+        "serviceImageQuery": "commercial interior design office hospitality professional Cape Town"
+      }
+    ],
+    "galleryHeading": "Spaces We’ve Designed",
+    "aboutHeading": "Interiors designed with <em>purpose</em>",
+    "aboutText": "Great interior design isn’t about trends — it’s about understanding how a person or organisation uses a space and creating an environment that serves that use beautifully.\n\nI am a SADI-registered interior designer with 17 years of experience across residential, hospitality, and commercial projects in Cape Town and beyond.",
+    "aboutMission": "We believe a well-designed interior doesn’t just look right — it makes you feel right the moment you walk in.",
+    "stats": [
+      {
+        "value": "17+",
+        "label": "Years Designing",
+        "sublabel": "since 2007"
+      },
+      {
+        "value": "200+",
+        "label": "Projects Completed",
+        "sublabel": "residential to commercial"
+      },
+      {
+        "value": "SADI",
+        "label": "Registered Designer",
+        "sublabel": "professional body member"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 250+ reviews"
+      }
+    ],
+    "contactHeading": "Want to transform your space?",
+    "contactHours": "Mon–Fri: 09:00–17:00 · Site visits by appointment · Virtual consultations available",
+    "projectCaptions": [
+      "Cape Town apartment, full design",
+      "Franschhoek guesthouse, hospitality fit-out",
+      "Bespoke kitchen, Constantia",
+      "Retail fit-out, V&A Waterfront"
+    ],
+    "testimonial": {
+      "quote": "Our home looks like a magazine shoot every day. She understood exactly what we wanted.",
+      "author": "Kate & Jon A., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "elegant, considered, natural light",
+    "heroImageQuery": "interior design professional residential Cape Town living room elegant",
+    "ogImageQuery": "interior designer professional Cape Town residential project",
+    "aboutImageQuery": "interior designer professional working Cape Town space",
+    "galleryImageQueries": [
+      "residential interior design Cape Town living room",
+      "kitchen interior design professional Cape Town",
+      "commercial office interior design professional",
+      "hospitality interior design Cape Town professional"
+    ]
   },
   "Copywriter / Content Creator": {
-      "heroEyebrow": "COPYWRITING CAPE TOWN",
-      "heroAccent": "Brand copy, content & campaigns",
-      "tagline": "Words that make people do <em>things</em>",
-      "heroSubtitle": "Strategic copywriting and content creation for brands that want to communicate with clarity, personality, and persuasion.",
-      "ctaPrimary": "Start a Project",
-      "ctaSecondary": "View Work",
-      "ctaNote": "Brief-first approach \u00b7 NDA on all projects \u00b7 Fast turnarounds available",
-      "badge": "IAB SA Content Marketing Council",
-      "servicesHeading": "What We Write",
-      "services": [
-          {
-              "name": "Brand Copywriting",
-              "description": "Tone of voice development, brand manifestos, taglines, and website copy that defines how you sound.",
-              "tags": [
-                  "Brand Voice",
-                  "Website Copy"
-              ],
-              "icon": "edit-3",
-              "serviceImageQuery": "copywriter writing brand professional Cape Town studio"
-          },
-          {
-              "name": "Content Strategy & Creation",
-              "description": "Blog posts, newsletters, social content, and long-form articles that build authority and drive traffic.",
-              "tags": [
-                  "Content Strategy",
-                  "Blog"
-              ],
-              "icon": "file-text",
-              "serviceImageQuery": "content creation strategy copywriter professional Cape Town"
-          },
-          {
-              "name": "Campaign & Ad Copy",
-              "description": "Campaign concepts, ad copy, email sequences, and landing page copy designed to convert.",
-              "tags": [
-                  "Ad Copy",
-                  "Email"
-              ],
-              "icon": "target",
-              "serviceImageQuery": "advertising campaign copy professional writer Cape Town"
-          }
-      ],
-      "galleryHeading": "Words We've Written",
-      "aboutHeading": "Copy written with <em>conviction</em>",
-      "aboutText": "Most brands write about themselves. The best brands write for their audience. I've spent 15 years helping companies tell stories that resonate \u2014 in advertising, content, and brand communications.\n\nI've written for FMCG, tech, property, hospitality, and finance. Good copy starts with understanding people, not products.",
-      "aboutMission": "We believe the right words can change how people feel about a brand \u2014 and that's the most powerful tool in marketing.",
-      "stats": [
-          {
-              "value": "15+",
-              "label": "Years Writing",
-              "sublabel": "since 2009"
-          },
-          {
-              "value": "100+",
-              "label": "Brands Written For",
-              "sublabel": "local to international"
-          },
-          {
-              "value": "3",
-              "label": "Bookmark Awards",
-              "sublabel": "content & digital category"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 150+ reviews"
-          }
-      ],
-      "contactHeading": "Got a brief? Let's write something great.",
-      "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Remote projects welcome \u00b7 Rush turnarounds available",
-      "projectCaptions": [
-          "Brand manifesto, Cape Town startup",
-          "Campaign tagline, national FMCG",
-          "Website rewrite, hospitality brand",
-          "Newsletter series, financial services"
-      ],
-      "testimonial": {
-          "quote": "She nailed our brand voice on the first draft. We haven't touched the website copy in 3 years.",
-          "author": "Tom A., Cape Town",
-          "rating": 5
+    "heroEyebrow": "COPYWRITING CAPE TOWN",
+    "heroAccent": "Brand copy, content & campaigns",
+    "tagline": "Words that make people do <em>things</em>",
+    "heroSubtitle": "Strategic copywriting and content creation for brands that want to communicate with clarity, personality, and persuasion.",
+    "ctaPrimary": "Start a Project",
+    "ctaSecondary": "View Work",
+    "ctaNote": "Brief-first approach · NDA on all projects · Fast turnarounds available",
+    "badge": "IAB SA Content Marketing Council",
+    "servicesHeading": "What We Write",
+    "services": [
+      {
+        "name": "Brand Copywriting",
+        "description": "Tone of voice development, brand manifestos, taglines, and website copy that defines how you sound.",
+        "tags": [
+          "Brand Voice",
+          "Website Copy"
+        ],
+        "icon": "edit-3",
+        "serviceImageQuery": "copywriter writing brand professional Cape Town studio"
       },
-      "imageMood": "considered, creative, clean",
-      "heroImageQuery": "copywriter writing professional creative Cape Town studio",
-      "ogImageQuery": "copywriter content creator professional Cape Town brand",
-      "aboutImageQuery": "copywriter professional working Cape Town studio writing",
-      "galleryImageQueries": [
-          "copywriter brand writing professional Cape Town",
-          "content creation strategy professional",
-          "advertising campaign copywriting professional",
-          "copywriter client collaboration Cape Town"
-      ]
+      {
+        "name": "Content Strategy & Creation",
+        "description": "Blog posts, newsletters, social content, and long-form articles that build authority and drive traffic.",
+        "tags": [
+          "Content Strategy",
+          "Blog"
+        ],
+        "icon": "file-text",
+        "serviceImageQuery": "content creation strategy copywriter professional Cape Town"
+      },
+      {
+        "name": "Campaign & Ad Copy",
+        "description": "Campaign concepts, ad copy, email sequences, and landing page copy designed to convert.",
+        "tags": [
+          "Ad Copy",
+          "Email"
+        ],
+        "icon": "target",
+        "serviceImageQuery": "advertising campaign copy professional writer Cape Town"
+      }
+    ],
+    "galleryHeading": "Words We’ve Written",
+    "aboutHeading": "Copy written with <em>conviction</em>",
+    "aboutText": "Most brands write about themselves. The best brands write for their audience. I’ve spent 15 years helping companies tell stories that resonate — in advertising, content, and brand communications.\n\nI’ve written for FMCG, tech, property, hospitality, and finance. Good copy starts with understanding people, not products.",
+    "aboutMission": "We believe the right words can change how people feel about a brand — and that’s the most powerful tool in marketing.",
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Years Writing",
+        "sublabel": "since 2009"
+      },
+      {
+        "value": "100+",
+        "label": "Brands Written For",
+        "sublabel": "local to international"
+      },
+      {
+        "value": "3",
+        "label": "Bookmark Awards",
+        "sublabel": "content & digital category"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 150+ reviews"
+      }
+    ],
+    "contactHeading": "Got a brief? Let’s write something great.",
+    "contactHours": "Mon–Fri: 09:00–17:30 · Remote projects welcome · Rush turnarounds available",
+    "projectCaptions": [
+      "Brand manifesto, Cape Town startup",
+      "Campaign tagline, national FMCG",
+      "Website rewrite, hospitality brand",
+      "Newsletter series, financial services"
+    ],
+    "testimonial": {
+      "quote": "She nailed our brand voice on the first draft. We haven’t touched the website copy in 3 years.",
+      "author": "Tom A., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "considered, creative, clean",
+    "heroImageQuery": "copywriter writing professional creative Cape Town studio",
+    "ogImageQuery": "copywriter content creator professional Cape Town brand",
+    "aboutImageQuery": "copywriter professional working Cape Town studio writing",
+    "galleryImageQueries": [
+      "copywriter brand writing professional Cape Town",
+      "content creation strategy professional",
+      "advertising campaign copywriting professional",
+      "copywriter client collaboration Cape Town"
+    ]
   },
   "Music Producer / Studio": {
-      "heroEyebrow": "RECORDING STUDIO CAPE TOWN",
-      "heroAccent": "Professional recording, mixing & mastering",
-      "tagline": "Your sound, <em>realised</em>",
-      "heroSubtitle": "Professional recording, production, mixing, and mastering from an acoustically treated Cape Town studio with an experienced producer.",
-      "ctaPrimary": "Book Studio Time",
-      "ctaSecondary": "Listen to Our Work",
-      "ctaNote": "Hourly & block rates \u00b7 All genres welcome \u00b7 Engineer included",
-      "badge": "RISA Registered Music Producer",
-      "servicesHeading": "What We Do",
-      "services": [
-          {
-              "name": "Recording & Production",
-              "description": "Full music production from demo to release \u2014 arrangement, recording, and sound design included.",
-              "tags": [
-                  "Recording",
-                  "Production"
-              ],
-              "icon": "mic",
-              "serviceImageQuery": "recording studio professional Cape Town music production"
-          },
-          {
-              "name": "Mixing & Mastering",
-              "description": "Professional mixing and mastering for independent artists and labels seeking a competitive sound.",
-              "tags": [
-                  "Mixing",
-                  "Mastering"
-              ],
-              "icon": "sliders",
-              "serviceImageQuery": "music mixing mastering studio professional audio engineer"
-          },
-          {
-              "name": "Podcast & Voiceover Recording",
-              "description": "Podcast episodes, voiceover sessions, and audio branding recorded and produced to broadcast standard.",
-              "tags": [
-                  "Podcast",
-                  "Voiceover"
-              ],
-              "icon": "radio",
-              "serviceImageQuery": "podcast voiceover recording studio professional Cape Town"
-          }
-      ],
-      "galleryHeading": "From the Studio",
-      "aboutHeading": "Sound crafted with <em>care</em>",
-      "aboutText": "I have been producing music and recording artists in Cape Town for 18 years. The studio is acoustically treated, equipped with industry-standard gear, and designed to make artists feel comfortable enough to give their best performance.\n\nI work across genres \u2014 from singer-songwriter to hip-hop, jazz to electronic.",
-      "aboutMission": "We believe every artist deserves to hear their music the way they imagined it \u2014 and our job is to close that gap.",
-      "stats": [
-          {
-              "value": "18+",
-              "label": "Years Producing",
-              "sublabel": "since 2006"
-          },
-          {
-              "value": "200+",
-              "label": "Tracks Produced",
-              "sublabel": "across all genres"
-          },
-          {
-              "value": "12",
-              "label": "SA Chart Entries",
-              "sublabel": "from our studio"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 180+ reviews"
-          }
-      ],
-      "contactHeading": "Ready to record?",
-      "contactHours": "Mon\u2013Sun: 09:00\u201322:00 by booking \u00b7 Enquiries Mon\u2013Fri 09:00\u201317:00",
-      "projectCaptions": [
-          "Tracking session, live band",
-          "Mix session, hip-hop EP",
-          "Podcast series, financial brand",
-          "Vocal session, singer-songwriter"
-      ],
-      "testimonial": {
-          "quote": "The mix made our sound commercial without losing what makes us us. Brilliant producer.",
-          "author": "Kagiso M., Cape Town",
-          "rating": 5
+    "heroEyebrow": "RECORDING STUDIO CAPE TOWN",
+    "heroAccent": "Professional recording, mixing & mastering",
+    "tagline": "Your sound, <em>realised</em>",
+    "heroSubtitle": "Professional recording, production, mixing, and mastering from an acoustically treated Cape Town studio with an experienced producer.",
+    "ctaPrimary": "Book Studio Time",
+    "ctaSecondary": "Listen to Our Work",
+    "ctaNote": "Hourly & block rates · All genres welcome · Engineer included",
+    "badge": "RISA Registered Music Producer",
+    "servicesHeading": "What We Do",
+    "services": [
+      {
+        "name": "Recording & Production",
+        "description": "Full music production from demo to release — arrangement, recording, and sound design included.",
+        "tags": [
+          "Recording",
+          "Production"
+        ],
+        "icon": "mic",
+        "serviceImageQuery": "recording studio professional Cape Town music production"
       },
-      "imageMood": "moody, professional, warm",
-      "heroImageQuery": "recording studio professional Cape Town music producer",
-      "ogImageQuery": "music studio professional recording Cape Town producer",
-      "aboutImageQuery": "music producer recording studio professional Cape Town mixing",
-      "galleryImageQueries": [
-          "recording studio live session Cape Town professional",
-          "music mixing mastering console professional",
-          "podcast recording studio Cape Town professional",
-          "recording studio artist vocalist professional Cape Town"
-      ]
+      {
+        "name": "Mixing & Mastering",
+        "description": "Professional mixing and mastering for independent artists and labels seeking a competitive sound.",
+        "tags": [
+          "Mixing",
+          "Mastering"
+        ],
+        "icon": "sliders",
+        "serviceImageQuery": "music mixing mastering studio professional audio engineer"
+      },
+      {
+        "name": "Podcast & Voiceover Recording",
+        "description": "Podcast episodes, voiceover sessions, and audio branding recorded and produced to broadcast standard.",
+        "tags": [
+          "Podcast",
+          "Voiceover"
+        ],
+        "icon": "radio",
+        "serviceImageQuery": "podcast voiceover recording studio professional Cape Town"
+      }
+    ],
+    "galleryHeading": "From the Studio",
+    "aboutHeading": "Sound crafted with <em>care</em>",
+    "aboutText": "I have been producing music and recording artists in Cape Town for 18 years. The studio is acoustically treated, equipped with industry-standard gear, and designed to make artists feel comfortable enough to give their best performance.\n\nI work across genres — from singer-songwriter to hip-hop, jazz to electronic.",
+    "aboutMission": "We believe every artist deserves to hear their music the way they imagined it — and our job is to close that gap.",
+    "stats": [
+      {
+        "value": "18+",
+        "label": "Years Producing",
+        "sublabel": "since 2006"
+      },
+      {
+        "value": "200+",
+        "label": "Tracks Produced",
+        "sublabel": "across all genres"
+      },
+      {
+        "value": "12",
+        "label": "SA Chart Entries",
+        "sublabel": "from our studio"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 180+ reviews"
+      }
+    ],
+    "contactHeading": "Ready to record?",
+    "contactHours": "Mon–Sun: 09:00–22:00 by booking · Enquiries Mon–Fri 09:00–17:00",
+    "projectCaptions": [
+      "Tracking session, live band",
+      "Mix session, hip-hop EP",
+      "Podcast series, financial brand",
+      "Vocal session, singer-songwriter"
+    ],
+    "testimonial": {
+      "quote": "The mix made our sound commercial without losing what makes us us. Brilliant producer.",
+      "author": "Kagiso M., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "moody, professional, warm",
+    "heroImageQuery": "recording studio professional Cape Town music producer",
+    "ogImageQuery": "music studio professional recording Cape Town producer",
+    "aboutImageQuery": "music producer recording studio professional Cape Town mixing",
+    "galleryImageQueries": [
+      "recording studio live session Cape Town professional",
+      "music mixing mastering console professional",
+      "podcast recording studio Cape Town professional",
+      "recording studio artist vocalist professional Cape Town"
+    ]
   },
   "Craft / Handmade Goods": {
-      "heroEyebrow": "HANDMADE IN CAPE TOWN",
-      "heroAccent": "Made to order. One of a kind.",
-      "tagline": "Things made with hands, meant to <em>last</em>",
-      "heroSubtitle": "Beautifully crafted handmade goods made in Cape Town \u2014 from ceramics and textiles to leather goods and home d\u00e9cor.",
-      "ctaPrimary": "Shop the Collection",
-      "ctaSecondary": "Custom Orders",
-      "ctaNote": "Custom orders welcome \u00b7 Ships nationwide \u00b7 Gift wrapping available",
-      "badge": "Proudly South African Craft Producer",
-      "servicesHeading": "What We Make",
-      "services": [
-          {
-              "name": "Handmade Ceramics",
-              "description": "Wheel-thrown and hand-built ceramics \u2014 mugs, bowls, vases, and planters in earthy South African tones.",
-              "tags": [
-                  "Ceramics",
-                  "Wheel-Thrown"
-              ],
-              "icon": "circle",
-              "serviceImageQuery": "handmade ceramics pottery Cape Town earthy tones craft"
-          },
-          {
-              "name": "Textile & Woven Goods",
-              "description": "Hand-woven cushion covers, throws, and wall hangings in natural fibres and local patterns.",
-              "tags": [
-                  "Woven",
-                  "Natural Fibres"
-              ],
-              "icon": "grid",
-              "serviceImageQuery": "handmade textile woven craft Cape Town natural"
-          },
-          {
-              "name": "Custom Leather Goods",
-              "description": "Hand-stitched leather wallets, bags, key rings, and corporate gifts made to your specification.",
-              "tags": [
-                  "Leather",
-                  "Custom"
-              ],
-              "icon": "briefcase",
-              "serviceImageQuery": "handmade leather goods craft Cape Town custom"
-          }
-      ],
-      "galleryHeading": "Made by Hand",
-      "aboutHeading": "Craft made with <em>intention</em>",
-      "aboutText": "Everything we make is made by hand, in Cape Town, using locally sourced materials where possible. We are not a factory \u2014 each piece takes time, and each piece is slightly different. That's the point.\n\nWe take custom orders and work with corporate clients for branded gifting.",
-      "aboutMission": "We believe handmade objects carry something mass-produced ones never can \u2014 the evidence of a human being who cared.",
-      "stats": [
-          {
-              "value": "9+",
-              "label": "Years Making",
-              "sublabel": "since 2015"
-          },
-          {
-              "value": "5,000+",
-              "label": "Pieces Sold",
-              "sublabel": "online & at markets"
-          },
-          {
-              "value": "100%",
-              "label": "Made in Cape Town",
-              "sublabel": "locally sourced materials"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 400+ reviews"
-          }
-      ],
-      "contactHeading": "Want a custom or bulk order?",
-      "contactHours": "Online orders 24hrs \u00b7 Market stalls Sat\u2013Sun \u00b7 Studio visits by appointment",
-      "projectCaptions": [
-          "Ceramic collection, earthy tones",
-          "Woven cushion, natural linen",
-          "Leather wallet, hand-stitched",
-          "Corporate gift set, custom branded"
-      ],
-      "testimonial": {
-          "quote": "The ceramic set I bought is the most-admired thing in our kitchen. Worth every cent.",
-          "author": "Anneke S., Cape Town",
-          "rating": 5
+    "heroEyebrow": "HANDMADE IN CAPE TOWN",
+    "heroAccent": "Made to order. One of a kind.",
+    "tagline": "Things made with hands, meant to <em>last</em>",
+    "heroSubtitle": "Beautifully crafted handmade goods made in Cape Town — from ceramics and textiles to leather goods and home décor.",
+    "ctaPrimary": "Shop the Collection",
+    "ctaSecondary": "Custom Orders",
+    "ctaNote": "Custom orders welcome · Ships nationwide · Gift wrapping available",
+    "badge": "Proudly South African Craft Producer",
+    "servicesHeading": "What We Make",
+    "services": [
+      {
+        "name": "Handmade Ceramics",
+        "description": "Wheel-thrown and hand-built ceramics — mugs, bowls, vases, and planters in earthy South African tones.",
+        "tags": [
+          "Ceramics",
+          "Wheel-Thrown"
+        ],
+        "icon": "circle",
+        "serviceImageQuery": "handmade ceramics pottery Cape Town earthy tones craft"
       },
-      "imageMood": "earthy, warm, artisanal",
-      "heroImageQuery": "handmade craft goods ceramics Cape Town artisan studio",
-      "ogImageQuery": "handmade ceramics leather craft Cape Town artisan",
-      "aboutImageQuery": "craft maker handmade goods Cape Town studio artisan",
-      "galleryImageQueries": [
-          "handmade ceramics pottery Cape Town earthy",
-          "woven textile craft natural fibre Cape Town",
-          "handmade leather goods craft Cape Town",
-          "artisan craft market Cape Town handmade"
-      ]
+      {
+        "name": "Textile & Woven Goods",
+        "description": "Hand-woven cushion covers, throws, and wall hangings in natural fibres and local patterns.",
+        "tags": [
+          "Woven",
+          "Natural Fibres"
+        ],
+        "icon": "grid",
+        "serviceImageQuery": "handmade textile woven craft Cape Town natural"
+      },
+      {
+        "name": "Custom Leather Goods",
+        "description": "Hand-stitched leather wallets, bags, key rings, and corporate gifts made to your specification.",
+        "tags": [
+          "Leather",
+          "Custom"
+        ],
+        "icon": "briefcase",
+        "serviceImageQuery": "handmade leather goods craft Cape Town custom"
+      }
+    ],
+    "galleryHeading": "Made by Hand",
+    "aboutHeading": "Craft made with <em>intention</em>",
+    "aboutText": "Everything we make is made by hand, in Cape Town, using locally sourced materials where possible. We are not a factory — each piece takes time, and each piece is slightly different. That’s the point.\n\nWe take custom orders and work with corporate clients for branded gifting.",
+    "aboutMission": "We believe handmade objects carry something mass-produced ones never can — the evidence of a human being who cared.",
+    "stats": [
+      {
+        "value": "9+",
+        "label": "Years Making",
+        "sublabel": "since 2015"
+      },
+      {
+        "value": "5,000+",
+        "label": "Pieces Sold",
+        "sublabel": "online & at markets"
+      },
+      {
+        "value": "100%",
+        "label": "Made in Cape Town",
+        "sublabel": "locally sourced materials"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 400+ reviews"
+      }
+    ],
+    "contactHeading": "Want a custom or bulk order?",
+    "contactHours": "Online orders 24hrs · Market stalls Sat–Sun · Studio visits by appointment",
+    "projectCaptions": [
+      "Ceramic collection, earthy tones",
+      "Woven cushion, natural linen",
+      "Leather wallet, hand-stitched",
+      "Corporate gift set, custom branded"
+    ],
+    "testimonial": {
+      "quote": "The ceramic set I bought is the most-admired thing in our kitchen. Worth every cent.",
+      "author": "Anneke S., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "earthy, warm, artisanal",
+    "heroImageQuery": "handmade craft goods ceramics Cape Town artisan studio",
+    "ogImageQuery": "handmade ceramics leather craft Cape Town artisan",
+    "aboutImageQuery": "craft maker handmade goods Cape Town studio artisan",
+    "galleryImageQueries": [
+      "handmade ceramics pottery Cape Town earthy",
+      "woven textile craft natural fibre Cape Town",
+      "handmade leather goods craft Cape Town",
+      "artisan craft market Cape Town handmade"
+    ]
   },
   "Fashion Designer": {
-      "heroEyebrow": "FASHION DESIGN CAPE TOWN",
-      "heroAccent": "Ready-to-wear, bespoke & capsule collections",
-      "tagline": "Clothes designed for who you actually <em>are</em>",
-      "heroSubtitle": "Independent Cape Town fashion label producing considered ready-to-wear, bespoke garments, and capsule collections.",
-      "ctaPrimary": "Book a Fitting",
-      "ctaSecondary": "View Collection",
-      "ctaNote": "Bespoke fittings by appointment \u00b7 Ships worldwide \u00b7 Sustainable fabrics used",
-      "badge": "SAFA South African Fashion Association",
-      "servicesHeading": "What We Create",
-      "services": [
-          {
-              "name": "Bespoke Garments",
-              "description": "Custom-made garments designed and constructed entirely for your measurements, occasion, and taste.",
-              "tags": [
-                  "Bespoke",
-                  "Custom-Made"
-              ],
-              "icon": "scissors",
-              "serviceImageQuery": "bespoke fashion designer garment fitting Cape Town"
-          },
-          {
-              "name": "Ready-to-Wear Collection",
-              "description": "Seasonal ready-to-wear pieces designed and produced in limited runs from our Cape Town studio.",
-              "tags": [
-                  "Ready-to-Wear",
-                  "Limited Edition"
-              ],
-              "icon": "star",
-              "serviceImageQuery": "fashion designer ready to wear collection Cape Town"
-          },
-          {
-              "name": "Capsule Wardrobe Consulting",
-              "description": "Personal styling and capsule wardrobe design to help you dress with intention and consistency.",
-              "tags": [
-                  "Capsule Wardrobe",
-                  "Styling"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "fashion capsule wardrobe styling consulting professional"
-          }
-      ],
-      "galleryHeading": "From the Studio",
-      "aboutHeading": "Fashion made with <em>purpose</em>",
-      "aboutText": "I design clothes that are made to be worn \u2014 not photographed once and forgotten. Every piece is constructed in our Cape Town studio using considered fabrics sourced from South African and European suppliers.\n\nI have been designing and producing collections since 2011, with stockists in Cape Town and Johannesburg.",
-      "aboutMission": "We believe fashion should make the wearer feel more like themselves \u2014 not a version of someone else's idea.",
-      "stats": [
-          {
-              "value": "13+",
-              "label": "Years Designing",
-              "sublabel": "since 2011"
-          },
-          {
-              "value": "8",
-              "label": "Seasons Produced",
-              "sublabel": "ready-to-wear collections"
-          },
-          {
-              "value": "3",
-              "label": "SA Fashion Week Shows",
-              "sublabel": "main runway"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 200+ reviews"
-          }
-      ],
-      "contactHeading": "Want a bespoke fitting or consultation?",
-      "contactHours": "Mon\u2013Fri: 10:00\u201317:00 \u00b7 Sat: 10:00\u201314:00 \u00b7 Fittings by appointment only",
-      "projectCaptions": [
-          "Bespoke wedding ensemble, Cape Town",
-          "SS25 ready-to-wear, campaign shoot",
-          "Custom occasion dress, Woodstock studio",
-          "Capsule collection, Cape Town stockist"
-      ],
-      "testimonial": {
-          "quote": "The wedding dress was absolutely perfect. She understood exactly what I wanted and exceeded it.",
-          "author": "Bianca P., Cape Town",
-          "rating": 5
+    "heroEyebrow": "FASHION DESIGN CAPE TOWN",
+    "heroAccent": "Ready-to-wear, bespoke & capsule collections",
+    "tagline": "Clothes designed for who you actually <em>are</em>",
+    "heroSubtitle": "Independent Cape Town fashion label producing considered ready-to-wear, bespoke garments, and capsule collections.",
+    "ctaPrimary": "Book a Fitting",
+    "ctaSecondary": "View Collection",
+    "ctaNote": "Bespoke fittings by appointment · Ships worldwide · Sustainable fabrics used",
+    "badge": "SAFA South African Fashion Association",
+    "servicesHeading": "What We Create",
+    "services": [
+      {
+        "name": "Bespoke Garments",
+        "description": "Custom-made garments designed and constructed entirely for your measurements, occasion, and taste.",
+        "tags": [
+          "Bespoke",
+          "Custom-Made"
+        ],
+        "icon": "scissors",
+        "serviceImageQuery": "bespoke fashion designer garment fitting Cape Town"
       },
-      "imageMood": "considered, minimal, editorial",
-      "heroImageQuery": "fashion designer Cape Town studio ready to wear editorial",
-      "ogImageQuery": "fashion designer Cape Town bespoke ready-to-wear collection",
-      "aboutImageQuery": "fashion designer studio Cape Town sewing garment professional",
-      "galleryImageQueries": [
-          "fashion designer Cape Town editorial shoot",
-          "bespoke garment fitting studio professional",
-          "ready to wear fashion collection Cape Town",
-          "fashion designer studio garment construction Cape Town"
-      ]
+      {
+        "name": "Ready-to-Wear Collection",
+        "description": "Seasonal ready-to-wear pieces designed and produced in limited runs from our Cape Town studio.",
+        "tags": [
+          "Ready-to-Wear",
+          "Limited Edition"
+        ],
+        "icon": "star",
+        "serviceImageQuery": "fashion designer ready to wear collection Cape Town"
+      },
+      {
+        "name": "Capsule Wardrobe Consulting",
+        "description": "Personal styling and capsule wardrobe design to help you dress with intention and consistency.",
+        "tags": [
+          "Capsule Wardrobe",
+          "Styling"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "fashion capsule wardrobe styling consulting professional"
+      }
+    ],
+    "galleryHeading": "From the Studio",
+    "aboutHeading": "Fashion made with <em>purpose</em>",
+    "aboutText": "I design clothes that are made to be worn — not photographed once and forgotten. Every piece is constructed in our Cape Town studio using considered fabrics sourced from South African and European suppliers.\n\nI have been designing and producing collections since 2011, with stockists in Cape Town and Johannesburg.",
+    "aboutMission": "We believe fashion should make the wearer feel more like themselves — not a version of someone else’s idea.",
+    "stats": [
+      {
+        "value": "13+",
+        "label": "Years Designing",
+        "sublabel": "since 2011"
+      },
+      {
+        "value": "8",
+        "label": "Seasons Produced",
+        "sublabel": "ready-to-wear collections"
+      },
+      {
+        "value": "3",
+        "label": "SA Fashion Week Shows",
+        "sublabel": "main runway"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 200+ reviews"
+      }
+    ],
+    "contactHeading": "Want a bespoke fitting or consultation?",
+    "contactHours": "Mon–Fri: 10:00–17:00 · Sat: 10:00–14:00 · Fittings by appointment only",
+    "projectCaptions": [
+      "Bespoke wedding ensemble, Cape Town",
+      "SS25 ready-to-wear, campaign shoot",
+      "Custom occasion dress, Woodstock studio",
+      "Capsule collection, Cape Town stockist"
+    ],
+    "testimonial": {
+      "quote": "The wedding dress was absolutely perfect. She understood exactly what I wanted and exceeded it.",
+      "author": "Bianca P., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "considered, minimal, editorial",
+    "heroImageQuery": "fashion designer Cape Town studio ready to wear editorial",
+    "ogImageQuery": "fashion designer Cape Town bespoke ready-to-wear collection",
+    "aboutImageQuery": "fashion designer studio Cape Town sewing garment professional",
+    "galleryImageQueries": [
+      "fashion designer Cape Town editorial shoot",
+      "bespoke garment fitting studio professional",
+      "ready to wear fashion collection Cape Town",
+      "fashion designer studio garment construction Cape Town"
+    ]
   },
   "Animator / Motion Design": {
-      "heroEyebrow": "ANIMATION & MOTION DESIGN CAPE TOWN",
-      "heroAccent": "2D, 3D & motion graphics",
-      "tagline": "Ideas that <em>move</em> people",
-      "heroSubtitle": "Professional animation and motion design for brands, broadcasters, and agencies \u2014 from explainer videos to broadcast graphics.",
-      "ctaPrimary": "Start a Project",
-      "ctaSecondary": "Watch Showreel",
-      "ctaNote": "Script & storyboard included \u00b7 Broadcast-ready delivery \u00b7 Revision rounds built in",
-      "badge": "BASA Arts & Media Associate Member",
-      "servicesHeading": "What We Animate",
-      "services": [
-          {
-              "name": "Explainer & Brand Animation",
-              "description": "2D animated explainer videos and brand films that make complex ideas simple and engaging.",
-              "tags": [
-                  "Explainer",
-                  "2D Animation"
-              ],
-              "icon": "play",
-              "serviceImageQuery": "2D animation explainer video professional Cape Town"
-          },
-          {
-              "name": "Motion Graphics & Titles",
-              "description": "Logo animations, broadcast graphics, title sequences, and social motion content for any platform.",
-              "tags": [
-                  "Motion Graphics",
-                  "Logo Animation"
-              ],
-              "icon": "film",
-              "serviceImageQuery": "motion graphics broadcast title animation professional"
-          },
-          {
-              "name": "3D Animation & Visualisation",
-              "description": "Product visualisation, architectural walkthroughs, and 3D character animation.",
-              "tags": [
-                  "3D Animation",
-                  "Product Vis"
-              ],
-              "icon": "box",
-              "serviceImageQuery": "3D animation product visualisation architectural professional"
-          }
-      ],
-      "galleryHeading": "Things We've Set in Motion",
-      "aboutHeading": "Motion design with <em>meaning</em>",
-      "aboutText": "We've been creating animation and motion design for South African and international clients since 2010. Every project starts with a strong script and storyboard \u2014 because animation without a clear story is just expensive moving shapes.\n\nWe deliver broadcast-quality output in any format or platform specification required.",
-      "aboutMission": "We believe motion is the most efficient way to explain, entertain, and persuade \u2014 when it's backed by a clear idea.",
-      "stats": [
-          {
-              "value": "14+",
-              "label": "Years Animating",
-              "sublabel": "since 2010"
-          },
-          {
-              "value": "400+",
-              "label": "Projects Delivered",
-              "sublabel": "explainer to broadcast"
-          },
-          {
-              "value": "6",
-              "label": "Broadcast Clients",
-              "sublabel": "SABC, M-Net & beyond"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 150+ reviews"
-          }
-      ],
-      "contactHeading": "Have an animation brief?",
-      "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Remote projects welcome \u00b7 Quotes within 24hrs",
-      "projectCaptions": [
-          "Explainer video, fintech startup",
-          "Broadcast opener, M-Net campaign",
-          "3D product vis, tech brand",
-          "Social motion pack, lifestyle brand"
-      ],
-      "testimonial": {
-          "quote": "The explainer video increased our product trial sign-ups by 40% in the first month.",
-          "author": "Sam K., Cape Town",
-          "rating": 5
+    "heroEyebrow": "ANIMATION & MOTION DESIGN CAPE TOWN",
+    "heroAccent": "2D, 3D & motion graphics",
+    "tagline": "Ideas that <em>move</em> people",
+    "heroSubtitle": "Professional animation and motion design for brands, broadcasters, and agencies — from explainer videos to broadcast graphics.",
+    "ctaPrimary": "Start a Project",
+    "ctaSecondary": "Watch Showreel",
+    "ctaNote": "Script & storyboard included · Broadcast-ready delivery · Revision rounds built in",
+    "badge": "BASA Arts & Media Associate Member",
+    "servicesHeading": "What We Animate",
+    "services": [
+      {
+        "name": "Explainer & Brand Animation",
+        "description": "2D animated explainer videos and brand films that make complex ideas simple and engaging.",
+        "tags": [
+          "Explainer",
+          "2D Animation"
+        ],
+        "icon": "play",
+        "serviceImageQuery": "2D animation explainer video professional Cape Town"
       },
-      "imageMood": "bold, vibrant, creative",
-      "heroImageQuery": "animation motion design studio professional Cape Town",
-      "ogImageQuery": "motion design animation professional Cape Town studio",
-      "aboutImageQuery": "animator motion designer professional studio Cape Town",
-      "galleryImageQueries": [
-          "2D animation explainer video production Cape Town",
-          "motion graphics broadcast title sequence professional",
-          "3D animation product visualisation professional",
-          "motion design social content brand Cape Town"
-      ]
+      {
+        "name": "Motion Graphics & Titles",
+        "description": "Logo animations, broadcast graphics, title sequences, and social motion content for any platform.",
+        "tags": [
+          "Motion Graphics",
+          "Logo Animation"
+        ],
+        "icon": "film",
+        "serviceImageQuery": "motion graphics broadcast title animation professional"
+      },
+      {
+        "name": "3D Animation & Visualisation",
+        "description": "Product visualisation, architectural walkthroughs, and 3D character animation.",
+        "tags": [
+          "3D Animation",
+          "Product Vis"
+        ],
+        "icon": "box",
+        "serviceImageQuery": "3D animation product visualisation architectural professional"
+      }
+    ],
+    "galleryHeading": "Things We’ve Set in Motion",
+    "aboutHeading": "Motion design with <em>meaning</em>",
+    "aboutText": "We’ve been creating animation and motion design for South African and international clients since 2010. Every project starts with a strong script and storyboard — because animation without a clear story is just expensive moving shapes.\n\nWe deliver broadcast-quality output in any format or platform specification required.",
+    "aboutMission": "We believe motion is the most efficient way to explain, entertain, and persuade — when it’s backed by a clear idea.",
+    "stats": [
+      {
+        "value": "14+",
+        "label": "Years Animating",
+        "sublabel": "since 2010"
+      },
+      {
+        "value": "400+",
+        "label": "Projects Delivered",
+        "sublabel": "explainer to broadcast"
+      },
+      {
+        "value": "6",
+        "label": "Broadcast Clients",
+        "sublabel": "SABC, M-Net & beyond"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 150+ reviews"
+      }
+    ],
+    "contactHeading": "Have an animation brief?",
+    "contactHours": "Mon–Fri: 09:00–17:30 · Remote projects welcome · Quotes within 24hrs",
+    "projectCaptions": [
+      "Explainer video, fintech startup",
+      "Broadcast opener, M-Net campaign",
+      "3D product vis, tech brand",
+      "Social motion pack, lifestyle brand"
+    ],
+    "testimonial": {
+      "quote": "The explainer video increased our product trial sign-ups by 40% in the first month.",
+      "author": "Sam K., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "bold, vibrant, creative",
+    "heroImageQuery": "animation motion design studio professional Cape Town",
+    "ogImageQuery": "motion design animation professional Cape Town studio",
+    "aboutImageQuery": "animator motion designer professional studio Cape Town",
+    "galleryImageQueries": [
+      "2D animation explainer video production Cape Town",
+      "motion graphics broadcast title sequence professional",
+      "3D animation product visualisation professional",
+      "motion design social content brand Cape Town"
+    ]
   },
   "Tattoo / Piercing Studio": {
-      "heroEyebrow": "TATTOO STUDIO CAPE TOWN",
-      "heroAccent": "Custom tattoos & professional piercing",
-      "tagline": "Art made permanent, made <em>right</em>",
-      "heroSubtitle": "Custom tattoo design and professional piercing in a sterile, welcoming studio by experienced artists in Cape Town.",
-      "ctaPrimary": "Book a Consultation",
-      "ctaSecondary": "Artist Portfolios",
-      "ctaNote": "Free design consultation \u00b7 BLOODBORNE pathogens certified \u00b7 Vegan inks available",
-      "badge": "SA Tattoo Artists Association Member",
-      "servicesHeading": "What We Do",
-      "services": [
-          {
-              "name": "Custom Tattoo Design",
-              "description": "Bespoke tattoo design and application across all styles \u2014 fine line, black and grey, realism, and traditional.",
-              "tags": [
-                  "Custom Design",
-                  "Fine Line"
-              ],
-              "icon": "edit-3",
-              "serviceImageQuery": "custom tattoo design studio Cape Town professional artist"
-          },
-          {
-              "name": "Cover-Up & Rework",
-              "description": "Expert cover-up design and rework of existing tattoos \u2014 transforming what you have into what you want.",
-              "tags": [
-                  "Cover-Up",
-                  "Rework"
-              ],
-              "icon": "refresh-cw",
-              "serviceImageQuery": "tattoo cover up rework professional artist studio"
-          },
-          {
-              "name": "Professional Piercing",
-              "description": "Ear, nose, body, and cartilage piercings using implant-grade titanium jewellery and sterile technique.",
-              "tags": [
-                  "Piercing",
-                  "Titanium Jewellery"
-              ],
-              "icon": "circle",
-              "serviceImageQuery": "professional piercing studio Cape Town titanium jewellery"
-          }
-      ],
-      "galleryHeading": "Fresh Ink",
-      "aboutHeading": "Tattoos that stand the <em>test</em> of time",
-      "aboutText": "A tattoo is permanent. The artist you choose matters enormously. Our studio in Cape Town has been producing custom tattoo work since 2012 \u2014 we consult before we book, design before we draw, and only proceed when both artist and client are confident.\n\nAll artists are bloodborne pathogen certified. All equipment is single-use. No shortcuts.",
-      "aboutMission": "We believe tattoo art deserves the same care and technical skill as any other fine art \u2014 because it lasts forever.",
-      "stats": [
-          {
-              "value": "12+",
-              "label": "Years in Studio",
-              "sublabel": "since 2012"
-          },
-          {
-              "value": "4",
-              "label": "Resident Artists",
-              "sublabel": "each with specialist style"
-          },
-          {
-              "value": "5,000+",
-              "label": "Tattoos Completed",
-              "sublabel": "Cape Town & walk-ins"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 500+ reviews"
-          }
-      ],
-      "contactHeading": "Ready to book a consultation?",
-      "contactHours": "Tue\u2013Sat: 10:00\u201318:00 \u00b7 Sun: 11:00\u201316:00 \u00b7 Closed Mondays",
-      "projectCaptions": [
-          "Fine line botanical, inner arm",
-          "Black & grey portrait, sleeve",
-          "Geometric cover-up, shoulder",
-          "Minimalist script, collarbone"
-      ],
-      "testimonial": {
-          "quote": "The consultation made me feel completely confident. The result is everything I hoped for.",
-          "author": "Ruby H., Cape Town",
-          "rating": 5
+    "heroEyebrow": "TATTOO STUDIO CAPE TOWN",
+    "heroAccent": "Custom tattoos & professional piercing",
+    "tagline": "Art made permanent, made <em>right</em>",
+    "heroSubtitle": "Custom tattoo design and professional piercing in a sterile, welcoming studio by experienced artists in Cape Town.",
+    "ctaPrimary": "Book a Consultation",
+    "ctaSecondary": "Artist Portfolios",
+    "ctaNote": "Free design consultation · BLOODBORNE pathogens certified · Vegan inks available",
+    "badge": "SA Tattoo Artists Association Member",
+    "servicesHeading": "What We Do",
+    "services": [
+      {
+        "name": "Custom Tattoo Design",
+        "description": "Bespoke tattoo design and application across all styles — fine line, black and grey, realism, and traditional.",
+        "tags": [
+          "Custom Design",
+          "Fine Line"
+        ],
+        "icon": "edit-3",
+        "serviceImageQuery": "custom tattoo design studio Cape Town professional artist"
       },
-      "imageMood": "dark, artistic, precise",
-      "heroImageQuery": "tattoo studio Cape Town professional artist custom fine line",
-      "ogImageQuery": "tattoo studio professional artist Cape Town custom",
-      "aboutImageQuery": "tattoo artist professional studio Cape Town working",
-      "galleryImageQueries": [
-          "custom tattoo fine line professional Cape Town",
-          "black grey realism tattoo professional studio",
-          "tattoo cover up professional artist Cape Town",
-          "professional piercing studio Cape Town titanium"
-      ]
+      {
+        "name": "Cover-Up & Rework",
+        "description": "Expert cover-up design and rework of existing tattoos — transforming what you have into what you want.",
+        "tags": [
+          "Cover-Up",
+          "Rework"
+        ],
+        "icon": "refresh-cw",
+        "serviceImageQuery": "tattoo cover up rework professional artist studio"
+      },
+      {
+        "name": "Professional Piercing",
+        "description": "Ear, nose, body, and cartilage piercings using implant-grade titanium jewellery and sterile technique.",
+        "tags": [
+          "Piercing",
+          "Titanium Jewellery"
+        ],
+        "icon": "circle",
+        "serviceImageQuery": "professional piercing studio Cape Town titanium jewellery"
+      }
+    ],
+    "galleryHeading": "Fresh Ink",
+    "aboutHeading": "Tattoos that stand the <em>test</em> of time",
+    "aboutText": "A tattoo is permanent. The artist you choose matters enormously. Our studio in Cape Town has been producing custom tattoo work since 2012 — we consult before we book, design before we draw, and only proceed when both artist and client are confident.\n\nAll artists are bloodborne pathogen certified. All equipment is single-use. No shortcuts.",
+    "aboutMission": "We believe tattoo art deserves the same care and technical skill as any other fine art — because it lasts forever.",
+    "stats": [
+      {
+        "value": "12+",
+        "label": "Years in Studio",
+        "sublabel": "since 2012"
+      },
+      {
+        "value": "4",
+        "label": "Resident Artists",
+        "sublabel": "each with specialist style"
+      },
+      {
+        "value": "5,000+",
+        "label": "Tattoos Completed",
+        "sublabel": "Cape Town & walk-ins"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 500+ reviews"
+      }
+    ],
+    "contactHeading": "Ready to book a consultation?",
+    "contactHours": "Tue–Sat: 10:00–18:00 · Sun: 11:00–16:00 · Closed Mondays",
+    "projectCaptions": [
+      "Fine line botanical, inner arm",
+      "Black & grey portrait, sleeve",
+      "Geometric cover-up, shoulder",
+      "Minimalist script, collarbone"
+    ],
+    "testimonial": {
+      "quote": "The consultation made me feel completely confident. The result is everything I hoped for.",
+      "author": "Ruby H., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "dark, artistic, precise",
+    "heroImageQuery": "tattoo studio Cape Town professional artist custom fine line",
+    "ogImageQuery": "tattoo studio professional artist Cape Town custom",
+    "aboutImageQuery": "tattoo artist professional studio Cape Town working",
+    "galleryImageQueries": [
+      "custom tattoo fine line professional Cape Town",
+      "black grey realism tattoo professional studio",
+      "tattoo cover up professional artist Cape Town",
+      "professional piercing studio Cape Town titanium"
+    ]
   },
   "Art Gallery / Art Shop": {
-      "heroEyebrow": "ART GALLERY CAPE TOWN",
-      "heroAccent": "Original works, prints & commissions",
-      "tagline": "Art that changes how a space <em>feels</em>",
-      "heroSubtitle": "Curated contemporary art gallery representing South African and international artists \u2014 originals, limited prints, and commissions.",
-      "ctaPrimary": "Visit the Gallery",
-      "ctaSecondary": "Current Exhibition",
-      "ctaNote": "Free art advisory \u00b7 Framing service \u00b7 Corporate & private commissions",
-      "badge": "GAASA Gallery Association of South Africa",
-      "servicesHeading": "What We Offer",
-      "services": [
-          {
-              "name": "Original Artworks",
-              "description": "Curated collection of original paintings, sculptures, and mixed media by established and emerging SA artists.",
-              "tags": [
-                  "Original Art",
-                  "SA Artists"
-              ],
-              "icon": "star",
-              "serviceImageQuery": "art gallery original paintings Cape Town contemporary exhibition"
-          },
-          {
-              "name": "Prints & Editions",
-              "description": "Limited edition prints, gicl\u00e9e reproductions, and signed artist editions at accessible price points.",
-              "tags": [
-                  "Limited Editions",
-                  "Gicl\u00e9e"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "art gallery limited edition prints gicl\u00e9e Cape Town"
-          },
-          {
-              "name": "Art Advisory & Commissions",
-              "description": "Personal art advisory for collectors and interior designers, plus custom commission coordination.",
-              "tags": [
-                  "Art Advisory",
-                  "Commission"
-              ],
-              "icon": "briefcase",
-              "serviceImageQuery": "art gallery advisory commission consultation Cape Town"
-          }
-      ],
-      "galleryHeading": "Current Exhibition",
-      "aboutHeading": "Art selected with <em>conviction</em>",
-      "aboutText": "We've been running an independent contemporary art gallery in Cape Town since 2009. We represent 22 South African artists and host 6 exhibitions per year \u2014 each one a considered body of work, not a mixed collection.\n\nWe believe South African art deserves serious attention. Our job is to facilitate that meeting between artist and collector.",
-      "aboutMission": "We believe the right piece of art on a wall changes how the person who lives with it sees the world.",
-      "stats": [
-          {
-              "value": "15+",
-              "label": "Years Open",
-              "sublabel": "since 2009"
-          },
-          {
-              "value": "22",
-              "label": "Represented Artists",
-              "sublabel": "SA and international"
-          },
-          {
-              "value": "80+",
-              "label": "Exhibitions Curated",
-              "sublabel": "since opening"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 300+ reviews"
-          }
-      ],
-      "contactHeading": "Want to visit or discuss a work?",
-      "contactHours": "Tue\u2013Fri: 10:00\u201318:00 \u00b7 Sat: 10:00\u201316:00 \u00b7 Sun\u2013Mon: By appointment",
-      "projectCaptions": [
-          "Solo exhibition, Woodstock gallery",
-          "Commission, private residence Constantia",
-          "Corporate collection, Cape Town CBD",
-          "Limited edition print series"
-      ],
-      "testimonial": {
-          "quote": "The advisory service helped me buy three pieces I genuinely love. Priceless experience.",
-          "author": "Catherine D., Cape Town collector",
-          "rating": 5
+    "heroEyebrow": "ART GALLERY CAPE TOWN",
+    "heroAccent": "Original works, prints & commissions",
+    "tagline": "Art that changes how a space <em>feels</em>",
+    "heroSubtitle": "Curated contemporary art gallery representing South African and international artists — originals, limited prints, and commissions.",
+    "ctaPrimary": "Visit the Gallery",
+    "ctaSecondary": "Current Exhibition",
+    "ctaNote": "Free art advisory · Framing service · Corporate & private commissions",
+    "badge": "GAASA Gallery Association of South Africa",
+    "servicesHeading": "What We Offer",
+    "services": [
+      {
+        "name": "Original Artworks",
+        "description": "Curated collection of original paintings, sculptures, and mixed media by established and emerging SA artists.",
+        "tags": [
+          "Original Art",
+          "SA Artists"
+        ],
+        "icon": "star",
+        "serviceImageQuery": "art gallery original paintings Cape Town contemporary exhibition"
       },
-      "imageMood": "curated, minimal, artistic",
-      "heroImageQuery": "art gallery contemporary Cape Town exhibition paintings",
-      "ogImageQuery": "art gallery Cape Town contemporary South African art",
-      "aboutImageQuery": "art gallery interior Cape Town contemporary exhibition",
-      "galleryImageQueries": [
-          "contemporary art gallery Cape Town exhibition paintings",
-          "South African art gallery limited edition prints",
-          "art gallery commission advisory Cape Town collector",
-          "Cape Town gallery exhibition opening contemporary"
-      ]
+      {
+        "name": "Prints & Editions",
+        "description": "Limited edition prints, giclée reproductions, and signed artist editions at accessible price points.",
+        "tags": [
+          "Limited Editions",
+          "Giclée"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "art gallery limited edition prints giclée Cape Town"
+      },
+      {
+        "name": "Art Advisory & Commissions",
+        "description": "Personal art advisory for collectors and interior designers, plus custom commission coordination.",
+        "tags": [
+          "Art Advisory",
+          "Commission"
+        ],
+        "icon": "briefcase",
+        "serviceImageQuery": "art gallery advisory commission consultation Cape Town"
+      }
+    ],
+    "galleryHeading": "Current Exhibition",
+    "aboutHeading": "Art selected with <em>conviction</em>",
+    "aboutText": "We’ve been running an independent contemporary art gallery in Cape Town since 2009. We represent 22 South African artists and host 6 exhibitions per year — each one a considered body of work, not a mixed collection.\n\nWe believe South African art deserves serious attention. Our job is to facilitate that meeting between artist and collector.",
+    "aboutMission": "We believe the right piece of art on a wall changes how the person who lives with it sees the world.",
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Years Open",
+        "sublabel": "since 2009"
+      },
+      {
+        "value": "22",
+        "label": "Represented Artists",
+        "sublabel": "SA and international"
+      },
+      {
+        "value": "80+",
+        "label": "Exhibitions Curated",
+        "sublabel": "since opening"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 300+ reviews"
+      }
+    ],
+    "contactHeading": "Want to visit or discuss a work?",
+    "contactHours": "Tue–Fri: 10:00–18:00 · Sat: 10:00–16:00 · Sun–Mon: By appointment",
+    "projectCaptions": [
+      "Solo exhibition, Woodstock gallery",
+      "Commission, private residence Constantia",
+      "Corporate collection, Cape Town CBD",
+      "Limited edition print series"
+    ],
+    "testimonial": {
+      "quote": "The advisory service helped me buy three pieces I genuinely love. Priceless experience.",
+      "author": "Catherine D., Cape Town collector",
+      "rating": 5
+    },
+    "imageMood": "curated, minimal, artistic",
+    "heroImageQuery": "art gallery contemporary Cape Town exhibition paintings",
+    "ogImageQuery": "art gallery Cape Town contemporary South African art",
+    "aboutImageQuery": "art gallery interior Cape Town contemporary exhibition",
+    "galleryImageQueries": [
+      "contemporary art gallery Cape Town exhibition paintings",
+      "South African art gallery limited edition prints",
+      "art gallery commission advisory Cape Town collector",
+      "Cape Town gallery exhibition opening contemporary"
+    ]
   },
   "Real Estate Agent": {
-      "heroEyebrow": "ESTATE AGENT CAPE TOWN",
-      "heroAccent": "Sales, rentals & property investment",
-      "tagline": "The agent who puts your interests <em>first</em>",
-      "heroSubtitle": "Experienced property sales and rental agent specialising in Cape Town's residential market \u2014 from first-time buyers to investment portfolios.",
-      "ctaPrimary": "List Your Property",
-      "ctaSecondary": "View Listings",
-      "ctaNote": "Free property valuation \u00b7 No sole mandate required \u00b7 Market-leading marketing",
-      "badge": "PPRA Registered Property Practitioner",
-      "servicesHeading": "How We Help",
-      "services": [
-          {
-              "name": "Residential Sales",
-              "description": "Strategic pricing, professional photography, and targeted marketing to achieve maximum sale value.",
-              "tags": [
-                  "Sales",
-                  "Pricing Strategy"
-              ],
-              "icon": "home",
-              "serviceImageQuery": "real estate agent property sale Cape Town residential professional"
-          },
-          {
-              "name": "Rental Management",
-              "description": "Tenant sourcing, lease management, and ongoing property management for residential landlords.",
-              "tags": [
-                  "Rentals",
-                  "Property Management"
-              ],
-              "icon": "key",
-              "serviceImageQuery": "property rental management agent Cape Town residential"
-          },
-          {
-              "name": "Property Investment Advisory",
-              "description": "Investment property sourcing, yield analysis, and portfolio strategy for buy-to-let investors.",
-              "tags": [
-                  "Investment",
-                  "Yield Analysis"
-              ],
-              "icon": "trending-up",
-              "serviceImageQuery": "property investment advisory real estate Cape Town professional"
-          }
-      ],
-      "galleryHeading": "Recently Sold & Let",
-      "aboutHeading": "Property sold with <em>strategy</em>",
-      "aboutText": "I have been selling and letting property in Cape Town for 19 years. The market rewards agents who know the street, know the buyer pool, and know how to price \u2014 not those who simply list and wait.\n\nI am PPRA registered, hold a valid Fidelity Fund Certificate, and operate with complete transparency on commission structures.",
-      "aboutMission": "We believe selling your property should feel like you have an expert in your corner \u2014 not someone who disappears after the mandate.",
-      "stats": [
-          {
-              "value": "19+",
-              "label": "Years in Property",
-              "sublabel": "since 2005"
-          },
-          {
-              "value": "600+",
-              "label": "Properties Sold",
-              "sublabel": "Cape Town & surrounds"
-          },
-          {
-              "value": "97%",
-              "label": "List-to-Sale Rate",
-              "sublabel": "of mandated properties"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 400+ reviews"
-          }
-      ],
-      "contactHeading": "Want a free property valuation?",
-      "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 09:00\u201314:00 \u00b7 Viewings 7 days by appointment",
-      "projectCaptions": [
-          "Sold in 12 days, Constantia",
-          "Let above asking, Sea Point",
-          "Investment portfolio, Atlantic Seaboard",
-          "Off-market sale, Newlands"
-      ],
-      "testimonial": {
-          "quote": "Sold for R200k above asking in under 2 weeks. She knows exactly how to position a property.",
-          "author": "Michael & Jane D., Cape Town",
-          "rating": 5
+    "heroEyebrow": "ESTATE AGENT CAPE TOWN",
+    "heroAccent": "Sales, rentals & property investment",
+    "tagline": "The agent who puts your interests <em>first</em>",
+    "heroSubtitle": "Experienced property sales and rental agent specialising in Cape Town’s residential market — from first-time buyers to investment portfolios.",
+    "ctaPrimary": "List Your Property",
+    "ctaSecondary": "View Listings",
+    "ctaNote": "Free property valuation · No sole mandate required · Market-leading marketing",
+    "badge": "PPRA Registered Property Practitioner",
+    "servicesHeading": "How We Help",
+    "services": [
+      {
+        "name": "Residential Sales",
+        "description": "Strategic pricing, professional photography, and targeted marketing to achieve maximum sale value.",
+        "tags": [
+          "Sales",
+          "Pricing Strategy"
+        ],
+        "icon": "home",
+        "serviceImageQuery": "real estate agent property sale Cape Town residential professional"
       },
-      "imageMood": "premium, aspirational, professional",
-      "heroImageQuery": "real estate agent property Cape Town residential professional",
-      "ogImageQuery": "real estate agent Cape Town residential property professional",
-      "aboutImageQuery": "real estate agent professional Cape Town property",
-      "galleryImageQueries": [
-          "luxury residential property Cape Town Atlantic Seaboard",
-          "Cape Town property for sale Sea Point",
-          "investment property rental Cape Town professional",
-          "real estate agent sold property Cape Town"
-      ]
+      {
+        "name": "Rental Management",
+        "description": "Tenant sourcing, lease management, and ongoing property management for residential landlords.",
+        "tags": [
+          "Rentals",
+          "Property Management"
+        ],
+        "icon": "key",
+        "serviceImageQuery": "property rental management agent Cape Town residential"
+      },
+      {
+        "name": "Property Investment Advisory",
+        "description": "Investment property sourcing, yield analysis, and portfolio strategy for buy-to-let investors.",
+        "tags": [
+          "Investment",
+          "Yield Analysis"
+        ],
+        "icon": "trending-up",
+        "serviceImageQuery": "property investment advisory real estate Cape Town professional"
+      }
+    ],
+    "galleryHeading": "Recently Sold & Let",
+    "aboutHeading": "Property sold with <em>strategy</em>",
+    "aboutText": "I have been selling and letting property in Cape Town for 19 years. The market rewards agents who know the street, know the buyer pool, and know how to price — not those who simply list and wait.\n\nI am PPRA registered, hold a valid Fidelity Fund Certificate, and operate with complete transparency on commission structures.",
+    "aboutMission": "We believe selling your property should feel like you have an expert in your corner — not someone who disappears after the mandate.",
+    "stats": [
+      {
+        "value": "19+",
+        "label": "Years in Property",
+        "sublabel": "since 2005"
+      },
+      {
+        "value": "600+",
+        "label": "Properties Sold",
+        "sublabel": "Cape Town & surrounds"
+      },
+      {
+        "value": "97%",
+        "label": "List-to-Sale Rate",
+        "sublabel": "of mandated properties"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 400+ reviews"
+      }
+    ],
+    "contactHeading": "Want a free property valuation?",
+    "contactHours": "Mon–Fri: 08:00–18:00 · Sat: 09:00–14:00 · Viewings 7 days by appointment",
+    "projectCaptions": [
+      "Sold in 12 days, Constantia",
+      "Let above asking, Sea Point",
+      "Investment portfolio, Atlantic Seaboard",
+      "Off-market sale, Newlands"
+    ],
+    "testimonial": {
+      "quote": "Sold for R200k above asking in under 2 weeks. She knows exactly how to position a property.",
+      "author": "Michael & Jane D., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "premium, aspirational, professional",
+    "heroImageQuery": "real estate agent property Cape Town residential professional",
+    "ogImageQuery": "real estate agent Cape Town residential property professional",
+    "aboutImageQuery": "real estate agent professional Cape Town property",
+    "galleryImageQueries": [
+      "luxury residential property Cape Town Atlantic Seaboard",
+      "Cape Town property for sale Sea Point",
+      "investment property rental Cape Town professional",
+      "real estate agent sold property Cape Town"
+    ]
   },
   "Architect": {
-      "heroEyebrow": "REGISTERED ARCHITECT CAPE TOWN",
-      "heroAccent": "SACAP registered. Site-managed builds.",
-      "tagline": "Architecture shaped by place, climate, and <em>you</em>",
-      "heroSubtitle": "SACAP-registered architectural design for residential extensions, new builds, and commercial projects in the Western Cape.",
-      "ctaPrimary": "Book a Consultation",
-      "ctaSecondary": "Our Projects",
-      "ctaNote": "Free initial consultation \u00b7 Full council submission service \u00b7 Site management included",
-      "badge": "SACAP Registered Professional Architect",
-      "servicesHeading": "What We Design",
-      "services": [
-          {
-              "name": "Residential Architecture",
-              "description": "New homes, extensions, and alterations designed around your life, your site, and the Western Cape climate.",
-              "tags": [
-                  "New Homes",
-                  "Extensions"
-              ],
-              "icon": "home",
-              "serviceImageQuery": "architect residential home design Cape Town professional"
-          },
-          {
-              "name": "Council Submissions & Approvals",
-              "description": "Full planning permission submission, heritage assessment, and council approval management.",
-              "tags": [
-                  "Council Submission",
-                  "Planning"
-              ],
-              "icon": "file-text",
-              "serviceImageQuery": "architect council submission planning permission professional"
-          },
-          {
-              "name": "Commercial & Retail Design",
-              "description": "Commercial interiors, retail fit-outs, and office refurbishments with full architectural service.",
-              "tags": [
-                  "Commercial",
-                  "Retail Fit-Out"
-              ],
-              "icon": "briefcase",
-              "serviceImageQuery": "commercial architect office retail design Cape Town professional"
-          }
-      ],
-      "galleryHeading": "Projects We've Designed",
-      "aboutHeading": "Architecture built for <em>place</em>",
-      "aboutText": "Every building we design responds to its specific site \u2014 the orientation, the climate, the views, and the neighbourhood. Cape Town architecture should look like it belongs here, not like it was lifted from a property magazine.\n\nWe are SACAP registered, manage the full council submission process, and offer site management through construction.",
-      "aboutMission": "We believe great architecture improves the life of the person inside it and the quality of the street it faces.",
-      "stats": [
-          {
-              "value": "20+",
-              "label": "Years Practising",
-              "sublabel": "since 2004"
-          },
-          {
-              "value": "180+",
-              "label": "Projects Built",
-              "sublabel": "residential to commercial"
-          },
-          {
-              "value": "SACAP",
-              "label": "Registered Architect",
-              "sublabel": "professional council member"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 250+ reviews"
-          }
-      ],
-      "contactHeading": "Want to discuss your project?",
-      "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Site visits by appointment \u00b7 Initial consultation free",
-      "projectCaptions": [
-          "New residence, Llandudno hillside",
-          "Extension & pool, Constantia",
-          "Retail fit-out, Cape Town CBD",
-          "Heritage renovation, Bo-Kaap"
-      ],
-      "testimonial": {
-          "quote": "The house doesn't just look amazing \u2014 it actually works for how we live. Brilliant architect.",
-          "author": "Lara & Nico B., Cape Town",
-          "rating": 5
+    "heroEyebrow": "REGISTERED ARCHITECT CAPE TOWN",
+    "heroAccent": "SACAP registered. Site-managed builds.",
+    "tagline": "Architecture shaped by place, climate, and <em>you</em>",
+    "heroSubtitle": "SACAP-registered architectural design for residential extensions, new builds, and commercial projects in the Western Cape.",
+    "ctaPrimary": "Book a Consultation",
+    "ctaSecondary": "Our Projects",
+    "ctaNote": "Free initial consultation · Full council submission service · Site management included",
+    "badge": "SACAP Registered Professional Architect",
+    "servicesHeading": "What We Design",
+    "services": [
+      {
+        "name": "Residential Architecture",
+        "description": "New homes, extensions, and alterations designed around your life, your site, and the Western Cape climate.",
+        "tags": [
+          "New Homes",
+          "Extensions"
+        ],
+        "icon": "home",
+        "serviceImageQuery": "architect residential home design Cape Town professional"
       },
-      "imageMood": "architectural, clean, considered",
-      "heroImageQuery": "architect residential design Cape Town modern professional",
-      "ogImageQuery": "architect professional residential design Cape Town project",
-      "aboutImageQuery": "architect professional Cape Town reviewing plans site",
-      "galleryImageQueries": [
-          "residential architecture Cape Town modern home",
-          "architect extension renovation Cape Town professional",
-          "commercial architecture office Cape Town interior",
-          "heritage architecture Cape Town professional renovation"
-      ]
+      {
+        "name": "Council Submissions & Approvals",
+        "description": "Full planning permission submission, heritage assessment, and council approval management.",
+        "tags": [
+          "Council Submission",
+          "Planning"
+        ],
+        "icon": "file-text",
+        "serviceImageQuery": "architect council submission planning permission professional"
+      },
+      {
+        "name": "Commercial & Retail Design",
+        "description": "Commercial interiors, retail fit-outs, and office refurbishments with full architectural service.",
+        "tags": [
+          "Commercial",
+          "Retail Fit-Out"
+        ],
+        "icon": "briefcase",
+        "serviceImageQuery": "commercial architect office retail design Cape Town professional"
+      }
+    ],
+    "galleryHeading": "Projects We’ve Designed",
+    "aboutHeading": "Architecture built for <em>place</em>",
+    "aboutText": "Every building we design responds to its specific site — the orientation, the climate, the views, and the neighbourhood. Cape Town architecture should look like it belongs here, not like it was lifted from a property magazine.\n\nWe are SACAP registered, manage the full council submission process, and offer site management through construction.",
+    "aboutMission": "We believe great architecture improves the life of the person inside it and the quality of the street it faces.",
+    "stats": [
+      {
+        "value": "20+",
+        "label": "Years Practising",
+        "sublabel": "since 2004"
+      },
+      {
+        "value": "180+",
+        "label": "Projects Built",
+        "sublabel": "residential to commercial"
+      },
+      {
+        "value": "SACAP",
+        "label": "Registered Architect",
+        "sublabel": "professional council member"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 250+ reviews"
+      }
+    ],
+    "contactHeading": "Want to discuss your project?",
+    "contactHours": "Mon–Fri: 08:30–17:00 · Site visits by appointment · Initial consultation free",
+    "projectCaptions": [
+      "New residence, Llandudno hillside",
+      "Extension & pool, Constantia",
+      "Retail fit-out, Cape Town CBD",
+      "Heritage renovation, Bo-Kaap"
+    ],
+    "testimonial": {
+      "quote": "The house doesn’t just look amazing — it actually works for how we live. Brilliant architect.",
+      "author": "Lara & Nico B., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "architectural, clean, considered",
+    "heroImageQuery": "architect residential design Cape Town modern professional",
+    "ogImageQuery": "architect professional residential design Cape Town project",
+    "aboutImageQuery": "architect professional Cape Town reviewing plans site",
+    "galleryImageQueries": [
+      "residential architecture Cape Town modern home",
+      "architect extension renovation Cape Town professional",
+      "commercial architecture office Cape Town interior",
+      "heritage architecture Cape Town professional renovation"
+    ]
   },
   "Surveyor": {
-      "heroEyebrow": "LAND SURVEYOR CAPE TOWN",
-      "heroAccent": "PLATO registered. Rapid turnaround.",
-      "tagline": "Every boundary, measured <em>precisely</em>",
-      "heroSubtitle": "Professional land surveying, sectional title surveys, and building location certificates for property transactions and development.",
-      "ctaPrimary": "Get a Quote",
-      "ctaSecondary": "Our Services",
-      "ctaNote": "PLATO registered \u00b7 Deeds office approved \u00b7 5-day BLC turnaround",
-      "badge": "PLATO Registered Land Surveyor",
-      "servicesHeading": "What We Survey",
-      "services": [
-          {
-              "name": "Building Location Certificates",
-              "description": "Rapid BLC preparation for property transfer and mortgage bond registration \u2014 5-day standard turnaround.",
-              "tags": [
-                  "BLC",
-                  "Transfer"
-              ],
-              "icon": "map",
-              "serviceImageQuery": "land surveyor building location certificate professional Cape Town"
-          },
-          {
-              "name": "Sectional Title Surveys",
-              "description": "Sectional plan preparation, registration, and extension of sectional title schemes.",
-              "tags": [
-                  "Sectional Title",
-                  "Scheme"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "sectional title survey professional land surveyor Cape Town"
-          },
-          {
-              "name": "Subdivision & Consolidation",
-              "description": "Land subdivision, consolidation, and rezoning surveys for residential and commercial development.",
-              "tags": [
-                  "Subdivision",
-                  "Rezoning"
-              ],
-              "icon": "scissors",
-              "serviceImageQuery": "land subdivision survey professional development Cape Town"
-          }
-      ],
-      "galleryHeading": "Surveys Completed",
-      "aboutHeading": "Surveying done with <em>accuracy</em>",
-      "aboutText": "A surveying error can delay a property transfer, block a development approval, or create expensive disputes between neighbours. We have been producing accurate, Deeds Office-approved surveys in the Western Cape since 2007.\n\nOur PLATO registration is current. Our turnaround times are among the fastest in Cape Town.",
-      "aboutMission": "We believe accurate land surveying is the foundation of every secure property transaction and confident development.",
-      "stats": [
-          {
-              "value": "17+",
-              "label": "Years Surveying",
-              "sublabel": "since 2007"
-          },
-          {
-              "value": "3,000+",
-              "label": "Surveys Completed",
-              "sublabel": "BLC, sectional & subdivision"
-          },
-          {
-              "value": "5",
-              "label": "Day BLC Turnaround",
-              "sublabel": "standard service"
-          },
-          {
-              "value": "4.8\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 200+ reviews"
-          }
-      ],
-      "contactHeading": "Need a survey quoted?",
-      "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Site surveys by appointment \u00b7 Urgent BLC requests by phone",
-      "projectCaptions": [
-          "BLC, Sea Point apartment transfer",
-          "Sectional plan, Newlands development",
-          "Subdivision survey, Hout Bay",
-          "Farm consolidation, Western Cape"
-      ],
-      "testimonial": {
-          "quote": "BLC delivered in 4 days when the transfer was under pressure. Saved our deal.",
-          "author": "Christo V., Cape Town",
-          "rating": 5
+    "heroEyebrow": "LAND SURVEYOR CAPE TOWN",
+    "heroAccent": "PLATO registered. Rapid turnaround.",
+    "tagline": "Every boundary, measured <em>precisely</em>",
+    "heroSubtitle": "Professional land surveying, sectional title surveys, and building location certificates for property transactions and development.",
+    "ctaPrimary": "Get a Quote",
+    "ctaSecondary": "Our Services",
+    "ctaNote": "PLATO registered · Deeds office approved · 5-day BLC turnaround",
+    "badge": "PLATO Registered Land Surveyor",
+    "servicesHeading": "What We Survey",
+    "services": [
+      {
+        "name": "Building Location Certificates",
+        "description": "Rapid BLC preparation for property transfer and mortgage bond registration — 5-day standard turnaround.",
+        "tags": [
+          "BLC",
+          "Transfer"
+        ],
+        "icon": "map",
+        "serviceImageQuery": "land surveyor building location certificate professional Cape Town"
       },
-      "imageMood": "precise, professional, technical",
-      "heroImageQuery": "land surveyor professional Cape Town measurement equipment",
-      "ogImageQuery": "land surveyor professional Cape Town survey measurement",
-      "aboutImageQuery": "land surveyor professional equipment measuring Cape Town",
-      "galleryImageQueries": [
-          "land surveyor professional equipment Cape Town site",
-          "building location certificate survey property",
-          "sectional title survey professional development",
-          "land subdivision survey Cape Town professional"
-      ]
+      {
+        "name": "Sectional Title Surveys",
+        "description": "Sectional plan preparation, registration, and extension of sectional title schemes.",
+        "tags": [
+          "Sectional Title",
+          "Scheme"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "sectional title survey professional land surveyor Cape Town"
+      },
+      {
+        "name": "Subdivision & Consolidation",
+        "description": "Land subdivision, consolidation, and rezoning surveys for residential and commercial development.",
+        "tags": [
+          "Subdivision",
+          "Rezoning"
+        ],
+        "icon": "scissors",
+        "serviceImageQuery": "land subdivision survey professional development Cape Town"
+      }
+    ],
+    "galleryHeading": "Surveys Completed",
+    "aboutHeading": "Surveying done with <em>accuracy</em>",
+    "aboutText": "A surveying error can delay a property transfer, block a development approval, or create expensive disputes between neighbours. We have been producing accurate, Deeds Office-approved surveys in the Western Cape since 2007.\n\nOur PLATO registration is current. Our turnaround times are among the fastest in Cape Town.",
+    "aboutMission": "We believe accurate land surveying is the foundation of every secure property transaction and confident development.",
+    "stats": [
+      {
+        "value": "17+",
+        "label": "Years Surveying",
+        "sublabel": "since 2007"
+      },
+      {
+        "value": "3,000+",
+        "label": "Surveys Completed",
+        "sublabel": "BLC, sectional & subdivision"
+      },
+      {
+        "value": "5",
+        "label": "Day BLC Turnaround",
+        "sublabel": "standard service"
+      },
+      {
+        "value": "4.8★",
+        "label": "Google Rating",
+        "sublabel": "from 200+ reviews"
+      }
+    ],
+    "contactHeading": "Need a survey quoted?",
+    "contactHours": "Mon–Fri: 08:00–17:00 · Site surveys by appointment · Urgent BLC requests by phone",
+    "projectCaptions": [
+      "BLC, Sea Point apartment transfer",
+      "Sectional plan, Newlands development",
+      "Subdivision survey, Hout Bay",
+      "Farm consolidation, Western Cape"
+    ],
+    "testimonial": {
+      "quote": "BLC delivered in 4 days when the transfer was under pressure. Saved our deal.",
+      "author": "Christo V., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "precise, professional, technical",
+    "heroImageQuery": "land surveyor professional Cape Town measurement equipment",
+    "ogImageQuery": "land surveyor professional Cape Town survey measurement",
+    "aboutImageQuery": "land surveyor professional equipment measuring Cape Town",
+    "galleryImageQueries": [
+      "land surveyor professional equipment Cape Town site",
+      "building location certificate survey property",
+      "sectional title survey professional development",
+      "land subdivision survey Cape Town professional"
+    ]
   },
   "Property Management": {
-      "heroEyebrow": "PROPERTY MANAGEMENT CAPE TOWN",
-      "heroAccent": "Residential & commercial portfolios",
-      "tagline": "Your investment, managed as if it were <em>ours</em>",
-      "heroSubtitle": "Professional property management for residential and commercial landlords \u2014 tenant placement, maintenance, and financial reporting.",
-      "ctaPrimary": "Get a Management Quote",
-      "ctaSecondary": "What's Included",
-      "ctaNote": "No placement fee for new mandates \u00b7 Monthly financial statements \u00b7 24hr maintenance line",
-      "badge": "PPRA Registered Property Manager",
-      "servicesHeading": "What We Manage",
-      "services": [
-          {
-              "name": "Tenant Sourcing & Placement",
-              "description": "Thorough tenant vetting, credit checks, lease drafting, and deposit management on your behalf.",
-              "tags": [
-                  "Tenant Vetting",
-                  "Lease Management"
-              ],
-              "icon": "user-check",
-              "serviceImageQuery": "property management tenant screening professional Cape Town"
-          },
-          {
-              "name": "Maintenance Coordination",
-              "description": "24-hour maintenance line, trusted contractor network, and monthly maintenance reporting.",
-              "tags": [
-                  "Maintenance",
-                  "24hr Line"
-              ],
-              "icon": "tool",
-              "serviceImageQuery": "property management maintenance coordination professional"
-          },
-          {
-              "name": "Financial Reporting",
-              "description": "Monthly owner statements, rental collection, and annual income summaries for tax purposes.",
-              "tags": [
-                  "Financial Statements",
-                  "Rental Collection"
-              ],
-              "icon": "file-text",
-              "serviceImageQuery": "property management financial reporting statements professional"
-          }
-      ],
-      "galleryHeading": "Properties We Manage",
-      "aboutHeading": "Property managed with <em>diligence</em>",
-      "aboutText": "We manage 280 residential units and 40 commercial properties in Cape Town. Every landlord receives monthly statements, prompt maintenance responses, and an agent who answers the phone.\n\nWe are PPRA registered, hold a valid Fidelity Fund Certificate, and place tenant deposits in a regulated trust account.",
-      "aboutMission": "We believe a well-managed property preserves its value, retains quality tenants, and gives its owner genuine peace of mind.",
-      "stats": [
-          {
-              "value": "15+",
-              "label": "Years Managing",
-              "sublabel": "since 2009"
-          },
-          {
-              "value": "280+",
-              "label": "Units Managed",
-              "sublabel": "residential & commercial"
-          },
-          {
-              "value": "97%",
-              "label": "Rental Collection Rate",
-              "sublabel": "month-on-month"
-          },
-          {
-              "value": "4.8\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 300+ reviews"
-          }
-      ],
-      "contactHeading": "Want your property professionally managed?",
-      "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Sat: 09:00\u201312:00 \u00b7 Maintenance line 24hrs",
-      "projectCaptions": [
-          "6-unit apartment block, Sea Point",
-          "Commercial strip, Cape Town CBD",
-          "Residential portfolio, Southern Suburbs",
-          "Holiday let, Atlantic Seaboard"
-      ],
-      "testimonial": {
-          "quote": "Best decision I made with my investment property. Zero landlord stress for 4 years.",
-          "author": "Johan M., Cape Town landlord",
-          "rating": 5
+    "heroEyebrow": "PROPERTY MANAGEMENT CAPE TOWN",
+    "heroAccent": "Residential & commercial portfolios",
+    "tagline": "Your investment, managed as if it were <em>ours</em>",
+    "heroSubtitle": "Professional property management for residential and commercial landlords — tenant placement, maintenance, and financial reporting.",
+    "ctaPrimary": "Get a Management Quote",
+    "ctaSecondary": "What’s Included",
+    "ctaNote": "No placement fee for new mandates · Monthly financial statements · 24hr maintenance line",
+    "badge": "PPRA Registered Property Manager",
+    "servicesHeading": "What We Manage",
+    "services": [
+      {
+        "name": "Tenant Sourcing & Placement",
+        "description": "Thorough tenant vetting, credit checks, lease drafting, and deposit management on your behalf.",
+        "tags": [
+          "Tenant Vetting",
+          "Lease Management"
+        ],
+        "icon": "user-check",
+        "serviceImageQuery": "property management tenant screening professional Cape Town"
       },
-      "imageMood": "professional, reliable, residential",
-      "heroImageQuery": "property management professional residential Cape Town portfolio",
-      "ogImageQuery": "property management professional Cape Town residential landlord",
-      "aboutImageQuery": "property manager professional Cape Town office team",
-      "galleryImageQueries": [
-          "residential property management Cape Town apartments",
-          "property management tenant placement professional",
-          "commercial property management Cape Town",
-          "property management financial reporting professional"
-      ]
+      {
+        "name": "Maintenance Coordination",
+        "description": "24-hour maintenance line, trusted contractor network, and monthly maintenance reporting.",
+        "tags": [
+          "Maintenance",
+          "24hr Line"
+        ],
+        "icon": "tool",
+        "serviceImageQuery": "property management maintenance coordination professional"
+      },
+      {
+        "name": "Financial Reporting",
+        "description": "Monthly owner statements, rental collection, and annual income summaries for tax purposes.",
+        "tags": [
+          "Financial Statements",
+          "Rental Collection"
+        ],
+        "icon": "file-text",
+        "serviceImageQuery": "property management financial reporting statements professional"
+      }
+    ],
+    "galleryHeading": "Properties We Manage",
+    "aboutHeading": "Property managed with <em>diligence</em>",
+    "aboutText": "We manage 280 residential units and 40 commercial properties in Cape Town. Every landlord receives monthly statements, prompt maintenance responses, and an agent who answers the phone.\n\nWe are PPRA registered, hold a valid Fidelity Fund Certificate, and place tenant deposits in a regulated trust account.",
+    "aboutMission": "We believe a well-managed property preserves its value, retains quality tenants, and gives its owner genuine peace of mind.",
+    "stats": [
+      {
+        "value": "15+",
+        "label": "Years Managing",
+        "sublabel": "since 2009"
+      },
+      {
+        "value": "280+",
+        "label": "Units Managed",
+        "sublabel": "residential & commercial"
+      },
+      {
+        "value": "97%",
+        "label": "Rental Collection Rate",
+        "sublabel": "month-on-month"
+      },
+      {
+        "value": "4.8★",
+        "label": "Google Rating",
+        "sublabel": "from 300+ reviews"
+      }
+    ],
+    "contactHeading": "Want your property professionally managed?",
+    "contactHours": "Mon–Fri: 08:30–17:00 · Sat: 09:00–12:00 · Maintenance line 24hrs",
+    "projectCaptions": [
+      "6-unit apartment block, Sea Point",
+      "Commercial strip, Cape Town CBD",
+      "Residential portfolio, Southern Suburbs",
+      "Holiday let, Atlantic Seaboard"
+    ],
+    "testimonial": {
+      "quote": "Best decision I made with my investment property. Zero landlord stress for 4 years.",
+      "author": "Johan M., Cape Town landlord",
+      "rating": 5
+    },
+    "imageMood": "professional, reliable, residential",
+    "heroImageQuery": "property management professional residential Cape Town portfolio",
+    "ogImageQuery": "property management professional Cape Town residential landlord",
+    "aboutImageQuery": "property manager professional Cape Town office team",
+    "galleryImageQueries": [
+      "residential property management Cape Town apartments",
+      "property management tenant placement professional",
+      "commercial property management Cape Town",
+      "property management financial reporting professional"
+    ]
   },
   "Home Staging": {
-      "heroEyebrow": "HOME STAGING CAPE TOWN",
-      "heroAccent": "Sell faster. Sell for more.",
-      "tagline": "The first impression that closes the <em>deal</em>",
-      "heroSubtitle": "Professional home staging for residential properties going to market \u2014 furniture, styling, and photography-ready presentation.",
-      "ctaPrimary": "Book a Staging Consult",
-      "ctaSecondary": "Before & After",
-      "ctaNote": "Proven to increase sale price \u00b7 Furniture hire included \u00b7 48hr turnaround",
-      "badge": "RESA Accredited Home Stager",
-      "servicesHeading": "What We Do",
-      "services": [
-          {
-              "name": "Full Home Staging",
-              "description": "Furniture sourcing, placement, and complete styling of the property for photography and viewings.",
-              "tags": [
-                  "Full Staging",
-                  "Furniture Hire"
-              ],
-              "icon": "home",
-              "serviceImageQuery": "home staging professional furniture residential Cape Town"
-          },
-          {
-              "name": "Occupied Home Styling",
-              "description": "Decluttering, furniture rearrangement, and styling of occupied homes for sale without full staging.",
-              "tags": [
-                  "Occupied Styling",
-                  "Declutter"
-              ],
-              "icon": "layers",
-              "serviceImageQuery": "home staging occupied property styling professional"
-          },
-          {
-              "name": "Staging Consultation",
-              "description": "Room-by-room advice and an action plan for owners who want to stage independently.",
-              "tags": [
-                  "Consultation",
-                  "DIY Guidance"
-              ],
-              "icon": "clipboard",
-              "serviceImageQuery": "home staging consultation professional Cape Town advice"
-          }
-      ],
-      "galleryHeading": "Staged to Sell",
-      "aboutHeading": "Staging that makes buyers <em>feel</em> it",
-      "aboutText": "Buyers make emotional decisions in the first 30 seconds of a viewing. We stage properties to create that moment \u2014 the feeling that they could live here, that this is already a home.\n\nStaged properties in Cape Town sell in 40% less time and for an average of 7% more than comparable unstaged properties.",
-      "aboutMission": "We believe every property deserves to be seen at its absolute best \u2014 because the difference in price can be tens of thousands of rand.",
-      "stats": [
-          {
-              "value": "11+",
-              "label": "Years Staging",
-              "sublabel": "since 2013"
-          },
-          {
-              "value": "450+",
-              "label": "Properties Staged",
-              "sublabel": "Cape Town market"
-          },
-          {
-              "value": "40%",
-              "label": "Faster Sale",
-              "sublabel": "vs unstaged comparable"
-          },
-          {
-              "value": "4.9\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 250+ reviews"
-          }
-      ],
-      "contactHeading": "Ready to stage your property?",
-      "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Sat: 09:00\u201313:00 \u00b7 Staging by appointment",
-      "projectCaptions": [
-          "Full staging, 3-bed Atlantic Seaboard",
-          "Occupied styling, Claremont",
-          "Before & after, Sea Point apartment",
-          "Vacant staging, Southern Suburbs"
-      ],
-      "testimonial": {
-          "quote": "Listed Monday after staging, accepted offer Wednesday. R180k above asking.",
-          "author": "Heather P., Cape Town",
-          "rating": 5
+    "heroEyebrow": "HOME STAGING CAPE TOWN",
+    "heroAccent": "Sell faster. Sell for more.",
+    "tagline": "The first impression that closes the <em>deal</em>",
+    "heroSubtitle": "Professional home staging for residential properties going to market — furniture, styling, and photography-ready presentation.",
+    "ctaPrimary": "Book a Staging Consult",
+    "ctaSecondary": "Before & After",
+    "ctaNote": "Proven to increase sale price · Furniture hire included · 48hr turnaround",
+    "badge": "RESA Accredited Home Stager",
+    "servicesHeading": "What We Do",
+    "services": [
+      {
+        "name": "Full Home Staging",
+        "description": "Furniture sourcing, placement, and complete styling of the property for photography and viewings.",
+        "tags": [
+          "Full Staging",
+          "Furniture Hire"
+        ],
+        "icon": "home",
+        "serviceImageQuery": "home staging professional furniture residential Cape Town"
       },
-      "imageMood": "warm, aspirational, residential",
-      "heroImageQuery": "home staging professional residential Cape Town beautiful interior",
-      "ogImageQuery": "home staging professional Cape Town before after residential",
-      "aboutImageQuery": "home stager professional Cape Town interior styling",
-      "galleryImageQueries": [
-          "home staging before after professional Cape Town",
-          "staged living room residential Cape Town beautiful",
-          "home staging furniture professional styling",
-          "vacant home staged Cape Town property sale"
-      ]
+      {
+        "name": "Occupied Home Styling",
+        "description": "Decluttering, furniture rearrangement, and styling of occupied homes for sale without full staging.",
+        "tags": [
+          "Occupied Styling",
+          "Declutter"
+        ],
+        "icon": "layers",
+        "serviceImageQuery": "home staging occupied property styling professional"
+      },
+      {
+        "name": "Staging Consultation",
+        "description": "Room-by-room advice and an action plan for owners who want to stage independently.",
+        "tags": [
+          "Consultation",
+          "DIY Guidance"
+        ],
+        "icon": "clipboard",
+        "serviceImageQuery": "home staging consultation professional Cape Town advice"
+      }
+    ],
+    "galleryHeading": "Staged to Sell",
+    "aboutHeading": "Staging that makes buyers <em>feel</em> it",
+    "aboutText": "Buyers make emotional decisions in the first 30 seconds of a viewing. We stage properties to create that moment — the feeling that they could live here, that this is already a home.\n\nStaged properties in Cape Town sell in 40% less time and for an average of 7% more than comparable unstaged properties.",
+    "aboutMission": "We believe every property deserves to be seen at its absolute best — because the difference in price can be tens of thousands of rand.",
+    "stats": [
+      {
+        "value": "11+",
+        "label": "Years Staging",
+        "sublabel": "since 2013"
+      },
+      {
+        "value": "450+",
+        "label": "Properties Staged",
+        "sublabel": "Cape Town market"
+      },
+      {
+        "value": "40%",
+        "label": "Faster Sale",
+        "sublabel": "vs unstaged comparable"
+      },
+      {
+        "value": "4.9★",
+        "label": "Google Rating",
+        "sublabel": "from 250+ reviews"
+      }
+    ],
+    "contactHeading": "Ready to stage your property?",
+    "contactHours": "Mon–Fri: 08:30–17:00 · Sat: 09:00–13:00 · Staging by appointment",
+    "projectCaptions": [
+      "Full staging, 3-bed Atlantic Seaboard",
+      "Occupied styling, Claremont",
+      "Before & after, Sea Point apartment",
+      "Vacant staging, Southern Suburbs"
+    ],
+    "testimonial": {
+      "quote": "Listed Monday after staging, accepted offer Wednesday. R180k above asking.",
+      "author": "Heather P., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "warm, aspirational, residential",
+    "heroImageQuery": "home staging professional residential Cape Town beautiful interior",
+    "ogImageQuery": "home staging professional Cape Town before after residential",
+    "aboutImageQuery": "home stager professional Cape Town interior styling",
+    "galleryImageQueries": [
+      "home staging before after professional Cape Town",
+      "staged living room residential Cape Town beautiful",
+      "home staging furniture professional styling",
+      "vacant home staged Cape Town property sale"
+    ]
   },
   "Town Planner": {
-      "heroEyebrow": "TOWN PLANNER CAPE TOWN",
-      "heroAccent": "SACPLAN registered. Full application service.",
-      "tagline": "Planning permission, handled with <em>expertise</em>",
-      "heroSubtitle": "SACPLAN-registered town planner for rezoning, land use applications, environmental authorisations, and heritage submissions.",
-      "ctaPrimary": "Book a Consultation",
-      "ctaSecondary": "What We Handle",
-      "ctaNote": "Free initial assessment \u00b7 Council liaison included \u00b7 Realistic timelines always",
-      "badge": "SACPLAN Registered Town Planner",
-      "servicesHeading": "What We Apply For",
-      "services": [
-          {
-              "name": "Rezoning Applications",
-              "description": "Full rezoning applications managed from motivation through public participation to council approval.",
-              "tags": [
-                  "Rezoning",
-                  "Land Use"
-              ],
-              "icon": "map",
-              "serviceImageQuery": "town planner rezoning application council Cape Town professional"
-          },
-          {
-              "name": "Departure & Consent Use",
-              "description": "Departure from zoning scheme, consent use applications, and land development approvals.",
-              "tags": [
-                  "Departure",
-                  "Consent Use"
-              ],
-              "icon": "file-text",
-              "serviceImageQuery": "town planner land use departure consent professional"
-          },
-          {
-              "name": "Environmental & Heritage",
-              "description": "Environmental authorisations, heritage impact assessments, and appeals for sensitive sites.",
-              "tags": [
-                  "Environmental",
-                  "Heritage"
-              ],
-              "icon": "shield",
-              "serviceImageQuery": "town planner environmental heritage assessment professional Cape Town"
-          }
-      ],
-      "galleryHeading": "Applications Approved",
-      "aboutHeading": "Planning done with <em>realism</em>",
-      "aboutText": "Planning applications fail because applicants don't understand what is and isn't achievable on a specific site, in a specific zone, in a specific municipality. We know the City of Cape Town's planning system inside out.\n\nWe are SACPLAN registered, we give honest assessments of application prospects, and we manage the full process.",
-      "aboutMission": "We believe property owners deserve a planning consultant who tells them the truth \u2014 and then fights hard for the best possible outcome.",
-      "stats": [
-          {
-              "value": "16+",
-              "label": "Years Planning",
-              "sublabel": "since 2008"
-          },
-          {
-              "value": "400+",
-              "label": "Applications Managed",
-              "sublabel": "rezoning to heritage"
-          },
-          {
-              "value": "88%",
-              "label": "Application Approval Rate",
-              "sublabel": "submitted applications"
-          },
-          {
-              "value": "4.8\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 180+ reviews"
-          }
-      ],
-      "contactHeading": "Want an honest planning assessment?",
-      "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Initial consultation by appointment \u00b7 Urgent matters by phone",
-      "projectCaptions": [
-          "Rezoning approved, Woodstock mixed-use",
-          "Heritage approval, Bo-Kaap property",
-          "Subdivision consent, Constantia",
-          "Environmental authorisation, West Coast"
-      ],
-      "testimonial": {
-          "quote": "Got approval for a rezoning three other planners said was impossible. She found a way.",
-          "author": "Alan R., Cape Town developer",
-          "rating": 5
+    "heroEyebrow": "TOWN PLANNER CAPE TOWN",
+    "heroAccent": "SACPLAN registered. Full application service.",
+    "tagline": "Planning permission, handled with <em>expertise</em>",
+    "heroSubtitle": "SACPLAN-registered town planner for rezoning, land use applications, environmental authorisations, and heritage submissions.",
+    "ctaPrimary": "Book a Consultation",
+    "ctaSecondary": "What We Handle",
+    "ctaNote": "Free initial assessment · Council liaison included · Realistic timelines always",
+    "badge": "SACPLAN Registered Town Planner",
+    "servicesHeading": "What We Apply For",
+    "services": [
+      {
+        "name": "Rezoning Applications",
+        "description": "Full rezoning applications managed from motivation through public participation to council approval.",
+        "tags": [
+          "Rezoning",
+          "Land Use"
+        ],
+        "icon": "map",
+        "serviceImageQuery": "town planner rezoning application council Cape Town professional"
       },
-      "imageMood": "professional, precise, authoritative",
-      "heroImageQuery": "town planner professional Cape Town council application",
-      "ogImageQuery": "town planner SACPLAN professional Cape Town planning",
-      "aboutImageQuery": "town planner professional reviewing plans maps Cape Town",
-      "galleryImageQueries": [
-          "town planning application council Cape Town professional",
-          "rezoning land use professional Cape Town",
-          "heritage assessment planning professional Cape Town",
-          "environmental authorisation planning Cape Town professional"
-      ]
+      {
+        "name": "Departure & Consent Use",
+        "description": "Departure from zoning scheme, consent use applications, and land development approvals.",
+        "tags": [
+          "Departure",
+          "Consent Use"
+        ],
+        "icon": "file-text",
+        "serviceImageQuery": "town planner land use departure consent professional"
+      },
+      {
+        "name": "Environmental & Heritage",
+        "description": "Environmental authorisations, heritage impact assessments, and appeals for sensitive sites.",
+        "tags": [
+          "Environmental",
+          "Heritage"
+        ],
+        "icon": "shield",
+        "serviceImageQuery": "town planner environmental heritage assessment professional Cape Town"
+      }
+    ],
+    "galleryHeading": "Applications Approved",
+    "aboutHeading": "Planning done with <em>realism</em>",
+    "aboutText": "Planning applications fail because applicants don’t understand what is and isn’t achievable on a specific site, in a specific zone, in a specific municipality. We know the City of Cape Town’s planning system inside out.\n\nWe are SACPLAN registered, we give honest assessments of application prospects, and we manage the full process.",
+    "aboutMission": "We believe property owners deserve a planning consultant who tells them the truth — and then fights hard for the best possible outcome.",
+    "stats": [
+      {
+        "value": "16+",
+        "label": "Years Planning",
+        "sublabel": "since 2008"
+      },
+      {
+        "value": "400+",
+        "label": "Applications Managed",
+        "sublabel": "rezoning to heritage"
+      },
+      {
+        "value": "88%",
+        "label": "Application Approval Rate",
+        "sublabel": "submitted applications"
+      },
+      {
+        "value": "4.8★",
+        "label": "Google Rating",
+        "sublabel": "from 180+ reviews"
+      }
+    ],
+    "contactHeading": "Want an honest planning assessment?",
+    "contactHours": "Mon–Fri: 08:30–17:00 · Initial consultation by appointment · Urgent matters by phone",
+    "projectCaptions": [
+      "Rezoning approved, Woodstock mixed-use",
+      "Heritage approval, Bo-Kaap property",
+      "Subdivision consent, Constantia",
+      "Environmental authorisation, West Coast"
+    ],
+    "testimonial": {
+      "quote": "Got approval for a rezoning three other planners said was impossible. She found a way.",
+      "author": "Alan R., Cape Town developer",
+      "rating": 5
+    },
+    "imageMood": "professional, precise, authoritative",
+    "heroImageQuery": "town planner professional Cape Town council application",
+    "ogImageQuery": "town planner SACPLAN professional Cape Town planning",
+    "aboutImageQuery": "town planner professional reviewing plans maps Cape Town",
+    "galleryImageQueries": [
+      "town planning application council Cape Town professional",
+      "rezoning land use professional Cape Town",
+      "heritage assessment planning professional Cape Town",
+      "environmental authorisation planning Cape Town professional"
+    ]
   },
   "Print Shop / Signage": {
-      "heroEyebrow": "PRINT SHOP & SIGNAGE CAPE TOWN",
-      "heroAccent": "Printing, signs, banners & vinyl branding",
-      "tagline": "Every surface a chance to make an <em>impression</em>",
-      "heroSubtitle": "Wide-format printing, custom signage, banners, and vinyl branding materials produced fast and finished to a professional standard.",
-      "ctaPrimary": "Get a Quote",
-      "ctaSecondary": "What We Print",
-      "ctaNote": "Same-day rush available \u00b7 Design service included \u00b7 Free delivery in CBD",
-      "badge": "FESPA Certified Wide-Format Print Studio",
-      "servicesHeading": "What We Produce",
-      "services": [
-          {
-              "name": "Signage & Banners",
-              "description": "Indoor and outdoor signage, pull-up banners, and large-format display prints for any venue or event.",
-              "tags": [
-                  "Outdoor Signs",
-                  "Banners"
-              ],
-              "icon": "monitor",
-              "serviceImageQuery": "custom signage banners large format print professional Cape Town"
-          },
-          {
-              "name": "Vinyl Branding & Wraps",
-              "description": "Cut vinyl lettering, window graphics, vehicle wraps, and wall murals applied by certified installers.",
-              "tags": [
-                  "Vinyl",
-                  "Vehicle Wraps"
-              ],
-              "icon": "truck",
-              "serviceImageQuery": "vinyl branding wrap vehicle window graphics professional Cape Town"
-          },
-          {
-              "name": "Branding Materials & Print",
-              "description": "Business cards, brochures, stickers, and branded packaging materials printed to premium specification.",
-              "tags": [
-                  "Branding Materials",
-                  "Stickers"
-              ],
-              "icon": "file-text",
-              "serviceImageQuery": "branding materials print business cards stickers professional"
-          }
-      ],
-      "galleryHeading": "Off the Press",
-      "aboutHeading": "Print made with <em>purpose</em>",
-      "aboutText": "We've been running presses and installing signage in Cape Town since 2008. Printing is easy. Printing things that actually look the way the client imagined \u2014 that takes skill, the right equipment, and people who care about colour accuracy and finish quality.\n\nWe use UV-stable inks, commercial-grade substrates, and experienced installers for every vinyl and signage job.",
-      "aboutMission": "We believe every printed surface is a brand statement \u2014 and sloppy print is a cost no business can afford.",
-      "stats": [
-          {
-              "value": "16+",
-              "label": "Years Printing",
-              "sublabel": "since 2008"
-          },
-          {
-              "value": "2,000+",
-              "label": "Projects Produced",
-              "sublabel": "print to installation"
-          },
-          {
-              "value": "48hr",
-              "label": "Standard Turnaround",
-              "sublabel": "same-day available"
-          },
-          {
-              "value": "4.8\u2605",
-              "label": "Google Rating",
-              "sublabel": "from 380+ reviews"
-          }
-      ],
-      "contactHeading": "Need a print or signage quote?",
-      "contactHours": "Mon\u2013Fri: 07:30\u201317:30 \u00b7 Sat: 08:00\u201313:00 \u00b7 Rush orders by prior arrangement",
-      "projectCaptions": [
-          "Retail fascia signage, Cape Town CBD",
-          "Vehicle wrap, 12-van fleet branding",
-          "Event banner wall, CTICC exhibition",
-          "Window vinyl, Woodstock studio fitout"
-      ],
-      "testimonial": {
-          "quote": "Fleet of 12 vans wrapped in 3 days. Every single one perfect. Incredibly professional team.",
-          "author": "Dean F., Cape Town",
-          "rating": 5
+    "heroEyebrow": "PRINT SHOP & SIGNAGE CAPE TOWN",
+    "heroAccent": "Printing, signs, banners & vinyl branding",
+    "tagline": "Every surface a chance to make an <em>impression</em>",
+    "heroSubtitle": "Wide-format printing, custom signage, banners, and vinyl branding materials produced fast and finished to a professional standard.",
+    "ctaPrimary": "Get a Quote",
+    "ctaSecondary": "What We Print",
+    "ctaNote": "Same-day rush available · Design service included · Free delivery in CBD",
+    "badge": "FESPA Certified Wide-Format Print Studio",
+    "servicesHeading": "What We Produce",
+    "services": [
+      {
+        "name": "Signage & Banners",
+        "description": "Indoor and outdoor signage, pull-up banners, and large-format display prints for any venue or event.",
+        "tags": [
+          "Outdoor Signs",
+          "Banners"
+        ],
+        "icon": "monitor",
+        "serviceImageQuery": "custom signage banners large format print professional Cape Town"
       },
-      "imageMood": "bold, vibrant, commercial",
-      "heroImageQuery": "print shop signage wide format Cape Town professional printing",
-      "ogImageQuery": "signage vinyl branding print professional Cape Town",
-      "aboutImageQuery": "print shop team professional wide format press Cape Town",
-      "galleryImageQueries": [
-          "custom signage retail fascia professional Cape Town",
-          "vehicle wrap vinyl branding fleet professional",
-          "event banner display large format print Cape Town",
-          "window vinyl graphics branding professional Cape Town"
-      ]
+      {
+        "name": "Vinyl Branding & Wraps",
+        "description": "Cut vinyl lettering, window graphics, vehicle wraps, and wall murals applied by certified installers.",
+        "tags": [
+          "Vinyl",
+          "Vehicle Wraps"
+        ],
+        "icon": "truck",
+        "serviceImageQuery": "vinyl branding wrap vehicle window graphics professional Cape Town"
+      },
+      {
+        "name": "Branding Materials & Print",
+        "description": "Business cards, brochures, stickers, and branded packaging materials printed to premium specification.",
+        "tags": [
+          "Branding Materials",
+          "Stickers"
+        ],
+        "icon": "file-text",
+        "serviceImageQuery": "branding materials print business cards stickers professional"
+      }
+    ],
+    "galleryHeading": "Off the Press",
+    "aboutHeading": "Print made with <em>purpose</em>",
+    "aboutText": "We’ve been running presses and installing signage in Cape Town since 2008. Printing is easy. Printing things that actually look the way the client imagined — that takes skill, the right equipment, and people who care about colour accuracy and finish quality.\n\nWe use UV-stable inks, commercial-grade substrates, and experienced installers for every vinyl and signage job.",
+    "aboutMission": "We believe every printed surface is a brand statement — and sloppy print is a cost no business can afford.",
+    "stats": [
+      {
+        "value": "16+",
+        "label": "Years Printing",
+        "sublabel": "since 2008"
+      },
+      {
+        "value": "2,000+",
+        "label": "Projects Produced",
+        "sublabel": "print to installation"
+      },
+      {
+        "value": "48hr",
+        "label": "Standard Turnaround",
+        "sublabel": "same-day available"
+      },
+      {
+        "value": "4.8★",
+        "label": "Google Rating",
+        "sublabel": "from 380+ reviews"
+      }
+    ],
+    "contactHeading": "Need a print or signage quote?",
+    "contactHours": "Mon–Fri: 07:30–17:30 · Sat: 08:00–13:00 · Rush orders by prior arrangement",
+    "projectCaptions": [
+      "Retail fascia signage, Cape Town CBD",
+      "Vehicle wrap, 12-van fleet branding",
+      "Event banner wall, CTICC exhibition",
+      "Window vinyl, Woodstock studio fitout"
+    ],
+    "testimonial": {
+      "quote": "Fleet of 12 vans wrapped in 3 days. Every single one perfect. Incredibly professional team.",
+      "author": "Dean F., Cape Town",
+      "rating": 5
+    },
+    "imageMood": "bold, vibrant, commercial",
+    "heroImageQuery": "print shop signage wide format Cape Town professional printing",
+    "ogImageQuery": "signage vinyl branding print professional Cape Town",
+    "aboutImageQuery": "print shop team professional wide format press Cape Town",
+    "galleryImageQueries": [
+      "custom signage retail fascia professional Cape Town",
+      "vehicle wrap vinyl branding fleet professional",
+      "event banner display large format print Cape Town",
+      "window vinyl graphics branding professional Cape Town"
+    ]
   },
 }

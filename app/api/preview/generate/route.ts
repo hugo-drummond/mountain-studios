@@ -503,7 +503,7 @@ function buildNav(businessName: string, content: GeneratedContent, navFlags: Ret
   return `
   <nav style="position:absolute;top:0;left:0;right:0;z-index:100;padding:0 2rem">
     <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.35rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.6rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
         ${navLinks.join('\n        ')}
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
@@ -521,7 +521,7 @@ function buildFooter(businessName: string, content: GeneratedContent, theme: The
   <footer style="padding:4rem 2rem 2rem;background:${theme === 'light' ? '#f0f0f0' : '#0a0a0a'};border-top:1px solid var(--border)">
     <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
       <div>
-        <div style="font-family:var(--heading-font);font-size:1.25rem;font-weight:700;color:var(--text);margin-bottom:0.75rem">${businessName}</div>
+        <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
       </div>
       <div>
@@ -563,7 +563,7 @@ function buildAboutSection(content: GeneratedContent): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
         <div>
           <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 2rem 0">${content.aboutHeading}</h2>
-          ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1rem;color:var(--primary);line-height:1.6;font-style:italic;margin:0 0 2rem 0">${content.aboutMission}</p>` : ''}
+          ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text);line-height:1.6;font-style:italic;font-weight:600;margin:0 0 2rem 0">${content.aboutMission}</p>` : ''}
           ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0">${p}</p>`).join('')}
         </div>
         <div>
@@ -619,7 +619,7 @@ function buildContactSection(content: GeneratedContent): string {
             </div>
             <div>
               <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${content.contactHours.replace(/ · /g, '<br />')}</p>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${content.contactHours?.replace(/ · /g, '<br />') ?? ''}</p>
             </div>
           </div>
           <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
@@ -674,22 +674,25 @@ function buildVisualTemplate(data: TemplateData): string {
   const servicesSection = `
     <section id="services" style="padding:100px 0;background:var(--bg-alt)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <p style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font)">${content.heroEyebrow}</p>
+        <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-          ${content.services.map((s, i) => `
-            <div style="border-radius:16px;overflow:hidden;background:var(--card-bg);border:1px solid var(--border)">
-              <div style="height:200px;overflow:hidden">
-                <img src="${serviceImgs[i] || serviceImgs[0]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
-              </div>
-              <div style="padding:1.5rem">
-                <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
-                <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.6;margin:0 0 1rem 0">${s.description}</p>
+        <div style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
+          <!-- Left: featured image -->
+          <div style="overflow:hidden;border-radius:16px;height:520px">
+            <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <!-- Right: stacked services list -->
+          <div>
+            ${content.services.map((s, i) => `
+              <div style="border-top:1px solid var(--border);padding:1.5rem 0${i === content.services.length - 1 ? ';border-bottom:1px solid var(--border)' : ''}">
+                <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:0.5rem">0${i + 1}</div>
+                <h3 style="font-family:var(--heading-font);font-size:1.4rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">${s.name}</h3>
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0 0 1rem 0">${s.description}</p>
                 <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
                   ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid var(--border)">${t}</span>`).join('')}
                 </div>
-              </div>
-            </div>`).join('')}
+              </div>`).join('')}
+          </div>
         </div>
       </div>
     </section>`
@@ -720,14 +723,14 @@ ${buildNav(businessName, content, navFlags)}
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.4) 50%,rgba(0,0,0,0.65) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.6) 50%,rgba(0,0,0,0.75) 100%)"></div>
     </div>
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem;width:100%">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:6rem 2rem 0;width:100%">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
       <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
       <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
       <div style="display:flex;gap:1rem;align-items:center">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
@@ -785,16 +788,20 @@ function buildServiceTemplate(data: TemplateData): string {
     ? 'border-radius:16px;background:var(--card-bg);box-shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);padding:2rem'
     : 'border-radius:16px;background:var(--card-bg);border:1px solid var(--border);padding:2rem'
 
+  const serviceCardStyle = theme === 'light'
+    ? 'border-radius:16px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);padding:2.5rem 2rem;transition:box-shadow 0.2s,transform 0.2s'
+    : 'border-radius:16px;background:var(--card-bg);border:1px solid var(--border);padding:2.5rem 2rem;transition:box-shadow 0.2s,transform 0.2s'
+
   const servicesSection = `
     <section id="services" style="padding:100px 0;background:var(--bg-alt)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <p style="font-size:0.8rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font)">${content.heroEyebrow}</p>
+        <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
           ${content.services.map((s, i) => `
-            <div style="${cardStyle}">
-              <div style="width:48px;height:48px;border-radius:12px;background:rgba(${pr},${pg},${pb},0.12);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-                <span style="font-size:1.25rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
+            <div style="${serviceCardStyle}">
+              <div style="width:64px;height:64px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+                <span style="font-size:1.6rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
               </div>
               <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
               <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
@@ -815,12 +822,31 @@ function buildServiceTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);text-align:center;margin-bottom:4rem;max-width:500px;margin-left:auto;margin-right:auto">A simple, straightforward process designed around you.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;text-align:center">
+        <!-- Icons -->
+        <div style="display:flex;justify-content:space-around;align-items:center;position:relative;margin-bottom:0">
           ${steps.map(s => `
-            <div>
-              <div style="width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;margin:0 auto 1.5rem">${s.step}</div>
-              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.title}</h3>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${s.description}</p>
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+              <div style="width:110px;height:110px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.06);border:2px solid rgba(${pr},${pg},${pb},0.12);display:flex;align-items:center;justify-content:center;position:relative;z-index:2">
+                <span style="font-family:var(--heading-font);font-size:2.25rem;font-weight:700;color:var(--primary)">${s.step}</span>
+              </div>
+            </div>`).join('')}
+        </div>
+        <!-- Connector line with dots -->
+        <div style="position:relative;height:28px;margin:0">
+          <div style="position:absolute;top:12px;left:calc(100% / 6);right:calc(100% / 6);height:3px;background:rgba(${pr},${pg},${pb},0.2);z-index:1"></div>
+          <div style="position:relative;display:flex;justify-content:space-around;z-index:2">
+            ${steps.map(() => `
+              <div style="flex:1;display:flex;justify-content:center">
+                <div style="width:14px;height:14px;border-radius:50%;background:var(--primary);margin-top:6px"></div>
+              </div>`).join('')}
+          </div>
+        </div>
+        <!-- Text -->
+        <div style="display:flex;justify-content:space-around;margin-top:1.5rem">
+          ${steps.map(s => `
+            <div style="flex:1;padding:0 2rem;text-align:center">
+              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:var(--text);margin:0 0 0.75rem 0">${s.title}</h3>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
             </div>`).join('')}
         </div>
       </div>
@@ -834,14 +860,14 @@ ${buildNav(businessName, content, navFlags)}
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
     ${theme === 'dark' ? '' : `<div style="position:absolute;inset:0">
       <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.55) 50%,rgba(0,0,0,0.75) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.65) 50%,rgba(0,0,0,0.8) 100%)"></div>
     </div>`}
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem;width:100%">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+    <div style="position:relative;max-width:1100px;margin:0 auto;padding:6rem 2rem 0;width:100%">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
       <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:#f5f5f0;line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
       <p style="font-family:var(--body-font);font-size:1.15rem;color:#a3a3a0;max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
       <div style="display:flex;gap:1rem;align-items:center;margin-bottom:${content.ctaNote ? '0.75rem' : '4rem'}">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
@@ -877,41 +903,94 @@ function buildPortfolioTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
-  const galleryImgs = [
+  const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
     images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+    stockImages.cards[6],
   ]
 
   const captions = content.projectCaptions || ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design']
 
   const servicesSection = `
+    <style>
+      .pf-acc-btn { cursor:pointer;width:100%;background:none;border:none;padding:0;text-align:left }
+      .pf-acc-body { overflow:hidden;max-height:0;transition:max-height 0.35s ease }
+      .pf-acc-body.pf-open { max-height:300px }
+      .pf-acc-icon { transition:transform 0.3s ease;font-size:1.5rem;color:var(--text-muted) }
+      .pf-acc-icon.pf-open { transform:rotate(45deg) }
+    </style>
     <section id="services" style="padding:100px 0;background:var(--bg-alt)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem;text-align:center">
-          ${content.services.map(s => `
-            <div style="padding:1rem">
-              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
-            </div>`).join('')}
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
+        <div style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
+          <!-- Left: service image -->
+          <div style="position:sticky;top:2rem">
+            <div style="overflow:hidden;height:560px">
+              ${serviceImgs.map((img, i) => `<img id="pf-svc-img-${i}" src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;display:${i === 0 ? 'block' : 'none'}" />`).join('')}
+            </div>
+          </div>
+          <!-- Right: accordion -->
+          <div>
+            ${content.services.map((s, i) => `
+              <div style="border-top:1px solid var(--border)${i === content.services.length - 1 ? ';border-bottom:1px solid var(--border)' : ''}">
+                <button class="pf-acc-btn" onclick="(function(){var items=document.querySelectorAll('.pf-acc-body');var icons=document.querySelectorAll('.pf-acc-icon');var imgs=document.querySelectorAll('[id^=pf-svc-img]');items.forEach(function(el,j){if(j===${i}){el.classList.toggle('pf-open');icons[j].classList.toggle('pf-open')}else{el.classList.remove('pf-open');icons[j].classList.remove('pf-open')}});imgs.forEach(function(el,j){el.style.display=j===${i}?'block':'none'})})()" style="display:flex;align-items:center;justify-content:space-between;padding:1.75rem 0;width:100%;background:none;border:none;cursor:pointer">
+                  <div>
+                    <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:0.5rem">0${i + 1}</div>
+                    <h3 style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:400;color:var(--text);margin:0;line-height:1.2">${s.name}</h3>
+                  </div>
+                  <span class="pf-acc-icon${i === 0 ? ' pf-open' : ''}">+</span>
+                </button>
+                <div class="pf-acc-body${i === 0 ? ' pf-open' : ''}" style="padding:0 0 1.5rem">
+                  <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0 0 1rem 0">${s.description}</p>
+                  <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                    ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid var(--border)">${t}</span>`).join('')}
+                  </div>
+                </div>
+              </div>`).join('')}
+          </div>
         </div>
       </div>
     </section>`
 
   const gallerySection = `
-    <section id="gallery" style="padding:100px 0;background:var(--bg)">
+    <style>
+      .pf-cell { position:relative;overflow:hidden }
+      .pf-cell img { width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease }
+      .pf-cell:hover img { transform:scale(1.03) }
+      .pf-cap { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s ease }
+      .pf-cell:hover .pf-cap { opacity:1 }
+      .pf-cap span { font-family:var(--body-font);font-size:0.95rem;color:#fff;font-weight:500;letter-spacing:0.03em }
+    </style>
+    <section id="gallery" style="padding:80px 0 0;background:var(--bg)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
-        <div style="columns:2;column-gap:1.5rem">
-          ${galleryImgs.map((img, i) => `
-            <div style="break-inside:avoid;margin-bottom:1.5rem;border-radius:16px;overflow:hidden;position:relative">
-              <img src="${img}" alt="${captions[i] || 'Project'}" style="width:100%;display:block;${i % 2 === 0 ? 'aspect-ratio:4/5' : 'aspect-ratio:3/4'};object-fit:cover" />
-              <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem;background:linear-gradient(transparent,rgba(0,0,0,0.7))">
-                <span style="font-family:var(--body-font);font-size:0.9rem;color:#fff;font-weight:500">${captions[i] || 'Project'}</span>
-              </div>
-            </div>`).join('')}
+      </div>
+      <div style="max-width:1200px;margin:0 auto">
+        <div style="display:grid;grid-template-columns:65% 35%;height:400px;gap:2px">
+          <div class="pf-cell">
+            <img src="${galleryImgs[0]}" alt="${captions[0] || 'Project'}" />
+            <div class="pf-cap"><span>${captions[0] || 'Project'}</span></div>
+          </div>
+          <div class="pf-cell">
+            <img src="${galleryImgs[1]}" alt="${captions[1] || 'Project'}" />
+            <div class="pf-cap"><span>${captions[1] || 'Project'}</span></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:40% 60%;height:340px;gap:2px;margin-top:2px">
+          <div class="pf-cell">
+            <img src="${galleryImgs[2]}" alt="${captions[2] || 'Project'}" />
+            <div class="pf-cap"><span>${captions[2] || 'Project'}</span></div>
+          </div>
+          <div class="pf-cell">
+            <img src="${galleryImgs[3]}" alt="${captions[3] || 'Project'}" />
+            <div class="pf-cap"><span>${captions[3] || 'Project'}</span></div>
+          </div>
         </div>
       </div>
     </section>`
@@ -924,14 +1003,14 @@ ${buildNav(businessName, content, navFlags)}
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.7) 60%,rgba(0,0,0,0.85) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.75) 60%,rgba(0,0,0,0.88) 100%)"></div>
     </div>
-    <div style="position:relative;max-width:800px;margin:0 auto;padding:0 2rem">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.25rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:1.5rem;font-weight:500">${content.heroEyebrow}</p>
+    <div style="position:relative;max-width:800px;margin:0 auto;padding:6rem 2rem 0">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
+      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
       <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5.5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem">${content.tagline}</h1>
       <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;margin:0 auto ${content.heroAccent ? '1rem' : '2.5rem'};line-height:1.7">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:var(--primary);font-weight:500;margin-bottom:2.5rem">${content.heroAccent}</p>` : ''}
+      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
       <div style="display:flex;gap:1rem;justify-content:center">
         <a href="#gallery" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
@@ -964,7 +1043,14 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const primary = noColors ? '#2563EB' : (primaryColor || '#6C5CE7')
+    // Ensure primary color has enough contrast for buttons on dark backgrounds
+    const rawPrimary = noColors ? '#2563EB' : (primaryColor || '#6C5CE7')
+    const pR = parseInt(rawPrimary.slice(1, 3), 16) || 0
+    const pG = parseInt(rawPrimary.slice(3, 5), 16) || 0
+    const pB = parseInt(rawPrimary.slice(5, 7), 16) || 0
+    const luminance = (0.299 * pR + 0.587 * pG + 0.114 * pB) / 255
+    // If color is too light (near white), fall back to a visible accent
+    const primary = luminance > 0.85 ? '#6C5CE7' : rawPrimary
     const secondary = noColors ? '#10B981' : (secondaryColor || '#00CEC9')
     const category: BusinessCategory = businessCategory || 'other'
     const variant = categoryVariant[category] || 'service'

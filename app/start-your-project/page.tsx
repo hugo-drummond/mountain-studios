@@ -42,7 +42,9 @@ const businessTypeData: BusinessTypeEntry[] = [
   { name: 'Hotel', category: 'food-hospitality', keywords: ['hospitality', 'resort', 'motel'] },
 
   // Retail
-  { name: 'Retail Store', category: 'retail', keywords: ['shop', 'store', 'retailer', 'merchandise'] },
+  { name: 'Clothing / Fashion Retail', category: 'retail', keywords: ['clothing', 'fashion', 'garments', 'boutique', 'apparel'] },
+  { name: 'Food & Grocery Retail', category: 'retail', keywords: ['grocery', 'fresh produce', 'food store', 'market', 'superette'] },
+  { name: 'General Retail Store', category: 'retail', keywords: ['shop', 'store', 'retailer', 'merchandise'] },
   { name: 'Boutique / Fashion Store', category: 'retail', keywords: ['clothing', 'fashion', 'apparel', 'dress shop', 'menswear', 'womenswear'] },
   { name: 'Florist', category: 'retail', keywords: ['flowers', 'flower shop', 'floral', 'bouquets'] },
   { name: 'Gift Shop', category: 'retail', keywords: ['gifts', 'souvenirs', 'novelties', 'presents'] },
@@ -169,7 +171,7 @@ const businessTypeData: BusinessTypeEntry[] = [
 
   // Property
   { name: 'Real Estate Agent', category: 'property', keywords: ['estate agent', 'property sales', 'realtor', 'property management'] },
-  { name: 'Architect', category: 'property', keywords: ['architecture', 'building design', 'architectural plans'] },
+  { name: 'Architect', category: 'creative', keywords: ['architecture', 'building design', 'architectural plans'] },
   { name: 'Surveyor', category: 'property', keywords: ['land surveyor', 'quantity surveyor', 'property valuation'] },
   { name: 'Property Management', category: 'property', keywords: ['landlord', 'rental management', 'letting agent', 'body corporate'] },
   { name: 'Home Staging', category: 'property', keywords: ['property styling', 'show house', 'staging'] },
@@ -434,7 +436,6 @@ export default function StartYourProject() {
   const [previewProgress, setPreviewProgress] = useState(0)
   const [previewError, setPreviewError] = useState(false)
   const previewRequested = useRef(false)
-  const [previewExpanded, setPreviewExpanded] = useState(false)
 
   // Quote
   const [quoteData, setQuoteData] = useState<ReturnType<typeof calculateQuote> | null>(null)
@@ -911,11 +912,16 @@ export default function StartYourProject() {
             </h1>
             {previewHtml && !previewLoading && (
               <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '1rem', fontFamily: font }}>
-                Click the preview to expand &amp; download as PDF
+                Click the preview to open in a new tab
               </p>
             )}
             <div
-              onClick={() => { if (previewHtml && !previewLoading) setPreviewExpanded(true) }}
+              onClick={() => {
+                if (previewHtml && !previewLoading) {
+                  const w = window.open('', '_blank')
+                  if (w) { w.document.write(previewHtml); w.document.close() }
+                }
+              }}
               style={{
                 width: '90vw',
                 maxWidth: '1100px',
@@ -1001,71 +1007,6 @@ export default function StartYourProject() {
             </div>
 
             {/* Expanded preview modal */}
-            {previewExpanded && previewHtml && (
-              <div
-                onClick={() => setPreviewExpanded(false)}
-                style={{
-                  position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-                  backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)',
-                  zIndex: 1000, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                  padding: '2rem',
-                }}
-              >
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    width: '90vw', maxWidth: '1200px', height: '80vh',
-                    backgroundColor: '#fff', borderRadius: '12px', overflow: 'hidden',
-                    position: 'relative', boxShadow: '0 25px 60px rgba(0,0,0,0.5)',
-                  }}
-                >
-                  <iframe
-                    srcDoc={previewHtml}
-                    title={`Site preview for ${businessName}`}
-                    referrerPolicy="no-referrer"
-                    style={{ width: '100%', height: '100%', border: 'none' }}
-                  />
-                </div>
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      // Download as HTML file (user can print to PDF from browser)
-                      const blob = new Blob([previewHtml], { type: 'text/html' })
-                      const url = URL.createObjectURL(blob)
-                      const a = document.createElement('a')
-                      a.href = url
-                      a.download = `${businessName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase()}-preview.html`
-                      a.click()
-                      URL.revokeObjectURL(url)
-                    }}
-                    style={{ ...btnPrimary, backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '0.8rem' }}
-                  >
-                    Download HTML
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      const printWindow = window.open('', '_blank')
-                      if (printWindow) {
-                        printWindow.document.write(previewHtml)
-                        printWindow.document.close()
-                        setTimeout(() => printWindow.print(), 500)
-                      }
-                    }}
-                    style={{ ...btnPrimary, backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '0.8rem' }}
-                  >
-                    Save as PDF
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); setPreviewExpanded(false) }}
-                    style={{ ...btnBack, fontSize: '0.8rem' }}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            )}
           </>
         )}
 
