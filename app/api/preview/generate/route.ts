@@ -1467,6 +1467,190 @@ ${evtFooter}
 </html>`
 }
 
+// ---------- Education Template (Preply–inspired) ----------
+function buildEducationTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const eduBg = '#ffffff'
+  const eduText = '#1a1a1a'
+  const eduMuted = '#6b6b6b'
+  const eduPink = '#f8c8d8'
+
+  // Nav
+  const eduNavLinks: string[] = []
+  if (navFlags.navServices) eduNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${eduText};text-decoration:none;font-weight:500">Courses</a>`)
+  if (navFlags.navAbout) eduNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${eduText};text-decoration:none;font-weight:500">About</a>`)
+  if (navFlags.navContact) eduNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${eduText};text-decoration:none;font-weight:500">Contact</a>`)
+
+  const eduNav = `
+  <nav style="background:${eduBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${eduText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${eduNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;border:1px solid ${eduText};color:${eduText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — pink bg, heading left, photo right
+  const heroSection = `
+  <section style="background:${eduPink};overflow:hidden">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:80vh;align-items:center;padding:0 2rem">
+      <div style="padding:3rem 0">
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1.5rem">${content.tagline}</h1>
+        <p style="font-family:var(--body-font);font-size:1.05rem;color:${eduText};line-height:1.7;margin-bottom:2rem;max-width:420px;opacity:0.8">${content.heroSubtitle}</p>
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:1rem;font-weight:600;padding:1rem 2.5rem;background:${eduText};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary} &rarr;</a>
+      </div>
+      <div style="display:flex;justify-content:center;align-items:flex-end;height:100%">
+        <img src="${heroImg}" alt="" style="max-width:100%;max-height:85vh;object-fit:contain;border-radius:12px" />
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: Stats row
+  const statsSection = `
+  <section style="padding:60px 2rem;background:${eduBg}">
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
+      ${content.stats.slice(0, 5).map((s, i) => `
+      <div style="text-align:center;${i < content.stats.length - 1 ? 'padding-right:3rem;border-right:1px solid rgba(0,0,0,0.1)' : ''}">
+        <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:${eduText}">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:${eduMuted}">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 3: 3-column service cards with icons + arrows
+  const serviceGrid = `
+  <section id="services" style="padding:60px 2rem;background:${eduBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+      ${content.services.map(s => `
+      <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1rem">
+        <div style="font-size:1.5rem;flex-shrink:0">${s.icon || '&#9998;'}</div>
+        <div style="flex:1">
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${eduText}">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:${eduMuted}">${s.description}</p>
+        </div>
+        <span style="font-size:1.2rem;color:${eduMuted}">&rsaquo;</span>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: Giant statement
+  const statementSection = `
+  <section style="padding:100px 2rem;background:${eduBg};text-align:center">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1">${content.aboutHeading}</h2>
+    </div>
+  </section>`
+
+  // Section 5: 3-step process cards — numbered green badges + photos
+  const processSteps = content.processSteps || [
+    { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
+    { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
+    { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
+  ]
+  const processSection = `
+  <section style="padding:80px 2rem;background:${eduBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${eduText};margin-bottom:3rem">${content.servicesHeading || 'How it works:'}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${processSteps.slice(0, 3).map((step, i) => `
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:2rem;display:flex;flex-direction:column">
+          <div style="width:36px;height:36px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.9rem;font-weight:700;margin-bottom:1.5rem">${step.step}</div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:${eduText};margin-bottom:0.75rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7;margin-bottom:1.5rem;flex:1">${step.description}</p>
+          <div style="border-radius:12px;overflow:hidden;height:200px">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 6: 50/50 testimonial — photo left, bold quote right
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${eduBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:1rem;color:${eduMuted};text-align:center;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+        <div style="border-radius:16px;overflow:hidden;height:450px">
+          <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div>
+          <p style="font-family:var(--heading-font);font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;color:${eduText};line-height:1.4;margin-bottom:1.5rem">${content.testimonial.quote}</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted}">— ${content.testimonial.author}</p>
+        </div>
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 7: About split — teal hero
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:var(--primary)">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;margin-bottom:1rem">${content.aboutHeading}</h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${eduText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid #fff;color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary}</a>
+        </div>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;height:400px">
+        <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Section 8: Pink CTA banner
+  const ctaBanner = `
+  <section style="padding:100px 2rem;background:${eduPink};text-align:center">
+    <div style="max-width:900px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1rem">${content.contactHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${eduText};opacity:0.7">${content.heroSubtitle}</p>
+    </div>
+  </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${eduBg};
+      --bg-alt: #f5f5f5;
+      --card-bg: ${eduBg};
+      --text: ${eduText};
+      --text-muted: ${eduMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${eduNav}
+
+  ${heroSection}
+  ${statsSection}
+  ${serviceGrid}
+  ${statementSection}
+  ${processSection}
+  ${testimonialSection}
+  ${aboutSection}
+  ${buildContactSection(content)}
+  ${ctaBanner}
+
+${buildFooter(businessName, content, 'light')}
+
+</body>
+</html>`
+}
+
 // ---------- Creative Template (Lusion–inspired, dark portfolio) ----------
 function buildCreativeTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -3836,6 +4020,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildEventsTemplate(templateData)
     } else if (category === 'creative') {
       htmlString = buildCreativeTemplate(templateData)
+    } else if (category === 'education') {
+      htmlString = buildEducationTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
