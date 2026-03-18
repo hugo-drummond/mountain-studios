@@ -1467,7 +1467,7 @@ ${evtFooter}
 </html>`
 }
 
-// ---------- Creative Template (Zola–inspired, portfolio-focused) ----------
+// ---------- Creative Template (Lusion–inspired, dark portfolio) ----------
 function buildCreativeTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -1486,132 +1486,145 @@ function buildCreativeTemplate(data: TemplateData): string {
     stockImages.cards[6],
   ]
 
-  const crBg = '#ffffff'
-  const crText = '#1a1a1a'
+  const crBg = '#f5f5f0'
+  const crText = '#0a0a0a'
   const crMuted = '#6b6b6b'
-  const crAccent = '#2a6b6b'
 
-  // Nav
-  const crNavLinks: string[] = []
-  if (navFlags.navServices) crNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Work</a>`)
-  if (navFlags.navGallery) crNavLinks.push(`<a href="#gallery" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Portfolio</a>`)
-  if (navFlags.navAbout) crNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">About</a>`)
-  if (navFlags.navContact) crNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Contact</a>`)
-
+  // Nav — Lusion style: logo left, pill CTAs right
   const crNav = `
-  <nav style="background:${crBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${crText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        ${crNavLinks.join('\n        ')}
+  <nav style="background:${crBg};position:sticky;top:0;z-index:100">
+    <div style="max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${crText};text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${crText};color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Menu</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${crText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
     </div>
   </nav>`
 
-  // Section 1: Split hero — photo left, large serif heading right
+  // Section 1: Hero — subtitle top right, full-bleed image, "SCROLL TO EXPLORE" label
   const heroSection = `
-  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:85vh;background:${crBg}">
-    <div style="overflow:hidden">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  <section style="background:${crBg};padding:0 2rem">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:start;padding:2rem 0">
+        <div></div>
+        <p style="font-family:var(--body-font);font-size:1.05rem;color:${crText};max-width:500px;line-height:1.7">${content.heroSubtitle}</p>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;height:70vh;margin-bottom:1rem">
+        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:${crMuted};text-align:center;padding:1rem 0">+ &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; Scroll to explore &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; +</p>
     </div>
-    <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem;background:${crAccent}">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.5rem"><em>${content.tagline}</em></h1>
-      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:450px">${content.heroSubtitle}</p>
-      <div style="display:flex;gap:0.75rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${crText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-        <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid #fff;color:#fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+  </section>`
+
+  // Section 2: Giant statement heading
+  const statementSection = `
+  <section style="padding:120px 2rem;background:${crBg}">
+    <div style="max-width:1400px;margin:0 auto">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:500;color:${crText};line-height:1.05;letter-spacing:-0.02em">${content.tagline}</h1>
+    </div>
+  </section>`
+
+  // Section 3: About — photo left, text right
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:${crBg}">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div style="border-radius:16px;overflow:hidden;height:500px">
+        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:1.1rem;color:${crText};line-height:1.8;margin-bottom:1.5rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">&#9679; ${content.ctaSecondary || 'About Us'}</a>
       </div>
     </div>
   </section>`
 
-  // Section 2: Portfolio gallery — asymmetric grid
-  const gallerySection = `
+  // Section 4: Featured Work — 2-column portfolio grid with tag labels
+  const portfolioGrid = `
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${crText};margin-bottom:3rem"><em>${content.galleryHeading}</em></h2>
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
-        <div style="border-radius:12px;overflow:hidden;height:400px">
-          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="border-radius:12px;overflow:hidden;height:400px">
-          <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.galleryHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1.5rem">
-        <div style="border-radius:12px;overflow:hidden;height:350px">
-          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="border-radius:12px;overflow:hidden;height:350px">
-          <img src="${galleryImgs[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        ${content.services.map((s, i) => `
+        <div>
+          <div style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
+            <img src="${i < serviceImgs.length ? serviceImgs[i] : (galleryImgs[i - serviceImgs.length] || heroImg)}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${s.tags.join(' &#8226; ')}</p>
+          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:${crText};display:flex;align-items:center;gap:0.5rem">&rarr; ${s.name}</h3>
+        </div>`).join('')}
+      </div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">&#9679; See all projects</a>
       </div>
     </div>
   </section>`
 
-  // Section 3: Services list with arrow links
+  // Section 5: Services list
   const servicesList = `
   <section id="services" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1000px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${crText};margin-bottom:3rem"><em>${content.servicesHeading}</em></h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:${crText};margin-bottom:3rem">${content.servicesHeading}</h2>
       ${content.services.map(s => `
-      <div style="display:flex;align-items:start;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">
-        <div>
-          <h3 style="font-family:var(--body-font);font-size:1rem;font-weight:600;color:${crText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};line-height:1.7">${s.description}</p>
-        </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">
+        <h3 style="font-family:var(--body-font);font-size:1rem;font-weight:600;color:${crText}">${s.name}</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted}">${s.description}</p>
       </div>`).join('')}
     </div>
   </section>`
 
-  // Section 4: About — 50/50
-  const aboutSection = `
-  <section id="about" style="background:${crAccent}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:60vh">
-      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:#fff;line-height:1.3;margin-bottom:1.5rem"><em>${content.aboutHeading}</em></h2>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-      </div>
-      <div style="overflow:hidden">
-        <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Stats
-  const statsSection = `
-  <section style="padding:60px 2rem;background:${crBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
-      ${content.stats.slice(0, 4).map(s => `
+  // Footer — Lusion style: address, socials, newsletter
+  const crFooter = `
+  <footer style="padding:5rem 2rem 2rem;background:${crBg};border-top:1px solid rgba(0,0,0,0.08)">
+    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
       <div>
-        <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:400;color:${crText}">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted}">${s.label}</div>
-      </div>`).join('')}
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${crText};letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">123 Main Road<br />Cape Town, 8001<br />South Africa</p>
+      </div>
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">General enquiries</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};margin-bottom:2rem">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">New business</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted}">work@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:500;color:${crText};margin-bottom:1.5rem">Subscribe to our newsletter</h3>
+        <form style="display:flex;border-bottom:1px solid ${crText};padding-bottom:0.5rem;max-width:400px" onsubmit="return false">
+          <input type="email" placeholder="Your email" style="flex:1;font-family:var(--body-font);padding:0.5rem 0;background:transparent;border:none;color:${crText};font-size:0.9rem;outline:none" />
+          <button type="submit" style="background:transparent;border:none;color:${crText};cursor:pointer;font-size:1.1rem">&rarr;</button>
+        </form>
+      </div>
     </div>
-  </section>`
+    <div style="max-width:1400px;margin:3rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:left">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:${crMuted}">&copy; ${new Date().getFullYear()} ${businessName}.</p>
+    </div>
+  </footer>`
 
   return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
   <style>
     :root {
       --bg: ${crBg};
-      --bg-alt: #f5f5f5;
-      --card-bg: ${crBg};
+      --bg-alt: #eeeee8;
+      --card-bg: #ffffff;
       --text: ${crText};
       --text-muted: ${crMuted};
-      --border: rgba(0,0,0,0.06);
+      --border: rgba(0,0,0,0.08);
     }
   </style>
 
 ${crNav}
 
   ${heroSection}
-  ${gallerySection}
-  ${servicesList}
+  ${statementSection}
   ${aboutSection}
-  ${statsSection}
+  ${portfolioGrid}
+  ${servicesList}
   ${buildContactSection(content)}
 
-${buildFooter(businessName, content, 'light')}
+${crFooter}
 
 </body>
 </html>`
