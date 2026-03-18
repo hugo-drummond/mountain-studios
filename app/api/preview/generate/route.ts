@@ -1264,6 +1264,192 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Fitness-Sport Template (EverybodyFights–inspired) ----------
+function buildFitnessTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const fitBg = '#111111'
+  const fitText = '#ffffff'
+  const fitMuted = '#999999'
+  const fitOrange = '#e85d26'
+
+  // Promo bar
+  const promoBanner = `
+  <div style="background:${fitOrange};padding:0.6rem 2rem;text-align:center">
+    <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.04em">${content.badge || content.heroEyebrow}</p>
+  </div>`
+
+  // Nav
+  const fitNavLinks: string[] = []
+  if (navFlags.navServices) fitNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${fitText};text-decoration:none;font-weight:400">Services</a>`)
+  if (navFlags.navAbout) fitNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${fitText};text-decoration:none;font-weight:400">About</a>`)
+  if (navFlags.navContact) fitNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${fitText};text-decoration:none;font-weight:400">Contact</a>`)
+
+  const fitNav = `
+  ${promoBanner}
+  <nav style="background:${fitBg};position:sticky;top:0;z-index:100">
+    <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${fitOrange};text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${fitNavLinks.join('\n        ')}
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;border:1px solid ${fitText};color:${fitText};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaSecondary || 'Pricing'}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${fitOrange};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed dark hero
+  const heroSection = `
+  <section style="position:relative;min-height:85vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.6) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.08em;max-width:700px">${content.tagline}</h1>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 2: Class types — icon grid
+  const classTypes = `
+  <section id="services" style="padding:80px 2rem;background:${fitBg};text-align:center">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2.5rem">
+        ${content.services.map(s => `
+        <div style="text-align:center">
+          <div style="font-size:2.5rem;color:${fitText};margin-bottom:1rem;line-height:1">${s.icon || '&#9883;'}</div>
+          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${s.name}</h3>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: Awards / trust strip
+  const awardsStrip = `
+  <section style="padding:60px 2rem;background:${fitBg};text-align:center;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:2rem">${content.aboutMission || content.heroEyebrow}</h2>
+      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
+        ${content.stats.slice(0, 4).map(s => `
+        <div style="text-align:center">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:${fitText}">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;color:${fitMuted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 4: 3-column location/service cards with photo bg
+  const locationCards = `
+  <section style="padding:80px 2rem;background:${fitBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      ${content.services.slice(0, 3).map((s, i) => `
+      <div style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
+        <div style="position:absolute;inset:0">
+          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
+        </div>
+        <div style="position:relative;padding:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:700;color:${fitText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem">${s.description}</p>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.65rem 1.5rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'Discover'}</a>
+        </div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 5: Gallery — 3-column photo grid
+  const gallerySection = `
+  <section style="padding:0;background:${fitBg}">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+      ${serviceImgs.map(img => `
+      <div style="height:350px;overflow:hidden">
+        <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 6: About + CTA
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:${fitBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${fitMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;color:${fitText};text-decoration:underline;text-underline-offset:4px;margin-top:0.5rem">${content.ctaSecondary || 'Learn More'}</a>
+      </div>
+      <div style="border-radius:8px;overflow:hidden;height:400px">
+        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Footer
+  const fitFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${fitBg};border-top:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">About Us</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};line-height:1.7;max-width:350px">${content.aboutText.split('\n')[0]}</p>
+        <a href="#about" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;color:${fitText};text-decoration:underline;text-underline-offset:4px;margin-top:1rem">Learn More</a>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Links</h3>
+        ${content.services.slice(0, 3).map(s => `<a href="#services" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        <a href="#contact" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Follow Us</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};margin-top:0.5rem">021 000 0000</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:left">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
+  <style>
+    :root {
+      --bg: ${fitBg};
+      --bg-alt: #1a1a1a;
+      --card-bg: #1a1a1a;
+      --text: ${fitText};
+      --text-muted: ${fitMuted};
+      --border: rgba(255,255,255,0.08);
+    }
+  </style>
+
+${fitNav}
+
+  ${heroSection}
+  ${classTypes}
+  ${awardsStrip}
+  ${locationCards}
+  ${gallerySection}
+  ${aboutSection}
+  ${buildContactSection(content)}
+
+${fitFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Automotive Template (Polestar visual + Clutch structure) ----------
 function buildAutomotiveTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -3278,6 +3464,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildPetsTemplate(templateData)
     } else if (category === 'automotive') {
       htmlString = buildAutomotiveTemplate(templateData)
+    } else if (category === 'fitness-sport') {
+      htmlString = buildFitnessTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
