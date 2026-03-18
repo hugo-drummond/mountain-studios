@@ -1264,6 +1264,278 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Trades-Construction Template (Plumb London–inspired) ----------
+function buildTradesTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+  ]
+
+  // Trades uses a clean light theme with blue accent
+  const tradesBg = '#ffffff'
+  const tradesAltBg = '#f5f7fa'
+  const tradesText = '#1a1a2e'
+  const tradesMuted = '#6b7280'
+
+  // Top bar — tagline left, CTA right
+  const topBar = `
+  <div style="background:${tradesAltBg};padding:0.5rem 2rem;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:var(--primary);font-weight:600">${content.badge || content.heroEyebrow}</p>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;color:${tradesText};text-decoration:none;font-weight:500">&#9993; ${content.ctaPrimary}</a>
+    </div>
+  </div>`
+
+  // Nav — logo left, links center, phone CTA right
+  const tradesNavLinks: string[] = []
+  if (navFlags.navServices) tradesNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${tradesText};text-decoration:none;font-weight:500;transition:color 0.2s">Services</a>`)
+  if (navFlags.navAbout) tradesNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${tradesText};text-decoration:none;font-weight:500;transition:color 0.2s">About Us</a>`)
+  if (navFlags.navContact) tradesNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${tradesText};text-decoration:none;font-weight:500;transition:color 0.2s">Contact Us</a>`)
+
+  const tradesNav = `
+  ${topBar}
+  <nav style="background:${tradesBg};position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${tradesText};text-decoration:none;letter-spacing:0.02em">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${tradesNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.7rem 1.75rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:opacity 0.2s">&#9742; ${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — photo left, text + CTAs right, rating badge
+  const ratingHtml = content.testimonial ? `
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+        <span style="font-family:var(--body-font);font-size:0.8rem;color:${tradesMuted};padding:0.3rem 0.75rem;border:1px solid rgba(0,0,0,0.1);border-radius:999px">Rated ${content.testimonial.rating}/5</span>
+        <span style="color:#f59e0b;font-size:1.1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</span>
+      </div>` : ''
+
+  const heroSection = `
+  <section style="background:${tradesAltBg};overflow:hidden">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
+      <div style="overflow:hidden">
+        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+        ${ratingHtml}
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${tradesText};line-height:1.15;margin-bottom:1.25rem">${content.tagline}</h1>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${tradesMuted};line-height:1.7;margin-bottom:2rem;max-width:450px">${content.heroSubtitle}</p>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:opacity 0.2s">&#9993; ${content.ctaPrimary}</a>
+          <a href="tel:0000000000" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:${tradesText};color:#fff;border-radius:8px;text-decoration:none;display:flex;align-items:center;gap:0.5rem">&#9742; Call Us</a>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: Promo banner — accent color strip
+  const promoBanner = `
+  <section style="background:var(--primary);padding:1.25rem 2rem">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
+      <p style="font-family:var(--body-font);font-size:1rem;color:#fff;font-weight:500">${content.aboutMission || content.heroSubtitle}</p>
+      <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:#fff;text-decoration:none;font-weight:600;white-space:nowrap">Learn more &rsaquo;</a>
+    </div>
+  </section>`
+
+  // Section 3: 4-column trust cards — white cards with icons
+  const trustCards = `
+  <section style="padding:80px 2rem;background:${tradesBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:1.5rem">
+      ${content.stats.slice(0, 4).map(s => `
+      <div style="background:${tradesBg};border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:2rem 1.5rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+        <div style="font-size:1.5rem;color:var(--primary);margin-bottom:0.75rem">${s.value}</div>
+        <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:0.5rem">${s.label}</h3>
+        ${s.sublabel ? `<p style="font-family:var(--body-font);font-size:0.85rem;color:${tradesMuted};line-height:1.6">${s.sublabel}</p>` : ''}
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: Our Services — heading with underline accent + service grid
+  const servicesSection = `
+  <section id="services" style="padding:80px 2rem;background:${tradesAltBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${tradesText};display:inline-block;position:relative">${content.servicesHeading}
+          <span style="position:absolute;bottom:-4px;left:0;width:40%;height:4px;background:var(--primary);border-radius:2px"></span>
+        </h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem">
+        ${content.services.map(s => `
+        <div style="background:${tradesBg};border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:2rem;display:flex;gap:1.25rem;align-items:start;box-shadow:0 2px 8px rgba(0,0,0,0.04)">
+          <div style="font-size:1.75rem;color:var(--primary);flex-shrink:0">${s.icon || '&#9881;'}</div>
+          <div>
+            <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${tradesText};margin-bottom:0.5rem">${s.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.9rem;color:${tradesMuted};line-height:1.7">${s.description}</p>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 5: Green CTA banner
+  const ctaBanner = `
+  <section style="background:var(--secondary);padding:3.5rem 2rem">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;margin-bottom:0.5rem">${content.contactHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.85)">${content.heroSubtitle}</p>
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${tradesText};border-radius:8px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 6: Why Choose Us — heading + 2x2 icon grid
+  const whyChooseUs = `
+  <section style="padding:80px 2rem;background:${tradesBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${tradesText};margin-bottom:3rem;display:inline-block;position:relative">${content.aboutHeading}
+        <span style="position:absolute;bottom:-4px;left:0;width:40%;height:4px;background:var(--primary);border-radius:2px"></span>
+      </h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2.5rem 4rem">
+        ${content.processSteps ? content.processSteps.map(step => `
+        <div style="display:flex;gap:1rem;align-items:start">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="color:var(--primary);font-size:1.1rem">&#10003;</span>
+          </div>
+          <div>
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${tradesText};margin-bottom:0.35rem">${step.title}</h3>
+            <p style="font-family:var(--body-font);font-size:0.9rem;color:${tradesMuted};line-height:1.7">${step.description}</p>
+          </div>
+        </div>`).join('') : content.stats.slice(0, 4).map(s => `
+        <div style="display:flex;gap:1rem;align-items:start">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="color:var(--primary);font-size:1.1rem">&#10003;</span>
+          </div>
+          <div>
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${tradesText};margin-bottom:0.35rem">${s.label}</h3>
+            ${s.sublabel ? `<p style="font-family:var(--body-font);font-size:0.9rem;color:${tradesMuted};line-height:1.7">${s.sublabel}</p>` : ''}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 7: About — text left + accordion-style services, photo right
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:${tradesAltBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${tradesText};text-align:center;margin-bottom:3rem">${businessName}</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+        <div>
+          <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${tradesText};padding:0.75rem 0;border-bottom:1px solid rgba(0,0,0,0.08);margin-bottom:1.5rem">About Us</div>
+          ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${tradesMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+          ${content.services.slice(0, 3).map(s => `
+          <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${tradesText};padding:0.75rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">${s.name}</div>`).join('')}
+        </div>
+        <div style="border-radius:12px;overflow:hidden;height:500px">
+          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 8: Coverage / areas — image left, heading + tag list right
+  const coverageSection = `
+  <section style="padding:80px 2rem;background:${tradesBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div style="border-radius:12px;overflow:hidden;height:400px">
+        <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${tradesText};margin-bottom:2rem">${content.galleryHeading || 'Areas We Cover'}</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem">
+          ${content.services.map(s => s.tags).flat().slice(0, 9).map(t => `
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:var(--primary);font-size:0.9rem">&#9745;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:var(--primary);font-weight:500">${t}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Testimonial section
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:60px 2rem;background:${tradesAltBg}">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <div style="color:#f59e0b;font-size:1.2rem;margin-bottom:1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:${tradesText};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
+      <p style="font-family:var(--body-font);font-size:0.9rem;color:${tradesMuted};font-weight:600">— ${content.testimonial.author}</p>
+    </div>
+  </section>` : ''
+
+  // Trades footer
+  const tradesFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${tradesText};color:#fff">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:1rem;font-weight:600">Services</div>
+        ${content.services.map(s => `<a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
+        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.8);margin-bottom:1rem;font-weight:600">Legal</div>
+        <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
+        <a href="#" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.4)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${tradesBg};
+      --bg-alt: ${tradesAltBg};
+      --card-bg: ${tradesBg};
+      --text: ${tradesText};
+      --text-muted: ${tradesMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${tradesNav}
+
+  ${heroSection}
+  ${promoBanner}
+  ${trustCards}
+  ${servicesSection}
+  ${ctaBanner}
+  ${whyChooseUs}
+  ${aboutSection}
+  ${coverageSection}
+  ${testimonialSection}
+  ${buildContactSection(content)}
+
+${tradesFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Retail Template (Public Pool–inspired) ----------
 function buildRetailTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -1891,6 +2163,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildTechDigitalTemplate(templateData)
     } else if (category === 'retail') {
       htmlString = buildRetailTemplate(templateData)
+    } else if (category === 'trades-construction') {
+      htmlString = buildTradesTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
