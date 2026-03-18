@@ -1264,6 +1264,198 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Pets Template (WOOOF–inspired) ----------
+function buildPetsTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const petBg = '#c5d9b2'
+  const petDark = '#3a5a3a'
+  const petText = '#2d4a2d'
+  const petMuted = '#5a7a5a'
+
+  // Nav
+  const petNavLinks: string[] = []
+  if (navFlags.navServices) petNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.95rem;color:#fff;text-decoration:none;font-weight:500">Services</a>`)
+  if (navFlags.navAbout) petNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.95rem;color:#fff;text-decoration:none;font-weight:500">About</a>`)
+  if (navFlags.navContact) petNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;color:#fff;text-decoration:none;font-weight:500">Contact</a>`)
+
+  const petNav = `
+  <nav style="background:${petBg};position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${petNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;border:2px solid #fff;color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — large heading left, rounded photo right
+  const heroSection = `
+  <section style="padding:80px 2rem;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
+      <div>
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1.5rem">${content.tagline}</h1>
+        <p style="font-family:var(--body-font);font-size:1.1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.heroSubtitle}</p>
+        <a href="#about" style="font-family:var(--body-font);font-size:1.1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Read about us.'}</a>
+      </div>
+      <div style="border-radius:24px;overflow:hidden;height:500px">
+        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: 50/50 — photo left, heading + underline CTA right
+  const featureSection = `
+  <section id="services" style="padding:80px 2rem;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div style="border-radius:24px;overflow:hidden;height:450px">
+        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.servicesHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutMission || content.heroSubtitle}</p>
+        <a href="#services" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Check out our services.'}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: 50/50 reversed — heading left, photo right
+  const featureSection2 = `
+  <section style="padding:80px 2rem;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutText.split('\n')[0]}</p>
+        <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaPrimary}</a>
+      </div>
+      <div style="border-radius:24px;overflow:hidden;height:450px">
+        <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Section 4: Brand/centered section — large brand name + subtitle
+  const brandSection = `
+  <section style="padding:120px 2rem;background:${petBg};text-align:center">
+    <div style="max-width:800px;margin:0 auto">
+      <div style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:700;color:${petDark};letter-spacing:0.04em;margin-bottom:1rem">${businessName}</div>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:${petMuted};letter-spacing:0.08em;text-transform:uppercase">${content.heroEyebrow}</p>
+    </div>
+  </section>`
+
+  // Section 5: Service cards
+  const serviceCards = `
+  <section style="padding:80px 2rem;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.services.map((s, i) => `
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">${s.icon || '&#128062;'}</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:${petText};margin-bottom:0.5rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${petMuted};line-height:1.7">${s.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 6: Testimonials — 3 review cards
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${[0,1,2].map(i => {
+          const t = i === 0 && content.testimonial ? content.testimonial : null
+          const quote = t ? t.quote : (content.services[i]?.description || content.heroSubtitle)
+          const author = t ? t.author : (content.services[i]?.name || 'Happy Customer')
+          const rating = t ? t.rating : 5
+          const colors = ['#f59e0b', '#4a9e4a', '#6a7aba']
+          return `
+        <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:${colors[i % 3]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">${author.charAt(0)}</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${petText}">${author}</div>
+            </div>
+          </div>
+          <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">${'&#9733;'.repeat(rating)}</div>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${petMuted};line-height:1.7">${quote}</p>
+        </div>`
+        }).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Footer — sage green bg, 4-column
+  const petFooter = `
+  <footer style="padding:60px 2rem 30px;background:${petBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${businessName}</div>
+      </div>
+      ${content.contactHours ? `<div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Hours</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${content.contactHours.replace(/ · /g, '<br />')}</p>
+      </div>` : `<div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Services</h4>
+        ${content.services.slice(0, 3).map(s => `<p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};margin-bottom:0.35rem">${s.name}</p>`).join('')}
+      </div>`}
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Contact</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Location</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">123 Main Road<br />Cape Town, 8001</p>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:${petMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${petBg};
+      --bg-alt: ${petBg};
+      --card-bg: rgba(255,255,255,0.4);
+      --text: ${petText};
+      --text-muted: ${petMuted};
+      --border: rgba(0,0,0,0.08);
+    }
+  </style>
+
+${petNav}
+
+  ${heroSection}
+  ${featureSection}
+  ${featureSection2}
+  ${brandSection}
+  ${serviceCards}
+  ${testimonialSection}
+  ${buildContactSection(content)}
+
+${petFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Food-Hospitality Template (Crafto Restaurant–inspired) ----------
 function buildFoodHospitalityTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -2898,6 +3090,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildHealthWellnessTemplate(templateData)
     } else if (category === 'food-hospitality') {
       htmlString = buildFoodHospitalityTemplate(templateData)
+    } else if (category === 'pets') {
+      htmlString = buildPetsTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
