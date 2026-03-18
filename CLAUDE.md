@@ -6,16 +6,11 @@
 - **Repo**: `hugodrummon/mountain-studios` (private)
 - **Dev server**: `localhost:3000`
 
-## Last Session (2026-03-18)
+## Last Session (2026-03-18, session 2)
 
 ### What was done
-1. **Preview opens in new tab** — clicking the preview thumbnail now calls `window.open()` + `document.write()` to open the full HTML in a new browser tab. Removed the old `previewExpanded` state and full-screen modal overlay entirely.
-2. **Navbar logo wordmark restyled** — `buildNav()` logo: font-size 1.35→1.6rem, font-weight 700→800, letter-spacing 0.04→0.12em, added `text-transform: uppercase`. Footer logo matched to same style (1.4rem, 800, 0.1em, uppercase).
-3. **heroAccent contrast fix** — all 3 template variants: font-size 0.9→1.2rem, font-weight 500→600, added `text-shadow: 0 1px 3px rgba(0,0,0,0.4)` for readability over hero images.
-4. **aboutMission contrast fix** — changed from `color: var(--primary)` (low-contrast purple) to `color: var(--text)` (white on dark, charcoal on light). Bumped to 1.15rem, font-weight 600.
-5. **Hero/section eyebrows improved** — bumped to 0.85rem, font-weight 600. Hero eyebrows get text-shadow for image readability.
-6. **Architect moved** from `property` category to `creative` category in `page.tsx` business type list.
-7. **Started 15-category template redesign research** — collecting reference website structures per category to build 15 distinct category-level templates (replacing current 3 variants).
+1. **Built `buildPropertyTemplate()`** — dedicated property template inspired by 505statestreet.com. Structure: pill-button nav → full-bleed hero (headline bottom-left) → atmospheric full-width photo → large serif statement → alternating 60/40 service splits (zigzag) → lifestyle photo overlay → stats row → asymmetric gallery grid → 50/50 about + image → contact form → giant brand name footer. Wired into POST handler (`if (category === 'property')` before the variant switch).
+2. **Reference site for tech-digital** — plain.com selected, screenshots partially collected (session hit context limit before completion).
 
 ### What's working
 - All 3 template variants render correctly: **visual** (photo-heavy), **service** (icon cards + process steps), **portfolio** (gallery-focused)
@@ -45,7 +40,10 @@ Collecting a reference website per category, extracting the homepage structure, 
 - **health-wellness** — [iveeapp.com](https://www.iveeapp.com/): pastel blue palette + 50/50 hero + mission split + navy stats row + services accordion with card carousel + membership cards with bullet lists + team carousel + testimonial color cards + contact cards
 - **property** — [505statestreet.com](https://505statestreet.com/): minimal nav with pill buttons + full-bleed hero + centered statement + tabbed amenity galleries + floor plan tabs + day/night toggle + sustainability icons + CTA
 
-**Still need reference sites for (11 remaining):**
+**Template functions built:**
+- **property** — `buildPropertyTemplate()` in route.ts (505 State Street–inspired)
+
+**Still need reference sites + templates for (10 remaining):**
 - fitness-sport
 - pets
 - events-entertainment
@@ -55,7 +53,7 @@ Collecting a reference website per category, extracting the homepage structure, 
 - home-services
 - education
 - automotive
-- tech-digital
+- tech-digital (reference: plain.com — screenshots incomplete, need to re-capture)
 - other
 
 **Implementation plan:**
