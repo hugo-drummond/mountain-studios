@@ -1264,6 +1264,238 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Home-Services Template (Helpling–inspired) ----------
+function buildHomeServicesTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const homeBg = '#ffffff'
+  const homeAlt = '#f7f9f7'
+  const homeText = '#1a1a2e'
+  const homeMuted = '#6b7280'
+  const homeGreenBg = '#5a7a5a'
+
+  // Nav — logo left, links center, CTA right
+  const homeNavLinks: string[] = []
+  if (navFlags.navServices) homeNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${homeText};text-decoration:none;font-weight:500">Services</a>`)
+  if (navFlags.navAbout) homeNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${homeText};text-decoration:none;font-weight:500">About</a>`)
+  if (navFlags.navContact) homeNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${homeText};text-decoration:none;font-weight:500">Contact</a>`)
+
+  const homeNav = `
+  <nav style="background:${homeBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:var(--primary);text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${homeNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — green bg left with heading + CTA, photo right
+  const heroSection = `
+  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
+    <div style="background:var(--primary);display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.5rem">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:420px">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:0.75rem;max-width:420px">
+        <a href="#contact" style="flex:1;text-align:center;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 1.5rem;background:#fff;color:var(--primary);border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#services" style="flex:1;text-align:center;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 1.5rem;border:2px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary}</a>
+      </div>
+    </div>
+    <div style="overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    </div>
+  </section>`
+
+  // Section 2: 3-step process — centered heading + 3 icon columns
+  const processSteps = content.processSteps || [
+    { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
+    { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
+    { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
+  ]
+  const processSection = `
+  <section style="padding:80px 2rem;background:${homeBg};text-align:center">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.servicesHeading || 'How It Works'}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem">
+        ${processSteps.slice(0, 3).map(step => `
+        <div>
+          <div style="width:72px;height:72px;border-radius:16px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
+            <span style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:var(--primary)">${step.step}</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7">${step.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: Stats row — dark green bg
+  const statsSection = `
+  <section style="padding:60px 2rem;background:var(--primary)">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.25rem">${s.sublabel || ''}</div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-top:0.35rem">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: 4-column benefits with green-tinted icons
+  const benefitsSection = `
+  <section id="services" style="padding:80px 2rem;background:${homeBg};text-align:center">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.aboutHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
+        ${content.services.slice(0, 4).map(s => `
+        <div style="text-align:left">
+          <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
+            <span style="font-size:1.3rem;color:var(--primary)">${s.icon || '&#10003;'}</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 5: 3-column testimonial cards with avatar + stars
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${homeAlt}">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:0.75rem">${content.galleryHeading || 'What Our Customers Say'}</h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};margin-bottom:3rem">${content.aboutMission || 'Read reviews from happy customers.'}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${[0,1,2].map(i => {
+          const t = i === 0 && content.testimonial ? content.testimonial : null
+          const quote = t ? t.quote : (content.services[i]?.description || '')
+          const author = t ? t.author : (content.services[i]?.name || 'Happy Customer')
+          const rating = t ? t.rating : 5
+          return `
+        <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2rem 1.5rem;text-align:center;position:relative;margin-top:2rem">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.2rem;font-weight:700;position:absolute;top:-32px;left:50%;transform:translateX(-50%)">${author.charAt(0)}</div>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7;font-style:italic;margin-top:1.5rem;margin-bottom:1rem">"${quote}"</p>
+          <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${homeText};margin-bottom:0.5rem">${author}</p>
+          <div style="color:#f59e0b;font-size:0.9rem">${'&#9733;'.repeat(rating)}</div>
+        </div>`
+        }).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 6: 50/50 feature — bullet list left, photo right
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const featureSection = `
+  <section id="about" style="padding:80px 2rem;background:${homeBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${homeText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${aboutParagraphs.map(p => `<div style="display:flex;align-items:start;gap:0.75rem;margin-bottom:0.75rem">
+          <span style="color:var(--primary);font-size:1rem;flex-shrink:0;margin-top:2px">&#9632;</span>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};line-height:1.7">${p}</p>
+        </div>`).join('')}
+        <div style="display:flex;gap:0.75rem;margin-top:2rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+        </div>
+      </div>
+      <div style="border-radius:16px;overflow:hidden;height:450px">
+        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Section 7: 3-column support/FAQ cards
+  const supportCards = `
+  <section style="padding:80px 2rem;background:${homeAlt}">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.contactHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.services.slice(0, 3).map(s => `
+        <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
+          <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.2rem;color:var(--primary)">${s.icon || '&#9881;'}</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // CTA banner — dark green bg
+  const ctaBanner = `
+  <section style="padding:60px 2rem;background:var(--primary)">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;max-width:600px">${content.aboutMission || content.heroSubtitle}</h2>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2.5rem;background:var(--secondary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Footer
+  const homeFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${homeAlt};border-top:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.6;max-width:300px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About</a>
+        <a href="#contact" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+        <a href="#" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;color:${homeMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${homeBg};
+      --bg-alt: ${homeAlt};
+      --card-bg: ${homeBg};
+      --text: ${homeText};
+      --text-muted: ${homeMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${homeNav}
+
+  ${heroSection}
+  ${processSection}
+  ${statsSection}
+  ${benefitsSection}
+  ${testimonialSection}
+  ${featureSection}
+  ${supportCards}
+  ${buildContactSection(content)}
+  ${ctaBanner}
+
+${homeFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Trades-Construction Template (Plumb London–inspired) ----------
 function buildTradesTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -2165,6 +2397,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildRetailTemplate(templateData)
     } else if (category === 'trades-construction') {
       htmlString = buildTradesTemplate(templateData)
+    } else if (category === 'home-services') {
+      htmlString = buildHomeServicesTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
