@@ -1467,6 +1467,192 @@ ${evtFooter}
 </html>`
 }
 
+// ---------- Professional Template (Mishcon–inspired) ----------
+function buildProfessionalTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const proBg = '#2a2a2a'
+  const proText = '#f5f5f0'
+  const proMuted = '#a0a0a0'
+  const proRed = '#c0392b'
+
+  // Nav — dark bg, serif logo + tagline, links, "How can we help?" CTA
+  const proNavLinks: string[] = []
+  if (navFlags.navServices) proNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">Services</a>`)
+  if (navFlags.navAbout) proNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">About</a>`)
+  if (navFlags.navContact) proNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">Contact</a>`)
+
+  const proNav = `
+  <nav style="background:${proBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <div>
+        <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:400;color:${proText};text-decoration:none;display:block;line-height:1.2">${businessName}</a>
+        <p style="font-family:var(--body-font);font-size:0.7rem;color:${proMuted};font-style:italic">${content.heroEyebrow || content.aboutMission || ''}</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${proNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed hero with heading overlay + subtitle + red CTA
+  const heroSection = `
+  <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.55) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1rem;max-width:600px">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.75rem;background:${proRed};color:#fff;border-radius:4px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  // Section 2: 4-column (or 3) service cards — photos + title + description + red link
+  const serviceCards = `
+  <section id="services" style="padding:80px 2rem;background:${proBg}">
+    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
+      ${content.services.map((s, i) => `
+      <div>
+        <div style="height:200px;overflow:hidden;margin-bottom:1.25rem">
+          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
+        </div>
+        <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proRed};text-decoration:none;font-weight:500">${content.ctaSecondary || 'Read more'}</a>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 3: People / about — full-width photo bg with heading + text overlay
+  const peopleSection = `
+  <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.2) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem;width:100%">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;font-style:italic">${content.aboutHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.5rem">${content.aboutText.split('\n')[0]}</p>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${proRed};color:#fff;border-radius:4px;text-decoration:none">${content.ctaSecondary || 'Learn More'}</a>
+    </div>
+  </section>`
+
+  // Section 4: Stats / credentials
+  const statsSection = `
+  <section style="padding:60px 2rem;background:${proBg};border-top:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:3rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:400;color:${proText}">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted}">${s.label}</div>
+        ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:${proMuted};opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 5: Process steps / how we work
+  const processSection = content.processSteps ? `
+  <section style="padding:80px 2rem;background:${proBg}">
+    <div style="max-width:1000px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${proText};margin-bottom:3rem;font-style:italic">${content.servicesHeading || 'How We Work'}</h2>
+      ${content.processSteps.map((step, i) => `
+      <div style="display:flex;gap:2rem;align-items:start;padding:2rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08)' : ''}">
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:${proRed};flex-shrink:0;width:40px">${step.step}.</div>
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${proText};margin-bottom:0.5rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${proMuted};line-height:1.7">${step.description}</p>
+        </div>
+      </div>`).join('')}
+    </div>
+  </section>` : ''
+
+  // Testimonial
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:60px 2rem;background:${proBg};border-top:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${proText};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};font-weight:500">— ${content.testimonial.author}</p>
+    </div>
+  </section>` : ''
+
+  // Full-width image
+  const fullImage = `
+  <section style="height:40vh;overflow:hidden">
+    <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  </section>`
+
+  // Footer — dark, 4-column links + subscribe + social
+  const proFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:#1e1e1e">
+    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${proText};margin-bottom:0.35rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;color:${proMuted};font-style:italic;margin-bottom:1.5rem">${content.heroEyebrow || ''}</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Navigate</h4>
+        <a href="#about" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
+        <a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
+        <a href="#contact" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Services</h4>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Legal</h4>
+        <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
+        <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;border:1px solid ${proRed};color:${proRed};text-decoration:none;margin-top:1rem">Subscribe</a>
+      </div>
+    </div>
+    <div style="max-width:1300px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);text-align:left">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
+  <style>
+    :root {
+      --bg: ${proBg};
+      --bg-alt: #333333;
+      --card-bg: #333333;
+      --text: ${proText};
+      --text-muted: ${proMuted};
+      --border: rgba(255,255,255,0.08);
+    }
+  </style>
+
+${proNav}
+
+  ${heroSection}
+  ${serviceCards}
+  ${peopleSection}
+  ${statsSection}
+  ${processSection}
+  ${testimonialSection}
+  ${fullImage}
+  ${buildContactSection(content)}
+
+${proFooter}
+
+</body>
+</html>`
+}
+
 // ---------- Education Template (Preply–inspired) ----------
 function buildEducationTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -4022,6 +4208,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildCreativeTemplate(templateData)
     } else if (category === 'education') {
       htmlString = buildEducationTemplate(templateData)
+    } else if (category === 'professional') {
+      htmlString = buildProfessionalTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
