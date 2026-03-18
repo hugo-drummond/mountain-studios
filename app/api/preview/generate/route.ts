@@ -1264,6 +1264,229 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Tech-Digital Template (Plain.com–inspired) ----------
+function buildTechDigitalTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  // Tech nav — clean, two CTAs (outline + filled)
+  const techNavLinks: string[] = []
+  if (navFlags.navServices) techNavLinks.push(`<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s">Services</a>`)
+  if (navFlags.navAbout) techNavLinks.push(`<a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s">About</a>`)
+  if (navFlags.navContact) techNavLinks.push(`<a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.9rem;font-weight:500;transition:color 0.2s">Contact</a>`)
+
+  const techNav = `
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,15,15,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:0.5rem">
+        <span style="color:var(--primary);font-size:1.1rem">&#9670;</span> ${businessName}
+      </a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${techNavLinks.join('\n        ')}
+      </div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <a href="#about" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.1rem;border:1px solid var(--border);border-radius:6px;color:var(--text);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:border-color 0.2s">${content.ctaSecondary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.1rem;background:var(--primary);border:1px solid var(--primary);border-radius:6px;color:#fff;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </nav>`
+
+  // Section 1: Centered text hero — green accent heading + screenshot below
+  const heroSection = `
+  <section style="padding:160px 2rem 80px;text-align:center;background:var(--bg)">
+    <div style="max-width:800px;margin:0 auto">
+      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;padding:0.4rem 1rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);margin-bottom:1.5rem;letter-spacing:0.04em">${content.badge}</div>` : ''}
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem">
+        <span style="color:var(--primary)">${content.heroAccent || content.tagline.split(' ').slice(0, 2).join(' ')}</span><br />
+        <span style="color:var(--text)">${content.heroAccent ? content.tagline : content.tagline.split(' ').slice(2).join(' ')}</span>
+      </h1>
+      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);line-height:1.7;max-width:600px;margin:0 auto 2.5rem">${content.heroSubtitle}</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-bottom:4rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:background 0.2s">${content.ctaSecondary}</a>
+      </div>
+    </div>
+    <div style="max-width:1000px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 25px 60px rgba(0,0,0,0.5)">
+      <img src="${heroImg}" alt="" style="width:100%;height:auto;display:block" />
+    </div>
+  </section>`
+
+  // Section 2: 3-column feature cards
+  const featureCards = `
+  <section style="padding:100px 2rem;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      ${content.services.slice(0, 3).map(s => `
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
+        <div style="font-size:2rem;margin-bottom:1.25rem">${s.icon || '&#9672;'}</div>
+        <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.75rem">${s.name}</h3>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${s.description}</p>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 3: Logo / trust strip
+  const trustStrip = `
+  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2rem;font-weight:600">${content.heroEyebrow}</p>
+      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
+        ${content.stats.slice(0, 4).map(s => `
+        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">${s.value} ${s.label}</div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 4: Problem statement — large centered text
+  const problemStatement = `
+  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
+    <div style="max-width:850px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.5rem">${content.servicesHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:var(--text-muted);line-height:1.7;max-width:650px;margin:0 auto">${content.aboutMission || content.heroSubtitle}</p>
+    </div>
+  </section>`
+
+  // Section 5: Alternating feature showcases (badge + heading + text left, image right, then swap)
+  const featureShowcases = content.services.length > 0 ? `
+  <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto">
+      ${content.services.map((s, i) => `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < content.services.length - 1 ? '6rem' : '0'}">
+        ${i % 2 === 0 ? `
+        <div>
+          <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:350px;object-fit:cover" />
+        </div>` : `
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:350px;object-fit:cover" />
+        </div>
+        <div>
+          <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
+        </div>`}
+      </div>`).join('')}
+    </div>
+  </section>` : ''
+
+  // Section 6: Dark accent section — "Speed, meet power" style
+  const darkAccentSection = `
+  <section style="padding:120px 2rem;background:#0a0a0a;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--primary);line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:650px;margin:0 auto">${content.aboutText.split('\n')[0]}</p>
+    </div>
+  </section>`
+
+  // Section 7: Two-column value props with divider lines (Plain.com "When you need..." pattern)
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const valueProps = `
+  <section id="about" style="padding:100px 2rem;background:var(--bg)">
+    <div style="max-width:1000px;margin:0 auto">
+      ${content.processSteps ? content.processSteps.map((step, i) => `
+      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">${step.title}</h3>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} &rarr;</a>
+        </div>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">${step.description}</p>
+      </div>`).join('') : aboutParagraphs.map((p, i) => `
+      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < aboutParagraphs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3">${content.stats[i]?.label || 'Our Approach'}</h3>
+        </div>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">${p}</p>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 8: Testimonial card
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:100px 2rem;background:var(--bg-alt)">
+    <div style="max-width:1100px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;font-weight:600;text-align:center">What our clients say</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
+      <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:var(--card-bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="font-size:1.5rem;color:var(--primary);margin-bottom:1.5rem">&#10077;&#10077;</div>
+            <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text-muted);line-height:1.7;font-style:italic">${content.testimonial.quote}</p>
+          </div>
+          <div style="margin-top:2rem;display:flex;align-items:center;gap:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">${content.testimonial.author.charAt(0)}</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${content.testimonial.author}</div>
+              ${content.testimonial.rating ? `<div style="color:#f59e0b;font-size:0.75rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+            </div>
+          </div>
+        </div>
+        <div style="overflow:hidden">
+          <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 9: Stats row
+  const statsSection = `
+  <section style="padding:80px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">${s.label}</div>
+        ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 10: Final CTA
+  const finalCta = `
+  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
+    <div style="max-width:700px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:2rem">${content.contactHeading}</h2>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaPrimary}</a>
+        <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
+
+${techNav}
+
+  ${heroSection}
+  ${featureCards}
+  ${trustStrip}
+  ${problemStatement}
+  ${featureShowcases}
+  ${darkAccentSection}
+  ${valueProps}
+  ${testimonialSection}
+  ${statsSection}
+  ${buildContactSection(content)}
+  ${finalCta}
+
+${buildFooter(businessName, content, 'dark')}
+
+</body>
+</html>`
+}
+
 // ---------- POST handler ----------
 export async function POST(req: NextRequest) {
   try {
@@ -1430,9 +1653,11 @@ export async function POST(req: NextRequest) {
     }
 
     let htmlString: string
-    // Property gets its own dedicated template
+    // Category-specific templates
     if (category === 'property') {
       htmlString = buildPropertyTemplate(templateData)
+    } else if (category === 'tech-digital') {
+      htmlString = buildTechDigitalTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
