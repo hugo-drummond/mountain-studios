@@ -1264,6 +1264,190 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Automotive Template (Polestar visual + Clutch structure) ----------
+function buildAutomotiveTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+  ]
+
+  // Nav — minimal, Polestar-style
+  const autoNavLinks: string[] = []
+  if (navFlags.navServices) autoNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:var(--text);text-decoration:none;font-weight:400">Services</a>`)
+  if (navFlags.navAbout) autoNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:var(--text);text-decoration:none;font-weight:400">About</a>`)
+  if (navFlags.navContact) autoNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:var(--text);text-decoration:none;font-weight:400">Contact</a>`)
+
+  const autoNav = `
+  <nav style="background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)">
+    <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:0.02em">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2.5rem">
+        ${autoNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;font-weight:400">&#9906; ${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed cinematic hero — Polestar style
+  const heroSection = `
+  <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.5) 80%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.75rem;max-width:550px">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:450px;line-height:1.7;margin-bottom:1.5rem">${content.heroSubtitle}</p>
+      <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaPrimary} &rarr;</a>
+    </div>
+  </section>`
+
+  // Section 2: 2-column service showcase — Polestar model cards style
+  const serviceShowcase = `
+  <section style="padding:0;background:var(--bg);border-bottom:1px solid var(--border)">
+    <div style="display:grid;grid-template-columns:1fr 1fr">
+      ${content.services.slice(0, 2).map((s, i) => `
+      <div style="padding:3rem 2.5rem;border-${i === 0 ? 'right' : 'left'}:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);margin-bottom:0.5rem">${s.name}</h3>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem">${s.description}</p>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;font-weight:500">${content.ctaSecondary || 'Learn more'} &rarr;</a>
+        <div style="margin-top:2rem;height:280px;overflow:hidden">
+          <img src="${serviceImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 3: Large CTA links — Polestar "Book a test drive" style
+  const ctaLinks = `
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1300px;margin:0 auto">
+      ${content.services.slice(0, 3).map(s => `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">${s.name}</h3>
+        <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: How it works — Clutch 3-step cards with photos
+  const processSection = content.processSteps ? `
+  <section id="services" style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.processSteps.map((step, i) => `
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="padding:1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+            <span style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${step.step}. ${step.title}</span>
+          </div>
+          <div style="position:relative;height:220px;overflow:hidden">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem;background:linear-gradient(transparent,rgba(0,0,0,0.7))">
+              <p style="font-family:var(--body-font);font-size:0.85rem;color:#fff;line-height:1.6">${step.description}</p>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Section 5: Why choose us — Clutch 4-column with left border accent
+  const whySection = `
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.aboutHeading}</h2>
+      <div style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
+        ${content.stats.slice(0, 4).map((s, i) => `
+        <div style="padding:2rem;${i < Math.min(content.stats.length, 4) - 1 ? 'border-right:1px solid var(--border)' : ''}">
+          <div style="border-left:3px solid var(--primary);padding-left:1rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">${s.label}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">${s.sublabel || s.value}</p>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Section 6: Full-bleed feature image — Polestar sustainability style
+  const featureImage = `
+  <section id="about" style="position:relative;min-height:60vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${galleryImgs[0] || serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.5) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;color:#fff;margin-bottom:0.5rem">${content.aboutHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:450px;line-height:1.7;margin-bottom:1.25rem">${content.aboutText.split('\n')[0]}</p>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.7rem 1.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaSecondary || 'Read more'} &rarr;</a>
+    </div>
+  </section>`
+
+  // Section 7: 3-column product/service cards — Clutch vehicle cards style
+  const productCards = `
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.services.map((s, i) => `
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="height:220px;overflow:hidden">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">${s.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">${s.description}</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // Testimonial
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border)">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">— ${content.testimonial.author}</p>
+    </div>
+  </section>` : ''
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
+
+${autoNav}
+
+  ${heroSection}
+  ${serviceShowcase}
+  ${ctaLinks}
+  ${processSection}
+  ${whySection}
+  ${featureImage}
+  ${productCards}
+  ${testimonialSection}
+  ${buildContactSection(content)}
+
+${buildFooter(businessName, content, 'dark')}
+
+</body>
+</html>`
+}
+
 // ---------- Pets Template (WOOOF–inspired) ----------
 function buildPetsTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -3092,6 +3276,8 @@ export async function POST(req: NextRequest) {
       htmlString = buildFoodHospitalityTemplate(templateData)
     } else if (category === 'pets') {
       htmlString = buildPetsTemplate(templateData)
+    } else if (category === 'automotive') {
+      htmlString = buildAutomotiveTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
