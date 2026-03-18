@@ -6,26 +6,28 @@
 - **Repo**: `hugodrummon/mountain-studios` (private)
 - **Dev server**: `localhost:3000`
 
-## Last Session (2026-03-17)
+## Last Session (2026-03-18)
 
 ### What was done
-1. **Merged all 8 batch content files** into `app/api/preview/generate/content.ts` — now contains **151 pre-written business types** across 15 categories. No Claude API fallback needed for any standard business type.
-2. **Batch files merged**: batch1 (food-hospitality, 15), batch2 (retail, 15), batch3 (health-wellness, 15), batch4 (fitness-pets-events, 22), batch5 (trades-construction, 17), batch6 (professional + home-services, 23), patch-batch7-missing (6), batch7 (education-auto-tech-other, 20 new), batch8 (creative-property, 18 including Print Shop/Signage)
-3. **New fields added to PresetContent interface**: `processSteps` (service variant), `heroBgImageQuery` (dark hero bg for service businesses), `icon` on services (mapped to Unicode symbols), `contactHours` (2-column contact section)
-4. **Icon mapping system**: 50+ Lucide/Feather icon names mapped to Unicode symbols for service template cards (e.g. `droplet` -> water drop, `zap` -> lightning, `shield` -> shield)
-5. **heroBgImageQuery support**: Service variant hero backgrounds now use targeted dark/moody Pexels queries instead of generic business type searches
-6. **About section layout fix**: Moved `aboutText` paragraphs from right column to left column, directly below `aboutMission`. Left column: heading + mission + text. Right column: stats grid + testimonial.
-7. **Squashed all WIP auto-save commits** into a single clean commit and force-pushed to GitHub.
+1. **Preview opens in new tab** — clicking the preview thumbnail now calls `window.open()` + `document.write()` to open the full HTML in a new browser tab. Removed the old `previewExpanded` state and full-screen modal overlay entirely.
+2. **Navbar logo wordmark restyled** — `buildNav()` logo: font-size 1.35→1.6rem, font-weight 700→800, letter-spacing 0.04→0.12em, added `text-transform: uppercase`. Footer logo matched to same style (1.4rem, 800, 0.1em, uppercase).
+3. **heroAccent contrast fix** — all 3 template variants: font-size 0.9→1.2rem, font-weight 500→600, added `text-shadow: 0 1px 3px rgba(0,0,0,0.4)` for readability over hero images.
+4. **aboutMission contrast fix** — changed from `color: var(--primary)` (low-contrast purple) to `color: var(--text)` (white on dark, charcoal on light). Bumped to 1.15rem, font-weight 600.
+5. **Hero/section eyebrows improved** — bumped to 0.85rem, font-weight 600. Hero eyebrows get text-shadow for image readability.
+6. **Architect moved** from `property` category to `creative` category in `page.tsx` business type list.
+7. **Started 15-category template redesign research** — collecting reference website structures per category to build 15 distinct category-level templates (replacing current 3 variants).
 
 ### What's working
 - All 3 template variants render correctly: **visual** (photo-heavy), **service** (icon cards + process steps), **portfolio** (gallery-focused)
 - 151/151 business types have pre-written content with targeted Pexels image queries per section
+- Preview opens directly in new browser tab on click
+- Navbar logo renders as a proper uppercase wordmark with heading font
+- heroAccent and aboutMission text now readable in all themes
 - Contact section: 2-column layout with trading hours (when `contactHours` exists), single-column centered (when absent)
 - Testimonial cards with star ratings render in about section
 - Badge pills, heroAccent, ctaNote all render in hero sections
 - Stats with sublabels render correctly
 - Service template: light theme (most categories) and dark theme (tech-digital only)
-- Download HTML and Save as PDF buttons functional
 
 ### What's partially working
 - `next build` fails on an unrelated route (`/api/admin/leads/[id]/send-brief`) due to missing `SUPABASE_URL` env var at build time — not related to preview system
@@ -34,16 +36,44 @@
 
 ## Next Steps (Priority Order)
 
-1. **Test all 15 categories** — generate a preview for one type from each category and verify layout, images, and content render correctly:
-   - Visual: Restaurant, Boutique/Fashion Store, Dentist, Personal Trainer, Dog Groomer, Event Planner
-   - Service: Plumber, Lawyer/Attorney, Cleaning Service, Music Teacher, Car Dealership, Web Developer/Designer, Other
-   - Portfolio: Photographer, Real Estate Agent
-2. **Mobile responsiveness** — all templates use CSS grid with fixed columns; needs media queries or responsive breakpoints for mobile/tablet
-3. **Portfolio variant `projectCaptions`** — batch8 creative types include `projectCaptions` array but verify the portfolio template actually renders them in the gallery
-4. **OG image support** — all presets have `ogImageQuery` but it's not used anywhere yet; could generate an OG meta tag
-5. **User-uploaded images** — verify user images override stock images correctly in all 3 variants
-6. **PDF generation quality** — test Save as PDF across different template variants
-7. **Build fix** — resolve `SUPABASE_URL` env var issue in admin route so `next build` succeeds
+### 1. Complete 15-category template redesign (IN PROGRESS)
+Collecting a reference website per category, extracting the homepage structure, then rebuilding each category as its own template function. This replaces the current 3-variant system with 15 distinct layouts.
+
+**Reference sites collected so far:**
+- **food-hospitality** — [crafto.themezaa.com/restaurant](https://crafto.themezaa.com/restaurant/): full-screen hero + stats row + split about + tabbed menu + card carousel + testimonials
+- **retail** — [taiping.co.nz](https://www.taiping.co.nz/): red accent nav + hero + stats row + 50/50 split about + 50/50 locations + 2x2 department cards + brand logos + footer
+- **health-wellness** — [iveeapp.com](https://www.iveeapp.com/): pastel blue palette + 50/50 hero + mission split + navy stats row + services accordion with card carousel + membership cards with bullet lists + team carousel + testimonial color cards + contact cards
+- **property** — [505statestreet.com](https://505statestreet.com/): minimal nav with pill buttons + full-bleed hero + centered statement + tabbed amenity galleries + floor plan tabs + day/night toggle + sustainability icons + CTA
+
+**Still need reference sites for (11 remaining):**
+- fitness-sport
+- pets
+- events-entertainment
+- creative
+- trades-construction
+- professional
+- home-services
+- education
+- automotive
+- tech-digital
+- other
+
+**Implementation plan:**
+1. Collect all 15 reference site structures
+2. Create `buildFoodHospitalityTemplate()`, `buildRetailTemplate()`, etc. — one function per category
+3. All share `buildNav()`, `buildFooter()`, `buildHead()`, `buildAboutSection()`, `buildContactSection()`
+4. Update POST handler to call category-specific builder
+5. Test one business type per category
+
+### 2. Mobile responsiveness
+All templates use CSS grid with fixed columns; needs media queries or responsive breakpoints for mobile/tablet.
+
+### 3. Other pending items
+- Portfolio variant `projectCaptions` — verify rendering in gallery
+- OG image support — presets have `ogImageQuery` but not used yet
+- User-uploaded images — verify override works in all variants
+- PDF generation quality — test across variants
+- Build fix — resolve `SUPABASE_URL` env var issue in admin route
 
 ## Blockers
 
@@ -65,9 +95,12 @@
 - Unicode symbols for service icons instead of SVG icon library: keeps HTML self-contained with zero external dependencies
 - Single HTML file output: entire preview is one self-contained HTML string with inline styles, Google Fonts link, and Pexels image URLs
 - `heroBgImageQuery` for service variants: uses dark/moody background images instead of forcing bright stock photos on businesses like plumbers and electricians
+- **15-category redesign**: replacing 3 generic variants with 15 category-specific templates inspired by real reference websites. Each category gets a distinct layout optimized for its business type (e.g. tabbed menus for food, membership cards for health, tabbed galleries for property).
+- **Architect** belongs in `creative` category (not `property`) — portfolio-style template suits architects better.
 
 ### Debugging
 - If images don't load: check `PEXELS_API_KEY` env var; falls back to picsum.photos placeholders
 - If content shows raw descriptions: JSON parse failed; check `max_tokens` (currently 768) and JSON extraction retry logic
 - All `npx tsc` errors are from `node_modules` — ignore them; our code compiles clean
 - `next build` failure is from `/api/admin/leads/[id]/send-brief` needing `SUPABASE_URL` — unrelated to preview system
+- **20MB message limit**: when sending many screenshots in a single Claude Code session, total message size can exceed 20MB. Compress screenshots or use WebFetch URLs instead.
