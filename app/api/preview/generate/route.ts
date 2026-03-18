@@ -1264,6 +1264,359 @@ ${propFooter}
 </html>`
 }
 
+// ---------- Events-Entertainment Template (Zola–inspired) ----------
+function buildEventsTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+
+  const evtBg = '#ffffff'
+  const evtText = '#1a1a1a'
+  const evtMuted = '#6b6b6b'
+  const evtTeal = '#2a6b6b'
+
+  // Nav
+  const evtNavLinks: string[] = []
+  if (navFlags.navServices) evtNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${evtText};text-decoration:none;font-weight:400">Services</a>`)
+  if (navFlags.navAbout) evtNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${evtText};text-decoration:none;font-weight:400">About</a>`)
+  if (navFlags.navContact) evtNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${evtText};text-decoration:none;font-weight:400">Contact</a>`)
+
+  const evtNav = `
+  <nav style="background:${evtBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${evtText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${evtNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Full-bleed hero — centered text on photo
+  const heroSection = `
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
+    </div>
+    <div style="position:relative;text-align:center;max-width:800px;padding:0 2rem">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.25rem"><em>${content.tagline}</em></h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:2rem;max-width:550px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${evtText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:transparent;color:#fff;border:1px solid #fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: Service grid — 3-column cards with arrow links + photos
+  const serviceGrid = `
+  <section id="services" style="padding:80px 2rem;background:${evtBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:1fr 3fr;gap:0;border:1px solid rgba(0,0,0,0.08);border-radius:16px;overflow:hidden">
+        <div style="padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(0,0,0,0.08)">
+          <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:0.75rem"><em>${content.servicesHeading}</em></h2>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${evtMuted};line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+          ${content.services.map((s, i) => `
+          <div style="border-left:${i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};padding:1.5rem">
+            <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
+            <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
+            <div style="border-radius:12px;overflow:hidden;height:200px">
+              <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: Alternating 50/50 feature sections — teal bg blocks
+  const featureSections = content.services.slice(0, 2).map((s, i) => `
+  <section style="background:${i % 2 === 0 ? evtTeal : evtBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:70vh">
+      ${i % 2 === 0 ? `
+      <div style="overflow:hidden">
+        <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem">${s.description}</p>
+        <div style="display:flex;gap:0.75rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:#fff;color:${evtText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid #fff;color:#fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+        </div>
+      </div>` : `
+      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${evtMuted};line-height:1.7;margin-bottom:2rem">${s.description}</p>
+        <div style="display:flex;gap:0.75rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+        </div>
+      </div>
+      <div style="overflow:hidden">
+        <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>`}
+    </div>
+  </section>`).join('')
+
+  // Section 4: About / expert advisors — photo left, text right
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:${evtBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
+      <div style="border-radius:16px;overflow:hidden;height:450px">
+        <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none;margin-top:1rem">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 5: Category icon grid
+  const categoryGrid = content.services.length > 0 ? `
+  <section style="padding:60px 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};margin-bottom:2.5rem">${content.galleryHeading || content.servicesHeading}</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:2.5rem;justify-content:center">
+        ${content.services.map(s => `
+        <div style="text-align:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:${evtTeal};display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem">
+            <span style="font-size:1.2rem;color:#fff">${s.icon || '&#9733;'}</span>
+          </div>
+          <span style="font-family:var(--body-font);font-size:0.8rem;color:${evtText}">${s.name}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // Testimonial
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:60px 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:700px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${evtText};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:${evtMuted};font-weight:500">— ${content.testimonial.author}</p>
+    </div>
+  </section>` : ''
+
+  // Footer
+  const evtFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.08)">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:3rem">
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Services</h4>
+        ${content.services.map(s => `<a href="#services" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">About</h4>
+        <a href="#about" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Our Story</a>
+        <a href="#contact" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Support</h4>
+        <a href="#" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
+        <a href="#" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${evtText};margin-bottom:0.5rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${content.heroSubtitle}</p>
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.06);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:${evtMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    </div>
+  </footer>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${evtBg};
+      --bg-alt: #f5f5f5;
+      --card-bg: ${evtBg};
+      --text: ${evtText};
+      --text-muted: ${evtMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${evtNav}
+
+  ${heroSection}
+  ${serviceGrid}
+  ${featureSections}
+  ${aboutSection}
+  ${categoryGrid}
+  ${testimonialSection}
+  ${buildContactSection(content)}
+
+${evtFooter}
+
+</body>
+</html>`
+}
+
+// ---------- Creative Template (Zola–inspired, portfolio-focused) ----------
+function buildCreativeTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+  ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
+    stockImages.cards[6],
+  ]
+
+  const crBg = '#ffffff'
+  const crText = '#1a1a1a'
+  const crMuted = '#6b6b6b'
+  const crAccent = '#2a6b6b'
+
+  // Nav
+  const crNavLinks: string[] = []
+  if (navFlags.navServices) crNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Work</a>`)
+  if (navFlags.navGallery) crNavLinks.push(`<a href="#gallery" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Portfolio</a>`)
+  if (navFlags.navAbout) crNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">About</a>`)
+  if (navFlags.navContact) crNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:none">Contact</a>`)
+
+  const crNav = `
+  <nav style="background:${crBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${crText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${crNavLinks.join('\n        ')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${crText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+  </nav>`
+
+  // Section 1: Split hero — photo left, large serif heading right
+  const heroSection = `
+  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:85vh;background:${crBg}">
+    <div style="overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem;background:${crAccent}">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.5rem"><em>${content.tagline}</em></h1>
+      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:450px">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:0.75rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${crText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid #fff;color:#fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>`
+
+  // Section 2: Portfolio gallery — asymmetric grid
+  const gallerySection = `
+  <section id="gallery" style="padding:80px 2rem;background:${crBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${crText};margin-bottom:3rem"><em>${content.galleryHeading}</em></h2>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+        <div style="border-radius:12px;overflow:hidden;height:400px">
+          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="border-radius:12px;overflow:hidden;height:400px">
+          <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1.5rem">
+        <div style="border-radius:12px;overflow:hidden;height:350px">
+          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="border-radius:12px;overflow:hidden;height:350px">
+          <img src="${galleryImgs[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // Section 3: Services list with arrow links
+  const servicesList = `
+  <section id="services" style="padding:80px 2rem;background:${crBg}">
+    <div style="max-width:1000px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${crText};margin-bottom:3rem"><em>${content.servicesHeading}</em></h2>
+      ${content.services.map(s => `
+      <div style="display:flex;align-items:start;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">
+        <div>
+          <h3 style="font-family:var(--body-font);font-size:1rem;font-weight:600;color:${crText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};line-height:1.7">${s.description}</p>
+        </div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  // Section 4: About — 50/50
+  const aboutSection = `
+  <section id="about" style="background:${crAccent}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:60vh">
+      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:#fff;line-height:1.3;margin-bottom:1.5rem"><em>${content.aboutHeading}</em></h2>
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+      </div>
+      <div style="overflow:hidden">
+        <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>`
+
+  // Stats
+  const statsSection = `
+  <section style="padding:60px 2rem;background:${crBg}">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:400;color:${crText}">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted}">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${crBg};
+      --bg-alt: #f5f5f5;
+      --card-bg: ${crBg};
+      --text: ${crText};
+      --text-muted: ${crMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+${crNav}
+
+  ${heroSection}
+  ${gallerySection}
+  ${servicesList}
+  ${aboutSection}
+  ${statsSection}
+  ${buildContactSection(content)}
+
+${buildFooter(businessName, content, 'light')}
+
+</body>
+</html>`
+}
+
 // ---------- Fitness-Sport Template (EverybodyFights–inspired) ----------
 function buildFitnessTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
@@ -3466,6 +3819,10 @@ export async function POST(req: NextRequest) {
       htmlString = buildAutomotiveTemplate(templateData)
     } else if (category === 'fitness-sport') {
       htmlString = buildFitnessTemplate(templateData)
+    } else if (category === 'events-entertainment') {
+      htmlString = buildEventsTemplate(templateData)
+    } else if (category === 'creative') {
+      htmlString = buildCreativeTemplate(templateData)
     } else {
       switch (variant) {
         case 'visual':
