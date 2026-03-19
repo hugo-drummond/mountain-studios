@@ -565,15 +565,6 @@ function buildFooter(businessName: string, content: GeneratedContent, theme: The
 function buildAboutSection(content: GeneratedContent): string {
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
 
-  const testimonialHtml = content.testimonial ? `
-          <div style="margin-top:2rem;padding:1.5rem;background:var(--card-bg);border-radius:12px;border:1px solid var(--border)">
-            <div style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:0.75rem">"${content.testimonial.quote}"</div>
-            <div style="display:flex;align-items:center;gap:0.5rem">
-              <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">${content.testimonial.author}</div>
-              ${content.testimonial.rating ? `<div style="color:#f59e0b;font-size:0.8rem">${'★'.repeat(content.testimonial.rating)}</div>` : ''}
-            </div>
-          </div>` : ''
-
   return `
     <section id="about" style="padding:100px 0;background:var(--bg-alt)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
@@ -591,8 +582,21 @@ function buildAboutSection(content: GeneratedContent): string {
                 ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.15rem">${s.sublabel}</div>` : ''}
               </div>
             `).join('')}
-          </div>${testimonialHtml}
+          </div>
         </div>
+      </div>
+    </section>`
+}
+
+function buildTestimonialSection(content: GeneratedContent): string {
+  if (!content.testimonial) return ''
+  return `
+    <section style="padding:80px 0;background:var(--bg)">
+      <div style="max-width:700px;margin:0 auto;padding:0 2rem;text-align:center">
+        <div style="font-size:4rem;line-height:1;color:var(--primary);margin-bottom:1.5rem">&#10077;</div>
+        <p style="font-family:var(--heading-font);font-size:clamp(1.15rem,2vw,1.5rem);font-weight:400;color:var(--text);line-height:1.6;font-style:italic;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
+        <p style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;margin-bottom:0.75rem">— ${content.testimonial.author}</p>
+        ${content.testimonial.rating ? `<div style="color:#f59e0b;font-size:1rem;letter-spacing:0.1em">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
       </div>
     </section>`
 }
@@ -758,6 +762,7 @@ ${buildNav(businessName, content, navFlags)}
   ${servicesSection}
   ${gallerySection}
   ${buildAboutSection(content)}
+  ${buildTestimonialSection(content)}
   ${buildContactSection(content)}
 
 ${buildFooter(businessName, content)}
@@ -906,6 +911,7 @@ ${buildNav(businessName, content, navFlags)}
   ${servicesSection}
   ${processSection}
   ${buildAboutSection(content)}
+  ${buildTestimonialSection(content)}
   ${buildContactSection(content)}
 
 ${buildFooter(businessName, content, theme)}
@@ -1040,6 +1046,7 @@ ${buildNav(businessName, content, navFlags)}
   ${servicesSection}
   ${gallerySection}
   ${buildAboutSection(content)}
+  ${buildTestimonialSection(content)}
   ${buildContactSection(content)}
 
 ${buildFooter(businessName, content)}
