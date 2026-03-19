@@ -2112,7 +2112,7 @@ function buildFitnessTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 2: Class types — icon grid
+  // Section 2: Class types — name only, no icons
   const classTypes = `
   <section id="services" style="padding:80px 2rem;background:${fitBg};text-align:center">
     <div style="max-width:1200px;margin:0 auto">
@@ -2120,8 +2120,11 @@ function buildFitnessTemplate(data: TemplateData): string {
       <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2.5rem">
         ${content.services.map(s => `
         <div style="text-align:center">
-          <div style="font-size:2.5rem;color:${fitText};margin-bottom:1rem;line-height:1">${s.icon || '&#9883;'}</div>
           <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:${fitMuted};line-height:1.6;margin-top:0.5rem">${s.description}</p>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
+            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:${fitMuted};text-transform:uppercase;letter-spacing:0.05em">${t}</span>`).join('')}
+          </div>
         </div>`).join('')}
       </div>
     </div>
@@ -2172,17 +2175,25 @@ function buildFitnessTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: About + CTA
-  const aboutSection = `
+  // Section 6: HYP-style packages — 3 cards with bg images
+  const packagesSection = `
   <section id="about" style="padding:80px 2rem;background:${fitBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${fitMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;color:${fitText};text-decoration:underline;text-underline-offset:4px;margin-top:0.5rem">${content.ctaSecondary || 'Learn More'}</a>
-      </div>
-      <div style="border-radius:8px;overflow:hidden;height:400px">
-        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitOrange};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.galleryHeading || 'Packages'}</h2>
+      <div style="width:50px;height:3px;background:${fitOrange};margin-bottom:3rem"></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.services.slice(0, 3).map((s, i) => `
+        <div style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+          <div style="position:absolute;inset:0">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
+          </div>
+          <div style="position:relative;padding:2rem">
+            <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:${fitText};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:1.25rem">${s.description}</p>
+            ${s.tags.map(t => `<div style="font-family:var(--body-font);font-size:0.8rem;color:${fitText};padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;${t}</div>`).join('')}
+          </div>
+        </div>`).join('')}
       </div>
     </div>
   </section>`
@@ -2227,11 +2238,11 @@ function buildFitnessTemplate(data: TemplateData): string {
 ${fitNav}
 
   ${heroSection}
-  ${classTypes}
   ${awardsStrip}
+  ${classTypes}
   ${locationCards}
   ${gallerySection}
-  ${aboutSection}
+  ${packagesSection}
   ${buildContactSection(content)}
 
 ${fitFooter}

@@ -4095,7 +4095,7 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
-    "heroImageQuery": "gym interior equipment weights machines treadmills rows",
+    "heroImageQuery": "gym class group training energetic people working out weights barbell",
     "ogImageQuery": "gym interior weights machines equipment modern",
     "aboutImageQuery": "gym floor equipment weights benches mirrors modern",
     "galleryImageQueries": [
