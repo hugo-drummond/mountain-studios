@@ -826,14 +826,16 @@ function buildServiceTemplate(data: TemplateData): string {
       </div>
     </section>`
 
-  // "How It Works" process section instead of gallery
+  // "How It Works" process section — hidden for professional categories where it feels generic
+  const showProcessSection = ['trades-construction', 'home-services', 'automotive', 'education', 'tech-digital', 'fitness-sport', 'health-wellness', 'other'].includes(businessCategory)
+
   const steps = content.processSteps || [
     { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
     { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
     { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
   ]
 
-  const processSection = `
+  const processSection = !showProcessSection ? '' : `
     <section id="gallery" style="padding:100px 0;background:var(--bg)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
@@ -1578,21 +1580,8 @@ function buildProfessionalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 5: Process steps / how we work
-  const processSection = content.processSteps ? `
-  <section style="padding:80px 2rem;background:${proBg}">
-    <div style="max-width:1000px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${proText};margin-bottom:3rem;font-style:italic">${content.servicesHeading || 'How We Work'}</h2>
-      ${content.processSteps.map((step, i) => `
-      <div style="display:flex;gap:2rem;align-items:start;padding:2rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.08)' : ''}">
-        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:${proRed};flex-shrink:0;width:40px">${step.step}.</div>
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${proText};margin-bottom:0.5rem">${step.title}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${proMuted};line-height:1.7">${step.description}</p>
-        </div>
-      </div>`).join('')}
-    </div>
-  </section>` : ''
+  // Section 5: Process steps — suppressed for professional category (feels generic for lawyers, accountants, etc.)
+  const processSection = ''
 
   // Testimonial
   const testimonialSection = content.testimonial ? `
