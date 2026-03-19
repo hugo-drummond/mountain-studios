@@ -2314,27 +2314,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 4: How it works — Clutch 3-step cards with photos
-  const processSection = content.processSteps ? `
-  <section id="services" style="padding:80px 2rem;background:var(--bg)">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.processSteps.map((step, i) => `
-        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
-          <div style="padding:1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
-            <span style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${step.step}. ${step.title}</span>
-          </div>
-          <div style="position:relative;height:220px;overflow:hidden">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem;background:linear-gradient(transparent,rgba(0,0,0,0.7))">
-              <p style="font-family:var(--body-font);font-size:0.85rem;color:#fff;line-height:1.6">${step.description}</p>
-            </div>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>` : ''
+  // Section 4: How it works — removed for automotive (process steps don't suit car dealerships)
 
   // Section 5: Why choose us — Clutch 4-column with left border accent
   const whySection = `
@@ -2367,7 +2347,8 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 7: 3-column product/service cards — Clutch vehicle cards style
+  // Section 7: 3-column product/service cards — uses unique images per card (service imgs + gallery imgs)
+  const allCardImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
   const productCards = `
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
@@ -2376,7 +2357,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${content.services.map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
           <div style="height:220px;overflow:hidden">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${allCardImgs[i % allCardImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="padding:1.5rem">
             <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">${s.name}</h3>
@@ -2407,7 +2388,6 @@ ${autoNav}
   ${heroSection}
   ${serviceShowcase}
   ${ctaLinks}
-  ${processSection}
   ${whySection}
   ${featureImage}
   ${productCards}

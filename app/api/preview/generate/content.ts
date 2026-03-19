@@ -10174,7 +10174,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Service History"
               ],
               "icon": "truck",
-              "serviceImageQuery": "used car dealership quality vehicles Cape Town professional"
+              "serviceImageQuery": "white SUV car front view showroom clean background"
           },
           {
               "name": "In-House Vehicle Finance",
@@ -10184,7 +10184,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Bank Approved"
               ],
               "icon": "credit-card",
-              "serviceImageQuery": "car dealership finance professional vehicle Cape Town"
+              "serviceImageQuery": "blue sedan car parked side view clean background"
           },
           {
               "name": "Trade-Ins & Vehicle Valuations",
@@ -10194,7 +10194,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Valuation"
               ],
               "icon": "repeat",
-              "serviceImageQuery": "car trade in valuation dealership professional Cape Town"
+              "serviceImageQuery": "red sports car front angle clean background"
           }
       ],
       "galleryHeading": "Current Stock",
@@ -10248,15 +10248,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "premium, trustworthy, clean",
-      "heroImageQuery": "used car dealership Cape Town quality vehicles professional",
-      "heroBgImageQuery": "car dealership vehicles dark showroom background professional",
-      "ogImageQuery": "used car dealership Cape Town quality vehicles lot",
-      "aboutImageQuery": "car dealership professional team Cape Town showroom",
+      "heroImageQuery": "luxury car showroom dark interior modern dealership",
+      "heroBgImageQuery": "car showroom dark background luxury vehicles row",
+      "ogImageQuery": "car dealership showroom row of vehicles",
+      "aboutImageQuery": "car dealership team professional handshake",
       "galleryImageQueries": [
-          "used car dealership lot Cape Town quality vehicles",
-          "car finance approval dealership professional",
-          "vehicle trade in valuation Cape Town dealer",
-          "car dealership showroom interior Cape Town professional"
+          "black luxury SUV parked front view",
+          "silver hatchback car side view clean",
+          "white pickup truck front angle outdoor",
+          "grey BMW sedan parked side view"
       ]
   },
   "App Developer": {
