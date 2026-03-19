@@ -1609,21 +1609,40 @@ function buildProfessionalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 4: Stats / credentials
-  const statsSection = `
-  <section style="padding:60px 2rem;background:${proBg};border-top:1px solid rgba(255,255,255,0.08)">
-    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:3rem;text-align:center">
-      ${content.stats.slice(0, 4).map(s => `
-      <div>
-        <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:400;color:${proText}">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted}">${s.label}</div>
-        ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:${proMuted};opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+  // Werksmans-style 2x2 greyscale image grid with accent label pills + stats bar
+  const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
+  const tileImgs = [
+    stockImages.cards[3] || `https://picsum.photos/seed/${businessName}-tile0/600/400`,
+    stockImages.cards[4] || `https://picsum.photos/seed/${businessName}-tile1/600/400`,
+    stockImages.cards[5] || `https://picsum.photos/seed/${businessName}-tile2/600/400`,
+    stockImages.cards[6] || `https://picsum.photos/seed/${businessName}-tile3/600/400`,
+  ]
+  const pR = parseInt(primaryColor.slice(1, 3), 16) || 0
+  const pG = parseInt(primaryColor.slice(3, 5), 16) || 0
+  const pB = parseInt(primaryColor.slice(5, 7), 16) || 0
+  const statIcons = ['&#9878;', '&#9734;', '&#9823;']
+
+  const imageGridSection = `
+  <section style="padding:0;background:${proBg}">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      ${tileImgs.map((img, i) => `
+      <div style="position:relative;height:280px;overflow:hidden">
+        <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)" />
+        <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#1a1a1a;padding:0.65rem 1.25rem;background:rgba(${pR},${pG},${pB},0.85)">${tileLabels[i]}</div>
       </div>`).join('')}
     </div>
+    <div style="background:#333;border-top:3px solid var(--primary);padding:60px 2rem">
+      <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:3rem;text-align:center">
+        ${content.stats.slice(0, 3).map((s, i) => `
+        <div>
+          <div style="font-size:2rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
+          <div style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${proText};margin-bottom:0.35rem">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText}">${s.label}</div>
+          ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.8rem;color:${proMuted};margin-top:0.25rem">${s.sublabel}</div>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>
   </section>`
-
-  // Section 5: Process steps — suppressed for professional category (feels generic for lawyers, accountants, etc.)
-  const processSection = ''
 
   // Testimonial
   const testimonialSection = content.testimonial ? `
@@ -1686,10 +1705,9 @@ function buildProfessionalTemplate(data: TemplateData): string {
 ${proNav}
 
   ${heroSection}
+  ${imageGridSection}
   ${serviceCards}
   ${peopleSection}
-  ${statsSection}
-  ${processSection}
   ${testimonialSection}
   ${fullImage}
   ${buildContactSection(content)}
