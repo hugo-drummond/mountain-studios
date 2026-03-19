@@ -1768,7 +1768,9 @@ function buildEducationTemplate(data: TemplateData): string {
   // Section 3: 3-column service cards with icons + arrows
   const serviceGrid = `
   <section id="services" style="padding:60px 2rem;background:${eduBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:2rem">${content.servicesHeading}</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
       ${content.services.map(s => `
       <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1rem">
         <div style="font-size:1.5rem;flex-shrink:0">${s.icon || '&#9998;'}</div>
@@ -1779,17 +1781,10 @@ function buildEducationTemplate(data: TemplateData): string {
         <span style="font-size:1.2rem;color:${eduMuted}">&rsaquo;</span>
       </div>`).join('')}
     </div>
-  </section>`
-
-  // Section 4: Giant statement
-  const statementSection = `
-  <section style="padding:100px 2rem;background:${eduBg};text-align:center">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1">${content.aboutHeading}</h2>
     </div>
   </section>`
 
-  // Section 5: 3-step process cards — numbered green badges + photos
+  // Section 4: 3-step process cards — numbered badges + photos
   const processSteps = content.processSteps || [
     { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
     { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
@@ -1798,7 +1793,7 @@ function buildEducationTemplate(data: TemplateData): string {
   const processSection = `
   <section style="padding:80px 2rem;background:${eduBg}">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${eduText};margin-bottom:3rem">${content.servicesHeading || 'How it works:'}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${eduText};margin-bottom:3rem">Get your child back on track</h2>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${processSteps.slice(0, 3).map((step, i) => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:2rem;display:flex;flex-direction:column">
@@ -1848,12 +1843,20 @@ function buildEducationTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 8: Pink CTA banner
-  const ctaBanner = `
-  <section style="padding:100px 2rem;background:${eduPink};text-align:center">
-    <div style="max-width:900px;margin:0 auto">
+  // Section 8: Pink CTA banner with contact form inside
+  const eduContactSection = `
+  <section id="contact" style="padding:80px 2rem;background:${eduPink}">
+    <div style="max-width:700px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1rem">${content.contactHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${eduText};opacity:0.7">${content.heroSubtitle}</p>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${eduText};opacity:0.7;margin-bottom:3rem">${content.heroSubtitle}</p>
+      <form style="display:flex;flex-direction:column;gap:1.25rem;text-align:left" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
+          <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
+        </div>
+        <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none;resize:none"></textarea>
+        <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:#fff;color:${eduText};border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer">Send Message</button>
+      </form>
     </div>
   </section>`
 
@@ -1874,12 +1877,10 @@ ${eduNav}
   ${heroSection}
   ${statsSection}
   ${serviceGrid}
-  ${statementSection}
   ${processSection}
   ${testimonialSection}
   ${aboutSection}
-  ${buildContactSection(content)}
-  ${ctaBanner}
+  ${eduContactSection}
 
 ${buildFooter(businessName, content, 'light')}
 
