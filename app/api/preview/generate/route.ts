@@ -1784,26 +1784,31 @@ function buildEducationTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 4: 3-step process cards — numbered badges + photos
+  // Section 4: TeachMe2-style 3-step process — circles + dashed connector + text
   const processSteps = content.processSteps || [
     { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
     { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
     { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
   ]
+  const stepColors = [primaryColor, secondaryColor || '#f5a623', '#6c63ff']
   const processSection = `
   <section style="padding:80px 2rem;background:${eduBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${eduText};margin-bottom:3rem">Get your child back on track</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${processSteps.slice(0, 3).map((step, i) => `
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:2rem;display:flex;flex-direction:column">
-          <div style="width:36px;height:36px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.9rem;font-weight:700;margin-bottom:1.5rem">${step.step}</div>
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:${eduText};margin-bottom:0.75rem">${step.title}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7;margin-bottom:1.5rem;flex:1">${step.description}</p>
-          <div style="border-radius:12px;overflow:hidden;height:200px">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
+    <div style="max-width:1000px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem"><span style="color:var(--primary)">3 Simple steps</span> to get your child back on track</h2>
+      <!-- Circle indicators with dashed connectors -->
+      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:3rem">
+        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="flex:1;max-width:180px;border-top:3px dashed #ccc;margin:0 -4px"></div>` : ''}<div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0;position:relative;z-index:1">${step.step}</div>`).join('')}
+      </div>
+      <!-- Step content -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+        ${processSteps.slice(0, 3).map(step => `
+        <div style="text-align:center">
+          <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${eduText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7">${step.description}</p>
         </div>`).join('')}
+      </div>
+      <div style="margin-top:3rem">
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:1rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
     </div>
   </section>`
