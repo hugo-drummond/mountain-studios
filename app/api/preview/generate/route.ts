@@ -1795,16 +1795,14 @@ function buildEducationTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${eduBg}">
     <div style="max-width:1000px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> To Get Your Child Back On Track</h2>
-      <!-- Circle indicators with dashed connectors -->
-      <div style="display:flex;align-items:center;justify-content:center;margin-bottom:3rem">
-        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="flex:1;max-width:180px;border-top:3px dashed #ccc;margin:0 -4px"></div>` : ''}<div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0;position:relative;z-index:1">${step.step}</div>`).join('')}
-      </div>
-      <!-- Step content -->
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-        ${processSteps.slice(0, 3).map(step => `
-        <div style="text-align:center">
-          <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${eduText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7">${step.description}</p>
+      <!-- Steps: circle + connector + text in one grid -->
+      <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
+        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed #ccc;margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
+          <div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
+          <div>
+            <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${eduText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
+            <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7">${step.description}</p>
+          </div>
         </div>`).join('')}
       </div>
       <div style="margin-top:3rem">
