@@ -831,8 +831,9 @@ function buildServiceTemplate(data: TemplateData): string {
       </div>
     </section>`
 
-  // "How It Works" process section — hidden for professional categories where it feels generic
-  const showProcessSection = ['trades-construction', 'home-services', 'automotive', 'education', 'tech-digital', 'fitness-sport', 'health-wellness', 'other'].includes(businessCategory)
+  // Professional categories get a Werksmans-inspired image grid + stats bar instead of "How It Works"
+  const isProfessionalCategory = businessCategory === 'professional'
+  const showProcessSection = !isProfessionalCategory
 
   const steps = content.processSteps || [
     { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
@@ -840,7 +841,41 @@ function buildServiceTemplate(data: TemplateData): string {
     { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
   ]
 
-  const processSection = !showProcessSection ? '' : `
+  // Werksmans-style image grid + stats bar for professional types
+  const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
+  const tileImgs = [
+    stockImages.cards[3] || stockImages.hero,
+    stockImages.cards[4] || stockImages.cards[0],
+    stockImages.cards[5] || stockImages.cards[1],
+    stockImages.cards[6] || stockImages.cards[2],
+  ]
+  const statIcons = ['&#9878;', '&#9734;', '&#9823;'] // scales, star, person — generic professional
+
+  const professionalSection = !isProfessionalCategory ? '' : `
+    <section style="padding:0;background:var(--bg)">
+      <!-- 2x2 greyscale image grid with accent label pills -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        ${tileImgs.map((img, i) => `
+        <div style="position:relative;height:280px;overflow:hidden">
+          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)" />
+          <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#1a1a1a;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
+        </div>`).join('')}
+      </div>
+      <!-- Stats bar -->
+      <div style="background:var(--bg-alt);border-top:3px solid var(--primary);padding:60px 2rem">
+        <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:3rem;text-align:center">
+          ${content.stats.slice(0, 3).map((s, i) => `
+          <div>
+            <div style="font-size:2rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
+            <div style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);margin-bottom:0.35rem">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${s.label}</div>
+            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem">${s.sublabel}</div>` : ''}
+          </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const processSection = isProfessionalCategory ? professionalSection : !showProcessSection ? '' : `
     <section id="gallery" style="padding:100px 0;background:var(--bg)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
