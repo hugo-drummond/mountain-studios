@@ -1090,7 +1090,7 @@ ${buildFooter(businessName, content)}
 </html>`
 }
 
-// ---------- Property Template (505 State Street–inspired) ----------
+// ---------- Property Template (v0 Real Estate–inspired) ----------
 function buildPropertyTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -1102,223 +1102,247 @@ function buildPropertyTemplate(data: TemplateData): string {
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
   ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
-    stockImages.cards[6],
-  ]
 
-  // Property nav uses pill buttons instead of plain links
-  const propNavLinks: string[] = []
-  if (navFlags.navServices) propNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">Services</a>`)
-  if (navFlags.navGallery) propNavLinks.push(`<a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">Gallery</a>`)
-  if (navFlags.navAbout) propNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.5rem 1.25rem;border:1px solid rgba(255,255,255,0.35);border-radius:999px;color:#fff;text-decoration:none;transition:all 0.2s">About</a>`)
+  const prBg = '#ffffff'
+  const prAlt = '#faf7f4'
+  const prText = '#1a1a2e'
+  const prMuted = '#64748b'
+  const prCopper = primaryColor || '#b5651d'
 
-  const propNav = `
-  <nav style="position:absolute;top:0;left:0;right:0;z-index:100;padding:0 2rem">
-    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:0.75rem">
-        ${propNavLinks.join('\n        ')}
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.5rem 1.25rem;background:#fff;color:#111;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
+  // Nav — serif logo + uppercase tracked links + phone + copper CTA
+  const prNavLinks: string[] = []
+  prNavLinks.push(`<a href="#properties" style="font-family:var(--body-font);font-size:0.8rem;color:${prText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Properties</a>`)
+  if (navFlags.navAbout) prNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.8rem;color:${prText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">About</a>`)
+  if (navFlags.navServices) prNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.8rem;color:${prText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Services</a>`)
+  if (navFlags.navContact) prNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;color:${prText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Contact</a>`)
+
+  const prNav = `
+  <nav style="background:${prBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${prText};text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        ${prNavLinks.join('\n        ')}
+      </div>
+      <div style="display:flex;align-items:center;gap:1.5rem">
+        <span style="font-family:var(--body-font);font-size:0.85rem;color:${prText};font-weight:500">&#9742; 021 000 0000</span>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${prCopper};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
     </div>
   </nav>`
 
-  // Section 1: Full-bleed hero with headline overlay
+  // Section 1: Full-bleed hero — tracked eyebrow, huge serif business name, subtitle, 2 CTAs
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden">
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.5) 70%,rgba(0,0,0,0.7) 100%)"></div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45)"></div>
     </div>
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 2rem 6rem;width:100%">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:400;color:#fff;line-height:1.1;margin-bottom:1.25rem;max-width:700px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.75);max-width:500px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.5);border-radius:999px;text-decoration:none;transition:all 0.2s;display:inline-block">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Section 2: Full-width atmospheric photo
-  const atmosphericPhoto = `
-  <section style="height:70vh;overflow:hidden">
-    <img src="${galleryImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-  </section>`
-
-  // Section 3: Large statement text
-  const statementText = content.aboutMission || content.heroSubtitle
-  const statementSection = `
-  <section style="padding:100px 2rem;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto">
-      <p style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.35;max-width:900px">${statementText}</p>
+    <div style="position:relative;max-width:900px;padding:0 2rem">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">${content.heroEyebrow || 'Premium Real Estate Services'}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.02em">${businessName}</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 2rem;line-height:1.7">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center">
+        <a href="#properties" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">View Properties &rarr;</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:${prCopper};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+      </div>
     </div>
   </section>`
 
-  // Section 4: Services — 60/40 split (photo left, text right)
-  const featuresSection = `
-  <section id="services" style="padding:100px 0;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:start;margin-bottom:5rem">
-        <div style="overflow:hidden;border-radius:0;height:600px">
+  // Section 2: About — photo left with floating stat badge, eyebrow + heading + paragraphs + stats right
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const aboutSection = `
+  <section id="about" style="padding:80px 2rem;background:${prBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div style="position:relative">
+        <div style="border-radius:16px;overflow:hidden;height:550px">
           <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
-        <div style="padding-top:2rem">
-          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-weight:600">${content.heroEyebrow}</p>
-          <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1.5rem">${content.servicesHeading}</h2>
-          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:2rem">${content.services[0]?.description || ''}</p>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.75rem;background:var(--text);color:var(--bg);border-radius:999px;text-decoration:none;display:inline-block;transition:opacity 0.2s">More Details</a>
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:${prCopper};border-radius:12px;padding:1.5rem 2rem;color:#fff">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;line-height:1">${content.stats[0]?.value || '15+'}</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem">${content.stats[0]?.label || 'Years of Excellence'}</div>
         </div>
       </div>
-      ${content.services.slice(1).map((s, i) => `
-      <div style="display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};gap:4rem;align-items:start;margin-bottom:${i < content.services.length - 2 ? '5rem' : '0'}">
-        ${i % 2 === 0 ? `
-        <div style="padding-top:2rem">
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.35rem 0.85rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
-          </div>
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${prMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <div style="display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
+          ${content.stats.slice(0, 4).map(s => `
+          <div>
+            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${prCopper}">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.label}</div>
+          </div>`).join('')}
         </div>
-        <div style="overflow:hidden;height:450px">
-          <img src="${serviceImgs[(i + 1) % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>` : `
-        <div style="overflow:hidden;height:450px">
-          <img src="${serviceImgs[(i + 1) % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="padding-top:2rem">
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:1rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.35rem 0.85rem;border-radius:999px;border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
-          </div>
-        </div>`}
-      </div>`).join('')}
+      </div>
     </div>
   </section>`
 
-  // Section 5: Lifestyle statement image with text overlay
-  const lifestyleSection = `
-  <section style="position:relative;height:80vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35)"></div>
-    </div>
-    <div style="position:relative;text-align:center;max-width:900px;padding:0 2rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:#fff;line-height:1.15">${content.aboutHeading}</h2>
-    </div>
-  </section>`
-
-  // Section 6: Stats row
-  const statsSection = `
-  <section style="padding:80px 2rem;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center">
-      ${content.stats.slice(0, 4).map(s => `
-        <div style="text-align:center;flex:1">
-          <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--text);margin-bottom:0.5rem">${s.value}</div>
-          <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em">${s.label}</div>
-          ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+  // Section 3: Featured Properties — eyebrow + heading + 3 property cards with "For Sale" badge
+  const propertiesSection = `
+  <section id="properties" style="padding:80px 2rem;background:${prAlt}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Our Portfolio</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.galleryHeading || 'Featured Properties'}</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        ${content.services.slice(0, 3).map((s, i) => `
+        <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+          <div style="position:relative;height:250px;overflow:hidden">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
+          </div>
+          <div style="padding:1.5rem">
+            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
+              <span style="color:${prMuted};font-size:0.85rem">&#9906;</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.tags[0] || 'Cape Town'}</span>
+            </div>
+            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted};line-height:1.6">${s.description}</p>
+          </div>
         </div>`).join('')}
+      </div>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${prCopper};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:2.5rem">View All Properties &rarr;</a>
     </div>
   </section>`
 
-  // Section 7: Gallery — photo grid (asymmetric, 505-style)
-  const gallerySection = `
-  <section id="gallery" style="padding:100px 0;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.galleryHeading}</h2>
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1rem;margin-bottom:1rem">
-        <div style="overflow:hidden;height:420px">
-          <img src="${galleryImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="overflow:hidden;height:420px">
-          <img src="${galleryImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:1rem">
-        <div style="overflow:hidden;height:350px">
-          <img src="${galleryImgs[3]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="overflow:hidden;height:350px">
-          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
+  // Section 4: Services — eyebrow + heading + 2x2 icon cards
+  const servicesSection = `
+  <section id="services" style="padding:80px 2rem;background:${prAlt}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.servicesHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.heroSubtitle}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left">
+        ${content.services.map(s => `
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon)}</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${prMuted};line-height:1.7">${s.description}</p>
+        </div>`).join('')}
       </div>
     </div>
   </section>`
 
-  // Section 8: About — text left, testimonial right
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
-  const testimonialHtml = content.testimonial ? `
-    <div style="margin-top:2.5rem;padding:2rem;background:var(--card-bg);border-left:3px solid var(--primary)">
-      <p style="font-family:var(--body-font);font-size:1rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:0.75rem">"${content.testimonial.quote}"</p>
-      <div style="display:flex;align-items:center;gap:0.5rem">
-        <span style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">${content.testimonial.author}</span>
-        ${content.testimonial.rating ? `<span style="color:#f59e0b;font-size:0.8rem">${'★'.repeat(content.testimonial.rating)}</span>` : ''}
+  // Section 5: Testimonials — copper bg, 3 quote cards with quote marks
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:80px 2rem;background:${prCopper}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Client Stories</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">${content.galleryHeading ? 'What Our Clients Say' : 'What Our Clients Say'}</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
+          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
+          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${content.testimonial.author.split(',')[0]}</div>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">${content.testimonial.author.split(',')[1]?.trim() || ''}</div>
+        </div>
+        ${[0,1].map(i => `
+        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
+          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"${i === 0 ? 'Sold our property above asking price. Expert marketing and negotiation.' : 'Patient guidance through every step. Now proud homeowners!'}"</p>
+          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${i === 0 ? 'Robert W.' : 'Emily & David P.'}</div>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">${i === 0 ? 'Seller' : 'First-time Buyers'}</div>
+        </div>`).join('')}
       </div>
-    </div>` : ''
+    </div>
+  </section>` : ''
 
-  const aboutSection = `
-  <section id="about" style="padding:100px 0;background:var(--bg-alt)">
-    <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start">
+  // Section 6: Contact — 2-column: info left, form card right
+  const contactSection = `
+  <section id="contact" style="padding:80px 2rem;background:${prBg}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
       <div>
-        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-weight:600">About</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.2;margin-bottom:2rem">${content.aboutHeading}</h2>
-        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prCopper};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.contactHeading}</h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:${prMuted};line-height:1.7;margin-bottom:2.5rem">${content.aboutMission || content.heroSubtitle}</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9906;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Office Location</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">123 Main Road, Cape Town</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9742;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">021 000 0000</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9993;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</div></div>
+          </div>
+          ${content.contactHours ? `<div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9200;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Hours</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${content.contactHours.replace(/ · /g, '<br />')}</div></div>
+          </div>` : ''}
+        </div>
       </div>
-      <div>
-        <div style="overflow:hidden;height:400px;margin-bottom:0">
-          <img src="${serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>${testimonialHtml}
+      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
+        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${prText};margin-bottom:1.5rem">Send Us a Message</h3>
+        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Full Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Email Address</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Phone Number</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your real estate needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
+          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${prCopper};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
+        </form>
       </div>
     </div>
   </section>`
 
-  // Property footer — giant brand name style
-  const propFooter = `
-  <footer style="padding:5rem 2rem 2rem;background:#0a0a0a;border-top:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto">
-      <div style="font-family:var(--heading-font);font-size:clamp(3rem,8vw,7rem);font-weight:700;color:var(--text);line-height:1;margin-bottom:3rem;letter-spacing:-0.02em">${businessName}</div>
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-top:2rem;border-top:1px solid var(--border)">
-        <div>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
-        </div>
-        <div>
-          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div>
-          ${content.services.map(s => `<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">${s.name}</a>`).join('')}
-        </div>
-        <div>
-          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
-          <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">About Us</a>
-          <a href="#gallery" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Gallery</a>
-          <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Contact</a>
-        </div>
-        <div>
-          <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
-          <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Privacy Policy</a>
-          <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Terms of Service</a>
-        </div>
+  // Footer — 4-column: logo+desc | quick links | services | connect
+  const prFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${prText}">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
       </div>
-      <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
-        <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Quick Links</h4>
+        <a href="#properties" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Properties</a>
+        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
+        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
+        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Services</h4>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Connect</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">021 000 0000</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Terms of Service</a>
       </div>
     </div>
   </footer>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  <style>
+    :root {
+      --bg: ${prBg};
+      --bg-alt: ${prAlt};
+      --card-bg: ${prBg};
+      --text: ${prText};
+      --text-muted: ${prMuted};
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
 
-${propNav}
+${prNav}
 
   ${heroSection}
-  ${atmosphericPhoto}
-  ${statementSection}
-  ${featuresSection}
-  ${lifestyleSection}
-  ${statsSection}
-  ${gallerySection}
   ${aboutSection}
-  ${buildContactSection(content)}
+  ${propertiesSection}
+  ${servicesSection}
+  ${testimonialSection}
+  ${contactSection}
 
-${propFooter}
+${prFooter}
 
 </body>
 </html>`
