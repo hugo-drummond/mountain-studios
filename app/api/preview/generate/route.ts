@@ -3335,6 +3335,23 @@ ${homeFooter}
 }
 
 // ---------- Trades-Construction Template (Plumb London–inspired) ----------
+const iconMap: Record<string, string> = {
+  'zap': '&#9889;', 'bolt': '&#9889;', 'cpu': '&#9881;', 'sun': '&#9728;', 'droplet': '&#128167;',
+  'flame': '&#128293;', 'tool': '&#128295;', 'wrench': '&#128295;', 'home': '&#127968;', 'shield': '&#128737;',
+  'layers': '&#9776;', 'grid': '&#9638;', 'box': '&#128230;', 'maximize': '&#11036;', 'star': '&#11088;',
+  'map': '&#128205;', 'edit': '&#9998;', 'edit-2': '&#9998;', 'square': '&#9632;', 'key': '&#128273;',
+  'lock': '&#128274;', 'align-left': '&#9776;', 'trash-2': '&#128465;', 'truck': '&#128666;',
+  'credit-card': '&#128179;', 'repeat': '&#128260;', 'settings': '&#9881;', 'check': '&#10003;',
+  'phone': '&#9742;', 'mail': '&#9993;', 'clock': '&#9200;', 'calendar': '&#128197;',
+  'user': '&#128100;', 'users': '&#128101;', 'heart': '&#10084;', 'briefcase': '&#128188;',
+  'camera': '&#128247;', 'music': '&#127925;', 'book': '&#128214;', 'scissors': '&#9986;',
+  'thermometer': '&#127777;', 'wind': '&#127744;', 'cloud': '&#9729;', 'umbrella': '&#9730;',
+}
+function mapIcon(icon?: string): string {
+  if (!icon) return '&#9881;'
+  return iconMap[icon] || '&#9881;'
+}
+
 function buildTradesTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -3428,7 +3445,7 @@ function buildTradesTemplate(data: TemplateData): string {
         ${content.services.map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="width:48px;height:48px;border-radius:12px;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-            <span style="color:${trBlue};font-size:1.2rem">${s.icon || '&#9881;'}</span>
+            <span style="color:${trBlue};font-size:1.2rem">${mapIcon(s.icon)}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${trText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${trMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
