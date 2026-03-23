@@ -68,6 +68,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Cape Wines"
         ],
         "serviceImageQuery": "wine bottle glasses poured at restaurant table"
+      },
+      {
+        "name": "Sunday Brunch",
+        "description": "A leisurely weekend spread of eggs Benedict, freshly baked pastries, and bottomless mimosas.",
+        "tags": [
+          "Brunch",
+          "Weekend"
+        ],
+        "serviceImageQuery": "brunch table spread eggs pastries juice morning"
       }
     ],
     "galleryHeading": "From Our Kitchen",
@@ -151,6 +160,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Gift Bags"
         ],
         "serviceImageQuery": "coffee beans roasted bag scoop wooden surface"
+      },
+      {
+        "name": "Meeting & Co-Working Space",
+        "description": "Free WiFi, plug points at every table, and a quiet corner perfect for laptops and small meetings.",
+        "tags": [
+          "WiFi",
+          "Co-Working"
+        ],
+        "serviceImageQuery": "café interior laptop table coffee cup workspace"
       }
     ],
     "galleryHeading": "Life at the Counter",
@@ -234,6 +252,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding Cakes"
         ],
         "serviceImageQuery": "pastry croissant danish display tray bakery"
+      },
+      {
+        "name": "Bread Subscriptions",
+        "description": "Weekly loaf deliveries straight to your door — choose your favourites and we bake them fresh.",
+        "tags": [
+          "Subscription",
+          "Weekly Delivery"
+        ],
+        "serviceImageQuery": "bread loaves basket assorted fresh baked"
       }
     ],
     "galleryHeading": "This Morning's Bake",
@@ -317,6 +344,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Quiz Night"
         ],
         "serviceImageQuery": "bar food burger fries plate pub table"
+      },
+      {
+        "name": "Cocktail Menu",
+        "description": "Signature cocktails, classic mixes, and seasonal specials shaken and stirred by our bar team.",
+        "tags": [
+          "Cocktails",
+          "Signature Drinks"
+        ],
+        "serviceImageQuery": "cocktail drinks colourful glasses bar counter"
       }
     ],
     "galleryHeading": "Nights at the Bar",
@@ -400,6 +436,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Antipasti"
         ],
         "serviceImageQuery": "biltong dried meat South African snack display"
+      },
+      {
+        "name": "Braai Packs & Marinades",
+        "description": "Ready-to-braai packs with marinated chops, boerewors, and sosaties — just add fire.",
+        "tags": [
+          "Braai Packs",
+          "Marinades"
+        ],
+        "serviceImageQuery": "marinated meat skewers braai pack tray"
       }
     ],
     "galleryHeading": "From the Block",
@@ -483,6 +528,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Cocktail Events"
         ],
         "serviceImageQuery": "canapes finger food platter served catering event"
+      },
+      {
+        "name": "Meal Prep & Drop-Off",
+        "description": "Weekly meal prep packages delivered to your home or office — wholesome food without the cooking.",
+        "tags": [
+          "Meal Prep",
+          "Drop-Off"
+        ],
+        "serviceImageQuery": "meal prep containers portioned food packed"
       }
     ],
     "galleryHeading": "Events We've Fed",
@@ -566,6 +620,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Click & Collect"
         ],
         "serviceImageQuery": "chicken wrap burrito fast food foil packaging"
+      },
+      {
+        "name": "Loyalty & Rewards",
+        "description": "Earn stamps on every order and get your tenth meal free — because regulars deserve a perk.",
+        "tags": [
+          "Loyalty Card",
+          "Rewards"
+        ],
+        "serviceImageQuery": "takeaway paper bags counter fast food packaged"
       }
     ],
     "galleryHeading": "Hot Off the Grill",
@@ -649,6 +712,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Events"
         ],
         "serviceImageQuery": "food truck coffee served window latte cup"
+      },
+      {
+        "name": "Festival & Pop-Up Bookings",
+        "description": "Book us for food festivals, pop-up markets, and neighbourhood events across the Western Cape.",
+        "tags": [
+          "Festivals",
+          "Pop-Ups"
+        ],
+        "serviceImageQuery": "outdoor food market stalls street festival"
       }
     ],
     "galleryHeading": "From the Window",
@@ -732,6 +804,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Cleanse"
         ],
         "serviceImageQuery": "detox juice cleanse bottles labelled refrigerator"
+      },
+      {
+        "name": "Açaí & Smoothie Bowls",
+        "description": "Thick-blended açaí, pitaya, and green bowls topped with granola, seeds, and seasonal fruit.",
+        "tags": [
+          "Açaí Bowls",
+          "Toppings"
+        ],
+        "serviceImageQuery": "acai bowl topped granola fruit seeds close-up"
       }
     ],
     "galleryHeading": "Fresh Every Morning",
@@ -815,6 +896,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Takeaway"
         ],
         "serviceImageQuery": "calzone folded pizza plate Italian restaurant"
+      },
+      {
+        "name": "Build Your Own Pizza",
+        "description": "Choose your base, sauce, and toppings — we fire it in the oven exactly how you like it.",
+        "tags": [
+          "Custom",
+          "Build Your Own"
+        ],
+        "serviceImageQuery": "pizza toppings ingredients dough preparation board"
       }
     ],
     "galleryHeading": "From the Oven",
@@ -898,6 +988,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Chef's Choice"
         ],
         "serviceImageQuery": "stir fry wok noodles vegetables Asian kitchen"
+      },
+      {
+        "name": "Bento & Lunch Boxes",
+        "description": "Neatly portioned bento sets with rice, pickles, and your choice of protein — perfect for a quick lunch.",
+        "tags": [
+          "Bento",
+          "Lunch Set"
+        ],
+        "serviceImageQuery": "bento box Japanese lunch rice compartments"
       }
     ],
     "galleryHeading": "From the Counter",
@@ -981,6 +1080,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Wholesale"
         ],
         "serviceImageQuery": "frozen yogurt cup toppings fruit sprinkles"
+      },
+      {
+        "name": "Milkshakes & Floats",
+        "description": "Thick hand-spun milkshakes and old-school ice cream floats made with any flavour in the cabinet.",
+        "tags": [
+          "Milkshakes",
+          "Floats"
+        ],
+        "serviceImageQuery": "milkshake tall glass straw whipped cream"
       }
     ],
     "galleryHeading": "Today's Cabinet",
@@ -1064,6 +1172,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Gift Boxes"
         ],
         "serviceImageQuery": "wine tasting event glasses pouring cellar"
+      },
+      {
+        "name": "Mixed Cases & Subscriptions",
+        "description": "Curated mixed cases delivered monthly — discover new estates and varietals without the guesswork.",
+        "tags": [
+          "Mixed Cases",
+          "Subscription"
+        ],
+        "serviceImageQuery": "wine case wooden box bottles packed gift"
       }
     ],
     "galleryHeading": "In the Cellar",
@@ -1147,6 +1264,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Airport Transfer"
         ],
         "serviceImageQuery": "guest house pool garden loungers outdoor"
+      },
+      {
+        "name": "Self-Catering Cottage",
+        "description": "A private garden cottage with kitchenette, braai area, and its own entrance for longer stays.",
+        "tags": [
+          "Self-Catering",
+          "Garden Cottage"
+        ],
+        "serviceImageQuery": "cottage garden patio braai outdoor seating"
       }
     ],
     "galleryHeading": "Your Home Away",
@@ -1230,6 +1356,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Dining"
         ],
         "serviceImageQuery": "hotel spa pool indoor treatment wellness"
+      },
+      {
+        "name": "Conference & Events",
+        "description": "Fully equipped meeting rooms and event spaces with AV, catering, and dedicated coordination.",
+        "tags": [
+          "Conferences",
+          "Business Events"
+        ],
+        "serviceImageQuery": "conference room long table projector screen setup"
       }
     ],
     "galleryHeading": "Life at the Hotel",
@@ -1304,6 +1439,15 @@ export const presetContent: Record<string, PresetContent> = {
         "description": "Complimentary personal styling consultations in-store \u2014 we help you find what works for you.",
         "tags": ["Styling", "Consultation"],
         "serviceImageQuery": "fashion accessories scarves bags jewellery counter display"
+      },
+      {
+        "name": "Alterations & Tailoring",
+        "description": "In-house alterations so everything you buy fits like it was made for you.",
+        "tags": [
+          "Alterations",
+          "Tailoring"
+        ],
+        "serviceImageQuery": "sewing machine thread fabric alteration close-up"
       }
     ],
     "galleryHeading": "In the Store",
@@ -1362,6 +1506,15 @@ export const presetContent: Record<string, PresetContent> = {
         "description": "Pantry staples, household goods, and everyday groceries at fair prices with no membership needed.",
         "tags": ["Pantry", "Household"],
         "serviceImageQuery": "grocery delivery bags packed products doorstep"
+      },
+      {
+        "name": "Online Ordering & Delivery",
+        "description": "Order your weekly shop online and we deliver same-day — packed by the same team who stock the shelves.",
+        "tags": [
+          "Online Orders",
+          "Same-Day Delivery"
+        ],
+        "serviceImageQuery": "grocery basket filled products counter checkout"
       }
     ],
     "galleryHeading": "Fresh from the Shelves",
@@ -1420,6 +1573,15 @@ export const presetContent: Record<string, PresetContent> = {
         "description": "Complimentary gift wrapping and personalised cards on any in-store or online purchase.",
         "tags": ["Gift Wrap", "Personalised"],
         "serviceImageQuery": "retail delivery packages boxed products"
+      },
+      {
+        "name": "Loyalty Programme",
+        "description": "Earn points on every purchase and unlock exclusive discounts, early access, and birthday treats.",
+        "tags": [
+          "Loyalty",
+          "Rewards"
+        ],
+        "serviceImageQuery": "retail counter shopping bags branded packaging"
       }
     ],
     "galleryHeading": "In the Shop",
@@ -1487,6 +1649,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Wardrobe Edit"
         ],
         "serviceImageQuery": "clothing rack with curated designer dresses elegant boutique"
+      },
+      {
+        "name": "Trunk Shows & Pop-Ups",
+        "description": "Seasonal trunk shows featuring guest designers and exclusive limited-edition capsule collections.",
+        "tags": [
+          "Trunk Shows",
+          "Limited Edition"
+        ],
+        "serviceImageQuery": "fashion pop-up event clothing displayed gallery"
       }
     ],
     "galleryHeading": "The Current Edit",
@@ -1570,6 +1741,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Weekly Delivery"
         ],
         "serviceImageQuery": "corporate flower arrangement vase office reception"
+      },
+      {
+        "name": "Dried & Preserved Florals",
+        "description": "Long-lasting dried and preserved arrangements that hold their beauty for months without water.",
+        "tags": [
+          "Dried Flowers",
+          "Preserved"
+        ],
+        "serviceImageQuery": "dried flower arrangement vase preserved bouquet"
       }
     ],
     "galleryHeading": "In Bloom",
@@ -1653,6 +1833,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Bulk Orders"
         ],
         "serviceImageQuery": "personalised gifts engraved mugs frames"
+      },
+      {
+        "name": "Kids & Baby Gifts",
+        "description": "Beautifully made toys, blankets, and keepsakes for new arrivals and little ones.",
+        "tags": [
+          "Baby Gifts",
+          "Kids"
+        ],
+        "serviceImageQuery": "baby gift set blanket toy box wrapped"
       }
     ],
     "galleryHeading": "Worth Giving",
@@ -1736,6 +1925,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Heirloom Reset"
         ],
         "serviceImageQuery": "jewellery repair polishing tools workbench"
+      },
+      {
+        "name": "Engraving & Personalisation",
+        "description": "Custom engraving on rings, pendants, and watches — dates, initials, or a message that matters.",
+        "tags": [
+          "Engraving",
+          "Personalised"
+        ],
+        "serviceImageQuery": "engraved ring inscription close-up jewellery"
       }
     ],
     "galleryHeading": "From the Bench",
@@ -1819,6 +2017,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Space Planning"
         ],
         "serviceImageQuery": "interior styled room armchair lamp side table"
+      },
+      {
+        "name": "Delivery & Assembly",
+        "description": "White-glove delivery and assembly in your home — we place it exactly where you want it.",
+        "tags": [
+          "White-Glove",
+          "Assembly"
+        ],
+        "serviceImageQuery": "furniture delivery wrapped moving blanket truck"
       }
     ],
     "galleryHeading": "In the Showroom",
@@ -1902,6 +2109,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery"
         ],
         "serviceImageQuery": "key cutting machine hardware store counter"
+      },
+      {
+        "name": "Key Cutting & Gas Refills",
+        "description": "While-you-wait key cutting, gas bottle exchanges, and number plate making at the counter.",
+        "tags": [
+          "Key Cutting",
+          "Gas Refills"
+        ],
+        "serviceImageQuery": "plumbing fittings pipes display hardware aisle"
       }
     ],
     "galleryHeading": "In the Store",
@@ -1985,6 +2201,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Gift Cards"
         ],
         "serviceImageQuery": "book gift wrapped ribbon bow"
+      },
+      {
+        "name": "Children's Section",
+        "description": "A dedicated kids corner with picture books, middle-grade fiction, and age-guided recommendations.",
+        "tags": [
+          "Children's Books",
+          "Picture Books"
+        ],
+        "serviceImageQuery": "children books colourful shelf display illustrated"
       }
     ],
     "galleryHeading": "In the Stacks",
@@ -2068,6 +2293,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Glucose"
         ],
         "serviceImageQuery": "pharmacist blood pressure check health screening"
+      },
+      {
+        "name": "Vaccinations & Travel Health",
+        "description": "Flu jabs, travel vaccinations, and immunisation records managed by our qualified pharmacists.",
+        "tags": [
+          "Vaccinations",
+          "Travel Health"
+        ],
+        "serviceImageQuery": "vaccination injection syringe medical vial"
       }
     ],
     "galleryHeading": "Your Health, Our Priority",
@@ -2151,6 +2385,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Wrapping"
         ],
         "serviceImageQuery": "toy gift wrapped ribbon box birthday"
+      },
+      {
+        "name": "Outdoor & Active Play",
+        "description": "Trampolines, scooters, sandpits, and garden games that get kids moving and off screens.",
+        "tags": [
+          "Outdoor Toys",
+          "Active Play"
+        ],
+        "serviceImageQuery": "outdoor toys scooter trampoline garden play"
       }
     ],
     "galleryHeading": "The Toy Box",
@@ -2234,6 +2477,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Trade-Ins"
         ],
         "serviceImageQuery": "home entertainment TV display electronics showroom"
+      },
+      {
+        "name": "Setup & Installation",
+        "description": "On-site setup for TVs, sound systems, home networks, and smart home devices — done properly.",
+        "tags": [
+          "Installation",
+          "Home Setup"
+        ],
+        "serviceImageQuery": "TV mounted wall living room entertainment system"
       }
     ],
     "galleryHeading": "In the Store",
@@ -2317,6 +2569,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Cricket"
         ],
         "serviceImageQuery": "outdoor camping gear backpacks tents display"
+      },
+      {
+        "name": "Racket Restringing & Repairs",
+        "description": "In-store racket restringing, ski servicing, and equipment repairs by qualified technicians.",
+        "tags": [
+          "Restringing",
+          "Equipment Repair"
+        ],
+        "serviceImageQuery": "tennis racket strings close-up sports equipment"
       }
     ],
     "galleryHeading": "Get Out There",
@@ -2400,6 +2661,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Click & Collect"
         ],
         "serviceImageQuery": "deli counter prepared food supermarket"
+      },
+      {
+        "name": "Loyalty Card & Weekly Specials",
+        "description": "Swipe your loyalty card for points on every shop and exclusive access to our weekly specials.",
+        "tags": [
+          "Loyalty Card",
+          "Weekly Specials"
+        ],
+        "serviceImageQuery": "supermarket checkout counter bags groceries"
       }
     ],
     "galleryHeading": "In the Aisles",
@@ -2483,6 +2753,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Consignment"
         ],
         "serviceImageQuery": "retro vinyl records crate browsing thrift"
+      },
+      {
+        "name": "Upcycled & Restored Pieces",
+        "description": "Hand-restored furniture and upcycled fashion pieces given a second life by local makers.",
+        "tags": [
+          "Upcycled",
+          "Restored"
+        ],
+        "serviceImageQuery": "upcycled furniture painted restored chair table"
       }
     ],
     "galleryHeading": "Recent Finds",
@@ -2566,6 +2845,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Compost"
         ],
         "serviceImageQuery": "garden tools soil bags fertiliser display shelf"
+      },
+      {
+        "name": "Fruit Trees & Edible Garden",
+        "description": "Citrus, stone fruit, herbs, and vegetable seedlings for growing your own food at home.",
+        "tags": [
+          "Fruit Trees",
+          "Edible Garden"
+        ],
+        "serviceImageQuery": "fruit tree citrus lemon potted nursery display"
       }
     ],
     "galleryHeading": "In the Nursery",
@@ -2649,6 +2937,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Clear Aligners"
         ],
         "serviceImageQuery": "dental implant model jaw bone cross-section close-up"
+      },
+      {
+        "name": "Children's Dentistry",
+        "description": "Gentle, child-friendly dental care from first teeth through to teens — building habits that last a lifetime.",
+        "tags": [
+          "Paediatric",
+          "Preventive Care"
+        ],
+        "serviceImageQuery": "colourful children dental chair equipment bright fun room"
       }
     ],
     "galleryHeading": "Smile Transformations",
@@ -2732,6 +3029,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Medicals"
         ],
         "serviceImageQuery": "vaccination injection arm syringe clinic room"
+      },
+      {
+        "name": "Women's & Reproductive Health",
+        "description": "Pap smears, contraception, antenatal screening, and menopause management with discretion and care.",
+        "tags": [
+          "Women's Health",
+          "Antenatal"
+        ],
+        "serviceImageQuery": "gynaecology examination room ultrasound monitor equipment"
       }
     ],
     "galleryHeading": "Your Health Matters",
@@ -2815,6 +3121,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Orthopaedic"
         ],
         "serviceImageQuery": "post-surgery rehabilitation exercise balance board physio gym"
+      },
+      {
+        "name": "Women's Health Physio",
+        "description": "Specialised pelvic floor rehabilitation, pre- and postnatal physio, and incontinence management.",
+        "tags": [
+          "Pelvic Floor",
+          "Postnatal"
+        ],
+        "serviceImageQuery": "pelvic floor exercise ball rehabilitation mat physio equipment"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2898,6 +3213,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Paediatric"
         ],
         "serviceImageQuery": "gentle paediatric chiropractic infant adjustment hands"
+      },
+      {
+        "name": "Sports Chiropractic",
+        "description": "Performance-focused chiropractic care for athletes including biomechanical assessment and injury prevention.",
+        "tags": [
+          "Sports Performance",
+          "Biomechanics"
+        ],
+        "serviceImageQuery": "sports biomechanics assessment running gait analysis screen"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2981,6 +3305,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Dry Eye"
         ],
         "serviceImageQuery": "contact lens fitting finger tip insertion close-up"
+      },
+      {
+        "name": "Children's Vision Screening",
+        "description": "Early detection of lazy eye, squint, and learning-related vision issues in school-age children.",
+        "tags": [
+          "Paediatric Vision",
+          "Screening"
+        ],
+        "serviceImageQuery": "children vision screening chart colourful shapes eye test"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3064,6 +3397,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Scalp Treatment"
         ],
         "serviceImageQuery": "keratin hair treatment application smoothing iron salon"
+      },
+      {
+        "name": "Bridal & Event Styling",
+        "description": "Wedding hair, updo styling, and event-ready looks with a trial session and on-location service.",
+        "tags": [
+          "Bridal Hair",
+          "Updo"
+        ],
+        "serviceImageQuery": "bridal updo hairstyle pins flowers elegant wedding styling"
       }
     ],
     "galleryHeading": "From the Chair",
@@ -3147,6 +3489,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Waxing"
         ],
         "serviceImageQuery": "gel manicure nail polish application hands close-up"
+      },
+      {
+        "name": "Lash & Brow Artistry",
+        "description": "Eyelash extensions, brow lamination, tinting, and microblading for effortlessly defined features.",
+        "tags": [
+          "Lash Extensions",
+          "Brow Lamination"
+        ],
+        "serviceImageQuery": "eyelash extensions individual lash application tweezers close-up"
       }
     ],
     "galleryHeading": "Your Escape Awaits",
@@ -3230,6 +3581,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Athletes"
         ],
         "serviceImageQuery": "sports massage calf leg athlete recovery treatment"
+      },
+      {
+        "name": "Prenatal & Postnatal Massage",
+        "description": "Safe, supportive massage for expectant and new mothers — easing tension, swelling, and the demands of pregnancy.",
+        "tags": [
+          "Prenatal",
+          "Postnatal"
+        ],
+        "serviceImageQuery": "pregnancy massage bolster side-lying support cushions treatment"
       }
     ],
     "galleryHeading": "A Space to Unwind",
@@ -3313,6 +3673,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Endurance"
         ],
         "serviceImageQuery": "sports nutrition smoothie protein powder blender preparation"
+      },
+      {
+        "name": "Gut Health & IBS Management",
+        "description": "Low-FODMAP guidance, elimination protocols, and gut microbiome support for digestive conditions.",
+        "tags": [
+          "Gut Health",
+          "Low-FODMAP"
+        ],
+        "serviceImageQuery": "gut health fermented foods probiotics kefir sauerkraut jars"
       }
     ],
     "galleryHeading": "Your Nutrition Journey",
@@ -3396,6 +3765,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Adolescent"
         ],
         "serviceImageQuery": "child play therapy toys sand tray art supplies room"
+      },
+      {
+        "name": "Corporate & Workplace Wellness",
+        "description": "EAP sessions, workplace stress debriefings, and organisational wellbeing programmes for businesses.",
+        "tags": [
+          "EAP",
+          "Workplace Wellness"
+        ],
+        "serviceImageQuery": "corporate wellness workshop group discussion circle chairs office"
       }
     ],
     "galleryHeading": "A Safe Space",
@@ -3479,6 +3857,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Dysphagia"
         ],
         "serviceImageQuery": "voice therapy larynx model swallowing exercise demonstration"
+      },
+      {
+        "name": "Augmentative & Alternative Communication",
+        "description": "AAC device assessment, setup, and training for non-verbal or minimally verbal children and adults.",
+        "tags": [
+          "AAC",
+          "Assistive Technology"
+        ],
+        "serviceImageQuery": "AAC communication device tablet symbols buttons touchscreen"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3562,6 +3949,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Workstation"
         ],
         "serviceImageQuery": "ergonomic workstation assessment desk chair monitor setup"
+      },
+      {
+        "name": "School Readiness Assessment",
+        "description": "Comprehensive assessments for Grade R and Grade 1 readiness covering motor, perceptual, and social skills.",
+        "tags": [
+          "School Readiness",
+          "Perceptual Skills"
+        ],
+        "serviceImageQuery": "school readiness assessment worksheet pencil grip shapes child"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3645,6 +4041,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Sound Therapy"
         ],
         "serviceImageQuery": "tinnitus sound therapy headphones audiologist screen display"
+      },
+      {
+        "name": "Paediatric Hearing Screening",
+        "description": "Newborn and early childhood hearing screening using OAE and ABR technology for early intervention.",
+        "tags": [
+          "Newborn Screening",
+          "Early Intervention"
+        ],
+        "serviceImageQuery": "paediatric hearing screening OAE probe infant ear test"
       }
     ],
     "galleryHeading": "Hear Better. Live Better.",
@@ -3728,6 +4133,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Risk Assessment"
         ],
         "serviceImageQuery": "diabetic foot screening monofilament test sensation check"
+      },
+      {
+        "name": "Custom Orthotics",
+        "description": "Precision-moulded orthotics designed from gait analysis data to correct alignment and relieve chronic pain.",
+        "tags": [
+          "Custom Orthotics",
+          "Gait Analysis"
+        ],
+        "serviceImageQuery": "custom orthotic insole moulding tray foot impression podiatry"
       }
     ],
     "galleryHeading": "Back on Your Feet",
@@ -3811,6 +4225,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Reiki"
         ],
         "serviceImageQuery": "reflexology foot pressure point treatment hands close-up"
+      },
+      {
+        "name": "Herbal Medicine & Nutrition",
+        "description": "Custom herbal formulations and whole-food nutrition plans addressing inflammation, hormones, and fatigue.",
+        "tags": [
+          "Herbal Medicine",
+          "Nutrition"
+        ],
+        "serviceImageQuery": "herbal medicine dried herbs mortar pestle tincture bottles wooden"
       }
     ],
     "galleryHeading": "Your Healing Space",
@@ -3894,6 +4317,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Body Composition"
         ],
         "serviceImageQuery": "body transformation before after progress tracking measurement"
+      },
+      {
+        "name": "Small Group Training",
+        "description": "High-energy sessions of 4–6 people combining strength and conditioning at a fraction of the one-on-one price.",
+        "tags": [
+          "Small Group",
+          "Strength & Conditioning"
+        ],
+        "serviceImageQuery": "small group training kettlebell circuit barbell gym floor"
       }
     ],
     "galleryHeading": "Clients in Action",
@@ -3977,6 +4409,15 @@ export const presetContent: Record<string, PresetContent> = {
           "200hr"
         ],
         "serviceImageQuery": "yoga teacher training group circle seated studio discussion"
+      },
+      {
+        "name": "Prenatal & Postnatal Yoga",
+        "description": "Safe, nurturing classes designed specifically for expectant and new mothers at every trimester.",
+        "tags": [
+          "Prenatal Yoga",
+          "Postnatal"
+        ],
+        "serviceImageQuery": "prenatal yoga class bolsters blankets gentle supported poses"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -4060,6 +4501,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Biokinetics"
         ],
         "serviceImageQuery": "personal training session TRX suspension straps gym"
+      },
+      {
+        "name": "Recovery & Wellness Zone",
+        "description": "Sauna, cold plunge, foam rolling stations, and stretching area for serious post-workout recovery.",
+        "tags": [
+          "Sauna",
+          "Cold Plunge"
+        ],
+        "serviceImageQuery": "sauna interior wooden benches steam heat wellness recovery"
       }
     ],
     "galleryHeading": "In the Gym",
@@ -4143,6 +4593,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Confidence"
         ],
         "serviceImageQuery": "children martial arts class kids white uniforms bowing dojo"
+      },
+      {
+        "name": "Self-Defence Workshops",
+        "description": "Practical self-defence workshops for adults and teens — real-world techniques taught in a safe, controlled setting.",
+        "tags": [
+          "Self-Defence",
+          "Women's Safety"
+        ],
+        "serviceImageQuery": "self-defence workshop arm grab escape technique demonstration"
       }
     ],
     "galleryHeading": "On the Mats",
@@ -4226,6 +4685,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Children"
         ],
         "serviceImageQuery": "children ballet class tutu barre studio mirrors"
+      },
+      {
+        "name": "Wedding & First Dance Coaching",
+        "description": "Private choreography sessions to prepare couples for their wedding first dance — any song, any style.",
+        "tags": [
+          "Wedding Dance",
+          "Choreography"
+        ],
+        "serviceImageQuery": "wedding first dance choreography couple waltz studio rehearsal"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -4309,6 +4777,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Competition"
         ],
         "serviceImageQuery": "competitive squad swimmer freestyle stroke lane racing"
+      },
+      {
+        "name": "Aqua Fitness & Rehabilitation",
+        "description": "Low-impact water-based fitness and rehabilitation classes ideal for injury recovery and older adults.",
+        "tags": [
+          "Aqua Fitness",
+          "Rehabilitation"
+        ],
+        "serviceImageQuery": "aqua fitness water aerobics noodles pool exercise class"
       }
     ],
     "galleryHeading": "In the Pool",
@@ -4392,6 +4869,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Titleist"
         ],
         "serviceImageQuery": "golf pro shop interior clubs bags apparel display racks"
+      },
+      {
+        "name": "Short Game & Putting Clinics",
+        "description": "Focused clinics on chipping, pitching, and putting — where most golfers lose the most strokes.",
+        "tags": [
+          "Short Game",
+          "Putting"
+        ],
+        "serviceImageQuery": "golf putting green practice short game chipping flag hole"
       }
     ],
     "galleryHeading": "On the Range",
@@ -4475,6 +4961,15 @@ export const presetContent: Record<string, PresetContent> = {
           "Skills"
         ],
         "serviceImageQuery": "children holiday sports camp outdoor games field group"
+      },
+      {
+        "name": "Strength & Conditioning Programmes",
+        "description": "Periodised S&C programmes designed to complement sport-specific training and reduce injury risk.",
+        "tags": [
+          "Strength & Conditioning",
+          "Injury Prevention"
+        ],
+        "serviceImageQuery": "strength conditioning barbell squat rack athletic training gym"
       }
     ],
     "galleryHeading": "In Action",
@@ -4558,6 +5053,15 @@ export const presetContent: Record<string, PresetContent> = {
           "First Visit"
         ],
         "serviceImageQuery": "dog nail trimming groomer hands close-up"
+      },
+      {
+        "name": "Teeth Cleaning & Oral Care",
+        "description": "Non-anaesthetic teeth cleaning, breath treatment, and gum health checks to keep those chompers in top shape.",
+        "tags": [
+          "Dental",
+          "Oral Care"
+        ],
+        "serviceImageQuery": "dog teeth clean white dental hygiene close-up mouth"
       }
     ],
     "galleryHeading": "Happy, Clean Dogs",
@@ -5723,6 +6227,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "high pressure water jet drain cleaning"
+          },
+          {
+              "name": "Bathroom & Kitchen Plumbing",
+              "description": "Full plumbing rough-in and fit-out for new bathrooms and kitchens \u2014 basins, toilets, showers, and dishwasher points.",
+              "tags": [
+                  "Bathroom Plumbing",
+                  "Kitchen Fit-Out"
+              ],
+              "icon": "grid",
+              "serviceImageQuery": "modern bathroom basin taps shower mixer installed"
           }
       ],
       "galleryHeading": "Work Done Right",
@@ -5827,6 +6341,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "sun",
               "serviceImageQuery": "solar panels installed on residential roof blue sky"
+          },
+          {
+              "name": "Lighting Design & Installation",
+              "description": "Recessed downlights, LED strip lighting, outdoor lighting, and dimmer circuits for residential and commercial spaces.",
+              "tags": [
+                  "LED Downlights",
+                  "Dimmers"
+              ],
+              "icon": "settings",
+              "serviceImageQuery": "recessed LED downlights installed modern ceiling"
           }
       ],
       "galleryHeading": "Work That Passes Inspection",
@@ -5931,6 +6455,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "concrete foundation repair waterproofing membrane"
+          },
+          {
+              "name": "Boundary Walls & Retaining Structures",
+              "description": "Plastered boundary walls, retaining walls, and gabion structures built to council spec with engineer sign-off where required.",
+              "tags": [
+                  "Boundary Walls",
+                  "Retaining Walls"
+              ],
+              "icon": "maximize",
+              "serviceImageQuery": "plastered boundary wall residential property completed"
           }
       ],
       "galleryHeading": "Recent Builds",
@@ -6035,6 +6569,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "box",
               "serviceImageQuery": "handmade solid wood dining table rustic"
+          },
+          {
+              "name": "Timber Decking & Pergolas",
+              "description": "Hardwood and composite decking, pergola structures, and outdoor timber features built to withstand the Cape climate.",
+              "tags": [
+                  "Decking",
+                  "Pergolas"
+              ],
+              "icon": "sun",
+              "serviceImageQuery": "timber deck pergola outdoor patio garden completed"
           }
       ],
       "galleryHeading": "From Our Workshop",
@@ -6139,6 +6683,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "star",
               "serviceImageQuery": "wrought iron balustrade railing staircase decorative"
+          },
+          {
+              "name": "Security Doors & Burglar Bars",
+              "description": "Custom security gates, slam-lock doors, and clear-guard burglar bars fabricated and fitted to your openings.",
+              "tags": [
+                  "Security Gates",
+                  "Burglar Bars"
+              ],
+              "icon": "lock",
+              "serviceImageQuery": "steel security gate slam lock door installed"
           }
       ],
       "galleryHeading": "From the Workshop",
@@ -6243,6 +6797,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "grid",
               "serviceImageQuery": "large format porcelain floor tiles modern living room"
+          },
+          {
+              "name": "Wall Tiling & Splashbacks",
+              "description": "Kitchen splashbacks, bathroom wall tiling, and decorative feature walls in mosaic, subway, or natural stone.",
+              "tags": [
+                  "Splashbacks",
+                  "Wall Tiling"
+              ],
+              "icon": "square",
+              "serviceImageQuery": "kitchen splashback subway tiles white wall installed"
           }
       ],
       "galleryHeading": "Surfaces We've Laid",
@@ -6347,6 +6911,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "layers",
               "serviceImageQuery": "new metal roof sheets installed house IBR"
+          },
+          {
+              "name": "Gutters & Downpipes",
+              "description": "Seamless aluminium gutters, PVC downpipes, and leaf guards installed, replaced, or repaired across all roof types.",
+              "tags": [
+                  "Gutters",
+                  "Leaf Guards"
+              ],
+              "icon": "tool",
+              "serviceImageQuery": "seamless aluminium gutter downpipe installed roof edge"
           }
       ],
       "galleryHeading": "Roofs We've Fixed",
@@ -6451,6 +7025,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "star",
               "serviceImageQuery": "venetian plaster textured wall finish grey warm"
+          },
+          {
+              "name": "Roof & Floor Coatings",
+              "description": "Protective roof paint coatings, epoxy garage floors, and deck sealing to extend surface life and appearance.",
+              "tags": [
+                  "Roof Coating",
+                  "Epoxy Floor"
+              ],
+              "icon": "shield",
+              "serviceImageQuery": "epoxy garage floor coating grey glossy finish"
           }
       ],
       "galleryHeading": "Fresh Coats",
@@ -6555,6 +7139,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "new glass window pane installed frame"
+          },
+          {
+              "name": "Glass Balustrades & Pool Fencing",
+              "description": "Frameless glass balustrades for balconies, staircases, and pool enclosures in toughened safety glass.",
+              "tags": [
+                  "Balustrades",
+                  "Pool Fencing"
+              ],
+              "icon": "shield",
+              "serviceImageQuery": "frameless glass balustrade balcony railing modern"
           }
       ],
       "galleryHeading": "Clear Results",
@@ -6659,6 +7253,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "keypad access control panel gate entry system"
+          },
+          {
+              "name": "Safe Supply & Installation",
+              "description": "Home and office safes supplied, delivered, and bolted down \u2014 fireproof and insurance-rated options available.",
+              "tags": [
+                  "Safes",
+                  "Fireproof"
+              ],
+              "icon": "box",
+              "serviceImageQuery": "home safe vault fireproof installed wall mounted"
           }
       ],
       "galleryHeading": "Secured & Sorted",
@@ -6763,6 +7367,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "wall crack filled repaired smooth surface"
+          },
+          {
+              "name": "Cornice & Ceiling Work",
+              "description": "Cornicing installation, ceiling board replacement, and decorative ceiling repairs for a polished overhead finish.",
+              "tags": [
+                  "Cornicing",
+                  "Ceiling Board"
+              ],
+              "icon": "layers",
+              "serviceImageQuery": "decorative cornice ceiling installed white room"
           }
       ],
       "galleryHeading": "Surfaces We've Finished",
@@ -6867,6 +7481,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "align-left",
               "serviceImageQuery": "wooden timber fence panels garden boundary privacy"
+          },
+          {
+              "name": "Driveway Gates & Automation",
+              "description": "Sliding and swing gate supply, installation, and motor automation with remote controls and battery backup.",
+              "tags": [
+                  "Gate Motors",
+                  "Sliding Gate"
+              ],
+              "icon": "cpu",
+              "serviceImageQuery": "automated sliding gate motor installed driveway"
           }
       ],
       "galleryHeading": "Fences We've Built",
@@ -6971,6 +7595,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "scaffolding tubes boards platforms erected site"
+          },
+          {
+              "name": "Suspended & Mobile Platforms",
+              "description": "Mobile scaffold towers, roof edge protection, and suspended platform systems for specialist access requirements.",
+              "tags": [
+                  "Mobile Tower",
+                  "Edge Protection"
+              ],
+              "icon": "box",
+              "serviceImageQuery": "mobile scaffold tower platform wheels access"
           }
       ],
       "galleryHeading": "On the Scaffold",
@@ -7075,6 +7709,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "truck",
               "serviceImageQuery": "rubble skip bin loaded bricks debris site"
+          },
+          {
+              "name": "Asbestos Removal & Disposal",
+              "description": "Licensed asbestos roof and ceiling removal with certified disposal and clearance certificates issued.",
+              "tags": [
+                  "Asbestos",
+                  "Licensed Removal"
+              ],
+              "icon": "alert-triangle",
+              "serviceImageQuery": "asbestos roof removal bagged sheets disposal site"
           }
       ],
       "galleryHeading": "Cleared for Development",
@@ -7179,6 +7823,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "zap",
               "serviceImageQuery": "solar inverter installed garage wall display screen"
+          },
+          {
+              "name": "EV Charging Stations",
+              "description": "Home and commercial electric vehicle charger installations wired into your existing solar or grid supply.",
+              "tags": [
+                  "EV Charger",
+                  "Electric Vehicle"
+              ],
+              "icon": "battery-charging",
+              "serviceImageQuery": "electric vehicle charger wall mounted home garage"
           }
       ],
       "galleryHeading": "Live Off the Grid",
@@ -7283,6 +7937,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "cpu",
               "serviceImageQuery": "ceiling ducted air conditioning vent office interior"
+          },
+          {
+              "name": "Heat Pump Water Heating",
+              "description": "Energy-efficient heat pump geyser installations that cut water heating costs by up to 70% year-round.",
+              "tags": [
+                  "Heat Pump",
+                  "Energy Saving"
+              ],
+              "icon": "thermometer",
+              "serviceImageQuery": "heat pump water heater installed exterior wall unit"
           }
       ],
       "galleryHeading": "Cool Work",
@@ -7387,6 +8051,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "cloud-rain",
               "serviceImageQuery": "garden sprinkler irrigation system watering green lawn"
+          },
+          {
+              "name": "Water Filtration & Treatment",
+              "description": "Whole-house filtration, UV sterilisation, and reverse osmosis systems to make borehole water safe for drinking.",
+              "tags": [
+                  "Water Filtration",
+                  "UV Sterilisation"
+              ],
+              "icon": "filter",
+              "serviceImageQuery": "water filtration system installed wall mounted home"
           }
       ],
       "galleryHeading": "Water on Your Terms",
@@ -7491,6 +8165,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "courtroom interior empty wooden bench judge seat"
+          },
+          {
+              "name": "Wills & Estate Administration",
+              "description": "Drafting of wills, appointment as executor, and full estate administration to ensure your wishes are carried out.",
+              "tags": [
+                  "Wills",
+                  "Estate Admin"
+              ],
+              "icon": "clipboard",
+              "serviceImageQuery": "last will testament document signed witnessed"
           }
       ],
       "galleryHeading": "Our Practice",
@@ -7595,6 +8279,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "users",
               "serviceImageQuery": "payroll payslip documents stacked on office desk"
+          },
+          {
+              "name": "Company Registration & Compliance",
+              "description": "New company registration with CIPC, BEE affidavits, annual returns, and SARS eFiling setup for startups and SMEs.",
+              "tags": [
+                  "CIPC Registration",
+                  "Annual Returns"
+              ],
+              "icon": "check-square",
+              "serviceImageQuery": "company registration certificate CIPC documents desk"
           }
       ],
       "galleryHeading": "Your Finances, Our Focus",
@@ -7699,6 +8393,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "trending-up",
               "serviceImageQuery": "revenue growth chart upward trend on screen"
+          },
+          {
+              "name": "Change Management & Restructuring",
+              "description": "Organisational restructuring, workforce realignment, and change management support to navigate transitions smoothly.",
+              "tags": [
+                  "Restructuring",
+                  "Change Management"
+              ],
+              "icon": "refresh-cw",
+              "serviceImageQuery": "organisational chart restructured diagram pinned board"
           }
       ],
       "galleryHeading": "Our Approach",
@@ -7803,6 +8507,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "estate planning documents will testament pen"
+          },
+          {
+              "name": "Tax-Efficient Savings & TFSA",
+              "description": "Tax-free savings accounts, tax-efficient investment structures, and Section 12J planning for maximum after-tax growth.",
+              "tags": [
+                  "TFSA",
+                  "Tax Efficiency"
+              ],
+              "icon": "percent",
+              "serviceImageQuery": "savings account growth chart compound interest"
           }
       ],
       "galleryHeading": "Your Financial Future",
@@ -7907,6 +8621,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "car accident damage bumper claim scene"
+          },
+          {
+              "name": "Specialist & High-Value Cover",
+              "description": "Tailored cover for high-value homes, art collections, jewellery, and classic vehicles that standard policies exclude.",
+              "tags": [
+                  "High-Value",
+                  "Art & Jewellery"
+              ],
+              "icon": "star",
+              "serviceImageQuery": "luxury watch jewellery collection velvet case display"
           }
       ],
       "galleryHeading": "Cover That Counts",
@@ -8011,6 +8735,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "star",
               "serviceImageQuery": "boardroom executive chairs long table glass windows"
+          },
+          {
+              "name": "Psychometric & Skills Testing",
+              "description": "Pre-employment psychometric assessments, competency testing, and cultural fit evaluations to de-risk every hire.",
+              "tags": [
+                  "Psychometrics",
+                  "Skills Testing"
+              ],
+              "icon": "clipboard",
+              "serviceImageQuery": "aptitude test assessment paper desk pencil"
           }
       ],
       "galleryHeading": "Connections Made",
@@ -8115,6 +8849,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "camera",
               "serviceImageQuery": "video production camera studio creative shoot setup"
+          },
+          {
+              "name": "Website Design & Development",
+              "description": "Conversion-focused websites built on modern platforms with SEO, analytics, and lead capture baked in from day one.",
+              "tags": [
+                  "Web Design",
+                  "Lead Generation"
+              ],
+              "icon": "monitor",
+              "serviceImageQuery": "responsive website design mockup laptop tablet phone"
           }
       ],
       "galleryHeading": "Campaigns We've Built",
@@ -8219,6 +8963,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "users",
               "serviceImageQuery": "workshop group session chairs circle flipchart"
+          },
+          {
+              "name": "Leadership Development Programmes",
+              "description": "Structured multi-session leadership programmes for emerging managers stepping into their first leadership roles.",
+              "tags": [
+                  "Leadership",
+                  "Emerging Managers"
+              ],
+              "icon": "award",
+              "serviceImageQuery": "leadership development workbook certificate pen desk"
           }
       ],
       "galleryHeading": "Coaching in Action",
@@ -8323,6 +9077,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "mic",
               "serviceImageQuery": "interpreting headset booth conference equipment"
+          },
+          {
+              "name": "Website & App Localisation",
+              "description": "Full website and mobile app translation with cultural adaptation, SEO keyword localisation, and CMS integration.",
+              "tags": [
+                  "Localisation",
+                  "App Translation"
+              ],
+              "icon": "globe",
+              "serviceImageQuery": "multilingual website screens different languages devices"
           }
       ],
       "galleryHeading": "Languages We Speak",
@@ -8427,6 +9191,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "stamp",
               "serviceImageQuery": "affidavit sworn document stamped certified copy"
+          },
+          {
+              "name": "Ante-Nuptial Contracts",
+              "description": "Drafting and registration of ante-nuptial contracts (ANCs) to protect both parties before marriage.",
+              "tags": [
+                  "Ante-Nuptial",
+                  "Marriage Contract"
+              ],
+              "icon": "file-text",
+              "serviceImageQuery": "ante-nuptial contract marriage document signed rings"
           }
       ],
       "galleryHeading": "Documents We Certify",
@@ -8531,6 +9305,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "check-circle",
               "serviceImageQuery": "clearance certificate document checkmark approved stamp"
+          },
+          {
+              "name": "Budgeting & Financial Literacy",
+              "description": "Personalised budgeting tools, spending analysis, and financial literacy coaching to prevent future over-indebtedness.",
+              "tags": [
+                  "Budgeting",
+                  "Financial Literacy"
+              ],
+              "icon": "book",
+              "serviceImageQuery": "budget planner spreadsheet income expenses savings"
           }
       ],
       "galleryHeading": "The Road to Financial Freedom",
@@ -8635,6 +9419,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "truck",
               "serviceImageQuery": "air cargo plane loading freight airport tarmac"
+          },
+          {
+              "name": "Warehousing & Distribution",
+              "description": "Bonded and general warehousing, inventory management, and last-mile distribution from our Cape Town facility.",
+              "tags": [
+                  "Warehousing",
+                  "Distribution"
+              ],
+              "icon": "archive",
+              "serviceImageQuery": "warehouse interior shelves pallets inventory storage"
           }
       ],
       "galleryHeading": "Cargo We've Cleared",
@@ -8718,7 +9512,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Recurring"
               ],
               "icon": "home",
-              "serviceImageQuery": "professional home cleaning service residential Cape Town"
+              "serviceImageQuery": "spotless clean living room tidy bright interior"
           },
           {
               "name": "Office & Commercial Cleaning",
@@ -8728,7 +9522,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Commercial"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "office commercial cleaning service professional Cape Town"
+              "serviceImageQuery": "clean modern office space desks tidy interior"
           },
           {
               "name": "Deep Cleans & Move-Out",
@@ -8738,7 +9532,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Move-Out"
               ],
               "icon": "zap",
-              "serviceImageQuery": "deep cleaning service home move out professional"
+              "serviceImageQuery": "sparkling clean empty kitchen deep cleaned white"
+          },
+          {
+              "name": "Carpet & Upholstery Cleaning",
+              "description": "Professional steam cleaning of carpets, rugs, and upholstered furniture using truck-mounted extraction equipment.",
+              "tags": [
+                  "Carpet Clean",
+                  "Steam Extraction"
+              ],
+              "icon": "wind",
+              "serviceImageQuery": "carpet steam cleaning extraction machine residential"
           }
       ],
       "galleryHeading": "Spotlessly Done",
@@ -8792,15 +9596,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, bright, spotless",
-      "heroImageQuery": "professional home cleaning service Cape Town residential bright",
-      "heroBgImageQuery": "cleaning service professional dark background supplies",
-      "ogImageQuery": "professional cleaning service Cape Town home spotless",
-      "aboutImageQuery": "cleaning team professional Cape Town home service",
+      "heroImageQuery": "spotless bright living room clean white interior home",
+      "heroBgImageQuery": "cleaning supplies spray bottles dark background",
+      "ogImageQuery": "immaculate clean home interior bright airy rooms",
+      "aboutImageQuery": "cleaner wiping kitchen counter spray cloth working",
       "galleryImageQueries": [
-          "professional home cleaning Cape Town residential spotless",
-          "office commercial cleaning professional service",
-          "deep cleaning move out service professional",
-          "cleaning team professional equipment Cape Town"
+          "clean tidy bedroom freshly made bed white sheets",
+          "sparkling clean office workspace desks organized",
+          "deep cleaned bathroom tiles grout shining",
+          "polished hardwood floor living room gleaming"
       ]
   },
   "Landscaper / Gardener": {
@@ -8822,7 +9626,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Indigenous"
               ],
               "icon": "feather",
-              "serviceImageQuery": "landscaper garden design installation Cape Town professional"
+              "serviceImageQuery": "beautiful landscaped garden plants pathways flowers"
           },
           {
               "name": "Hard Landscaping",
@@ -8832,7 +9636,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Decking"
               ],
               "icon": "layers",
-              "serviceImageQuery": "hard landscaping retaining wall deck paving professional"
+              "serviceImageQuery": "stone retaining wall garden timber deck outdoor"
           },
           {
               "name": "Ongoing Garden Maintenance",
@@ -8842,7 +9646,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Irrigation"
               ],
               "icon": "scissors",
-              "serviceImageQuery": "garden maintenance professional landscaper team Cape Town"
+              "serviceImageQuery": "manicured lawn garden hedge trimmed neat green"
+          },
+          {
+              "name": "Irrigation System Installation",
+              "description": "Automated drip and spray irrigation systems designed to keep your garden thriving while minimising water usage.",
+              "tags": [
+                  "Automated Irrigation",
+                  "Water-Wise"
+              ],
+              "icon": "cloud-rain",
+              "serviceImageQuery": "automated garden irrigation sprinkler system installed"
           }
       ],
       "galleryHeading": "Gardens We've Created",
@@ -8896,15 +9710,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "lush, natural, crafted",
-      "heroImageQuery": "landscaping garden design professional Cape Town beautiful",
-      "heroBgImageQuery": "garden landscaping dark background lush green professional",
-      "ogImageQuery": "professional landscaping garden Cape Town beautiful installation",
-      "aboutImageQuery": "landscaper team garden installation professional Cape Town",
+      "heroImageQuery": "beautiful landscaped garden outdoor seating flowers lush",
+      "heroBgImageQuery": "garden landscaping dark background lush green",
+      "ogImageQuery": "stunning garden design pathways plants flowers",
+      "aboutImageQuery": "gardener planting flowers bed landscaping working",
       "galleryImageQueries": [
-          "garden design installation Cape Town professional",
-          "hard landscaping retaining wall deck professional",
-          "indigenous fynbos garden Cape Town",
-          "garden maintenance team professional Cape Town"
+          "landscaped garden design curved pathway flower beds",
+          "timber deck outdoor dining area garden view",
+          "indigenous fynbos garden rockery succulents",
+          "water feature pond garden stones plants"
       ]
   },
   "Pest Control": {
@@ -8926,7 +9740,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Ants"
               ],
               "icon": "alert-triangle",
-              "serviceImageQuery": "pest control treatment residential professional Cape Town"
+              "serviceImageQuery": "pest control spray nozzle treating baseboard interior"
           },
           {
               "name": "Rodent Control",
@@ -8936,7 +9750,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Bait Stations"
               ],
               "icon": "shield",
-              "serviceImageQuery": "rodent pest control professional residential treatment"
+              "serviceImageQuery": "rodent bait station placed along wall pest"
           },
           {
               "name": "Termite & Wood Borer",
@@ -8946,7 +9760,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Wood Borer"
               ],
               "icon": "home",
-              "serviceImageQuery": "termite treatment pest control professional residential"
+              "serviceImageQuery": "termite damage wood treatment close up inspection"
+          },
+          {
+              "name": "Bird & Wildlife Management",
+              "description": "Pigeon proofing, bird spikes, netting installations, and humane wildlife deterrents for roofs and buildings.",
+              "tags": [
+                  "Bird Proofing",
+                  "Pigeon Spikes"
+              ],
+              "icon": "feather",
+              "serviceImageQuery": "bird spike pigeon proofing installed building ledge"
           }
       ],
       "galleryHeading": "Treated & Cleared",
@@ -9000,15 +9824,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, professional, trustworthy",
-      "heroImageQuery": "pest control professional residential treatment Cape Town",
-      "heroBgImageQuery": "pest control professional dark background clean",
-      "ogImageQuery": "pest control technician professional treatment residential",
-      "aboutImageQuery": "pest control technician professional uniformed Cape Town",
+      "heroImageQuery": "clean pest free home interior bright kitchen",
+      "heroBgImageQuery": "pest control equipment sprayer dark background",
+      "ogImageQuery": "clean healthy home interior pest free living",
+      "aboutImageQuery": "pest control technician spraying treatment working",
       "galleryImageQueries": [
-          "pest control treatment residential professional",
-          "rodent control bait station professional",
-          "termite treatment inspection professional",
-          "pest control technician uniformed Cape Town"
+          "pest control spray treatment along baseboard wall",
+          "rodent bait station placed garden perimeter",
+          "termite damage inspection wooden beam close up",
+          "fumigation tent over house structure treatment"
       ]
   },
   "Security Company": {
@@ -9030,7 +9854,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "24/7"
               ],
               "icon": "shield",
-              "serviceImageQuery": "armed response security vehicle residential Cape Town"
+              "serviceImageQuery": "security response vehicle patrol car residential street"
           },
           {
               "name": "CCTV & Alarm Systems",
@@ -9040,7 +9864,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Alarm Monitoring"
               ],
               "icon": "video",
-              "serviceImageQuery": "CCTV security camera installation residential professional"
+              "serviceImageQuery": "CCTV security camera mounted wall surveillance"
           },
           {
               "name": "Guarding & Access Control",
@@ -9050,7 +9874,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Access Control"
               ],
               "icon": "user-check",
-              "serviceImageQuery": "security guard access control gate residential estate"
+              "serviceImageQuery": "security boom gate entrance estate access control"
+          },
+          {
+              "name": "Electric Fencing & Perimeter Detection",
+              "description": "Certified electric fence installations, perimeter beams, and vibration sensors for comprehensive boundary protection.",
+              "tags": [
+                  "Electric Fence",
+                  "Perimeter Beams"
+              ],
+              "icon": "zap",
+              "serviceImageQuery": "electric fence perimeter beam sensor installed wall"
           }
       ],
       "galleryHeading": "Securing Cape Town",
@@ -9104,15 +9938,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, secure, authoritative",
-      "heroImageQuery": "security company professional armed response Cape Town residential",
-      "heroBgImageQuery": "security professional dark background shield protection",
-      "ogImageQuery": "armed response security vehicle professional Cape Town",
-      "aboutImageQuery": "security officer professional uniformed Cape Town residential",
+      "heroImageQuery": "secure residential estate entrance gate camera bollards",
+      "heroBgImageQuery": "security dark background shield protection",
+      "ogImageQuery": "CCTV cameras installed building entrance security",
+      "aboutImageQuery": "security officer patrolling residential area night",
       "galleryImageQueries": [
-          "armed response security vehicle residential Cape Town",
-          "CCTV camera installation security professional",
-          "security guard access control gate estate",
-          "security control room monitoring professional"
+          "security patrol vehicle driving residential street night",
+          "CCTV camera dome mounted building exterior",
+          "boom gate access control estate entrance point",
+          "security control room monitors screens surveillance"
       ]
   },
   "Moving / Removals": {
@@ -9134,7 +9968,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Full Pack"
               ],
               "icon": "home",
-              "serviceImageQuery": "professional removals household moving Cape Town truck"
+              "serviceImageQuery": "moving boxes stacked living room packed household"
           },
           {
               "name": "Office & Commercial Removals",
@@ -9144,7 +9978,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "IT Care"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "office commercial removals professional Cape Town relocation"
+              "serviceImageQuery": "office desks chairs stacked boxes relocation moving"
           },
           {
               "name": "Storage & Packaging",
@@ -9154,7 +9988,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Packing"
               ],
               "icon": "package",
-              "serviceImageQuery": "removals storage professional packing service Cape Town"
+              "serviceImageQuery": "storage unit warehouse boxes shelves organized"
+          },
+          {
+              "name": "Furniture Assembly & Disassembly",
+              "description": "Professional disassembly of beds, desks, and wall units before the move, and full reassembly at your new address.",
+              "tags": [
+                  "Disassembly",
+                  "Reassembly"
+              ],
+              "icon": "tool",
+              "serviceImageQuery": "furniture disassembled bed frame parts ready moving"
           }
       ],
       "galleryHeading": "Moves We've Made",
@@ -9208,15 +10052,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, reliable, careful",
-      "heroImageQuery": "professional removals moving truck Cape Town residential",
-      "heroBgImageQuery": "removals boxes truck dark background professional",
-      "ogImageQuery": "professional removal truck Cape Town household move",
-      "aboutImageQuery": "removals crew professional packing household Cape Town",
+      "heroImageQuery": "moving truck parked outside house loading furniture",
+      "heroBgImageQuery": "removals boxes truck dark background",
+      "ogImageQuery": "removal truck loaded furniture boxes residential street",
+      "aboutImageQuery": "movers carrying sofa down stairs teamwork careful",
       "galleryImageQueries": [
-          "professional removals truck household Cape Town",
-          "office relocation commercial professional",
-          "removals packing fragile items professional",
-          "storage facility removals professional Cape Town"
+          "removal truck loaded furniture blankets residential",
+          "office relocation desks stacked boxes corridor",
+          "bubble wrap packing fragile items boxes",
+          "storage facility unit open organized boxes"
       ]
   },
   "Pool Service": {
@@ -9238,7 +10082,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Chemical Balance"
               ],
               "icon": "droplet",
-              "serviceImageQuery": "pool maintenance service professional residential Cape Town"
+              "serviceImageQuery": "crystal clear swimming pool blue water residential"
           },
           {
               "name": "Equipment Repairs & Upgrades",
@@ -9248,7 +10092,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Filter"
               ],
               "icon": "settings",
-              "serviceImageQuery": "pool pump repair professional equipment maintenance"
+              "serviceImageQuery": "pool pump filter equipment room installed pipes"
           },
           {
               "name": "Pool Renovations",
@@ -9258,7 +10102,17 @@ export const presetContent: Record<string, PresetContent> = {
                   "Tiling"
               ],
               "icon": "tool",
-              "serviceImageQuery": "pool renovation resurfacing tiling professional Cape Town"
+              "serviceImageQuery": "renovated pool mosaic tiles blue water feature"
+          },
+          {
+              "name": "Solar Pool Heating",
+              "description": "Roof-mounted solar heating panels that extend your swimming season by months without increasing your electricity bill.",
+              "tags": [
+                  "Solar Heating",
+                  "Season Extension"
+              ],
+              "icon": "sun",
+              "serviceImageQuery": "solar pool heating panels installed roof residential"
           }
       ],
       "galleryHeading": "Pools We Maintain",
@@ -9312,15 +10166,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, clean, aquatic",
-      "heroImageQuery": "pool service maintenance professional residential Cape Town clear",
-      "heroBgImageQuery": "swimming pool dark background blue water professional",
-      "ogImageQuery": "pool maintenance professional residential Cape Town clear",
-      "aboutImageQuery": "pool technician servicing cleaning residential Cape Town",
+      "heroImageQuery": "sparkling blue swimming pool backyard garden sunny",
+      "heroBgImageQuery": "swimming pool dark background blue water",
+      "ogImageQuery": "crystal clear pool turquoise water residential garden",
+      "aboutImageQuery": "pool technician testing water chemistry skimmer net",
       "galleryImageQueries": [
-          "pool maintenance clean residential Cape Town clear",
-          "pool pump equipment repair professional",
-          "pool renovation resurfacing tiling professional",
-          "crystal clear pool residential Cape Town summer"
+          "clear blue pool water sunlight ripples residential",
+          "pool pump room equipment filter plumbing",
+          "renovated pool new tiles mosaic blue surface",
+          "infinity pool edge garden view sunset residential"
       ]
   },
   "Laundry / Dry Cleaning": {
@@ -9363,6 +10217,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "scissors",
               "serviceImageQuery": "garment alteration sewing repair seamstress professional"
+          },
+          {
+              "name": "Specialist & Wedding Dress Care",
+              "description": "Expert cleaning and preservation of wedding dresses, leather, suede, and delicate designer garments.",
+              "tags": [
+                  "Wedding Dress",
+                  "Specialist Fabrics"
+              ],
+              "icon": "star",
+              "serviceImageQuery": "wedding dress preservation box cleaned pressed white"
           }
       ],
       "galleryHeading": "Garments We've Revived",
@@ -9467,6 +10331,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "dishwasher oven appliance repair professional technician"
+          },
+          {
+              "name": "Stove, Hob & Extractor Repairs",
+              "description": "Gas hob ignition, ceramic hob element, extractor fan motor, and stove thermostat repairs for all brands.",
+              "tags": [
+                  "Stove Repair",
+                  "Extractor Fan"
+              ],
+              "icon": "cpu",
+              "serviceImageQuery": "gas hob ceramic stove top repaired clean kitchen"
           }
       ],
       "galleryHeading": "Fixed & Running",
@@ -9571,6 +10445,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "edit",
               "serviceImageQuery": "handyman painting patching crack fill residential professional"
+          },
+          {
+              "name": "TV Mounting & Smart Home Setup",
+              "description": "Wall-mounted TV installations, cable concealment, Wi-Fi mesh setup, and smart doorbell fitting.",
+              "tags": [
+                  "TV Mounting",
+                  "Smart Home"
+              ],
+              "icon": "monitor",
+              "serviceImageQuery": "wall mounted TV flat screen cables concealed living room"
           }
       ],
       "galleryHeading": "Jobs Done",
@@ -9675,6 +10559,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "align-left",
               "serviceImageQuery": "blinds roller roman professional installation interior"
+          },
+          {
+              "name": "Scatter Cushions & Soft Accessories",
+              "description": "Custom scatter cushions, bolsters, window seats, and padded headboards made in your chosen fabric.",
+              "tags": [
+                  "Scatter Cushions",
+                  "Headboards"
+              ],
+              "icon": "heart",
+              "serviceImageQuery": "custom scatter cushions velvet sofa styled living room"
           }
       ],
       "galleryHeading": "Before & After",
@@ -9779,6 +10673,16 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "feather",
               "serviceImageQuery": "garden waste green waste removal professional Cape Town"
+          },
+          {
+              "name": "E-Waste & Hazardous Disposal",
+              "description": "Compliant collection and disposal of electronic waste, old paint, chemicals, and other hazardous household materials.",
+              "tags": [
+                  "E-Waste",
+                  "Hazardous Disposal"
+              ],
+              "icon": "alert-triangle",
+              "serviceImageQuery": "electronic waste e-waste recycling sorted bins"
           }
       ],
       "galleryHeading": "Cleared & Clean",
@@ -9883,6 +10787,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "award",
               "serviceImageQuery": "exam preparation study materials practice papers desk books"
+          },
+          {
+              "name": "Conversational Afrikaans",
+              "description": "Practical Afrikaans tuition for English speakers wanting to connect in the workplace and community.",
+              "tags": [
+                "Afrikaans",
+                "Conversational"
+              ],
+              "serviceImageQuery": "Afrikaans language textbook vocabulary flashcards desk study"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -9987,6 +10900,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "activity",
               "serviceImageQuery": "children art craft painting activity table creative colourful"
+          },
+          {
+              "name": "Exam Preparation Bootcamps",
+              "description": "Intensive revision workshops before mid-year and final exams covering key subjects and exam technique.",
+              "tags": [
+                "Exam Prep",
+                "Revision"
+              ],
+              "serviceImageQuery": "exam revision bootcamp past papers whiteboard study notes"
           }
       ],
       "galleryHeading": "Learning Beyond the Bell",
@@ -10091,6 +11013,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "star",
               "serviceImageQuery": "children painting easels colourful art class brushes aprons"
+          },
+          {
+              "name": "Corporate & Team-Building Workshops",
+              "description": "Guided creative workshops for corporate teams — ceramics, painting, and collaborative art experiences.",
+              "tags": [
+                "Corporate Events",
+                "Team Building"
+              ],
+              "serviceImageQuery": "corporate team building art workshop group painting canvas"
           }
       ],
       "galleryHeading": "Made in Our Studio",
@@ -10504,6 +11435,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Music Theory"
               ],
               "serviceImageQuery": "singing lesson microphone vocal warmup piano accompaniment"
+          },
+          {
+              "name": "Drums & Percussion",
+              "description": "Drum kit, djembe, and percussion lessons for beginners to advanced — solo and ensemble playing.",
+              "tags": [
+                "Drums",
+                "Percussion"
+              ],
+              "serviceImageQuery": "drum kit sticks snare cymbal lesson close-up studio"
           }
       ],
       "galleryHeading": "In the Studio",
@@ -10604,6 +11544,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Exam Prep"
               ],
               "serviceImageQuery": "matric exam revision past papers textbooks desk study notes"
+          },
+          {
+              "name": "Accounting & Business Studies",
+              "description": "One-on-one and group tutoring in accounting, business studies, and economics from Grade 10 to matric.",
+              "tags": [
+                "Accounting",
+                "Business Studies"
+              ],
+              "serviceImageQuery": "accounting textbook calculator financial statements study desk"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -10704,6 +11653,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Adults"
               ],
               "serviceImageQuery": "nervous adult learner driving lesson steering wheel instructor calm"
+          },
+          {
+              "name": "Code 10 & Code 14 Heavy Vehicle",
+              "description": "Professional heavy vehicle licence training for Code 10 and Code 14 with yard and road preparation.",
+              "tags": [
+                "Code 10",
+                "Heavy Vehicle"
+              ],
+              "serviceImageQuery": "heavy truck driving training yard manoeuvre code 14 vehicle"
           }
       ],
       "galleryHeading": "New Drivers, New Freedom",
@@ -10804,6 +11762,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "School Readiness"
               ],
               "serviceImageQuery": "grade R school readiness writing pencil grip exercise desk"
+          },
+          {
+              "name": "Outdoor Nature Play Programme",
+              "description": "Structured outdoor learning with sensory gardens, mud kitchens, and nature walks to develop curiosity and resilience.",
+              "tags": [
+                "Nature Play",
+                "Outdoor Learning"
+              ],
+              "serviceImageQuery": "sensory garden mud kitchen outdoor play sandpit water table"
           }
       ],
       "galleryHeading": "A Day at Preschool",
@@ -10904,6 +11871,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "NQF"
               ],
               "serviceImageQuery": "learnership workplace mentoring young adult practical training"
+          },
+          {
+              "name": "Health & Safety Compliance Courses",
+              "description": "OHSA, fire safety, and hazardous chemical handling courses with DoL-accepted certification.",
+              "tags": [
+                "OHSA Compliance",
+                "Fire Safety"
+              ],
+              "serviceImageQuery": "fire safety training extinguisher demonstration workplace PPE"
           }
       ],
       "galleryHeading": "In the Classroom",
@@ -11004,6 +11980,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "MS Office"
               ],
               "serviceImageQuery": "adult computer literacy class keyboard mouse monitor basics"
+          },
+          {
+              "name": "Holiday Coding Camps",
+              "description": "Intensive one-week coding camps during school holidays — game design, app building, and robotics challenges.",
+              "tags": [
+                "Holiday Camp",
+                "Game Design"
+              ],
+              "serviceImageQuery": "kids coding holiday camp robotics challenge project building"
           }
       ],
       "galleryHeading": "In the Lab",
@@ -11104,6 +12089,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Workplace Safety"
               ],
               "serviceImageQuery": "workplace safety fire extinguisher PPE hard hat training"
+          },
+          {
+              "name": "Wilderness & Outdoor First Aid",
+              "description": "Extended first aid for hikers, trail runners, and outdoor guides covering remote-area emergency response.",
+              "tags": [
+                "Wilderness",
+                "Outdoor First Aid"
+              ],
+              "serviceImageQuery": "wilderness first aid outdoor backpack splint bandage trail"
           }
       ],
       "galleryHeading": "Training That Saves Lives",
