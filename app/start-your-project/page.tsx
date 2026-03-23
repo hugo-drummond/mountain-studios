@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { pagePrices, type PageType, type Region, regionCurrencyMap, calculateQuote } from '../../constants/pricing'
 import NavBar from '../../components/site/NavBar'
-import { createClient } from '@supabase/supabase-js'
+// Supabase import removed — images now use browser object URLs for preview
 
 const TOTAL_STEPS = 9
 
@@ -426,9 +426,7 @@ export default function StartYourProject() {
 
   // Images
   const [uploadedImages, setUploadedImages] = useState<{ url: string; name: string }[]>([])
-  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const sessionId = useRef(crypto.randomUUID())
 
   // Preview
   const [previewHtml, setPreviewHtml] = useState<string | null>(null)
@@ -514,7 +512,7 @@ export default function StartYourProject() {
     }
   }, [previewLoading])
 
-  async function handleImageUpload(files: FileList | null) {
+  function handleImageUpload(files: FileList | null) {
     if (!files || files.length === 0) return
     const remaining = MAX_IMAGES - uploadedImages.length
     if (remaining <= 0) return
@@ -527,35 +525,17 @@ export default function StartYourProject() {
     const valid = toUpload.filter(f => f.size <= MAX_FILE_SIZE)
     if (valid.length === 0) return
 
-    setUploading(true)
-    try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      if (!supabaseUrl || !supabaseKey) throw new Error('Supabase not configured')
-      const supabase = createClient(supabaseUrl, supabaseKey)
-
-      const newImages: { url: string; name: string }[] = []
-      for (const file of valid) {
-        const ext = file.name.split('.').pop() || 'jpg'
-        const path = `${sessionId.current}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-        const { error } = await supabase.storage.from('prospect-images').upload(path, file, { contentType: file.type })
-        if (error) {
-          console.error('Upload error:', error)
-          continue
-        }
-        const { data: { publicUrl } } = supabase.storage.from('prospect-images').getPublicUrl(path)
-        newImages.push({ url: publicUrl, name: file.name })
-      }
-      setUploadedImages(prev => [...prev, ...newImages])
-    } catch (err) {
-      console.error('Image upload failed:', err)
-    } finally {
-      setUploading(false)
-      if (fileInputRef.current) fileInputRef.current.value = ''
-    }
+    // Use temporary browser object URLs — no server upload needed for preview
+    const newImages = valid.map(file => ({
+      url: URL.createObjectURL(file),
+      name: file.name,
+    }))
+    setUploadedImages(prev => [...prev, ...newImages])
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   function removeImage(url: string) {
+    URL.revokeObjectURL(url)
     setUploadedImages(prev => prev.filter(img => img.url !== url))
   }
 
@@ -840,26 +820,15 @@ export default function StartYourProject() {
                 style={{ display: 'none' }}
                 disabled={uploadedImages.length >= MAX_IMAGES}
               />
-              {uploading ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-                  <div style={{
-                    width: '24px', height: '24px', border: '2px solid rgba(255,255,255,0.2)',
-                    borderTopColor: 'rgba(255,255,255,0.8)', borderRadius: '50%',
-                    animation: 'spin 0.8s linear infinite',
-                  }} />
-                  <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', fontFamily: font }}>Uploading...</span>
-                </div>
-              ) : (
-                <>
-                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.5 }}>📁</div>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', fontFamily: font, margin: 0 }}>
-                    Drag &amp; drop images here, or click to browse
-                  </p>
-                  <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontFamily: font, marginTop: '0.5rem' }}>
-                    Up to {MAX_IMAGES} images, max 5MB each
-                  </p>
-                </>
-              )}
+              <>
+                <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.5 }}>📁</div>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', fontFamily: font, margin: 0 }}>
+                  Drag &amp; drop images here, or click to browse
+                </p>
+                <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontFamily: font, marginTop: '0.5rem' }}>
+                  Up to {MAX_IMAGES} images, max 5MB each
+                </p>
+              </>
             </div>
 
             {/* Thumbnails */}
