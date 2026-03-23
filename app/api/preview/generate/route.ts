@@ -3173,18 +3173,20 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
     { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
   ]
+  const stepIcons = ['&#127968;', '&#128188;', '&#128666;']
   const processSection = `
   <section style="padding:80px 2rem;background:${homeBg};text-align:center">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.servicesHeading || 'How It Works'}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">How It Works</h2>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem">
-        ${processSteps.slice(0, 3).map(step => `
+        ${processSteps.slice(0, 3).map((step, i) => `
         <div>
-          <div style="width:72px;height:72px;border-radius:16px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
-            <span style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:var(--primary)">${step.step}</span>
+          <div style="width:72px;height:72px;border-radius:50%;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
+            <span style="font-size:1.8rem">${stepIcons[i] || '&#9733;'}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${step.title}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7">${step.description}</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7;margin-bottom:1rem">${step.description}</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
         </div>`).join('')}
       </div>
     </div>
@@ -3212,7 +3214,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         ${content.services.slice(0, 4).map(s => `
         <div style="text-align:left">
           <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
-            <span style="font-size:1.3rem;color:var(--primary)">${s.icon || '&#10003;'}</span>
+            <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon)}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
@@ -3289,7 +3291,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <section style="padding:60px 2rem;background:var(--primary)">
     <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;max-width:600px">${content.aboutMission || content.heroSubtitle}</h2>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2.5rem;background:var(--secondary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2.5rem;background:#fff;color:${homeText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
     </div>
   </section>`
 
@@ -3332,14 +3334,13 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 ${homeNav}
 
   ${heroSection}
+  ${benefitsSection}
   ${processSection}
   ${statsSection}
-  ${benefitsSection}
-  ${testimonialSection}
   ${featureSection}
-  ${supportCards}
-  ${buildContactSection(content)}
+  ${testimonialSection}
   ${ctaBanner}
+  ${buildContactSection(content)}
 
 ${homeFooter}
 

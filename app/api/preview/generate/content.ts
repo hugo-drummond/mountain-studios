@@ -9619,7 +9619,7 @@ export const presetContent: Record<string, PresetContent> = {
       "ctaSecondary": "Our Services",
       "ctaNote": "Insured staff \u00b7 Eco-friendly products available \u00b7 Recurring discounts",
       "badge": "NCCA Registered Cleaning Company",
-      "servicesHeading": "What We Clean",
+      "servicesHeading": "Cleaning Services Tailored to You",
       "services": [
           {
               "name": "Regular Home Cleaning",
