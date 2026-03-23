@@ -1364,7 +1364,7 @@ function buildEventsTemplate(data: TemplateData): string {
   const evtBg = '#ffffff'
   const evtText = '#1a1a1a'
   const evtMuted = '#6b6b6b'
-  const evtTeal = '#2a6b6b'
+  const evtTeal = primaryColor || '#2a6b6b'
 
   // Nav
   const evtNavLinks: string[] = []
@@ -1567,7 +1567,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const proBg = '#2a2a2a'
   const proText = '#f5f5f0'
   const proMuted = '#a0a0a0'
-  const proRed = '#c0392b'
+  const proRed = primaryColor || '#c0392b'
 
   // Nav — dark bg, serif logo + tagline, links, "How can we help?" CTA
   const proNavLinks: string[] = []
@@ -2114,7 +2114,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   const fitBg = '#111111'
   const fitText = '#ffffff'
   const fitMuted = '#999999'
-  const fitOrange = '#e85d26'
+  const fitOrange = primaryColor || '#e85d26'
 
   // Promo bar
   const promoBanner = `
