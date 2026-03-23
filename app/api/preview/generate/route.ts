@@ -3175,12 +3175,13 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   ]
   const stepIcons = ['&#127968;', '&#128188;', '&#128666;']
   const processSection = `
-  <section style="padding:80px 2rem;background:${homeBg};text-align:center">
+  <section style="padding:80px 2rem;background:${homeAlt};text-align:center">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">How It Works</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;margin-bottom:2.5rem">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-bottom:2.5rem">
         ${processSteps.slice(0, 3).map((step, i) => `
-        <div>
+        <div style="position:relative;padding:2.5rem 1.5rem;background:${homeBg};border:1px solid rgba(0,0,0,0.06);${i === 0 ? 'border-radius:16px 0 0 16px' : i === 2 ? 'border-radius:0 16px 16px 0' : ''}">
+          ${i < 2 ? `<div style="position:absolute;top:50%;right:-12px;width:24px;height:24px;background:${homeBg};border-right:1px solid rgba(0,0,0,0.06);border-top:1px solid rgba(0,0,0,0.06);transform:rotate(45deg) translateY(-50%);z-index:2"></div>` : ''}
           <div style="width:72px;height:72px;border-radius:50%;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
             <span style="font-size:1.8rem">${stepIcons[i] || '&#9733;'}</span>
           </div>
@@ -3335,8 +3336,8 @@ ${homeNav}
 
   ${heroSection}
   ${benefitsSection}
-  ${processSection}
   ${statsSection}
+  ${processSection}
   ${featureSection}
   ${testimonialSection}
   ${ctaBanner}

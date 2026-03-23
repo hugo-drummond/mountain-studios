@@ -10655,7 +10655,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Sofas"
               ],
               "icon": "home",
-              "serviceImageQuery": "furniture reupholstery sofa professional Cape Town workshop"
+              "serviceImageQuery": "reupholstered sofa velvet fabric finished living room"
           },
           {
               "name": "Custom Curtains & Drapes",
@@ -10665,7 +10665,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Made-to-Measure"
               ],
               "icon": "layers",
-              "serviceImageQuery": "custom curtains drapes made to measure professional interior"
+              "serviceImageQuery": "custom curtains drapes hanging in living room window"
           },
           {
               "name": "Blinds & Roman Blinds",
@@ -10675,7 +10675,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Roman Blinds"
               ],
               "icon": "align-left",
-              "serviceImageQuery": "blinds roller roman professional installation interior"
+              "serviceImageQuery": "roller blinds roman blinds installed window living room"
           },
           {
               "name": "Scatter Cushions & Soft Accessories",
@@ -10739,15 +10739,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, crafted, interior",
-      "heroImageQuery": "upholstery reupholstery sofa professional Cape Town interior",
-      "heroBgImageQuery": "fabric upholstery dark background professional interior",
-      "ogImageQuery": "furniture reupholstery professional before after Cape Town",
-      "aboutImageQuery": "upholsterer professional workroom fabric sewing Cape Town",
+      "heroImageQuery": "reupholstered sofa velvet fabric elegant living room",
+      "heroBgImageQuery": "fabric swatches dark background textile upholstery",
+      "ogImageQuery": "reupholstered armchair new fabric interior styled",
+      "aboutImageQuery": "upholsterer sewing fabric workroom hands close up",
       "galleryImageQueries": [
-          "furniture reupholstery sofa before after professional",
-          "custom curtains drapes installed interior Cape Town",
-          "roller roman blinds installed professional interior",
-          "upholstery workroom Cape Town professional fabric"
+          "reupholstered sofa before after new fabric",
+          "custom curtains drapes hanging bay window interior",
+          "roman blinds fitted bedroom window styled",
+          "upholstery workroom fabric bolts sewing machine"
       ]
   },
   "Waste Removal / Skip Hire": {
@@ -10769,7 +10769,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Same-Day"
               ],
               "icon": "trash-2",
-              "serviceImageQuery": "skip bin hire residential delivery Cape Town professional"
+              "serviceImageQuery": "skip bin driveway residential waste loaded"
           },
           {
               "name": "Builders' Rubble Removal",
@@ -10779,7 +10779,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Crane Truck"
               ],
               "icon": "truck",
-              "serviceImageQuery": "rubble removal builders waste crane truck professional Cape Town"
+              "serviceImageQuery": "builders rubble removal tipper truck construction site"
           },
           {
               "name": "Garden & Green Waste",
@@ -10789,7 +10789,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Green Waste"
               ],
               "icon": "feather",
-              "serviceImageQuery": "garden waste green waste removal professional Cape Town"
+              "serviceImageQuery": "garden waste branches green refuse loaded truck"
           },
           {
               "name": "E-Waste & Hazardous Disposal",
@@ -10853,15 +10853,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, clean, efficient",
-      "heroImageQuery": "skip hire waste removal professional Cape Town residential",
-      "heroBgImageQuery": "waste removal skip bin dark background professional",
-      "ogImageQuery": "skip hire bin residential Cape Town professional service",
-      "aboutImageQuery": "waste removal team professional Cape Town truck site",
+      "heroImageQuery": "skip bin hire delivery residential driveway loaded",
+      "heroBgImageQuery": "waste skip bin dark background industrial",
+      "ogImageQuery": "skip hire bin residential waste removal street",
+      "aboutImageQuery": "waste removal crew loading skip bin truck site",
       "galleryImageQueries": [
-          "skip bin hire residential Cape Town delivery",
-          "rubble removal crane truck professional Cape Town",
-          "garden waste green waste removal professional",
-          "skip hire collection waste sorting professional"
+          "skip bin loaded residential driveway waste",
+          "builders rubble removal tipper truck site clearance",
+          "garden waste green refuse truck loaded branches",
+          "waste sorting recycling facility bins separated"
       ]
   },
   "Language School": {
@@ -14953,7 +14953,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Extensions"
         ],
         "icon": "home",
-        "serviceImageQuery": "architect residential home design Cape Town professional"
+        "serviceImageQuery": "modern residential house exterior architecture completed"
       },
       {
         "name": "Council Submissions & Approvals",
@@ -14963,7 +14963,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Planning"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "architect council submission planning permission professional"
+        "serviceImageQuery": "architectural blueprints floor plan drawings desk"
       },
       {
         "name": "Commercial & Retail Design",
@@ -14973,7 +14973,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Retail Fit-Out"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "commercial architect office retail design Cape Town professional"
+        "serviceImageQuery": "modern commercial building interior open plan office design"
       },
         {
           "name": "Site Management & Contract Admin",
@@ -15025,14 +15025,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "architectural, clean, considered",
-    "heroImageQuery": "architect residential design Cape Town modern professional",
-    "ogImageQuery": "architect professional residential design Cape Town project",
-    "aboutImageQuery": "architect professional Cape Town reviewing plans site",
+    "heroImageQuery": "modern architecture residential building exterior white walls",
+    "ogImageQuery": "architectural model building design concept",
+    "aboutImageQuery": "architect reviewing blueprints at desk with scale model",
     "galleryImageQueries": [
-      "residential architecture Cape Town modern home",
-      "architect extension renovation Cape Town professional",
-      "commercial architecture office Cape Town interior",
-      "heritage architecture Cape Town professional renovation"
+      "modern residential house architecture exterior completed",
+      "home extension renovation contemporary glass design",
+      "commercial office interior architecture open plan",
+      "heritage building renovation restored facade"
     ]
   },
   "Surveyor": {
@@ -15458,7 +15458,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Banners"
         ],
         "icon": "monitor",
-        "serviceImageQuery": "custom signage banners large format print professional Cape Town"
+        "serviceImageQuery": "custom signage outdoor banner large format printing"
       },
       {
         "name": "Vinyl Branding & Wraps",
@@ -15468,7 +15468,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vehicle Wraps"
         ],
         "icon": "truck",
-        "serviceImageQuery": "vinyl branding wrap vehicle window graphics professional Cape Town"
+        "serviceImageQuery": "vinyl lettering window graphics storefront branding"
       },
       {
         "name": "Branding Materials & Print",
@@ -15478,7 +15478,17 @@ export const presetContent: Record<string, PresetContent> = {
           "Stickers"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "branding materials print business cards stickers professional"
+        "serviceImageQuery": "business cards brochures printed branding materials stacked"
+      },
+      {
+        "name": "Vehicle Wraps & Fleet Branding",
+        "description": "Full and partial vehicle wraps, fleet livery, and branded van graphics designed, printed, and applied on-site.",
+        "tags": [
+          "Vehicle Wraps",
+          "Fleet Branding"
+        ],
+        "icon": "truck",
+        "serviceImageQuery": "vehicle wrap branded van fleet livery graphics"
       }
     ],
     "galleryHeading": "Off the Press",
@@ -15521,14 +15531,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, commercial",
-    "heroImageQuery": "print shop signage wide format Cape Town professional printing",
-    "ogImageQuery": "signage vinyl branding print professional Cape Town",
-    "aboutImageQuery": "print shop team professional wide format press Cape Town",
+    "heroImageQuery": "print shop wide format printer signage production",
+    "ogImageQuery": "signage vinyl banners printed display",
+    "aboutImageQuery": "print shop operator running wide format press",
     "galleryImageQueries": [
-      "custom signage retail fascia professional Cape Town",
-      "vehicle wrap vinyl branding fleet professional",
-      "event banner display large format print Cape Town",
-      "window vinyl graphics branding professional Cape Town"
+      "retail fascia signage illuminated shopfront",
+      "branded vehicle wrap van fleet graphics",
+      "event banner wall exhibition display stand",
+      "window vinyl graphics storefront branding installed"
     ]
   },
 }
