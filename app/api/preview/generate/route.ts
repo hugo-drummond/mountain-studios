@@ -3708,13 +3708,14 @@ function buildRetailTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1.05rem;color:${retailMuted};line-height:1.7;max-width:500px;margin:0 auto 2rem">${content.aboutMission || content.heroSubtitle}</p>
       <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem">${content.ctaSecondary || 'Shop All'}</a>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem">
-        ${serviceImgs.map((img, i) => `
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
+        ${content.services.slice(0, 4).map((s, i) => `
         <div style="display:flex;flex-direction:column;align-items:center">
-          <div style="width:280px;height:280px;border-radius:50%;overflow:hidden;border:2px solid var(--primary);margin-bottom:1rem">
-            <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <div style="width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;margin-bottom:1rem">
+            <img src="${i < serviceImgs.length ? serviceImgs[i] : (galleryImgs[i - serviceImgs.length] || heroImg)}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
-          <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase">${content.services[i]?.name || ''}</p>
+          <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:${retailMuted};line-height:1.6;text-align:center;margin-top:0.5rem">${s.description}</p>
         </div>`).join('')}
       </div>
     </div>
