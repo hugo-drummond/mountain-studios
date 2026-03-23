@@ -8,8 +8,26 @@ import NavBar from '../../components/site/NavBar'
 
 const TOTAL_STEPS = 9
 
-const MAX_IMAGES = 5
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+
+// Image limits per category — matches how many images each template actually uses
+const categoryImageLimits: Record<BusinessCategory, number> = {
+  'food-hospitality': 5,     // visual: hero + 3 service + 1 gallery
+  'retail': 5,
+  'health-wellness': 5,
+  'fitness-sport': 5,
+  'pets': 5,
+  'events-entertainment': 5,
+  'tech-digital': 2,         // service (dark): hero bg + 1
+  'professional': 4,         // service: 2x2 image grid
+  'trades-construction': 2,  // service: hero bg + 1
+  'home-services': 2,
+  'education': 2,
+  'automotive': 2,
+  'other': 3,
+  'creative': 9,             // portfolio: hero + 3 service + 5 gallery
+  'property': 4,             // property: hero + 3 service
+}
 
 type BusinessCategory =
   | 'food-hospitality' | 'retail' | 'trades-construction' | 'health-wellness'
@@ -514,7 +532,8 @@ export default function StartYourProject() {
 
   async function handleImageUpload(files: FileList | null) {
     if (!files || files.length === 0) return
-    const remaining = MAX_IMAGES - uploadedImages.length
+    const maxImages = businessCategory ? categoryImageLimits[businessCategory] : 5
+    const remaining = maxImages - uploadedImages.length
     if (remaining <= 0) return
 
     const toUpload = Array.from(files).slice(0, remaining)
@@ -790,7 +809,9 @@ export default function StartYourProject() {
         )}
 
         {/* Step 5: Your Images */}
-        {step === 5 && (
+        {step === 5 && (() => {
+          const maxImages = businessCategory ? categoryImageLimits[businessCategory] : 5
+          return (
           <>
             <h1 style={heading}>Got any images you&apos;d like us to use?</h1>
             <p style={{ fontFamily: font, fontSize: '1rem', color: 'rgba(255,255,255,0.5)', marginBottom: '2rem', lineHeight: 1.6 }}>
@@ -809,9 +830,9 @@ export default function StartYourProject() {
                 borderRadius: '12px',
                 padding: '2.5rem 1.5rem',
                 textAlign: 'center',
-                cursor: uploadedImages.length >= MAX_IMAGES ? 'not-allowed' : 'pointer',
+                cursor: uploadedImages.length >= maxImages ? 'not-allowed' : 'pointer',
                 transition: 'border-color 0.2s ease',
-                opacity: uploadedImages.length >= MAX_IMAGES ? 0.4 : 1,
+                opacity: uploadedImages.length >= maxImages ? 0.4 : 1,
                 marginBottom: '1.5rem',
               }}
             >
@@ -822,7 +843,7 @@ export default function StartYourProject() {
                 multiple
                 onChange={(e) => handleImageUpload(e.target.files)}
                 style={{ display: 'none' }}
-                disabled={uploadedImages.length >= MAX_IMAGES}
+                disabled={uploadedImages.length >= maxImages}
               />
               <>
                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.5 }}>📁</div>
@@ -830,7 +851,7 @@ export default function StartYourProject() {
                   Drag &amp; drop images here, or click to browse
                 </p>
                 <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontFamily: font, marginTop: '0.5rem' }}>
-                  Up to {MAX_IMAGES} images, max 5MB each
+                  Up to {maxImages} images, max 5MB each
                 </p>
               </>
             </div>
@@ -869,13 +890,14 @@ export default function StartYourProject() {
             )}
 
             <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', fontFamily: font }}>
-              {uploadedImages.length}/{MAX_IMAGES} images uploaded
+              {uploadedImages.length}/{maxImages} images uploaded
             </p>
 
             <Nav back={() => setStep(4)} next={() => setStep(6)} />
             <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
           </>
-        )}
+          )
+        })()}
 
         {/* Step 6: Site preview */}
         {step === 6 && (

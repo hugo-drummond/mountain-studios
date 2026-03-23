@@ -818,9 +818,12 @@ function buildServiceTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-          ${content.services.map((s, i) => `
-            <div style="${serviceCardStyle}">
+        <div style="display:flex;align-items:stretch;gap:0">
+          ${content.services.map((s, i) => `${i > 0 ? `
+            <div style="display:flex;align-items:center;flex-shrink:0;padding:0 0.25rem">
+              <div style="width:28px;height:28px;background:rgba(${pr},${pg},${pb},0.15);transform:rotate(45deg);border-right:2px solid rgba(${pr},${pg},${pb},0.4);border-top:2px solid rgba(${pr},${pg},${pb},0.4)"></div>
+            </div>` : ''}
+            <div style="flex:1;${serviceCardStyle}${i === 0 ? ';border-radius:16px 4px 4px 16px' : i === content.services.length - 1 ? ';border-radius:4px 16px 16px 4px' : ';border-radius:4px'}">
               <div style="width:64px;height:64px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
                 <span style="font-size:1.6rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
               </div>
@@ -969,9 +972,10 @@ function buildPortfolioTemplate(data: TemplateData): string {
   ]
   const galleryImgs = [
     images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
-    stockImages.cards[6],
+    images[5] || stockImages.cards[4],
+    images[6] || stockImages.cards[5],
+    images[7] || stockImages.cards[6],
+    images[8] || stockImages.cards[7],
   ]
 
   const captions = content.projectCaptions || ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design']
@@ -1051,6 +1055,12 @@ function buildPortfolioTemplate(data: TemplateData): string {
             <div class="pf-cap"><span>${captions[3] || 'Project'}</span></div>
           </div>
         </div>
+        ${galleryImgs[4] ? `<div style="display:grid;grid-template-columns:1fr;height:360px;gap:2px;margin-top:2px">
+          <div class="pf-cell">
+            <img src="${galleryImgs[4]}" alt="${captions[4] || 'Project'}" />
+            <div class="pf-cap"><span>${captions[4] || 'Project'}</span></div>
+          </div>
+        </div>` : ''}
       </div>
     </section>`
 
