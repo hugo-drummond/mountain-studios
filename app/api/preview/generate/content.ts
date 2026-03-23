@@ -10196,7 +10196,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Suits"
               ],
               "icon": "wind",
-              "serviceImageQuery": "dry cleaning professional garments suits pressed Cape Town"
+              "serviceImageQuery": "suits hanging plastic covers dry cleaned pressed rack"
           },
           {
               "name": "Laundry & Pressing",
@@ -10206,7 +10206,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Pressing"
               ],
               "icon": "layers",
-              "serviceImageQuery": "laundry pressing shirts professional service clean"
+              "serviceImageQuery": "pressed white shirts folded stacked crisp clean"
           },
           {
               "name": "Alterations & Repairs",
