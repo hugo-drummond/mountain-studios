@@ -5806,7 +5806,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Emergency"
               ],
               "icon": "zap",
-              "serviceImageQuery": "electrical distribution board circuit breakers close up"
+              "serviceImageQuery": "electrician fault finding electrical panel professional"
           },
           {
               "name": "DB Board Upgrades",
@@ -5816,7 +5816,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "RCBO"
               ],
               "icon": "cpu",
-              "serviceImageQuery": "new distribution board installed neat wiring"
+              "serviceImageQuery": "electrician DB board upgrade distribution board professional"
           },
           {
               "name": "Solar & Backup Power",
@@ -5826,7 +5826,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Inverter"
               ],
               "icon": "sun",
-              "serviceImageQuery": "solar panels installed on residential roof blue sky"
+              "serviceImageQuery": "solar panel installation electrician roof residential"
           }
       ],
       "galleryHeading": "Work That Passes Inspection",
@@ -5880,15 +5880,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "precise, professional, safe",
-      "heroImageQuery": "modern home lighting recessed downlights living room",
-      "heroBgImageQuery": "electrical panel wiring dark background",
-      "ogImageQuery": "neat electrical wiring distribution board installed",
-      "aboutImageQuery": "electrician wiring distribution board working",
+      "heroImageQuery": "electrician professional electrical work residential Cape Town",
+      "heroBgImageQuery": "electrical panel wiring dark professional background",
+      "ogImageQuery": "electrician DB board wiring professional residential",
+      "aboutImageQuery": "electrician working on DB board professional certified",
       "galleryImageQueries": [
-          "new distribution board RCBO switches installed",
-          "solar panel array residential rooftop",
-          "recessed LED downlights installed ceiling",
-          "outdoor garden lighting pathway bollard lights night"
+          "electrician DB board upgrade professional",
+          "solar panel installation residential roof",
+          "electrical fault finding wiring professional",
+          "electrician neat cable installation certified"
       ]
   },
   "Builder / General Contractor": {
@@ -5910,7 +5910,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Extensions"
               ],
               "icon": "home",
-              "serviceImageQuery": "new house construction brick walls foundation site"
+              "serviceImageQuery": "residential construction new build Cape Town professional"
           },
           {
               "name": "Renovations & Remodels",
@@ -5920,7 +5920,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Kitchen Remodel"
               ],
               "icon": "tool",
-              "serviceImageQuery": "kitchen renovation remodel white cabinets island"
+              "serviceImageQuery": "home renovation builder remodel interior professional"
           },
           {
               "name": "Structural Repairs",
@@ -5930,7 +5930,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Waterproofing"
               ],
               "icon": "shield",
-              "serviceImageQuery": "concrete foundation repair waterproofing membrane"
+              "serviceImageQuery": "structural repair builder foundation wall professional"
           }
       ],
       "galleryHeading": "Recent Builds",
@@ -5984,15 +5984,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "solid, professional, crafted",
-      "heroImageQuery": "completed modern house exterior architecture garden",
-      "heroBgImageQuery": "construction site building dark background tools",
-      "ogImageQuery": "finished residential home exterior landscaping",
-      "aboutImageQuery": "builder laying bricks construction site working",
+      "heroImageQuery": "builder construction residential Cape Town professional site",
+      "heroBgImageQuery": "construction site building dark professional tools",
+      "ogImageQuery": "residential construction Cape Town new build professional",
+      "aboutImageQuery": "builder contractor on site professional Cape Town",
       "galleryImageQueries": [
-          "new build house completed exterior landscaped",
-          "renovated open plan kitchen living room interior",
-          "house extension second storey addition completed",
-          "bathroom renovation modern tiles vanity mirror"
+          "residential new build Cape Town construction",
+          "home renovation kitchen remodel professional",
+          "builder extension structural work Cape Town",
+          "completed home build handover Cape Town"
       ]
   },
   "Joiner / Carpenter": {
@@ -6014,7 +6014,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Wardrobes"
               ],
               "icon": "layers",
-              "serviceImageQuery": "built in wardrobe white doors floor to ceiling bedroom"
+              "serviceImageQuery": "bespoke built in wardrobe cupboard joinery Cape Town"
           },
           {
               "name": "Kitchen Cabinetry",
@@ -6024,7 +6024,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Custom"
               ],
               "icon": "grid",
-              "serviceImageQuery": "custom wooden kitchen cabinets oak shaker style"
+              "serviceImageQuery": "custom kitchen cabinetry joinery carpenter wood"
           },
           {
               "name": "Bespoke Furniture",
@@ -6034,7 +6034,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Solid Wood"
               ],
               "icon": "box",
-              "serviceImageQuery": "handmade solid wood dining table rustic"
+              "serviceImageQuery": "bespoke furniture solid wood carpenter workshop"
           }
       ],
       "galleryHeading": "From Our Workshop",
@@ -6088,15 +6088,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, crafted, precise",
-      "heroImageQuery": "custom built in bookshelf living room warm wood",
-      "heroBgImageQuery": "carpenter workshop wood shavings dark background",
-      "ogImageQuery": "fitted wardrobe doors open organized interior",
-      "aboutImageQuery": "carpenter hand planing wood workshop crafting",
+      "heroImageQuery": "custom joinery carpenter Cape Town built in wardrobe kitchen",
+      "heroBgImageQuery": "carpenter workshop wood dark tools craft background",
+      "ogImageQuery": "bespoke built in cupboard joinery Cape Town finished",
+      "aboutImageQuery": "carpenter joiner workshop Cape Town crafting wood",
       "galleryImageQueries": [
-          "built in wardrobe walk in closet organized",
-          "modern kitchen cabinetry wooden island completed",
-          "solid wood desk home office bespoke furniture",
-          "floating timber shelves mounted living room wall"
+          "built in wardrobe floor ceiling joinery Cape Town",
+          "custom kitchen cabinetry finished professional",
+          "bespoke furniture solid wood workshop",
+          "joinery installation Cape Town finished neat"
       ]
   },
   "Welder / Metalworker": {
@@ -6118,7 +6118,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Powder Coated"
               ],
               "icon": "shield",
-              "serviceImageQuery": "ornamental iron driveway gate black powder coated"
+              "serviceImageQuery": "custom metal gate fabrication welding powder coated"
           },
           {
               "name": "Structural Steelwork",
@@ -6128,7 +6128,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Staircases"
               ],
               "icon": "maximize",
-              "serviceImageQuery": "steel staircase industrial modern wood treads"
+              "serviceImageQuery": "structural steel fabrication welding staircase commercial"
           },
           {
               "name": "Ornamental & Decorative Iron",
@@ -6138,7 +6138,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Grilles"
               ],
               "icon": "star",
-              "serviceImageQuery": "wrought iron balustrade railing staircase decorative"
+              "serviceImageQuery": "ornamental ironwork balustrade decorative metal residential"
           }
       ],
       "galleryHeading": "From the Workshop",
@@ -6192,15 +6192,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, precise, strong",
-      "heroImageQuery": "custom steel driveway gate installed modern house",
+      "heroImageQuery": "metal fabrication welding workshop Cape Town professional",
       "heroBgImageQuery": "welding sparks dark metal fabrication workshop background",
-      "ogImageQuery": "ornamental iron gate entrance finished installed",
-      "aboutImageQuery": "welder sparks metal fabrication workshop action",
+      "ogImageQuery": "custom metal gate fabrication powder coated finished",
+      "aboutImageQuery": "welder fabricating metal workshop Cape Town professional",
       "galleryImageQueries": [
-          "modern steel sliding gate driveway installed",
-          "metal spiral staircase interior industrial style",
-          "wrought iron window security bars decorative",
-          "steel pergola frame outdoor patio structure"
+          "custom gate fabrication powder coated metal",
+          "structural steel staircase fabrication installed",
+          "ornamental ironwork balustrade residential",
+          "welding workshop fabrication metal sparks"
       ]
   },
   "Paving / Tiling": {
@@ -6222,7 +6222,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Natural Stone"
               ],
               "icon": "map",
-              "serviceImageQuery": "brick paved driveway herringbone pattern completed"
+              "serviceImageQuery": "driveway paving installation professional Cape Town"
           },
           {
               "name": "Patio & Pool Surrounds",
@@ -6232,7 +6232,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Pool Surround"
               ],
               "icon": "sun",
-              "serviceImageQuery": "stone patio pool surround outdoor tiles sunny"
+              "serviceImageQuery": "patio paving pool surround outdoor tiling professional"
           },
           {
               "name": "Interior Floor Tiling",
@@ -6242,7 +6242,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Bathroom Tiling"
               ],
               "icon": "grid",
-              "serviceImageQuery": "large format porcelain floor tiles modern living room"
+              "serviceImageQuery": "interior floor tiling large format porcelain professional"
           }
       ],
       "galleryHeading": "Surfaces We've Laid",
@@ -6296,15 +6296,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, precise, durable",
-      "heroImageQuery": "beautiful paved driveway natural stone entrance",
-      "heroBgImageQuery": "paving stones tiles dark background texture",
-      "ogImageQuery": "completed natural stone paved driveway house",
-      "aboutImageQuery": "tiler laying floor tiles close up hands working",
+      "heroImageQuery": "paving tiling professional Cape Town driveway patio",
+      "heroBgImageQuery": "paving stones tiles dark background professional texture",
+      "ogImageQuery": "professional paving driveway natural stone Cape Town",
+      "aboutImageQuery": "tiler paving professional laying tiles Cape Town",
       "galleryImageQueries": [
-          "cobblestone driveway pattern completed front entrance",
-          "outdoor patio tiled seating area garden view",
-          "marble bathroom floor tiles herringbone pattern",
-          "slate pool surround tiles completed water feature"
+          "driveway paving professional Cape Town natural stone",
+          "patio pool surround tiling outdoor",
+          "interior floor tiling large format porcelain",
+          "completed paving project Cape Town neat"
       ]
   },
   "Roofer": {
@@ -6326,7 +6326,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Tiles"
               ],
               "icon": "home",
-              "serviceImageQuery": "roof tile replacement repair close up clay tiles"
+              "serviceImageQuery": "roofer roof repair tile replacement professional Cape Town"
           },
           {
               "name": "Waterproofing & Coatings",
@@ -6336,7 +6336,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Flat Roof"
               ],
               "icon": "shield",
-              "serviceImageQuery": "flat roof waterproofing membrane coating applied"
+              "serviceImageQuery": "roof waterproofing membrane coating application professional"
           },
           {
               "name": "Full Re-Roofing",
@@ -6346,7 +6346,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "IBR"
               ],
               "icon": "layers",
-              "serviceImageQuery": "new metal roof sheets installed house IBR"
+              "serviceImageQuery": "re-roofing new roof installation IBR professional"
           }
       ],
       "galleryHeading": "Roofs We've Fixed",
@@ -6400,15 +6400,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "solid, professional, weatherproof",
-      "heroImageQuery": "newly tiled residential roof aerial view house",
-      "heroBgImageQuery": "roof tiles dark sky background roofing",
-      "ogImageQuery": "completed roof clay tiles house blue sky",
-      "aboutImageQuery": "roofer installing tiles on roof ridge working",
+      "heroImageQuery": "roofer professional roof repair Cape Town residential",
+      "heroBgImageQuery": "roof tiles dark sky professional roofing background",
+      "ogImageQuery": "roof repair professional Cape Town tiles waterproofing",
+      "aboutImageQuery": "roofer professional on roof Cape Town inspection",
       "galleryImageQueries": [
-          "clay tile roof completed residential house",
-          "flat roof waterproofing membrane white coating",
-          "new corrugated metal roof installed building",
-          "copper gutters downpipes installed house fascia"
+          "roof tile repair replacement professional",
+          "waterproofing membrane application flat roof",
+          "re-roofing new IBR installation professional",
+          "completed roof repair Cape Town residential"
       ]
   },
   "Painter / Decorator": {
@@ -6430,7 +6430,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Feature Walls"
               ],
               "icon": "edit",
-              "serviceImageQuery": "freshly painted white living room interior bright walls"
+              "serviceImageQuery": "interior house painting professional Cape Town clean finish"
           },
           {
               "name": "Exterior & Facade Painting",
@@ -6440,7 +6440,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Weatherproof"
               ],
               "icon": "home",
-              "serviceImageQuery": "freshly painted house exterior white facade"
+              "serviceImageQuery": "exterior house painting professional Cape Town facade"
           },
           {
               "name": "Decorative & Textured Finishes",
@@ -6450,7 +6450,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Textured"
               ],
               "icon": "star",
-              "serviceImageQuery": "venetian plaster textured wall finish grey warm"
+              "serviceImageQuery": "decorative painting venetian plaster texture finish wall"
           }
       ],
       "galleryHeading": "Fresh Coats",
@@ -7470,7 +7470,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Property Transfer"
               ],
               "icon": "home",
-              "serviceImageQuery": "property deed title document signed sealed"
+              "serviceImageQuery": "attorney lawyer property conveyancing consultation office"
           },
           {
               "name": "Contracts & Commercial Law",
@@ -7480,7 +7480,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Commercial"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "commercial contract document pen signature close up"
+              "serviceImageQuery": "lawyer commercial contract review consultation professional"
           },
           {
               "name": "Dispute Resolution & Litigation",
@@ -7490,7 +7490,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Mediation"
               ],
               "icon": "shield",
-              "serviceImageQuery": "courtroom interior empty wooden bench judge seat"
+              "serviceImageQuery": "lawyer litigation dispute resolution consultation professional"
           }
       ],
       "galleryHeading": "Our Practice",
@@ -7544,15 +7544,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, authoritative, trustworthy",
-      "heroImageQuery": "law library shelves leather bound books gavel",
-      "heroBgImageQuery": "dark moody scales of justice closeup dramatic lighting",
-      "ogImageQuery": "legal scales justice books dark wooden desk",
-      "aboutImageQuery": "attorneys discussing case files around conference table",
+      "heroImageQuery": "law firm attorney office Cape Town professional",
+      "heroBgImageQuery": "law books scales justice dark professional background",
+      "ogImageQuery": "attorney lawyer consultation professional Cape Town office",
+      "aboutImageQuery": "attorney lawyer professional office Cape Town team",
       "galleryImageQueries": [
-          "law office interior mahogany desk bookshelves",
-          "legal contract signature pen close up document",
-          "courtroom wooden interior high ceiling formal",
-          "scales of justice brass on desk with law books"
+          "law firm office professional Cape Town interior",
+          "attorney consultation client professional meeting",
+          "legal documents contract review lawyer",
+          "law firm attorneys professional Cape Town team"
       ]
   },
   "Accountant": {
@@ -7574,7 +7574,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Management Accounts"
               ],
               "icon": "book",
-              "serviceImageQuery": "spreadsheet financial statements laptop screen numbers"
+              "serviceImageQuery": "accountant bookkeeping financial statements office professional"
           },
           {
               "name": "Tax Compliance & Returns",
@@ -7584,7 +7584,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "VAT"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "tax return forms calculator pen on desk"
+              "serviceImageQuery": "accountant tax compliance SARS returns professional"
           },
           {
               "name": "Payroll & HR Administration",
@@ -7594,7 +7594,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "IRP5"
               ],
               "icon": "users",
-              "serviceImageQuery": "payroll payslip documents stacked on office desk"
+              "serviceImageQuery": "accountant payroll HR administration professional office"
           }
       ],
       "galleryHeading": "Your Finances, Our Focus",
@@ -7648,15 +7648,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, precise, trustworthy",
-      "heroImageQuery": "financial reports charts graphs on desk calculator",
-      "heroBgImageQuery": "dark moody spreadsheet numbers financial data screen",
-      "ogImageQuery": "accounting ledger financial statements desk workspace",
-      "aboutImageQuery": "accounting team reviewing financial reports in boardroom",
+      "heroImageQuery": "accountant office professional Cape Town financial",
+      "heroBgImageQuery": "financial accounting dark background numbers professional",
+      "ogImageQuery": "chartered accountant professional Cape Town office",
+      "aboutImageQuery": "accountant team professional office Cape Town financial",
       "galleryImageQueries": [
-          "bookkeeping ledger open on desk with calculator",
-          "tax forms stacked with pen and calculator",
-          "annual financial report graphs pie charts printed",
-          "cloud accounting software dashboard laptop screen"
+          "accountant bookkeeping office professional Cape Town",
+          "tax returns SARS compliance professional",
+          "financial statements accounts professional review",
+          "accountant client consultation meeting Cape Town"
       ]
   },
   "Consultant": {
@@ -7678,7 +7678,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Market Analysis"
               ],
               "icon": "target",
-              "serviceImageQuery": "strategy whiteboard diagram flowchart sticky notes"
+              "serviceImageQuery": "business strategy consultant whiteboard workshop professional"
           },
           {
               "name": "Operational Improvement",
@@ -7688,7 +7688,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Efficiency"
               ],
               "icon": "settings",
-              "serviceImageQuery": "workflow process map diagram printed on table"
+              "serviceImageQuery": "business operations consultant process improvement professional"
           },
           {
               "name": "Growth & Scale Advisory",
@@ -7698,7 +7698,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Scale"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "revenue growth chart upward trend on screen"
+              "serviceImageQuery": "business growth consulting revenue strategy professional"
           }
       ],
       "galleryHeading": "Our Approach",
@@ -7752,15 +7752,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "sharp, professional, strategic",
-      "heroImageQuery": "whiteboard covered in strategy diagrams and sticky notes",
-      "heroBgImageQuery": "dark moody boardroom empty chairs long table",
-      "ogImageQuery": "strategy planning board post-it notes diagrams",
-      "aboutImageQuery": "consultant presenting strategy slides to client in meeting room",
+      "heroImageQuery": "business consultant strategy meeting professional Cape Town",
+      "heroBgImageQuery": "business strategy dark background professional meeting",
+      "ogImageQuery": "business consultant professional Cape Town strategy",
+      "aboutImageQuery": "consultant working with client business strategy Cape Town",
       "galleryImageQueries": [
-          "strategy workshop whiteboard markers sticky notes",
-          "business plan document executive summary printed",
-          "KPI dashboard metrics graphs on monitor screen",
-          "process flowchart printed large format on wall"
+          "business strategy whiteboard workshop professional",
+          "consultant client meeting Cape Town office",
+          "business growth chart results consulting",
+          "operations process improvement professional team"
       ]
   },
   "Financial Advisor": {
@@ -7782,7 +7782,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Preservation"
               ],
               "icon": "clock",
-              "serviceImageQuery": "retirement fund growth chart nest egg savings"
+              "serviceImageQuery": "financial advisor retirement planning consultation professional"
           },
           {
               "name": "Investment Portfolio Management",
@@ -7792,7 +7792,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Portfolio"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "investment portfolio pie chart asset allocation screen"
+              "serviceImageQuery": "financial advisor investment portfolio management consultation"
           },
           {
               "name": "Risk & Estate Planning",
@@ -7802,7 +7802,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Estate"
               ],
               "icon": "shield",
-              "serviceImageQuery": "estate planning documents will testament pen"
+              "serviceImageQuery": "financial advisor estate planning risk insurance consultation"
           }
       ],
       "galleryHeading": "Your Financial Future",
@@ -7856,15 +7856,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, trustworthy, confident",
-      "heroImageQuery": "investment growth chart line graph upward trend",
-      "heroBgImageQuery": "dark moody stock market data financial charts screen",
-      "ogImageQuery": "financial planning documents charts calculator desk",
-      "aboutImageQuery": "financial planner explaining charts to couple at desk",
+      "heroImageQuery": "financial advisor CFP consultation professional Cape Town office",
+      "heroBgImageQuery": "financial planning dark background charts professional",
+      "ogImageQuery": "financial advisor retirement investment consultation professional",
+      "aboutImageQuery": "financial planner advisor client consultation Cape Town",
       "galleryImageQueries": [
-          "retirement savings jar coins growing plant money",
-          "stock market investment chart candlestick screen",
-          "life insurance policy document with family photos",
-          "financial plan printed document pie charts graphs"
+          "financial advisor consultation retirement planning",
+          "investment portfolio management professional",
+          "estate planning insurance financial advisor",
+          "CFP financial planner office Cape Town"
       ]
   },
   "Insurance Agent / Broker": {
@@ -7886,7 +7886,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Vehicle"
               ],
               "icon": "home",
-              "serviceImageQuery": "house and car miniature models umbrella protection"
+              "serviceImageQuery": "insurance broker personal lines home vehicle consultation"
           },
           {
               "name": "Business Insurance",
@@ -7896,7 +7896,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Liability"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "commercial building exterior office warehouse property"
+              "serviceImageQuery": "insurance broker commercial business property professional"
           },
           {
               "name": "Claims Assistance",
@@ -7906,7 +7906,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Settlement"
               ],
               "icon": "shield",
-              "serviceImageQuery": "car accident damage bumper claim scene"
+              "serviceImageQuery": "insurance broker claims assistance support professional"
           }
       ],
       "galleryHeading": "Cover That Counts",
@@ -7960,15 +7960,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, reassuring, trustworthy",
-      "heroImageQuery": "umbrella protecting house model safety shield concept",
-      "heroBgImageQuery": "dark moody umbrella rain protection dramatic lighting",
-      "ogImageQuery": "insurance policy documents house car model desk",
-      "aboutImageQuery": "insurance broker reviewing policy documents with client at desk",
+      "heroImageQuery": "insurance broker professional consultation office Cape Town",
+      "heroBgImageQuery": "insurance professional dark background protection shield",
+      "ogImageQuery": "independent insurance broker professional consultation Cape Town",
+      "aboutImageQuery": "insurance broker client consultation professional Cape Town",
       "galleryImageQueries": [
-          "insurance policy comparison documents spread on desk",
-          "family home exterior garden protected insured",
-          "warehouse commercial building exterior loading dock",
-          "water damage home interior insurance claim"
+          "insurance broker comparison professional consultation",
+          "home vehicle insurance personal lines cover",
+          "commercial business insurance professional",
+          "insurance claims assistance support broker"
       ]
   },
   "Recruitment / Staffing": {
@@ -7990,7 +7990,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "90-day Guarantee"
               ],
               "icon": "user-check",
-              "serviceImageQuery": "CV resume document on desk with pen shortlist"
+              "serviceImageQuery": "recruitment agency permanent placement professional Cape Town"
           },
           {
               "name": "Contract & Temp Staffing",
@@ -8000,7 +8000,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Temp"
               ],
               "icon": "clock",
-              "serviceImageQuery": "busy office open plan workspace desks computers"
+              "serviceImageQuery": "contract staffing agency temp professional workplace"
           },
           {
               "name": "Executive Search",
@@ -8010,7 +8010,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "C-Suite"
               ],
               "icon": "star",
-              "serviceImageQuery": "boardroom executive chairs long table glass windows"
+              "serviceImageQuery": "executive search recruitment professional headhunting boardroom"
           }
       ],
       "galleryHeading": "Connections Made",
@@ -8064,15 +8064,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, dynamic, people-focused",
-      "heroImageQuery": "modern office space desks open plan bright workspace",
-      "heroBgImageQuery": "dark moody empty office desks chairs evening",
-      "ogImageQuery": "resume CV shortlist documents desk workspace",
-      "aboutImageQuery": "recruitment consultants collaborating around laptop in office",
+      "heroImageQuery": "recruitment agency professional office Cape Town staffing",
+      "heroBgImageQuery": "recruitment professional dark background people hiring",
+      "ogImageQuery": "recruitment agency consultant professional Cape Town",
+      "aboutImageQuery": "recruiter consultant professional meeting Cape Town office",
       "galleryImageQueries": [
-          "office workspace modern desks bright natural light",
-          "handshake two people meeting office job offer",
-          "corner office executive desk city view window",
-          "stack of CVs resumes printed on desk"
+          "recruitment agency office professional Cape Town",
+          "candidate interview placement professional",
+          "executive search headhunting professional boardroom",
+          "recruitment consultant client meeting Cape Town"
       ]
   },
   "Marketing Agency": {
@@ -8094,7 +8094,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Positioning"
               ],
               "icon": "star",
-              "serviceImageQuery": "brand identity mockup logo business cards stationery"
+              "serviceImageQuery": "marketing agency brand strategy identity creative Cape Town"
           },
           {
               "name": "Digital Marketing & SEO",
@@ -8104,7 +8104,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "google analytics dashboard website traffic screen"
+              "serviceImageQuery": "digital marketing agency SEO Google Ads professional"
           },
           {
               "name": "Content & Creative Production",
@@ -8114,7 +8114,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Video"
               ],
               "icon": "camera",
-              "serviceImageQuery": "video production camera studio creative shoot setup"
+              "serviceImageQuery": "marketing agency content production creative photography video"
           }
       ],
       "galleryHeading": "Campaigns We've Built",
@@ -8168,15 +8168,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "creative, bold, modern",
-      "heroImageQuery": "creative workspace mood board design mockups colourful",
-      "heroBgImageQuery": "dark moody creative studio neon lights workspace",
-      "ogImageQuery": "brand campaign mockup billboard poster design",
-      "aboutImageQuery": "creative team brainstorming around whiteboard with post-its",
+      "heroImageQuery": "marketing agency creative team office Cape Town professional",
+      "heroBgImageQuery": "marketing agency dark background creative professional",
+      "ogImageQuery": "marketing agency Cape Town professional creative team",
+      "aboutImageQuery": "marketing agency team working Cape Town creative office",
       "galleryImageQueries": [
-          "brand campaign poster mockup billboard street",
-          "social media marketing phone screen notifications",
-          "photographer studio product shoot camera lighting",
-          "marketing analytics dashboard charts ROI screen"
+          "marketing agency brand campaign creative Cape Town",
+          "digital marketing SEO Google Ads professional",
+          "content production photography video marketing",
+          "marketing agency results data reporting analytics"
       ]
   },
   "Business Coach": {
@@ -8198,7 +8198,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Leadership"
               ],
               "icon": "user",
-              "serviceImageQuery": "notebook goal setting written plan pen on desk"
+              "serviceImageQuery": "executive business coach session professional Cape Town"
           },
           {
               "name": "Entrepreneur Coaching",
@@ -8208,7 +8208,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Founder"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "startup workspace laptop whiteboard ideas brainstorm"
+              "serviceImageQuery": "entrepreneur business coaching session professional"
           },
           {
               "name": "Team & Group Coaching",
@@ -8218,7 +8218,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Workshops"
               ],
               "icon": "users",
-              "serviceImageQuery": "workshop group session chairs circle flipchart"
+              "serviceImageQuery": "team business coaching workshop group professional"
           }
       ],
       "galleryHeading": "Coaching in Action",
@@ -8272,15 +8272,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, warm, purposeful",
-      "heroImageQuery": "mountain summit sunrise achievement peak view",
-      "heroBgImageQuery": "dark moody pathway leading forward light at end",
-      "ogImageQuery": "compass direction leadership navigation desk",
-      "aboutImageQuery": "coach and client in one on one session at small table",
+      "heroImageQuery": "business coach professional session Cape Town leadership",
+      "heroBgImageQuery": "coaching professional dark background leadership growth",
+      "ogImageQuery": "business coach professional Cape Town executive session",
+      "aboutImageQuery": "business coach one on one session professional Cape Town",
       "galleryImageQueries": [
-          "journal open on desk with pen goal list written",
-          "lightbulb idea creativity innovation concept",
-          "team workshop flipchart markers group activity",
-          "growth mindset books stack on desk motivation"
+          "executive coaching session professional Cape Town",
+          "entrepreneur business coaching professional",
+          "team coaching workshop group professional",
+          "business coach client results professional meeting"
       ]
   },
   "Translation / Interpreting": {
@@ -8302,7 +8302,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Legal"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "certified document stamp official translation seal"
+              "serviceImageQuery": "translation certified legal document professional"
           },
           {
               "name": "Business & Technical Translation",
@@ -8312,7 +8312,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Technical"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "technical manual open multilingual pages text"
+              "serviceImageQuery": "business technical translation professional documents"
           },
           {
               "name": "Conference & Court Interpreting",
@@ -8322,7 +8322,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Court"
               ],
               "icon": "mic",
-              "serviceImageQuery": "interpreting headset booth conference equipment"
+              "serviceImageQuery": "conference interpreting professional headset court"
           }
       ],
       "galleryHeading": "Languages We Speak",
@@ -8376,15 +8376,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, precise, global",
-      "heroImageQuery": "multilingual dictionary pages open languages text",
-      "heroBgImageQuery": "dark moody world map text overlay languages",
-      "ogImageQuery": "translated document pages side by side languages",
-      "aboutImageQuery": "translator at desk comparing documents in two languages",
+      "heroImageQuery": "translation interpreter professional multilingual documents",
+      "heroBgImageQuery": "translation languages professional dark background global",
+      "ogImageQuery": "professional translation certified documents Cape Town",
+      "aboutImageQuery": "translator professional working documents language Cape Town",
       "galleryImageQueries": [
-          "certified translation stamp seal on legal document",
-          "conference interpreting booth headphones microphone",
-          "multilingual brochure pages printed different languages",
-          "globe world map with different language flags"
+          "certified translation legal documents professional",
+          "conference interpreting headset simultaneous",
+          "business translation corporate documents professional",
+          "translation team multilingual Cape Town professional"
       ]
   },
   "Notary / Commissioner of Oaths": {
@@ -8406,7 +8406,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "International"
               ],
               "icon": "award",
-              "serviceImageQuery": "notarial seal stamp pressed into wax on document"
+              "serviceImageQuery": "notary public authentication documents professional office"
           },
           {
               "name": "Apostille & Legalisation",
@@ -8416,7 +8416,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Hague"
               ],
               "icon": "check-square",
-              "serviceImageQuery": "apostille stamp certificate official government seal"
+              "serviceImageQuery": "apostille legalisation document authentication official"
           },
           {
               "name": "Commissioner of Oaths",
@@ -8426,7 +8426,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Certified Copy"
               ],
               "icon": "stamp",
-              "serviceImageQuery": "affidavit sworn document stamped certified copy"
+              "serviceImageQuery": "commissioner of oaths stamp documents certified professional"
           }
       ],
       "galleryHeading": "Documents We Certify",
@@ -8480,15 +8480,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "authoritative, precise, professional",
-      "heroImageQuery": "official seal stamp embossed on legal document",
-      "heroBgImageQuery": "dark moody wax seal document parchment dramatic",
-      "ogImageQuery": "notarial seal wax stamp official parchment document",
-      "aboutImageQuery": "notary at desk stamping and signing official documents",
+      "heroImageQuery": "notary public office professional documents Cape Town",
+      "heroBgImageQuery": "official stamp documents dark professional background",
+      "ogImageQuery": "notary public professional authentication documents stamp",
+      "aboutImageQuery": "notary attorney professional office Cape Town documents",
       "galleryImageQueries": [
-          "official rubber stamp ink pad document desk",
-          "government certificate apostille ribbon official",
-          "stack of certified copies stamped and signed",
-          "wax seal stamp closeup on legal document red"
+          "notary authentication stamp documents professional",
+          "apostille legalisation document official",
+          "commissioner oaths certified copy professional",
+          "notary office Cape Town professional documents"
       ]
   },
   "Debt Counsellor": {
@@ -8510,7 +8510,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Reduced Instalments"
               ],
               "icon": "trending-down",
-              "serviceImageQuery": "calculator bills statements overdue pile on desk"
+              "serviceImageQuery": "debt counsellor consultation professional Cape Town office"
           },
           {
               "name": "Creditor Protection",
@@ -8520,7 +8520,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Creditor Stop"
               ],
               "icon": "shield",
-              "serviceImageQuery": "shield icon protecting house from arrows concept art"
+              "serviceImageQuery": "debt counselling legal protection creditor professional"
           },
           {
               "name": "Clearance Certificate",
@@ -8530,7 +8530,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Credit Record"
               ],
               "icon": "check-circle",
-              "serviceImageQuery": "clearance certificate document checkmark approved stamp"
+              "serviceImageQuery": "debt clearance certificate credit record restored professional"
           }
       ],
       "galleryHeading": "The Road to Financial Freedom",
@@ -8584,15 +8584,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "calm, trustworthy, hopeful",
-      "heroImageQuery": "broken chain links freedom release concept",
-      "heroBgImageQuery": "dark moody bridge pathway leading to light hope",
-      "ogImageQuery": "stack of bills envelopes financial stress desk",
-      "aboutImageQuery": "counsellor sitting with client reviewing paperwork empathetically",
+      "heroImageQuery": "debt counsellor professional consultation Cape Town office",
+      "heroBgImageQuery": "financial freedom professional dark background calm hopeful",
+      "ogImageQuery": "debt counsellor NCR registered professional Cape Town",
+      "aboutImageQuery": "debt counsellor professional consultation client Cape Town",
       "galleryImageQueries": [
-          "overdue bills red letters pile on table",
-          "sunrise open road freedom new beginning",
-          "budget planner notebook pen calculator savings",
-          "happy family in garden home debt free celebration"
+          "debt counselling consultation professional Cape Town",
+          "financial freedom debt review process",
+          "NCR debt counsellor professional office",
+          "debt clearance certificate financial recovery"
       ]
   },
   "Customs / Freight Broker": {
@@ -8614,7 +8614,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Customs"
               ],
               "icon": "package",
-              "serviceImageQuery": "container ship port crane unloading cargo"
+              "serviceImageQuery": "customs clearing freight import port Cape Town professional"
           },
           {
               "name": "Export Documentation",
@@ -8624,7 +8624,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Documentation"
               ],
               "icon": "send",
-              "serviceImageQuery": "shipping documents bill of lading customs forms"
+              "serviceImageQuery": "export documentation freight customs professional Cape Town"
           },
           {
               "name": "Freight Forwarding & Logistics",
@@ -8634,7 +8634,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Air Freight"
               ],
               "icon": "truck",
-              "serviceImageQuery": "air cargo plane loading freight airport tarmac"
+              "serviceImageQuery": "freight forwarding logistics sea air container Cape Town"
           }
       ],
       "galleryHeading": "Cargo We've Cleared",
@@ -8688,15 +8688,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, precise, global",
-      "heroImageQuery": "container port stacked shipping containers crane harbour",
-      "heroBgImageQuery": "dark moody container port night cranes silhouette",
-      "ogImageQuery": "shipping containers stacked colourful port aerial",
-      "aboutImageQuery": "logistics team reviewing shipping documents in warehouse office",
+      "heroImageQuery": "customs freight Cape Town port container professional",
+      "heroBgImageQuery": "container port freight dark background professional logistics",
+      "ogImageQuery": "freight customs clearing Cape Town port professional",
+      "aboutImageQuery": "customs broker professional Cape Town port freight",
       "galleryImageQueries": [
-          "container ship docked at port aerial view",
-          "customs declaration form stamp documents desk",
-          "air cargo loading bay plane freight pallets",
-          "warehouse interior shelves pallets forklift logistics"
+          "container port Cape Town freight customs",
+          "customs clearing documentation professional",
+          "air freight cargo airport professional",
+          "freight forwarding logistics warehouse Cape Town"
       ]
   },
   "Cleaning Service": {
@@ -13837,14 +13837,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "professional, reliable, residential",
-    "heroImageQuery": "modern apartment building exterior balconies blue sky",
-    "ogImageQuery": "residential apartment complex courtyard garden",
-    "aboutImageQuery": "property management team meeting in office with laptops",
+    "heroImageQuery": "property management professional residential Cape Town portfolio",
+    "ogImageQuery": "property management professional Cape Town residential landlord",
+    "aboutImageQuery": "property manager professional Cape Town office team",
     "galleryImageQueries": [
-      "apartment block exterior well maintained garden",
-      "modern kitchen interior rental apartment clean",
-      "commercial office building glass facade",
-      "holiday rental apartment sea view balcony"
+      "residential property management Cape Town apartments",
+      "property management tenant placement professional",
+      "commercial property management Cape Town",
+      "property management financial reporting professional"
     ]
   },
   "Home Staging": {
@@ -13866,7 +13866,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Furniture Hire"
         ],
         "icon": "home",
-        "serviceImageQuery": "beautifully staged living room modern furniture neutral tones"
+        "serviceImageQuery": "home staging professional furniture residential Cape Town"
       },
       {
         "name": "Occupied Home Styling",
@@ -13876,7 +13876,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Declutter"
         ],
         "icon": "layers",
-        "serviceImageQuery": "decluttered minimalist bedroom white linen styling"
+        "serviceImageQuery": "home staging occupied property styling professional"
       },
       {
         "name": "Staging Consultation",
@@ -13886,7 +13886,7 @@ export const presetContent: Record<string, PresetContent> = {
           "DIY Guidance"
         ],
         "icon": "clipboard",
-        "serviceImageQuery": "interior mood board fabric swatches colour samples"
+        "serviceImageQuery": "home staging consultation professional Cape Town advice"
       }
     ],
     "galleryHeading": "Staged to Sell",
@@ -13929,14 +13929,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, aspirational, residential",
-    "heroImageQuery": "staged luxury living room fireplace neutral decor",
-    "ogImageQuery": "beautifully furnished open plan living dining room",
-    "aboutImageQuery": "home stager arranging cushions on sofa in living room",
+    "heroImageQuery": "home staging professional residential Cape Town beautiful interior",
+    "ogImageQuery": "home staging professional Cape Town before after residential",
+    "aboutImageQuery": "home stager professional Cape Town interior styling",
     "galleryImageQueries": [
-      "empty room transformed into styled living space",
-      "staged dining room table set with flowers",
-      "staged master bedroom luxury bedding lamps",
-      "staged entrance hallway console mirror fresh flowers"
+      "home staging before after professional Cape Town",
+      "staged living room residential Cape Town beautiful",
+      "home staging furniture professional styling",
+      "vacant home staged Cape Town property sale"
     ]
   },
   "Town Planner": {
@@ -13958,7 +13958,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Land Use"
         ],
         "icon": "map",
-        "serviceImageQuery": "zoning map urban plan coloured land use districts"
+        "serviceImageQuery": "town planner rezoning application council Cape Town professional"
       },
       {
         "name": "Departure & Consent Use",
@@ -13968,7 +13968,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Consent Use"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "residential neighbourhood aerial view mixed use buildings"
+        "serviceImageQuery": "town planner land use departure consent professional"
       },
       {
         "name": "Environmental & Heritage",
@@ -13978,7 +13978,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Heritage"
         ],
         "icon": "shield",
-        "serviceImageQuery": "heritage building facade preserved restoration exterior"
+        "serviceImageQuery": "town planner environmental heritage assessment professional Cape Town"
       }
     ],
     "galleryHeading": "Applications Approved",
@@ -14021,14 +14021,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "professional, precise, authoritative",
-    "heroImageQuery": "city urban skyline aerial view mixed use development",
-    "ogImageQuery": "urban development plan aerial view buildings roads",
-    "aboutImageQuery": "planners reviewing architectural drawings and site maps at desk",
+    "heroImageQuery": "town planner professional Cape Town council application",
+    "ogImageQuery": "town planner SACPLAN professional Cape Town planning",
+    "aboutImageQuery": "town planner professional reviewing plans maps Cape Town",
     "galleryImageQueries": [
-      "urban zoning map coloured districts planning",
-      "construction site new development breaking ground",
-      "heritage building victorian facade restoration",
-      "environmental wetland conservation natural landscape"
+      "town planning application council Cape Town professional",
+      "rezoning land use professional Cape Town",
+      "heritage assessment planning professional Cape Town",
+      "environmental authorisation planning Cape Town professional"
     ]
   },
   "Print Shop / Signage": {
