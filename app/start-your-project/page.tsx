@@ -512,7 +512,7 @@ export default function StartYourProject() {
     }
   }, [previewLoading])
 
-  function handleImageUpload(files: FileList | null) {
+  async function handleImageUpload(files: FileList | null) {
     if (!files || files.length === 0) return
     const remaining = MAX_IMAGES - uploadedImages.length
     if (remaining <= 0) return
@@ -525,17 +525,21 @@ export default function StartYourProject() {
     const valid = toUpload.filter(f => f.size <= MAX_FILE_SIZE)
     if (valid.length === 0) return
 
-    // Use temporary browser object URLs — no server upload needed for preview
-    const newImages = valid.map(file => ({
-      url: URL.createObjectURL(file),
-      name: file.name,
-    }))
+    // Convert to base64 data URLs — embeddable in HTML, no server storage needed
+    const newImages: { url: string; name: string }[] = []
+    for (const file of valid) {
+      const dataUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as string)
+        reader.readAsDataURL(file)
+      })
+      newImages.push({ url: dataUrl, name: file.name })
+    }
     setUploadedImages(prev => [...prev, ...newImages])
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   function removeImage(url: string) {
-    URL.revokeObjectURL(url)
     setUploadedImages(prev => prev.filter(img => img.url !== url))
   }
 
