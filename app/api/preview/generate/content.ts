@@ -13498,7 +13498,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pricing Strategy"
         ],
         "icon": "home",
-        "serviceImageQuery": "real estate agent property sale Cape Town residential professional"
+        "serviceImageQuery": "luxury house exterior for sale front garden"
       },
       {
         "name": "Rental Management",
