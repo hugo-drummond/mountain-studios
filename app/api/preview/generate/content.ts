@@ -10216,7 +10216,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Repairs"
               ],
               "icon": "scissors",
-              "serviceImageQuery": "garment alteration sewing repair seamstress professional"
+              "serviceImageQuery": "sewing machine fabric alteration close up stitching"
           },
           {
               "name": "Specialist & Wedding Dress Care",
@@ -10280,15 +10280,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, fresh, professional",
-      "heroImageQuery": "dry cleaning professional garments pressed Cape Town service",
-      "heroBgImageQuery": "dry cleaning garments dark background professional clean",
-      "ogImageQuery": "dry cleaning professional suit garment Cape Town service",
-      "aboutImageQuery": "dry cleaning professional staff garments Cape Town",
+      "heroImageQuery": "row of pressed suits hanging rack dry cleaner shop",
+      "heroBgImageQuery": "clothes hangers garments dark background clean",
+      "ogImageQuery": "freshly pressed shirts suits hanging ready collection",
+      "aboutImageQuery": "dry cleaner staff pressing garment steam iron working",
       "galleryImageQueries": [
-          "dry cleaning suits professional pressed Cape Town",
-          "laundry service clean shirts pressed professional",
-          "garment alteration seamstress professional repair",
-          "dry cleaning collection delivery Cape Town"
+          "suits jackets wrapped plastic dry cleaned rack",
+          "folded pressed white shirts stacked neat",
+          "seamstress sewing machine fabric alteration close up",
+          "laundry delivery van garments bags hanging"
       ]
   },
   "Appliance Repair": {
@@ -10310,7 +10310,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Dryer"
               ],
               "icon": "wind",
-              "serviceImageQuery": "appliance repair washing machine technician professional"
+              "serviceImageQuery": "washing machine open drum interior repair parts"
           },
           {
               "name": "Fridges & Freezers",
@@ -10320,7 +10320,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Freezer"
               ],
               "icon": "thermometer",
-              "serviceImageQuery": "fridge freezer repair technician professional appliance"
+              "serviceImageQuery": "refrigerator compressor back panel repair components"
           },
           {
               "name": "Dishwashers & Ovens",
@@ -10330,7 +10330,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Oven"
               ],
               "icon": "tool",
-              "serviceImageQuery": "dishwasher oven appliance repair professional technician"
+              "serviceImageQuery": "oven heating element replacement repair interior"
           },
           {
               "name": "Stove, Hob & Extractor Repairs",
@@ -10792,8 +10792,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Conversational Afrikaans",
               "description": "Practical Afrikaans tuition for English speakers wanting to connect in the workplace and community.",
               "tags": [
-                "Afrikaans",
-                "Conversational"
+                  "Afrikaans",
+                  "Conversational"
               ],
               "serviceImageQuery": "Afrikaans language textbook vocabulary flashcards desk study"
           }
@@ -10905,8 +10905,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Exam Preparation Bootcamps",
               "description": "Intensive revision workshops before mid-year and final exams covering key subjects and exam technique.",
               "tags": [
-                "Exam Prep",
-                "Revision"
+                  "Exam Prep",
+                  "Revision"
               ],
               "serviceImageQuery": "exam revision bootcamp past papers whiteboard study notes"
           }
@@ -11018,8 +11018,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Corporate & Team-Building Workshops",
               "description": "Guided creative workshops for corporate teams — ceramics, painting, and collaborative art experiences.",
               "tags": [
-                "Corporate Events",
-                "Team Building"
+                  "Corporate Events",
+                  "Team Building"
               ],
               "serviceImageQuery": "corporate team building art workshop group painting canvas"
           }
@@ -11440,8 +11440,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Drums & Percussion",
               "description": "Drum kit, djembe, and percussion lessons for beginners to advanced — solo and ensemble playing.",
               "tags": [
-                "Drums",
-                "Percussion"
+                  "Drums",
+                  "Percussion"
               ],
               "serviceImageQuery": "drum kit sticks snare cymbal lesson close-up studio"
           }
@@ -11549,8 +11549,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Accounting & Business Studies",
               "description": "One-on-one and group tutoring in accounting, business studies, and economics from Grade 10 to matric.",
               "tags": [
-                "Accounting",
-                "Business Studies"
+                  "Accounting",
+                  "Business Studies"
               ],
               "serviceImageQuery": "accounting textbook calculator financial statements study desk"
           }
@@ -11658,8 +11658,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Code 10 & Code 14 Heavy Vehicle",
               "description": "Professional heavy vehicle licence training for Code 10 and Code 14 with yard and road preparation.",
               "tags": [
-                "Code 10",
-                "Heavy Vehicle"
+                  "Code 10",
+                  "Heavy Vehicle"
               ],
               "serviceImageQuery": "heavy truck driving training yard manoeuvre code 14 vehicle"
           }
@@ -11767,8 +11767,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Outdoor Nature Play Programme",
               "description": "Structured outdoor learning with sensory gardens, mud kitchens, and nature walks to develop curiosity and resilience.",
               "tags": [
-                "Nature Play",
-                "Outdoor Learning"
+                  "Nature Play",
+                  "Outdoor Learning"
               ],
               "serviceImageQuery": "sensory garden mud kitchen outdoor play sandpit water table"
           }
@@ -11876,8 +11876,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Health & Safety Compliance Courses",
               "description": "OHSA, fire safety, and hazardous chemical handling courses with DoL-accepted certification.",
               "tags": [
-                "OHSA Compliance",
-                "Fire Safety"
+                  "OHSA Compliance",
+                  "Fire Safety"
               ],
               "serviceImageQuery": "fire safety training extinguisher demonstration workplace PPE"
           }
@@ -11985,8 +11985,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Holiday Coding Camps",
               "description": "Intensive one-week coding camps during school holidays — game design, app building, and robotics challenges.",
               "tags": [
-                "Holiday Camp",
-                "Game Design"
+                  "Holiday Camp",
+                  "Game Design"
               ],
               "serviceImageQuery": "kids coding holiday camp robotics challenge project building"
           }
@@ -12094,8 +12094,8 @@ export const presetContent: Record<string, PresetContent> = {
               "name": "Wilderness & Outdoor First Aid",
               "description": "Extended first aid for hikers, trail runners, and outdoor guides covering remote-area emergency response.",
               "tags": [
-                "Wilderness",
-                "Outdoor First Aid"
+                  "Wilderness",
+                  "Outdoor First Aid"
               ],
               "serviceImageQuery": "wilderness first aid outdoor backpack splint bandage trail"
           }
