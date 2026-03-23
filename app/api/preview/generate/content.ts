@@ -7386,7 +7386,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Garden"
               ],
               "icon": "cloud-rain",
-              "serviceImageQuery": "irrigation system installation garden drip spray professional"
+              "serviceImageQuery": "garden sprinkler irrigation system watering green lawn"
           }
       ],
       "galleryHeading": "Water on Your Terms",
@@ -7440,15 +7440,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "natural, clean, resourceful",
-      "heroImageQuery": "borehole drilling residential Cape Town water pump professional",
+      "heroImageQuery": "lush green garden irrigation sprinklers running water",
       "heroBgImageQuery": "borehole water pump dark background natural earth",
-      "ogImageQuery": "borehole pump installation residential Cape Town water",
-      "aboutImageQuery": "borehole drilling team professional Western Cape site",
+      "ogImageQuery": "garden lawn green healthy irrigation sprinkler system",
+      "aboutImageQuery": "borehole drilling rig crew operating site working",
       "galleryImageQueries": [
-          "borehole drilling rig residential Cape Town",
-          "submersible pump borehole installation",
-          "irrigation drip system garden professional",
-          "borehole completed pump house installation"
+          "borehole drilling rig operating garden yard",
+          "submersible pump equipment pressure tank installed",
+          "drip irrigation lines installed garden beds plants",
+          "lush green lawn sprinkler system running sunset"
       ]
   },
   "Lawyer / Attorney": {
