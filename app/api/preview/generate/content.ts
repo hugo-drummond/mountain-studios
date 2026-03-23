@@ -14741,7 +14741,7 @@ export const presetContent: Record<string, PresetContent> = {
     "ctaSecondary": "Current Exhibition",
     "ctaNote": "Free art advisory · Framing service · Corporate & private commissions",
     "badge": "GAASA Gallery Association of South Africa",
-    "servicesHeading": "What We Offer",
+    "servicesHeading": "Recently Added",
     "services": [
       {
         "name": "Original Artworks",

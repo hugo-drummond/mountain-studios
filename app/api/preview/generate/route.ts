@@ -1965,11 +1965,31 @@ function buildCreativeTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 2: Giant statement heading
-  const statementSection = `
-  <section style="padding:120px 2rem;background:${crBg}">
-    <div style="max-width:1400px;margin:0 auto">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:500;color:${crText};line-height:1.05;letter-spacing:-0.02em">${content.tagline}</h1>
+  // Section 2: Meet the Artists / Team — upriseart-inspired
+  const artistNames = ['Thandi Molefe', 'James van Wyk', 'Naledi Khumalo']
+  const artistLocations = ['Cape Town, WC', 'Stellenbosch, WC', 'Johannesburg, GP']
+  const artistBios = [
+    content.services[0]?.description || '',
+    content.services[1]?.description || '',
+    content.services[2]?.description || '',
+  ]
+  const meetSection = `
+  <section style="padding:100px 2rem;background:${crBg}">
+    <div style="max-width:1400px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">Meet the Artists</h2>
+      <a href="#" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
+        ${[0,1,2].map(i => `
+        <div>
+          <div style="height:450px;overflow:hidden;margin-bottom:1.25rem">
+            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${artistNames[i]}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${artistLocations[i]}</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7;margin-bottom:1rem">${artistBios[i]}</p>
+          <a href="#" style="font-family:var(--body-font);font-size:0.85rem;color:${crText};text-decoration:underline;text-underline-offset:4px">View Artist</a>
+        </div>`).join('')}
+      </div>
     </div>
   </section>`
 
@@ -1987,19 +2007,20 @@ function buildCreativeTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 4: Featured Work — 2-column portfolio grid with tag labels
+  // Section 4: Featured Work — 2-column portfolio grid with tag labels (even rows)
+  const allPortfolioImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
   const portfolioGrid = `
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.galleryHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.servicesHeading}</h2>
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
-        ${content.services.map((s, i) => `
+        ${content.services.slice(0, 4).map((s, i) => `
         <div>
           <div style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
-            <img src="${i < serviceImgs.length ? serviceImgs[i] : (galleryImgs[i - serviceImgs.length] || heroImg)}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${allPortfolioImgs[i % allPortfolioImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${s.tags.join(' &#8226; ')}</p>
           <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:${crText};display:flex;align-items:center;gap:0.5rem">&rarr; ${s.name}</h3>
@@ -2029,7 +2050,6 @@ function buildCreativeTemplate(data: TemplateData): string {
   <footer style="padding:5rem 2rem 2rem;background:${crBg};border-top:1px solid rgba(0,0,0,0.08)">
     <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
       <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${crText};letter-spacing:0.04em;text-transform:uppercase;margin-bottom:2rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">123 Main Road<br />Cape Town, 8001<br />South Africa</p>
       </div>
       <div>
@@ -2066,7 +2086,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 ${crNav}
 
   ${heroSection}
-  ${statementSection}
+  ${meetSection}
   ${aboutSection}
   ${portfolioGrid}
   ${servicesList}
