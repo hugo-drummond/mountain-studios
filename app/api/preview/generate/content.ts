@@ -5145,7 +5145,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Fish"
         ],
         "serviceImageQuery": "aquarium fish tanks tropical pet shop"
-      }
+      },
+        {
+          "name": "Grooming & Health Products",
+          "description": "Flea and tick treatments, shampoos, supplements, and wellness products recommended by vets and pet nutritionists.",
+          "tags": [
+            "Health Products",
+            "Supplements"
+          ],
+          "serviceImageQuery": "pet health supplements shampoo bottles grooming products shelf"
+        }
     ],
     "galleryHeading": "Pet Heaven",
     "aboutHeading": "Pets deserve the <em>best</em> \u2014 so do you",
@@ -5228,7 +5237,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Socialisation"
         ],
         "serviceImageQuery": "dog daycare dogs playing together outdoor yard"
-      }
+      },
+        {
+          "name": "Pet Transport & Collection",
+          "description": "Safe, stress-free collection and drop-off service for pets who need a lift to and from boarding.",
+          "tags": [
+            "Pet Transport",
+            "Collection"
+          ],
+          "serviceImageQuery": "pet transport crate carrier vehicle comfortable travel"
+        }
     ],
     "galleryHeading": "Home Away From Home",
     "aboutHeading": "Boarding you can leave <em>without worry</em>",
@@ -5311,7 +5329,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Feeding"
         ],
         "serviceImageQuery": "puppy visit check-in home pet sitter"
-      }
+      },
+        {
+          "name": "Pet Taxi & Transport",
+          "description": "Safe, reliable pet transport to the vet, groomer, or airport — your furry friend travels in comfort while you carry on.",
+          "tags": [
+            "Pet Taxi",
+            "Transport"
+          ],
+          "serviceImageQuery": "pet carrier crate travel comfortable blanket inside"
+        }
     ],
     "galleryHeading": "Happy Walks",
     "aboutHeading": "Trusted with what <em>matters</em> most",
@@ -5394,7 +5421,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Behaviour"
         ],
         "serviceImageQuery": "behavioural training dog calm relaxed command"
-      }
+      },
+        {
+          "name": "Agility & Sport Training",
+          "description": "Fun, high-energy agility courses and canine sport training for dogs who need more than just a walk around the block.",
+          "tags": [
+            "Agility",
+            "Canine Sport"
+          ],
+          "serviceImageQuery": "dog agility weave poles tunnel course outdoor"
+        }
     ],
     "galleryHeading": "Good Dogs in the Making",
     "aboutHeading": "Training built on <em>trust</em>",
@@ -5477,7 +5513,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Accessories"
         ],
         "serviceImageQuery": "premium pet food bowls toys accessories display"
-      }
+      },
+        {
+          "name": "Obedience Training",
+          "description": "Group and one-on-one obedience classes for puppies and adult dogs — positive methods, lasting results.",
+          "tags": [
+            "Obedience",
+            "Training"
+          ],
+          "serviceImageQuery": "dog obedience class sit stay treat reward outdoor"
+        }
     ],
     "galleryHeading": "Happy Pets",
     "aboutHeading": "Pet care done <em>properly</em>",
@@ -5560,7 +5605,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Ultrasound"
         ],
         "serviceImageQuery": "veterinary xray imaging room equipment"
-      }
+      },
+        {
+          "name": "Dental Care & Oral Surgery",
+          "description": "Professional dental scaling, polishing, extractions, and oral health assessments under anaesthesia.",
+          "tags": [
+            "Dental",
+            "Oral Surgery"
+          ],
+          "serviceImageQuery": "veterinary dental instruments teeth cleaning equipment tray"
+        }
     ],
     "galleryHeading": "In the Clinic",
     "aboutHeading": "Vets who treat animals like <em>family</em>",
@@ -5643,7 +5697,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Creative"
         ],
         "serviceImageQuery": "event mood board fabric swatches flowers design"
-      }
+      },
+        {
+          "name": "Brand Activations & Launches",
+          "description": "Product launches, brand activations, and experiential marketing events that generate buzz and deliver measurable ROI.",
+          "tags": [
+            "Brand Activation",
+            "Product Launch"
+          ],
+          "serviceImageQuery": "product launch event display branded booth activation"
+        }
     ],
     "galleryHeading": "Events We've Created",
     "aboutHeading": "Events planned with <em>obsession</em>",
@@ -5726,7 +5789,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Lighting"
         ],
         "serviceImageQuery": "sound system speakers lighting rig event setup"
-      }
+      },
+        {
+          "name": "Private Parties & Milestones",
+          "description": "Birthday bashes, engagement parties, and milestone celebrations with custom playlists and a vibe that keeps the dancefloor packed.",
+          "tags": [
+            "Private Party",
+            "Milestone"
+          ],
+          "serviceImageQuery": "birthday party dancefloor coloured lights confetti celebration"
+        }
     ],
     "galleryHeading": "On the Decks",
     "aboutHeading": "Music that <em>moves</em> people",
@@ -5809,7 +5881,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Chapel"
         ],
         "serviceImageQuery": "wedding chapel interior aisle seats natural light"
-      }
+      },
+        {
+          "name": "Décor & Floral Styling",
+          "description": "Full wedding décor and floral styling — table settings, ceremony arches, centrepieces, and everything your Pinterest board promised.",
+          "tags": [
+            "Wedding Décor",
+            "Floral"
+          ],
+          "serviceImageQuery": "wedding floral centrepiece table setting candles elegant"
+        }
     ],
     "galleryHeading": "Your Day, Our Backdrop",
     "aboutHeading": "Weddings held with <em>reverence</em>",
@@ -5892,7 +5973,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Prop Box"
         ],
         "serviceImageQuery": "photo strip prints with custom branded overlay"
-      }
+      },
+        {
+          "name": "GIF & Boomerang Station",
+          "description": "Interactive GIF and boomerang stations with instant social sharing — your guests post the party while they’re still at the party.",
+          "tags": [
+            "GIF Station",
+            "Social Sharing"
+          ],
+          "serviceImageQuery": "animated GIF booth screen social sharing station event"
+        }
     ],
     "galleryHeading": "In the Booth",
     "aboutHeading": "Memories made <em>instantly</em>",
@@ -5975,7 +6065,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Neon Signs"
         ],
         "serviceImageQuery": "neon sign backdrop foliage wall event décor hire"
-      }
+      },
+        {
+          "name": "Sweet Tables & Grazing Boards",
+          "description": "Styled dessert tables, grazing boards, and candy bars that double as décor and keep guests coming back for more.",
+          "tags": [
+            "Sweet Table",
+            "Grazing Board"
+          ],
+          "serviceImageQuery": "dessert table sweet treats styled display party event"
+        }
     ],
     "galleryHeading": "Party Moments",
     "aboutHeading": "D\u00e9cor that creates <em>memories</em>",
@@ -6058,7 +6157,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Children's Parties"
         ],
         "serviceImageQuery": "face painting children party entertainer colourful"
-      }
+      },
+        {
+          "name": "Wedding Entertainment",
+          "description": "Ceremony musicians, cocktail hour acts, and reception entertainment tailored to your wedding day timeline.",
+          "tags": [
+            "Wedding Music",
+            "Ceremony"
+          ],
+          "serviceImageQuery": "acoustic guitar musician performing wedding ceremony garden"
+        }
     ],
     "galleryHeading": "In Performance",
     "aboutHeading": "Entertainment that <em>lands</em>",
@@ -6141,7 +6249,16 @@ export const presetContent: Record<string, PresetContent> = {
           "Sundowner"
         ],
         "serviceImageQuery": "outdoor terrace garden fairy lights cocktail setting evening"
-      }
+      },
+        {
+          "name": "Workshop & Training Rooms",
+          "description": "Dedicated workshop spaces for team training, seminars, and breakaway sessions with modular furniture and fast WiFi.",
+          "tags": [
+            "Workshop",
+            "Training Room"
+          ],
+          "serviceImageQuery": "training room workshop seminar space chairs whiteboard"
+        }
     ],
     "galleryHeading": "Our Spaces",
     "aboutHeading": "Spaces made for <em>remarkable</em> events",
@@ -10508,15 +10625,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "practical, reliable, friendly",
-      "heroImageQuery": "handyman professional residential repair Cape Town tools",
-      "heroBgImageQuery": "handyman tools professional dark background residential",
-      "ogImageQuery": "handyman professional Cape Town residential repair tools",
-      "aboutImageQuery": "handyman professional working residential repair Cape Town",
+      "heroImageQuery": "well maintained home interior repairs completed tidy",
+      "heroBgImageQuery": "tool belt tools dark background workshop",
+      "ogImageQuery": "neat home interior shelves mounted walls painted",
+      "aboutImageQuery": "handyman drilling wall shelf mounting working",
       "galleryImageQueries": [
-          "handyman repair residential professional Cape Town",
-          "handyman carpentry shelving assembly professional",
-          "handyman painting patching crack repair professional",
-          "handyman completed jobs residential neat Cape Town"
+          "new tap installed kitchen sink dripping fixed",
+          "floating shelves mounted wall living room books",
+          "freshly patched painted wall smooth finish",
+          "flat pack furniture assembled desk bedroom neat"
       ]
   },
   "Upholstery / Curtains": {
@@ -11126,6 +11243,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "repeat",
               "serviceImageQuery": "red sports car front angle clean background"
+          },
+          {
+            "name": "After-Sale Service Plans",
+            "description": "Extended warranty packages, service plans, and roadside assistance bolt-ons for complete peace of mind after purchase.",
+            "tags": [
+              "Warranty",
+              "Service Plan"
+            ],
+            "serviceImageQuery": "car warranty certificate document keys desk"
           }
       ],
       "galleryHeading": "Current Stock",
@@ -11230,6 +11356,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "zap",
               "serviceImageQuery": "wireframe sketches on paper app UX design process"
+          },
+          {
+            "name": "API Development & Integration",
+            "description": "Custom API development, third-party integrations, and payment gateway connections to power your platform behind the scenes.",
+            "tags": [
+              "API",
+              "Integration"
+            ],
+            "serviceImageQuery": "API endpoint code JSON response terminal screen"
           }
       ],
       "galleryHeading": "Apps We've Shipped",
@@ -11334,6 +11469,15 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "bar-chart-2",
               "serviceImageQuery": "Google Shopping ads product listing screen"
+          },
+          {
+            "name": "Product Photography & Listing",
+            "description": "E-commerce product photography, copywriting, and bulk listing upload — ready to sell from day one.",
+            "tags": [
+              "Product Photos",
+              "Listing"
+            ],
+            "serviceImageQuery": "ecommerce product photo white background styled item"
           }
       ],
       "galleryHeading": "Stores We've Built",
@@ -12198,6 +12342,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Wheel Alignment"
               ],
               "serviceImageQuery": "brake disc pads replacement close-up car wheel"
+          },
+          {
+            "name": "Air Conditioning & Regassing",
+            "description": "Full aircon diagnostic, regassing, compressor repairs, and cabin filter replacements for all makes.",
+            "tags": [
+              "Aircon",
+              "Regassing"
+            ],
+            "serviceImageQuery": "car aircon system regas gauge hose connected"
           }
       ],
       "galleryHeading": "In the Workshop",
@@ -12298,6 +12451,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Courtesy Car"
               ],
               "serviceImageQuery": "accident damaged car front bumper before repair"
+          },
+          {
+            "name": "Windscreen & Glass Replacement",
+            "description": "Chip repairs and full windscreen replacements using OEM-spec glass — fitted on-site, insurance-approved.",
+            "tags": [
+              "Windscreen",
+              "Chip Repair"
+            ],
+            "serviceImageQuery": "windscreen glass replacement fitted car workshop suction"
           }
       ],
       "galleryHeading": "Before & After",
@@ -12398,6 +12560,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Paint Protection"
               ],
               "serviceImageQuery": "ceramic coating applied to car hood water beading"
+          },
+          {
+            "name": "Engine Bay Detailing",
+            "description": "Deep clean and dressing of the engine bay — because what’s under the bonnet deserves the same attention as the paint.",
+            "tags": [
+              "Engine Bay",
+              "Deep Clean"
+            ],
+            "serviceImageQuery": "engine bay cleaned detailed shiny hoses cover"
           }
       ],
       "galleryHeading": "Showroom Finish",
@@ -12498,6 +12669,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "While You Wait"
               ],
               "serviceImageQuery": "tyre puncture repair plug patch workshop close-up"
+          },
+          {
+            "name": "Mag Wheel Repairs & Refurbishment",
+            "description": "Buckle repairs, kerb damage restoration, and full mag wheel refinishing to factory-fresh condition.",
+            "tags": [
+              "Mag Wheels",
+              "Refurbishment"
+            ],
+            "serviceImageQuery": "alloy mag wheel refurbished polished gleaming silver"
           }
       ],
       "galleryHeading": "On the Rims",
@@ -12598,6 +12778,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Dash Cam"
               ],
               "serviceImageQuery": "GPS tracker device installed under vehicle dashboard"
+          },
+          {
+            "name": "Alternator & Starter Motor Repairs",
+            "description": "Alternator rebuilds, starter motor replacements, and charging system diagnostics to keep you turning over first time.",
+            "tags": [
+              "Alternator",
+              "Starter Motor"
+            ],
+            "serviceImageQuery": "car alternator starter motor removed engine bay parts"
           }
       ],
       "galleryHeading": "Wired Right",
@@ -12698,6 +12887,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Secure Storage"
               ],
               "serviceImageQuery": "accident damaged vehicle being winched onto tow truck"
+          },
+          {
+            "name": "Long-Distance Towing",
+            "description": "Interstate and long-haul vehicle transport between cities — fully insured, GPS-tracked, and door-to-door.",
+            "tags": [
+              "Long Distance",
+              "Vehicle Transport"
+            ],
+            "serviceImageQuery": "flatbed truck loaded car highway long distance transport"
           }
       ],
       "galleryHeading": "On the Road",
@@ -12798,6 +12996,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Riding Gear"
               ],
               "serviceImageQuery": "motorcycle helmets riding gear leather jackets display shelf"
+          },
+          {
+            "name": "Custom Builds & Modifications",
+            "description": "Performance upgrades, exhaust systems, custom paint, and bolt-on modifications to make your ride truly yours.",
+            "tags": [
+              "Custom Build",
+              "Performance"
+            ],
+            "serviceImageQuery": "custom motorcycle exhaust pipes chrome modified close-up"
           }
       ],
       "galleryHeading": "In the Shop",
@@ -12898,6 +13105,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Page Speed"
               ],
               "serviceImageQuery": "SEO analytics dashboard Google search results screen"
+          },
+          {
+            "name": "Hosting & Maintenance",
+            "description": "Managed hosting, uptime monitoring, security updates, and monthly content changes — your site stays fast and safe.",
+            "tags": [
+              "Hosting",
+              "Maintenance"
+            ],
+            "serviceImageQuery": "server rack hosting data centre blinking lights"
           }
       ],
       "galleryHeading": "Our Work",
@@ -12998,6 +13214,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Cybersecurity"
               ],
               "serviceImageQuery": "network switch ethernet cables connected blinking"
+          },
+          {
+            "name": "Hardware Procurement & Setup",
+            "description": "Laptops, desktops, monitors, and peripherals sourced at trade pricing and delivered configured and ready to work.",
+            "tags": [
+              "Hardware",
+              "Procurement"
+            ],
+            "serviceImageQuery": "new laptop unboxing setup workstation desk monitor"
           }
       ],
       "galleryHeading": "IT Done Right",
@@ -13098,6 +13323,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Email Marketing"
               ],
               "serviceImageQuery": "social media feed posts scheduled content calendar screen"
+          },
+          {
+            "name": "Marketing Automation & CRM",
+            "description": "HubSpot, Mailchimp, and custom CRM setups that automate lead nurturing and keep your sales pipeline moving.",
+            "tags": [
+              "Marketing Automation",
+              "CRM"
+            ],
+            "serviceImageQuery": "CRM dashboard pipeline leads funnel automation screen"
           }
       ],
       "galleryHeading": "Campaigns We've Run",
@@ -13198,6 +13432,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Incident Response"
               ],
               "serviceImageQuery": "security operations centre SOC screens monitoring dashboard"
+          },
+          {
+            "name": "Employee Security Training",
+            "description": "Phishing simulations, security awareness workshops, and policy training to turn your staff from the weakest link into the first line of defence.",
+            "tags": [
+              "Awareness Training",
+              "Phishing Simulation"
+            ],
+            "serviceImageQuery": "phishing email warning alert screen security awareness"
           }
       ],
       "galleryHeading": "Security Done Right",
@@ -13298,6 +13541,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Machine Learning"
               ],
               "serviceImageQuery": "machine learning model prediction chart forecast screen"
+          },
+          {
+            "name": "Data Governance & Quality",
+            "description": "Data quality auditing, governance frameworks, and master data management to ensure your reports are built on numbers you can trust.",
+            "tags": [
+              "Data Governance",
+              "Quality"
+            ],
+            "serviceImageQuery": "data quality audit spreadsheet validation checks screen"
           }
       ],
       "galleryHeading": "Data in Action",
@@ -13398,6 +13650,15 @@ export const presetContent: Record<string, PresetContent> = {
                   "Follow-Up"
               ],
               "serviceImageQuery": "phone call headset support desk computer screen"
+          },
+          {
+            "name": "Custom Project Work",
+            "description": "Bespoke projects tailored to your specific requirements — scoped, quoted, and delivered to agreed timelines.",
+            "tags": [
+              "Custom Projects",
+              "Bespoke"
+            ],
+            "serviceImageQuery": "project plan whiteboard sticky notes timeline roadmap"
           }
       ],
       "galleryHeading": "Our Work",
@@ -13501,7 +13762,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "users",
         "serviceImageQuery": "event photography crowd stage speakers conference"
-      }
+      },
+        {
+          "name": "Drone & Aerial Photography",
+          "description": "Licensed drone photography for property, construction, events, and landscape — dramatic perspectives from above.",
+          "tags": [
+            "Drone",
+            "Aerial"
+          ],
+          "serviceImageQuery": "aerial drone photo coastline landscape overhead view"
+        }
     ],
     "galleryHeading": "From the Portfolio",
     "aboutHeading": "Photography that <em>means</em> something",
@@ -13593,7 +13863,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "video",
         "serviceImageQuery": "multi-camera event coverage conference recording"
-      }
+      },
+        {
+          "name": "Drone & Aerial Video",
+          "description": "Licensed drone cinematography for property, tourism, and brand films — sweeping aerials that add production value instantly.",
+          "tags": [
+            "Drone",
+            "Aerial"
+          ],
+          "serviceImageQuery": "aerial drone footage coastline landscape cinematic view"
+        }
     ],
     "galleryHeading": "From the Edit Suite",
     "aboutHeading": "Video crafted with <em>intention</em>",
@@ -13685,7 +13964,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "monitor",
         "serviceImageQuery": "social media template design phone screen mockup"
-      }
+      },
+        {
+          "name": "Presentation & Pitch Deck Design",
+          "description": "Investor decks, sales presentations, and internal keynotes designed to communicate clearly and win the room.",
+          "tags": [
+            "Pitch Deck",
+            "Presentation"
+          ],
+          "serviceImageQuery": "pitch deck presentation slides screen clean layout design"
+        }
     ],
     "galleryHeading": "Selected Work",
     "aboutHeading": "Design rooted in <em>strategy</em>",
@@ -13777,7 +14065,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "briefcase",
         "serviceImageQuery": "modern office interior design workspace open plan"
-      }
+      },
+        {
+          "name": "Kitchen & Bathroom Design",
+          "description": "Specialist kitchen and bathroom design with 3D renders, material selection, and contractor coordination.",
+          "tags": [
+            "Kitchen Design",
+            "Bathroom"
+          ],
+          "serviceImageQuery": "modern kitchen design marble countertop island pendant lights"
+        }
     ],
     "galleryHeading": "Spaces We’ve Designed",
     "aboutHeading": "Interiors designed with <em>purpose</em>",
@@ -13869,7 +14166,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "target",
         "serviceImageQuery": "advertising headline layout magazine spread design"
-      }
+      },
+        {
+          "name": "SEO Copywriting",
+          "description": "Search-optimised web copy, landing pages, and blog content that ranks on Google and reads like it was written by a human.",
+          "tags": [
+            "SEO Copy",
+            "Web Content"
+          ],
+          "serviceImageQuery": "Google search results page ranking SEO content screen"
+        }
     ],
     "galleryHeading": "Words We’ve Written",
     "aboutHeading": "Copy written with <em>conviction</em>",
@@ -13961,7 +14267,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "radio",
         "serviceImageQuery": "podcast microphone headphones recording studio desk"
-      }
+      },
+        {
+          "name": "Film Scoring & Sync Licensing",
+          "description": "Original music composition for film, TV, and advertising — plus sync licensing for existing catalogue tracks.",
+          "tags": [
+            "Film Score",
+            "Sync Licensing"
+          ],
+          "serviceImageQuery": "music score sheet notes composition manuscript paper"
+        }
     ],
     "galleryHeading": "From the Studio",
     "aboutHeading": "Sound crafted with <em>care</em>",
@@ -14053,7 +14368,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "briefcase",
         "serviceImageQuery": "hand-stitched leather wallet bag close-up craft"
-      }
+      },
+        {
+          "name": "Candles & Home Fragrance",
+          "description": "Hand-poured soy candles, reed diffusers, and room sprays made with essential oils in small batches.",
+          "tags": [
+            "Candles",
+            "Home Fragrance"
+          ],
+          "serviceImageQuery": "hand-poured soy candle glass jar flame warm light"
+        }
     ],
     "galleryHeading": "Made by Hand",
     "aboutHeading": "Craft made with <em>intention</em>",
@@ -14145,7 +14469,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "layers",
         "serviceImageQuery": "capsule wardrobe flat lay outfit combinations styled"
-      }
+      },
+        {
+          "name": "Bridal & Occasion Wear",
+          "description": "Custom-designed bridal gowns, mother-of-the-bride outfits, and occasion wear for events that matter.",
+          "tags": [
+            "Bridal",
+            "Occasion Wear"
+          ],
+          "serviceImageQuery": "bridal gown white dress mannequin studio design detail"
+        }
     ],
     "galleryHeading": "From the Studio",
     "aboutHeading": "Fashion made with <em>purpose</em>",
@@ -14237,7 +14570,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "box",
         "serviceImageQuery": "3D render product visualisation floating object screen"
-      }
+      },
+        {
+          "name": "Interactive & UI Animation",
+          "description": "Micro-interactions, loading states, and animated UI elements that make apps and websites feel alive.",
+          "tags": [
+            "UI Animation",
+            "Micro-Interaction"
+          ],
+          "serviceImageQuery": "animated UI interface loading spinner button hover screen"
+        }
     ],
     "galleryHeading": "Things We’ve Set in Motion",
     "aboutHeading": "Motion design with <em>meaning</em>",
@@ -14329,7 +14671,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "circle",
         "serviceImageQuery": "ear piercing titanium jewellery stud close-up"
-      }
+      },
+        {
+          "name": "Laser Tattoo Removal",
+          "description": "Safe, effective laser removal and fading treatments for old or unwanted tattoos — consultations always free.",
+          "tags": [
+            "Laser Removal",
+            "Fading"
+          ],
+          "serviceImageQuery": "laser tattoo removal machine light beam skin treatment"
+        }
     ],
     "galleryHeading": "Fresh Ink",
     "aboutHeading": "Tattoos that stand the <em>test</em> of time",
@@ -14421,7 +14772,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "briefcase",
         "serviceImageQuery": "sculpture mixed media artwork gallery pedestal spotlight"
-      }
+      },
+        {
+          "name": "Framing & Installation",
+          "description": "Museum-quality custom framing and art installation services for homes, offices, and corporate collections.",
+          "tags": [
+            "Custom Framing",
+            "Installation"
+          ],
+          "serviceImageQuery": "custom picture frame moulding samples matboard workshop"
+        }
     ],
     "galleryHeading": "Current Exhibition",
     "aboutHeading": "Art selected with <em>conviction</em>",
@@ -14513,7 +14873,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "trending-up",
         "serviceImageQuery": "residential investment property building exterior balcony"
-      }
+      },
+        {
+          "name": "First-Time Buyer Guidance",
+          "description": "Step-by-step guidance through the home-buying process — bond pre-approval, offer to purchase, transfer, and registration.",
+          "tags": [
+            "First-Time Buyer",
+            "Bond Guidance"
+          ],
+          "serviceImageQuery": "house keys new home front door entrance welcome"
+        }
     ],
     "galleryHeading": "Recently Sold & Let",
     "aboutHeading": "Property sold with <em>strategy</em>",
@@ -14605,7 +14974,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "briefcase",
         "serviceImageQuery": "commercial architect office retail design Cape Town professional"
-      }
+      },
+        {
+          "name": "Site Management & Contract Admin",
+          "description": "Full construction oversight, contractor management, and contract administration from foundation to handover.",
+          "tags": [
+            "Site Management",
+            "Contract Admin"
+          ],
+          "serviceImageQuery": "construction site scaffold building progress concrete frame"
+        }
     ],
     "galleryHeading": "Projects We’ve Designed",
     "aboutHeading": "Architecture built for <em>place</em>",
@@ -14697,7 +15075,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "scissors",
         "serviceImageQuery": "vacant land plots subdivision fenced development site"
-      }
+      },
+        {
+          "name": "Topographic & As-Built Surveys",
+          "description": "Detailed topographic surveys for architects and engineers, plus as-built verification for completed structures.",
+          "tags": [
+            "Topographic",
+            "As-Built"
+          ],
+          "serviceImageQuery": "survey total station tripod instrument measuring land"
+        }
     ],
     "galleryHeading": "Surveys Completed",
     "aboutHeading": "Surveying done with <em>accuracy</em>",
@@ -14789,7 +15176,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "file-text",
         "serviceImageQuery": "financial statement spreadsheet laptop rental income report"
-      }
+      },
+        {
+          "name": "Body Corporate Administration",
+          "description": "Full body corporate management including AGMs, trustee support, levy collection, and compliance with the Sectional Titles Act.",
+          "tags": [
+            "Body Corporate",
+            "Levy Collection"
+          ],
+          "serviceImageQuery": "apartment complex body corporate meeting room documents"
+        }
     ],
     "galleryHeading": "Properties We Manage",
     "aboutHeading": "Property managed with <em>diligence</em>",
@@ -14881,7 +15277,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "clipboard",
         "serviceImageQuery": "interior mood board fabric swatches colour samples"
-      }
+      },
+        {
+          "name": "Virtual Staging",
+          "description": "Photorealistic virtual staging of empty rooms for online listings — no furniture hire, no waiting, delivered in 48 hours.",
+          "tags": [
+            "Virtual Staging",
+            "Digital"
+          ],
+          "serviceImageQuery": "virtual staged room before after empty furnished comparison"
+        }
     ],
     "galleryHeading": "Staged to Sell",
     "aboutHeading": "Staging that makes buyers <em>feel</em> it",
@@ -14973,7 +15378,16 @@ export const presetContent: Record<string, PresetContent> = {
         ],
         "icon": "shield",
         "serviceImageQuery": "heritage building facade preserved restoration exterior"
-      }
+      },
+        {
+          "name": "Subdivision & Development Coordination",
+          "description": "End-to-end management of subdivision applications, including surveyor liaison, council submissions, and Deeds Office registration.",
+          "tags": [
+            "Subdivision",
+            "Development"
+          ],
+          "serviceImageQuery": "subdivision development plan map layout site blocks"
+        }
     ],
     "galleryHeading": "Applications Approved",
     "aboutHeading": "Planning done with <em>realism</em>",
