@@ -10394,15 +10394,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "practical, reliable, professional",
-      "heroImageQuery": "appliance repair technician professional Cape Town home",
-      "heroBgImageQuery": "appliance repair professional dark background tools",
-      "ogImageQuery": "appliance repair washing machine fridge professional Cape Town",
-      "aboutImageQuery": "appliance repair technician professional on job Cape Town",
+      "heroImageQuery": "modern kitchen appliances washing machine fridge interior",
+      "heroBgImageQuery": "appliance repair tools multimeter dark background",
+      "ogImageQuery": "kitchen appliances working properly washing machine fridge",
+      "aboutImageQuery": "technician repairing washing machine tools working",
       "galleryImageQueries": [
-          "washing machine repair technician professional",
-          "fridge freezer appliance repair Cape Town",
-          "dishwasher oven repair professional technician",
-          "appliance repair van callout professional Cape Town"
+          "washing machine drum repair parts close up",
+          "refrigerator compressor repair back panel open",
+          "dishwasher interior spray arm pump repair",
+          "oven element thermostat repair door open"
       ]
   },
   "Handyman": {
@@ -10424,7 +10424,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Electrical"
               ],
               "icon": "tool",
-              "serviceImageQuery": "handyman plumbing electrical repair residential professional"
+              "serviceImageQuery": "tap faucet repair wrench plumbing under sink"
           },
           {
               "name": "Carpentry & Assembly",
@@ -10434,7 +10434,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Shelving"
               ],
               "icon": "box",
-              "serviceImageQuery": "handyman carpentry shelving assembly residential professional"
+              "serviceImageQuery": "wall shelf mounted brackets books display installed"
           },
           {
               "name": "Painting & Patching",
@@ -10444,7 +10444,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Crack Fill"
               ],
               "icon": "edit",
-              "serviceImageQuery": "handyman painting patching crack fill residential professional"
+              "serviceImageQuery": "wall crack filled sanded painted smooth finish"
           },
           {
               "name": "TV Mounting & Smart Home Setup",
