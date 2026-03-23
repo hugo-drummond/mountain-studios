@@ -471,6 +471,8 @@ export default function StartYourProject() {
 
   const progress = ((step + 1) / TOTAL_STEPS) * 100
 
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
   // Generate preview when entering Step 6
   useEffect(() => {
     if (step !== 6) {
@@ -484,33 +486,56 @@ export default function StartYourProject() {
     setPreviewError(false)
     setPreviewHtml(null)
 
-    fetch('/api/preview/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        businessName,
-        businessType,
-        businessCategory,
-        pages: [...selectedPages.map(p => pageOptions.find(o => o.key === p)?.label || p), ...customPages],
-        style: selectedStyle,
-        primaryColor,
-        secondaryColor,
-        visualBalance,
-        noColors,
-        images: uploadedImages.map(img => img.url),
-      }),
-    })
-      .then(r => r.json())
-      .then(res => {
+    // reCAPTCHA v3 check then generate
+    ;(async () => {
+      if (executeRecaptcha) {
+        try {
+          const token = await executeRecaptcha('preview_generate')
+          const check = await fetch('/api/recaptcha', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          })
+          if (!check.ok) {
+            setPreviewError(true)
+            setPreviewLoading(false)
+            return
+          }
+        } catch {
+          // allow on recaptcha failure so real users aren't blocked
+        }
+      }
+
+      try {
+        const r = await fetch('/api/preview/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            businessName,
+            businessType,
+            businessCategory,
+            pages: [...selectedPages.map(p => pageOptions.find(o => o.key === p)?.label || p), ...customPages],
+            style: selectedStyle,
+            primaryColor,
+            secondaryColor,
+            visualBalance,
+            noColors,
+            images: uploadedImages.map(img => img.url),
+          }),
+        })
+        const res = await r.json()
         if (res.success) {
           setPreviewHtml(res.data.html)
         } else {
           setPreviewError(true)
         }
-      })
-      .catch(() => setPreviewError(true))
-      .finally(() => setPreviewLoading(false))
-  }, [step, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages])
+      } catch {
+        setPreviewError(true)
+      } finally {
+        setPreviewLoading(false)
+      }
+    })()
+  }, [step, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, executeRecaptcha])
 
   // Simulated progress bar animation
   useEffect(() => {
@@ -580,8 +605,6 @@ export default function StartYourProject() {
     const quote = calculateQuote(allPages, 1.0, 1.0) // ZAR default
     setQuoteData(quote)
   }
-
-  const { executeRecaptcha } = useGoogleReCaptcha()
 
   const handleBook = useCallback(async () => {
     if (!executeRecaptcha) return
