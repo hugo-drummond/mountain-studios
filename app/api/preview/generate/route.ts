@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
+
 import { presetContent, PresetContent } from './content'
 
 type BusinessCategory =
@@ -385,69 +385,6 @@ interface GeneratedContent {
   heroImageQuery?: string
   aboutImageQuery?: string
   galleryImageQueries?: string[]
-}
-
-function buildContentPrompt(data: {
-  businessName: string
-  businessType: string
-  businessCategory: BusinessCategory
-  pages: string[]
-  variant: TemplateVariant
-}): string {
-  const { businessName, businessType, businessCategory, pages, variant } = data
-  const preset = categoryPresets[businessCategory] || categoryPresets['other']
-
-  let variantFields = ''
-  if (variant === 'service') {
-    variantFields = `
-  "processSteps": [
-    { "step": "1", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" },
-    { "step": "2", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" },
-    { "step": "3", "title": "Step title, 2-4 words", "description": "What happens in this step, 8-12 words" }
-  ],`
-  } else if (variant === 'portfolio') {
-    variantFields = `
-  "projectCaptions": ["Caption for project 1, 3-5 words", "Caption for project 2, 3-5 words", "Caption for project 3, 3-5 words", "Caption for project 4, 3-5 words"],`
-  }
-
-  let variantHint = ''
-  if (variant === 'service') {
-    variantHint = '\nThis is a SERVICE business — no photos will be shown on cards. Services should focus on outcomes and value, not visual descriptions.'
-  } else if (variant === 'portfolio') {
-    variantHint = '\nThis is a PORTFOLIO/VISUAL business — the layout will be gallery-focused. Keep service descriptions minimal and punchy.'
-  }
-
-  return `Generate JSON content for a ${businessType} called "${businessName}".
-Tone: ${preset.tone}
-CTA text: "${preset.ctaText}"
-Pages the user selected: ${pages.join(', ')}${variantHint}
-
-Return ONLY valid JSON (no markdown, no backticks, no explanation). Start with { and end with }.
-{
-  "heroEyebrow": "Short uppercase label, 3-5 words, e.g. 'Premium ${businessType} Experience'",
-  "tagline": "Compelling headline, 6-10 words. Use <em> on one word for italic accent.",
-  "heroSubtitle": "One sentence, 10-18 words, expanding on the tagline",
-  "ctaPrimary": "${preset.ctaText}",
-  "ctaSecondary": "Secondary CTA text, 2-3 words like 'Our Portfolio' or 'Learn More'",
-  "servicesHeading": "Section heading for the services area, 2-4 words",
-  "services": [
-    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] },
-    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] },
-    { "name": "Service name relevant to a ${businessType}", "description": "One sentence, 10-15 words", "tags": ["Tag1", "Tag2"] }
-  ],${variantFields}
-  "galleryHeading": "Short gallery section heading, 2-4 words",
-  "aboutHeading": "About section heading with <em> on one word for italic accent, 4-8 words",
-  "aboutText": "Two short paragraphs about the business separated by \\n\\n. Total 40-60 words.",
-  "stats": [
-    { "value": "15+", "label": "Years Experience" },
-    { "value": "500+", "label": "Relevant metric for a ${businessType}" },
-    { "value": "50+", "label": "Another relevant metric" },
-    { "value": "98%", "label": "Client Satisfaction" }
-  ],
-  "contactHeading": "Contact section heading as a question, 5-8 words"
-}
-
-Make all content specific and authentic for a ${businessType}. No generic placeholder text.`
 }
 
 // ---------- Shared template helpers ----------
@@ -4170,86 +4107,36 @@ export async function POST(req: NextRequest) {
         galleryImageQueries: preset.galleryImageQueries,
       }
     } else {
-      // Ask Claude for content JSON
-      const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
-      const claudeRes = await anthropic.messages.create({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 768,
-        messages: [
-          {
-            role: 'user',
-            content: buildContentPrompt({
-              businessName,
-              businessType,
-              businessCategory: category,
-              pages: pages || ['Home', 'About', 'Services', 'Contact'],
-              variant,
-            }),
-          },
+      // Generic fallback content — no external API calls
+      const catPreset = categoryPresets[category] || categoryPresets['other']
+      content = {
+        heroEyebrow: `Premium ${businessType}`,
+        tagline: `Welcome to <em>${businessName}</em>`,
+        heroSubtitle: `Experience the finest ${businessType.toLowerCase()} services in your area.`,
+        ctaPrimary: catPreset.ctaText,
+        ctaSecondary: 'Learn More',
+        servicesHeading: 'What We Offer',
+        services: [
+          { name: 'Consultation', description: `Get expert ${businessType.toLowerCase()} advice tailored to your specific needs and goals.`, tags: ['Featured'] },
+          { name: 'Full Service', description: `Comprehensive ${businessType.toLowerCase()} solutions from start to finish, handled with care.`, tags: ['Popular'] },
+          { name: 'Ongoing Support', description: `Continued partnership to ensure lasting results and your complete satisfaction.`, tags: ['Trusted'] },
         ],
-      })
-
-      let jsonString = ''
-      if (claudeRes.content[0]?.type === 'text') {
-        jsonString = claudeRes.content[0].text
-      }
-
-      // Strip markdown fences if present
-      jsonString = jsonString.trim()
-      if (jsonString.startsWith('```')) {
-        jsonString = jsonString.slice(jsonString.indexOf('\n') + 1)
-      }
-      if (jsonString.endsWith('```')) {
-        jsonString = jsonString.slice(0, jsonString.lastIndexOf('```'))
-      }
-      jsonString = jsonString.trim()
-
-      try {
-        content = JSON.parse(jsonString)
-      } catch {
-        // Retry: extract JSON between first { and last }
-        try {
-          const firstBrace = jsonString.indexOf('{')
-          const lastBrace = jsonString.lastIndexOf('}')
-          if (firstBrace !== -1 && lastBrace > firstBrace) {
-            content = JSON.parse(jsonString.slice(firstBrace, lastBrace + 1))
-          } else {
-            throw new Error('No JSON object found')
-          }
-        } catch {
-          // Fallback content
-          const catPreset = categoryPresets[category] || categoryPresets['other']
-          content = {
-            heroEyebrow: `Premium ${businessType}`,
-            tagline: `Welcome to <em>${businessName}</em>`,
-            heroSubtitle: `Experience the finest ${businessType.toLowerCase()} services in your area.`,
-            ctaPrimary: catPreset.ctaText,
-            ctaSecondary: 'Learn More',
-            servicesHeading: 'What We Offer',
-            services: [
-              { name: 'Consultation', description: `Get expert ${businessType.toLowerCase()} advice tailored to your specific needs and goals.`, tags: ['Featured'] },
-              { name: 'Full Service', description: `Comprehensive ${businessType.toLowerCase()} solutions from start to finish, handled with care.`, tags: ['Popular'] },
-              { name: 'Ongoing Support', description: `Continued partnership to ensure lasting results and your complete satisfaction.`, tags: ['Trusted'] },
-            ],
-            galleryHeading: 'Our Work',
-            aboutHeading: `Where quality meets <em>excellence</em>`,
-            aboutText: `At ${businessName}, we bring years of dedicated experience to every project.\n\nOur commitment to quality and client satisfaction drives everything we do.`,
-            stats: [
-              { value: '10+', label: 'Years Experience' },
-              { value: '500+', label: 'Happy Clients' },
-              { value: '50+', label: 'Projects Completed' },
-              { value: '100%', label: 'Satisfaction' },
-            ],
-            contactHeading: 'Ready to get started?',
-            processSteps: [
-              { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
-              { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
-              { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
-            ],
-            projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
-          }
-        }
+        galleryHeading: 'Our Work',
+        aboutHeading: `Where quality meets <em>excellence</em>`,
+        aboutText: `At ${businessName}, we bring years of dedicated experience to every project.\n\nOur commitment to quality and client satisfaction drives everything we do.`,
+        stats: [
+          { value: '10+', label: 'Years Experience' },
+          { value: '500+', label: 'Happy Clients' },
+          { value: '50+', label: 'Projects Completed' },
+          { value: '100%', label: 'Satisfaction' },
+        ],
+        contactHeading: 'Ready to get started?',
+        processSteps: [
+          { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+          { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+          { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+        ],
+        projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
       }
     }
 
