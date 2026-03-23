@@ -885,29 +885,17 @@ function buildServiceTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);text-align:center;margin-bottom:4rem;max-width:500px;margin-left:auto;margin-right:auto">A simple, straightforward process designed around you.</p>
-        <!-- Icons -->
-        <div style="display:flex;justify-content:space-around;align-items:center;position:relative;margin-bottom:0">
-          ${steps.map(s => `
-            <div style="display:flex;flex-direction:column;align-items:center;flex:1">
-              <div style="width:110px;height:110px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.06);border:2px solid rgba(${pr},${pg},${pb},0.12);display:flex;align-items:center;justify-content:center;position:relative;z-index:2">
-                <span style="font-family:var(--heading-font);font-size:2.25rem;font-weight:700;color:var(--primary)">${s.step}</span>
+        <div style="display:flex;align-items:stretch;gap:0">
+          ${steps.map((s, i) => `${i > 0 ? `
+            <div style="display:flex;align-items:center;flex-shrink:0;padding:0 0.75rem">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>` : ''}
+            <div style="flex:1;${cardStyle};text-align:center;display:flex;flex-direction:column;align-items:center">
+              <div style="width:72px;height:72px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+                <span style="font-family:var(--heading-font);font-size:1.75rem;font-weight:700;color:var(--primary)">${s.step}</span>
               </div>
-            </div>`).join('')}
-        </div>
-        <!-- Connector line with dots -->
-        <div style="position:relative;height:28px;margin:0">
-          <div style="position:absolute;top:12px;left:calc(100% / 6);right:calc(100% / 6);height:3px;background:rgba(${pr},${pg},${pb},0.2);z-index:1"></div>
-          <div style="position:relative;display:flex;justify-content:space-around;z-index:2">
-            ${steps.map(() => `
-              <div style="flex:1;display:flex;justify-content:center">
-                <div style="width:14px;height:14px;border-radius:50%;background:var(--primary);margin-top:6px"></div>
-              </div>`).join('')}
-          </div>
-        </div>
-        <!-- Text -->
-        <div style="display:flex;justify-content:space-around;margin-top:1.5rem">
-          ${steps.map(s => `
-            <div style="flex:1;padding:0 2rem;text-align:center">
               <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:var(--text);margin:0 0 0.75rem 0">${s.title}</h3>
               <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
             </div>`).join('')}
