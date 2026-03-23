@@ -105,7 +105,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "warm, moody, intimate",
     "heroImageQuery": "restaurant dining table plates wine glasses candlelight evening",
     "ogImageQuery": "fine dining table set white plates wine restaurant",
-    "aboutImageQuery": "chef plating food kitchen restaurant close-up",
+    "aboutImageQuery": "chef plating dishes in restaurant kitchen line",
     "galleryImageQueries": [
       "restaurant interior booth seating warm pendant lights",
       "grilled steak plated garnished fine dining",
@@ -186,9 +186,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, cosy, textured",
-    "heroImageQuery": "coffee shop counter espresso machine barista pouring latte",
+    "heroImageQuery": "latte art coffee cup wooden table café warm light",
     "ogImageQuery": "cappuccino latte art ceramic cup café table",
-    "aboutImageQuery": "barista pouring latte art coffee cup close-up",
+    "aboutImageQuery": "barista making espresso behind café counter",
     "galleryImageQueries": [
       "café interior wooden tables pendant lights cosy",
       "croissant pastry plate coffee cup café table",
@@ -520,12 +520,12 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "elegant, abundant, professional",
     "heroImageQuery": "catering buffet table elegant setup platters trays event",
     "ogImageQuery": "catering event buffet table platters serving dishes",
-    "aboutImageQuery": "catering chef plating food kitchen preparation trays",
+    "aboutImageQuery": "catering team preparing food trays in kitchen",
     "galleryImageQueries": [
-      "catering setup banquet table plates cutlery glasses",
-      "canapes appetizers platter served event catering",
-      "wedding catering table long reception dinner plates",
-      "chef preparing food catering kitchen stainless steel"
+      "catering banquet table set with plates cutlery glasses",
+      "canapes appetizer platters on serving trays event",
+      "wedding reception long table set with flowers plates",
+      "dessert table catering display cakes macarons"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Consultations by appointment \u00b7 Events 7 days"
   },
@@ -850,9 +850,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "rustic, warm, Italian",
-    "heroImageQuery": "pizza wood fired oven flames stretching dough",
+    "heroImageQuery": "neapolitan pizza fresh from wood fired oven charred bubbles",
     "ogImageQuery": "neapolitan pizza fresh out oven charred bubbles",
-    "aboutImageQuery": "pizza chef stretching dough flour kitchen wood oven",
+    "aboutImageQuery": "pizza maker stretching dough near wood fired oven",
     "galleryImageQueries": [
       "pizza oven interior flames brick wood fired",
       "margherita pizza fresh basil mozzarella close-up",
@@ -935,7 +935,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "minimal, precise, elegant",
     "heroImageQuery": "sushi platter nigiri sashimi rolls wooden board",
     "ogImageQuery": "sushi plate nigiri maki rolls wasabi ginger",
-    "aboutImageQuery": "sushi chef preparing fish knife cutting board",
+    "aboutImageQuery": "sushi chef slicing fresh fish behind counter",
     "galleryImageQueries": [
       "sushi restaurant interior counter seats minimal Japanese",
       "sashimi platter fresh fish sliced ice",
@@ -1018,7 +1018,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "bright, joyful, colourful",
     "heroImageQuery": "gelato display cabinet colourful scoops metal trays",
     "ogImageQuery": "ice cream scoops colourful cone waffle",
-    "aboutImageQuery": "gelato scooped waffle cone hand serving counter",
+    "aboutImageQuery": "gelato maker scooping from display cabinet into cone",
     "galleryImageQueries": [
       "gelato shop interior display case colourful flavours",
       "ice cream sundae glass toppings chocolate sauce",
@@ -1101,7 +1101,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "rich, warm, sophisticated",
     "heroImageQuery": "wine bottles rack cellar wooden shelves display",
     "ogImageQuery": "wine bottles displayed wooden shelf cellar",
-    "aboutImageQuery": "sommelier holding wine bottle examining label cellar",
+    "aboutImageQuery": "wine tasting event glasses being poured cellar barrel",
     "galleryImageQueries": [
       "wine shop interior bottles shelves wooden racks",
       "wine tasting glasses poured red white cellar",
@@ -1265,8 +1265,8 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "luxurious, airy, South African",
-    "heroImageQuery": "hotel room luxury bed white sheets city view window",
-    "ogImageQuery": "luxury hotel room bed city view Cape Town",
+    "heroImageQuery": "luxury hotel room bed white linen city view window",
+    "ogImageQuery": "luxury hotel room bed white linen city view",
     "aboutImageQuery": "hotel lobby interior modern reception desk marble",
     "galleryImageQueries": [
       "hotel room interior bed luxury pillows lamps",
@@ -1291,19 +1291,19 @@ export const presetContent: Record<string, PresetContent> = {
         "name": "Women's & Men's Collections",
         "description": "Seasonal clothing lines from emerging and established designers, refreshed monthly.",
         "tags": ["Women's", "Men's"],
-        "serviceImageQuery": "women fashion clothing rack dresses hanging store"
+        "serviceImageQuery": "clothing rack dresses hanging in fashion store"
       },
       {
         "name": "Shoes & Accessories",
         "description": "Curated footwear, bags, jewellery, and accessories to complete every outfit.",
         "tags": ["Shoes", "Accessories"],
-        "serviceImageQuery": "men clothing store shirts folded display"
+        "serviceImageQuery": "shoes displayed on shelves fashion retail store"
       },
       {
         "name": "Personal Styling",
         "description": "Complimentary personal styling consultations in-store \u2014 we help you find what works for you.",
         "tags": ["Styling", "Consultation"],
-        "serviceImageQuery": "accessories jewellery sunglasses display retail counter"
+        "serviceImageQuery": "fashion accessories scarves bags jewellery counter display"
       }
     ],
     "galleryHeading": "In the Store",
@@ -1325,7 +1325,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "stylish, warm, curated",
     "heroImageQuery": "clothing store interior hanging rails garments organised racks",
     "ogImageQuery": "clothing rack fashion store garments hanging",
-    "aboutImageQuery": "fashion retail folded clothes table display store",
+    "aboutImageQuery": "shop assistant arranging clothing on display table",
     "galleryImageQueries": [
       "clothing store interior racks hangers organised",
       "fashion accessories display scarves bags shelf",
@@ -1383,7 +1383,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "fresh, natural, inviting",
     "heroImageQuery": "grocery store fresh produce fruit vegetables display shelves",
     "ogImageQuery": "grocery store produce aisle fresh vegetables fruit",
-    "aboutImageQuery": "fresh fruit vegetables market display colourful stacked",
+    "aboutImageQuery": "grocer arranging fresh produce on display shelf",
     "galleryImageQueries": [
       "grocery store interior aisles shelves stocked products",
       "fresh vegetables crates market display tomatoes peppers",
@@ -1441,12 +1441,12 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "warm, curated, inviting",
     "heroImageQuery": "retail shop interior shelves products display counter",
     "ogImageQuery": "retail shop interior display shelves products",
-    "aboutImageQuery": "retail store owner behind counter serving customer",
+    "aboutImageQuery": "shop owner arranging products on display shelf",
     "galleryImageQueries": [
-      "retail store interior shelves products organised display",
-      "shop counter cash register products display",
-      "retail store window display products storefront",
-      "customer shopping retail store browsing shelves"
+      "retail store interior shelves products organised",
+      "shop counter products gift wrap display",
+      "retail store window display storefront street view",
+      "curated homeware products displayed on shelf"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1477,7 +1477,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Accessories",
           "Jewellery"
         ],
-        "serviceImageQuery": "personal styling consultation fashion boutique"
+        "serviceImageQuery": "designer handbags jewellery accessories displayed boutique shelf"
       },
       {
         "name": "Personal Styling",
@@ -1486,7 +1486,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Styling",
           "Wardrobe Edit"
         ],
-        "serviceImageQuery": "boutique accessories display jewellery scarves"
+        "serviceImageQuery": "clothing rack with curated designer dresses elegant boutique"
       }
     ],
     "galleryHeading": "The Current Edit",
@@ -1524,7 +1524,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "elegant, minimal, editorial",
     "heroImageQuery": "boutique interior clothing rack elegant minimal hangers",
     "ogImageQuery": "boutique fashion store interior clothing display",
-    "aboutImageQuery": "fashion boutique folded clothes display table curated",
+    "aboutImageQuery": "boutique owner styling mannequin in store",
     "galleryImageQueries": [
       "boutique interior minimal clothing rack hangers",
       "designer handbags displayed shelf boutique store",
@@ -1690,7 +1690,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "warm, curated, celebratory",
     "heroImageQuery": "gift shop interior shelves candles homeware mugs display",
     "ogImageQuery": "gift shop interior curated display homeware",
-    "aboutImageQuery": "gift shop display curated items candles ceramics",
+    "aboutImageQuery": "shop owner wrapping gift with ribbon at counter",
     "galleryImageQueries": [
       "gift shop shelves products candles ceramics",
       "greeting cards display rack gift shop",
@@ -1818,7 +1818,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Styling",
           "Space Planning"
         ],
-        "serviceImageQuery": "furniture delivery truck unloading sofa home"
+        "serviceImageQuery": "interior styled room armchair lamp side table"
       }
     ],
     "galleryHeading": "In the Showroom",
@@ -1856,7 +1856,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "warm, natural, crafted",
     "heroImageQuery": "furniture showroom sofa dining table chairs display",
     "ogImageQuery": "furniture showroom interior sofa table chairs",
-    "aboutImageQuery": "solid wood dining table chairs craftsman workshop",
+    "aboutImageQuery": "carpenter sanding solid wood table in workshop",
     "galleryImageQueries": [
       "furniture showroom living room sofa coffee table",
       "dining table solid wood chairs set showroom",
@@ -2132,7 +2132,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Educational",
           "STEM"
         ],
-        "serviceImageQuery": "stuffed animals teddy bears display toy shelf"
+        "serviceImageQuery": "educational building blocks STEM toys display shelf"
       },
       {
         "name": "Games & Puzzles",
@@ -2141,7 +2141,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Board Games",
           "Puzzles"
         ],
-        "serviceImageQuery": "educational STEM toys building blocks display"
+        "serviceImageQuery": "board games puzzles stacked on shelf toy store"
       },
       {
         "name": "Birthday Gifting",
@@ -2630,7 +2630,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Check-Ups",
           "Family Dentistry"
         ],
-        "serviceImageQuery": "dental examination patient chair dentist tools"
+        "serviceImageQuery": "dental checkup mouth mirror tools examination close-up"
       },
       {
         "name": "Cosmetic & Whitening",
@@ -2639,7 +2639,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Whitening",
           "Veneers"
         ],
-        "serviceImageQuery": "teeth whitening treatment dental chair UV light"
+        "serviceImageQuery": "teeth whitening LED light treatment dental chair close-up"
       },
       {
         "name": "Implants & Orthodontics",
@@ -2648,7 +2648,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Implants",
           "Clear Aligners"
         ],
-        "serviceImageQuery": "dental implant model jaw close-up"
+        "serviceImageQuery": "dental implant model jaw bone cross-section close-up"
       }
     ],
     "galleryHeading": "Smile Transformations",
@@ -2713,7 +2713,7 @@ export const presetContent: Record<string, PresetContent> = {
           "GP Consultations",
           "Chronic Care"
         ],
-        "serviceImageQuery": "doctor examining patient stethoscope consultation room"
+        "serviceImageQuery": "medical consultation desk computer notes stethoscope"
       },
       {
         "name": "Chronic Disease Management",
@@ -2722,7 +2722,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes",
           "Hypertension"
         ],
-        "serviceImageQuery": "blood test sample tubes laboratory medical"
+        "serviceImageQuery": "blood pressure monitor cuff arm reading check"
       },
       {
         "name": "Occupational & Travel Health",
@@ -2731,7 +2731,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Travel Vaccines",
           "Medicals"
         ],
-        "serviceImageQuery": "vaccination injection arm doctor patient clinic"
+        "serviceImageQuery": "vaccination injection arm syringe clinic room"
       }
     ],
     "galleryHeading": "Your Health Matters",
@@ -2767,14 +2767,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, clean, professional",
-    "heroImageQuery": "doctor consultation desk stethoscope patient examination room",
-    "ogImageQuery": "doctor stethoscope consultation examination room",
-    "aboutImageQuery": "doctor stethoscope white coat consulting patient desk",
+    "heroImageQuery": "medical practice interior waiting area modern clean bright",
+    "ogImageQuery": "medical practice consultation room modern clean",
+    "aboutImageQuery": "doctor listening to patient consultation desk warm",
     "galleryImageQueries": [
-      "doctor office consultation desk computer monitor",
-      "blood pressure check cuff arm doctor patient",
-      "medical waiting room chairs reception desk",
-      "doctor examining patient stethoscope clinic"
+      "medical practice consultation room desk monitor warm",
+      "blood test sample tubes laboratory medical equipment",
+      "medical examination room bed equipment curtain",
+      "stethoscope checking heartbeat patient chest close-up"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:30 \u00b7 Emergencies: walk-in welcome"
   },
@@ -2796,7 +2796,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Rehab",
           "Runners"
         ],
-        "serviceImageQuery": "sports physiotherapy knee treatment athlete"
+        "serviceImageQuery": "knee physiotherapy taping sports injury treatment table"
       },
       {
         "name": "Chronic Pain & Back Care",
@@ -2805,7 +2805,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck"
         ],
-        "serviceImageQuery": "back pain physio treatment massage table"
+        "serviceImageQuery": "lower back manual therapy hands spine treatment bed"
       },
       {
         "name": "Post-Surgical Rehabilitation",
@@ -2814,7 +2814,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Op Rehab",
           "Orthopaedic"
         ],
-        "serviceImageQuery": "rehabilitation exercises physio patient gym equipment"
+        "serviceImageQuery": "post-surgery rehabilitation exercise balance board physio gym"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2850,14 +2850,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clinical, active, professional",
-    "heroImageQuery": "physiotherapist treating patient shoulder massage therapy bed",
-    "ogImageQuery": "physiotherapy treatment bed patient therapist hands",
-    "aboutImageQuery": "physio stretching patient leg rehabilitation exercise",
+    "heroImageQuery": "physiotherapy clinic interior treatment beds equipment bright",
+    "ogImageQuery": "physiotherapy clinic treatment room beds equipment",
+    "aboutImageQuery": "physiotherapist guiding patient leg stretch exercise mat",
     "galleryImageQueries": [
-      "physiotherapy clinic treatment bed equipment room",
-      "physio exercise ball patient rehabilitation gym",
-      "ultrasound therapy machine physiotherapist treating knee",
-      "resistance band exercise patient physio clinic"
+      "physiotherapy clinic room treatment beds bright equipment",
+      "exercise ball rehabilitation patient balancing physio gym",
+      "ultrasound therapy probe knee joint treatment close-up",
+      "resistance band shoulder exercise patient physio clinic"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
@@ -2879,7 +2879,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Adjustments",
           "Spinal Health"
         ],
-        "serviceImageQuery": "spinal adjustment chiropractor patient table hands"
+        "serviceImageQuery": "chiropractic spinal adjustment hands on back treatment table"
       },
       {
         "name": "Back & Neck Pain",
@@ -2888,7 +2888,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck Pain"
         ],
-        "serviceImageQuery": "posture assessment chiropractor patient standing"
+        "serviceImageQuery": "neck adjustment chiropractic treatment patient side view"
       },
       {
         "name": "Paediatric & Family Chiropractic",
@@ -2897,7 +2897,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Family",
           "Paediatric"
         ],
-        "serviceImageQuery": "chiropractic treatment table clinic room equipment"
+        "serviceImageQuery": "gentle paediatric chiropractic infant adjustment hands"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -2933,14 +2933,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, clinical, calming",
-    "heroImageQuery": "chiropractor adjusting patient spine treatment table hands",
-    "ogImageQuery": "chiropractor spine adjustment patient treatment room",
-    "aboutImageQuery": "chiropractic adjustment back patient treatment table",
+    "heroImageQuery": "chiropractic clinic interior treatment table modern bright",
+    "ogImageQuery": "chiropractic treatment room modern clean equipment",
+    "aboutImageQuery": "chiropractor adjusting patient spine hands treatment table",
     "galleryImageQueries": [
-      "chiropractic clinic interior treatment table room",
-      "spine model vertebrae chiropractor desk display",
-      "chiropractor examining patient posture standing",
-      "chiropractic neck adjustment patient treatment"
+      "chiropractic clinic treatment room table modern bright",
+      "spine anatomical model vertebrae desk display close-up",
+      "posture assessment standing side view alignment check",
+      "chiropractic heat therapy back warm pack treatment"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -2962,7 +2962,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Eye Health",
           "Glaucoma Screening"
         ],
-        "serviceImageQuery": "eye test phoropter optometrist patient lenses"
+        "serviceImageQuery": "phoropter eye test lenses patient eye exam close-up"
       },
       {
         "name": "Designer Frames & Lenses",
@@ -2971,7 +2971,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Designer Frames",
           "Varifocals"
         ],
-        "serviceImageQuery": "eyeglasses frames display rack optometrist shop"
+        "serviceImageQuery": "designer eyeglasses frames display wall rack shelves"
       },
       {
         "name": "Contact Lens Fitting",
@@ -2980,7 +2980,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contact Lenses",
           "Dry Eye"
         ],
-        "serviceImageQuery": "contact lens case solution close-up"
+        "serviceImageQuery": "contact lens fitting finger tip insertion close-up"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3016,14 +3016,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, precise, modern",
-    "heroImageQuery": "optometrist eye test equipment phoropter patient chair",
-    "ogImageQuery": "optometrist eye test equipment chair patient",
-    "aboutImageQuery": "eye examination optometrist phoropter patient lenses",
+    "heroImageQuery": "optometry practice interior eye test equipment phoropter modern",
+    "ogImageQuery": "optometry practice eye test room equipment modern",
+    "aboutImageQuery": "optometrist examining patient eyes slit lamp close-up",
     "galleryImageQueries": [
-      "eyeglasses frames display wall optometrist shop",
-      "eye test chart letters optometrist wall",
-      "contact lens fitting optometrist patient close-up",
-      "optometrist using slit lamp eye examination"
+      "eyeglasses frames display wall shelves modern shop",
+      "slit lamp eye examination biomicroscope close-up",
+      "contact lens case solution daily lenses close-up",
+      "children eye test colourful chart shapes wall"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:30 \u00b7 Sat: 08:30\u201313:00 \u00b7 By appointment"
   },
@@ -3045,7 +3045,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Precision Cut",
           "Natural Hair"
         ],
-        "serviceImageQuery": "haircut scissors comb stylist cutting client hair"
+        "serviceImageQuery": "precision haircut scissors comb wet hair sectioning close-up"
       },
       {
         "name": "Colour & Balayage",
@@ -3054,7 +3054,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Balayage",
           "Colour Correction"
         ],
-        "serviceImageQuery": "hair colour highlights foils salon treatment"
+        "serviceImageQuery": "balayage hair colour foils application process salon"
       },
       {
         "name": "Treatments & Keratin",
@@ -3063,7 +3063,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Keratin",
           "Scalp Treatment"
         ],
-        "serviceImageQuery": "beard trim barber razor client chair"
+        "serviceImageQuery": "keratin hair treatment application smoothing iron salon"
       }
     ],
     "galleryHeading": "From the Chair",
@@ -3099,14 +3099,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "stylish, warm, creative",
-    "heroImageQuery": "hair salon interior chairs mirrors stations styling",
-    "ogImageQuery": "hair salon chairs mirrors styling stations interior",
-    "aboutImageQuery": "hairdresser cutting hair scissors client salon chair",
+    "heroImageQuery": "hair salon interior styling stations mirrors warm lighting",
+    "ogImageQuery": "hair salon interior mirrors chairs warm styling",
+    "aboutImageQuery": "stylist cutting client hair scissors salon chair action",
     "galleryImageQueries": [
-      "barber shop chair mirror vintage interior",
-      "hair colouring foils stylist salon client",
-      "hair wash basin shampoo salon client reclined",
-      "hairstylist blow drying hair brush client salon"
+      "barber shop chair leather vintage mirror warm lighting",
+      "hair colouring foils highlights process salon client",
+      "hair wash basin shampoo backwash salon client reclined",
+      "blow dry round brush styling finish salon client"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 08:30\u201316:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -3128,7 +3128,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Environ",
           "Anti-Ageing"
         ],
-        "serviceImageQuery": "facial treatment client spa bed aesthetician hands"
+        "serviceImageQuery": "facial treatment serum application aesthetician spa bed close-up"
       },
       {
         "name": "Body Treatments & Wraps",
@@ -3137,7 +3137,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Body Wraps",
           "Scrubs"
         ],
-        "serviceImageQuery": "manicure pedicure nail salon hands polish"
+        "serviceImageQuery": "body wrap detox towels spa treatment bed"
       },
       {
         "name": "Nails & Waxing",
@@ -3146,7 +3146,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gel Nails",
           "Waxing"
         ],
-        "serviceImageQuery": "body massage oil hands spa treatment table"
+        "serviceImageQuery": "gel manicure nail polish application hands close-up"
       }
     ],
     "galleryHeading": "Your Escape Awaits",
@@ -3182,14 +3182,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "serene, luxurious, warm",
-    "heroImageQuery": "beauty salon facial treatment bed towels candles relaxation",
-    "ogImageQuery": "beauty salon treatment room bed candles towels",
-    "aboutImageQuery": "spa treatment facial mask client lying bed towels",
+    "heroImageQuery": "spa treatment room interior candles towels bed warm ambient",
+    "ogImageQuery": "spa treatment room candles towels ambient warm",
+    "aboutImageQuery": "aesthetician applying facial mask client spa bed treatment",
     "galleryImageQueries": [
-      "spa reception desk flowers candles interior",
-      "manicure nail polish hands nail technician salon",
-      "facial treatment mask client spa bed towels",
-      "massage stones hot towels spa treatment room"
+      "spa reception area flowers candles ambient lighting interior",
+      "pedicure foot spa warm water treatment soak",
+      "hot stone massage placement back spa treatment",
+      "manicure nail art design close-up hands polish"
     ],
     "contactHours": "Mon\u2013Sat: 09:00\u201319:00 \u00b7 Sun: 10:00\u201316:00 \u00b7 Evening slots available"
   },
@@ -3211,7 +3211,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Deep Tissue",
           "Remedial"
         ],
-        "serviceImageQuery": "deep tissue massage back therapist hands pressure"
+        "serviceImageQuery": "deep tissue massage back muscles pressure hands close-up"
       },
       {
         "name": "Swedish & Relaxation",
@@ -3220,7 +3220,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Swedish",
           "Relaxation"
         ],
-        "serviceImageQuery": "hot stone massage placement back spa"
+        "serviceImageQuery": "swedish relaxation massage long strokes back oil"
       },
       {
         "name": "Sports & Recovery",
@@ -3229,7 +3229,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Recovery",
           "Athletes"
         ],
-        "serviceImageQuery": "sports massage leg athlete therapy treatment"
+        "serviceImageQuery": "sports massage calf leg athlete recovery treatment"
       }
     ],
     "galleryHeading": "A Space to Unwind",
@@ -3265,14 +3265,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, healing",
-    "heroImageQuery": "massage therapy treatment room table towels candles oil",
-    "ogImageQuery": "massage treatment table room towels oil candles",
-    "aboutImageQuery": "massage therapist hands back client treatment table",
+    "heroImageQuery": "massage therapy room interior table towels dim candles ambience",
+    "ogImageQuery": "massage room interior dim candles towels ambience",
+    "aboutImageQuery": "massage therapist working on client shoulder neck treatment",
     "galleryImageQueries": [
-      "massage treatment room table dim candles towels",
-      "hot stone massage back client spa",
-      "massage oil bottles towels spa treatment setup",
-      "deep tissue massage therapist hands shoulder"
+      "massage room candles essential oils towels warm ambience",
+      "hot stone massage basalt stones placed back spine",
+      "aromatherapy essential oil bottles herbs treatment setup",
+      "foot reflexology massage pressure point treatment close-up"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201319:00 \u00b7 Sat: 09:00\u201317:00 \u00b7 By appointment only"
   },
@@ -3294,7 +3294,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Weight Management",
           "Metabolic"
         ],
-        "serviceImageQuery": "meal plan printed paper desk healthy food"
+        "serviceImageQuery": "meal plan document printed paper desk pen notes"
       },
       {
         "name": "Chronic Disease Nutrition",
@@ -3303,7 +3303,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes Nutrition",
           "Cardiac Diet"
         ],
-        "serviceImageQuery": "body composition measurement nutritionist patient"
+        "serviceImageQuery": "blood glucose monitor diabetes management nutrition close-up"
       },
       {
         "name": "Sports & Performance Nutrition",
@@ -3312,7 +3312,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Nutrition",
           "Endurance"
         ],
-        "serviceImageQuery": "healthy food preparation kitchen vegetables cutting board"
+        "serviceImageQuery": "sports nutrition smoothie protein powder blender preparation"
       }
     ],
     "galleryHeading": "Your Nutrition Journey",
@@ -3348,14 +3348,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, warm, nourishing",
-    "heroImageQuery": "nutritionist consultation desk fruits vegetables meal plan",
-    "ogImageQuery": "dietitian consultation desk healthy food fruits vegetables",
-    "aboutImageQuery": "healthy food plate balanced meal vegetables grains protein",
+    "heroImageQuery": "fresh healthy food spread table colourful vegetables fruits grains",
+    "ogImageQuery": "healthy food spread vegetables fruits grains table",
+    "aboutImageQuery": "dietitian consultation with client discussing meal plan desk",
     "galleryImageQueries": [
-      "healthy meal prep containers vegetables rice chicken",
-      "nutritionist measuring tape fruit desk consultation",
-      "smoothie bowl berries seeds granola breakfast healthy",
-      "grocery shopping fresh vegetables basket healthy food"
+      "healthy meal prep containers colourful vegetables rice protein",
+      "body composition scale measurement health assessment",
+      "smoothie bowl acai berries seeds granola breakfast close-up",
+      "fresh produce market vegetables fruit colourful basket"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Telehealth available evenings \u00b7 By appointment"
   },
@@ -3377,7 +3377,7 @@ export const presetContent: Record<string, PresetContent> = {
           "CBT",
           "Trauma Therapy"
         ],
-        "serviceImageQuery": "therapy session client therapist seated office"
+        "serviceImageQuery": "therapy room comfortable armchairs warm lamp conversation"
       },
       {
         "name": "Couples Therapy",
@@ -3386,7 +3386,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Couples",
           "Relationships"
         ],
-        "serviceImageQuery": "couple therapy session two people therapist"
+        "serviceImageQuery": "couple seated together couch therapy session room"
       },
       {
         "name": "Child & Adolescent Therapy",
@@ -3395,7 +3395,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Child Therapy",
           "Adolescent"
         ],
-        "serviceImageQuery": "group therapy circle chairs meeting room"
+        "serviceImageQuery": "child play therapy toys sand tray art supplies room"
       }
     ],
     "galleryHeading": "A Safe Space",
@@ -3431,14 +3431,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, safe, warm",
-    "heroImageQuery": "therapy office comfortable couch armchair warm lamp",
-    "ogImageQuery": "psychology office comfortable chair desk lamp warm",
-    "aboutImageQuery": "therapist notepad pen consultation warm office chair",
+    "heroImageQuery": "therapy room interior comfortable sofa warm lamp plants",
+    "ogImageQuery": "therapy room interior warm lamp comfortable sofa",
+    "aboutImageQuery": "therapist listening to client seated warm office empathy",
     "galleryImageQueries": [
-      "therapy room comfortable sofa cushions warm light",
-      "therapist consultation client seated office chairs",
-      "journal writing hands pen notebook therapy",
-      "meditation mindfulness person seated calm peaceful"
+      "therapy waiting room comfortable seating plants soft light",
+      "journal writing pen notebook self-reflection therapy homework",
+      "sand tray therapy miniature figures play therapy room",
+      "mindfulness meditation cushion candle calm peaceful space"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Telehealth available"
   },
@@ -3460,7 +3460,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Language Delay",
           "Literacy"
         ],
-        "serviceImageQuery": "child speech therapy session therapist cards"
+        "serviceImageQuery": "child speech therapy session picture cards alphabet table"
       },
       {
         "name": "Stuttering & Fluency",
@@ -3469,7 +3469,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fluency",
           "Stuttering"
         ],
-        "serviceImageQuery": "adult speech therapy stroke rehabilitation exercises"
+        "serviceImageQuery": "speech fluency exercises mouth mirror articulation practice"
       },
       {
         "name": "Voice & Swallowing",
@@ -3478,7 +3478,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Voice Therapy",
           "Dysphagia"
         ],
-        "serviceImageQuery": "speech therapy assessment child microphone recording"
+        "serviceImageQuery": "voice therapy larynx model swallowing exercise demonstration"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3514,14 +3514,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, professional, encouraging",
-    "heroImageQuery": "speech therapist session child cards flashcards table",
-    "ogImageQuery": "speech therapist session child flashcards table",
-    "aboutImageQuery": "speech therapy exercises child therapist mirror mouth",
+    "heroImageQuery": "speech therapy room interior colourful child-friendly posters table",
+    "ogImageQuery": "speech therapy room colourful child-friendly bright",
+    "aboutImageQuery": "speech therapist working with child letter sounds mirror",
     "galleryImageQueries": [
-      "speech therapy room colourful child-friendly table chairs",
-      "flashcards picture cards speech therapy child",
-      "therapist child speech exercise mirror tongue",
-      "speech therapy toys puppets child engagement"
+      "speech therapy practice room table chairs colourful posters bright",
+      "articulation picture cards letter sounds speech therapy close-up",
+      "child practicing speech sounds mirror mouth movements exercise",
+      "speech therapy puppets storytelling language engagement child"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3543,7 +3543,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sensory Processing",
           "Fine Motor"
         ],
-        "serviceImageQuery": "hand therapy exercises occupational therapist patient"
+        "serviceImageQuery": "child sensory integration swing climbing occupational therapy gym"
       },
       {
         "name": "Neurological Rehabilitation",
@@ -3552,7 +3552,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Stroke",
           "Neuro Rehab"
         ],
-        "serviceImageQuery": "child sensory therapy play occupational therapist"
+        "serviceImageQuery": "stroke rehabilitation daily task hand grip exercise OT"
       },
       {
         "name": "Ergonomic & Workplace Assessment",
@@ -3561,7 +3561,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ergonomics",
           "Workstation"
         ],
-        "serviceImageQuery": "occupational therapy rehabilitation walking aids"
+        "serviceImageQuery": "ergonomic workstation assessment desk chair monitor setup"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3597,14 +3597,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, enabling, professional",
-    "heroImageQuery": "occupational therapy session patient hand exercises tools",
-    "ogImageQuery": "occupational therapy hand exercises patient tools",
-    "aboutImageQuery": "OT therapist helping patient daily tasks kitchen",
+    "heroImageQuery": "occupational therapy clinic interior sensory equipment bright room",
+    "ogImageQuery": "occupational therapy room sensory equipment bright",
+    "aboutImageQuery": "occupational therapist guiding patient hand exercise task activity",
     "galleryImageQueries": [
-      "occupational therapy clinic room equipment exercises",
-      "hand therapy putty squeeze exercise close-up",
-      "child occupational therapy sensory play activities",
-      "occupational therapist patient kitchen daily living"
+      "occupational therapy sensory room swing ball pit bright",
+      "hand therapy putty grip squeeze exercise close-up",
+      "fine motor skills pencil grip exercise child OT table",
+      "stroke patient rehabilitation kitchen daily living task OT"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3626,7 +3626,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Test",
           "Diagnostic"
         ],
-        "serviceImageQuery": "hearing test headphones patient audiologist booth"
+        "serviceImageQuery": "hearing test soundproof booth headphones audiometry equipment"
       },
       {
         "name": "Hearing Aid Fitting",
@@ -3635,7 +3635,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Aids",
           "Phonak"
         ],
-        "serviceImageQuery": "hearing aid fitting ear patient audiologist"
+        "serviceImageQuery": "hearing aid behind ear fitting close-up small device"
       },
       {
         "name": "Tinnitus Management",
@@ -3644,7 +3644,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Tinnitus",
           "Sound Therapy"
         ],
-        "serviceImageQuery": "ear examination otoscope audiologist patient"
+        "serviceImageQuery": "tinnitus sound therapy headphones audiologist screen display"
       }
     ],
     "galleryHeading": "Hear Better. Live Better.",
@@ -3680,14 +3680,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
-    "heroImageQuery": "audiologist hearing test headphones patient booth equipment",
-    "ogImageQuery": "audiologist hearing test equipment headphones patient",
-    "aboutImageQuery": "hearing aid fitting audiologist patient ear close-up",
+    "heroImageQuery": "audiology clinic interior hearing test booth equipment modern",
+    "ogImageQuery": "audiology clinic hearing test equipment modern",
+    "aboutImageQuery": "audiologist fitting hearing aid patient ear close-up action",
     "galleryImageQueries": [
-      "audiology booth hearing test patient headphones",
-      "hearing aids displayed cases small devices",
-      "audiologist otoscope ear examination patient",
-      "hearing test audiogram results screen display"
+      "audiology soundproof booth hearing test headphones equipment",
+      "hearing aid models display case small devices varieties",
+      "otoscope ear canal examination close-up medical",
+      "audiogram results graph screen hearing threshold display"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Sat: 08:30\u201312:00 \u00b7 By appointment"
   },
@@ -3709,7 +3709,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Plantar Fasciitis",
           "Orthotics"
         ],
-        "serviceImageQuery": "podiatrist foot examination patient treatment chair"
+        "serviceImageQuery": "plantar fasciitis heel examination foot biomechanics assessment"
       },
       {
         "name": "Nail & Skin Conditions",
@@ -3718,7 +3718,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ingrown Toenails",
           "Fungal"
         ],
-        "serviceImageQuery": "custom orthotics insoles shoes fitting display"
+        "serviceImageQuery": "ingrown toenail treatment podiatry instruments foot close-up"
       },
       {
         "name": "Diabetic Foot Care",
@@ -3727,7 +3727,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetic Foot",
           "Risk Assessment"
         ],
-        "serviceImageQuery": "diabetic foot care screening podiatrist examination"
+        "serviceImageQuery": "diabetic foot screening monofilament test sensation check"
       }
     ],
     "galleryHeading": "Back on Your Feet",
@@ -3763,14 +3763,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, professional, clinical",
-    "heroImageQuery": "podiatrist examining foot patient treatment chair clinic",
-    "ogImageQuery": "podiatrist foot examination treatment patient chair",
-    "aboutImageQuery": "podiatry treatment foot care instruments patient chair",
+    "heroImageQuery": "podiatry clinic interior treatment chair instruments bright clean",
+    "ogImageQuery": "podiatry clinic treatment chair instruments modern",
+    "aboutImageQuery": "podiatrist treating patient foot instruments chair close-up",
     "galleryImageQueries": [
-      "podiatry clinic treatment chair foot examination",
-      "orthotics insoles custom fitted shoes display",
-      "foot care tools instruments podiatry tray",
-      "podiatrist examining foot patient treatment room"
+      "podiatry treatment room chair instruments bright modern clean",
+      "custom orthotics insoles moulded shoes fitting display",
+      "podiatry instruments scalpel clippers tray sterile close-up",
+      "gait analysis treadmill biomechanics running assessment screen"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3792,7 +3792,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Acupuncture",
           "TCM"
         ],
-        "serviceImageQuery": "acupuncture needles treatment patient table back"
+        "serviceImageQuery": "acupuncture needles inserted back meridian points close-up"
       },
       {
         "name": "Homeopathy & Naturopathy",
@@ -3801,7 +3801,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Homeopathy",
           "Naturopathy"
         ],
-        "serviceImageQuery": "herbal tinctures bottles natural medicine shelf"
+        "serviceImageQuery": "homeopathy naturopathy herbal tincture bottles remedies wooden shelf"
       },
       {
         "name": "Reflexology & Energy Work",
@@ -3810,7 +3810,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reflexology",
           "Reiki"
         ],
-        "serviceImageQuery": "reiki energy healing hands hovering patient"
+        "serviceImageQuery": "reflexology foot pressure point treatment hands close-up"
       }
     ],
     "galleryHeading": "Your Healing Space",
@@ -3846,14 +3846,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, earthy, healing",
-    "heroImageQuery": "acupuncture needles back treatment table holistic clinic",
-    "ogImageQuery": "holistic health treatment acupuncture herbs natural",
-    "aboutImageQuery": "herbal medicine bottles tinctures natural remedies shelf",
+    "heroImageQuery": "holistic health clinic interior herbs plants warm natural light",
+    "ogImageQuery": "holistic clinic interior herbs candles warm natural",
+    "aboutImageQuery": "holistic practitioner consulting patient pulse reading wrist",
     "galleryImageQueries": [
-      "acupuncture treatment needles back patient table",
-      "herbal medicine dried herbs jars wooden shelf",
-      "cupping therapy back round cups treatment",
-      "holistic clinic interior plants warm natural light"
+      "acupuncture treatment needles back patient meridian table",
+      "dried medicinal herbs jars wooden apothecary shelf",
+      "cupping therapy round glass cups back treatment marks",
+      "crystal healing stones arrangement therapy treatment table"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 09:00\u201314:00 \u00b7 By appointment"
   },
@@ -3875,7 +3875,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Customised",
           "One-on-One"
         ],
-        "serviceImageQuery": "personal training session client dumbbells gym"
+        "serviceImageQuery": "one-on-one training session kettlebell squat gym floor"
       },
       {
         "name": "Online Coaching",
@@ -3884,7 +3884,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Online Coaching",
           "Remote"
         ],
-        "serviceImageQuery": "outdoor bootcamp group fitness training park"
+        "serviceImageQuery": "online coaching app workout plan phone screen tracking"
       },
       {
         "name": "Body Transformation",
@@ -3893,7 +3893,7 @@ export const presetContent: Record<string, PresetContent> = {
           "12-Week",
           "Body Composition"
         ],
-        "serviceImageQuery": "nutrition plan healthy meal prep trainer"
+        "serviceImageQuery": "body transformation before after progress tracking measurement"
       }
     ],
     "galleryHeading": "Clients in Action",
@@ -3929,14 +3929,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, motivating, dynamic",
-    "heroImageQuery": "personal trainer coaching client dumbbell gym weights",
-    "ogImageQuery": "personal trainer client weights gym workout",
-    "aboutImageQuery": "personal trainer demonstrating exercise client gym",
+    "heroImageQuery": "gym training floor weights barbells kettlebells functional equipment",
+    "ogImageQuery": "gym training floor weights equipment functional area",
+    "aboutImageQuery": "trainer coaching client through squat form gym session",
     "galleryImageQueries": [
-      "gym weight training dumbbells rack equipment",
-      "personal training session squat barbell client",
-      "outdoor fitness training park bodyweight exercise",
-      "stretching cool down mat personal trainer client"
+      "gym floor kettlebells dumbbells rack functional training area",
+      "barbell squat rack training session loaded bar gym",
+      "outdoor bootcamp training park group pushups grass",
+      "stretching foam roller recovery cool down mat gym"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 By appointment"
   },
@@ -3958,7 +3958,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vinyasa",
           "Power Yoga"
         ],
-        "serviceImageQuery": "yoga class group mats studio instructor"
+        "serviceImageQuery": "vinyasa flow class group warrior pose mats studio"
       },
       {
         "name": "Yin & Restorative Yoga",
@@ -3967,7 +3967,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Yin Yoga",
           "Restorative"
         ],
-        "serviceImageQuery": "private yoga session instructor student pose"
+        "serviceImageQuery": "yin yoga restorative bolster supported pose dim candles"
       },
       {
         "name": "Yoga Teacher Training",
@@ -3976,7 +3976,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Teacher Training",
           "200hr"
         ],
-        "serviceImageQuery": "meditation class seated cushions candles peaceful"
+        "serviceImageQuery": "yoga teacher training group circle seated studio discussion"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -4012,14 +4012,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, natural light",
-    "heroImageQuery": "yoga studio class mats people poses wooden floor",
-    "ogImageQuery": "yoga studio class mats poses peaceful",
-    "aboutImageQuery": "yoga instructor demonstrating pose studio class students",
+    "heroImageQuery": "yoga studio interior wooden floor mats blocks natural light",
+    "ogImageQuery": "yoga studio interior mats wooden floor natural light",
+    "aboutImageQuery": "yoga instructor adjusting student pose hands-on studio class",
     "galleryImageQueries": [
-      "yoga studio interior mats blocks props wooden",
-      "yoga class downward dog pose students studio",
-      "meditation seated pose candles incense calm studio",
-      "yoga stretch warrior pose instructor studio"
+      "yoga studio interior mats blocks blankets props warm light",
+      "downward dog pose yoga class students hands feet mats",
+      "seated meditation cushion incense candle calm studio floor",
+      "headstand inversion practice wall support yoga studio"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201320:00 \u00b7 Sat: 07:00\u201315:00 \u00b7 Sun: 08:00\u201313:00"
   },
@@ -4041,7 +4041,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Free Weights",
           "Cardio"
         ],
-        "serviceImageQuery": "weight training gym barbells bench press equipment"
+        "serviceImageQuery": "free weights area dumbbells barbell bench press rack gym"
       },
       {
         "name": "Group Fitness Classes",
@@ -4050,7 +4050,7 @@ export const presetContent: Record<string, PresetContent> = {
           "HIIT",
           "Cycling"
         ],
-        "serviceImageQuery": "group fitness class spinning studio gym"
+        "serviceImageQuery": "group spinning cycling class studio bikes energy"
       },
       {
         "name": "Personal Training & Biokinetics",
@@ -4059,7 +4059,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Training",
           "Biokinetics"
         ],
-        "serviceImageQuery": "gym cardio treadmill running machines row"
+        "serviceImageQuery": "personal training session TRX suspension straps gym"
       }
     ],
     "galleryHeading": "In the Gym",
@@ -4095,14 +4095,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
-    "heroImageQuery": "gym class group training energetic people working out weights barbell",
-    "ogImageQuery": "gym interior weights machines equipment modern",
-    "aboutImageQuery": "gym floor equipment weights benches mirrors modern",
+    "heroImageQuery": "gym interior wide angle weights machines cardio floor modern",
+    "ogImageQuery": "gym floor weights machines cardio equipment wide",
+    "aboutImageQuery": "gym members working out weights floor energetic atmosphere",
     "galleryImageQueries": [
-      "gym weight room dumbbells barbells racks mirrors",
-      "treadmill cardio machines row gym equipment",
-      "group fitness class spinning bikes gym studio",
-      "gym stretching area mats foam rollers"
+      "gym weight room barbells racks mirrors squat area",
+      "treadmill running cardio machines row gym floor",
+      "boxing HIIT class gloves pads group gym studio",
+      "functional training area ropes kettlebells tyres gym"
     ],
     "contactHours": "Mon\u2013Fri: 05:30\u201321:00 \u00b7 Sat: 07:00\u201318:00 \u00b7 Sun: 08:00\u201314:00"
   },
@@ -4124,7 +4124,7 @@ export const presetContent: Record<string, PresetContent> = {
           "BJJ",
           "Grappling"
         ],
-        "serviceImageQuery": "karate class students uniforms belts training dojo"
+        "serviceImageQuery": "brazilian jiu-jitsu grappling gi rolling mats sparring"
       },
       {
         "name": "Muay Thai & Kickboxing",
@@ -4133,7 +4133,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Muay Thai",
           "Striking"
         ],
-        "serviceImageQuery": "boxing training gloves bag gym workout"
+        "serviceImageQuery": "muay thai pad work kick training gloves gym"
       },
       {
         "name": "Kids Martial Arts",
@@ -4142,7 +4142,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Kids Classes",
           "Confidence"
         ],
-        "serviceImageQuery": "children martial arts class kids uniforms dojo"
+        "serviceImageQuery": "children martial arts class kids white uniforms bowing dojo"
       }
     ],
     "galleryHeading": "On the Mats",
@@ -4178,14 +4178,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "intense, disciplined, powerful",
-    "heroImageQuery": "martial arts dojo training mats kicks students uniforms",
-    "ogImageQuery": "martial arts dojo training students uniforms kicks",
-    "aboutImageQuery": "martial arts instructor demonstrating kick students dojo",
+    "heroImageQuery": "martial arts dojo interior mats heavy bags mirrors training",
+    "ogImageQuery": "martial arts dojo interior mats bags training area",
+    "aboutImageQuery": "martial arts instructor demonstrating technique students dojo mats",
     "galleryImageQueries": [
-      "martial arts dojo training mats mirrors wall",
-      "karate kick practice student uniform belt",
-      "boxing gloves punching bag training gym",
-      "martial arts sparring students protective gear"
+      "martial arts dojo interior mats heavy bags wall mirrors",
+      "BJJ ground grappling submission hold mats close-up",
+      "muay thai heavy bag knee strike training gym",
+      "kids martial arts class drilling kicks pads dojo"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:30 \u00b7 Sat: 08:00\u201314:00 \u00b7 Class times on schedule"
   },
@@ -4207,7 +4207,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Salsa",
           "Ballroom"
         ],
-        "serviceImageQuery": "ballet class students barre pointe shoes studio"
+        "serviceImageQuery": "salsa latin dance partners spin studio warm lighting"
       },
       {
         "name": "Contemporary & Jazz",
@@ -4216,7 +4216,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contemporary",
           "Jazz"
         ],
-        "serviceImageQuery": "contemporary dance class students studio movement"
+        "serviceImageQuery": "contemporary dance class floor work students studio movement"
       },
       {
         "name": "Children's Dance",
@@ -4225,7 +4225,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ballet",
           "Children"
         ],
-        "serviceImageQuery": "children dance class kids studio instructor"
+        "serviceImageQuery": "children ballet class tutu barre studio mirrors"
       }
     ],
     "galleryHeading": "In the Studio",
@@ -4261,14 +4261,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "expressive, warm, energetic",
-    "heroImageQuery": "dance studio mirror barre dancers practising wooden floor",
-    "ogImageQuery": "dance studio interior mirror barre wooden floor",
-    "aboutImageQuery": "dance class students instructor studio mirror barre",
+    "heroImageQuery": "dance studio interior mirror barre wooden floor bright spacious",
+    "ogImageQuery": "dance studio interior barre mirror spacious wooden floor",
+    "aboutImageQuery": "dance instructor teaching class students studio mirror action",
     "galleryImageQueries": [
-      "dance studio interior mirror barre wooden floor",
-      "ballet dancers pointe shoes practice studio",
-      "hip hop dance class students studio urban",
-      "ballroom dance partners studio elegance"
+      "dance studio empty interior barre mirror spotlights wooden floor",
+      "ballet pointe shoes relevé barre practice studio close-up",
+      "hip hop dance class students studio street style energy",
+      "latin ballroom dance couple tango hold studio elegance"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:00 \u00b7 Sat: 08:00\u201316:00 \u00b7 Class schedule on website"
   },
@@ -4290,7 +4290,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Learn to Swim",
           "Water Safety"
         ],
-        "serviceImageQuery": "swimming lessons pool instructor student lane"
+        "serviceImageQuery": "child swimming lesson instructor pool kickboard water"
       },
       {
         "name": "Adult Swimming Lessons",
@@ -4299,7 +4299,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Adult Lessons",
           "Beginner"
         ],
-        "serviceImageQuery": "aqua aerobics group exercise pool water"
+        "serviceImageQuery": "adult swimming lesson stroke technique lane pool goggles"
       },
       {
         "name": "Competitive Squad Training",
@@ -4308,7 +4308,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Squad Training",
           "Competition"
         ],
-        "serviceImageQuery": "competitive swimming lane freestyle stroke pool"
+        "serviceImageQuery": "competitive squad swimmer freestyle stroke lane racing"
       }
     ],
     "galleryHeading": "In the Pool",
@@ -4344,14 +4344,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, bright, aquatic",
-    "heroImageQuery": "swimming pool lanes blue water indoor facility",
-    "ogImageQuery": "swimming pool lanes blue water indoor clean",
-    "aboutImageQuery": "swimming coach teaching lane pool goggles cap",
+    "heroImageQuery": "indoor swimming pool lanes blue water overhead facility clean",
+    "ogImageQuery": "indoor swimming pool lanes blue water clean bright",
+    "aboutImageQuery": "swimming coach in water teaching child technique pool",
     "galleryImageQueries": [
-      "swimming pool indoor lanes blue water overhead",
-      "swimmer diving blocks starting position pool",
-      "children swimming lesson pool instructor kids",
-      "aqua aerobics class pool exercise group"
+      "swimming pool underwater view blue water lane lines",
+      "swimmer diving blocks starting position splash pool",
+      "toddler parent baby swimming lesson pool warm water",
+      "aqua aerobics class water exercise group pool noodles"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -4373,7 +4373,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Golf Lessons",
           "Video Analysis"
         ],
-        "serviceImageQuery": "golf lesson instruction swing coach driving range"
+        "serviceImageQuery": "golf swing lesson driving range tee shot instruction"
       },
       {
         "name": "Club Fitting",
@@ -4382,7 +4382,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Club Fitting",
           "Trackman"
         ],
-        "serviceImageQuery": "golf clubs bags display pro shop rack"
+        "serviceImageQuery": "golf club fitting launch monitor trackman data screen"
       },
       {
         "name": "Pro Shop & Equipment",
@@ -4391,7 +4391,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pro Shop",
           "Titleist"
         ],
-        "serviceImageQuery": "golf driving range practice balls mats"
+        "serviceImageQuery": "golf pro shop interior clubs bags apparel display racks"
       }
     ],
     "galleryHeading": "On the Range",
@@ -4427,14 +4427,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "green, classic, precision",
-    "heroImageQuery": "golf course green fairway flag pin blue sky",
-    "ogImageQuery": "golf course green fairway clubs equipment",
-    "aboutImageQuery": "golf pro shop interior clubs bags equipment display",
+    "heroImageQuery": "golf driving range green fairway practice area scenic",
+    "ogImageQuery": "golf driving range fairway practice scenic green",
+    "aboutImageQuery": "golf coach watching student swing driving range lesson",
     "galleryImageQueries": [
-      "golf course fairway green trees scenic",
-      "golf club driver ball tee close-up",
-      "golf pro shop interior clubs bags display rack",
-      "golf putting green flag hole close-up"
+      "golf course hole aerial view fairway bunker green scenic",
+      "golf ball driver tee box close-up grass morning dew",
+      "golf simulator indoor screen launch monitor club fitting",
+      "golf putting practice green hole flag approach shot"
     ],
     "contactHours": "Mon\u2013Sun: 07:00\u201318:00 \u00b7 Lessons by appointment \u00b7 Pro shop open daily"
   },
@@ -4456,7 +4456,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Youth Sport",
           "Multi-Sport"
         ],
-        "serviceImageQuery": "sports coaching session athletes field drills"
+        "serviceImageQuery": "youth multi-sport training field agility cones ladder drills"
       },
       {
         "name": "Individual Performance Coaching",
@@ -4465,7 +4465,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Performance",
           "Competitive"
         ],
-        "serviceImageQuery": "strength conditioning gym athletes training weights"
+        "serviceImageQuery": "athlete sprint training starting blocks track field"
       },
       {
         "name": "School Holiday Camps",
@@ -4474,7 +4474,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Holiday Camps",
           "Skills"
         ],
-        "serviceImageQuery": "team strategy whiteboard coach sports meeting"
+        "serviceImageQuery": "children holiday sports camp outdoor games field group"
       }
     ],
     "galleryHeading": "In Action",
@@ -4510,14 +4510,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "active, outdoor, energetic",
-    "heroImageQuery": "sports coaching training field athletes running cones drills",
-    "ogImageQuery": "sports coaching athletes field training drills",
-    "aboutImageQuery": "coach clipboard team huddle sports field training",
+    "heroImageQuery": "sports field training area cones markers grass athletic track",
+    "ogImageQuery": "sports training field cones markers athletic track grass",
+    "aboutImageQuery": "coach guiding young athletes technique field training action",
     "galleryImageQueries": [
-      "sports training field athletes running drills cones",
-      "coach demonstrating technique athletes field training",
-      "team sports practice field balls equipment",
-      "athletics track running training coach athletes"
+      "agility training cones ladder athletes running field drills",
+      "coach demonstrating throwing technique athlete field close-up",
+      "team huddle sports field discussion strategy coach",
+      "children sports camp relay race running field outdoor"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Holiday camps seasonal"
   },
@@ -4593,14 +4593,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, clean",
-    "heroImageQuery": "dog groomer bathing fluffy dog grooming table salon",
-    "ogImageQuery": "dog grooming salon bath fluffy dog wet",
-    "aboutImageQuery": "dog being groomed clippers fur trimming table salon",
+    "heroImageQuery": "fluffy dog sitting on grooming table freshly groomed",
+    "ogImageQuery": "small white dog groomed with bow tie fluffy",
+    "aboutImageQuery": "groomer gently brushing dog on grooming table",
     "galleryImageQueries": [
-      "dog grooming salon interior bath table equipment",
-      "fluffy dog after grooming bow tie clean",
-      "dog being bathed tub shampoo groomer hands",
-      "small dog haircut trim grooming table clippers"
+      "poodle freshly groomed fluffy white salon",
+      "golden retriever being bathed in grooming tub",
+      "small dog getting haircut on grooming table",
+      "dog grooming salon interior bath stations clean"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
@@ -4676,14 +4676,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, colourful",
-    "heroImageQuery": "pet shop interior shelves food toys accessories display",
-    "ogImageQuery": "pet shop interior shelves food toys pets",
-    "aboutImageQuery": "pet shop staff holding puppy customer counter",
+    "heroImageQuery": "puppy sitting in pet shop surrounded by toys",
+    "ogImageQuery": "kitten and puppy together pet shop cute",
+    "aboutImageQuery": "pet shop staff member helping customer with dog food",
     "galleryImageQueries": [
-      "pet shop interior shelves food treats organised",
-      "aquarium fish tanks display pet shop",
-      "dog toys display shelf pet shop colourful",
-      "pet food bags stacked shelf display varieties"
+      "colourful tropical fish aquarium tank pet shop",
+      "dog toys bones treats colourful display shelf",
+      "premium pet food bags stacked on shelf varieties",
+      "rabbit guinea pig small animal enclosure pet shop"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 08:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -4759,14 +4759,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, safe",
-    "heroImageQuery": "dog kennel facility outdoor run dogs playing yard",
-    "ogImageQuery": "dog kennel facility dogs outdoor yard",
-    "aboutImageQuery": "dogs playing together kennel outdoor yard daycare",
+    "heroImageQuery": "happy dogs playing together in outdoor yard kennel",
+    "ogImageQuery": "dogs running and playing in large outdoor kennel yard",
+    "aboutImageQuery": "kennel staff walking dogs in outdoor exercise area",
     "galleryImageQueries": [
-      "kennel facility outdoor dog run play yard",
-      "cat cattery room climbing tree scratching post",
-      "dog sleeping comfortable kennel bed indoor",
-      "kennel reception area counter pet check-in"
+      "dogs playing fetch in large grassy kennel yard",
+      "cat relaxing on climbing tree in cattery room",
+      "dog sleeping on comfortable bed in kennel room",
+      "clean indoor kennel suite with dog bed and water bowl"
     ],
     "contactHours": "Mon\u2013Sun: 07:30\u201318:00 \u00b7 Drop-off & collection daily \u00b7 Emergency line available"
   },
@@ -4842,9 +4842,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, active",
-    "heroImageQuery": "dog walker multiple dogs leashes park path walking",
-    "ogImageQuery": "dog walking multiple dogs leashes park path",
-    "aboutImageQuery": "person walking dogs park trail leashes happy dogs",
+    "heroImageQuery": "happy dogs running together on park path",
+    "ogImageQuery": "group of dogs walking on leashes park trail",
+    "aboutImageQuery": "dog walker with group of dogs on beach trail",
     "galleryImageQueries": [
       "dogs walking together park trail leashes group",
       "happy dog running park field off-leash play",
@@ -4925,9 +4925,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, trust-building",
-    "heroImageQuery": "dog trainer teaching sit command treats outdoor field",
-    "ogImageQuery": "dog training obedience commands outdoor field",
-    "aboutImageQuery": "dog training session obedience sit stay command",
+    "heroImageQuery": "dog sitting attentively looking up during training session outdoor",
+    "ogImageQuery": "dog performing sit stay command outdoors training",
+    "aboutImageQuery": "trainer rewarding dog with treat during obedience session",
     "galleryImageQueries": [
       "dog training class outdoor field group dogs",
       "puppy training treats reward obedience sit",
@@ -4954,7 +4954,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Grooming",
           "Pamper"
         ],
-        "serviceImageQuery": "pet grooming dog bath shampoo tub"
+        "serviceImageQuery": "dog being bathed in grooming tub shampoo suds"
       },
       {
         "name": "Daycare & Socialisation",
@@ -4963,7 +4963,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Daycare",
           "Socialisation"
         ],
-        "serviceImageQuery": "pet transport carrier crate safe travel"
+        "serviceImageQuery": "dogs playing together supervised daycare outdoor yard"
       },
       {
         "name": "Pet Accessories & Food",
@@ -4972,7 +4972,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Premium Food",
           "Accessories"
         ],
-        "serviceImageQuery": "pet photography portrait dog studio backdrop"
+        "serviceImageQuery": "premium pet food bowls toys accessories display"
       }
     ],
     "galleryHeading": "Happy Pets",
@@ -5008,14 +5008,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, welcoming, animal-loving",
-    "heroImageQuery": "pet care grooming bath dog hands gentle wash",
-    "ogImageQuery": "pet grooming care dog bath clean",
-    "aboutImageQuery": "pet services happy dog groomed bow tie clean",
+    "heroImageQuery": "happy golden retriever puppy sitting looking at camera",
+    "ogImageQuery": "cat and dog sitting together looking at camera",
+    "aboutImageQuery": "pet care staff member playing with dogs in daycare yard",
     "galleryImageQueries": [
-      "pet grooming dog bath tub wash hands",
-      "cat grooming brush fur pet care gentle",
-      "pet transport crate carrier car travel safe",
-      "pet photography dog portrait studio cute"
+      "fluffy dog freshly groomed with bow tie",
+      "cat being gently brushed grooming session",
+      "dogs running playing together daycare yard",
+      "pet food treats toys accessories display shelf"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -5037,7 +5037,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vaccinations",
           "Wellness"
         ],
-        "serviceImageQuery": "vet examining dog stethoscope clinic table"
+        "serviceImageQuery": "dog being examined with stethoscope on vet table"
       },
       {
         "name": "Soft Tissue & Orthopaedic Surgery",
@@ -5046,7 +5046,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Surgery",
           "Desexing"
         ],
-        "serviceImageQuery": "pet vaccination injection vet clinic cat"
+        "serviceImageQuery": "cat receiving vaccination at vet clinic"
       },
       {
         "name": "Diagnostics & Imaging",
@@ -5055,7 +5055,7 @@ export const presetContent: Record<string, PresetContent> = {
           "X-Ray",
           "Ultrasound"
         ],
-        "serviceImageQuery": "pet surgery vet operating room equipment"
+        "serviceImageQuery": "veterinary xray imaging room equipment"
       }
     ],
     "galleryHeading": "In the Clinic",
@@ -5091,14 +5091,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, professional",
-    "heroImageQuery": "veterinarian examining dog stethoscope vet clinic table",
-    "ogImageQuery": "veterinarian dog stethoscope examination clinic",
-    "aboutImageQuery": "vet holding cat examination table clinic gentle",
+    "heroImageQuery": "golden retriever sitting on vet examination table clinic",
+    "ogImageQuery": "cat on vet examination table clinic",
+    "aboutImageQuery": "vet gently examining puppy on clinic table",
     "galleryImageQueries": [
-      "vet clinic interior examination room table equipment",
-      "veterinarian examining dog stethoscope table",
-      "cat vet check-up vaccination injection clinic",
-      "vet surgery operating room equipment sterile"
+      "vet clinic reception area clean modern interior",
+      "dog on examination table vet clinic",
+      "cat receiving check-up vaccination at clinic",
+      "vet surgery operating room sterile equipment"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Emergency line 24hrs"
   },
@@ -5120,7 +5120,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Gala Dinners"
         ],
-        "serviceImageQuery": "corporate event setup stage podium conference room"
+        "serviceImageQuery": "corporate gala dinner table set elegant venue"
       },
       {
         "name": "Private Functions",
@@ -5129,7 +5129,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Functions",
           "Milestones"
         ],
-        "serviceImageQuery": "wedding event setup decorated tables flowers"
+        "serviceImageQuery": "birthday party decorated table balloons cake setup"
       },
       {
         "name": "Concept & Design",
@@ -5138,7 +5138,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Event Design",
           "Creative"
         ],
-        "serviceImageQuery": "birthday party setup balloons cake decorations"
+        "serviceImageQuery": "event mood board fabric swatches flowers design"
       }
     ],
     "galleryHeading": "Events We've Created",
@@ -5174,9 +5174,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, dramatic, celebratory",
-    "heroImageQuery": "event setup decorated tables flowers balloons venue hall",
-    "ogImageQuery": "event decorated venue tables flowers setup",
-    "aboutImageQuery": "event planner arranging table setup flowers venue",
+    "heroImageQuery": "elegant event venue decorated tables centrepieces flowers lighting",
+    "ogImageQuery": "event venue hall decorated tables flowers evening lighting",
+    "aboutImageQuery": "event coordinator arranging table settings at venue",
     "galleryImageQueries": [
       "event venue setup decorated tables chairs flowers",
       "corporate event conference stage podium screen",
@@ -5203,7 +5203,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding DJ",
           "MC"
         ],
-        "serviceImageQuery": "DJ decks mixer performing event party lights"
+        "serviceImageQuery": "DJ turntables mixer close-up coloured lights"
       },
       {
         "name": "Corporate Events",
@@ -5212,7 +5212,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Gala Dinner"
         ],
-        "serviceImageQuery": "wedding DJ dance floor guests dancing"
+        "serviceImageQuery": "packed dance floor party lights crowd dancing"
       },
       {
         "name": "Sound & Lighting",
@@ -5221,7 +5221,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sound System",
           "Lighting"
         ],
-        "serviceImageQuery": "corporate event MC microphone stage presenter"
+        "serviceImageQuery": "sound system speakers lighting rig event setup"
       }
     ],
     "galleryHeading": "On the Decks",
@@ -5257,9 +5257,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, nightlife, electric",
-    "heroImageQuery": "DJ mixing decks turntables headphones club lights",
+    "heroImageQuery": "DJ decks mixer turntables close-up neon lights",
     "ogImageQuery": "DJ turntables mixer headphones club lights",
-    "aboutImageQuery": "DJ performing mixer deck crowd dance floor lights",
+    "aboutImageQuery": "DJ mixing tracks behind decks at event",
     "galleryImageQueries": [
       "DJ booth setup turntables mixer lights club",
       "dance floor crowd party lights DJ event",
@@ -5286,7 +5286,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Exclusive Use",
           "Coordination"
         ],
-        "serviceImageQuery": "wedding ceremony setup arch flowers outdoor venue"
+        "serviceImageQuery": "wedding ceremony arch flowers chairs aisle outdoor garden"
       },
       {
         "name": "Catering & Bar",
@@ -5295,7 +5295,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Catering",
           "Open Bar"
         ],
-        "serviceImageQuery": "wedding reception dinner tables decorated elegant"
+        "serviceImageQuery": "wedding reception dinner tables set candles flowers elegant"
       },
       {
         "name": "Ceremony & Chapel",
@@ -5304,7 +5304,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Garden Ceremony",
           "Chapel"
         ],
-        "serviceImageQuery": "wedding planning documents rings flowers flat lay"
+        "serviceImageQuery": "wedding chapel interior aisle seats natural light"
       }
     ],
     "galleryHeading": "Your Day, Our Backdrop",
@@ -5340,9 +5340,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "romantic, golden, Cape",
-    "heroImageQuery": "wedding venue ceremony aisle flowers arch chairs outdoor",
+    "heroImageQuery": "wedding ceremony arch flowers aisle chairs garden venue",
     "ogImageQuery": "wedding ceremony aisle flowers arch venue outdoor",
-    "aboutImageQuery": "wedding reception table set flowers candles elegant",
+    "aboutImageQuery": "wedding coordinator setting up table flowers at venue",
     "galleryImageQueries": [
       "wedding ceremony outdoor arch flowers aisle chairs",
       "wedding reception hall decorated tables centrepieces",
@@ -5369,7 +5369,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Mirror Booth",
           "Open Air"
         ],
-        "serviceImageQuery": "photo booth setup backdrop lights event venue"
+        "serviceImageQuery": "mirror photo booth glowing ring light event venue"
       },
       {
         "name": "360\u00b0 Video Booth",
@@ -5378,7 +5378,7 @@ export const presetContent: Record<string, PresetContent> = {
           "360 Booth",
           "Slow Motion"
         ],
-        "serviceImageQuery": "photo booth props signs moustache glasses fun"
+        "serviceImageQuery": "360 video booth spinning platform event party"
       },
       {
         "name": "Custom Branding & Props",
@@ -5387,7 +5387,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Branded",
           "Prop Box"
         ],
-        "serviceImageQuery": "photo strip prints event party keepsake"
+        "serviceImageQuery": "photo strip prints with custom branded overlay"
       }
     ],
     "galleryHeading": "In the Booth",
@@ -5423,9 +5423,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fun, vibrant, celebratory",
-    "heroImageQuery": "photo booth backdrop props guests posing party fun",
+    "heroImageQuery": "photo booth setup backdrop neon sign lights event",
     "ogImageQuery": "photo booth backdrop props party guests fun",
-    "aboutImageQuery": "photo booth setup props signs party fun event",
+    "aboutImageQuery": "photo booth attendant setting up backdrop props event",
     "galleryImageQueries": [
       "photo booth backdrop lights setup event venue",
       "photo booth props signs guests posing fun",
@@ -5470,7 +5470,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Backdrop Hire",
           "Neon Signs"
         ],
-        "serviceImageQuery": "party hire chairs tables linen event setup"
+        "serviceImageQuery": "neon sign backdrop foliage wall event décor hire"
       }
     ],
     "galleryHeading": "Party Moments",
@@ -5506,9 +5506,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "colourful, festive, joyful",
-    "heroImageQuery": "party supplies balloons decorations streamers colourful display",
+    "heroImageQuery": "balloon arch garland colourful party entrance decoration",
     "ogImageQuery": "party supplies balloons streamers decorations colourful",
-    "aboutImageQuery": "party decorations table set balloons banners colourful",
+    "aboutImageQuery": "balloon artist creating arch installation for party",
     "galleryImageQueries": [
       "party shop interior balloons banners shelves display",
       "balloon arch decoration entrance event colourful",
@@ -5535,7 +5535,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Live Music",
           "Jazz"
         ],
-        "serviceImageQuery": "live music band stage performance event"
+        "serviceImageQuery": "jazz band performing live instruments stage lighting"
       },
       {
         "name": "Corporate Entertainment",
@@ -5544,7 +5544,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate Acts",
           "Emcee"
         ],
-        "serviceImageQuery": "magician magic show stage trick audience"
+        "serviceImageQuery": "comedian MC performing stage microphone corporate event"
       },
       {
         "name": "Children's Entertainment",
@@ -5553,7 +5553,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Magician",
           "Children's Parties"
         ],
-        "serviceImageQuery": "children party entertainer balloon animals kids"
+        "serviceImageQuery": "face painting children party entertainer colourful"
       }
     ],
     "galleryHeading": "In Performance",
@@ -5589,9 +5589,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "vibrant, live, celebratory",
-    "heroImageQuery": "stage performer spotlight microphone audience live show",
+    "heroImageQuery": "live band performing on stage instruments lights concert",
     "ogImageQuery": "performer stage spotlight microphone live show",
-    "aboutImageQuery": "entertainer performing stage audience lights show",
+    "aboutImageQuery": "musician performing guitar on stage event lighting",
     "galleryImageQueries": [
       "stage performance lights performer audience live",
       "magician performing trick audience amazed show",
@@ -5618,7 +5618,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Boardroom",
           "AV Equipped"
         ],
-        "serviceImageQuery": "conference venue meeting room screen projector"
+        "serviceImageQuery": "boardroom meeting room screen projector chairs table"
       },
       {
         "name": "Event Hall & Function Room",
@@ -5627,7 +5627,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Event Hall",
           "Flexible Layout"
         ],
-        "serviceImageQuery": "wedding venue hall decorated tables reception"
+        "serviceImageQuery": "event hall large open space decorated for dinner"
       },
       {
         "name": "Outdoor Terrace & Garden",
@@ -5636,7 +5636,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Outdoor",
           "Sundowner"
         ],
-        "serviceImageQuery": "outdoor venue garden event marquee fairy lights"
+        "serviceImageQuery": "outdoor terrace garden fairy lights cocktail setting evening"
       }
     ],
     "galleryHeading": "Our Spaces",
@@ -5672,9 +5672,9 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "versatile, elegant, professional",
-    "heroImageQuery": "event venue empty hall set chairs tables elegant",
+    "heroImageQuery": "event venue hall interior set tables chairs elegant evening",
     "ogImageQuery": "venue hire hall interior chairs tables setup",
-    "aboutImageQuery": "function venue interior tables chairs setup event",
+    "aboutImageQuery": "venue manager preparing event space tables setup",
     "galleryImageQueries": [
       "venue hall interior empty chairs tables setup",
       "conference room projector screen chairs meeting",
@@ -6504,15 +6504,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, bright, clean",
-      "heroImageQuery": "professional painter interior Cape Town clean fresh finish",
-      "heroBgImageQuery": "paint roller brush professional dark background painting",
-      "ogImageQuery": "professional house painting Cape Town fresh interior",
-      "aboutImageQuery": "painter professional interior Cape Town neat team",
+      "heroImageQuery": "freshly painted modern home interior bright airy rooms",
+      "heroBgImageQuery": "paint roller brush dark background painting supplies",
+      "ogImageQuery": "painted living room fresh white walls furniture",
+      "aboutImageQuery": "painter rolling paint on wall interior working",
       "galleryImageQueries": [
-          "interior paint fresh finish Cape Town professional",
-          "exterior house painting facade professional",
-          "decorative venetian plaster finish wall",
-          "painted room transformation professional Cape Town"
+          "freshly painted bedroom soft colours feature wall",
+          "house exterior painted white trim neat finish",
+          "venetian plaster texture accent wall interior",
+          "painted hallway staircase white bright transformation"
       ]
   },
   "Glazier": {
@@ -6534,7 +6534,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Toughened Glass"
               ],
               "icon": "square",
-              "serviceImageQuery": "frameless shower door glass installation professional bathroom"
+              "serviceImageQuery": "frameless glass shower enclosure modern bathroom"
           },
           {
               "name": "Aluminium Windows & Doors",
@@ -6544,7 +6544,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Sliding Doors"
               ],
               "icon": "maximize",
-              "serviceImageQuery": "aluminium windows sliding doors glazier installation residential"
+              "serviceImageQuery": "aluminium sliding doors large glass panels living room"
           },
           {
               "name": "Glass Repairs & Replacements",
@@ -6554,7 +6554,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Safety Glass"
               ],
               "icon": "tool",
-              "serviceImageQuery": "glazier glass replacement repair residential professional"
+              "serviceImageQuery": "new glass window pane installed frame"
           }
       ],
       "galleryHeading": "Clear Results",
@@ -6608,15 +6608,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, light, precise",
-      "heroImageQuery": "glazier glass installation residential Cape Town modern",
+      "heroImageQuery": "modern home large glass windows natural light interior",
       "heroBgImageQuery": "glass reflection dark background architectural glazing",
-      "ogImageQuery": "frameless shower glass installation professional bathroom",
-      "aboutImageQuery": "glazier fitting glass window professional Cape Town",
+      "ogImageQuery": "frameless glass shower door installed modern bathroom",
+      "aboutImageQuery": "glazier installing glass panel window working",
       "galleryImageQueries": [
-          "frameless shower enclosure glass bathroom",
-          "aluminium windows installed residential Cape Town",
-          "glass sliding door installation modern home",
-          "glazier completed work clean neat professional"
+          "frameless shower glass enclosure walk in bathroom",
+          "aluminium window frames installed modern house",
+          "glass bi-fold doors opening to garden patio",
+          "glass balustrade balcony railing modern home"
       ]
   },
   "Locksmith": {
@@ -6638,7 +6638,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "30-min Response"
               ],
               "icon": "key",
-              "serviceImageQuery": "locksmith emergency lockout door residential professional"
+              "serviceImageQuery": "door lock mechanism key cylinder close up"
           },
           {
               "name": "Lock Upgrades & Security",
@@ -6648,7 +6648,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "High Security"
               ],
               "icon": "lock",
-              "serviceImageQuery": "locksmith security lock installation residential door"
+              "serviceImageQuery": "deadbolt high security lock installed front door"
           },
           {
               "name": "Access Control & Intercoms",
@@ -6658,7 +6658,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Gate Motors"
               ],
               "icon": "shield",
-              "serviceImageQuery": "access control keypad gate motor intercom installation"
+              "serviceImageQuery": "keypad access control panel gate entry system"
           }
       ],
       "galleryHeading": "Secured & Sorted",
@@ -6712,15 +6712,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "trustworthy, secure, professional",
-      "heroImageQuery": "locksmith professional door lock installation residential",
-      "heroBgImageQuery": "lock security door dark background professional",
-      "ogImageQuery": "locksmith installing security lock residential door",
-      "aboutImageQuery": "locksmith professional uniformed working on door lock",
+      "heroImageQuery": "secure front door brass handle deadbolt lock",
+      "heroBgImageQuery": "lock security door dark background metal",
+      "ogImageQuery": "high security door lock deadbolt installed",
+      "aboutImageQuery": "locksmith picking lock working on door close up",
       "galleryImageQueries": [
-          "high security lock installation door residential",
-          "access control keypad gate motor professional",
-          "locksmith lockout emergency residential professional",
-          "intercom installation security gate Cape Town"
+          "deadbolt lock installed wooden front door",
+          "keypad entry system gate access control installed",
+          "smart lock digital keypad front door modern",
+          "intercom video system mounted wall entrance"
       ]
   },
   "Plasterer": {
@@ -6742,7 +6742,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Smooth Finish"
               ],
               "icon": "edit-2",
-              "serviceImageQuery": "plasterer internal skim coat smooth wall finish professional"
+              "serviceImageQuery": "smooth plastered wall interior paint ready surface"
           },
           {
               "name": "External Plastering",
@@ -6752,7 +6752,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "New Build"
               ],
               "icon": "home",
-              "serviceImageQuery": "external plastering render facade building professional"
+              "serviceImageQuery": "rendered exterior wall building facade smooth finish"
           },
           {
               "name": "Crack Repair & Remediation",
@@ -6762,7 +6762,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Remediation"
               ],
               "icon": "tool",
-              "serviceImageQuery": "wall crack repair plasterer remediation professional"
+              "serviceImageQuery": "wall crack filled repaired smooth surface"
           }
       ],
       "galleryHeading": "Surfaces We've Finished",
@@ -6816,15 +6816,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, smooth, professional",
-      "heroImageQuery": "plasterer smooth wall finish internal professional Cape Town",
-      "heroBgImageQuery": "plastering wall dark textured background professional",
-      "ogImageQuery": "internal plastering smooth finish wall professional",
-      "aboutImageQuery": "plasterer applying skim coat wall professional Cape Town",
+      "heroImageQuery": "smooth white plastered walls empty room bright light",
+      "heroBgImageQuery": "plastering wall dark textured background",
+      "ogImageQuery": "smooth skim plaster finish interior white wall",
+      "aboutImageQuery": "plasterer trowelling skim coat wall working",
       "galleryImageQueries": [
-          "internal skim plaster smooth wall finish",
-          "external render plaster facade building",
-          "crack repair wall remediation professional",
-          "completed plaster finish paint-ready wall"
+          "smooth interior plastered room white walls ceiling",
+          "rendered exterior building facade finished",
+          "repaired wall crack smooth finish painted",
+          "newly plastered room ready for painting light"
       ]
   },
   "Fencing Contractor": {
@@ -6846,7 +6846,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Anti-Climb"
               ],
               "icon": "shield",
-              "serviceImageQuery": "palisade security fencing residential installation professional"
+              "serviceImageQuery": "steel palisade fence installed residential boundary"
           },
           {
               "name": "Electric Fencing",
@@ -6856,7 +6856,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Certificate"
               ],
               "icon": "zap",
-              "serviceImageQuery": "electric fence installation residential Cape Town certified"
+              "serviceImageQuery": "electric fence wires installed wall top security"
           },
           {
               "name": "Timber & Precast Walls",
@@ -6866,7 +6866,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Vibracrete"
               ],
               "icon": "align-left",
-              "serviceImageQuery": "timber fence precast wall installation residential"
+              "serviceImageQuery": "wooden timber fence panels garden boundary privacy"
           }
       ],
       "galleryHeading": "Fences We've Built",
@@ -6920,15 +6920,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "secure, clean, residential",
-      "heroImageQuery": "fencing contractor palisade installation residential Cape Town",
-      "heroBgImageQuery": "fencing security palisade dark background professional",
-      "ogImageQuery": "palisade fencing installed residential Cape Town neat",
-      "aboutImageQuery": "fencing contractor installing fence residential professional",
+      "heroImageQuery": "black palisade fence installed around residential property",
+      "heroBgImageQuery": "fencing security palisade dark background",
+      "ogImageQuery": "completed palisade fence boundary residential neat",
+      "aboutImageQuery": "fencing installer drilling post holes working",
       "galleryImageQueries": [
-          "palisade security fence residential Cape Town",
-          "electric fence installation certified residential",
-          "timber fence palisade installation neat",
-          "precast wall vibracrete installation residential"
+          "steel palisade boundary fence residential property",
+          "electric fence strands wall top perimeter security",
+          "timber palisade garden fence panels neat row",
+          "precast concrete wall boundary residential installed"
       ]
   },
   "Scaffolding": {
@@ -6950,7 +6950,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Painting Access"
               ],
               "icon": "layers",
-              "serviceImageQuery": "residential scaffolding erected house painting Cape Town"
+              "serviceImageQuery": "scaffolding erected around house exterior painting"
           },
           {
               "name": "Commercial & Industrial",
@@ -6960,7 +6960,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Industrial"
               ],
               "icon": "maximize",
-              "serviceImageQuery": "commercial scaffolding industrial building access professional"
+              "serviceImageQuery": "scaffolding tall commercial building facade construction"
           },
           {
               "name": "Scaffold Hire & Erect",
@@ -6970,7 +6970,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "OHSA"
               ],
               "icon": "tool",
-              "serviceImageQuery": "scaffolding hire erect professional construction site"
+              "serviceImageQuery": "scaffolding tubes boards platforms erected site"
           }
       ],
       "galleryHeading": "On the Scaffold",
@@ -7024,15 +7024,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, safe, structured",
-      "heroImageQuery": "scaffolding erected building construction professional Cape Town",
-      "heroBgImageQuery": "scaffolding dark construction site background professional",
-      "ogImageQuery": "scaffolding professional erection residential Cape Town",
-      "aboutImageQuery": "scaffolding team erecting structure professional certified",
+      "heroImageQuery": "scaffolding structure erected building facade blue sky",
+      "heroBgImageQuery": "scaffolding dark construction site background",
+      "ogImageQuery": "scaffolding around building renovation work access",
+      "aboutImageQuery": "workers assembling scaffolding tubes clamps erecting",
       "galleryImageQueries": [
-          "residential scaffolding erected house renovation",
-          "commercial scaffolding industrial building access",
-          "scaffolding OHSA inspection professional site",
-          "scaffold dismantling professional clean site"
+          "scaffolding around house residential renovation access",
+          "scaffolding commercial building multiple stories facade",
+          "scaffolding platform boards walkway safety rails",
+          "clean construction site scaffolding removed completed"
       ]
   },
   "Demolition": {
@@ -7054,7 +7054,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Renovation"
               ],
               "icon": "trash-2",
-              "serviceImageQuery": "residential strip out demolition interior renovation professional"
+              "serviceImageQuery": "interior gutted stripped out room renovation walls"
           },
           {
               "name": "Structural Demolition",
@@ -7064,7 +7064,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Controlled"
               ],
               "icon": "tool",
-              "serviceImageQuery": "structural demolition outbuilding controlled professional Cape Town"
+              "serviceImageQuery": "excavator demolishing small building rubble site"
           },
           {
               "name": "Rubble Removal & Clearing",
@@ -7074,7 +7074,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Site Clear"
               ],
               "icon": "truck",
-              "serviceImageQuery": "rubble removal demolition site clearing professional"
+              "serviceImageQuery": "rubble skip bin loaded bricks debris site"
           }
       ],
       "galleryHeading": "Cleared for Development",
@@ -7128,15 +7128,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, clear, professional",
-      "heroImageQuery": "demolition contractor professional site Cape Town clearance",
-      "heroBgImageQuery": "demolition site rubble dark background professional",
-      "ogImageQuery": "controlled demolition professional residential Cape Town",
-      "aboutImageQuery": "demolition team professional site Cape Town work",
+      "heroImageQuery": "cleared building site ready for construction flat ground",
+      "heroBgImageQuery": "demolition site rubble dark background",
+      "ogImageQuery": "cleared site after demolition clean flat ready",
+      "aboutImageQuery": "excavator demolishing structure operator working",
       "galleryImageQueries": [
-          "residential strip out demolition interior",
-          "structural demolition outbuilding Cape Town",
-          "rubble removal site clearing professional",
-          "cleared site after demolition ready to build"
+          "interior stripped out gutted room bare walls",
+          "excavator breaking concrete structure demolition",
+          "skip bin loaded rubble bricks site clearing",
+          "cleared level site after demolition clean"
       ]
   },
   "Solar / Renewable Energy": {
@@ -7158,7 +7158,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Hybrid"
               ],
               "icon": "sun",
-              "serviceImageQuery": "solar panel installation residential roof Cape Town professional"
+              "serviceImageQuery": "solar panels array installed residential roof sunny"
           },
           {
               "name": "Battery Backup & Storage",
@@ -7168,7 +7168,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Load-Shedding"
               ],
               "icon": "battery-charging",
-              "serviceImageQuery": "solar battery backup storage wall mounted home"
+              "serviceImageQuery": "lithium battery wall mounted home energy storage"
           },
           {
               "name": "Inverter & UPS Systems",
@@ -7178,7 +7178,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "UPS"
               ],
               "icon": "zap",
-              "serviceImageQuery": "inverter installation home backup power professional"
+              "serviceImageQuery": "solar inverter installed garage wall display screen"
           }
       ],
       "galleryHeading": "Live Off the Grid",
@@ -7232,15 +7232,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, modern, sustainable",
-      "heroImageQuery": "solar panels residential roof Cape Town installation clean",
+      "heroImageQuery": "solar panels on modern house roof blue sky sunny",
       "heroBgImageQuery": "solar panel array dark sky background renewable energy",
-      "ogImageQuery": "solar panel installation residential Cape Town roof",
-      "aboutImageQuery": "solar installer team residential roof professional Cape Town",
+      "ogImageQuery": "residential rooftop solar panel array installed",
+      "aboutImageQuery": "solar installer mounting panel on roof working",
       "galleryImageQueries": [
-          "solar panels residential roof installation Cape Town",
-          "battery backup storage wall mounted home",
-          "solar inverter installation professional home",
-          "solar system completed Cape Town residential"
+          "solar panel rows installed residential rooftop",
+          "battery storage unit wall mounted garage",
+          "solar inverter display monitoring energy output",
+          "modern house exterior with solar panels roof"
       ]
   },
   "HVAC / Air Conditioning": {
@@ -7262,7 +7262,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Split Units"
               ],
               "icon": "wind",
-              "serviceImageQuery": "air conditioning split unit installation residential professional"
+              "serviceImageQuery": "wall mounted split air conditioner unit white room"
           },
           {
               "name": "Servicing & Gas Recharge",
@@ -7272,7 +7272,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Maintenance"
               ],
               "icon": "settings",
-              "serviceImageQuery": "air conditioning service maintenance professional technician"
+              "serviceImageQuery": "air conditioner filter cleaning service open unit"
           },
           {
               "name": "Commercial HVAC",
@@ -7282,7 +7282,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Ducted"
               ],
               "icon": "cpu",
-              "serviceImageQuery": "commercial HVAC ducted air conditioning office installation"
+              "serviceImageQuery": "ceiling ducted air conditioning vent office interior"
           }
       ],
       "galleryHeading": "Cool Work",
@@ -7336,15 +7336,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, modern, cool",
-      "heroImageQuery": "air conditioning installation residential professional Cape Town",
-      "heroBgImageQuery": "HVAC air conditioning dark background professional cooling",
-      "ogImageQuery": "split unit air conditioner installation professional residential",
-      "aboutImageQuery": "HVAC technician air conditioning installation professional",
+      "heroImageQuery": "modern living room air conditioner mounted wall cool interior",
+      "heroBgImageQuery": "HVAC air conditioning unit dark background cooling",
+      "ogImageQuery": "split unit air conditioner installed living room wall",
+      "aboutImageQuery": "HVAC technician servicing air conditioner unit working",
       "galleryImageQueries": [
-          "split unit air conditioning installed residential",
-          "HVAC commercial ducted office installation",
-          "air conditioning service maintenance technician",
-          "completed AC installation neat professional"
+          "wall split unit air conditioner bedroom installed",
+          "ducted air conditioning ceiling vent office",
+          "air conditioner outdoor condenser unit mounted wall",
+          "cassette air conditioning ceiling unit open plan office"
       ]
   },
   "Borehole / Irrigation": {
@@ -7366,7 +7366,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "DWS Registered"
               ],
               "icon": "chevrons-down",
-              "serviceImageQuery": "borehole drilling residential Cape Town professional pump"
+              "serviceImageQuery": "borehole drilling rig operating residential yard"
           },
           {
               "name": "Pump & Pressure System",
@@ -7376,7 +7376,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Pressure Tank"
               ],
               "icon": "droplet",
-              "serviceImageQuery": "borehole pump installation submersible pressure system"
+              "serviceImageQuery": "water pump pressure tank installed pump house"
           },
           {
               "name": "Irrigation System Design",
@@ -9862,7 +9862,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Communication"
               ],
               "icon": "message-circle",
-              "serviceImageQuery": "language school English business professional class teaching"
+              "serviceImageQuery": "classroom whiteboard English lesson grammar students desks"
           },
           {
               "name": "French, German & Spanish",
@@ -9872,7 +9872,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "German"
               ],
               "icon": "globe",
-              "serviceImageQuery": "language class French German Spanish teaching professional"
+              "serviceImageQuery": "foreign language textbooks French German Spanish conversation class"
           },
           {
               "name": "Exam Preparation",
@@ -9882,7 +9882,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Cambridge"
               ],
               "icon": "award",
-              "serviceImageQuery": "language exam preparation IELTS Cambridge class professional"
+              "serviceImageQuery": "exam preparation study materials practice papers desk books"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -9936,15 +9936,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, international, engaged",
-      "heroImageQuery": "language school class teaching professional Cape Town",
-      "heroBgImageQuery": "language learning classroom dark background professional",
-      "ogImageQuery": "language school class professional teaching Cape Town",
-      "aboutImageQuery": "language teacher student class professional Cape Town",
+      "heroImageQuery": "language school classroom interior desks whiteboard bright modern",
+      "heroBgImageQuery": "language classroom dark background desks whiteboard modern",
+      "ogImageQuery": "language school classroom desks whiteboard bright modern",
+      "aboutImageQuery": "language teacher explaining lesson student whiteboard interaction",
       "galleryImageQueries": [
-          "language school classroom teaching Cape Town",
-          "business English professional class",
-          "language exam preparation IELTS study",
-          "language students conversation practice class"
+          "language classroom students desks whiteboard engaged learning",
+          "business English group lesson adults conversation practice",
+          "IELTS Cambridge exam study materials practice papers desk",
+          "language students paired conversation practice speaking activity"
       ]
   },
   "After-school / Enrichment": {
@@ -9966,7 +9966,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Supervised"
               ],
               "icon": "book",
-              "serviceImageQuery": "after school homework help supervision children professional"
+              "serviceImageQuery": "children doing homework desk books pencils supervised classroom"
           },
           {
               "name": "Academic Enrichment",
@@ -9976,7 +9976,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Enrichment"
               ],
               "icon": "award",
-              "serviceImageQuery": "after school enrichment academic maths science children"
+              "serviceImageQuery": "maths enrichment lesson children whiteboard numbers classroom"
           },
           {
               "name": "Creative & Sports Activities",
@@ -9986,7 +9986,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Coding"
               ],
               "icon": "activity",
-              "serviceImageQuery": "after school activities children art sport creative"
+              "serviceImageQuery": "children art craft painting activity table creative colourful"
           }
       ],
       "galleryHeading": "Learning Beyond the Bell",
@@ -10040,15 +10040,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, engaged, bright",
-      "heroImageQuery": "after school programme children learning homework Cape Town",
-      "heroBgImageQuery": "after school children education dark warm background",
-      "ogImageQuery": "after school enrichment programme children professional Cape Town",
-      "aboutImageQuery": "after school teacher children learning supervision Cape Town",
+      "heroImageQuery": "bright classroom interior desks bookshelves children learning warm",
+      "heroBgImageQuery": "classroom desks books dark warm background education",
+      "ogImageQuery": "classroom children learning desks books bright warm",
+      "aboutImageQuery": "teacher helping child with reading book desk warm classroom",
       "galleryImageQueries": [
-          "after school homework supervision children professional",
-          "enrichment maths science children classroom",
-          "after school activities art sport children Cape Town",
-          "after school programme happy children learning"
+          "children homework time pencils books desks supervision classroom",
+          "science experiment children classroom hands-on learning engaged",
+          "children outdoor sports activity running playing field grass",
+          "children reading books library corner colourful cushions"
       ]
   },
   "Art / Craft Classes": {
@@ -10070,7 +10070,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Oil Painting"
               ],
               "icon": "edit-3",
-              "serviceImageQuery": "art painting class studio Cape Town adult watercolour"
+              "serviceImageQuery": "watercolour painting easel brush close-up studio art class"
           },
           {
               "name": "Ceramics & Pottery",
@@ -10080,7 +10080,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Pottery"
               ],
               "icon": "circle",
-              "serviceImageQuery": "ceramics pottery class wheel throwing studio Cape Town"
+              "serviceImageQuery": "pottery wheel throwing hands clay spinning ceramics studio"
           },
           {
               "name": "Children's Art Programmes",
@@ -10090,7 +10090,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Age 4+"
               ],
               "icon": "star",
-              "serviceImageQuery": "children art class painting studio Cape Town young"
+              "serviceImageQuery": "children painting easels colourful art class brushes aprons"
           }
       ],
       "galleryHeading": "Made in Our Studio",
@@ -10144,15 +10144,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, creative, joyful",
-      "heroImageQuery": "art class painting studio Cape Town adult creative",
-      "heroBgImageQuery": "art studio painting dark background creative warm",
-      "ogImageQuery": "art craft class studio Cape Town painting ceramics",
-      "aboutImageQuery": "art teacher student painting studio Cape Town",
+      "heroImageQuery": "art studio interior easels canvases paints bright natural light",
+      "heroBgImageQuery": "art studio dark background canvases paints brushes creative",
+      "ogImageQuery": "art studio interior easels canvases paints ceramics bright",
+      "aboutImageQuery": "art instructor guiding student brush technique canvas easel",
       "galleryImageQueries": [
-          "painting class watercolour adult studio Cape Town",
-          "ceramics pottery class wheel throwing professional",
-          "children art class painting Cape Town studio",
-          "art studio completed works painting ceramics"
+          "watercolour painting class adult wet on wet technique studio",
+          "ceramics kiln glazed pottery finished pieces display shelf",
+          "children finger painting messy fun colourful art class table",
+          "art studio wall completed paintings canvases exhibition display"
       ]
   },
   "Car Dealership": {
@@ -10251,7 +10251,7 @@ export const presetContent: Record<string, PresetContent> = {
       "heroImageQuery": "luxury car showroom dark interior modern dealership",
       "heroBgImageQuery": "car showroom dark background luxury vehicles row",
       "ogImageQuery": "car dealership showroom row of vehicles",
-      "aboutImageQuery": "car dealership team professional handshake",
+      "aboutImageQuery": "car salesperson shaking hands with customer at dealership",
       "galleryImageQueries": [
           "black luxury SUV parked front view",
           "silver hatchback car side view clean",
@@ -10278,7 +10278,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Android"
               ],
               "icon": "smartphone",
-              "serviceImageQuery": "mobile app development iOS Android professional Cape Town"
+              "serviceImageQuery": "smartphone showing app interface UI design colourful"
           },
           {
               "name": "Web Applications",
@@ -10288,7 +10288,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SaaS"
               ],
               "icon": "monitor",
-              "serviceImageQuery": "web application development SaaS professional tech team"
+              "serviceImageQuery": "web application dashboard screen laptop browser"
           },
           {
               "name": "MVP & Startup Builds",
@@ -10298,7 +10298,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Startup"
               ],
               "icon": "zap",
-              "serviceImageQuery": "MVP startup app development professional tech team"
+              "serviceImageQuery": "wireframe sketches on paper app UX design process"
           }
       ],
       "galleryHeading": "Apps We've Shipped",
@@ -10352,15 +10352,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, technical, sharp",
-      "heroImageQuery": "app developer mobile team professional Cape Town tech",
-      "heroBgImageQuery": "app development code dark background professional tech",
-      "ogImageQuery": "mobile app development professional Cape Town iOS Android",
-      "aboutImageQuery": "app development team professional office Cape Town tech",
+      "heroImageQuery": "mobile app screens UI design mockup smartphone",
+      "heroBgImageQuery": "code editor dark screen syntax highlighted programming",
+      "ogImageQuery": "mobile app UI screens design mockup",
+      "aboutImageQuery": "developer writing code on laptop screen close-up",
       "galleryImageQueries": [
-          "mobile app development team Cape Town professional",
-          "iOS Android app screens UI professional",
-          "SaaS web application development professional",
-          "startup MVP launch app professional Cape Town"
+          "mobile app UI design screens colourful interface",
+          "code on dark screen programming syntax IDE",
+          "web dashboard analytics charts browser screen",
+          "wireframe prototype sketches UX design whiteboard"
       ]
   },
   "E-commerce": {
@@ -10382,7 +10382,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "WooCommerce"
               ],
               "icon": "shopping-cart",
-              "serviceImageQuery": "ecommerce store build Shopify professional Cape Town"
+              "serviceImageQuery": "Shopify store homepage design laptop product grid"
           },
           {
               "name": "Conversion Rate Optimisation",
@@ -10392,7 +10392,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "A/B Testing"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "ecommerce conversion optimisation CRO professional analytics"
+              "serviceImageQuery": "analytics dashboard conversion rate charts screen"
           },
           {
               "name": "E-commerce Growth Management",
@@ -10402,7 +10402,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO"
               ],
               "icon": "bar-chart-2",
-              "serviceImageQuery": "ecommerce growth marketing Google Shopping analytics professional"
+              "serviceImageQuery": "Google Shopping ads product listing screen"
           }
       ],
       "galleryHeading": "Stores We've Built",
@@ -10456,15 +10456,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, commercial, sharp",
-      "heroImageQuery": "ecommerce store development professional Shopify Cape Town",
-      "heroBgImageQuery": "ecommerce online store dark background professional tech",
-      "ogImageQuery": "ecommerce store professional development Cape Town Shopify",
-      "aboutImageQuery": "ecommerce team professional Cape Town online store",
+      "heroImageQuery": "ecommerce online store product page laptop screen",
+      "heroBgImageQuery": "online store checkout page dark screen background",
+      "ogImageQuery": "ecommerce product grid shopping cart laptop screen",
+      "aboutImageQuery": "person managing ecommerce store orders on laptop",
       "galleryImageQueries": [
-          "Shopify ecommerce store professional Cape Town",
-          "ecommerce conversion optimisation analytics professional",
-          "online store product page professional design",
-          "ecommerce growth results analytics dashboard"
+          "Shopify online store homepage products grid screen",
+          "ecommerce analytics dashboard conversion charts",
+          "product page design photography online store",
+          "email marketing campaign newsletter laptop screen"
       ]
   },
   "Music Teacher / School": {
@@ -10485,7 +10485,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Piano",
                   "Grade Exams"
               ],
-              "serviceImageQuery": "piano music teacher lesson student keyboard professional"
+              "serviceImageQuery": "piano keys hands playing lesson sheet music close-up"
           },
           {
               "name": "Guitar \u2014 Classical & Electric",
@@ -10494,7 +10494,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Guitar",
                   "Electric"
               ],
-              "serviceImageQuery": "guitar lesson teacher student acoustic electric music"
+              "serviceImageQuery": "acoustic guitar lesson strumming fingers fretboard close-up"
           },
           {
               "name": "Voice & Theory",
@@ -10503,7 +10503,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Voice",
                   "Music Theory"
               ],
-              "serviceImageQuery": "voice singing lesson teacher student music theory"
+              "serviceImageQuery": "singing lesson microphone vocal warmup piano accompaniment"
           }
       ],
       "galleryHeading": "In the Studio",
@@ -10539,15 +10539,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, creative, inspiring",
-      "heroImageQuery": "music school piano guitar teacher student Cape Town",
-      "heroBgImageQuery": "music notes instruments piano dark professional background",
-      "ogImageQuery": "music lesson teacher student piano guitar Cape Town",
-      "aboutImageQuery": "music teacher student piano lesson warm Cape Town",
+      "heroImageQuery": "music school studio interior piano guitar instruments warm",
+      "heroBgImageQuery": "piano keys dark moody background music instruments",
+      "ogImageQuery": "music school studio instruments piano guitar warm bright",
+      "aboutImageQuery": "music teacher guiding student hands piano keys lesson",
       "galleryImageQueries": [
-          "piano lesson teacher student professional music",
-          "guitar lesson acoustic student teacher",
-          "voice singing lesson teacher student",
-          "music school recital students performance"
+          "piano practice upright keys sheet music student hands",
+          "guitar lesson student chord finger placement fretboard",
+          "violin lesson bow technique student close-up strings",
+          "music school recital concert students performing stage"
       ],
       "processSteps": [
           {
@@ -10585,7 +10585,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Maths",
                   "Physical Science"
               ],
-              "serviceImageQuery": "tutor maths science student one on one Cape Town"
+              "serviceImageQuery": "maths tutoring one-on-one whiteboard equations student desk"
           },
           {
               "name": "English & Afrikaans",
@@ -10594,7 +10594,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "English",
                   "Essay Writing"
               ],
-              "serviceImageQuery": "tutor English language student writing lesson professional"
+              "serviceImageQuery": "English essay writing tutoring notebook pen student desk"
           },
           {
               "name": "Matric Exam Preparation",
@@ -10603,7 +10603,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Matric",
                   "Exam Prep"
               ],
-              "serviceImageQuery": "matric exam preparation tutoring student study Cape Town"
+              "serviceImageQuery": "matric exam revision past papers textbooks desk study notes"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -10639,15 +10639,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "focused, warm, encouraging",
-      "heroImageQuery": "academic tutoring student one on one maths Cape Town",
-      "heroBgImageQuery": "tutoring student books study professional dark background",
-      "ogImageQuery": "tutoring student maths academic Cape Town professional",
-      "aboutImageQuery": "tutor professional student one on one session Cape Town",
+      "heroImageQuery": "study desk books stationery bright room academic learning",
+      "heroBgImageQuery": "books study desk dark background academic learning",
+      "ogImageQuery": "tutoring desk books study materials academic bright",
+      "aboutImageQuery": "tutor explaining concept whiteboard student one-on-one session",
       "galleryImageQueries": [
-          "tutor maths science one on one student",
-          "matric exam preparation tutoring student",
-          "English tutoring writing lesson student",
-          "tutoring session online in person Cape Town"
+          "maths whiteboard equations student pencil working problem",
+          "matric revision past papers study notes highlighter desk",
+          "essay writing feedback red pen notebook student desk",
+          "online tutoring session laptop screen student desk webcam"
       ],
       "processSteps": [
           {
@@ -10685,7 +10685,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Learner's Licence",
                   "K53"
               ],
-              "serviceImageQuery": "driving school learner licence preparation student Cape Town"
+              "serviceImageQuery": "learner licence study guide K53 rules road book desk"
           },
           {
               "name": "Yard & Road Test Lessons",
@@ -10694,7 +10694,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Yard Test",
                   "Road Test"
               ],
-              "serviceImageQuery": "driving school yard test road test instructor student"
+              "serviceImageQuery": "driving yard test parallel parking cones manoeuvre car"
           },
           {
               "name": "Nervous Driver Programme",
@@ -10703,7 +10703,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Nervous Drivers",
                   "Adults"
               ],
-              "serviceImageQuery": "nervous driver adult lesson instructor patient Cape Town"
+              "serviceImageQuery": "nervous adult learner driving lesson steering wheel instructor calm"
           }
       ],
       "galleryHeading": "New Drivers, New Freedom",
@@ -10739,15 +10739,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "confident, fresh, practical",
-      "heroImageQuery": "driving school instructor student car lesson Cape Town",
-      "heroBgImageQuery": "driving lesson car road instructor dark professional",
-      "ogImageQuery": "driving school lesson instructor student Cape Town",
-      "aboutImageQuery": "driving instructor student lesson car professional Cape Town",
+      "heroImageQuery": "driving school car dual-control interior dashboard road view",
+      "heroBgImageQuery": "car dashboard driving road dark background view",
+      "ogImageQuery": "driving school car road lesson dual-control interior",
+      "aboutImageQuery": "driving instructor guiding student hands steering wheel lesson car",
       "galleryImageQueries": [
-          "driving lesson instructor student road Cape Town",
-          "yard test manoeuvre K53 driving school",
-          "learner licence preparation study Cape Town",
-          "driving school car instructor professional"
+          "driving lesson car road view steering wheel dashboard mirrors",
+          "parallel parking cones yard test K53 practice manoeuvre",
+          "K53 learner licence study materials road signs book",
+          "driving school branded car road lesson student confidence"
       ],
       "processSteps": [
           {
@@ -10785,7 +10785,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "ECD",
                   "Play-Based"
               ],
-              "serviceImageQuery": "preschool children play learning classroom Cape Town"
+              "serviceImageQuery": "toddlers play-based learning blocks puzzles classroom colourful"
           },
           {
               "name": "Full-Day Care",
@@ -10794,7 +10794,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Full-Day",
                   "Aftercare"
               ],
-              "serviceImageQuery": "preschool creche full day care children Cape Town"
+              "serviceImageQuery": "children circle time story mat teacher reading classroom"
           },
           {
               "name": "School Readiness Programme",
@@ -10803,7 +10803,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Grade R",
                   "School Readiness"
               ],
-              "serviceImageQuery": "preschool school readiness grade R preparation children"
+              "serviceImageQuery": "grade R school readiness writing pencil grip exercise desk"
           }
       ],
       "galleryHeading": "A Day at Preschool",
@@ -10839,15 +10839,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "bright, nurturing, playful",
-      "heroImageQuery": "preschool children playing learning classroom bright Cape Town",
-      "heroBgImageQuery": "preschool classroom bright colourful children learning background",
-      "ogImageQuery": "preschool children play learning classroom Cape Town",
-      "aboutImageQuery": "preschool teacher children activity classroom Cape Town",
+      "heroImageQuery": "preschool classroom interior bright colourful toys shelves learning",
+      "heroBgImageQuery": "preschool classroom colourful toys learning bright background",
+      "ogImageQuery": "preschool classroom bright colourful toys learning area",
+      "aboutImageQuery": "preschool teacher reading story children circle mat classroom",
       "galleryImageQueries": [
-          "preschool children play based learning classroom",
-          "preschool outdoor play area children Cape Town",
-          "preschool school readiness grade R programme",
-          "preschool teacher children activity Cape Town"
+          "preschool play-based learning building blocks water table classroom",
+          "preschool outdoor playground climbing frame sandpit children",
+          "grade R preparation writing letters numbers worksheet desk",
+          "preschool art activity messy play painting children table"
       ],
       "processSteps": [
           {
@@ -10885,7 +10885,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SETA Accredited",
                   "CPD Points"
               ],
-              "serviceImageQuery": "skills training accredited short course professional Cape Town"
+              "serviceImageQuery": "classroom training short course whiteboard presentation students"
           },
           {
               "name": "Corporate & In-House Training",
@@ -10894,7 +10894,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Corporate Training",
                   "In-House"
               ],
-              "serviceImageQuery": "corporate training workshop team skills professional"
+              "serviceImageQuery": "corporate workshop team activity breakout group discussion boardroom"
           },
           {
               "name": "Learnerships & Internships",
@@ -10903,7 +10903,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Learnership",
                   "NQF"
               ],
-              "serviceImageQuery": "learnership training youth professional workplace Cape Town"
+              "serviceImageQuery": "learnership workplace mentoring young adult practical training"
           }
       ],
       "galleryHeading": "In the Classroom",
@@ -10939,15 +10939,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, focused, empowering",
-      "heroImageQuery": "skills training academy professional Cape Town workshop",
-      "heroBgImageQuery": "training workshop professional dark background classroom",
-      "ogImageQuery": "accredited skills training professional Cape Town workshop",
-      "aboutImageQuery": "skills trainer facilitator professional workshop team",
+      "heroImageQuery": "training academy classroom interior projector desks modern bright",
+      "heroBgImageQuery": "training classroom dark background desks projector modern",
+      "ogImageQuery": "training academy classroom desks projector modern bright",
+      "aboutImageQuery": "facilitator leading workshop flipchart team discussion engaged",
       "galleryImageQueries": [
-          "accredited training short course professional Cape Town",
-          "corporate training workshop team skills",
-          "learnership workplace training youth professional",
-          "training academy classroom professional Cape Town"
+          "training classroom students taking notes whiteboard presentation",
+          "corporate team workshop boardroom collaborative exercise",
+          "learnership youth practical workplace mentoring on-the-job training",
+          "training certificate ceremony graduation group achievement"
       ],
       "processSteps": [
           {
@@ -10985,7 +10985,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Scratch",
                   "Robotics"
               ],
-              "serviceImageQuery": "kids coding class Scratch robotics children Cape Town"
+              "serviceImageQuery": "kids coding Scratch blocks screen colourful robotics table"
           },
           {
               "name": "Teen Web Development",
@@ -10994,7 +10994,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Python",
                   "Web Dev"
               ],
-              "serviceImageQuery": "teen coding class web development Python Cape Town"
+              "serviceImageQuery": "teenager coding Python web development laptop screen code"
           },
           {
               "name": "Adult Digital Skills",
@@ -11003,7 +11003,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Digital Literacy",
                   "MS Office"
               ],
-              "serviceImageQuery": "adult computer skills digital literacy class Cape Town"
+              "serviceImageQuery": "adult computer literacy class keyboard mouse monitor basics"
           }
       ],
       "galleryHeading": "In the Lab",
@@ -11039,15 +11039,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, energetic, creative",
-      "heroImageQuery": "coding class children teens computer Cape Town modern",
-      "heroBgImageQuery": "code screen programming dark professional background",
-      "ogImageQuery": "coding class children teens Cape Town computer programming",
-      "aboutImageQuery": "coding instructor student class computer Cape Town",
+      "heroImageQuery": "coding lab interior computers screens bright modern classroom",
+      "heroBgImageQuery": "code screen programming syntax dark background green text",
+      "ogImageQuery": "coding lab computers screens modern bright classroom",
+      "aboutImageQuery": "coding instructor helping student debug code screen laptop",
       "galleryImageQueries": [
-          "kids coding class Scratch robotics children",
-          "teen web development Python class Cape Town",
-          "adult computer skills digital literacy Cape Town",
-          "coding class project presentation students"
+          "kids Scratch coding colourful blocks game design screen",
+          "teen building website HTML CSS code screen laptop",
+          "adult learning computer skills Microsoft Office screen keyboard",
+          "student presenting coding project screen classmates applause"
       ],
       "processSteps": [
           {
@@ -11085,7 +11085,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "First Aid Level 1",
                   "DoL Certified"
               ],
-              "serviceImageQuery": "first aid training course CPR practical certification"
+              "serviceImageQuery": "CPR chest compressions mannequin training hands practical"
           },
           {
               "name": "CPR & AED Training",
@@ -11094,7 +11094,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "CPR",
                   "AED"
               ],
-              "serviceImageQuery": "CPR AED training first aid practical dummy"
+              "serviceImageQuery": "AED defibrillator pads placement mannequin training demonstration"
           },
           {
               "name": "Workplace Safety & OHSA Compliance",
@@ -11103,7 +11103,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "OHSA",
                   "Workplace Safety"
               ],
-              "serviceImageQuery": "workplace safety OHSA training compliance professional"
+              "serviceImageQuery": "workplace safety fire extinguisher PPE hard hat training"
           }
       ],
       "galleryHeading": "Training That Saves Lives",
@@ -11139,15 +11139,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "confident, practical, professional",
-      "heroImageQuery": "first aid training CPR practical course professional Cape Town",
-      "heroBgImageQuery": "first aid medical training dark professional background",
-      "ogImageQuery": "first aid training course CPR practical Cape Town",
-      "aboutImageQuery": "first aid instructor training practical CPR professional",
+      "heroImageQuery": "first aid training room mannequins bandages equipment bright",
+      "heroBgImageQuery": "first aid medical training dark background bandages equipment",
+      "ogImageQuery": "first aid training room CPR mannequins equipment bright",
+      "aboutImageQuery": "first aid instructor demonstrating bandaging technique student arm",
       "galleryImageQueries": [
-          "first aid training CPR practical course",
-          "AED defibrillator training professional",
-          "workplace safety OHSA training compliance",
-          "first aid certificate group training Cape Town"
+          "CPR training group students mannequins chest compressions floor",
+          "AED defibrillator device open pads ready emergency training",
+          "fire safety training extinguisher demonstration workplace outdoor",
+          "first aid training recovery position patient floor demonstration"
       ],
       "processSteps": [
           {
@@ -11185,7 +11185,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Logbook Service",
                   "OEM Parts"
               ],
-              "serviceImageQuery": "auto mechanic logbook service workshop professional"
+              "serviceImageQuery": "car engine oil change service workshop lift"
           },
           {
               "name": "Diagnostics & Repairs",
@@ -11194,7 +11194,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Diagnostics",
                   "Computer Scan"
               ],
-              "serviceImageQuery": "auto mechanic computerised diagnostics OBD2 scan professional"
+              "serviceImageQuery": "OBD2 diagnostic scanner plugged into car dashboard"
           },
           {
               "name": "Brakes, Tyres & Suspension",
@@ -11203,7 +11203,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Brakes",
                   "Wheel Alignment"
               ],
-              "serviceImageQuery": "auto mechanic brakes suspension wheel alignment workshop"
+              "serviceImageQuery": "brake disc pads replacement close-up car wheel"
           }
       ],
       "galleryHeading": "In the Workshop",
@@ -11239,15 +11239,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "technical, clean, professional",
-      "heroImageQuery": "auto mechanic workshop professional Cape Town vehicle service",
-      "heroBgImageQuery": "motor workshop car mechanic dark professional background",
-      "ogImageQuery": "auto mechanic workshop professional service Cape Town",
-      "aboutImageQuery": "mechanic professional workshop car service Cape Town",
+      "heroImageQuery": "car on hydraulic lift in mechanic workshop garage",
+      "heroBgImageQuery": "car engine bay close-up dark workshop background",
+      "ogImageQuery": "mechanic tools laid out on workshop bench engine parts",
+      "aboutImageQuery": "mechanic working under vehicle bonnet in workshop",
       "galleryImageQueries": [
-          "auto mechanic workshop professional service car",
-          "computerised diagnostics OBD2 scan mechanic",
-          "brakes suspension wheel alignment workshop",
-          "mechanic professional workshop Cape Town team"
+          "car on hydraulic lift in clean workshop",
+          "mechanic using diagnostic laptop on engine bay",
+          "brake disc pads suspension spring close-up",
+          "workshop interior tool wall organised equipment"
       ],
       "processSteps": [
           {
@@ -11285,7 +11285,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Panel Repair",
                   "Structural"
               ],
-              "serviceImageQuery": "panel beater auto body repair accident damage professional"
+              "serviceImageQuery": "car body panel dent repair hammer filler workshop"
           },
           {
               "name": "Spray Painting & Refinishing",
@@ -11294,7 +11294,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Spray Paint",
                   "Colour Match"
               ],
-              "serviceImageQuery": "spray painting auto body colour match professional respray"
+              "serviceImageQuery": "car being spray painted in booth protective suit"
           },
           {
               "name": "Insurance Claims Assistance",
@@ -11303,7 +11303,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Insurance Claims",
                   "Courtesy Car"
               ],
-              "serviceImageQuery": "auto body insurance claim professional assist customer"
+              "serviceImageQuery": "accident damaged car front bumper before repair"
           }
       ],
       "galleryHeading": "Before & After",
@@ -11339,15 +11339,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "precise, professional, clean",
-      "heroImageQuery": "panel beater auto body professional accident repair Cape Town",
-      "heroBgImageQuery": "auto body spray paint professional dark workshop background",
-      "ogImageQuery": "panel beating auto body repair professional Cape Town",
-      "aboutImageQuery": "panel beater professional workshop Cape Town car repair",
+      "heroImageQuery": "car being spray painted in auto body booth",
+      "heroBgImageQuery": "spray paint booth car dark workshop background",
+      "ogImageQuery": "car dent repair panel beating hammer body filler",
+      "aboutImageQuery": "panel beater sanding car body in workshop",
       "galleryImageQueries": [
-          "panel beating before after accident repair",
-          "auto body spray paint colour match professional",
-          "panel beater workshop Cape Town professional",
-          "insurance claim vehicle repair professional"
+          "car before and after panel repair restoration",
+          "spray paint booth car colour matched respray",
+          "panel beater workshop tools equipment organised",
+          "repaired car gleaming after full respray"
       ],
       "processSteps": [
           {
@@ -11385,7 +11385,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Full Valet",
                   "Interior Deep Clean"
               ],
-              "serviceImageQuery": "car valet detailing interior exterior professional clean"
+              "serviceImageQuery": "car interior deep clean leather seats dashboard valet"
           },
           {
               "name": "Paint Correction",
@@ -11394,7 +11394,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Paint Correction",
                   "Swirl Removal"
               ],
-              "serviceImageQuery": "paint correction machine polish car professional detailing"
+              "serviceImageQuery": "machine polisher removing swirl marks car paint close-up"
           },
           {
               "name": "Ceramic Coating",
@@ -11403,7 +11403,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Ceramic Coating",
                   "Paint Protection"
               ],
-              "serviceImageQuery": "ceramic coating professional car paint protection gloss"
+              "serviceImageQuery": "ceramic coating applied to car hood water beading"
           }
       ],
       "galleryHeading": "Showroom Finish",
@@ -11439,15 +11439,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "glossy, precise, clean",
-      "heroImageQuery": "car detailing professional valet clean Cape Town",
-      "heroBgImageQuery": "car detailing shiny paint dark professional background",
-      "ogImageQuery": "car detailing professional valet clean Cape Town",
-      "aboutImageQuery": "car detailer professional machine polish paint correction",
+      "heroImageQuery": "glossy black car hood reflection after detailing polish",
+      "heroBgImageQuery": "glossy wet car paintwork reflection dark background",
+      "ogImageQuery": "car paint ceramic coating water beading glossy",
+      "aboutImageQuery": "detailer machine polishing car paintwork close-up",
       "galleryImageQueries": [
-          "car detailing full valet interior exterior professional",
-          "paint correction machine polish swirl removal",
-          "ceramic coating car professional paint protection",
-          "car wash hand wash professional detailing"
+          "car interior vacuumed clean leather conditioned",
+          "paint correction before after swirl marks removed",
+          "ceramic coated car water beading on hood",
+          "car being hand washed foam mitt bucket"
       ],
       "processSteps": [
           {
@@ -11485,7 +11485,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "New Tyres",
                   "Michelin"
               ],
-              "serviceImageQuery": "tyre shop fitment professional Cape Town new tyres"
+              "serviceImageQuery": "new tyres stacked on display rack tyre shop"
           },
           {
               "name": "Wheel Alignment & Balancing",
@@ -11494,7 +11494,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Wheel Alignment",
                   "Balancing"
               ],
-              "serviceImageQuery": "wheel alignment balancing computerised professional tyre"
+              "serviceImageQuery": "computerised wheel alignment machine laser car"
           },
           {
               "name": "Puncture Repairs",
@@ -11503,7 +11503,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Puncture Repair",
                   "While You Wait"
               ],
-              "serviceImageQuery": "puncture repair tyre professional quick Cape Town"
+              "serviceImageQuery": "tyre puncture repair plug patch workshop close-up"
           }
       ],
       "galleryHeading": "On the Rims",
@@ -11539,15 +11539,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, practical, fast",
-      "heroImageQuery": "tyre shop professional fitment Cape Town new tyres",
-      "heroBgImageQuery": "tyre close up rim dark professional background",
-      "ogImageQuery": "tyre shop professional fitment Cape Town",
-      "aboutImageQuery": "tyre shop professional fitting wheel Cape Town",
+      "heroImageQuery": "new tyre on rim close-up tread pattern rubber",
+      "heroBgImageQuery": "tyre tread close-up rubber dark background",
+      "ogImageQuery": "stack of new tyres in tyre shop",
+      "aboutImageQuery": "technician fitting tyre onto wheel rim with machine",
       "galleryImageQueries": [
-          "tyre fitment professional Cape Town shop",
-          "wheel alignment computerised professional balancing",
-          "new tyres display stock tyre shop",
-          "puncture repair tyre professional quick"
+          "car lifted on jack tyre being changed",
+          "computerised wheel alignment machine display readings",
+          "new tyres stacked rows display tyre shop",
+          "tyre tread depth gauge measurement close-up"
       ],
       "processSteps": [
           {
@@ -11585,7 +11585,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Diagnostics",
                   "Fault Finding"
               ],
-              "serviceImageQuery": "auto electrician fault finding diagnostics vehicle professional"
+              "serviceImageQuery": "car electrical diagnostic scan tool plugged in"
           },
           {
               "name": "Alarm & Immobiliser",
@@ -11594,7 +11594,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Alarm",
                   "Immobiliser"
               ],
-              "serviceImageQuery": "auto electrician alarm immobiliser installation vehicle"
+              "serviceImageQuery": "car alarm system keypad immobiliser installed dashboard"
           },
           {
               "name": "Trackers & Dash Cameras",
@@ -11603,7 +11603,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "GPS Tracker",
                   "Dash Cam"
               ],
-              "serviceImageQuery": "vehicle GPS tracker dash camera installation professional"
+              "serviceImageQuery": "GPS tracker device installed under vehicle dashboard"
           }
       ],
       "galleryHeading": "Wired Right",
@@ -11639,15 +11639,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "technical, precise, professional",
-      "heroImageQuery": "auto electrician vehicle diagnostics professional Cape Town",
-      "heroBgImageQuery": "auto electrical wiring vehicle dark professional background",
-      "ogImageQuery": "auto electrician diagnostics vehicle professional Cape Town",
-      "aboutImageQuery": "auto electrician professional vehicle fault finding Cape Town",
+      "heroImageQuery": "car electrical wiring harness dashboard close-up",
+      "heroBgImageQuery": "vehicle wiring loom electrical connections dark background",
+      "ogImageQuery": "car OBD diagnostic tool plugged into dashboard",
+      "aboutImageQuery": "auto electrician testing vehicle wiring with multimeter",
       "galleryImageQueries": [
-          "auto electrician diagnostics OBD vehicle fault",
-          "vehicle alarm immobiliser installation professional",
-          "GPS tracker installation vehicle professional",
-          "auto electrician workshop professional Cape Town"
+          "car OBD diagnostic scanner display readings",
+          "vehicle alarm immobiliser module installed",
+          "dash camera mounted on car windscreen",
+          "car electrical wiring repair soldering workshop"
       ],
       "processSteps": [
           {
@@ -11685,7 +11685,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Towing",
                   "Flatbed"
               ],
-              "serviceImageQuery": "tow truck vehicle towing flatbed professional Cape Town"
+              "serviceImageQuery": "flatbed tow truck loading broken down car ramp"
           },
           {
               "name": "Roadside Assistance",
@@ -11694,7 +11694,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Jump Start",
                   "Fuel Delivery"
               ],
-              "serviceImageQuery": "roadside assistance battery jump start tyre change professional"
+              "serviceImageQuery": "battery jump start cables connected car engine roadside"
           },
           {
               "name": "Accident & Recovery",
@@ -11703,7 +11703,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Accident Recovery",
                   "Secure Storage"
               ],
-              "serviceImageQuery": "accident recovery tow truck vehicle scene professional"
+              "serviceImageQuery": "accident damaged vehicle being winched onto tow truck"
           }
       ],
       "galleryHeading": "On the Road",
@@ -11739,15 +11739,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "urgent, reliable, professional",
-      "heroImageQuery": "tow truck roadside assistance professional Cape Town",
-      "heroBgImageQuery": "tow truck road dark night professional background",
-      "ogImageQuery": "tow truck professional Cape Town roadside assistance",
-      "aboutImageQuery": "tow truck professional driver operator Cape Town",
+      "heroImageQuery": "flatbed tow truck loading car on ramp roadside",
+      "heroBgImageQuery": "tow truck headlights road dark night background",
+      "ogImageQuery": "tow truck flatbed with car loaded road",
+      "aboutImageQuery": "tow truck operator securing vehicle straps for transport",
       "galleryImageQueries": [
-          "tow truck flatbed vehicle towing Cape Town",
-          "roadside assistance battery jump start professional",
-          "accident recovery tow truck vehicle scene",
-          "tow truck operator professional Cape Town night"
+          "flatbed tow truck with car loaded highway",
+          "roadside battery jump start cables connected",
+          "accident vehicle recovery tow truck crane",
+          "tow truck amber lights operating at night road"
       ],
       "processSteps": [
           {
@@ -11785,7 +11785,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "New Bikes",
                   "Pre-Owned"
               ],
-              "serviceImageQuery": "motorcycle shop showroom bikes display Cape Town"
+              "serviceImageQuery": "sport motorcycle in showroom front angle gleaming"
           },
           {
               "name": "Workshop & Servicing",
@@ -11794,7 +11794,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Servicing",
                   "Repairs"
               ],
-              "serviceImageQuery": "motorcycle workshop service technician professional Cape Town"
+              "serviceImageQuery": "motorcycle engine being serviced on workshop stand"
           },
           {
               "name": "Parts, Gear & Accessories",
@@ -11803,7 +11803,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Genuine Parts",
                   "Riding Gear"
               ],
-              "serviceImageQuery": "motorcycle parts accessories gear shop display"
+              "serviceImageQuery": "motorcycle helmets riding gear leather jackets display shelf"
           }
       ],
       "galleryHeading": "In the Shop",
@@ -11839,15 +11839,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "bold, adventurous, mechanical",
-      "heroImageQuery": "motorcycle shop showroom Cape Town bikes display",
-      "heroBgImageQuery": "motorcycle dark moody professional background garage",
-      "ogImageQuery": "motorcycle shop professional Cape Town bikes display",
-      "aboutImageQuery": "motorcycle shop owner rider professional Cape Town",
+      "heroImageQuery": "motorcycles lined up in showroom floor display",
+      "heroBgImageQuery": "motorcycle close-up engine detail dark moody garage",
+      "ogImageQuery": "row of motorcycles in showroom gleaming",
+      "aboutImageQuery": "motorcycle mechanic working on engine in workshop",
       "galleryImageQueries": [
-          "motorcycle showroom bikes display Cape Town",
-          "motorcycle workshop service technician professional",
-          "motorcycle gear accessories helmets display shop",
-          "motorcycle pre-owned selection Cape Town shop"
+          "adventure motorcycle parked outdoor scenic road",
+          "motorcycle engine close-up chrome exhaust detail",
+          "riding helmets gloves boots gear display wall",
+          "classic vintage motorcycle restored showroom"
       ],
       "processSteps": [
           {
@@ -11885,7 +11885,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Custom Design",
                   "UX"
               ],
-              "serviceImageQuery": "web design agency team Cape Town custom website professional"
+              "serviceImageQuery": "website homepage design mockup browser clean layout"
           },
           {
               "name": "E-Commerce Development",
@@ -11894,7 +11894,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Shopify",
                   "WooCommerce"
               ],
-              "serviceImageQuery": "ecommerce web development Shopify WooCommerce professional"
+              "serviceImageQuery": "ecommerce store design product page checkout screen"
           },
           {
               "name": "SEO & Performance",
@@ -11903,7 +11903,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO",
                   "Page Speed"
               ],
-              "serviceImageQuery": "SEO web performance analytics dashboard professional"
+              "serviceImageQuery": "SEO analytics dashboard Google search results screen"
           }
       ],
       "galleryHeading": "Our Work",
@@ -11939,15 +11939,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, clean, digital",
-      "heroImageQuery": "web design development agency team Cape Town modern",
-      "heroBgImageQuery": "web code design dark professional background screen",
-      "ogImageQuery": "web design agency Cape Town custom website professional",
-      "aboutImageQuery": "web developer designer team Cape Town professional office",
+      "heroImageQuery": "website design mockup on laptop screen modern clean",
+      "heroBgImageQuery": "website code HTML CSS dark editor screen background",
+      "ogImageQuery": "responsive website design desktop tablet mobile mockup",
+      "aboutImageQuery": "web developer coding on dual monitors desk",
       "galleryImageQueries": [
-          "web design Cape Town custom website professional",
-          "ecommerce development Shopify WooCommerce",
-          "SEO analytics web performance dashboard",
-          "web design team studio Cape Town professional"
+          "website portfolio page design clean modern layout",
+          "ecommerce store product grid Shopify design",
+          "SEO analytics traffic growth chart dashboard",
+          "responsive website design mobile tablet desktop screens"
       ],
       "processSteps": [
           {
@@ -11985,7 +11985,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Helpdesk",
                   "SLA"
               ],
-              "serviceImageQuery": "IT support managed services professional desk helpdesk"
+              "serviceImageQuery": "helpdesk support screen monitoring dashboard alerts"
           },
           {
               "name": "Cloud & Microsoft 365",
@@ -11994,7 +11994,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Microsoft 365",
                   "Cloud Migration"
               ],
-              "serviceImageQuery": "cloud migration Microsoft 365 IT professional business"
+              "serviceImageQuery": "Microsoft 365 cloud apps icons laptop screen"
           },
           {
               "name": "Network & Security",
@@ -12003,7 +12003,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Network",
                   "Cybersecurity"
               ],
-              "serviceImageQuery": "business network security firewall IT professional"
+              "serviceImageQuery": "network switch ethernet cables connected blinking"
           }
       ],
       "galleryHeading": "IT Done Right",
@@ -12039,15 +12039,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, technical, reliable",
-      "heroImageQuery": "IT support professional managed services business Cape Town",
-      "heroBgImageQuery": "server rack IT network dark professional background",
-      "ogImageQuery": "IT support managed services professional Cape Town business",
-      "aboutImageQuery": "IT support technician professional business Cape Town",
+      "heroImageQuery": "server rack data centre blinking lights networking",
+      "heroBgImageQuery": "server room data centre blue lights dark background",
+      "ogImageQuery": "server rack networking cables data centre blue",
+      "aboutImageQuery": "IT technician configuring server rack data centre",
       "galleryImageQueries": [
-          "IT support helpdesk professional business Cape Town",
-          "Microsoft 365 cloud migration IT professional",
-          "network server room IT infrastructure professional",
-          "cybersecurity firewall IT professional business"
+          "helpdesk monitoring dashboard multiple screens alerts",
+          "Microsoft 365 cloud migration setup laptop",
+          "server room racks cables networking infrastructure",
+          "firewall security appliance network rack installed"
       ],
       "processSteps": [
           {
@@ -12085,7 +12085,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Google Ads",
                   "PPC"
               ],
-              "serviceImageQuery": "Google Ads digital marketing professional campaign management"
+              "serviceImageQuery": "Google Ads campaign dashboard PPC metrics screen"
           },
           {
               "name": "SEO & Content Marketing",
@@ -12094,7 +12094,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO",
                   "Content"
               ],
-              "serviceImageQuery": "SEO content marketing professional analytics ranking"
+              "serviceImageQuery": "SEO ranking results Google search page screen"
           },
           {
               "name": "Social Media & Email",
@@ -12103,7 +12103,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Social Media",
                   "Email Marketing"
               ],
-              "serviceImageQuery": "social media digital marketing professional campaign"
+              "serviceImageQuery": "social media feed posts scheduled content calendar screen"
           }
       ],
       "galleryHeading": "Campaigns We've Run",
@@ -12139,15 +12139,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "data-driven, modern, professional",
-      "heroImageQuery": "digital marketing agency Cape Town professional team performance",
-      "heroBgImageQuery": "digital marketing analytics dark dashboard professional",
-      "ogImageQuery": "digital marketing Google Ads SEO professional Cape Town",
-      "aboutImageQuery": "digital marketing team analytics performance Cape Town",
+      "heroImageQuery": "Google Ads analytics dashboard screen charts performance",
+      "heroBgImageQuery": "analytics dashboard charts dark background screen",
+      "ogImageQuery": "digital marketing analytics dashboard charts graphs",
+      "aboutImageQuery": "marketing analyst reviewing campaign performance on screen",
       "galleryImageQueries": [
-          "Google Ads campaign management professional analytics",
-          "SEO content marketing ranking professional",
-          "social media marketing campaign professional",
-          "digital marketing team Cape Town professional office"
+          "Google Ads PPC campaign metrics conversion screen",
+          "SEO keyword ranking chart growth analytics",
+          "social media content calendar posts scheduled",
+          "email marketing campaign open rate dashboard"
       ],
       "processSteps": [
           {
@@ -12185,7 +12185,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Pen Testing",
                   "Vulnerability Scan"
               ],
-              "serviceImageQuery": "cybersecurity penetration testing ethical hacking professional"
+              "serviceImageQuery": "terminal screen code penetration testing commands dark"
           },
           {
               "name": "Security Audits & POPIA Compliance",
@@ -12194,7 +12194,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "POPIA",
                   "Security Audit"
               ],
-              "serviceImageQuery": "cybersecurity audit POPIA compliance professional business"
+              "serviceImageQuery": "security audit report firewall configuration screen"
           },
           {
               "name": "Managed Security Services",
@@ -12203,7 +12203,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Threat Monitoring",
                   "Incident Response"
               ],
-              "serviceImageQuery": "cybersecurity managed security monitoring professional SOC"
+              "serviceImageQuery": "security operations centre SOC screens monitoring dashboard"
           }
       ],
       "galleryHeading": "Security Done Right",
@@ -12239,15 +12239,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "dark, technical, authoritative",
-      "heroImageQuery": "cybersecurity professional dark office Cape Town security",
-      "heroBgImageQuery": "cybersecurity code dark matrix professional background",
-      "ogImageQuery": "cybersecurity professional assessment business Cape Town",
-      "aboutImageQuery": "cybersecurity professional team Cape Town dark office",
+      "heroImageQuery": "cybersecurity lock shield icon digital circuit dark",
+      "heroBgImageQuery": "cybersecurity binary code matrix dark screen background",
+      "ogImageQuery": "cybersecurity shield lock padlock digital dark",
+      "aboutImageQuery": "security analyst monitoring threat dashboard screens dark room",
       "galleryImageQueries": [
-          "cybersecurity penetration testing professional team",
-          "security audit POPIA compliance professional",
-          "cybersecurity monitoring SOC professional dark",
-          "cybersecurity assessment report professional business"
+          "penetration testing terminal code results screen",
+          "security audit report compliance checklist screen",
+          "SOC monitoring dashboard threat alerts screens",
+          "firewall configuration network security appliance"
       ],
       "processSteps": [
           {
@@ -12285,7 +12285,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Power BI",
                   "Tableau"
               ],
-              "serviceImageQuery": "business intelligence dashboard Power BI data analytics professional"
+              "serviceImageQuery": "Power BI dashboard KPI charts real-time metrics screen"
           },
           {
               "name": "Data Integration & ETL",
@@ -12294,7 +12294,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Data Integration",
                   "ETL"
               ],
-              "serviceImageQuery": "data integration ETL pipeline analytics professional"
+              "serviceImageQuery": "data pipeline flow diagram ETL process screen"
           },
           {
               "name": "Predictive Analytics",
@@ -12303,7 +12303,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Predictive",
                   "Machine Learning"
               ],
-              "serviceImageQuery": "predictive analytics machine learning data professional"
+              "serviceImageQuery": "machine learning model prediction chart forecast screen"
           }
       ],
       "galleryHeading": "Data in Action",
@@ -12339,15 +12339,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "data-driven, modern, precise",
-      "heroImageQuery": "data analytics business intelligence dashboard professional Cape Town",
-      "heroBgImageQuery": "data analytics dashboard dark professional background charts",
-      "ogImageQuery": "business intelligence data analytics Power BI Cape Town",
-      "aboutImageQuery": "data analytics team professional Cape Town business intelligence",
+      "heroImageQuery": "Power BI dashboard charts graphs data visualisation screen",
+      "heroBgImageQuery": "analytics dashboard charts dark background blue graphs",
+      "ogImageQuery": "data analytics dashboard charts graphs visualisation",
+      "aboutImageQuery": "analyst building dashboard on screen charts data",
       "galleryImageQueries": [
-          "Power BI dashboard business intelligence professional",
-          "data analytics visualisation charts graphs professional",
-          "data integration ETL pipeline professional",
-          "predictive analytics machine learning professional Cape Town"
+          "Power BI interactive dashboard charts KPI tiles",
+          "data visualisation bar charts pie graphs screen",
+          "database schema diagram data integration flow",
+          "predictive analytics forecast chart machine learning"
       ],
       "processSteps": [
           {
@@ -12385,7 +12385,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Consultation",
                   "Assessment"
               ],
-              "serviceImageQuery": "professional consultation assessment meeting office Cape Town"
+              "serviceImageQuery": "consultation meeting notepad pen coffee table"
           },
           {
               "name": "Core Service Delivery",
@@ -12394,7 +12394,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Professional",
                   "Quality"
               ],
-              "serviceImageQuery": "professional service delivery quality team Cape Town"
+              "serviceImageQuery": "workspace laptop documents charts on desk"
           },
           {
               "name": "Ongoing Support",
@@ -12403,7 +12403,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Support",
                   "Follow-Up"
               ],
-              "serviceImageQuery": "professional ongoing support client team Cape Town"
+              "serviceImageQuery": "phone call headset support desk computer screen"
           }
       ],
       "galleryHeading": "Our Work",
@@ -12439,15 +12439,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, trustworthy, clean",
-      "heroImageQuery": "professional services team Cape Town business meeting",
-      "heroBgImageQuery": "professional service business dark office background",
-      "ogImageQuery": "professional services Cape Town business meeting team",
-      "aboutImageQuery": "professional team service Cape Town business meeting",
+      "heroImageQuery": "modern office workspace desk laptop plants clean",
+      "heroBgImageQuery": "modern workspace desk dark background ambient light",
+      "ogImageQuery": "modern office desk laptop notebook pen workspace",
+      "aboutImageQuery": "team collaborating around desk in modern office",
       "galleryImageQueries": [
-          "professional consultation meeting office Cape Town",
-          "service delivery professional team quality",
-          "business professional team Cape Town office",
-          "professional client meeting service Cape Town"
+          "modern office interior open plan desk workspace",
+          "whiteboard planning strategy notes markers",
+          "laptop desk coffee notebook workspace clean",
+          "handshake business meeting agreement close-up"
       ],
       "processSteps": [
           {
@@ -12486,7 +12486,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Brand"
         ],
         "icon": "user",
-        "serviceImageQuery": "professional portrait headshot photography studio Cape Town"
+        "serviceImageQuery": "portrait headshot natural light warm tones close-up"
       },
       {
         "name": "Commercial & Product Photography",
@@ -12496,7 +12496,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product"
         ],
         "icon": "camera",
-        "serviceImageQuery": "commercial product photography studio Cape Town professional"
+        "serviceImageQuery": "product photography flat lay styled table overhead"
       },
       {
         "name": "Events & Corporate",
@@ -12506,7 +12506,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate"
         ],
         "icon": "users",
-        "serviceImageQuery": "corporate event photography Cape Town professional conference"
+        "serviceImageQuery": "event photography crowd stage speakers conference"
       }
     ],
     "galleryHeading": "From the Portfolio",
@@ -12549,14 +12549,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "cinematic, natural light, intimate",
-    "heroImageQuery": "photographer adjusting camera natural light portrait studio bokeh",
+    "heroImageQuery": "portrait photo natural light woman close-up studio",
     "ogImageQuery": "professional camera lens portrait photography bokeh shallow depth",
-    "aboutImageQuery": "photographer holding camera smiling behind the scenes shoot",
+    "aboutImageQuery": "photographer adjusting lighting behind the scenes on shoot",
     "galleryImageQueries": [
-      "woman portrait natural light studio close up professional",
-      "product flat lay coffee table styled photography overhead",
-      "couple laughing candid outdoor lifestyle photography",
-      "photographer camera behind scenes shooting model studio"
+      "portrait photo moody lighting studio close-up",
+      "product flat lay overhead styled arrangement",
+      "couple candid outdoor golden hour lifestyle",
+      "architectural interior photo natural light room"
     ]
   },
   "Videographer": {
@@ -12578,7 +12578,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate"
         ],
         "icon": "film",
-        "serviceImageQuery": "brand film corporate video production Cape Town professional"
+        "serviceImageQuery": "cinema camera filming interview subject brand film"
       },
       {
         "name": "Social Media Content",
@@ -12588,7 +12588,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reels"
         ],
         "icon": "smartphone",
-        "serviceImageQuery": "social media video content production professional Cape Town"
+        "serviceImageQuery": "smartphone vertical video filming social content"
       },
       {
         "name": "Event & Documentary Coverage",
@@ -12598,7 +12598,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Documentary"
         ],
         "icon": "video",
-        "serviceImageQuery": "event video coverage documentary production professional Cape Town"
+        "serviceImageQuery": "multi-camera event coverage conference recording"
       }
     ],
     "galleryHeading": "From the Edit Suite",
@@ -12641,14 +12641,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "cinematic, moody, professional",
-    "heroImageQuery": "videographer professional film production Cape Town cinematic",
+    "heroImageQuery": "cinema camera on gimbal rig filming close-up",
     "ogImageQuery": "video production professional Cape Town brand film cinematic",
-    "aboutImageQuery": "videographer professional camera rig Cape Town shoot",
+    "aboutImageQuery": "videographer operating cinema camera on set filming",
     "galleryImageQueries": [
-      "brand film production Cape Town professional",
-      "social media video shoot professional Cape Town",
-      "event video coverage multi-camera professional",
-      "documentary film Cape Town professional cinematic"
+      "cinema camera on dolly track filming scene",
+      "vertical video filming social media content",
+      "drone aerial shot filming landscape cinematic",
+      "video editing timeline colour grading screen"
     ]
   },
   "Graphic Designer": {
@@ -12670,7 +12670,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Brand Guidelines"
         ],
         "icon": "star",
-        "serviceImageQuery": "graphic designer brand identity logo Cape Town professional"
+        "serviceImageQuery": "brand identity logo design stationery mockup layout"
       },
       {
         "name": "Print & Packaging Design",
@@ -12680,7 +12680,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Print"
         ],
         "icon": "layers",
-        "serviceImageQuery": "graphic design print packaging professional Cape Town studio"
+        "serviceImageQuery": "packaging design boxes printed brochure layout table"
       },
       {
         "name": "Digital & Social Design",
@@ -12690,7 +12690,7 @@ export const presetContent: Record<string, PresetContent> = {
           "UI Design"
         ],
         "icon": "monitor",
-        "serviceImageQuery": "digital design social media UI professional Cape Town"
+        "serviceImageQuery": "social media template design phone screen mockup"
       }
     ],
     "galleryHeading": "Selected Work",
@@ -12733,14 +12733,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, minimal, considered",
-    "heroImageQuery": "graphic designer studio Cape Town professional brand identity",
+    "heroImageQuery": "brand identity design logo mockup stationery layout",
     "ogImageQuery": "graphic design brand identity professional Cape Town studio",
-    "aboutImageQuery": "graphic designer professional studio Cape Town working",
+    "aboutImageQuery": "designer sketching logo concepts pencil paper desk",
     "galleryImageQueries": [
-      "brand identity logo design professional Cape Town",
-      "packaging design print Cape Town studio",
-      "digital social media design professional",
-      "graphic design portfolio branding Cape Town"
+      "brand identity logo colour palette stationery",
+      "packaging design product boxes printed layouts",
+      "social media post design template phone screen",
+      "typography poster design large format print"
     ]
   },
   "Interior Designer": {
@@ -12762,7 +12762,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Project Management"
         ],
         "icon": "home",
-        "serviceImageQuery": "interior design professional residential Cape Town living room"
+        "serviceImageQuery": "modern living room interior styled sofa cushions art"
       },
       {
         "name": "Furniture & Décor Sourcing",
@@ -12772,7 +12772,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sourcing"
         ],
         "icon": "layers",
-        "serviceImageQuery": "interior designer furniture sourcing décor Cape Town professional"
+        "serviceImageQuery": "furniture décor fabric samples mood board table"
       },
       {
         "name": "Commercial & Hospitality Design",
@@ -12782,7 +12782,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hospitality"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "commercial interior design office hospitality professional Cape Town"
+        "serviceImageQuery": "modern office interior design workspace open plan"
       }
     ],
     "galleryHeading": "Spaces We’ve Designed",
@@ -12825,14 +12825,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, considered, natural light",
-    "heroImageQuery": "interior design professional residential Cape Town living room elegant",
+    "heroImageQuery": "elegant living room interior design sofa art natural light",
     "ogImageQuery": "interior designer professional Cape Town residential project",
-    "aboutImageQuery": "interior designer professional working Cape Town space",
+    "aboutImageQuery": "interior designer reviewing fabric swatches mood board",
     "galleryImageQueries": [
-      "residential interior design Cape Town living room",
-      "kitchen interior design professional Cape Town",
-      "commercial office interior design professional",
-      "hospitality interior design Cape Town professional"
+      "living room interior design elegant styled warm",
+      "kitchen interior design modern marble countertop",
+      "commercial office interior open plan design",
+      "hospitality restaurant interior design elegant"
     ]
   },
   "Copywriter / Content Creator": {
@@ -12854,7 +12854,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Website Copy"
         ],
         "icon": "edit-3",
-        "serviceImageQuery": "copywriter writing brand professional Cape Town studio"
+        "serviceImageQuery": "website copy wireframe layout screen design words"
       },
       {
         "name": "Content Strategy & Creation",
@@ -12864,7 +12864,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Blog"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "content creation strategy copywriter professional Cape Town"
+        "serviceImageQuery": "blog post article writing screen content strategy"
       },
       {
         "name": "Campaign & Ad Copy",
@@ -12874,7 +12874,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Email"
         ],
         "icon": "target",
-        "serviceImageQuery": "advertising campaign copy professional writer Cape Town"
+        "serviceImageQuery": "advertising headline layout magazine spread design"
       }
     ],
     "galleryHeading": "Words We’ve Written",
@@ -12917,14 +12917,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "considered, creative, clean",
-    "heroImageQuery": "copywriter writing professional creative Cape Town studio",
+    "heroImageQuery": "notebook pen laptop keyboard writing desk close-up",
     "ogImageQuery": "copywriter content creator professional Cape Town brand",
-    "aboutImageQuery": "copywriter professional working Cape Town studio writing",
+    "aboutImageQuery": "writer typing on laptop in bright creative workspace",
     "galleryImageQueries": [
-      "copywriter brand writing professional Cape Town",
-      "content creation strategy professional",
-      "advertising campaign copywriting professional",
-      "copywriter client collaboration Cape Town"
+      "brand manifesto copy layout print design",
+      "blog content article screen laptop writing",
+      "advertising campaign headline creative layout",
+      "social media content posts planned calendar"
     ]
   },
   "Music Producer / Studio": {
@@ -12946,7 +12946,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Production"
         ],
         "icon": "mic",
-        "serviceImageQuery": "recording studio professional Cape Town music production"
+        "serviceImageQuery": "studio microphone condenser vocal booth recording"
       },
       {
         "name": "Mixing & Mastering",
@@ -12956,7 +12956,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Mastering"
         ],
         "icon": "sliders",
-        "serviceImageQuery": "music mixing mastering studio professional audio engineer"
+        "serviceImageQuery": "mixing console faders equaliser studio monitors speakers"
       },
       {
         "name": "Podcast & Voiceover Recording",
@@ -12966,7 +12966,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Voiceover"
         ],
         "icon": "radio",
-        "serviceImageQuery": "podcast voiceover recording studio professional Cape Town"
+        "serviceImageQuery": "podcast microphone headphones recording studio desk"
       }
     ],
     "galleryHeading": "From the Studio",
@@ -13009,14 +13009,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "moody, professional, warm",
-    "heroImageQuery": "recording studio professional Cape Town music producer",
+    "heroImageQuery": "recording studio mixing console faders knobs close-up",
     "ogImageQuery": "music studio professional recording Cape Town producer",
-    "aboutImageQuery": "music producer recording studio professional Cape Town mixing",
+    "aboutImageQuery": "music producer adjusting mixing console in studio",
     "galleryImageQueries": [
-      "recording studio live session Cape Town professional",
-      "music mixing mastering console professional",
-      "podcast recording studio Cape Town professional",
-      "recording studio artist vocalist professional Cape Town"
+      "band recording live session instruments studio",
+      "mixing mastering console monitor speakers close-up",
+      "podcast recording microphone headphones desk",
+      "vocalist singing into condenser microphone studio"
     ]
   },
   "Craft / Handmade Goods": {
@@ -13038,7 +13038,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wheel-Thrown"
         ],
         "icon": "circle",
-        "serviceImageQuery": "handmade ceramics pottery Cape Town earthy tones craft"
+        "serviceImageQuery": "wheel-thrown ceramic bowls mugs earthy glazes display"
       },
       {
         "name": "Textile & Woven Goods",
@@ -13048,7 +13048,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Natural Fibres"
         ],
         "icon": "grid",
-        "serviceImageQuery": "handmade textile woven craft Cape Town natural"
+        "serviceImageQuery": "hand-woven cushion covers throws natural fibre loom"
       },
       {
         "name": "Custom Leather Goods",
@@ -13058,7 +13058,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "handmade leather goods craft Cape Town custom"
+        "serviceImageQuery": "hand-stitched leather wallet bag close-up craft"
       }
     ],
     "galleryHeading": "Made by Hand",
@@ -13101,14 +13101,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "earthy, warm, artisanal",
-    "heroImageQuery": "handmade craft goods ceramics Cape Town artisan studio",
+    "heroImageQuery": "handmade ceramics pottery mugs bowls earthy tones display",
     "ogImageQuery": "handmade ceramics leather craft Cape Town artisan",
-    "aboutImageQuery": "craft maker handmade goods Cape Town studio artisan",
+    "aboutImageQuery": "potter shaping clay on wheel in studio",
     "galleryImageQueries": [
-      "handmade ceramics pottery Cape Town earthy",
-      "woven textile craft natural fibre Cape Town",
-      "handmade leather goods craft Cape Town",
-      "artisan craft market Cape Town handmade"
+      "ceramic vases bowls display earthy tones shelf",
+      "woven textile cushion throw natural fibre",
+      "hand-stitched leather goods wallet bag belt",
+      "artisan craft market stall handmade goods"
     ]
   },
   "Fashion Designer": {
@@ -13130,7 +13130,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom-Made"
         ],
         "icon": "scissors",
-        "serviceImageQuery": "bespoke fashion designer garment fitting Cape Town"
+        "serviceImageQuery": "bespoke dress garment on mannequin fitting studio"
       },
       {
         "name": "Ready-to-Wear Collection",
@@ -13140,7 +13140,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Limited Edition"
         ],
         "icon": "star",
-        "serviceImageQuery": "fashion designer ready to wear collection Cape Town"
+        "serviceImageQuery": "ready-to-wear clothing rack styled editorial lookbook"
       },
       {
         "name": "Capsule Wardrobe Consulting",
@@ -13150,7 +13150,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Styling"
         ],
         "icon": "layers",
-        "serviceImageQuery": "fashion capsule wardrobe styling consulting professional"
+        "serviceImageQuery": "capsule wardrobe flat lay outfit combinations styled"
       }
     ],
     "galleryHeading": "From the Studio",
@@ -13193,14 +13193,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "considered, minimal, editorial",
-    "heroImageQuery": "fashion designer Cape Town studio ready to wear editorial",
+    "heroImageQuery": "fashion garments hanging on rack editorial lookbook",
     "ogImageQuery": "fashion designer Cape Town bespoke ready-to-wear collection",
-    "aboutImageQuery": "fashion designer studio Cape Town sewing garment professional",
+    "aboutImageQuery": "fashion designer cutting fabric on table in studio",
     "galleryImageQueries": [
-      "fashion designer Cape Town editorial shoot",
-      "bespoke garment fitting studio professional",
-      "ready to wear fashion collection Cape Town",
-      "fashion designer studio garment construction Cape Town"
+      "fashion editorial model wearing designer garment",
+      "bespoke dress fitting mannequin pins studio",
+      "clothing collection lookbook styled garments rack",
+      "sewing machine fabric construction studio detail"
     ]
   },
   "Animator / Motion Design": {
@@ -13222,7 +13222,7 @@ export const presetContent: Record<string, PresetContent> = {
           "2D Animation"
         ],
         "icon": "play",
-        "serviceImageQuery": "2D animation explainer video professional Cape Town"
+        "serviceImageQuery": "2D animation explainer video colourful characters screen"
       },
       {
         "name": "Motion Graphics & Titles",
@@ -13232,7 +13232,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Logo Animation"
         ],
         "icon": "film",
-        "serviceImageQuery": "motion graphics broadcast title animation professional"
+        "serviceImageQuery": "motion graphics title sequence animated logo screen"
       },
       {
         "name": "3D Animation & Visualisation",
@@ -13242,7 +13242,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product Vis"
         ],
         "icon": "box",
-        "serviceImageQuery": "3D animation product visualisation architectural professional"
+        "serviceImageQuery": "3D render product visualisation floating object screen"
       }
     ],
     "galleryHeading": "Things We’ve Set in Motion",
@@ -13285,14 +13285,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, creative",
-    "heroImageQuery": "animation motion design studio professional Cape Town",
+    "heroImageQuery": "animation storyboard frames colourful character design screen",
     "ogImageQuery": "motion design animation professional Cape Town studio",
-    "aboutImageQuery": "animator motion designer professional studio Cape Town",
+    "aboutImageQuery": "animator working on frame illustration tablet stylus",
     "galleryImageQueries": [
-      "2D animation explainer video production Cape Town",
-      "motion graphics broadcast title sequence professional",
-      "3D animation product visualisation professional",
-      "motion design social content brand Cape Town"
+      "2D animation explainer video colourful scene",
+      "broadcast title sequence motion graphics animated",
+      "3D product render visualisation floating angle",
+      "social media motion content animated story"
     ]
   },
   "Tattoo / Piercing Studio": {
@@ -13314,7 +13314,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Line"
         ],
         "icon": "edit-3",
-        "serviceImageQuery": "custom tattoo design studio Cape Town professional artist"
+        "serviceImageQuery": "fine line tattoo design botanical arm close-up"
       },
       {
         "name": "Cover-Up & Rework",
@@ -13324,7 +13324,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rework"
         ],
         "icon": "refresh-cw",
-        "serviceImageQuery": "tattoo cover up rework professional artist studio"
+        "serviceImageQuery": "tattoo cover-up before after arm transformation"
       },
       {
         "name": "Professional Piercing",
@@ -13334,7 +13334,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Titanium Jewellery"
         ],
         "icon": "circle",
-        "serviceImageQuery": "professional piercing studio Cape Town titanium jewellery"
+        "serviceImageQuery": "ear piercing titanium jewellery stud close-up"
       }
     ],
     "galleryHeading": "Fresh Ink",
@@ -13377,14 +13377,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "dark, artistic, precise",
-    "heroImageQuery": "tattoo studio Cape Town professional artist custom fine line",
+    "heroImageQuery": "fine line tattoo close-up arm botanical floral design",
     "ogImageQuery": "tattoo studio professional artist Cape Town custom",
-    "aboutImageQuery": "tattoo artist professional studio Cape Town working",
+    "aboutImageQuery": "tattoo artist inking design on arm studio close-up",
     "galleryImageQueries": [
-      "custom tattoo fine line professional Cape Town",
-      "black grey realism tattoo professional studio",
-      "tattoo cover up professional artist Cape Town",
-      "professional piercing studio Cape Town titanium"
+      "fine line botanical tattoo arm close-up healed",
+      "black and grey realism portrait tattoo sleeve",
+      "geometric tattoo shoulder blade detailed linework",
+      "ear piercings multiple titanium studs healed"
     ]
   },
   "Art Gallery / Art Shop": {
@@ -13406,7 +13406,7 @@ export const presetContent: Record<string, PresetContent> = {
           "SA Artists"
         ],
         "icon": "star",
-        "serviceImageQuery": "art gallery original paintings Cape Town contemporary exhibition"
+        "serviceImageQuery": "large abstract painting canvas gallery wall spotlight"
       },
       {
         "name": "Prints & Editions",
@@ -13416,7 +13416,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Giclée"
         ],
         "icon": "layers",
-        "serviceImageQuery": "art gallery limited edition prints giclée Cape Town"
+        "serviceImageQuery": "framed limited edition art prints displayed gallery wall"
       },
       {
         "name": "Art Advisory & Commissions",
@@ -13426,7 +13426,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Commission"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "art gallery advisory commission consultation Cape Town"
+        "serviceImageQuery": "sculpture mixed media artwork gallery pedestal spotlight"
       }
     ],
     "galleryHeading": "Current Exhibition",
@@ -13469,14 +13469,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "curated, minimal, artistic",
-    "heroImageQuery": "art gallery contemporary Cape Town exhibition paintings",
+    "heroImageQuery": "contemporary art paintings hanging white gallery wall",
     "ogImageQuery": "art gallery Cape Town contemporary South African art",
-    "aboutImageQuery": "art gallery interior Cape Town contemporary exhibition",
+    "aboutImageQuery": "gallery curator hanging artwork on white wall",
     "galleryImageQueries": [
-      "contemporary art gallery Cape Town exhibition paintings",
-      "South African art gallery limited edition prints",
-      "art gallery commission advisory Cape Town collector",
-      "Cape Town gallery exhibition opening contemporary"
+      "gallery exhibition paintings hung white wall spotlights",
+      "limited edition prints framed gallery display row",
+      "sculpture pedestal gallery interior contemporary art",
+      "gallery opening event visitors viewing artwork"
     ]
   },
   "Real Estate Agent": {
