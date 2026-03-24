@@ -278,8 +278,7 @@ const referralOptions = ['Google Search', 'Social Media', 'Word of Mouth', 'Saw 
 
 // Shared styles
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
-const bg = '#111118'
-const accent = 'rgba(255,255,255,0.85)'
+const gradient = 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #d4b8c8 80%, #e8c8cf 100%)'
 
 const heading: React.CSSProperties = {
   fontFamily: font,
@@ -316,31 +315,29 @@ const pill = (active: boolean): React.CSSProperties => ({
 const btnPrimary: React.CSSProperties = {
   fontFamily: font,
   fontSize: '0.85rem',
-  fontWeight: 400,
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
-  padding: '0.6rem 1.5rem',
+  fontWeight: 600,
+  letterSpacing: '0.04em',
+  padding: '0.65rem 1.5rem',
   borderRadius: '9999px',
-  border: '1px solid rgba(255,255,255,0.7)',
-  backgroundColor: 'transparent',
-  color: 'rgba(255,255,255,0.9)',
+  border: 'none',
+  backgroundColor: '#fff',
+  color: '#1a1a2e',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
+  transition: 'opacity 0.2s',
 }
 
 const btnBack: React.CSSProperties = {
   fontFamily: font,
   fontSize: '0.85rem',
-  fontWeight: 400,
-  letterSpacing: '0.15em',
-  textTransform: 'uppercase',
+  fontWeight: 600,
+  letterSpacing: '0.04em',
   background: 'none',
-  border: '1px solid rgba(255,255,255,0.35)',
+  border: '1.5px solid rgba(255,255,255,0.4)',
   borderRadius: '9999px',
-  color: 'rgba(255,255,255,0.6)',
+  color: '#fff',
   cursor: 'pointer',
-  padding: '0.6rem 1.5rem',
-  transition: 'all 0.3s ease',
+  padding: '0.65rem 1.5rem',
+  transition: 'border-color 0.2s',
 }
 
 const inputStyle: React.CSSProperties = {
@@ -647,20 +644,43 @@ export default function StartYourProject() {
   })()
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: font, position: 'relative' }}>
-      {/* Scrolling mountain background */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0 }}>
-        <div style={{ display: 'flex', height: '100%', animation: 'bg-scroll 60s linear infinite' }}>
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0 }} />
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0, transform: 'scaleX(-1)' }} />
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0 }} />
-        </div>
-      </div>
-      {/* Dark overlay for readability */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1, background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 100%)' }} />
+    <div style={{ minHeight: '100vh', fontFamily: font, background: gradient }}>
 
-      <div style={{ position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      <NavBar />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+      {/* Nav */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 20,
+        display: 'flex', justifyContent: 'center', padding: '1.25rem 2.5rem',
+      }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          background: 'transparent', borderRadius: '999px',
+          padding: '0.65rem 0.65rem 0.65rem 1.75rem',
+          border: '1.5px solid rgba(255,255,255,0.5)',
+        }}>
+          <a href="/" style={{
+            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
+            marginRight: '1.5rem',
+          }}>mountain studios</a>
+          {['About', 'Contact', 'Portfolio'].map(label => (
+            <a key={label} href={`/${label.toLowerCase()}`} style={{
+              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              padding: '0.4rem 0.85rem', transition: 'color 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+            >{label}</a>
+          ))}
+          <a href="/start-your-project" style={{
+            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
+            background: '#fff', padding: '0.6rem 1.5rem', borderRadius: '999px',
+          }}>Get Started</a>
+        </div>
+      </nav>
 
       {/* Progress bar */}
       {step > 0 && step < 9 && (
