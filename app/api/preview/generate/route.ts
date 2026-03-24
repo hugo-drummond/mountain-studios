@@ -1933,8 +1933,8 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>`
 
   // Section 2: Meet the Artists / Team — upriseart-inspired
-  const artistNames = ['Thandi Molefe', 'James van Wyk', 'Naledi Khumalo']
-  const artistLocations = ['Cape Town, WC', 'Stellenbosch, WC', 'Johannesburg, GP']
+  const artistNames = ['Alex Morgan', 'Jordan Ellis', 'Riley Chen']
+  const artistLocations = [locationInfo.city, locationInfo.city, locationInfo.city]
   const artistBios = [
     content.services[0]?.description || '',
     content.services[1]?.description || '',
@@ -4061,6 +4061,27 @@ export async function POST(req: NextRequest) {
         ],
         projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
       }
+    }
+
+    // Replace Cape Town with prospect's city in all content strings
+    const city = locationInfo.city
+    if (city !== 'Cape Town') {
+      const replaceInObj = (obj: Record<string, unknown>) => {
+        for (const key of Object.keys(obj)) {
+          const val = obj[key]
+          if (typeof val === 'string') {
+            obj[key] = val.replace(/Cape Town/g, city).replace(/CAPE TOWN/g, city.toUpperCase())
+          } else if (Array.isArray(val)) {
+            val.forEach((item, i) => {
+              if (typeof item === 'string') val[i] = item.replace(/Cape Town/g, city).replace(/CAPE TOWN/g, city.toUpperCase())
+              else if (typeof item === 'object' && item) replaceInObj(item as Record<string, unknown>)
+            })
+          } else if (typeof val === 'object' && val) {
+            replaceInObj(val as Record<string, unknown>)
+          }
+        }
+      }
+      replaceInObj(content as unknown as Record<string, unknown>)
     }
 
     const templateData: TemplateData = {

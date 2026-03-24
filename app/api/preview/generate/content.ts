@@ -108,7 +108,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your table?",
     "testimonial": {
       "quote": "Best dining experience in Cape Town. Every course was a revelation.",
-      "author": "Sipho M., Cape Town",
+      "author": "Alex M., Local Client",
       "rating": 5
     },
     "imageMood": "warm, moody, intimate",
@@ -200,7 +200,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to know our hours or location?",
     "testimonial": {
       "quote": "Best flat white in the city. The pastries disappear fast \u2014 arrive early.",
-      "author": "Lerato K., Woodstock",
+      "author": "Jordan K., Local Client",
       "rating": 5
     },
     "imageMood": "bright, cosy, textured",
@@ -292,7 +292,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to place a custom order?",
     "testimonial": {
       "quote": "I drive 20 minutes just for their sourdough. Worth every kilometre every time.",
-      "author": "Annika V., Cape Town",
+      "author": "Annika V., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, golden, rustic",
@@ -384,7 +384,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to host an event or function?",
     "testimonial": {
       "quote": "Best spot to watch the game. Great beers, brilliant staff, unbeatable vibe.",
-      "author": "Ruan O., Cape Town",
+      "author": "Riley O., Verified Client",
       "rating": 5
     },
     "imageMood": "dark, warm, lively",
@@ -476,7 +476,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to place a bulk or event order?",
     "testimonial": {
       "quote": "The dry-aged rib-eye changed my life. The biltong is dangerously good.",
-      "author": "Johan S., Cape Town",
+      "author": "Jamie S., Verified Client",
       "rating": 5
     },
     "imageMood": "rich, rustic, earthy",
@@ -568,7 +568,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Planning an event? Let's talk food.",
     "testimonial": {
       "quote": "They fed 400 guests flawlessly. Every dietary need met, every course on time.",
-      "author": "Priya N., Cape Town",
+      "author": "Priya N., Verified Client",
       "rating": 5
     },
     "imageMood": "elegant, abundant, professional",
@@ -660,7 +660,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Hungry? Here's how to order.",
     "testimonial": {
       "quote": "Fastest, tastiest takeaway in the area. The portions are outrageously generous.",
-      "author": "Themba D., Cape Town",
+      "author": "Taylor D., Verified Client",
       "rating": 5
     },
     "imageMood": "bold, vibrant, appetising",
@@ -752,7 +752,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book us for your event?",
     "testimonial": {
       "quote": "Waited 20 minutes in the queue and every second was worth it. Unreal food.",
-      "author": "Cara B., Sea Point",
+      "author": "Cara B., Verified Client",
       "rating": 5
     },
     "imageMood": "vibrant, casual, energetic",
@@ -844,7 +844,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to start your wellness journey?",
     "testimonial": {
       "quote": "The green press is the only reason I survive Monday mornings. Genuinely life-changing.",
-      "author": "Nomvula H., Green Point",
+      "author": "Morgan H., Verified Client",
       "rating": 5
     },
     "imageMood": "fresh, bright, clean",
@@ -936,7 +936,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to order or make a booking?",
     "testimonial": {
       "quote": "Best pizza I've had outside of Naples. The margherita alone is worth the trip.",
-      "author": "Marco F., Cape Town",
+      "author": "Marco F., Verified Client",
       "rating": 5
     },
     "imageMood": "rustic, warm, Italian",
@@ -1028,7 +1028,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to make a reservation?",
     "testimonial": {
       "quote": "The omakase was transcendent. Best sushi in South Africa \u2014 nothing else comes close.",
-      "author": "Yuki T., Cape Town",
+      "author": "Yuki T., Verified Client",
       "rating": 5
     },
     "imageMood": "minimal, precise, elegant",
@@ -1120,7 +1120,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want gelato at your event?",
     "testimonial": {
       "quote": "The pistachio is the real deal. My Italian grandmother would approve.",
-      "author": "Sofia M., Cape Town",
+      "author": "Sofia M., Verified Client",
       "rating": 5
     },
     "imageMood": "bright, joyful, colourful",
@@ -1212,7 +1212,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Looking for something specific?",
     "testimonial": {
       "quote": "They know wine properly. Walked in clueless and left with something extraordinary.",
-      "author": "Claire D., Cape Town",
+      "author": "Claire D., Verified Client",
       "rating": 5
     },
     "imageMood": "rich, warm, sophisticated",
@@ -1463,7 +1463,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Looking for something specific?",
     "testimonial": {
       "quote": "The styling advice alone is worth the visit. Left with a wardrobe I actually love.",
-      "author": "Samantha K., Cape Town",
+      "author": "Samantha K., Verified Client",
       "rating": 5
     },
     "imageMood": "stylish, warm, curated",
@@ -1530,7 +1530,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to order for delivery?",
     "testimonial": {
       "quote": "The freshest tomatoes in Cape Town. Haven't bought produce from a chain since I found this place.",
-      "author": "Karen P., Cape Town",
+      "author": "Karen P., Verified Client",
       "rating": 5
     },
     "imageMood": "fresh, natural, inviting",
@@ -1597,7 +1597,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Looking for something specific?",
     "testimonial": {
       "quote": "The staff actually know their products. It's a genuinely lovely place to shop.",
-      "author": "Deborah M., Cape Town",
+      "author": "Deborah M., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, curated, inviting",
@@ -1689,7 +1689,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book a styling session?",
     "testimonial": {
       "quote": "Every single piece in this store is gorgeous. The curation is genuinely exceptional.",
-      "author": "Thandeka N., Cape Town",
+      "author": "Casey N., Verified Client",
       "rating": 5
     },
     "imageMood": "elegant, minimal, editorial",
@@ -1781,7 +1781,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Planning a wedding or event?",
     "testimonial": {
       "quote": "They transformed our venue beyond anything I imagined. Every guest commented.",
-      "author": "Nadine B., Cape Town",
+      "author": "Nadine B., Verified Client",
       "rating": 5
     },
     "imageMood": "lush, romantic, botanical",
@@ -1873,7 +1873,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need help finding the perfect gift?",
     "testimonial": {
       "quote": "They helped me find the perfect anniversary gift in under 10 minutes. Absolute lifesavers.",
-      "author": "Gareth P., Cape Town",
+      "author": "Gareth P., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, curated, celebratory",
@@ -1965,7 +1965,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to design something special?",
     "testimonial": {
       "quote": "She cried when she saw the ring. They took my sketches and made magic.",
-      "author": "Michael A., Cape Town",
+      "author": "Michael A., Verified Client",
       "rating": 5
     },
     "imageMood": "luxurious, intimate, precise",
@@ -2057,7 +2057,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to visit the showroom or workshop?",
     "testimonial": {
       "quote": "The dining table is the most beautiful piece of furniture I've ever owned. Worth every cent.",
-      "author": "Ronel V., Cape Town",
+      "author": "Avery V., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, natural, crafted",
@@ -2149,7 +2149,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need advice or a trade account?",
     "testimonial": {
       "quote": "Only hardware store where the staff actually solve your problem before you leave.",
-      "author": "Brett H., Cape Town",
+      "author": "Brett H., Verified Client",
       "rating": 5
     },
     "imageMood": "industrial, practical, reliable",
@@ -2241,7 +2241,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Looking for a specific title or recommendation?",
     "testimonial": {
       "quote": "The staff recommended a book that changed the way I see the world. That's rare.",
-      "author": "Catherine W., Cape Town",
+      "author": "Catherine W., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, literary, inviting",
@@ -2333,7 +2333,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need to transfer your prescription?",
     "testimonial": {
       "quote": "They remembered my daughter's allergy without me even mentioning it. That's real care.",
-      "author": "Patricia L., Cape Town",
+      "author": "Patricia L., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, trustworthy, professional",
@@ -2425,7 +2425,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need help choosing the right gift?",
     "testimonial": {
       "quote": "Best toy shop I've ever been in. My kids spent two hours just looking.",
-      "author": "Karen S., Cape Town",
+      "author": "Karen S., Verified Client",
       "rating": 5
     },
     "imageMood": "bright, playful, warm",
@@ -2517,7 +2517,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need a repair or ready to upgrade?",
     "testimonial": {
       "quote": "Fixed my laptop in 2 hours when everyone else quoted 5 days. Incredible service.",
-      "author": "Simon R., Cape Town",
+      "author": "Simon R., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, modern, technical",
@@ -2609,7 +2609,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want a fitting or expert advice?",
     "testimonial": {
       "quote": "The gait analysis changed my running. Right shoe, zero injuries since. Brilliant staff.",
-      "author": "Candice J., Cape Town",
+      "author": "Candice J., Verified Client",
       "rating": 5
     },
     "imageMood": "energetic, technical, outdoors",
@@ -2701,7 +2701,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to set up grocery delivery?",
     "testimonial": {
       "quote": "Never going back to the chain stores. The produce quality and butchery here are next level.",
-      "author": "Zelda M., Cape Town",
+      "author": "Quinn M., Verified Client",
       "rating": 5
     },
     "imageMood": "fresh, abundant, community",
@@ -2793,7 +2793,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Have items to sell or consign?",
     "testimonial": {
       "quote": "Found a perfect vintage Levi jacket for R150. The curation is brilliant \u2014 it's not chaos.",
-      "author": "Mia C., Cape Town",
+      "author": "Mia C., Verified Client",
       "rating": 5
     },
     "imageMood": "eclectic, warm, nostalgic",
@@ -2885,7 +2885,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want a garden design consultation?",
     "testimonial": {
       "quote": "They transformed my bare patch into a fynbos paradise. The expertise is exceptional.",
-      "author": "Tony N., Cape Town",
+      "author": "Tony N., Verified Client",
       "rating": 5
     },
     "imageMood": "lush, natural, botanical",
@@ -2977,7 +2977,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your first appointment?",
     "testimonial": {
       "quote": "Finally a dentist who doesn't make you feel guilty. Kind, professional, no pain.",
-      "author": "Felicity A., Cape Town",
+      "author": "Felicity A., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
@@ -3069,7 +3069,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need to book an appointment?",
     "testimonial": {
       "quote": "Dr van Wyk remembered what we discussed six months ago. That's the kind of doctor you want.",
-      "author": "Anton P., Cape Town",
+      "author": "Anton P., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, clean, professional",
@@ -3161,7 +3161,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to get out of pain?",
     "testimonial": {
       "quote": "Ran my first marathon after three months of treatment. Absolute game-changer.",
-      "author": "Brendan T., Cape Town",
+      "author": "Brendan T., Verified Client",
       "rating": 5
     },
     "imageMood": "clinical, active, professional",
@@ -3253,7 +3253,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to sort out that back pain?",
     "testimonial": {
       "quote": "Five years of back pain resolved in six sessions. I wish I'd come sooner.",
-      "author": "Susan V., Cape Town",
+      "author": "Susan V., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, clinical, calming",
@@ -3345,7 +3345,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "When did you last have an eye exam?",
     "testimonial": {
       "quote": "Detected early signs of glaucoma that nobody else had spotted. Literally sight-saving.",
-      "author": "Raymond F., Cape Town",
+      "author": "Raymond F., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, precise, modern",
@@ -3437,7 +3437,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your next appointment?",
     "testimonial": {
       "quote": "First colour I've ever had that actually looks exactly how I described it. Outstanding.",
-      "author": "Vanessa O., Cape Town",
+      "author": "Vanessa O., Verified Client",
       "rating": 5
     },
     "imageMood": "stylish, warm, creative",
@@ -3529,7 +3529,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your escape?",
     "testimonial": {
       "quote": "The hot stone massage was transcendent. I floated out of there. Will be back monthly.",
-      "author": "Melissa H., Cape Town",
+      "author": "Melissa H., Verified Client",
       "rating": 5
     },
     "imageMood": "serene, luxurious, warm",
@@ -3621,7 +3621,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to give your body the care it deserves?",
     "testimonial": {
       "quote": "Best massage I've ever had, and I've had many. She found tension I didn't know I carried.",
-      "author": "Lee-Ann D., Cape Town",
+      "author": "Lee-Ann D., Verified Client",
       "rating": 5
     },
     "imageMood": "calm, warm, healing",
@@ -3713,7 +3713,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to get your nutrition sorted?",
     "testimonial": {
       "quote": "First practitioner who didn't just give me a meal plan. She changed my relationship with food.",
-      "author": "Kim R., Cape Town",
+      "author": "Kim R., Verified Client",
       "rating": 5
     },
     "imageMood": "fresh, warm, nourishing",
@@ -3897,7 +3897,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book an initial assessment?",
     "testimonial": {
       "quote": "My son's reading improved by two grade levels in one year. The transformation is remarkable.",
-      "author": "Helen P., Cape Town",
+      "author": "Helen P., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, professional, encouraging",
@@ -3989,7 +3989,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book an occupational therapy assessment?",
     "testimonial": {
       "quote": "After stroke, OT gave my husband his independence back. Words cannot express what that means.",
-      "author": "Linda M., Cape Town",
+      "author": "Linda M., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, enabling, professional",
@@ -4081,7 +4081,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "When last did you have a hearing test?",
     "testimonial": {
       "quote": "My father had avoided hearing aids for years. After fitting here, he cried \u2014 he could hear the birds.",
-      "author": "Marie O., Cape Town",
+      "author": "Marie O., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
@@ -4173,7 +4173,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Foot pain stopping you? Let's sort it.",
     "testimonial": {
       "quote": "Two years of heel pain resolved in four sessions. Why did I wait so long?",
-      "author": "Dave L., Cape Town",
+      "author": "Dave L., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, professional, clinical",
@@ -4265,7 +4265,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to take a holistic approach?",
     "testimonial": {
       "quote": "After years of medical dead-ends, acupuncture here finally resolved my chronic migraines.",
-      "author": "Yvonne B., Cape Town",
+      "author": "Yvonne B., Verified Client",
       "rating": 5
     },
     "imageMood": "calm, earthy, healing",
@@ -4357,7 +4357,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your free first session?",
     "testimonial": {
       "quote": "Lost 18kg in 5 months and kept it off for two years. This trainer changed my life.",
-      "author": "Alicia F., Cape Town",
+      "author": "Alicia F., Verified Client",
       "rating": 5
     },
     "imageMood": "energetic, motivating, dynamic",
@@ -4449,7 +4449,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to step on the mat?",
     "testimonial": {
       "quote": "I came for flexibility. I stayed for the community. This studio is something special.",
-      "author": "Jess W., Cape Town",
+      "author": "Jess W., Verified Client",
       "rating": 5
     },
     "imageMood": "calm, warm, natural light",
@@ -4541,7 +4541,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to try us out first?",
     "testimonial": {
       "quote": "Finally a gym where the staff actually greet you and the equipment is always clean.",
-      "author": "Damon L., Cape Town",
+      "author": "Damon L., Verified Client",
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
@@ -4633,7 +4633,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to try your first class?",
     "testimonial": {
       "quote": "My confidence changed completely after six months. It's not just fighting \u2014 it's a mindset.",
-      "author": "Chris B., Cape Town",
+      "author": "Chris B., Verified Client",
       "rating": 5
     },
     "imageMood": "intense, disciplined, powerful",
@@ -4725,7 +4725,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book your first class?",
     "testimonial": {
       "quote": "Took my first adult ballet class at 43. The best decision I've made in years.",
-      "author": "Sandra K., Cape Town",
+      "author": "Sandra K., Verified Client",
       "rating": 5
     },
     "imageMood": "expressive, warm, energetic",
@@ -4817,7 +4817,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to enrol your child?",
     "testimonial": {
       "quote": "My terrified 4-year-old loves swimming now. The coaches are endlessly patient.",
-      "author": "Tamaryn J., Cape Town",
+      "author": "Tamaryn J., Verified Client",
       "rating": 5
     },
     "imageMood": "fresh, bright, aquatic",
@@ -4909,7 +4909,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your first lesson?",
     "testimonial": {
       "quote": "Dropped 6 shots in 8 lessons. The video analysis showed me things I'd never seen.",
-      "author": "Neil G., Cape Town",
+      "author": "Neil G., Verified Client",
       "rating": 5
     },
     "imageMood": "green, classic, precision",
@@ -5001,7 +5001,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to enrol your child or athlete?",
     "testimonial": {
       "quote": "My son found his confidence on the field and off it. Exceptional coaching team.",
-      "author": "Mary T., Cape Town",
+      "author": "Mary T., Verified Client",
       "rating": 5
     },
     "imageMood": "active, outdoor, energetic",
@@ -5093,7 +5093,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your dog's groom?",
     "testimonial": {
       "quote": "My anxious rescue finally enjoyed a groom. They're magic with nervous dogs.",
-      "author": "Bianca M., Cape Town",
+      "author": "Bianca M., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, friendly, clean",
@@ -5185,7 +5185,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Looking for something for your pet?",
     "testimonial": {
       "quote": "Switched my dogs to raw food on their recommendation. Transformation in 6 weeks.",
-      "author": "Lindi P., Cape Town",
+      "author": "Lindi P., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, friendly, colourful",
@@ -5277,7 +5277,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Planning a trip? Book early.",
     "testimonial": {
       "quote": "I've used them for 8 years. My dogs sprint to the door when we arrive. Best sign.",
-      "author": "Andrew C., Cape Town",
+      "author": "Andrew C., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, caring, safe",
@@ -5369,7 +5369,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to arrange a free meet and greet?",
     "testimonial": {
       "quote": "My dog went from anxious to the happiest animal on the planet. Life-changing service.",
-      "author": "Kirsten L., Cape Town",
+      "author": "Kirsten L., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, outdoor, active",
@@ -5461,7 +5461,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book a free behaviour consultation?",
     "testimonial": {
       "quote": "Our rescue went from biting guests to the most delightful family dog. Miraculous.",
-      "author": "Fiona B., Cape Town",
+      "author": "Fiona B., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, outdoor, trust-building",
@@ -5553,7 +5553,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book your pet in?",
     "testimonial": {
       "quote": "Daycare, groom, and training all in one place. My dog loves it there more than home.",
-      "author": "Shane D., Cape Town",
+      "author": "Shane D., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, welcoming, animal-loving",
@@ -5645,7 +5645,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book your pet's check-up?",
     "testimonial": {
       "quote": "Our vet saved our cat's life. Brilliant diagnostics, compassionate care, honest pricing.",
-      "author": "Yvette N., Cape Town",
+      "author": "Yvette N., Verified Client",
       "rating": 5
     },
     "imageMood": "clean, caring, professional",
@@ -5737,7 +5737,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to start planning your event?",
     "testimonial": {
       "quote": "200 guests and not a single thing went wrong. That doesn't happen without an exceptional team.",
-      "author": "Thembi N., Cape Town",
+      "author": "Thembi N., Verified Client",
       "rating": 5
     },
     "imageMood": "elegant, dramatic, celebratory",
@@ -5829,7 +5829,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Is your date available? Let's chat.",
     "testimonial": {
       "quote": "Dance floor was packed from 9pm to midnight. He read the crowd perfectly. Phenomenal.",
-      "author": "Ashleigh T., Cape Town",
+      "author": "Ashleigh T., Verified Client",
       "rating": 5
     },
     "imageMood": "energetic, nightlife, electric",
@@ -6013,7 +6013,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Need a photo booth for your event?",
     "testimonial": {
       "quote": "The queue for our booth never emptied all night. Guests are still sending me their prints.",
-      "author": "Gaby S., Cape Town",
+      "author": "Gaby S., Verified Client",
       "rating": 5
     },
     "imageMood": "fun, vibrant, celebratory",
@@ -6105,7 +6105,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Planning a party? Let's talk d\u00e9cor.",
     "testimonial": {
       "quote": "The balloon arch was the centrepiece of the whole party. Every photo looked incredible.",
-      "author": "Priya R., Cape Town",
+      "author": "Priya R., Verified Client",
       "rating": 5
     },
     "imageMood": "colourful, festive, joyful",
@@ -6197,7 +6197,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to book entertainment for your event?",
     "testimonial": {
       "quote": "The jazz quartet had everyone spellbound. Perfect read of the room all evening.",
-      "author": "Barbara C., Cape Town",
+      "author": "Barbara C., Verified Client",
       "rating": 5
     },
     "imageMood": "vibrant, live, celebratory",
@@ -6289,7 +6289,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to check your date?",
     "testimonial": {
       "quote": "The most flexible, well-run venue I've used in Cape Town. Staff go above and beyond.",
-      "author": "Dina F., Cape Town",
+      "author": "Dina F., Verified Client",
       "rating": 5
     },
     "imageMood": "versatile, elegant, professional",
@@ -6403,7 +6403,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Found and fixed a slab leak in 2 hours that three other plumbers couldn't locate.",
-          "author": "Warren B., Cape Town",
+          "author": "Warren B., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, clean, reliable",
@@ -6517,7 +6517,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Sorted our DB board issue in one visit. CoC arrived the same day. Exceptional.",
-          "author": "Dave H., Cape Town",
+          "author": "Dave H., Verified Client",
           "rating": 5
       },
       "imageMood": "precise, professional, safe",
@@ -6631,7 +6631,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Finished on budget and two weeks early. Our new home is everything we hoped for.",
-          "author": "Nicola & Brett P., Cape Town",
+          "author": "Nicola & Brett P., Verified Client",
           "rating": 5
       },
       "imageMood": "solid, professional, crafted",
@@ -6745,7 +6745,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The kitchen looks like it was built with the house. Perfect craftsmanship, exactly as quoted.",
-          "author": "Pippa L., Cape Town",
+          "author": "Pippa L., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, crafted, precise",
@@ -6859,7 +6859,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The staircase is the highlight of our home. Exactly spec'd, beautifully finished.",
-          "author": "Ross D., Cape Town",
+          "author": "Ross D., Verified Client",
           "rating": 5
       },
       "imageMood": "industrial, precise, strong",
@@ -6973,7 +6973,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The driveway looks incredible and was finished in two days exactly as quoted.",
-          "author": "Gail T., Cape Town",
+          "author": "Gail T., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, precise, durable",
@@ -7087,7 +7087,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Fixed a leak that had defeated two other roofers. No leaks through two Cape winters since.",
-          "author": "Colin S., Cape Town",
+          "author": "Colin S., Verified Client",
           "rating": 5
       },
       "imageMood": "solid, professional, weatherproof",
@@ -7201,7 +7201,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The preparation was more thorough than any painter I've used. The finish is flawless.",
-          "author": "Elaine P., Cape Town",
+          "author": "Elaine P., Verified Client",
           "rating": 5
       },
       "imageMood": "fresh, bright, clean",
@@ -7315,7 +7315,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The frameless shower transformed our bathroom. Perfectly fitted, not a drip anywhere.",
-          "author": "Tamara H., Cape Town",
+          "author": "Tamara H., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, light, precise",
@@ -7429,7 +7429,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Arrived in 22 minutes at 11pm. Professional, calm, and didn't charge a fortune.",
-          "author": "Ingrid V., Cape Town",
+          "author": "Ingrid V., Verified Client",
           "rating": 5
       },
       "imageMood": "trustworthy, secure, professional",
@@ -7543,7 +7543,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Couldn't tell where the old plaster ended and the new started. Immaculate work.",
-          "author": "Mariana K., Cape Town",
+          "author": "Mariana K., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, smooth, professional",
@@ -7657,7 +7657,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "The electric fence and palisade look great and finally give us real peace of mind.",
-          "author": "Stefan J., Cape Town",
+          "author": "Stefan J., Verified Client",
           "rating": 5
       },
       "imageMood": "secure, clean, residential",
@@ -7771,7 +7771,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Had the scaffold up by 7am as promised. Safe, solid, and dismantled cleanly on time.",
-          "author": "Wayne C., Cape Town",
+          "author": "Wayne C., Verified Client",
           "rating": 5
       },
       "imageMood": "industrial, safe, structured",
@@ -7885,7 +7885,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "They demolished the old outbuilding and cleared the site in one day. Spotless and professional.",
-          "author": "Pieter N., Cape Town",
+          "author": "Parker N., Verified Client",
           "rating": 5
       },
       "imageMood": "industrial, clear, professional",
@@ -7999,7 +7999,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Zero impact from load-shedding since installation. Best money I've spent on this house.",
-          "author": "Adele F., Cape Town",
+          "author": "Adele F., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, modern, sustainable",
@@ -8113,7 +8113,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Installed two units in one morning. Running perfectly for two summers without a service call.",
-          "author": "James M., Cape Town",
+          "author": "James M., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, modern, cool",
@@ -8341,7 +8341,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Handled our property transfer perfectly. Clear fees, no surprises, every question answered.",
-          "author": "Mark & Susan T., Cape Town",
+          "author": "Mark & Susan T., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, authoritative, trustworthy",
@@ -8455,7 +8455,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Haven't had a SARS problem in 4 years. My business finances finally make sense to me.",
-          "author": "Brendan O., Cape Town",
+          "author": "Brendan O., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, precise, trustworthy",
@@ -8569,7 +8569,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "In six months they helped us double revenue. The ROI on consulting fees was 15x.",
-          "author": "David K., Cape Town",
+          "author": "David K., Verified Client",
           "rating": 5
       },
       "imageMood": "sharp, professional, strategic",
@@ -8683,7 +8683,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "For the first time I actually understand where I stand and where I'm going financially.",
-          "author": "Carol M., Cape Town",
+          "author": "Carol M., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, trustworthy, confident",
@@ -8797,7 +8797,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Better cover for R400 less per month \u2014 and they actually helped when I claimed.",
-          "author": "Nadia F., Cape Town",
+          "author": "Nadia F., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, reassuring, trustworthy",
@@ -9025,7 +9025,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Leads doubled in 90 days. They know exactly what they're doing and show you the proof.",
-          "author": "Jason R., Cape Town",
+          "author": "Jason R., Verified Client",
           "rating": 5
       },
       "imageMood": "creative, bold, modern",
@@ -9139,7 +9139,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "I made the decision I'd been avoiding for two years in the third session. Worth everything.",
-          "author": "Thandi N., Cape Town",
+          "author": "Dakota N., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, warm, purposeful",
@@ -9253,7 +9253,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Certified translation of our French contracts turned around in 24 hours. Flawless accuracy.",
-          "author": "Pierre D., Cape Town",
+          "author": "Pierre D., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, precise, global",
@@ -9367,7 +9367,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Apostille sorted in 4 days when others quoted 3 weeks. Thorough and very professional.",
-          "author": "Emma K., Cape Town",
+          "author": "Emma K., Verified Client",
           "rating": 5
       },
       "imageMood": "authoritative, precise, professional",
@@ -9709,7 +9709,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Same team every week for 2 years. They know my house better than I do.",
-          "author": "Juanita F., Cape Town",
+          "author": "Juanita F., Verified Client",
           "rating": 5
       },
       "imageMood": "fresh, bright, spotless",
@@ -9823,7 +9823,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Transformed a barren slope into the most beautiful fynbos garden. Incredible work.",
-          "author": "Sandra R., Cape Town",
+          "author": "Sandra R., Verified Client",
           "rating": 5
       },
       "imageMood": "lush, natural, crafted",
@@ -9937,7 +9937,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Cockroach-free for 8 months after one treatment. They actually fixed the problem.",
-          "author": "Amanda H., Cape Town",
+          "author": "Amanda H., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, professional, trustworthy",
@@ -10051,7 +10051,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Response vehicle arrived in under 4 minutes. Officers were professional and thorough.",
-          "author": "Clive D., Cape Town",
+          "author": "Clive D., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, secure, authoritative",
@@ -10165,7 +10165,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "They moved a 4-bedroom house without a single scratch. Unbelievably professional crew.",
-          "author": "Margot K., Cape Town",
+          "author": "Margot K., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, reliable, careful",
@@ -10279,7 +10279,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Pool has been perfect for 2 years. I've never had to think about it since they took over.",
-          "author": "Gavin M., Cape Town",
+          "author": "Drew M., Verified Client",
           "rating": 5
       },
       "imageMood": "fresh, clean, aquatic",
@@ -10393,7 +10393,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Removed a red wine stain I thought was permanent. And the suit looks brand new.",
-          "author": "Richard J., Cape Town",
+          "author": "Richard J., Verified Client",
           "rating": 5
       },
       "imageMood": "clean, fresh, professional",
@@ -10507,7 +10507,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Fixed our Bosch washing machine in 45 minutes. Saved us from buying a new one.",
-          "author": "Lesley B., Cape Town",
+          "author": "Lesley B., Verified Client",
           "rating": 5
       },
       "imageMood": "practical, reliable, professional",
@@ -10621,7 +10621,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Cleared a list of 9 jobs in one morning. Every single one done properly. Brilliant.",
-          "author": "Tracy N., Cape Town",
+          "author": "Tracy N., Verified Client",
           "rating": 5
       },
       "imageMood": "practical, reliable, friendly",
@@ -10735,7 +10735,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "My grandmother's chair reupholstered in a gorgeous fabric. It looks better than when it was new.",
-          "author": "Gina R., Cape Town",
+          "author": "Gina R., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, crafted, interior",
@@ -10849,7 +10849,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Skip delivered in 2 hours, collected next day. Absolute no-fuss service.",
-          "author": "Daan P., Cape Town",
+          "author": "Daan P., Verified Client",
           "rating": 5
       },
       "imageMood": "industrial, clean, efficient",
@@ -10962,7 +10962,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Passed IELTS with a 7.5 band score after 3 months of preparation. Excellent teaching.",
-          "author": "Amara D., Cape Town",
+          "author": "Amara D., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, international, engaged",
@@ -11075,7 +11075,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "My son went from Ds in Maths to a B in one term. The staff are exceptional.",
-          "author": "Vanessa B., Cape Town",
+          "author": "Vanessa B., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, engaged, bright",
@@ -11188,7 +11188,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "I've never painted in my life. After 6 weeks I've made things I'm genuinely proud of.",
-          "author": "Michelle L., Cape Town",
+          "author": "Michelle L., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, creative, joyful",
@@ -11301,7 +11301,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Bought a Golf GTI with full history at a fair price. Finance approved in 2 hours.",
-          "author": "Kyle F., Cape Town",
+          "author": "Kyle F., Verified Client",
           "rating": 5
       },
       "imageMood": "premium, trustworthy, clean",
@@ -11527,7 +11527,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Revenue doubled in 4 months after they rebuilt our Shopify store. Worth every cent.",
-          "author": "Nadia R., Cape Town",
+          "author": "Nadia R., Verified Client",
           "rating": 5
       },
       "imageMood": "modern, commercial, sharp",
@@ -11619,7 +11619,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to book a free trial lesson?",
       "testimonial": {
           "quote": "My daughter went from refusing to practise to playing for an hour every day. Incredible teacher.",
-          "author": "Anthea S., Cape Town",
+          "author": "Anthea S., Verified Client",
           "rating": 5
       },
       "imageMood": "warm, creative, inspiring",
@@ -11728,7 +11728,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to book a trial session?",
       "testimonial": {
           "quote": "Maths went from 42% to 78% in one term. The tutor found exactly where the gaps were.",
-          "author": "Miriam T., Cape Town",
+          "author": "Miriam T., Verified Client",
           "rating": 5
       },
       "imageMood": "focused, warm, encouraging",
@@ -11837,7 +11837,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to start your lessons?",
       "testimonial": {
           "quote": "Passed my road test first time. My instructor was endlessly patient and incredibly thorough.",
-          "author": "Zara K., Cape Town",
+          "author": "Zara K., Verified Client",
           "rating": 5
       },
       "imageMood": "confident, fresh, practical",
@@ -11946,7 +11946,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to book a school tour?",
       "testimonial": {
           "quote": "My son runs to school every morning. He's thriving socially and academically. Wonderful place.",
-          "author": "Nomsa K., Cape Town",
+          "author": "Sage K., Verified Client",
           "rating": 5
       },
       "imageMood": "bright, nurturing, playful",
@@ -12055,7 +12055,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to discuss training for your team?",
       "testimonial": {
           "quote": "Measurable change in team performance within 6 weeks. Practical, relevant, excellent.",
-          "author": "Liezel M., Cape Town",
+          "author": "Liezel M., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, focused, empowering",
@@ -12164,7 +12164,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to book a free trial class?",
       "testimonial": {
           "quote": "My 10-year-old built his own game in 8 weeks. He is obsessed. Best investment.",
-          "author": "David O., Cape Town",
+          "author": "David O., Verified Client",
           "rating": 5
       },
       "imageMood": "modern, energetic, creative",
@@ -12273,7 +12273,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to book a first aid course?",
       "testimonial": {
           "quote": "Used my training for real 3 months later. It worked. That instructor potentially saved a life.",
-          "author": "Gavin M., Cape Town",
+          "author": "Drew M., Verified Client",
           "rating": 5
       },
       "imageMood": "confident, practical, professional",
@@ -12382,7 +12382,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to book your service?",
       "testimonial": {
           "quote": "First time in 10 years I left a workshop not wondering if I was overcharged. Brilliant.",
-          "author": "Derek M., Cape Town",
+          "author": "Derek M., Verified Client",
           "rating": 5
       },
       "imageMood": "technical, clean, professional",
@@ -12491,7 +12491,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Need an accident repair quote?",
       "testimonial": {
           "quote": "You literally cannot see where the damage was. The colour match is perfect. Outstanding work.",
-          "author": "Jacqui H., Cape Town",
+          "author": "Jacqui H., Verified Client",
           "rating": 5
       },
       "imageMood": "precise, professional, clean",
@@ -12600,7 +12600,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to book your detail?",
       "testimonial": {
           "quote": "Paint correction on a 12-year-old car. It looks better than it did in 2014. Remarkable.",
-          "author": "Brendon A., Cape Town",
+          "author": "Brendon A., Verified Client",
           "rating": 5
       },
       "imageMood": "glossy, precise, clean",
@@ -12709,7 +12709,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Need new tyres or a puncture fixed?",
       "testimonial": {
           "quote": "Best tyre shop in Cape Town. Fair price, fast fitment, no upsell nonsense. Perfect.",
-          "author": "Calvin D., Cape Town",
+          "author": "Calvin D., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, practical, fast",
@@ -12818,7 +12818,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Got an electrical gremlin? Let's find it.",
       "testimonial": {
           "quote": "Intermittent fault that defeated three other workshops. Found and fixed in two hours.",
-          "author": "Gavin B., Cape Town",
+          "author": "Rowan B., Verified Client",
           "rating": 5
       },
       "imageMood": "technical, precise, professional",
@@ -12927,7 +12927,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Broken down or had an accident?",
       "testimonial": {
           "quote": "Arrived in 22 minutes at midnight. Professional, calm, and got my car sorted. Excellent.",
-          "author": "Yolanda T., Cape Town",
+          "author": "Yolanda T., Verified Client",
           "rating": 5
       },
       "imageMood": "urgent, reliable, professional",
@@ -13036,7 +13036,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Looking to buy or service your bike?",
       "testimonial": {
           "quote": "Bought a pre-owned GS from them 3 years ago. Still have it serviced here. Trust is everything.",
-          "author": "Kobus V., Cape Town",
+          "author": "Kobus V., Verified Client",
           "rating": 5
       },
       "imageMood": "bold, adventurous, mechanical",
@@ -13145,7 +13145,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to start your project?",
       "testimonial": {
           "quote": "Enquiries doubled within 3 months of the new site going live. Exceptional strategic thinking.",
-          "author": "Wendy M., Cape Town",
+          "author": "Wendy M., Verified Client",
           "rating": 5
       },
       "imageMood": "modern, clean, digital",
@@ -13254,7 +13254,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to talk about your IT needs?",
       "testimonial": {
           "quote": "IT problems that were a weekly occurrence haven't happened in 18 months. Genuinely transformative.",
-          "author": "Chris H., Cape Town",
+          "author": "Chris H., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, technical, reliable",
@@ -13363,7 +13363,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want a free digital marketing audit?",
       "testimonial": {
           "quote": "Our cost-per-lead dropped 60% in 4 months. These are proper performance marketers.",
-          "author": "Ashley P., Cape Town",
+          "author": "Ashley P., Verified Client",
           "rating": 5
       },
       "imageMood": "data-driven, modern, professional",
@@ -13472,7 +13472,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to know how exposed you are?",
       "testimonial": {
           "quote": "Their assessment found 14 critical vulnerabilities. Fixed before anyone knew. Essential service.",
-          "author": "Mark T., Cape Town",
+          "author": "Mark T., Verified Client",
           "rating": 5
       },
       "imageMood": "dark, technical, authoritative",
@@ -13581,7 +13581,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Want to see what your data is saying?",
       "testimonial": {
           "quote": "Replaced our 12 Excel reports with one live dashboard. Management meetings transformed.",
-          "author": "Sandra M., Cape Town",
+          "author": "Sandra M., Verified Client",
           "rating": 5
       },
       "imageMood": "data-driven, modern, precise",
@@ -13690,7 +13690,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to discuss your needs?",
       "testimonial": {
           "quote": "Professional, reliable, and they delivered exactly what they promised. Highly recommended.",
-          "author": "Client, Cape Town",
+          "author": "Client, Verified Client",
           "rating": 5
       },
       "imageMood": "professional, trustworthy, clean",
@@ -13809,7 +13809,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The images were everything I hoped for. I’ve used them across every platform.",
-      "author": "Zara T., Cape Town",
+      "author": "Zara T., Verified Client",
       "rating": 5
     },
     "imageMood": "cinematic, natural light, intimate",
@@ -13910,7 +13910,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The brand film has been the best marketing investment we’ve made in 5 years.",
-      "author": "Marcus H., Cape Town",
+      "author": "Marcus H., Verified Client",
       "rating": 5
     },
     "imageMood": "cinematic, moody, professional",
@@ -14011,7 +14011,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The rebrand completely changed how people perceive us. Best creative decision we made.",
-      "author": "Sophie W., Cape Town",
+      "author": "Sophie W., Verified Client",
       "rating": 5
     },
     "imageMood": "bold, minimal, considered",
@@ -14112,7 +14112,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "Our home looks like a magazine shoot every day. She understood exactly what we wanted.",
-      "author": "Kate & Jon A., Cape Town",
+      "author": "Kate & Jon A., Verified Client",
       "rating": 5
     },
     "imageMood": "elegant, considered, natural light",
@@ -14213,7 +14213,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "She nailed our brand voice on the first draft. We haven’t touched the website copy in 3 years.",
-      "author": "Tom A., Cape Town",
+      "author": "Tom A., Verified Client",
       "rating": 5
     },
     "imageMood": "considered, creative, clean",
@@ -14314,7 +14314,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The mix made our sound commercial without losing what makes us us. Brilliant producer.",
-      "author": "Kagiso M., Cape Town",
+      "author": "Kagiso M., Verified Client",
       "rating": 5
     },
     "imageMood": "moody, professional, warm",
@@ -14415,7 +14415,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The ceramic set I bought is the most-admired thing in our kitchen. Worth every cent.",
-      "author": "Anneke S., Cape Town",
+      "author": "Anneke S., Verified Client",
       "rating": 5
     },
     "imageMood": "earthy, warm, artisanal",
@@ -14509,14 +14509,14 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want a bespoke fitting or consultation?",
     "contactHours": "Mon–Fri: 10:00–17:00 · Sat: 10:00–14:00 · Fittings by appointment only",
     "projectCaptions": [
-      "Bespoke wedding ensemble, Cape Town",
+      "Bespoke wedding ensemble, Verified Client",
       "SS25 ready-to-wear, campaign shoot",
       "Custom occasion dress, Woodstock studio",
       "Capsule collection, Cape Town stockist"
     ],
     "testimonial": {
       "quote": "The wedding dress was absolutely perfect. She understood exactly what I wanted and exceeded it.",
-      "author": "Bianca P., Cape Town",
+      "author": "Bianca P., Verified Client",
       "rating": 5
     },
     "imageMood": "considered, minimal, editorial",
@@ -14617,7 +14617,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The explainer video increased our product trial sign-ups by 40% in the first month.",
-      "author": "Sam K., Cape Town",
+      "author": "Sam K., Verified Client",
       "rating": 5
     },
     "imageMood": "bold, vibrant, creative",
@@ -14718,7 +14718,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The consultation made me feel completely confident. The result is everything I hoped for.",
-      "author": "Ruby H., Cape Town",
+      "author": "Ruby H., Verified Client",
       "rating": 5
     },
     "imageMood": "dark, artistic, precise",
@@ -14744,28 +14744,28 @@ export const presetContent: Record<string, PresetContent> = {
     "servicesHeading": "Featured Artists",
     "services": [
       {
-        "name": "Thandi Molefe",
-        "description": "Mixed media and large-scale abstract works exploring memory, landscape, and identity. Exhibited at FNB Joburg Art Fair 2023.",
+        "name": "Alex Morgan",
+        "description": "Mixed media and large-scale abstract works exploring memory, landscape, and identity.",
         "tags": [
           "Mixed Media",
           "Abstract"
         ],
         "icon": "star",
-        "serviceImageQuery": "female artist painting large abstract canvas studio"
+        "serviceImageQuery": "artist painting large abstract canvas studio"
       },
       {
-        "name": "James van Wyk",
-        "description": "Oil on canvas landscapes and seascapes capturing the light and colour of the Western Cape coastline.",
+        "name": "Jordan Ellis",
+        "description": "Oil on canvas landscapes and seascapes capturing light and colour in contemporary settings.",
         "tags": [
           "Oil Painting",
           "Landscape"
         ],
         "icon": "layers",
-        "serviceImageQuery": "male artist painter studio easel oil painting"
+        "serviceImageQuery": "artist painter studio easel oil painting"
       },
       {
-        "name": "Naledi Khumalo",
-        "description": "Contemporary sculpture and installation work in bronze, steel, and found materials. Winner of the Sasol New Signatures Award.",
+        "name": "Riley Chen",
+        "description": "Contemporary sculpture and installation work in bronze, steel, and found materials.",
         "tags": [
           "Sculpture",
           "Installation"
@@ -14774,8 +14774,8 @@ export const presetContent: Record<string, PresetContent> = {
         "serviceImageQuery": "sculptor artist workshop bronze sculpture tools"
       },
       {
-        "name": "Pieter de Villiers",
-        "description": "Fine art photography and limited edition giclée prints documenting urban architecture and street life across South Africa.",
+        "name": "Sam Okafor",
+        "description": "Fine art photography and limited edition giclée prints documenting urban architecture and street life.",
         "tags": [
           "Photography",
           "Prints"
@@ -14914,13 +14914,13 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHours": "Mon–Fri: 08:00–18:00 · Sat: 09:00–14:00 · Viewings 7 days by appointment",
     "projectCaptions": [
       "Sold in 12 days, Constantia",
-      "Let above asking, Sea Point",
+      "Let above asking, Verified Client",
       "Investment portfolio, Atlantic Seaboard",
       "Off-market sale, Newlands"
     ],
     "testimonial": {
       "quote": "Sold for R200k above asking in under 2 weeks. She knows exactly how to position a property.",
-      "author": "Michael & Jane D., Cape Town",
+      "author": "Michael & Jane D., Verified Client",
       "rating": 5
     },
     "imageMood": "premium, aspirational, professional",
@@ -15021,7 +15021,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The house doesn’t just look amazing — it actually works for how we live. Brilliant architect.",
-      "author": "Lara & Nico B., Cape Town",
+      "author": "Lara & Nico B., Verified Client",
       "rating": 5
     },
     "imageMood": "architectural, clean, considered",
@@ -15122,7 +15122,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "BLC delivered in 4 days when the transfer was under pressure. Saved our deal.",
-      "author": "Christo V., Cape Town",
+      "author": "Christo V., Verified Client",
       "rating": 5
     },
     "imageMood": "precise, professional, technical",
@@ -15216,14 +15216,14 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want your property professionally managed?",
     "contactHours": "Mon–Fri: 08:30–17:00 · Sat: 09:00–12:00 · Maintenance line 24hrs",
     "projectCaptions": [
-      "6-unit apartment block, Sea Point",
+      "6-unit apartment block, Verified Client",
       "Commercial strip, Cape Town CBD",
       "Residential portfolio, Southern Suburbs",
       "Holiday let, Atlantic Seaboard"
     ],
     "testimonial": {
       "quote": "Best decision I made with my investment property. Zero landlord stress for 4 years.",
-      "author": "Johan M., Cape Town landlord",
+      "author": "Jamie M., Verified Client",
       "rating": 5
     },
     "imageMood": "professional, reliable, residential",
@@ -15324,7 +15324,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "Listed Monday after staging, accepted offer Wednesday. R180k above asking.",
-      "author": "Heather P., Cape Town",
+      "author": "Heather P., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, aspirational, residential",
@@ -15527,7 +15527,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "Fleet of 12 vans wrapped in 3 days. Every single one perfect. Incredibly professional team.",
-      "author": "Dean F., Cape Town",
+      "author": "Dean F., Verified Client",
       "rating": 5
     },
     "imageMood": "bold, vibrant, commercial",
