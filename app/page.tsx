@@ -165,15 +165,15 @@ export default function Home() {
 
         {/* Nav links */}
         <div style={{
-          display: 'flex', gap: '0.75rem', marginTop: '3rem', justifyContent: 'center',
+          display: 'flex', gap: '1.5rem', marginTop: '3rem', justifyContent: 'center',
           animation: anim('fadeIn 1s 1.6s forwards'), opacity: startOpacity,
         }}>
           {navLinks.map(link => (
             <a key={link.href} href={link.href} style={{
-              fontFamily: font, fontSize: '0.8rem', fontWeight: 400,
+              fontFamily: font, fontSize: '0.95rem', fontWeight: 400,
               color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              padding: '0.55rem 1.4rem', borderRadius: '9999px',
+              letterSpacing: '0.15em', textTransform: 'uppercase',
+              padding: '0.75rem 2rem', borderRadius: '9999px',
               border: '1px solid rgba(255,255,255,0.35)',
               transition: 'all 0.3s ease',
             }}
