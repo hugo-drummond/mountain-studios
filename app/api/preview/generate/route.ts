@@ -424,11 +424,27 @@ interface TemplateData {
 // All sections always render on the home page regardless.
 function resolveNavLinks(pages: string[]) {
   const lowerPages = pages.map(p => p.toLowerCase())
+  const links: { label: string; href: string }[] = []
+
+  if (lowerPages.some(p => ['services', 'menu', 'treatments', 'classes', 'courses', 'products'].some(k => p.includes(k))))
+    links.push({ label: 'Services', href: '#services' })
+  if (lowerPages.some(p => ['gallery', 'portfolio', 'work', 'projects'].some(k => p.includes(k))))
+    links.push({ label: 'Gallery', href: '#gallery' })
+  if (lowerPages.some(p => p.includes('about')))
+    links.push({ label: 'About', href: '#about' })
+  if (lowerPages.some(p => p.includes('testimonial')))
+    links.push({ label: 'Testimonials', href: '#testimonials' })
+  if (lowerPages.some(p => p.includes('blog')))
+    links.push({ label: 'Blog', href: '#blog' })
+  if (lowerPages.some(p => ['contact', 'booking', 'appointment'].some(k => p.includes(k))))
+    links.push({ label: 'Contact', href: '#contact' })
+
   return {
-    navServices: lowerPages.some(p => ['services', 'menu', 'treatments', 'classes', 'courses', 'products'].some(k => p.includes(k))),
-    navGallery: lowerPages.some(p => ['gallery', 'portfolio', 'work', 'projects'].some(k => p.includes(k))),
-    navAbout: lowerPages.some(p => p.includes('about')),
-    navContact: lowerPages.some(p => ['contact', 'booking', 'appointment'].some(k => p.includes(k))),
+    allLinks: links,
+    navServices: links.some(l => l.href === '#services'),
+    navGallery: links.some(l => l.href === '#gallery'),
+    navAbout: links.some(l => l.href === '#about'),
+    navContact: links.some(l => l.href === '#contact'),
   }
 }
 
@@ -522,13 +538,26 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     }`
 }
 
-function buildNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
-  // Nav links — only pages the user selected show here
-  const navLinks: string[] = []
-  if (navFlags.navServices) navLinks.push('<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>')
-  if (navFlags.navGallery) navLinks.push('<a href="#gallery" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Gallery</a>')
-  if (navFlags.navAbout) navLinks.push('<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>')
-  if (navFlags.navContact) navLinks.push('<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>')
+function buildMobileMenu(content: GeneratedContent, links?: { label: string; href: string }[]): string {
+  const menuLinks = links || [
+    { label: 'Services', href: '#services' },
+    { label: 'About', href: '#about' },
+    { label: 'Contact', href: '#contact' },
+  ]
+  return `
+  <div id="ms-mob-menu" class="ms-mobile-menu">
+    <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
+    ${menuLinks.map(l => `<a href="${l.href}" onclick="this.parentElement.classList.remove('open')">${l.label}</a>`).join('\n    ')}
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary);border-color:var(--primary)">${content.ctaPrimary}</a>
+  </div>`
+}
+
+function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
+  const allLinks = navFlags.allLinks
+  const desktopLinks = allLinks.slice(0, 3).map(l =>
+    `<a href="${l.href}" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">${l.label}</a>`
+  )
+  const hasOverflow = allLinks.length > 3
 
   return `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
@@ -536,25 +565,15 @@ function buildNav(businessName: string, content: GeneratedContent, navFlags: Ret
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${navLinks.join('\n          ')}
+          ${desktopLinks.join('\n          ')}
         </div>
+        ${hasOverflow ? `<button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:0.25rem;line-height:1" class="ms-nav-links" aria-label="More">&#9776;</button>` : ''}
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
-  ${buildMobileMenu(content)}`
-}
-
-function buildMobileMenu(content: GeneratedContent): string {
-  return `
-  <div id="ms-mob-menu" class="ms-mobile-menu">
-    <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
-    <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
-    <a href="#about" onclick="this.parentElement.classList.remove('open')">About</a>
-    <a href="#contact" onclick="this.parentElement.classList.remove('open')">Contact</a>
-    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary);border-color:var(--primary)">${content.ctaPrimary}</a>
-  </div>`
+  ${buildMobileMenu(content, allLinks)}`
 }
 
 function buildBurgerButton(color: string = '#fff'): string {
@@ -772,7 +791,7 @@ function buildVisualTemplate(data: TemplateData): string {
 
   return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
 
-${buildNav(businessName, content, navFlags)}
+${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero -->
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
@@ -940,7 +959,7 @@ function buildServiceTemplate(data: TemplateData): string {
 
   return `${buildHead(businessName, fonts, primaryColor, secondaryColor, theme)}
 
-${buildNav(businessName, content, navFlags)}
+${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero -->
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
@@ -1091,7 +1110,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
 
-${buildNav(businessName, content, navFlags)}
+${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero — dramatic full-bleed with heavier gradient -->
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
@@ -1143,28 +1162,6 @@ function buildPropertyTemplate(data: TemplateData): string {
   const prText = '#1a1a2e'
   const prMuted = '#64748b'
   const prCopper = primaryColor || '#b5651d'
-
-  // Nav — standardised: primary bg, business name + links left, white pill CTA right
-  const prNavLinks: string[] = []
-  prNavLinks.push(`<a href="#properties" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Properties</a>`)
-  if (navFlags.navAbout) prNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navServices) prNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navContact) prNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const prNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${prNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — tracked eyebrow, huge serif business name, subtitle, 2 CTAs
   const heroSection = `
@@ -1369,7 +1366,7 @@ function buildPropertyTemplate(data: TemplateData): string {
     }
   </style>
 
-${prNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${aboutSection}
@@ -1401,27 +1398,6 @@ function buildEventsTemplate(data: TemplateData): string {
   const evtText = '#1a1a1a'
   const evtMuted = '#6b6b6b'
   const evtTeal = primaryColor || '#2a6b6b'
-
-  // Nav
-  const evtNavLinks: string[] = []
-  if (navFlags.navServices) evtNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) evtNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) evtNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const evtNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${evtNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — centered text on photo
   const heroSection = `
@@ -1575,7 +1551,7 @@ function buildEventsTemplate(data: TemplateData): string {
     }
   </style>
 
-${evtNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${serviceGrid}
@@ -1608,27 +1584,6 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const proText = '#f5f5f0'
   const proMuted = '#a0a0a0'
   const proRed = primaryColor || '#c0392b'
-
-  // Nav — dark bg, serif logo + tagline, links, "How can we help?" CTA
-  const proNavLinks: string[] = []
-  if (navFlags.navServices) proNavLinks.push(`<a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) proNavLinks.push(`<a href="#about" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">About</a>`)
-  if (navFlags.navContact) proNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">Contact</a>`)
-
-  const proNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${proNavLinks.map(l => l.replace(`color:${proText}`, 'color:rgba(255,255,255,0.8)')).join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero with heading overlay + subtitle + red CTA
   const heroSection = `
@@ -1752,7 +1707,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
     }
   </style>
 
-${proNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${imageGridSection}
@@ -1785,27 +1740,6 @@ function buildEducationTemplate(data: TemplateData): string {
   const eduText = '#1a1a1a'
   const eduMuted = '#6b6b6b'
   const eduPink = '#f8c8d8'
-
-  // Nav
-  const eduNavLinks: string[] = []
-  if (navFlags.navServices) eduNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Courses</a>`)
-  if (navFlags.navAbout) eduNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) eduNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const eduNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${eduNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — pink bg, heading left, photo right
   const heroSection = `
@@ -1944,7 +1878,7 @@ function buildEducationTemplate(data: TemplateData): string {
     }
   </style>
 
-${eduNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${statsSection}
@@ -1982,28 +1916,6 @@ function buildCreativeTemplate(data: TemplateData): string {
   const crBg = '#f5f5f0'
   const crText = '#0a0a0a'
   const crMuted = '#6b6b6b'
-
-  // Nav — standardised: primary bg, business name + links left, white pill CTA right
-  const crNavLinks: string[] = []
-  if (navFlags.navServices) crNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navGallery) crNavLinks.push(`<a href="#gallery" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Gallery</a>`)
-  if (navFlags.navAbout) crNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) crNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const crNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${crNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Hero — subtitle top right, full-bleed image, "SCROLL TO EXPLORE" label
   const heroSection = `
@@ -2138,7 +2050,7 @@ function buildCreativeTemplate(data: TemplateData): string {
     }
   </style>
 
-${crNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${meetSection}
@@ -2176,28 +2088,6 @@ function buildFitnessTemplate(data: TemplateData): string {
   <div style="background:${fitOrange};padding:0.6rem 2rem;text-align:center">
     <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.04em">${content.badge || content.heroEyebrow}</p>
   </div>`
-
-  // Nav
-  const fitNavLinks: string[] = []
-  if (navFlags.navServices) fitNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) fitNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) fitNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const fitNav = `
-  ${promoBanner}
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${fitNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed dark hero
   const heroSection = `
@@ -2335,7 +2225,8 @@ function buildFitnessTemplate(data: TemplateData): string {
     }
   </style>
 
-${fitNav}
+${promoBanner}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${awardsStrip}
@@ -2368,27 +2259,6 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     stockImages.cards[4],
     stockImages.cards[5],
   ]
-
-  // Nav — minimal, Polestar-style
-  const autoNavLinks: string[] = []
-  if (navFlags.navServices) autoNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) autoNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) autoNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const autoNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${autoNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed cinematic hero — Polestar style
   const heroSection = `
@@ -2502,7 +2372,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 
   return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
 
-${autoNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${serviceShowcase}
@@ -2536,27 +2406,6 @@ function buildPetsTemplate(data: TemplateData): string {
   const petDark = '#3a5a3a'
   const petText = '#2d4a2d'
   const petMuted = '#5a7a5a'
-
-  // Nav
-  const petNavLinks: string[] = []
-  if (navFlags.navServices) petNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) petNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) petNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const petNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${petNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — large heading left, rounded photo right
   const heroSection = `
@@ -2699,7 +2548,7 @@ function buildPetsTemplate(data: TemplateData): string {
     }
   </style>
 
-${petNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${featureSection}
@@ -2739,28 +2588,6 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const foodMuted = '#777777'
   const foodOlive = '#7a8a2a'
   const foodGold = '#c9a030'
-
-  // Nav — logo left, uppercase links center, dark CTA right
-  const foodNavLinks: string[] = []
-  if (navFlags.navServices) foodNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Menu</a>`)
-  if (navFlags.navGallery) foodNavLinks.push(`<a href="#gallery" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Gallery</a>`)
-  if (navFlags.navAbout) foodNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) foodNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const foodNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${foodNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Hero — full-bleed food photo with gold circle overlay + heading
   const heroSection = `
@@ -2937,7 +2764,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     }
   </style>
 
-${foodNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${aboutSplit}
@@ -2973,27 +2800,6 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   const hwText = '#1a1a2e'
   const hwMuted = '#64748b'
   const hwTeal = primaryColor || '#0d9488'
-
-  // Nav — logo + links + phone + teal CTA
-  const hwNavLinks: string[] = []
-  if (navFlags.navServices) hwNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) hwNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) hwNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const hwNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${hwNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — eyebrow, serif business name, subtitle, 2 CTAs
   const heroSection = `
@@ -3169,7 +2975,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
     }
   </style>
 
-${hwNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${aboutSection}
@@ -3201,27 +3007,6 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const homeText = '#1a1a2e'
   const homeMuted = '#6b7280'
   const homeGreenBg = '#5a7a5a'
-
-  // Nav — logo left, links center, CTA right
-  const homeNavLinks: string[] = []
-  if (navFlags.navServices) homeNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) homeNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) homeNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const homeNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${homeNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — green bg left with heading + CTA, photo right
   const heroSection = `
@@ -3855,13 +3640,15 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: Service / product cards — 3 items with images and names
+  // Section 6: Service / product cards — even grid with square images
+  const serviceCount = Math.min(content.services.length, 4)
+  const gridCols = serviceCount <= 2 ? 2 : 3
   const productCards = `
   <section id="services" style="padding:80px 2rem;background:${retailBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-      ${content.services.map((s, i) => `
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:2rem">
+      ${content.services.slice(0, gridCols * Math.ceil(serviceCount / gridCols)).map((s, i) => `
       <div style="text-align:center">
-        <div style="border-radius:50%;overflow:hidden;width:100%;aspect-ratio:1;border:2px solid rgba(0,0,0,0.06);margin-bottom:1.25rem">
+        <div style="border-radius:8px;overflow:hidden;width:100%;aspect-ratio:1;margin-bottom:1.25rem">
           <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
