@@ -98,9 +98,9 @@ export default function Home() {
 
       {/* Mountain silhouette */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-        <svg viewBox="0 0 1440 500" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '45vh' }}>
-          <path d="M0,500 L0,420 L200,415 L400,400 L600,380 L750,340 L850,280 L950,220 L1020,180 L1080,150 L1140,140 L1250,140 L1350,130 L1440,110 L1440,500 Z" fill="rgba(26,26,46,0.06)" />
-          <path d="M0,500 L0,450 L250,445 L500,435 L700,410 L830,370 L930,300 L1010,250 L1070,210 L1120,190 L1180,180 L1280,180 L1380,170 L1440,155 L1440,500 Z" fill="rgba(26,26,46,0.11)" />
+        <svg viewBox="0 0 1440 500" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: '40vh' }}>
+          <path d="M0,500 L0,350 L100,340 L250,320 L400,280 L500,230 L580,180 L650,140 L700,110 L720,100 L740,110 L800,140 L800,140 L860,140 L920,135 L960,140 L1020,200 L1100,270 L1200,330 L1350,380 L1440,400 L1440,500 Z" fill="rgba(26,26,46,0.06)" />
+          <path d="M0,500 L0,380 L150,370 L300,345 L450,300 L550,250 L620,200 L680,165 L720,145 L740,140 L760,145 L810,170 L850,170 L910,165 L950,170 L1000,220 L1080,285 L1180,345 L1300,390 L1440,420 L1440,500 Z" fill="rgba(26,26,46,0.11)" />
         </svg>
       </div>
 
