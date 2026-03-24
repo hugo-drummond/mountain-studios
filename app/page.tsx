@@ -115,10 +115,10 @@ export default function Home() {
         style={{ position: 'absolute', inset: 0, zIndex: 1 }}
       />
 
-      {/* Nav */}
+      {/* Nav - logo only */}
       <nav style={{
         position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between', padding: '2rem 3rem',
+        padding: '2rem 3rem',
         animation: anim('fadeIn 1s 0.5s forwards'), opacity: startOpacity,
       }}>
         <a href="/" style={{
@@ -128,21 +128,6 @@ export default function Home() {
         }}>
           MOUNTAIN<br />STUDIOS
         </a>
-        <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
-          {navLinks.map(link => (
-            <a key={link.href} href={link.href} style={{
-              fontFamily: font, fontSize: '0.8rem', fontWeight: 400,
-              color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              transition: 'color 0.2s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
       </nav>
 
       {/* Hero */}
@@ -176,6 +161,28 @@ export default function Home() {
             move the
             <br />needle forward
           </h1>
+        </div>
+
+        {/* Nav links */}
+        <div style={{
+          display: 'flex', gap: '0.75rem', marginTop: '3rem', justifyContent: 'center',
+          animation: anim('fadeIn 1s 1.6s forwards'), opacity: startOpacity,
+        }}>
+          {navLinks.map(link => (
+            <a key={link.href} href={link.href} style={{
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 400,
+              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              padding: '0.55rem 1.4rem', borderRadius: '9999px',
+              border: '1px solid rgba(255,255,255,0.35)',
+              transition: 'all 0.3s ease',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; e.currentTarget.style.color = '#fff'; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.075)' }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
 
