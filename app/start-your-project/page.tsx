@@ -497,7 +497,7 @@ export default function StartYourProject() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token }),
           })
-          if (!check.ok) {
+          if (!check.ok && window.location.hostname !== 'localhost') {
             setPreviewError(true)
             setPreviewLoading(false)
             return
