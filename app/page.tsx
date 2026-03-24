@@ -32,10 +32,8 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'rgba(26,26,46,0.85)', backdropFilter: 'blur(12px)',
+          background: 'transparent',
           borderRadius: '999px', padding: '0.4rem 0.5rem 0.4rem 1.25rem',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
         }}>
           <a href="/" style={{
             fontFamily: font, fontSize: '0.9rem', fontWeight: 700,
