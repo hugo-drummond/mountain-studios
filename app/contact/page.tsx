@@ -8,8 +8,8 @@ const serif = 'Georgia, "Times New Roman", serif'
 
 const navLinks = [
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
   { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 const inputStyle: React.CSSProperties = {

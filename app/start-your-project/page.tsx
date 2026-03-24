@@ -709,7 +709,7 @@ export default function StartYourProject() {
             color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
             marginRight: '1.5rem',
           }}>mountain studios</a>
-          {['About', 'Contact', 'Portfolio'].map(label => (
+          {['About', 'Portfolio', 'Contact'].map(label => (
             <a key={label} href={`/${label.toLowerCase()}`} style={{
               fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
               color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
