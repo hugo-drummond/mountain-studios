@@ -83,17 +83,8 @@ export default function Home() {
           lineHeight: 1.15, margin: 0, maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
-          Websites that work as hard as you do.
-        </h1>
-        <p style={{
-          fontFamily: font, fontSize: '0.85rem', fontWeight: 400,
-          color: 'rgba(26,26,46,0.5)', textAlign: 'center',
-          letterSpacing: '0.12em', textTransform: 'uppercase',
-          marginTop: '1.25rem',
-          animation: anim('fadeUp 1s 0.9s forwards'), opacity: so,
-        }}>
           Web Design Done Simply.
-        </p>
+        </h1>
       </div>
 
       {/* Mountain silhouette */}
