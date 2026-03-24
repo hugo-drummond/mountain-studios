@@ -32,35 +32,35 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(12px)',
-          borderRadius: '999px', padding: '0.4rem 0.5rem 0.4rem 1.25rem',
-          border: '1px solid rgba(255,255,255,0.5)',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+          background: 'transparent',
+          borderRadius: '999px', padding: '0.65rem 0.65rem 0.65rem 1.75rem',
+          border: '1.5px solid rgba(255,255,255,0.5)',
         }}>
           <a href="/" style={{
-            fontFamily: font, fontSize: '0.9rem', fontWeight: 700,
-            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
-            marginRight: '1rem',
+            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
+            marginRight: '1.5rem',
           }}>
             mountain studios
           </a>
           {['About', 'Contact', 'Portfolio'].map(label => (
             <a key={label} href={`/${label.toLowerCase()}`} style={{
-              fontFamily: font, fontSize: '0.78rem', fontWeight: 500,
-              color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
-              opacity: 0.55, transition: 'opacity 0.2s',
-              padding: '0.4rem 0.75rem',
+              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              transition: 'color 0.2s',
+              padding: '0.4rem 0.85rem',
             }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '0.55'}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
             >
               {label}
             </a>
           ))}
           <a href="/start-your-project" style={{
-            fontFamily: font, fontSize: '0.78rem', fontWeight: 600,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.02em',
-            background: '#1a1a2e', padding: '0.5rem 1.15rem', borderRadius: '999px',
+            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
+            background: '#fff', padding: '0.6rem 1.5rem', borderRadius: '999px',
             transition: 'opacity 0.2s',
           }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
