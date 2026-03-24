@@ -346,11 +346,12 @@ const inputStyle: React.CSSProperties = {
   fontWeight: 300,
   background: 'none',
   border: 'none',
-  borderBottom: '1px solid rgba(255,255,255,0.5)',
+  borderBottom: '1.5px solid rgba(255,255,255,0.5)',
   color: '#fff',
   padding: '0.5rem 0',
   width: '100%',
   outline: 'none',
+  caretColor: '#fff',
 }
 
 const fieldInput: React.CSSProperties = {
@@ -358,11 +359,12 @@ const fieldInput: React.CSSProperties = {
   fontSize: '1rem',
   background: 'none',
   border: 'none',
-  borderBottom: '1px solid rgba(255,255,255,0.3)',
+  borderBottom: '1.5px solid rgba(255,255,255,0.5)',
   color: '#fff',
   padding: '0.5rem 0',
   width: '100%',
   outline: 'none',
+  caretColor: '#fff',
 }
 
 function getWeekdays(startDate: Date, weeks: number): Date[] {
