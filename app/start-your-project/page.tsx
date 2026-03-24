@@ -797,7 +797,16 @@ export default function StartYourProject() {
               type="text"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
-              placeholder="e.g. Cape Town Pools"
+              placeholder={`e.g. ${(() => {
+                const cityMap: Record<string, string> = {
+                  'South Africa': 'Cape Town', 'United Kingdom': 'London', 'United States': 'New York',
+                  'Australia': 'Sydney', 'Germany': 'Berlin', 'France': 'Paris', 'Netherlands': 'Amsterdam',
+                  'Ireland': 'Dublin', 'Canada': 'Toronto', 'New Zealand': 'Auckland',
+                  'United Arab Emirates': 'Dubai', 'Singapore': 'Singapore',
+                }
+                const city = cityMap[selectedCountry] || 'Cape Town'
+                return `${city} Plumbing`
+              })()}`}
               autoFocus
               style={inputStyle}
             />
