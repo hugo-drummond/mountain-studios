@@ -3640,13 +3640,14 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: Service / product cards — even grid with square images
-  const serviceCount = Math.min(content.services.length, 4)
-  const gridCols = serviceCount <= 2 ? 2 : 3
+  // Section 6: People / product cards — even grid with square images
+  // Pick the largest even-friendly count: 4→2x2, 3→1x3, 2→1x2, 6→2x3
+  const cardItems = content.services.slice(0, content.services.length <= 3 ? content.services.length : content.services.length % 2 === 0 ? content.services.length : content.services.length - 1)
+  const gridCols = cardItems.length === 4 ? 2 : cardItems.length >= 6 ? 3 : cardItems.length
   const productCards = `
   <section id="services" style="padding:80px 2rem;background:${retailBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:2rem">
-      ${content.services.slice(0, gridCols * Math.ceil(serviceCount / gridCols)).map((s, i) => `
+    <div class="ms-grid" style="max-width:${gridCols <= 2 ? '800' : '1200'}px;margin:0 auto;display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:2rem">
+      ${cardItems.map((s, i) => `
       <div style="text-align:center">
         <div style="border-radius:8px;overflow:hidden;width:100%;aspect-ratio:1;margin-bottom:1.25rem">
           <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />

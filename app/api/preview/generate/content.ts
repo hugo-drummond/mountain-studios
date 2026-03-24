@@ -14741,47 +14741,47 @@ export const presetContent: Record<string, PresetContent> = {
     "ctaSecondary": "Current Exhibition",
     "ctaNote": "Free art advisory · Framing service · Corporate & private commissions",
     "badge": "GAASA Gallery Association of South Africa",
-    "servicesHeading": "Recently Added",
+    "servicesHeading": "Featured Artists",
     "services": [
       {
-        "name": "Original Artworks",
-        "description": "Curated collection of original paintings, sculptures, and mixed media by established and emerging SA artists.",
+        "name": "Thandi Molefe",
+        "description": "Mixed media and large-scale abstract works exploring memory, landscape, and identity. Exhibited at FNB Joburg Art Fair 2023.",
         "tags": [
-          "Original Art",
-          "SA Artists"
+          "Mixed Media",
+          "Abstract"
         ],
         "icon": "star",
-        "serviceImageQuery": "large abstract painting canvas gallery wall spotlight"
+        "serviceImageQuery": "female artist painting large abstract canvas studio"
       },
       {
-        "name": "Prints & Editions",
-        "description": "Limited edition prints, giclée reproductions, and signed artist editions at accessible price points.",
+        "name": "James van Wyk",
+        "description": "Oil on canvas landscapes and seascapes capturing the light and colour of the Western Cape coastline.",
         "tags": [
-          "Limited Editions",
-          "Giclée"
+          "Oil Painting",
+          "Landscape"
         ],
         "icon": "layers",
-        "serviceImageQuery": "framed limited edition art prints displayed gallery wall"
+        "serviceImageQuery": "male artist painter studio easel oil painting"
       },
       {
-        "name": "Art Advisory & Commissions",
-        "description": "Personal art advisory for collectors and interior designers, plus custom commission coordination.",
+        "name": "Naledi Khumalo",
+        "description": "Contemporary sculpture and installation work in bronze, steel, and found materials. Winner of the Sasol New Signatures Award.",
         "tags": [
-          "Art Advisory",
-          "Commission"
+          "Sculpture",
+          "Installation"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "sculpture mixed media artwork gallery pedestal spotlight"
+        "serviceImageQuery": "sculptor artist workshop bronze sculpture tools"
       },
-        {
-          "name": "Framing & Installation",
-          "description": "Museum-quality custom framing and art installation services for homes, offices, and corporate collections.",
-          "tags": [
-            "Custom Framing",
-            "Installation"
-          ],
-          "serviceImageQuery": "custom picture frame moulding samples matboard workshop"
-        }
+      {
+        "name": "Pieter de Villiers",
+        "description": "Fine art photography and limited edition giclée prints documenting urban architecture and street life across South Africa.",
+        "tags": [
+          "Photography",
+          "Prints"
+        ],
+        "serviceImageQuery": "photographer artist studio fine art photography prints"
+      }
     ],
     "galleryHeading": "Current Exhibition",
     "aboutHeading": "Art selected with <em>conviction</em>",
