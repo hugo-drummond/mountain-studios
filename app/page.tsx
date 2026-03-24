@@ -75,7 +75,7 @@ export default function Home() {
       <div style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         justifyContent: 'flex-end', minHeight: 'calc(100vh - 80px)',
-        padding: '0 2.5rem 12vh', position: 'relative', zIndex: 2,
+        padding: '0 2.5rem 20vh', position: 'relative', zIndex: 2,
       }}>
         <h1 style={{
           fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(2rem, 4vw, 3.2rem)',
