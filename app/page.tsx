@@ -78,8 +78,8 @@ export default function Home() {
         padding: '0 2.5rem 12vh', position: 'relative', zIndex: 2,
       }}>
         <h1 style={{
-          fontFamily: font, fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-          fontWeight: 600, color: '#2a2a3e', textAlign: 'center',
+          fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(2rem, 4vw, 3.2rem)',
+          fontWeight: 400, color: '#fff', textAlign: 'center',
           lineHeight: 1.15, margin: 0, maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
