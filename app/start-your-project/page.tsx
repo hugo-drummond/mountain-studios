@@ -283,10 +283,11 @@ const gradient = 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #d4b8c8 80%, 
 const heading: React.CSSProperties = {
   fontFamily: font,
   fontSize: 'clamp(2rem, 4vw, 3rem)',
-  fontWeight: 200,
+  fontWeight: 300,
   color: '#fff',
   margin: '0 0 2rem 0',
   lineHeight: 1.2,
+  textShadow: '0 1px 4px rgba(0,0,0,0.1)',
 }
 
 const label: React.CSSProperties = {
@@ -295,7 +296,7 @@ const label: React.CSSProperties = {
   fontWeight: 600,
   letterSpacing: '0.1em',
   textTransform: 'uppercase' as const,
-  color: 'rgba(255,255,255,0.5)',
+  color: 'rgba(255,255,255,0.85)',
   marginBottom: '0.5rem',
 }
 
@@ -701,7 +702,7 @@ export default function StartYourProject() {
             <h1 style={{ ...heading, fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
               Let&apos;s build your website.
             </h1>
-            <p style={{ fontFamily: font, fontSize: '1.1rem', color: 'rgba(255,255,255,0.6)', marginBottom: '2.5rem', lineHeight: 1.6 }}>
+            <p style={{ fontFamily: font, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', marginBottom: '2.5rem', lineHeight: 1.6 }}>
               Fill out this short form for a free preview of your site<br />and an instant quote. Takes 2 minutes.
             </p>
             <button onClick={() => setStep(1)} style={{ ...btnPrimary, padding: '0.75rem 2rem' }}>
@@ -819,7 +820,7 @@ export default function StartYourProject() {
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', marginTop: '1rem' }}>
               Total pages selected: {selectedPages.length + customPages.length}
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
               Base price increases with each additional page
             </p>
             <Nav back={() => setStep(2)} next={() => setStep(4)} disabled={selectedPages.length === 0} />
@@ -860,7 +861,7 @@ export default function StartYourProject() {
           return (
           <>
             <h1 style={heading}>Got any images you&apos;d like us to use?</h1>
-            <p style={{ fontFamily: font, fontSize: '1rem', color: 'rgba(255,255,255,0.5)', marginBottom: '2rem', lineHeight: 1.6 }}>
+            <p style={{ fontFamily: font, fontSize: '1rem', color: 'rgba(255,255,255,0.85)', marginBottom: '2rem', lineHeight: 1.6 }}>
               Logo, team photos, product shots — anything that represents your business.
               <br /><span style={{ fontSize: '0.85rem' }}>This step is optional. You can skip it if you don&apos;t have images ready.</span>
             </p>
@@ -872,7 +873,7 @@ export default function StartYourProject() {
               onDragLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)' }}
               onDrop={(e) => { e.preventDefault(); e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; handleImageUpload(e.dataTransfer.files) }}
               style={{
-                border: '2px dashed rgba(255,255,255,0.2)',
+                border: '2px dashed rgba(255,255,255,0.5)',
                 borderRadius: '12px',
                 padding: '2.5rem 1.5rem',
                 textAlign: 'center',
@@ -893,10 +894,10 @@ export default function StartYourProject() {
               />
               <>
                 <div style={{ fontSize: '2rem', marginBottom: '0.5rem', opacity: 0.5 }}>📁</div>
-                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', fontFamily: font, margin: 0 }}>
+                <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.95rem', fontFamily: font, margin: 0 }}>
                   Drag &amp; drop images here, or click to browse
                 </p>
-                <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', fontFamily: font, marginTop: '0.5rem' }}>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontFamily: font, marginTop: '0.5rem' }}>
                   Up to {maxImages} images, max 5MB each
                 </p>
               </>
@@ -935,7 +936,7 @@ export default function StartYourProject() {
               </div>
             )}
 
-            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', fontFamily: font }}>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.8rem', fontFamily: font }}>
               {uploadedImages.length}/{maxImages} images uploaded
             </p>
 
@@ -1072,7 +1073,7 @@ export default function StartYourProject() {
                 <span style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(quoteData.totalLocal, currency)}</span>
               </div>
             </div>
-            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.9rem', marginBottom: '2rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', marginBottom: '2rem' }}>
               This is an estimate. Final quote confirmed in your discovery call.
             </p>
             <Nav back={() => setStep(6)} next={() => setStep(8)} nextLabel="Book Your Free Discovery Call →" />
@@ -1195,7 +1196,7 @@ export default function StartYourProject() {
             <p style={{ color: '#fff', fontSize: '1.05rem', marginBottom: '1.5rem' }}>
               Time: <strong>{selectedTime}</strong>
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '450px', margin: '0 auto 1rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '450px', margin: '0 auto 1rem' }}>
               We&apos;ll walk through your preview, refine the design direction, and lock in the final scope together.
             </p>
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>
