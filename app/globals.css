@@ -35,8 +35,9 @@
 }
 
 /* White placeholders */
-::placeholder { color: rgba(255,255,255,0.55); opacity: 1; }
-::-webkit-input-placeholder { color: rgba(255,255,255,0.55); }
+::placeholder { color: rgba(255,255,255,0.75) !important; opacity: 1 !important; }
+::-webkit-input-placeholder { color: rgba(255,255,255,0.75) !important; opacity: 1 !important; }
+:-ms-input-placeholder { color: rgba(255,255,255,0.75) !important; }
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

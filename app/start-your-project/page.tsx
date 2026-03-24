@@ -302,12 +302,12 @@ const label: React.CSSProperties = {
 const pill = (active: boolean): React.CSSProperties => ({
   fontFamily: font,
   fontSize: '0.9rem',
-  fontWeight: 400,
+  fontWeight: 500,
   padding: '0.6rem 1.25rem',
   borderRadius: '9999px',
-  border: `1px solid ${active ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.2)'}`,
-  backgroundColor: active ? 'rgba(255,255,255,0.15)' : 'transparent',
-  color: active ? '#fff' : 'rgba(255,255,255,0.8)',
+  border: `1.5px solid ${active ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)'}`,
+  backgroundColor: active ? 'rgba(255,255,255,0.12)' : 'transparent',
+  color: '#fff',
   cursor: 'pointer',
   transition: 'all 0.2s ease',
 })
@@ -316,14 +316,15 @@ const btnPrimary: React.CSSProperties = {
   fontFamily: font,
   fontSize: '0.85rem',
   fontWeight: 600,
-  letterSpacing: '0.04em',
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
   padding: '0.65rem 1.5rem',
   borderRadius: '9999px',
-  border: 'none',
-  backgroundColor: '#fff',
-  color: '#1a1a2e',
+  border: '1.5px solid rgba(255,255,255,0.5)',
+  backgroundColor: 'transparent',
+  color: '#fff',
   cursor: 'pointer',
-  transition: 'opacity 0.2s',
+  transition: 'border-color 0.2s',
 }
 
 const btnBack: React.CSSProperties = {
