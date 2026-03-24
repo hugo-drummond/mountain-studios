@@ -6,7 +6,44 @@ import { pagePrices, type PageType, type Region, regionCurrencyMap, calculateQuo
 import NavBar from '../../components/site/NavBar'
 // Supabase import removed — images now use browser object URLs for preview
 
-const TOTAL_STEPS = 9
+const TOTAL_STEPS = 10
+
+const countries = [
+  { name: 'South Africa', region: 'South Africa' as Region, flag: '🇿🇦' },
+  { name: 'United Kingdom', region: 'United Kingdom' as Region, flag: '🇬🇧' },
+  { name: 'United States', region: 'United States' as Region, flag: '🇺🇸' },
+  { name: 'Australia', region: 'Australia' as Region, flag: '🇦🇺' },
+  { name: 'Germany', region: 'Europe' as Region, flag: '🇩🇪' },
+  { name: 'France', region: 'Europe' as Region, flag: '🇫🇷' },
+  { name: 'Netherlands', region: 'Europe' as Region, flag: '🇳🇱' },
+  { name: 'Ireland', region: 'Europe' as Region, flag: '🇮🇪' },
+  { name: 'Canada', region: 'Other' as Region, flag: '🇨🇦' },
+  { name: 'New Zealand', region: 'Other' as Region, flag: '🇳🇿' },
+  { name: 'Portugal', region: 'Europe' as Region, flag: '🇵🇹' },
+  { name: 'Spain', region: 'Europe' as Region, flag: '🇪🇸' },
+  { name: 'Italy', region: 'Europe' as Region, flag: '🇮🇹' },
+  { name: 'Switzerland', region: 'Europe' as Region, flag: '🇨🇭' },
+  { name: 'Sweden', region: 'Europe' as Region, flag: '🇸🇪' },
+  { name: 'Norway', region: 'Europe' as Region, flag: '🇳🇴' },
+  { name: 'Denmark', region: 'Europe' as Region, flag: '🇩🇰' },
+  { name: 'Belgium', region: 'Europe' as Region, flag: '🇧🇪' },
+  { name: 'Austria', region: 'Europe' as Region, flag: '🇦🇹' },
+  { name: 'United Arab Emirates', region: 'Other' as Region, flag: '🇦🇪' },
+  { name: 'Singapore', region: 'Other' as Region, flag: '🇸🇬' },
+  { name: 'Hong Kong', region: 'Other' as Region, flag: '🇭🇰' },
+  { name: 'Japan', region: 'Other' as Region, flag: '🇯🇵' },
+  { name: 'India', region: 'Other' as Region, flag: '🇮🇳' },
+  { name: 'Brazil', region: 'Other' as Region, flag: '🇧🇷' },
+  { name: 'Mexico', region: 'Other' as Region, flag: '🇲🇽' },
+  { name: 'Nigeria', region: 'Other' as Region, flag: '🇳🇬' },
+  { name: 'Kenya', region: 'Other' as Region, flag: '🇰🇪' },
+  { name: 'Ghana', region: 'Other' as Region, flag: '🇬🇭' },
+  { name: 'Namibia', region: 'South Africa' as Region, flag: '🇳🇦' },
+  { name: 'Botswana', region: 'South Africa' as Region, flag: '🇧🇼' },
+  { name: 'Mozambique', region: 'South Africa' as Region, flag: '🇲🇿' },
+  { name: 'Zimbabwe', region: 'South Africa' as Region, flag: '🇿🇼' },
+  { name: 'Mauritius', region: 'Other' as Region, flag: '🇲🇺' },
+]
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -456,7 +493,11 @@ export default function StartYourProject() {
 
   // Quote
   const [quoteData, setQuoteData] = useState<ReturnType<typeof calculateQuote> | null>(null)
-  const currency = 'ZAR' // default for now
+  const [selectedCountry, setSelectedCountry] = useState('')
+  const [selectedRegion, setSelectedRegion] = useState<Region>('South Africa')
+  const [countrySearch, setCountrySearch] = useState('')
+  const regionInfo = regionCurrencyMap[selectedRegion]
+  const currency = regionInfo.currency
 
   // Booking
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
@@ -476,7 +517,7 @@ export default function StartYourProject() {
 
   // Generate preview when entering Step 6
   useEffect(() => {
-    if (step !== 6) {
+    if (step !== 7) {
       previewRequested.current = false
       return
     }
@@ -515,6 +556,7 @@ export default function StartYourProject() {
             businessName,
             businessType,
             businessCategory,
+            country: selectedCountry,
             pages: [...selectedPages.map(p => pageOptions.find(o => o.key === p)?.label || p), ...customPages],
             style: selectedStyle,
             primaryColor,
@@ -603,7 +645,7 @@ export default function StartYourProject() {
 
   function generateQuote() {
     const allPages = [...selectedPages, ...customPages.map(() => 'other' as PageType)]
-    const quote = calculateQuote(allPages, 1.0, 1.0) // ZAR default
+    const quote = calculateQuote(allPages, regionInfo.multiplier, 1.0)
     setQuoteData(quote)
   }
 
@@ -618,7 +660,7 @@ export default function StartYourProject() {
       })
       if (res.ok) {
         setBooked(true)
-        setStep(8)
+        setStep(9)
       }
     } catch {
       // silently fail for now
@@ -827,8 +869,45 @@ export default function StartYourProject() {
           </>
         )}
 
-        {/* Step 4: Brand colours */}
-        {step === 4 && (
+        {/* Step 4: Where are you based? */}
+        {step === 4 && (() => {
+          const filtered = countrySearch.trim()
+            ? countries.filter(c => c.name.toLowerCase().includes(countrySearch.toLowerCase())).slice(0, 8)
+            : countries.slice(0, 12)
+          return (
+          <>
+            <h1 style={heading}>Where are you based?</h1>
+            <input
+              type="text"
+              value={countrySearch}
+              onChange={(e) => setCountrySearch(e.target.value)}
+              placeholder="Start typing your country..."
+              autoFocus
+              style={inputStyle}
+            />
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
+              {filtered.map(c => (
+                <button
+                  key={c.name}
+                  onClick={() => { setSelectedCountry(c.name); setSelectedRegion(c.region); setCountrySearch(c.name) }}
+                  style={pill(selectedCountry === c.name)}
+                >
+                  {c.flag} {c.name}
+                </button>
+              ))}
+            </div>
+            {selectedCountry && (
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', marginTop: '1rem' }}>
+                Pricing will be shown in {regionCurrencyMap[selectedRegion].currency}
+              </p>
+            )}
+            <Nav back={() => setStep(3)} next={() => setStep(5)} disabled={!selectedCountry} />
+          </>
+          )
+        })()}
+
+        {/* Step 5: Brand colours */}
+        {step === 5 && (
           <>
             <h1 style={heading}>Do you have brand colours?</h1>
             <div style={{ display: 'flex', gap: '3rem', marginBottom: '2rem', opacity: noColors ? 0.3 : 1, pointerEvents: noColors ? 'none' : 'auto' }}>
@@ -851,12 +930,12 @@ export default function StartYourProject() {
               <input type="checkbox" checked={noColors} onChange={(e) => setNoColors(e.target.checked)} style={{ accentColor: '#fff', width: '18px', height: '18px' }} />
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>I don&apos;t have colours yet — surprise me</span>
             </label>
-            <Nav back={() => setStep(3)} next={() => setStep(5)} />
+            <Nav back={() => setStep(4)} next={() => setStep(6)} />
           </>
         )}
 
-        {/* Step 5: Your Images */}
-        {step === 5 && (() => {
+        {/* Step 6: Your Images */}
+        {step === 6 && (() => {
           const maxImages = businessCategory ? categoryImageLimits[businessCategory] : 5
           return (
           <>
@@ -940,14 +1019,14 @@ export default function StartYourProject() {
               {uploadedImages.length}/{maxImages} images uploaded
             </p>
 
-            <Nav back={() => setStep(4)} next={() => setStep(6)} />
+            <Nav back={() => setStep(5)} next={() => setStep(7)} />
             <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
           </>
           )
         })()}
 
-        {/* Step 6: Site preview */}
-        {step === 6 && (
+        {/* Step 7: Site preview */}
+        {step === 7 && (
           <>
             <h1 style={{ ...heading, fontSize: 'clamp(1.5rem, 3vw, 2rem)', textAlign: 'center', marginBottom: '1rem' }}>
               Here&apos;s a preview of your site&apos;s Homepage.
@@ -1035,7 +1114,7 @@ export default function StartYourProject() {
             </div>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <button
-                onClick={() => { generateQuote(); setStep(7); }}
+                onClick={() => { generateQuote(); setStep(8); }}
                 style={{ ...btnPrimary, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
                 I love it — show me the quote
@@ -1053,7 +1132,7 @@ export default function StartYourProject() {
         )}
 
         {/* Step 7: Quote / Estimate */}
-        {step === 7 && quoteData && (
+        {step === 8 && quoteData && (
           <>
             <h1 style={heading}>Here&apos;s your estimate.</h1>
             <div style={{ marginBottom: '2rem' }}>
@@ -1076,12 +1155,12 @@ export default function StartYourProject() {
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', marginBottom: '2rem' }}>
               This is an estimate. Final quote confirmed in your discovery call.
             </p>
-            <Nav back={() => setStep(6)} next={() => setStep(8)} nextLabel="Book Your Free Discovery Call →" />
+            <Nav back={() => setStep(7)} next={() => setStep(9)} nextLabel="Book Your Free Discovery Call →" />
           </>
         )}
 
         {/* Step 8: Booking OR Confirmation */}
-        {step === 8 && !booked && (
+        {step === 9 && !booked && (
           <>
             <h1 style={heading}>Pick a time that works.</h1>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
@@ -1173,7 +1252,7 @@ export default function StartYourProject() {
               </div>
             </div>
             <Nav
-              back={() => setStep(7)}
+              back={() => setStep(8)}
               next={handleBook}
               nextLabel="Confirm & Book My Call →"
               disabled={!selectedDay || !selectedTime || !fullName.trim() || !email.trim()}
@@ -1182,7 +1261,7 @@ export default function StartYourProject() {
         )}
 
         {/* Step 8 (booked): Confirmation */}
-        {step === 8 && booked && (
+        {step === 9 && booked && (
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
             <h1 style={{ ...heading, fontSize: 'clamp(2rem, 4vw, 3rem)' }}>

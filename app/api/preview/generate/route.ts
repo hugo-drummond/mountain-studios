@@ -4041,7 +4041,7 @@ ${buildFooter(businessName, content, 'dark')}
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images } = body
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country } = body
 
     if (!businessName || !businessType) {
       return NextResponse.json(
