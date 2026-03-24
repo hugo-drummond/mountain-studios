@@ -500,12 +500,23 @@ export default function StartYourProject() {
 
   // Auto-detect country from IP
   useEffect(() => {
-    if (selectedCountry) return // don't override manual selection
-    fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) })
+    if (selectedCountry) return
+    const codeToName: Record<string, string> = {
+      ZA: 'South Africa', GB: 'United Kingdom', US: 'United States', AU: 'Australia',
+      DE: 'Germany', FR: 'France', NL: 'Netherlands', IE: 'Ireland', CA: 'Canada',
+      NZ: 'New Zealand', PT: 'Portugal', ES: 'Spain', IT: 'Italy', CH: 'Switzerland',
+      SE: 'Sweden', NO: 'Norway', DK: 'Denmark', BE: 'Belgium', AT: 'Austria',
+      AE: 'United Arab Emirates', SG: 'Singapore', HK: 'Hong Kong', JP: 'Japan',
+      IN: 'India', BR: 'Brazil', MX: 'Mexico', NG: 'Nigeria', KE: 'Kenya',
+      GH: 'Ghana', NA: 'Namibia', BW: 'Botswana', MZ: 'Mozambique', ZW: 'Zimbabwe',
+      MU: 'Mauritius',
+    }
+    fetch('https://api.country.is', { signal: AbortSignal.timeout(3000) })
       .then(r => r.json())
       .then(data => {
-        if (data.country_name) {
-          const match = countries.find(c => c.name === data.country_name)
+        const name = codeToName[data.country]
+        if (name) {
+          const match = countries.find(c => c.name === name)
           if (match) {
             setSelectedCountry(match.name)
             setSelectedRegion(match.region)
@@ -514,7 +525,7 @@ export default function StartYourProject() {
           }
         }
       })
-      .catch(() => {}) // silently fail
+      .catch(() => {})
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const regionInfo = regionCurrencyMap[selectedRegion]
   const currency = regionInfo.currency
