@@ -79,7 +79,7 @@ export default function Home() {
       }}>
         <h1 style={{
           fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-          fontWeight: 400, color: '#fff', textAlign: 'center',
+          fontWeight: 300, color: '#fff', textAlign: 'center',
           lineHeight: 1.15, margin: 0, maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
