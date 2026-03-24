@@ -5,11 +5,7 @@ import { useState } from 'react'
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const serif = 'Georgia, "Times New Roman", serif'
 
-const navLinks = [
-  { label: 'About', href: '/about' },
-  { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Contact', href: '/contact' },
-]
+import SiteNav from '../../components/site/SiteNav'
 
 const projects = [
   { name: 'Alistair Drummond Architect', category: 'Architecture', image: '/images/portfolio/alistair-drummond.jpg', url: 'https://alistairdrummondarchitect.co.za/' },
@@ -28,42 +24,7 @@ export default function PortfolioPage() {
       background: 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #d4b8c8 80%, #e8c8cf 100%)',
     }}>
       {/* Nav */}
-      <nav style={{
-        display: 'flex', justifyContent: 'center', padding: '1.25rem 2.5rem',
-      }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'transparent', borderRadius: '999px',
-          padding: '0.65rem 0.65rem 0.65rem 1.75rem',
-          border: '1.5px solid rgba(255,255,255,0.5)',
-        }}>
-          <a href="/" style={{
-            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
-            marginRight: '1.5rem',
-          }}>mountain studios</a>
-          {navLinks.map(link => (
-            <a key={link.href} href={link.href} style={{
-              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              padding: '0.4rem 0.85rem', transition: 'color 0.2s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-            >{link.label}</a>
-          ))}
-          <a href="/start-your-project" style={{
-            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
-            background: '#fff', padding: '0.6rem 1.5rem', borderRadius: '999px',
-            transition: 'opacity 0.2s',
-          }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >Get Started</a>
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* Header */}
       <section style={{ textAlign: 'center', padding: '4rem 2rem 3rem' }}>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import SiteNav from '../components/site/SiteNav'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 
@@ -24,52 +25,9 @@ export default function Home() {
       minHeight: '100vh', position: 'relative', overflow: 'hidden',
     }}>
 
-      {/* Nav */}
-      <nav style={{
-        display: 'flex', justifyContent: 'center',
-        padding: '1.25rem 2.5rem', position: 'relative', zIndex: 10,
-        animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so,
-      }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'transparent',
-          borderRadius: '999px', padding: '0.65rem 0.65rem 0.65rem 1.75rem',
-          border: '1.5px solid rgba(255,255,255,0.5)',
-        }}>
-          <a href="/" style={{
-            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
-            marginRight: '1.5rem',
-          }}>
-            mountain studios
-          </a>
-          {['About', 'Portfolio', 'Contact'].map(label => (
-            <a key={label} href={`/${label.toLowerCase()}`} style={{
-              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              transition: 'color 0.2s',
-              padding: '0.4rem 0.85rem',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-            >
-              {label}
-            </a>
-          ))}
-          <a href="/start-your-project" style={{
-            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
-            background: '#fff', padding: '0.6rem 1.5rem', borderRadius: '999px',
-            transition: 'opacity 0.2s',
-          }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            Get Started
-          </a>
-        </div>
-      </nav>
+      <div style={{ position: 'relative', zIndex: 10, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
+        <SiteNav />
+      </div>
 
       {/* Hero */}
       <div style={{

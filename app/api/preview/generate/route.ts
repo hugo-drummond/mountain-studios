@@ -467,10 +467,20 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     .ms-grid { display: grid; }
     .ms-flex { display: flex; }
 
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    .ms-mobile-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; }
+    .ms-mobile-menu.open { display: flex; }
+    .ms-mobile-menu a { color: #fff; text-decoration: none; font-family: var(--body-font); font-size: 1.2rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; transition: all 0.3s; }
+    .ms-mobile-menu a:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
+    .ms-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; }
+
     @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
       nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
-      nav > div { flex-wrap: wrap !important; padding: 0.75rem 1rem !important; gap: 0.5rem !important; justify-content: center !important; }
-      nav a { font-size: 0.75rem !important; }
 
       section { padding: 40px 0 !important; }
       section > div { padding: 0 1.25rem !important; }
@@ -520,16 +530,46 @@ function buildNav(businessName: string, content: GeneratedContent, navFlags: Ret
   if (navFlags.navAbout) navLinks.push('<a href="#about" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">About</a>')
   if (navFlags.navContact) navLinks.push('<a href="#contact" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.2s">Contact</a>')
 
+  const allMobileLinks = [...navLinks.map(l => l), `<a href="#contact" style="">${content.ctaPrimary}</a>`]
+
   return `
   <nav style="position:absolute;top:0;left:0;right:0;z-index:100;padding:0 2rem">
     <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px">
       <a href="#" style="font-family:var(--heading-font);font-size:1.6rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${navLinks.join('\n        ')}
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
       </div>
+      <button class="ms-burger" onclick="document.getElementById('ms-mob-menu').classList.add('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </nav>`
+  </nav>
+  <div id="ms-mob-menu" class="ms-mobile-menu">
+    <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
+    <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
+    <a href="#about" onclick="this.parentElement.classList.remove('open')">About</a>
+    <a href="#gallery" onclick="this.parentElement.classList.remove('open')">Gallery</a>
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')">Contact</a>
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary);border-color:var(--primary)">${content.ctaPrimary}</a>
+  </div>`
+}
+
+function buildMobileMenu(content: GeneratedContent): string {
+  return `
+  <div id="ms-mob-menu" class="ms-mobile-menu">
+    <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
+    <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
+    <a href="#about" onclick="this.parentElement.classList.remove('open')">About</a>
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')">Contact</a>
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary);border-color:var(--primary)">${content.ctaPrimary}</a>
+  </div>`
+}
+
+function buildBurgerButton(color: string = '#fff'): string {
+  return `<button class="ms-burger" onclick="document.getElementById('ms-mob-menu').classList.add('open')" aria-label="Menu">
+        <span style="background:${color}"></span><span style="background:${color}"></span><span style="background:${color}"></span>
+      </button>`
 }
 
 function buildFooter(businessName: string, content: GeneratedContent, theme: Theme = 'dark'): string {
@@ -1124,15 +1164,17 @@ function buildPropertyTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${prBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${prText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${prNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
         <span style="font-family:var(--body-font);font-size:0.85rem;color:${prText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${prCopper};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — tracked eyebrow, huge serif business name, subtitle, 2 CTAs
   const heroSection = `
@@ -1380,12 +1422,14 @@ function buildEventsTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${evtBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${evtText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${evtNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — centered text on photo
   const heroSection = `
@@ -1586,12 +1630,14 @@ function buildProfessionalTemplate(data: TemplateData): string {
         <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:400;color:${proText};text-decoration:none;display:block;line-height:1.2">${businessName}</a>
         <p style="font-family:var(--body-font);font-size:0.7rem;color:${proMuted};font-style:italic">${content.heroEyebrow || content.aboutMission || ''}</p>
       </div>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${proNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#fff')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero with heading overlay + subtitle + red CTA
   const heroSection = `
@@ -1759,12 +1805,14 @@ function buildEducationTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${eduBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${eduText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${eduNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;border:1px solid ${eduText};color:${eduText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — pink bg, heading left, photo right
   const heroSection = `
@@ -1947,12 +1995,14 @@ function buildCreativeTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${crBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${crText};text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:0.75rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:0.75rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${crText};color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Menu</a>
       </div>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Hero — subtitle top right, full-bleed image, "SCROLL TO EXPLORE" label
   const heroSection = `
@@ -2137,15 +2187,17 @@ function buildFitnessTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${fitBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${fitOrange};text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${fitNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:0.75rem">
         <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;border:1px solid ${fitText};color:${fitText};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaSecondary || 'Pricing'}</a>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${fitOrange};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#fff')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed dark hero
   const heroSection = `
@@ -2327,12 +2379,14 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)">
     <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:0.02em">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2.5rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2.5rem">
         ${autoNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;font-weight:400">&#9906; ${content.ctaPrimary}</a>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed cinematic hero — Polestar style
   const heroSection = `
@@ -2491,12 +2545,14 @@ function buildPetsTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${petBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${petNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;border:2px solid #fff;color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#fff')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — large heading left, rounded photo right
   const heroSection = `
@@ -2691,12 +2747,14 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${foodBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${foodText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${foodNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.7rem 1.5rem;background:${foodText};color:#fff;border-radius:4px;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Hero — full-bleed food photo with gold circle overlay + heading
   const heroSection = `
@@ -2921,15 +2979,17 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${hwBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${hwText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${hwNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
         <span style="font-family:var(--body-font);font-size:0.85rem;color:${hwText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${hwTeal};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — eyebrow, serif business name, subtitle, 2 CTAs
   const heroSection = `
@@ -3148,12 +3208,14 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${homeBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:var(--primary);text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${homeNavLinks.join('\n        ')}
       </div>
       <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.6rem 1.5rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Split hero — green bg left with heading + CTA, photo right
   const heroSection = `
@@ -3404,15 +3466,17 @@ function buildTradesTemplate(data: TemplateData): string {
   <nav class="ms-sticky" style="background:${trBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${trText};text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${trNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
         <span style="font-family:var(--body-font);font-size:0.85rem;color:${trText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${trBlue};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero with badge, heading, subtitle, 2 CTAs, trust strip
   const heroSection = `
@@ -3686,15 +3750,17 @@ function buildRetailTemplate(data: TemplateData): string {
   </div>
   <nav class="ms-sticky" style="background:${retailBg};border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:70px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:1.5rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:1.5rem">
         ${retailNavLinks.join('\n        ')}
       </div>
       <a href="#" style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:700;color:var(--primary);text-decoration:none;letter-spacing:0.02em;text-align:center">${businessName}</a>
       <div style="display:flex;align-items:center;justify-content:flex-end;gap:1rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#1a1a2e')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Full-bleed hero — huge heading overlay on lifestyle photo
   const heroSection = `
@@ -3906,15 +3972,17 @@ function buildTechDigitalTemplate(data: TemplateData): string {
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:0.5rem">
         <span style="color:var(--primary);font-size:1.1rem">&#9670;</span> ${businessName}
       </a>
-      <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${techNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:0.75rem">
         <a href="#about" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.1rem;border:1px solid var(--border);border-radius:6px;color:var(--text);text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:border-color 0.2s">${content.ctaSecondary}</a>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.1rem;background:var(--primary);border:1px solid var(--primary);border-radius:6px;color:#fff;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
       </div>
+      ${buildBurgerButton('#fff')}
     </div>
-  </nav>`
+  </nav>
+  ${buildMobileMenu(content)}`
 
   // Section 1: Centered text hero — green accent heading + screenshot below
   const heroSection = `
