@@ -389,6 +389,24 @@ interface GeneratedContent {
 
 // ---------- Shared template helpers ----------
 
+function getLocationInfo(country: string): { address: string; city: string; postcode: string; country: string; phone: string } {
+  const locations: Record<string, { address: string; city: string; postcode: string; country: string; phone: string }> = {
+    'South Africa': { address: '123 Main Road', city: 'Cape Town', postcode: '8001', country: 'South Africa', phone: '021 000 0000' },
+    'United Kingdom': { address: '42 High Street', city: 'London', postcode: 'EC2A 4BQ', country: 'United Kingdom', phone: '+44 20 7946 0958' },
+    'United States': { address: '350 Fifth Avenue', city: 'New York, NY', postcode: '10118', country: 'United States', phone: '+1 (212) 555-0147' },
+    'Australia': { address: '275 George Street', city: 'Sydney, NSW', postcode: '2000', country: 'Australia', phone: '+61 2 9374 4000' },
+    'Germany': { address: 'Friedrichstraße 43', city: 'Berlin', postcode: '10117', country: 'Germany', phone: '+49 30 123456' },
+    'France': { address: '8 Rue de Rivoli', city: 'Paris', postcode: '75001', country: 'France', phone: '+33 1 42 60 00 00' },
+    'Netherlands': { address: 'Keizersgracht 125', city: 'Amsterdam', postcode: '1015 CJ', country: 'Netherlands', phone: '+31 20 555 0123' },
+    'Ireland': { address: '45 Grafton Street', city: 'Dublin', postcode: 'D02 H638', country: 'Ireland', phone: '+353 1 555 0123' },
+    'Canada': { address: '100 King Street West', city: 'Toronto, ON', postcode: 'M5X 1A9', country: 'Canada', phone: '+1 (416) 555-0147' },
+    'New Zealand': { address: '15 Queen Street', city: 'Auckland', postcode: '1010', country: 'New Zealand', phone: '+64 9 555 0123' },
+    'United Arab Emirates': { address: 'Sheikh Zayed Road', city: 'Dubai', postcode: '', country: 'UAE', phone: '+971 4 555 0123' },
+    'Singapore': { address: '1 Raffles Place', city: 'Singapore', postcode: '048616', country: 'Singapore', phone: '+65 6555 0123' },
+  }
+  return locations[country] || locations['South Africa']
+}
+
 interface TemplateData {
   content: GeneratedContent
   businessName: string
@@ -399,6 +417,7 @@ interface TemplateData {
   images: string[]
   stockImages: StockImages
   variant: TemplateVariant
+  locationInfo: ReturnType<typeof getLocationInfo>
 }
 
 // Determines which extra nav links to show (selected pages beyond Home).
@@ -538,7 +557,7 @@ function buildTestimonialSection(content: GeneratedContent): string {
     </section>`
 }
 
-function buildContactSection(content: GeneratedContent): string {
+function buildContactSection(content: GeneratedContent, locationInfo: ReturnType<typeof getLocationInfo>): string {
   const hasHours = !!content.contactHours
 
   if (!hasHours) {
@@ -568,11 +587,11 @@ function buildContactSection(content: GeneratedContent): string {
           <div>
             <div style="margin-bottom:2rem">
               <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">123 Main Road, Cape Town, 8001</p>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${locationInfo.address}, ${locationInfo.city}, ${locationInfo.postcode}</p>
             </div>
             <div style="margin-bottom:2rem">
               <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.co.za<br />021 000 0000</p>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.com<br />${locationInfo.phone}</p>
             </div>
             <div>
               <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
@@ -612,7 +631,7 @@ function buildHead(businessName: string, fonts: { heading: string; headingFamily
 
 // ---------- Visual Template (photo-heavy) ----------
 function buildVisualTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -700,7 +719,7 @@ ${buildNav(businessName, content, navFlags)}
   ${gallerySection}
   ${buildAboutSection(content)}
   ${buildTestimonialSection(content)}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content)}
 
@@ -711,7 +730,7 @@ ${buildFooter(businessName, content)}
 // ---------- Service Template (icon cards, process section) ----------
 // Light theme for most service businesses; dark for tech-digital
 function buildServiceTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
   const theme: Theme = businessCategory === 'tech-digital' ? 'dark' : 'light'
@@ -877,7 +896,7 @@ ${buildNav(businessName, content, navFlags)}
   ${processSection}
   ${buildAboutSection(content)}
   ${buildTestimonialSection(content)}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content, theme)}
 
@@ -887,7 +906,7 @@ ${buildFooter(businessName, content, theme)}
 
 // ---------- Portfolio Template (gallery-focused) ----------
 function buildPortfolioTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1019,7 +1038,7 @@ ${buildNav(businessName, content, navFlags)}
   ${gallerySection}
   ${buildAboutSection(content)}
   ${buildTestimonialSection(content)}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content)}
 
@@ -1029,7 +1048,7 @@ ${buildFooter(businessName, content)}
 
 // ---------- Property Template (v0 Real Estate–inspired) ----------
 function buildPropertyTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1061,7 +1080,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         ${prNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
-        <span style="font-family:var(--body-font);font-size:0.85rem;color:${prText};font-weight:500">&#9742; 021 000 0000</span>
+        <span style="font-family:var(--body-font);font-size:0.85rem;color:${prText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${prCopper};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
     </div>
@@ -1131,7 +1150,7 @@ function buildPropertyTemplate(data: TemplateData): string {
           <div style="padding:1.5rem">
             <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
               <span style="color:${prMuted};font-size:0.85rem">&#9906;</span>
-              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.tags[0] || 'Cape Town'}</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.tags[0] || locationInfo.city}</span>
             </div>
             <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
             <p style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted};line-height:1.6">${s.description}</p>
@@ -1195,15 +1214,15 @@ function buildPropertyTemplate(data: TemplateData): string {
         <div style="display:flex;flex-direction:column;gap:1.5rem">
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Office Location</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">123 Main Road, Cape Town</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Office Location</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${locationInfo.address}, ${locationInfo.city}</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">021 000 0000</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${locationInfo.phone}</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
           </div>
           ${content.contactHours ? `<div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9200;</div>
@@ -1216,7 +1235,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Full Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Email Address</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Phone Number</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Phone Number</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your real estate needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
           <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${prCopper};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
         </form>
@@ -1245,8 +1264,8 @@ function buildPropertyTemplate(data: TemplateData): string {
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Connect</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">${locationInfo.phone}</p>
       </div>
     </div>
     <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
@@ -1287,7 +1306,7 @@ ${prFooter}
 
 // ---------- Events-Entertainment Template (Zola–inspired) ----------
 function buildEventsTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1480,7 +1499,7 @@ ${evtNav}
   ${aboutSection}
   ${categoryGrid}
   ${testimonialSection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${evtFooter}
 
@@ -1490,7 +1509,7 @@ ${evtFooter}
 
 // ---------- Professional Template (Mishcon–inspired) ----------
 function buildProfessionalTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1656,7 +1675,7 @@ ${proNav}
   ${peopleSection}
   ${testimonialSection}
   ${fullImage}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${proFooter}
 
@@ -1666,7 +1685,7 @@ ${proFooter}
 
 // ---------- Education Template (Preply–inspired) ----------
 function buildEducationTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1854,7 +1873,7 @@ ${buildFooter(businessName, content, 'light')}
 
 // ---------- Creative Template (Lusion–inspired, dark portfolio) ----------
 function buildCreativeTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -1987,13 +2006,13 @@ function buildCreativeTemplate(data: TemplateData): string {
   <footer style="padding:5rem 2rem 2rem;background:${crBg};border-top:1px solid rgba(0,0,0,0.08)">
     <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
       <div>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">123 Main Road<br />Cape Town, 8001<br />South Africa</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">${locationInfo.address}<br />${locationInfo.city}, ${locationInfo.postcode}<br />${locationInfo.country}</p>
       </div>
       <div>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">General enquiries</p>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};margin-bottom:2rem">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};margin-bottom:2rem">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">New business</p>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted}">work@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted}">work@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
       </div>
       <div>
         <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:500;color:${crText};margin-bottom:1.5rem">Subscribe to our newsletter</h3>
@@ -2027,7 +2046,7 @@ ${crNav}
   ${aboutSection}
   ${portfolioGrid}
   ${servicesList}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${crFooter}
 
@@ -2037,7 +2056,7 @@ ${crFooter}
 
 // ---------- Fitness-Sport Template (EverybodyFights–inspired) ----------
 function buildFitnessTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -2195,8 +2214,8 @@ function buildFitnessTemplate(data: TemplateData): string {
       </div>
       <div>
         <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Follow Us</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};margin-top:0.5rem">021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};margin-top:0.5rem">${locationInfo.phone}</p>
       </div>
     </div>
     <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:left">
@@ -2224,7 +2243,7 @@ ${fitNav}
   ${locationCards}
   ${gallerySection}
   ${packagesSection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${fitFooter}
 
@@ -2234,7 +2253,7 @@ ${fitFooter}
 
 // ---------- Automotive Template (Polestar visual + Clutch structure) ----------
 function buildAutomotiveTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -2388,7 +2407,7 @@ ${autoNav}
   ${featureImage}
   ${productCards}
   ${testimonialSection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content, 'dark')}
 
@@ -2398,7 +2417,7 @@ ${buildFooter(businessName, content, 'dark')}
 
 // ---------- Pets Template (WOOOF–inspired) ----------
 function buildPetsTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -2547,12 +2566,12 @@ function buildPetsTemplate(data: TemplateData): string {
       </div>`}
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Contact</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">021 000 0000</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${locationInfo.phone}</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Location</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">123 Main Road<br />Cape Town, 8001</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${locationInfo.address}<br />${locationInfo.city}, ${locationInfo.postcode}</p>
       </div>
     </div>
     <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
@@ -2580,7 +2599,7 @@ ${petNav}
   ${brandSection}
   ${serviceCards}
   ${testimonialSection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${petFooter}
 
@@ -2590,7 +2609,7 @@ ${petFooter}
 
 // ---------- Food-Hospitality Template (Crafto Restaurant–inspired) ----------
 function buildFoodHospitalityTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -2772,17 +2791,17 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
       <div>
         <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9742;</div>
         <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Let's Talk</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${locationInfo.phone}</p>
       </div>
       <div>
         <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
         <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.ctaPrimary}</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.co.za</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
       </div>
       <div>
         <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9906;</div>
         <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Visit Us</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">123 Main Road, Cape Town</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${locationInfo.address}, ${locationInfo.city}</p>
       </div>
     </div>
   </section>`
@@ -2816,7 +2835,7 @@ ${foodNav}
   ${testimonialSection}
   ${reviewStrip}
   ${fullImage}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
   ${contactRow}
 
 ${foodFooter}
@@ -2827,7 +2846,7 @@ ${foodFooter}
 
 // ---------- Health-Wellness Template (v0 Dentistry–inspired) ----------
 function buildHealthWellnessTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -2858,7 +2877,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
         ${hwNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
-        <span style="font-family:var(--body-font);font-size:0.85rem;color:${hwText};font-weight:500">&#9742; 021 000 0000</span>
+        <span style="font-family:var(--body-font);font-size:0.85rem;color:${hwText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${hwTeal};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
     </div>
@@ -2965,15 +2984,15 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
           <div style="display:flex;align-items:center;gap:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Address</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">123 Main Road, Cape Town</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Address</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${locationInfo.address}, ${locationInfo.city}</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Phone</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">021 000 0000</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Phone</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${locationInfo.phone}</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Email</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Email</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
           </div>
           ${content.contactHours ? `<div style="display:flex;align-items:center;gap:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9200;</div>
@@ -2990,7 +3009,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
             <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Last Name</label><input type="text" placeholder="Doe" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           </div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Email</label><input type="email" placeholder="john@example.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
           <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${hwTeal};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
         </form>
@@ -3054,7 +3073,7 @@ ${hwFooter}
 
 // ---------- Home-Services Template (Helpling–inspired) ----------
 function buildHomeServicesTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -3282,7 +3301,7 @@ ${homeNav}
   ${featureSection}
   ${testimonialSection}
   ${ctaBanner}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${homeFooter}
 
@@ -3309,7 +3328,7 @@ function mapIcon(icon?: string): string {
 }
 
 function buildTradesTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -3341,7 +3360,7 @@ function buildTradesTemplate(data: TemplateData): string {
         ${trNavLinks.join('\n        ')}
       </div>
       <div style="display:flex;align-items:center;gap:1.5rem">
-        <span style="font-family:var(--body-font);font-size:0.85rem;color:${trText};font-weight:500">&#9742; 021 000 0000</span>
+        <span style="font-family:var(--body-font);font-size:0.85rem;color:${trText};font-weight:500">&#9742; ${locationInfo.phone}</span>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${trBlue};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
     </div>
@@ -3495,15 +3514,15 @@ function buildTradesTemplate(data: TemplateData): string {
         <div style="display:flex;flex-direction:column;gap:1.5rem">
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">021 000 0000</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${locationInfo.phone}</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Service Area</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">Cape Town &amp; surrounds</div></div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Service Area</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${locationInfo.city} &amp; surrounds</div></div>
           </div>
           ${content.contactHours ? `<div style="display:flex;align-items:center;gap:1rem">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9200;</div>
@@ -3517,7 +3536,7 @@ function buildTradesTemplate(data: TemplateData): string {
         <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Email</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your project..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
           <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${trBlue};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
         </form>
@@ -3532,7 +3551,7 @@ function buildTradesTemplate(data: TemplateData): string {
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6)">&#9742; 021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6)">&#9742; ${locationInfo.phone}</p>
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Quick Links</h4>
@@ -3543,9 +3562,9 @@ function buildTradesTemplate(data: TemplateData): string {
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Contact</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9742; 021 000 0000</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s/g,'')}.co.za</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">&#9906; Cape Town &amp; surrounds</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">&#9906; ${locationInfo.city} &amp; surrounds</p>
       </div>
     </div>
     <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
@@ -3584,7 +3603,7 @@ ${trFooter}
 
 // ---------- Retail Template (Public Pool–inspired) ----------
 function buildRetailTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -3806,7 +3825,7 @@ ${retailNav}
   ${productCards}
   ${aboutSection}
   ${communitySection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
 
 ${retailFooter}
 
@@ -3816,7 +3835,7 @@ ${retailFooter}
 
 // ---------- Tech-Digital Template (Plain.com–inspired) ----------
 function buildTechDigitalTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages } = data
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
@@ -4028,7 +4047,7 @@ ${techNav}
   ${valueProps}
   ${testimonialSection}
   ${statsSection}
-  ${buildContactSection(content)}
+  ${buildContactSection(content, locationInfo)}
   ${finalCta}
 
 ${buildFooter(businessName, content, 'dark')}
@@ -4042,6 +4061,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
     const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country } = body
+    const locationInfo = getLocationInfo(country || '')
 
     if (!businessName || !businessType) {
       return NextResponse.json(
@@ -4150,6 +4170,7 @@ export async function POST(req: NextRequest) {
       images: Array.isArray(images) ? images : [],
       stockImages: stockImgs,
       variant,
+      locationInfo,
     }
 
     let htmlString: string
