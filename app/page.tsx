@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import NavBar from '../components/site/NavBar'
+import { useState, useEffect, useRef } from 'react'
 
 const navLinks = [
   { label: 'About', href: '/about' },
@@ -10,7 +9,10 @@ const navLinks = [
   { label: 'Contact', href: '/contact' },
 ]
 
+const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
+
 export default function Home() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [hasVisited, setHasVisited] = useState(true)
 
   useEffect(() => {
@@ -21,73 +23,215 @@ export default function Home() {
     }
   }, [])
 
+  // Particle animation
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    let animId: number
+    let particles: { x: number; y: number; vx: number; vy: number; r: number; o: number }[] = []
+
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    // Create particles in a flowing shape
+    const count = 180
+    const cx = canvas.width * 0.55
+    const cy = canvas.height * 0.45
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5
+      const radius = 120 + Math.random() * 180
+      particles.push({
+        x: cx + Math.cos(angle) * radius + (Math.random() - 0.5) * 60,
+        y: cy + Math.sin(angle) * radius * 0.7 + (Math.random() - 0.5) * 60,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        r: 1.2 + Math.random() * 1.8,
+        o: 0.15 + Math.random() * 0.55,
+      })
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x
+          const dy = particles[i].y - particles[j].y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 55) {
+            ctx.beginPath()
+            ctx.moveTo(particles[i].x, particles[i].y)
+            ctx.lineTo(particles[j].x, particles[j].y)
+            ctx.strokeStyle = `rgba(255,255,255,${0.06 * (1 - dist / 55)})`
+            ctx.lineWidth = 0.5
+            ctx.stroke()
+          }
+        }
+      }
+
+      // Draw particles
+      for (const p of particles) {
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(255,255,255,${p.o})`
+        ctx.fill()
+
+        p.x += p.vx
+        p.y += p.vy
+
+        // Gentle drift
+        p.vx += (Math.random() - 0.5) * 0.01
+        p.vy += (Math.random() - 0.5) * 0.01
+        p.vx *= 0.99
+        p.vy *= 0.99
+      }
+
+      animId = requestAnimationFrame(draw)
+    }
+    draw()
+
+    return () => {
+      cancelAnimationFrame(animId)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
   const anim = (animation: string) => hasVisited ? 'none' : animation
   const startOpacity = hasVisited ? 1 : 0
 
   return (
-    <>
-      {/* Scrolling background */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'hidden', zIndex: 0 }}>
-        <div id="bg" style={{ display: 'flex', height: '100%', animation: 'bg-scroll 60s linear infinite' }}>
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0 }} />
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0, transform: 'scaleX(-1)' }} />
-          <img src="/images/bg.jpg" alt="" style={{ height: '100%', width: 'auto', minWidth: '100vw', objectFit: 'cover', flexShrink: 0 }} />
+    <div style={{ background: '#0a0a0a', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+      {/* Particle canvas */}
+      <canvas
+        ref={canvasRef}
+        style={{ position: 'absolute', inset: 0, zIndex: 1 }}
+      />
+
+      {/* Nav */}
+      <nav style={{
+        position: 'relative', zIndex: 10, display: 'flex', alignItems: 'center',
+        justifyContent: 'space-between', padding: '2rem 3rem',
+        animation: anim('fadeIn 1s 0.5s forwards'), opacity: startOpacity,
+      }}>
+        <a href="/" style={{
+          fontFamily: font, fontSize: '0.85rem', fontWeight: 700,
+          color: '#fff', textDecoration: 'none', letterSpacing: '0.15em',
+          textTransform: 'uppercase', lineHeight: 1.3,
+        }}>
+          MOUNTAIN<br />STUDIOS
+        </a>
+        <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
+          {navLinks.map(link => (
+            <a key={link.href} href={link.href} style={{
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 400,
+              color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              transition: 'color 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <div style={{
+        position: 'relative', zIndex: 2, minHeight: 'calc(100vh - 200px)',
+        display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '0 3rem',
+      }}>
+        {/* Split headline */}
+        <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: startOpacity }}>
+          <h1 style={{
+            fontFamily: font, fontSize: 'clamp(3rem, 7vw, 6.5rem)',
+            fontWeight: 800, color: '#ffffff', textTransform: 'uppercase',
+            lineHeight: 1.0, margin: 0, letterSpacing: '-0.02em',
+          }}>
+            Building websites
+            <br />that
+          </h1>
+        </div>
+
+        <div style={{
+          textAlign: 'right', marginTop: '-0.5rem',
+          animation: anim('fadeUp 1s 1.3s forwards'), opacity: startOpacity,
+        }}>
+          <h1 style={{
+            fontFamily: font, fontSize: 'clamp(3rem, 7vw, 6.5rem)',
+            fontWeight: 800, color: '#ffffff', textTransform: 'uppercase',
+            lineHeight: 1.0, margin: 0, letterSpacing: '-0.02em',
+          }}>
+            move the
+            <br />needle forward
+          </h1>
         </div>
       </div>
 
-      {/* Radial gradient overlay */}
+      {/* Bottom section */}
       <div style={{
-        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1,
-        background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.65) 100%)',
-        animation: anim('overlay-fade 1.5s 1.5s forwards'), opacity: startOpacity,
-      }} />
-
-      <NavBar animate={!hasVisited} />
-
-      {/* Content wrapper */}
-      <div id="wrapper" style={{
-        position: 'relative', zIndex: 2, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center', minHeight: '100vh',
-        animation: anim('wrapper-fade 3s forwards'), opacity: startOpacity,
+        position: 'relative', zIndex: 2, padding: '3rem',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+        display: 'grid', gridTemplateColumns: '1fr 2fr auto',
+        gap: '2rem', alignItems: 'start',
+        animation: anim('fadeIn 1s 1.8s forwards'), opacity: startOpacity,
       }}>
-        <header style={{ textAlign: 'center', animation: anim('header-reveal 1s 2.25s forwards'), opacity: startOpacity }}>
-          <h1 style={{
-            fontFamily: 'var(--font-source-sans), "Source Sans 3", "Source Sans Pro", sans-serif',
-            fontSize: 'clamp(2.75rem, 5.5vw, 4.75rem)', fontWeight: 300, letterSpacing: '0.35em',
-            textTransform: 'uppercase', color: '#ffffff', margin: 0, lineHeight: 1.2,
-            textShadow: '0 0 20px rgba(0,0,0,0.3)',
-          }}>
-            Mountain Studios
-          </h1>
-          <p style={{
-            fontFamily: 'var(--font-source-sans), "Source Sans 3", "Source Sans Pro", sans-serif',
-            fontSize: 'clamp(0.9rem, 1.6vw, 1.15rem)', fontWeight: 400, letterSpacing: '0.225em',
-            textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', marginTop: '1rem',
-            lineHeight: 1.5, textShadow: '0 0 10px rgba(0,0,0,0.3)',
-          }}>
-            Web Design &nbsp;&bull;&nbsp; Cape Town &nbsp;&bull;&nbsp; One conversation. Done.
-          </p>
-        </header>
+        <a href="/contact" style={{
+          fontFamily: font, fontSize: '0.75rem', fontWeight: 500,
+          color: 'rgba(255,255,255,0.5)', textDecoration: 'none',
+          letterSpacing: '0.1em', textTransform: 'uppercase',
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+        }}
+          onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+          onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+        >
+          <span style={{ display: 'inline-block', width: '8px', height: '8px', border: '1px solid rgba(255,255,255,0.4)', marginRight: '0.25rem' }} />
+          Contact us
+        </a>
 
-        <nav style={{ display: 'flex', gap: '0.75rem', marginTop: '2rem' }}>
-          {navLinks.map((item, i) => (
-            <a key={item.href} href={item.href} style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              padding: '0.5rem 1.25rem', borderRadius: '9999px',
-              border: '1px solid rgba(255,255,255,0.7)', color: 'rgba(255,255,255,0.9)',
-              fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
-              fontSize: '0.8rem', fontWeight: 400, letterSpacing: '0.15em',
-              textTransform: 'uppercase', textDecoration: 'none', transition: 'all 0.3s ease',
-              animation: anim(`icon-reveal 0.75s ${2.5 + i * 0.25}s forwards`), opacity: startOpacity,
-            }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.75)'; e.currentTarget.style.color = '#ffffff'; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.075)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)'; e.currentTarget.style.color = 'rgba(255,255,255,0.9)'; e.currentTarget.style.backgroundColor = 'transparent' }}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <p style={{
+          fontFamily: 'monospace', fontSize: '0.8rem', fontWeight: 400,
+          color: 'rgba(255,255,255,0.5)', lineHeight: 1.8,
+          textTransform: 'uppercase', letterSpacing: '0.04em',
+          maxWidth: '600px', margin: 0,
+        }}>
+          Mountain Studios is a web design agency based in Cape Town.
+          We build premium, conversion-focused websites for small businesses.
+          One conversation. One brief. Done. No jargon, no committees,
+          no waiting months for a homepage.
+        </p>
+
+        <div style={{
+          fontFamily: font, fontSize: '4rem', fontWeight: 300,
+          color: 'rgba(255,255,255,0.08)', lineHeight: 1,
+        }}>
+          &#x275D;&#x275D;
+        </div>
       </div>
-    </>
+
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes fadeUp {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+          nav > div { display: none !important; }
+        }
+      `}</style>
+    </div>
   )
 }
