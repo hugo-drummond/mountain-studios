@@ -32,14 +32,14 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)',
+          background: 'rgba(26,26,46,0.85)', backdropFilter: 'blur(12px)',
           borderRadius: '999px', padding: '0.4rem 0.5rem 0.4rem 1.25rem',
-          border: '1px solid rgba(255,255,255,0.4)',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.15)',
         }}>
           <a href="/" style={{
             fontFamily: font, fontSize: '0.9rem', fontWeight: 700,
-            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
             marginRight: '1rem',
           }}>
             mountain studios
@@ -47,20 +47,20 @@ export default function Home() {
           {['About', 'Contact', 'Portfolio'].map(label => (
             <a key={label} href={`/${label.toLowerCase()}`} style={{
               fontFamily: font, fontSize: '0.78rem', fontWeight: 500,
-              color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
-              opacity: 0.55, transition: 'opacity 0.2s',
+              color: 'rgba(255,255,255,0.55)', textDecoration: 'none', letterSpacing: '0.02em',
+              transition: 'color 0.2s',
               padding: '0.4rem 0.75rem',
             }}
-              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '0.55'}
+              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
             >
               {label}
             </a>
           ))}
           <a href="/start-your-project" style={{
             fontFamily: font, fontSize: '0.78rem', fontWeight: 600,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.02em',
-            background: '#1a1a2e', padding: '0.5rem 1.15rem', borderRadius: '999px',
+            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
+            background: '#fff', padding: '0.5rem 1.15rem', borderRadius: '999px',
             transition: 'opacity 0.2s',
           }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
