@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #e8ecf1 75%, #ffffff 100%)',
+      background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
       minHeight: '100vh', position: 'relative', overflow: 'hidden',
     }}>
 
