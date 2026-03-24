@@ -428,21 +428,21 @@ function formatCurrency(amount: number, currency: string): string {
 }
 
 const categoryColors: Record<BusinessCategory, { primary: string; secondary: string }> = {
-  'food-hospitality':      { primary: '#E8A317', secondary: '#2B2B2B' },
-  'retail':                { primary: '#6C3CE1', secondary: '#FF6B6B' },
-  'trades-construction':   { primary: '#3B6B8A', secondary: '#F5A623' },
-  'health-wellness':       { primary: '#4A90A4', secondary: '#D4F0E7' },
-  'professional':          { primary: '#002147', secondary: '#F0E6D3' },
-  'creative':              { primary: '#1A1A2E', secondary: '#C4877A' },
-  'fitness-sport':         { primary: '#FF5F4F', secondary: '#3A3F47' },
-  'home-services':         { primary: '#3AAFDE', secondary: '#F7F9FC' },
-  'education':             { primary: '#2D3A8C', secondary: '#F5C242' },
-  'automotive':            { primary: '#5A5A5A', secondary: '#C0392B' },
-  'property':              { primary: '#1B2A4A', secondary: '#D4A853' },
-  'events-entertainment':  { primary: '#E8C4C4', secondary: '#3D1F3D' },
-  'tech-digital':          { primary: '#008080', secondary: '#FAF9F6' },
-  'pets':                  { primary: '#2A9D8F', secondary: '#F4A261' },
-  'other':                 { primary: '#2563EB', secondary: '#F59E0B' },
+  'food-hospitality':      { primary: '#8B4513', secondary: '#D4A574' },  // warm brown + tan — earthy, appetising
+  'retail':                { primary: '#1a1a2e', secondary: '#c9a96e' },  // dark navy + muted gold — upmarket retail
+  'trades-construction':   { primary: '#2C5F7C', secondary: '#E8913A' },  // steel blue + safety orange — trade industry standard
+  'health-wellness':       { primary: '#3A7D6E', secondary: '#B8D8CF' },  // sage green + soft mint — calming, clinical trust
+  'professional':          { primary: '#1E3A5F', secondary: '#C4A265' },  // navy + brass — law/finance authority
+  'creative':              { primary: '#2D2D2D', secondary: '#D4886C' },  // charcoal + terracotta — gallery/studio feel
+  'fitness-sport':         { primary: '#1A1A1A', secondary: '#E63946' },  // black + red accent — energy, power
+  'home-services':         { primary: '#2B7A78', secondary: '#DEF2F1' },  // teal + light mint — clean, trustworthy
+  'education':             { primary: '#1D3557', secondary: '#E9C46A' },  // deep blue + warm yellow — academic, approachable
+  'automotive':            { primary: '#2D2D2D', secondary: '#C0392B' },  // dark grey + red — automotive standard
+  'property':              { primary: '#1B2A4A', secondary: '#B5916C' },  // dark navy + warm copper — luxury property
+  'events-entertainment':  { primary: '#2D1B4E', secondary: '#E8B4B4' },  // deep plum + blush — evening/event feel
+  'tech-digital':          { primary: '#0D1B2A', secondary: '#00BFA6' },  // dark blue + teal green — modern tech
+  'pets':                  { primary: '#5B7553', secondary: '#E8B960' },  // forest green + warm gold — natural, friendly
+  'other':                 { primary: '#334155', secondary: '#94A3B8' },  // slate — neutral, professional
 }
 
 const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: number }> = {
