@@ -497,6 +497,7 @@ export default function StartYourProject() {
   const [selectedRegion, setSelectedRegion] = useState<Region>('South Africa')
   const [countrySearch, setCountrySearch] = useState('')
   const [geoDetected, setGeoDetected] = useState(false)
+  const [geoRegion, setGeoRegion] = useState<Region>('South Africa') // IP-based, locked for pricing
 
   // Auto-detect country from IP
   useEffect(() => {
@@ -522,12 +523,16 @@ export default function StartYourProject() {
             setSelectedRegion(match.region)
             setCountrySearch(match.name)
             setGeoDetected(true)
+            setGeoRegion(match.region) // lock pricing to IP region
           }
         }
       })
       .catch(() => {})
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
-  const regionInfo = regionCurrencyMap[selectedRegion]
+
+  // Pricing always uses IP-detected region; selectedRegion used for content only
+  const pricingRegion = geoDetected ? geoRegion : selectedRegion
+  const regionInfo = regionCurrencyMap[pricingRegion]
   const currency = regionInfo.currency
 
   // Booking
@@ -927,9 +932,9 @@ export default function StartYourProject() {
                 </button>
               ))}
             </div>
-            {selectedCountry && (
+            {selectedCountry && geoDetected && (
               <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', marginTop: '1rem' }}>
-                {geoDetected && selectedCountry === countrySearch ? 'We detected you\'re in ' + selectedCountry + '. ' : ''}Pricing will be shown in {regionCurrencyMap[selectedRegion].currency}
+                We detected you&apos;re in {selectedCountry}
               </p>
             )}
             <Nav back={() => setStep(3)} next={() => setStep(5)} disabled={!selectedCountry} />
