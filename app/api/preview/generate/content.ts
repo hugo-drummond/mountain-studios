@@ -3470,7 +3470,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Environ",
           "Anti-Ageing"
         ],
-        "serviceImageQuery": "facial treatment serum application aesthetician spa bed close-up"
+        "serviceImageQuery": "skincare products serum bottles clean white shelf professional"
       },
       {
         "name": "Body Treatments & Wraps",
@@ -3479,7 +3479,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Body Wraps",
           "Scrubs"
         ],
-        "serviceImageQuery": "body wrap detox towels spa treatment bed"
+        "serviceImageQuery": "spa treatment room towels essential oils candles professional"
       },
       {
         "name": "Nails & Waxing",
@@ -3535,7 +3535,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "serene, luxurious, warm",
     "heroImageQuery": "spa treatment room interior candles towels bed warm ambient",
     "ogImageQuery": "spa treatment room candles towels ambient warm",
-    "aboutImageQuery": "aesthetician applying facial mask client spa bed treatment",
+    "aboutImageQuery": "beauty spa interior skincare products shelves clean professional",
     "galleryImageQueries": [
       "spa reception area flowers candles ambient lighting interior",
       "pedicure foot spa warm water treatment soak",
@@ -3562,7 +3562,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Deep Tissue",
           "Remedial"
         ],
-        "serviceImageQuery": "deep tissue massage back muscles pressure hands close-up"
+        "serviceImageQuery": "massage therapy room professional treatment table setup"
       },
       {
         "name": "Swedish & Relaxation",
@@ -3571,7 +3571,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Swedish",
           "Relaxation"
         ],
-        "serviceImageQuery": "swedish relaxation massage long strokes back oil"
+        "serviceImageQuery": "relaxation spa room warm lighting candles stones"
       },
       {
         "name": "Sports & Recovery",
@@ -3580,7 +3580,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Recovery",
           "Athletes"
         ],
-        "serviceImageQuery": "sports massage calf leg athlete recovery treatment"
+        "serviceImageQuery": "sports recovery foam roller athletic training equipment"
       },
       {
         "name": "Prenatal & Postnatal Massage",
@@ -3589,7 +3589,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Prenatal",
           "Postnatal"
         ],
-        "serviceImageQuery": "pregnancy massage bolster side-lying support cushions treatment"
+        "serviceImageQuery": "prenatal wellness room cushions soft lighting peaceful"
       }
     ],
     "galleryHeading": "A Space to Unwind",
@@ -3627,7 +3627,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "calm, warm, healing",
     "heroImageQuery": "massage therapy room interior table towels dim candles ambience",
     "ogImageQuery": "massage room interior dim candles towels ambience",
-    "aboutImageQuery": "massage therapist working on client shoulder neck treatment",
+    "aboutImageQuery": "massage therapy room interior essential oils towels professional",
     "galleryImageQueries": [
       "massage room candles essential oils towels warm ambience",
       "hot stone massage basalt stones placed back spine",
@@ -4316,7 +4316,7 @@ export const presetContent: Record<string, PresetContent> = {
           "12-Week",
           "Body Composition"
         ],
-        "serviceImageQuery": "body transformation before after progress tracking measurement"
+        "serviceImageQuery": "gym equipment weights dumbbells fitness studio professional"
       },
       {
         "name": "Small Group Training",
@@ -14751,7 +14751,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Abstract"
         ],
         "icon": "star",
-        "serviceImageQuery": "artist painting large abstract canvas studio"
+        "serviceImageQuery": "large colorful abstract painting gallery wall"
       },
       {
         "name": "Jordan Ellis",
@@ -14761,7 +14761,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Landscape"
         ],
         "icon": "layers",
-        "serviceImageQuery": "artist painter studio easel oil painting"
+        "serviceImageQuery": "oil painting landscape artwork canvas framed"
       },
       {
         "name": "Riley Chen",
@@ -14771,7 +14771,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Installation"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "sculptor artist workshop bronze sculpture tools"
+        "serviceImageQuery": "bronze sculpture contemporary art gallery pedestal"
       },
       {
         "name": "Sam Okafor",
@@ -14780,7 +14780,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Photography",
           "Prints"
         ],
-        "serviceImageQuery": "photographer artist studio fine art photography prints"
+        "serviceImageQuery": "black and white fine art photography urban architecture print"
       }
     ],
     "galleryHeading": "Current Exhibition",

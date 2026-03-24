@@ -256,8 +256,10 @@ interface ImageQueries {
 
 async function fetchPexelsImage(query: string, apiKey: string, orientation: string = 'landscape', usedUrls?: Set<string>): Promise<string | null> {
   try {
+    // Ensure SFW results
+    const safeQuery = query.replace(/\b(sexy|nude|naked|provocative|lingerie|bikini)\b/gi, 'professional')
     const res = await fetch(
-      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=8&orientation=${orientation}`,
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(safeQuery)}&per_page=15&orientation=${orientation}`,
       { headers: { Authorization: apiKey } },
     )
     const data = await res.json()
