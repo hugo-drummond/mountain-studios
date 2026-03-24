@@ -533,13 +533,13 @@ function buildNav(businessName: string, content: GeneratedContent, navFlags: Ret
   return `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${navLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -1154,13 +1154,13 @@ function buildPropertyTemplate(data: TemplateData): string {
   const prNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${prNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -1411,13 +1411,13 @@ function buildEventsTemplate(data: TemplateData): string {
   const evtNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${evtNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -1618,13 +1618,13 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const proNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${proNavLinks.map(l => l.replace(`color:${proText}`, 'color:rgba(255,255,255,0.8)')).join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -1795,13 +1795,13 @@ function buildEducationTemplate(data: TemplateData): string {
   const eduNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${eduNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -1993,13 +1993,13 @@ function buildCreativeTemplate(data: TemplateData): string {
   const crNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${crNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -2187,13 +2187,13 @@ function buildFitnessTemplate(data: TemplateData): string {
   ${promoBanner}
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${fitNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -2378,13 +2378,13 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const autoNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${autoNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -2546,13 +2546,13 @@ function buildPetsTemplate(data: TemplateData): string {
   const petNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${petNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -2750,13 +2750,13 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const foodNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${foodNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -2983,13 +2983,13 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   const hwNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${hwNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -3211,13 +3211,13 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const homeNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${homeNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -3471,13 +3471,13 @@ function buildTradesTemplate(data: TemplateData): string {
   const trNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${trNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -3752,13 +3752,13 @@ function buildRetailTemplate(data: TemplateData): string {
   const retailNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${retailNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
@@ -3971,13 +3971,13 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const techNav = `
   <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <div style="display:flex;align-items:center;gap:2.5rem">
-        <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${techNavLinks.join('\n          ')}
         </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       ${buildBurgerButton('#fff')}
     </div>
   </nav>
