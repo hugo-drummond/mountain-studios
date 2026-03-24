@@ -461,7 +461,55 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     img { display: block; max-width: 100%; }
     a { cursor: pointer; }
     a:active, button:active { pointer-events: none; }
-    em { font-style: italic; }`
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+      nav > div { flex-wrap: wrap !important; padding: 0.75rem 1rem !important; gap: 0.5rem !important; justify-content: center !important; }
+      nav a { font-size: 0.75rem !important; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }`
 }
 
 function buildNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
@@ -491,7 +539,7 @@ function buildFooter(businessName: string, content: GeneratedContent, theme: The
 
   return `
   <footer style="padding:4rem 2rem 2rem;background:${theme === 'light' ? '#f0f0f0' : '#0a0a0a'};border-top:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">${content.heroSubtitle}</p>
@@ -523,14 +571,14 @@ function buildAboutSection(content: GeneratedContent): string {
 
   return `
     <section id="about" style="padding:100px 0;background:var(--bg-alt)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+      <div class="ms-grid" style="max-width:1100px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
         <div>
           <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 2rem 0">${content.aboutHeading}</h2>
           ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text);line-height:1.6;font-style:italic;font-weight:600;margin:0 0 2rem 0">${content.aboutMission}</p>` : ''}
           ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0">${p}</p>`).join('')}
         </div>
         <div>
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;padding-top:1rem">
+          <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;padding-top:1rem">
             ${content.stats.slice(0, 4).map(s => `
               <div>
                 <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:var(--text)">${s.value}</div>
@@ -567,7 +615,7 @@ function buildContactSection(content: GeneratedContent, locationInfo: ReturnType
       <div style="max-width:600px;margin:0 auto;padding:0 2rem;text-align:center">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
         <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
             <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
             <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
           </div>
@@ -583,7 +631,7 @@ function buildContactSection(content: GeneratedContent, locationInfo: ReturnType
     <section id="contact" style="padding:100px 0;background:var(--bg)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
-        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
           <div>
             <div style="margin-bottom:2rem">
               <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
@@ -599,7 +647,7 @@ function buildContactSection(content: GeneratedContent, locationInfo: ReturnType
             </div>
           </div>
           <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
               <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
               <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
             </div>
@@ -652,9 +700,9 @@ function buildVisualTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
+        <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
           <!-- Left: featured image -->
-          <div style="overflow:hidden;border-radius:16px;height:520px">
+          <div class="ms-img" style="overflow:hidden;border-radius:16px;height:520px">
             <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <!-- Right: stacked services list -->
@@ -677,8 +725,8 @@ function buildVisualTemplate(data: TemplateData): string {
     <section id="gallery" style="padding:100px 0;background:var(--bg)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
-        <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;grid-template-rows:auto auto">
-          <div style="grid-row:1/3;border-radius:16px;overflow:hidden;min-height:400px">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;grid-template-rows:auto auto">
+          <div class="ms-img" style="grid-row:1/3;border-radius:16px;overflow:hidden;min-height:400px">
             <img src="${galleryImgs[0]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="border-radius:16px;overflow:hidden;min-height:190px">
@@ -774,9 +822,9 @@ function buildServiceTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:flex;align-items:stretch;gap:1.5rem">
+        <div class="ms-flex" style="display:flex;align-items:stretch;gap:1.5rem">
           ${content.services.map((s, i) => `${i > 0 ? `
-            <div style="display:flex;align-items:center;flex-shrink:0">
+            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -815,16 +863,16 @@ function buildServiceTemplate(data: TemplateData): string {
   const professionalSection = !isProfessionalCategory ? '' : `
     <section style="padding:0;background:var(--bg)">
       <!-- 2x2 greyscale image grid with accent label pills -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
         ${tileImgs.map((img, i) => `
-        <div style="position:relative;height:280px;overflow:hidden">
+        <div class="ms-img" style="position:relative;height:280px;overflow:hidden">
           <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)" />
           <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#1a1a1a;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
         </div>`).join('')}
       </div>
       <!-- Stats bar -->
       <div style="background:var(--bg-alt);border-top:3px solid var(--primary);padding:60px 2rem">
-        <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:3rem;text-align:center">
+        <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:3rem;text-align:center">
           ${content.stats.slice(0, 3).map((s, i) => `
           <div>
             <div style="font-size:2rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
@@ -841,9 +889,9 @@ function buildServiceTemplate(data: TemplateData): string {
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);text-align:center;margin-bottom:4rem;max-width:500px;margin-left:auto;margin-right:auto">A simple, straightforward process designed around you.</p>
-        <div style="display:flex;align-items:stretch;gap:0">
+        <div class="ms-flex" style="display:flex;align-items:stretch;gap:0">
           ${steps.map((s, i) => `${i > 0 ? `
-            <div style="display:flex;align-items:center;flex-shrink:0;padding:0 0.75rem">
+            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0;padding:0 0.75rem">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -937,10 +985,10 @@ function buildPortfolioTemplate(data: TemplateData): string {
     <section id="services" style="padding:100px 0;background:var(--bg-alt)">
       <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
+        <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
           <!-- Left: service image -->
-          <div style="position:sticky;top:2rem">
-            <div style="overflow:hidden;height:560px">
+          <div class="ms-sticky" style="position:sticky;top:2rem">
+            <div class="ms-img" style="overflow:hidden;height:560px">
               ${serviceImgs.map((img, i) => `<img id="pf-svc-img-${i}" src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;display:${i === 0 ? 'block' : 'none'}" />`).join('')}
             </div>
           </div>
@@ -981,7 +1029,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
       </div>
       <div style="max-width:1200px;margin:0 auto">
-        <div style="display:grid;grid-template-columns:65% 35%;height:400px;gap:2px">
+        <div class="ms-grid" style="display:grid;grid-template-columns:65% 35%;height:400px;gap:2px">
           <div class="pf-cell">
             <img src="${galleryImgs[0]}" alt="${captions[0] || 'Project'}" />
             <div class="pf-cap"><span>${captions[0] || 'Project'}</span></div>
@@ -991,7 +1039,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
             <div class="pf-cap"><span>${captions[1] || 'Project'}</span></div>
           </div>
         </div>
-        <div style="display:grid;grid-template-columns:40% 60%;height:340px;gap:2px;margin-top:2px">
+        <div class="ms-grid" style="display:grid;grid-template-columns:40% 60%;height:340px;gap:2px;margin-top:2px">
           <div class="pf-cell">
             <img src="${galleryImgs[2]}" alt="${captions[2] || 'Project'}" />
             <div class="pf-cap"><span>${captions[2] || 'Project'}</span></div>
@@ -1073,7 +1121,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   if (navFlags.navContact) prNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;color:${prText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Contact</a>`)
 
   const prNav = `
-  <nav style="background:${prBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${prBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${prText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -1108,9 +1156,9 @@ function buildPropertyTemplate(data: TemplateData): string {
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:${prBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
-        <div style="border-radius:16px;overflow:hidden;height:550px">
+        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
           <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:${prCopper};border-radius:12px;padding:1.5rem 2rem;color:#fff">
@@ -1122,7 +1170,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${prMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
           ${content.stats.slice(0, 4).map(s => `
           <div>
             <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${prCopper}">${s.value}</div>
@@ -1140,10 +1188,10 @@ function buildPropertyTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Our Portfolio</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.galleryHeading || 'Featured Properties'}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         ${content.services.slice(0, 3).map((s, i) => `
         <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
-          <div style="position:relative;height:250px;overflow:hidden">
+          <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
             <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
           </div>
@@ -1168,7 +1216,7 @@ function buildPropertyTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left">
         ${content.services.map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon)}</div>
@@ -1185,7 +1233,7 @@ function buildPropertyTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Client Stories</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">${content.galleryHeading ? 'What Our Clients Say' : 'What Our Clients Say'}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
           <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
@@ -1206,7 +1254,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   // Section 6: Contact — 2-column: info left, form card right
   const contactSection = `
   <section id="contact" style="padding:80px 2rem;background:${prBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prCopper};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.contactHeading}</h2>
@@ -1246,7 +1294,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   // Footer — 4-column: logo+desc | quick links | services | connect
   const prFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${prText}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
@@ -1329,7 +1377,7 @@ function buildEventsTemplate(data: TemplateData): string {
   if (navFlags.navContact) evtNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${evtText};text-decoration:none;font-weight:400">Contact</a>`)
 
   const evtNav = `
-  <nav style="background:${evtBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${evtBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${evtText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -1360,17 +1408,17 @@ function buildEventsTemplate(data: TemplateData): string {
   const serviceGrid = `
   <section id="services" style="padding:80px 2rem;background:${evtBg}">
     <div style="max-width:1200px;margin:0 auto">
-      <div style="display:grid;grid-template-columns:1fr 3fr;gap:0;border:1px solid rgba(0,0,0,0.08);border-radius:16px;overflow:hidden">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 3fr;gap:0;border:1px solid rgba(0,0,0,0.08);border-radius:16px;overflow:hidden">
         <div style="padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(0,0,0,0.08)">
           <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:0.75rem"><em>${content.servicesHeading}</em></h2>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${evtMuted};line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr)">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr)">
           ${content.services.map((s, i) => `
           <div style="border-left:${i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};padding:1.5rem">
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
             <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
-            <div style="border-radius:12px;overflow:hidden;height:200px">
+            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:200px">
               <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             </div>
           </div>`).join('')}
@@ -1382,7 +1430,7 @@ function buildEventsTemplate(data: TemplateData): string {
   // Section 3: Alternating 50/50 feature sections — teal bg blocks
   const featureSections = content.services.slice(0, 2).map((s, i) => `
   <section style="background:${i % 2 === 0 ? evtTeal : evtBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:70vh">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:70vh">
       ${i % 2 === 0 ? `
       <div style="overflow:hidden">
         <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -1412,8 +1460,8 @@ function buildEventsTemplate(data: TemplateData): string {
   // Section 4: About / expert advisors — photo left, text right
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:${evtBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
-      <div style="border-radius:16px;overflow:hidden;height:450px">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
+      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
         <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
@@ -1453,7 +1501,7 @@ function buildEventsTemplate(data: TemplateData): string {
   // Footer
   const evtFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.08)">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:3rem">
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Services</h4>
         ${content.services.map(s => `<a href="#services" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
@@ -1532,7 +1580,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   if (navFlags.navContact) proNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proText};text-decoration:none;font-weight:400">Contact</a>`)
 
   const proNav = `
-  <nav style="background:${proBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)">
+  <nav class="ms-sticky" style="background:${proBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)">
     <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <div>
         <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:400;color:${proText};text-decoration:none;display:block;line-height:1.2">${businessName}</a>
@@ -1562,10 +1610,10 @@ function buildProfessionalTemplate(data: TemplateData): string {
   // Section 2: 4-column (or 3) service cards — photos + title + description + red link
   const serviceCards = `
   <section id="services" style="padding:80px 2rem;background:${proBg}">
-    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
+    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
       ${content.services.map((s, i) => `
       <div>
-        <div style="height:200px;overflow:hidden;margin-bottom:1.25rem">
+        <div class="ms-img" style="height:200px;overflow:hidden;margin-bottom:1.25rem">
           <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
@@ -1600,7 +1648,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
 
   const imageGridSection = `
   <section style="padding:40px 2rem;background:${proBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       ${tileImgs.map((img, i) => `
       <div style="position:relative;aspect-ratio:1;overflow:hidden">
         <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -1627,7 +1675,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   // Footer — dark, 4-column links + subscribe + social
   const proFooter = `
   <footer style="padding:4rem 2rem 2rem;background:#1e1e1e">
-    <div style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${proText};margin-bottom:0.35rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.75rem;color:${proMuted};font-style:italic;margin-bottom:1.5rem">${content.heroEyebrow || ''}</p>
@@ -1708,7 +1756,7 @@ function buildEducationTemplate(data: TemplateData): string {
   if (navFlags.navContact) eduNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${eduText};text-decoration:none;font-weight:500">Contact</a>`)
 
   const eduNav = `
-  <nav style="background:${eduBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${eduBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${eduText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -1721,7 +1769,7 @@ function buildEducationTemplate(data: TemplateData): string {
   // Section 1: Split hero — pink bg, heading left, photo right
   const heroSection = `
   <section style="background:${eduPink};overflow:hidden">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:80vh;align-items:center;padding:0 2rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:80vh;align-items:center;padding:0 2rem">
       <div style="padding:3rem 0">
         <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1.5rem">${content.tagline}</h1>
         <p style="font-family:var(--body-font);font-size:1.05rem;color:${eduText};line-height:1.7;margin-bottom:2rem;max-width:420px;opacity:0.8">${content.heroSubtitle}</p>
@@ -1750,7 +1798,7 @@ function buildEducationTemplate(data: TemplateData): string {
   <section id="services" style="padding:60px 2rem;background:${eduBg}">
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:2rem;text-align:center;text-transform:capitalize">${content.servicesHeading}</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
       ${content.services.map(s => `
       <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1rem">
         <div style="font-size:1.5rem;flex-shrink:0">${s.icon || '&#9998;'}</div>
@@ -1776,7 +1824,7 @@ function buildEducationTemplate(data: TemplateData): string {
     <div style="max-width:1000px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> To Get Your Child Back On Track</h2>
       <!-- Steps: circle + connector + text in one grid -->
-      <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
         ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed #ccc;margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
           <div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
           <div>
@@ -1796,8 +1844,8 @@ function buildEducationTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${eduBg}">
     <div style="max-width:1200px;margin:0 auto">
       <p style="font-family:var(--body-font);font-size:1rem;color:${eduMuted};text-align:center;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-        <div style="border-radius:16px;overflow:hidden;height:450px">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
           <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div>
@@ -1811,7 +1859,7 @@ function buildEducationTemplate(data: TemplateData): string {
   // Section 7: About split — teal hero
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:var(--primary)">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;margin-bottom:1rem">${content.aboutHeading}</h2>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
@@ -1820,7 +1868,7 @@ function buildEducationTemplate(data: TemplateData): string {
           <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid #fff;color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary}</a>
         </div>
       </div>
-      <div style="border-radius:16px;overflow:hidden;height:400px">
+      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:400px">
         <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
@@ -1833,7 +1881,7 @@ function buildEducationTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1rem">${content.contactHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${eduText};opacity:0.7;margin-bottom:3rem">${content.heroSubtitle}</p>
       <form style="display:flex;flex-direction:column;gap:1.25rem;text-align:left" onsubmit="return false">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
           <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
         </div>
@@ -1896,7 +1944,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   // Nav — Lusion style: logo left, pill CTAs right
   const crNav = `
-  <nav style="background:${crBg};position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:${crBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${crText};text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${businessName}</a>
       <div style="display:flex;align-items:center;gap:0.75rem">
@@ -1934,10 +1982,10 @@ function buildCreativeTemplate(data: TemplateData): string {
     <div style="max-width:1400px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">Meet the Artists</h2>
       <a href="#" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
         ${[0,1,2].map(i => `
         <div>
-          <div style="height:450px;overflow:hidden;margin-bottom:1.25rem">
+          <div class="ms-img" style="height:450px;overflow:hidden;margin-bottom:1.25rem">
             <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${artistNames[i]}</h3>
@@ -1952,8 +2000,8 @@ function buildCreativeTemplate(data: TemplateData): string {
   // Section 3: About — photo left, text right
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:${crBg}">
-    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
-      <div style="border-radius:16px;overflow:hidden;height:500px">
+    <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:500px">
         <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
@@ -1972,10 +2020,10 @@ function buildCreativeTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.servicesHeading}</h2>
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
         ${content.services.slice(0, 4).map((s, i) => `
         <div>
-          <div style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
+          <div class="ms-img" style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
             <img src="${allPortfolioImgs[i % allPortfolioImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${s.tags.join(' &#8226; ')}</p>
@@ -2004,7 +2052,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   // Footer — Lusion style: address, socials, newsletter
   const crFooter = `
   <footer style="padding:5rem 2rem 2rem;background:${crBg};border-top:1px solid rgba(0,0,0,0.08)">
-    <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
+    <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
       <div>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">${locationInfo.address}<br />${locationInfo.city}, ${locationInfo.postcode}<br />${locationInfo.country}</p>
       </div>
@@ -2086,7 +2134,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 
   const fitNav = `
   ${promoBanner}
-  <nav style="background:${fitBg};position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:${fitBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${fitOrange};text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -2117,7 +2165,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   <section id="services" style="padding:80px 2rem;background:${fitBg};text-align:center">
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2.5rem">
         ${content.services.map(s => `
         <div style="text-align:center">
           <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${s.name}</h3>
@@ -2148,9 +2196,9 @@ function buildFitnessTemplate(data: TemplateData): string {
   // Section 4: 3-column location/service cards with photo bg
   const locationCards = `
   <section style="padding:80px 2rem;background:${fitBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
       ${content.services.slice(0, 3).map((s, i) => `
-      <div style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
+      <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
         <div style="position:absolute;inset:0">
           <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
@@ -2167,9 +2215,9 @@ function buildFitnessTemplate(data: TemplateData): string {
   // Section 5: Gallery — 3-column photo grid
   const gallerySection = `
   <section style="padding:0;background:${fitBg}">
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
       ${serviceImgs.map(img => `
-      <div style="height:350px;overflow:hidden">
+      <div class="ms-img" style="height:350px;overflow:hidden">
         <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>`).join('')}
     </div>
@@ -2181,9 +2229,9 @@ function buildFitnessTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitOrange};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.galleryHeading || 'Packages'}</h2>
       <div style="width:50px;height:3px;background:${fitOrange};margin-bottom:3rem"></div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.slice(0, 3).map((s, i) => `
-        <div style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+        <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
           <div style="position:absolute;inset:0">
             <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
@@ -2201,7 +2249,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   // Footer
   const fitFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${fitBg};border-top:1px solid rgba(255,255,255,0.08)">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
       <div>
         <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">About Us</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};line-height:1.7;max-width:350px">${content.aboutText.split('\n')[0]}</p>
@@ -2276,7 +2324,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   if (navFlags.navContact) autoNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:var(--text);text-decoration:none;font-weight:400">Contact</a>`)
 
   const autoNav = `
-  <nav style="background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)">
+  <nav class="ms-sticky" style="background:var(--bg);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)">
     <div style="max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:0.02em">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2.5rem">
@@ -2304,13 +2352,13 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   // Section 2: 2-column service showcase — Polestar model cards style
   const serviceShowcase = `
   <section style="padding:0;background:var(--bg);border-bottom:1px solid var(--border)">
-    <div style="display:grid;grid-template-columns:1fr 1fr">
+    <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr">
       ${content.services.slice(0, 2).map((s, i) => `
       <div style="padding:3rem 2.5rem;border-${i === 0 ? 'right' : 'left'}:1px solid var(--border)">
         <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);margin-bottom:0.5rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem">${s.description}</p>
         <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;font-weight:500">${content.ctaSecondary || 'Learn more'} &rarr;</a>
-        <div style="margin-top:2rem;height:280px;overflow:hidden">
+        <div class="ms-img" style="margin-top:2rem;height:280px;overflow:hidden">
           <img src="${serviceImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>`).join('')}
@@ -2336,7 +2384,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.aboutHeading}</h2>
-      <div style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
+      <div class="ms-grid" style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
         ${content.stats.slice(0, 4).map((s, i) => `
         <div style="padding:2rem;${i < Math.min(content.stats.length, 4) - 1 ? 'border-right:1px solid var(--border)' : ''}">
           <div style="border-left:3px solid var(--primary);padding-left:1rem">
@@ -2368,10 +2416,10 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
-          <div style="height:220px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
             <img src="${allCardImgs[i % allCardImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="padding:1.5rem">
@@ -2440,7 +2488,7 @@ function buildPetsTemplate(data: TemplateData): string {
   if (navFlags.navContact) petNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;color:#fff;text-decoration:none;font-weight:500">Contact</a>`)
 
   const petNav = `
-  <nav style="background:${petBg};position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:${petBg};position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.04em">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -2453,13 +2501,13 @@ function buildPetsTemplate(data: TemplateData): string {
   // Section 1: Split hero — large heading left, rounded photo right
   const heroSection = `
   <section style="padding:80px 2rem;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
       <div>
         <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1.5rem">${content.tagline}</h1>
         <p style="font-family:var(--body-font);font-size:1.1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.heroSubtitle}</p>
         <a href="#about" style="font-family:var(--body-font);font-size:1.1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Read about us.'}</a>
       </div>
-      <div style="border-radius:24px;overflow:hidden;height:500px">
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:500px">
         <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
@@ -2468,8 +2516,8 @@ function buildPetsTemplate(data: TemplateData): string {
   // Section 2: 50/50 — photo left, heading + underline CTA right
   const featureSection = `
   <section id="services" style="padding:80px 2rem;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div style="border-radius:24px;overflow:hidden;height:450px">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
         <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
@@ -2483,13 +2531,13 @@ function buildPetsTemplate(data: TemplateData): string {
   // Section 3: 50/50 reversed — heading left, photo right
   const featureSection2 = `
   <section style="padding:80px 2rem;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutText.split('\n')[0]}</p>
         <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaPrimary}</a>
       </div>
-      <div style="border-radius:24px;overflow:hidden;height:450px">
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
         <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
@@ -2509,7 +2557,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${petBg}">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.map((s, i) => `
         <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
           <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
@@ -2527,7 +2575,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${petBg}">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${[0,1,2].map(i => {
           const t = i === 0 && content.testimonial ? content.testimonial : null
           const quote = t ? t.quote : (content.services[i]?.description || content.heroSubtitle)
@@ -2553,7 +2601,7 @@ function buildPetsTemplate(data: TemplateData): string {
   // Footer — sage green bg, 4-column
   const petFooter = `
   <footer style="padding:60px 2rem 30px;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${businessName}</div>
       </div>
@@ -2640,7 +2688,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   if (navFlags.navContact) foodNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;color:${foodText};text-decoration:none;font-weight:500;letter-spacing:0.12em;text-transform:uppercase">Contact</a>`)
 
   const foodNav = `
-  <nav style="background:${foodBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${foodBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${foodText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -2669,7 +2717,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   // Section 2: About split — large plate photo left, heading + text right
   const aboutSplit = `
   <section id="about" style="padding:100px 2rem;background:${foodBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
         <div style="border-radius:50%;overflow:hidden;width:90%;aspect-ratio:1;margin:0 auto">
           <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2692,7 +2740,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   // Section 3: 3-column trust bar — icons + text
   const trustBar = `
   <section style="padding:60px 2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
       ${content.stats.slice(0, 3).map(s => `
       <div style="display:flex;align-items:center;gap:1.25rem">
         <div style="width:64px;height:64px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
@@ -2712,7 +2760,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div style="max-width:1000px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.heroEyebrow} -</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem">
         ${content.services.map((s, i) => `
         <div style="display:flex;align-items:center;gap:1rem;text-align:left">
           <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
@@ -2738,9 +2786,9 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.badge || 'Specials Choice'} -</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${galleryImgs.slice(0, 3).map(img => `
-        <div style="border-radius:12px;overflow:hidden;height:300px">
+        <div class="ms-img" style="border-radius:12px;overflow:hidden;height:300px">
           <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>`).join('')}
       </div>
@@ -2782,7 +2830,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   // Section 9: 4-column contact footer
   const contactRow = `
   <section style="padding:60px 2rem;background:${foodBg}">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
       <div>
         <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
         <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About ${businessName}</h3>
@@ -2870,7 +2918,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   if (navFlags.navContact) hwNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${hwText};text-decoration:none;font-weight:500">Contact</a>`)
 
   const hwNav = `
-  <nav style="background:${hwBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${hwBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${hwText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -2905,15 +2953,15 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:${hwBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div style="border-radius:16px;overflow:hidden;height:550px">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
         <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.badge || 'About Us'}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${hwText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem">
           ${content.stats.slice(0, 3).map(s => `
           <div style="text-align:center">
             <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;color:${hwTeal};font-size:1.1rem">&#9733;</div>
@@ -2932,7 +2980,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${hwText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${hwMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem">
         ${content.services.map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem;text-align:left">
           <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
@@ -2951,7 +2999,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">${content.galleryHeading || 'What Our Patients Say'}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
           <div style="position:absolute;top:1.5rem;right:1.5rem;font-size:3rem;color:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.3);line-height:1">&#10077;</div>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
@@ -2976,12 +3024,12 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   // Section 5: Contact — 2-column: info left, form card right
   const contactSection = `
   <section id="contact" style="padding:80px 2rem;background:${hwBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${hwText};margin-bottom:1rem">${content.contactHeading}</h2>
         <p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.7;margin-bottom:2.5rem">${content.aboutMission || content.heroSubtitle}</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
           <div style="display:flex;align-items:center;gap:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9906;</div>
             <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Address</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${locationInfo.address}, ${locationInfo.city}</div></div>
@@ -3004,7 +3052,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
         <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${hwText};margin-bottom:0.5rem">Send Us a Message</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${hwMuted};margin-bottom:1.5rem">We'll get back to you as soon as possible.</p>
         <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
             <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">First Name</label><input type="text" placeholder="John" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
             <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Last Name</label><input type="text" placeholder="Doe" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
           </div>
@@ -3020,7 +3068,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   // Footer — 3-column: logo+desc | services | company, copyright bar
   const hwFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${hwAlt};border-top:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${hwText};margin-bottom:1rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${hwMuted};line-height:1.7;max-width:320px">${content.heroSubtitle}</p>
@@ -3097,7 +3145,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   if (navFlags.navContact) homeNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${homeText};text-decoration:none;font-weight:500">Contact</a>`)
 
   const homeNav = `
-  <nav style="background:${homeBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
+  <nav class="ms-sticky" style="background:${homeBg};position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:var(--primary);text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -3109,7 +3157,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 
   // Section 1: Split hero — green bg left with heading + CTA, photo right
   const heroSection = `
-  <section style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
+  <section class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
     <div style="background:var(--primary);display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
       <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.5rem">${content.tagline}</h1>
       <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:420px">${content.heroSubtitle}</p>
@@ -3134,9 +3182,9 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${homeAlt};text-align:center">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">How It Works</h2>
-      <div style="display:flex;align-items:stretch;gap:1.5rem;margin-bottom:2.5rem">
+      <div class="ms-flex" style="display:flex;align-items:stretch;gap:1.5rem;margin-bottom:2.5rem">
         ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `
-        <div style="display:flex;align-items:center;flex-shrink:0">
+        <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -3156,7 +3204,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   // Section 3: Stats row — dark green bg
   const statsSection = `
   <section style="padding:60px 2rem;background:var(--primary)">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
       ${content.stats.slice(0, 4).map(s => `
       <div>
         <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.25rem">${s.sublabel || ''}</div>
@@ -3171,7 +3219,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <section id="services" style="padding:80px 2rem;background:${homeBg};text-align:center">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.aboutHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
         ${content.services.slice(0, 4).map(s => `
         <div style="text-align:left">
           <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
@@ -3190,7 +3238,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:0.75rem">${content.galleryHeading || 'What Our Customers Say'}</h2>
       <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};margin-bottom:3rem">${content.aboutMission || 'Read reviews from happy customers.'}</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${[0,1,2].map(i => {
           const t = i === 0 && content.testimonial ? content.testimonial : null
           const quote = t ? t.quote : (content.services[i]?.description || '')
@@ -3212,7 +3260,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const featureSection = `
   <section id="about" style="padding:80px 2rem;background:${homeBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${homeText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<div style="display:flex;align-items:start;gap:0.75rem;margin-bottom:0.75rem">
@@ -3223,7 +3271,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
           <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
         </div>
       </div>
-      <div style="border-radius:16px;overflow:hidden;height:450px">
+      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
         <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
@@ -3234,7 +3282,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <section style="padding:80px 2rem;background:${homeAlt}">
     <div style="max-width:1100px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.contactHeading}</h2>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.slice(0, 3).map(s => `
         <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
           <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
@@ -3259,7 +3307,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   // Footer
   const homeFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${homeAlt};border-top:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:0.75rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.6;max-width:300px">${content.heroSubtitle}</p>
@@ -3353,7 +3401,7 @@ function buildTradesTemplate(data: TemplateData): string {
   if (navFlags.navContact) trNavLinks.push(`<a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;color:${trText};text-decoration:none;font-weight:500">Contact</a>`)
 
   const trNav = `
-  <nav style="background:${trBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
+  <nav class="ms-sticky" style="background:${trBg};position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,0.08)">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${trText};text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -3416,7 +3464,7 @@ function buildTradesTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Our Services</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};max-width:600px;line-height:1.7;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="width:48px;height:48px;border-radius:12px;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
@@ -3434,9 +3482,9 @@ function buildTradesTemplate(data: TemplateData): string {
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
   <section id="about" style="padding:80px 2rem;background:${trAlt}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
-        <div style="border-radius:16px;overflow:hidden;height:550px">
+        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
           <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem">
@@ -3451,7 +3499,7 @@ function buildTradesTemplate(data: TemplateData): string {
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${trMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem">
           ${content.services.map(s => s.tags).flat().slice(0, 6).map(t => `
           <div style="display:flex;align-items:center;gap:0.5rem">
             <span style="color:${trBlue};font-size:1rem">&#10003;</span>
@@ -3469,7 +3517,7 @@ function buildTradesTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1rem">What Our Customers Say</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};margin-bottom:3rem">Don't just take our word for it.</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:${trText};line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
@@ -3506,7 +3554,7 @@ function buildTradesTemplate(data: TemplateData): string {
   // Section 7: Contact — 2-column: info left, form right
   const contactSection = `
   <section id="contact" style="padding:80px 2rem;background:${trAlt}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Contact Us</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.contactHeading}</h2>
@@ -3547,7 +3595,7 @@ function buildTradesTemplate(data: TemplateData): string {
   // Footer — 3-column: logo+desc+phone | quick links | contact
   const trFooter = `
   <footer style="padding:4rem 2rem 2rem;background:${trText}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
       <div>
         <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
@@ -3636,8 +3684,8 @@ function buildRetailTemplate(data: TemplateData): string {
   <div style="background:var(--primary);padding:0.5rem 0;text-align:center;overflow:hidden">
     <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:#fff;letter-spacing:0.08em;white-space:nowrap">${content.badge || content.heroEyebrow || 'Free Delivery on All Orders Over R500'}</p>
   </div>
-  <nav style="background:${retailBg};border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:70px;padding:0 2rem">
+  <nav class="ms-sticky" style="background:${retailBg};border-bottom:1px solid rgba(0,0,0,0.06);position:sticky;top:0;z-index:100">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:70px;padding:0 2rem">
       <div style="display:flex;align-items:center;gap:1.5rem">
         ${retailNavLinks.join('\n        ')}
       </div>
@@ -3669,7 +3717,7 @@ function buildRetailTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1.05rem;color:${retailMuted};line-height:1.7;max-width:500px;margin:0 auto 2rem">${content.aboutMission || content.heroSubtitle}</p>
       <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem">${content.ctaSecondary || 'Shop All'}</a>
-      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
         ${content.services.slice(0, 4).map((s, i) => `
         <div style="display:flex;flex-direction:column;align-items:center">
           <div style="width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;margin-bottom:1rem">
@@ -3685,7 +3733,7 @@ function buildRetailTemplate(data: TemplateData): string {
   // Section 3: 50/50 split — overlapping photos left, heading + CTA right
   const splitSection = `
   <section style="padding:80px 2rem;background:${retailBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative;min-height:500px">
         <div style="position:absolute;top:0;left:0;width:65%;height:75%;border-radius:16px;overflow:hidden;z-index:1">
           <img src="${galleryImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -3716,7 +3764,7 @@ function buildRetailTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase">${content.galleryHeading || 'Why Choose Us'}</h2>
       <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;max-width:550px;margin:0 auto 3rem">${content.services[0]?.description || content.heroSubtitle}</p>
-      <div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem;align-items:center;max-width:900px;margin:0 auto">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem;align-items:center;max-width:900px;margin:0 auto">
         <div>
           ${content.stats.slice(0, 2).map((s, i) => `
           <div style="margin-bottom:${i === 0 ? '3rem' : '0'};text-align:center">
@@ -3742,7 +3790,7 @@ function buildRetailTemplate(data: TemplateData): string {
   // Section 6: Service / product cards — 3 items with images and names
   const productCards = `
   <section id="services" style="padding:80px 2rem;background:${retailBg}">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
       ${content.services.map((s, i) => `
       <div style="text-align:center">
         <div style="border-radius:50%;overflow:hidden;width:100%;aspect-ratio:1;border:2px solid rgba(0,0,0,0.06);margin-bottom:1.25rem">
@@ -3891,7 +3939,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   // Section 2: 3-column feature cards
   const featureCards = `
   <section style="padding:100px 2rem;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
       ${content.services.slice(0, 3).map(s => `
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
         <div style="font-size:2rem;margin-bottom:1.25rem">${s.icon || '&#9672;'}</div>
@@ -3927,7 +3975,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
       ${content.services.map((s, i) => `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < content.services.length - 1 ? '6rem' : '0'}">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < content.services.length - 1 ? '6rem' : '0'}">
         ${i % 2 === 0 ? `
         <div>
           <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>
@@ -3966,14 +4014,14 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   <section id="about" style="padding:100px 2rem;background:var(--bg)">
     <div style="max-width:1000px;margin:0 auto">
       ${content.processSteps ? content.processSteps.map((step, i) => `
-      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
         <div>
           <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">${step.title}</h3>
           <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} &rarr;</a>
         </div>
         <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">${step.description}</p>
       </div>`).join('') : aboutParagraphs.map((p, i) => `
-      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < aboutParagraphs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < aboutParagraphs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
         <div>
           <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3">${content.stats[i]?.label || 'Our Approach'}</h3>
         </div>
@@ -3988,7 +4036,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto">
       <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;font-weight:600;text-align:center">What our clients say</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
-      <div style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+      <div class="ms-grid" style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
         <div style="background:var(--card-bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between">
           <div>
             <div style="font-size:1.5rem;color:var(--primary);margin-bottom:1.5rem">&#10077;&#10077;</div>
@@ -4012,7 +4060,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   // Section 9: Stats row
   const statsSection = `
   <section style="padding:80px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
       ${content.stats.slice(0, 4).map(s => `
       <div>
         <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">${s.value}</div>
