@@ -92,7 +92,7 @@ export default function Home() {
           marginTop: '1.25rem',
           animation: anim('fadeUp 1s 0.9s forwards'), opacity: so,
         }}>
-          Web Design &middot; Cape Town &middot; One conversation. Done.
+          Web Design Done Simply.
         </p>
       </div>
 
