@@ -26,33 +26,41 @@ export default function Home() {
 
       {/* Nav */}
       <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '1.5rem 2.5rem', position: 'relative', zIndex: 10,
+        display: 'flex', justifyContent: 'center',
+        padding: '1.25rem 2.5rem', position: 'relative', zIndex: 10,
         animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so,
       }}>
-        <a href="/" style={{
-          fontFamily: font, fontSize: '1.1rem', fontWeight: 700,
-          color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.08em',
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)',
+          borderRadius: '999px', padding: '0.4rem 0.5rem 0.4rem 1.25rem',
+          border: '1px solid rgba(255,255,255,0.4)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
         }}>
-          mountain studios
-        </a>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.75rem' }}>
+          <a href="/" style={{
+            fontFamily: font, fontSize: '0.9rem', fontWeight: 700,
+            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
+            marginRight: '1rem',
+          }}>
+            mountain studios
+          </a>
           {['About', 'Contact', 'Portfolio'].map(label => (
             <a key={label} href={`/${label.toLowerCase()}`} style={{
-              fontFamily: font, fontSize: '0.8rem', fontWeight: 500,
-              color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
-              opacity: 0.6, transition: 'opacity 0.2s',
+              fontFamily: font, fontSize: '0.78rem', fontWeight: 500,
+              color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
+              opacity: 0.55, transition: 'opacity 0.2s',
+              padding: '0.4rem 0.75rem',
             }}
               onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-              onMouseLeave={e => e.currentTarget.style.opacity = '0.6'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '0.55'}
             >
               {label}
             </a>
           ))}
           <a href="/start-your-project" style={{
-            fontFamily: font, fontSize: '0.8rem', fontWeight: 600,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
-            background: '#1a1a2e', padding: '0.5rem 1.25rem', borderRadius: '8px',
+            fontFamily: font, fontSize: '0.78rem', fontWeight: 600,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.02em',
+            background: '#1a1a2e', padding: '0.5rem 1.15rem', borderRadius: '999px',
             transition: 'opacity 0.2s',
           }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
