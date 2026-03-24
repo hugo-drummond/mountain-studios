@@ -149,14 +149,15 @@ export default function Home() {
       <div style={{
         position: 'relative', zIndex: 2, minHeight: 'calc(100vh - 200px)',
         display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',
-        padding: '6vh 3rem 0',
+        padding: '15vh 3rem 0',
+        maxWidth: '1100px', margin: '0 auto', width: '100%',
       }}>
         {/* Split headline */}
         <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: startOpacity }}>
           <h1 style={{
             fontFamily: font, fontSize: 'clamp(2rem, 4.5vw, 4.2rem)',
-            fontWeight: 500, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase',
-            lineHeight: 1.05, margin: 0, letterSpacing: '-0.01em',
+            fontWeight: 300, color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase',
+            lineHeight: 1.05, margin: 0, letterSpacing: '0.04em',
           }}>
             Building websites
             <br />that
@@ -169,8 +170,8 @@ export default function Home() {
         }}>
           <h1 style={{
             fontFamily: font, fontSize: 'clamp(2rem, 4.5vw, 4.2rem)',
-            fontWeight: 500, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase',
-            lineHeight: 1.05, margin: 0, letterSpacing: '-0.01em',
+            fontWeight: 300, color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase',
+            lineHeight: 1.05, margin: 0, letterSpacing: '0.04em',
           }}>
             move the
             <br />needle forward
