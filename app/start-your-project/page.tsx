@@ -496,6 +496,26 @@ export default function StartYourProject() {
   const [selectedCountry, setSelectedCountry] = useState('')
   const [selectedRegion, setSelectedRegion] = useState<Region>('South Africa')
   const [countrySearch, setCountrySearch] = useState('')
+  const [geoDetected, setGeoDetected] = useState(false)
+
+  // Auto-detect country from IP
+  useEffect(() => {
+    if (selectedCountry) return // don't override manual selection
+    fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) })
+      .then(r => r.json())
+      .then(data => {
+        if (data.country_name) {
+          const match = countries.find(c => c.name === data.country_name)
+          if (match) {
+            setSelectedCountry(match.name)
+            setSelectedRegion(match.region)
+            setCountrySearch(match.name)
+            setGeoDetected(true)
+          }
+        }
+      })
+      .catch(() => {}) // silently fail
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
   const regionInfo = regionCurrencyMap[selectedRegion]
   const currency = regionInfo.currency
 
@@ -898,7 +918,7 @@ export default function StartYourProject() {
             </div>
             {selectedCountry && (
               <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', marginTop: '1rem' }}>
-                Pricing will be shown in {regionCurrencyMap[selectedRegion].currency}
+                {geoDetected && selectedCountry === countrySearch ? 'We detected you\'re in ' + selectedCountry + '. ' : ''}Pricing will be shown in {regionCurrencyMap[selectedRegion].currency}
               </p>
             )}
             <Nav back={() => setStep(3)} next={() => setStep(5)} disabled={!selectedCountry} />
