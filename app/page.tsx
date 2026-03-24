@@ -20,7 +20,7 @@ export default function Home() {
 
   return (
     <div style={{
-      background: 'linear-gradient(180deg, #c8d6e5 0%, #a8b8cc 50%, #8e9fba 100%)',
+      background: 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #e8ecf1 75%, #ffffff 100%)',
       minHeight: '100vh', position: 'relative', overflow: 'hidden',
     }}>
 
@@ -32,12 +32,14 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex', alignItems: 'center', gap: '0.5rem',
-          background: 'transparent',
+          background: 'rgba(255,255,255,0.65)', backdropFilter: 'blur(12px)',
           borderRadius: '999px', padding: '0.4rem 0.5rem 0.4rem 1.25rem',
+          border: '1px solid rgba(255,255,255,0.5)',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
         }}>
           <a href="/" style={{
             fontFamily: font, fontSize: '0.9rem', fontWeight: 700,
-            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
+            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
             marginRight: '1rem',
           }}>
             mountain studios
@@ -45,20 +47,20 @@ export default function Home() {
           {['About', 'Contact', 'Portfolio'].map(label => (
             <a key={label} href={`/${label.toLowerCase()}`} style={{
               fontFamily: font, fontSize: '0.78rem', fontWeight: 500,
-              color: 'rgba(255,255,255,0.55)', textDecoration: 'none', letterSpacing: '0.02em',
-              transition: 'color 0.2s',
+              color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
+              opacity: 0.55, transition: 'opacity 0.2s',
               padding: '0.4rem 0.75rem',
             }}
-              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}
+              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '0.55'}
             >
               {label}
             </a>
           ))}
           <a href="/start-your-project" style={{
             fontFamily: font, fontSize: '0.78rem', fontWeight: 600,
-            color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.02em',
-            background: '#fff', padding: '0.5rem 1.15rem', borderRadius: '999px',
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.02em',
+            background: '#1a1a2e', padding: '0.5rem 1.15rem', borderRadius: '999px',
             transition: 'opacity 0.2s',
           }}
             onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
@@ -77,7 +79,7 @@ export default function Home() {
       }}>
         <h1 style={{
           fontFamily: font, fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-          fontWeight: 600, color: '#1a1a2e', textAlign: 'center',
+          fontWeight: 600, color: '#2a2a3e', textAlign: 'center',
           lineHeight: 1.15, margin: 0, maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
