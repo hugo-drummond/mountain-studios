@@ -639,9 +639,11 @@ function buildBurgerButton(color: string = '#fff'): string {
 }
 
 function buildFooter(businessName: string, content: GeneratedContent, theme: Theme = 'dark'): string {
-  const serviceLinks = content.services.map(s =>
-    `<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">${s.name}</a>`
-  ).join('\n            ')
+  // Use first tag as footer link text (tags are always service categories, never person names)
+  const serviceLinks = content.services.slice(0, 4).map(s => {
+    const label = (s.tags && s.tags.length > 0) ? s.tags[0] : s.name
+    return `<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">${label}</a>`
+  }).join('\n            ')
 
   return `
   <footer style="padding:4rem 2rem 2rem;background:${theme === 'light' ? '#f0f0f0' : '#0a0a0a'};border-top:1px solid var(--border)">
@@ -1400,7 +1402,7 @@ function buildPropertyTemplate(data: TemplateData): string {
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Connect</h4>
@@ -1581,7 +1583,7 @@ function buildEventsTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:3rem">
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Services</h4>
-        ${content.services.map(s => `<a href="#services" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.map(s => `<a href="#services" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">About</h4>
@@ -1749,7 +1751,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Legal</h4>
@@ -2269,7 +2271,7 @@ function buildFitnessTemplate(data: TemplateData): string {
       </div>
       <div>
         <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Links</h3>
-        ${content.services.slice(0, 3).map(s => `<a href="#services" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 3).map(s => `<a href="#services" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
         <a href="#contact" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
       </div>
       <div>
@@ -3026,7 +3028,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${hwText};margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${hwText};margin-bottom:1rem">Company</h4>
@@ -3251,7 +3253,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       </div>
       <div>
         <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Company</div>
@@ -3746,7 +3748,7 @@ function buildRetailTemplate(data: TemplateData): string {
     <div style="max-width:600px;margin:0 auto;text-align:center">
       <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:1.5rem">${businessName}</div>
       <div style="display:flex;justify-content:center;gap:2rem;margin-bottom:2rem">
-        ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${s.name}</a>`).join('')}
+        ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${s.tags?.[0] || s.name}</a>`).join('')}
         <a href="#about" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">About</a>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">Contact</a>
       </div>
