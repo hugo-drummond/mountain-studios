@@ -5062,7 +5062,25 @@ export const presetContent: Record<string, PresetContent> = {
           "Oral Care"
         ],
         "serviceImageQuery": "dog teeth clean white dental hygiene close-up mouth"
-      }
+      },
+          {
+              "name": "Breed-Specific Styling",
+              "description": "Poodle clips, Schnauzer trims, and breed-standard cuts by groomers who know your dog's coat type.",
+              "tags": [
+                  "Breed Cuts",
+                  "Styling"
+              ],
+              "serviceImageQuery": "poodle grooming breed specific cut professional groomer"
+          },
+          {
+              "name": "De-Shedding Treatment",
+              "description": "Deep de-shedding blowout and undercoat removal for double-coated breeds like Huskies and Labradors.",
+              "tags": [
+                  "De-Shedding",
+                  "Undercoat"
+              ],
+              "serviceImageQuery": "dog deshedding treatment groomer blowout husky fur"
+          }
     ],
     "galleryHeading": "Happy, Clean Dogs",
     "aboutHeading": "Groomers who actually <em>love</em> dogs",
@@ -5154,7 +5172,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Supplements"
           ],
           "serviceImageQuery": "pet health supplements shampoo bottles grooming products shelf"
-        }
+        },
+          {
+              "name": "Aquarium & Fish Supplies",
+              "description": "Freshwater and marine tanks, filtration systems, fish food, and live fish from trusted breeders.",
+              "tags": [
+                  "Aquarium",
+                  "Fish"
+              ],
+              "serviceImageQuery": "aquarium fish tank tropical fish pet shop display"
+          },
+          {
+              "name": "Reptile & Exotic Pets",
+              "description": "Terrariums, heating lamps, substrate, and specialised nutrition for reptiles and exotic pets.",
+              "tags": [
+                  "Reptile",
+                  "Exotic"
+              ],
+              "serviceImageQuery": "reptile terrarium exotic pet shop gecko supplies"
+          }
     ],
     "galleryHeading": "Pet Heaven",
     "aboutHeading": "Pets deserve the <em>best</em> \u2014 so do you",
@@ -5246,7 +5282,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Collection"
           ],
           "serviceImageQuery": "pet transport crate carrier vehicle comfortable travel"
-        }
+        },
+          {
+              "name": "Puppy & Kitten Socialisation",
+              "description": "Supervised socialisation sessions for young pets to build confidence and good behaviour habits.",
+              "tags": [
+                  "Socialisation",
+                  "Puppy"
+              ],
+              "serviceImageQuery": "puppy socialisation group play kennel daycare"
+          },
+          {
+              "name": "Grooming Add-On",
+              "description": "Optional bath, brush, and nail trim so your pet comes home looking and smelling fresh.",
+              "tags": [
+                  "Grooming",
+                  "Bath"
+              ],
+              "serviceImageQuery": "dog bath grooming kennel wash clean happy"
+          }
     ],
     "galleryHeading": "Home Away From Home",
     "aboutHeading": "Boarding you can leave <em>without worry</em>",
@@ -5338,7 +5392,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Transport"
           ],
           "serviceImageQuery": "pet carrier crate travel comfortable blanket inside"
-        }
+        },
+          {
+              "name": "Overnight Stays",
+              "description": "Your pet sleeps in the comfort of their own home with our trusted sitter staying the night.",
+              "tags": [
+                  "Overnight",
+                  "House Sitting"
+              ],
+              "serviceImageQuery": "pet sitter dog home couch overnight comfortable"
+          },
+          {
+              "name": "Puppy Care Visits",
+              "description": "Multiple short visits throughout the day for puppies who need feeding, toilet breaks, and socialisation.",
+              "tags": [
+                  "Puppy Care",
+                  "Visits"
+              ],
+              "serviceImageQuery": "puppy care visit playing house young dog"
+          }
     ],
     "galleryHeading": "Happy Walks",
     "aboutHeading": "Trusted with what <em>matters</em> most",
@@ -5430,7 +5502,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Canine Sport"
           ],
           "serviceImageQuery": "dog agility weave poles tunnel course outdoor"
-        }
+        },
+          {
+              "name": "Separation Anxiety Programme",
+              "description": "Structured desensitisation protocols to help anxious dogs cope confidently when left alone.",
+              "tags": [
+                  "Separation Anxiety",
+                  "Behaviour"
+              ],
+              "serviceImageQuery": "dog training separation anxiety calm relaxed home"
+          },
+          {
+              "name": "Private In-Home Sessions",
+              "description": "One-on-one training in your home to address specific behaviours in the environment where they occur.",
+              "tags": [
+                  "Private",
+                  "In-Home"
+              ],
+              "serviceImageQuery": "dog trainer private session home one on one"
+          }
     ],
     "galleryHeading": "Good Dogs in the Making",
     "aboutHeading": "Training built on <em>trust</em>",
@@ -5522,7 +5612,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Training"
           ],
           "serviceImageQuery": "dog obedience class sit stay treat reward outdoor"
-        }
+        },
+          {
+              "name": "Pet Photography",
+              "description": "Professional studio and outdoor pet portraits to capture your furry family member at their best.",
+              "tags": [
+                  "Pet Photography",
+                  "Portraits"
+              ],
+              "serviceImageQuery": "pet photography studio dog portrait professional shoot"
+          },
+          {
+              "name": "Pet Transport & Relocation",
+              "description": "Safe, comfortable pet transport for vet visits, airport transfers, and long-distance relocations.",
+              "tags": [
+                  "Transport",
+                  "Relocation"
+              ],
+              "serviceImageQuery": "pet transport van vehicle comfortable dog travel"
+          }
     ],
     "galleryHeading": "Happy Pets",
     "aboutHeading": "Pet care done <em>properly</em>",
@@ -5614,7 +5722,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Oral Surgery"
           ],
           "serviceImageQuery": "veterinary dental instruments teeth cleaning equipment tray"
-        }
+        },
+          {
+              "name": "Microchipping & Registration",
+              "description": "ISO-standard microchip implantation and national database registration for permanent identification.",
+              "tags": [
+                  "Microchip",
+                  "Registration"
+              ],
+              "serviceImageQuery": "veterinarian microchipping dog identification pet clinic"
+          },
+          {
+              "name": "Nutritional Counselling",
+              "description": "Personalised diet plans for weight management, allergies, and life-stage nutritional needs.",
+              "tags": [
+                  "Nutrition",
+                  "Diet Plan"
+              ],
+              "serviceImageQuery": "veterinarian nutrition consultation pet food diet advice"
+          }
     ],
     "galleryHeading": "In the Clinic",
     "aboutHeading": "Vets who treat animals like <em>family</em>",
@@ -5706,7 +5832,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Product Launch"
           ],
           "serviceImageQuery": "product launch event display branded booth activation"
-        }
+        },
+          {
+              "name": "Wedding Planning",
+              "description": "Full-service wedding coordination from venue selection and vendor management to on-the-day direction.",
+              "tags": [
+                  "Weddings",
+                  "Coordination"
+              ],
+              "serviceImageQuery": "wedding planning decoration table setup venue beautiful"
+          },
+          {
+              "name": "Logistics & Production",
+              "description": "Technical production management including staging, audio-visual, and vendor coordination for seamless events.",
+              "tags": [
+                  "Production",
+                  "Logistics"
+              ],
+              "serviceImageQuery": "event production staging lighting setup conference"
+          }
     ],
     "galleryHeading": "Events We've Created",
     "aboutHeading": "Events planned with <em>obsession</em>",
@@ -5798,7 +5942,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Milestone"
           ],
           "serviceImageQuery": "birthday party dancefloor coloured lights confetti celebration"
-        }
+        },
+          {
+              "name": "Festival & Outdoor Events",
+              "description": "High-powered outdoor setups with festival-grade speakers, subs, and lighting rigs for large crowds.",
+              "tags": [
+                  "Festivals",
+                  "Outdoor"
+              ],
+              "serviceImageQuery": "outdoor festival DJ setup stage crowd music"
+          },
+          {
+              "name": "School & Matric Events",
+              "description": "Age-appropriate matric dance, school event, and prom DJ packages with clean playlists.",
+              "tags": [
+                  "Matric Dance",
+                  "School Events"
+              ],
+              "serviceImageQuery": "school matric dance event DJ lighting dance floor"
+          }
     ],
     "galleryHeading": "On the Decks",
     "aboutHeading": "Music that <em>moves</em> people",
@@ -5890,7 +6052,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Floral"
           ],
           "serviceImageQuery": "wedding floral centrepiece table setting candles elegant"
-        }
+        },
+          {
+              "name": "Photography & Videography",
+              "description": "Recommended photography and videography partners who know every angle of our beautiful venue.",
+              "tags": [
+                  "Photography",
+                  "Videography"
+              ],
+              "serviceImageQuery": "wedding photographer couple venue beautiful garden"
+          },
+          {
+              "name": "Honeymoon Accommodation",
+              "description": "On-site or partner honeymoon suites and post-wedding accommodation for the bridal couple and guests.",
+              "tags": [
+                  "Honeymoon",
+                  "Accommodation"
+              ],
+              "serviceImageQuery": "honeymoon suite romantic accommodation luxury bedroom"
+          }
     ],
     "galleryHeading": "Your Day, Our Backdrop",
     "aboutHeading": "Weddings held with <em>reverence</em>",
@@ -5982,7 +6162,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Social Sharing"
           ],
           "serviceImageQuery": "animated GIF booth screen social sharing station event"
-        }
+        },
+          {
+              "name": "Green Screen & Virtual Backgrounds",
+              "description": "Transport guests to Paris, the beach, or outer space with our chroma key green screen technology.",
+              "tags": [
+                  "Green Screen",
+                  "Virtual"
+              ],
+              "serviceImageQuery": "photo booth green screen party event fun background"
+          },
+          {
+              "name": "Social Media Sharing Station",
+              "description": "Instant digital sharing via QR code, email, or direct upload to Instagram and WhatsApp.",
+              "tags": [
+                  "Social Media",
+                  "Digital Sharing"
+              ],
+              "serviceImageQuery": "photo booth social media sharing screen digital event"
+          }
     ],
     "galleryHeading": "In the Booth",
     "aboutHeading": "Memories made <em>instantly</em>",
@@ -6074,7 +6272,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Grazing Board"
           ],
           "serviceImageQuery": "dessert table sweet treats styled display party event"
-        }
+        },
+          {
+              "name": "Balloon Installations",
+              "description": "Custom balloon arches, garlands, columns, and centrepieces for birthdays, weddings, and corporate events.",
+              "tags": [
+                  "Balloons",
+                  "Installations"
+              ],
+              "serviceImageQuery": "balloon arch installation party decoration colourful event"
+          },
+          {
+              "name": "Kids' Party Packages",
+              "description": "All-inclusive themed party packages with plates, cups, banners, favours, and matching d\u00e9cor.",
+              "tags": [
+                  "Kids Parties",
+                  "Themed"
+              ],
+              "serviceImageQuery": "kids birthday party supplies themed decoration table"
+          }
     ],
     "galleryHeading": "Party Moments",
     "aboutHeading": "D\u00e9cor that creates <em>memories</em>",
@@ -6166,7 +6382,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Ceremony"
           ],
           "serviceImageQuery": "acoustic guitar musician performing wedding ceremony garden"
-        }
+        },
+          {
+              "name": "MC & Hosting",
+              "description": "Professional event hosting, compere services, and audience engagement for conferences and gala dinners.",
+              "tags": [
+                  "MC",
+                  "Hosting"
+              ],
+              "serviceImageQuery": "MC event host microphone stage corporate gala dinner"
+          },
+          {
+              "name": "Team Building Entertainment",
+              "description": "Interactive group activities, game shows, and fun challenges designed for corporate team bonding.",
+              "tags": [
+                  "Team Building",
+                  "Interactive"
+              ],
+              "serviceImageQuery": "team building entertainment corporate group activity fun"
+          }
     ],
     "galleryHeading": "In Performance",
     "aboutHeading": "Entertainment that <em>lands</em>",
@@ -6258,7 +6492,25 @@ export const presetContent: Record<string, PresetContent> = {
             "Training Room"
           ],
           "serviceImageQuery": "training room workshop seminar space chairs whiteboard"
-        }
+        },
+          {
+              "name": "Catering & Bar Packages",
+              "description": "In-house and preferred caterer menus with cash bar, tab bar, and full-service beverage options.",
+              "tags": [
+                  "Catering",
+                  "Bar"
+              ],
+              "serviceImageQuery": "catering buffet food venue event function hall"
+          },
+          {
+              "name": "Audio-Visual & Tech Setup",
+              "description": "Built-in projectors, PA systems, microphones, and high-speed Wi-Fi for presentations and events.",
+              "tags": [
+                  "AV Equipment",
+                  "Projector"
+              ],
+              "serviceImageQuery": "conference room projector audio visual setup meeting"
+          }
     ],
     "galleryHeading": "Our Spaces",
     "aboutHeading": "Spaces made for <em>remarkable</em> events",
@@ -6354,6 +6606,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "grid",
               "serviceImageQuery": "modern bathroom basin taps shower mixer installed"
+          },
+          {
+              "name": "Water Pressure Solutions",
+              "description": "Pressure valve installation, pressure pump fitting, and municipal supply optimisation for consistent flow.",
+              "tags": [
+                  "Pressure Pumps",
+                  "Water Supply"
+              ],
+              "serviceImageQuery": "water pressure gauge plumbing system close up"
+          },
+          {
+              "name": "Gas Installations & Certificates",
+              "description": "LP gas installations, compliance certificates, and gas hob and geyser connections to SANS 10087 standards.",
+              "tags": [
+                  "Gas CoC",
+                  "LP Gas"
+              ],
+              "serviceImageQuery": "gas stove installation plumber connection"
           }
       ],
       "galleryHeading": "Work Done Right",
@@ -6468,6 +6738,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "settings",
               "serviceImageQuery": "recessed LED downlights installed modern ceiling"
+          },
+          {
+              "name": "EV Charger Installation",
+              "description": "Home and commercial EV charging point installation with dedicated circuits and surge protection.",
+              "tags": [
+                  "EV Charging",
+                  "Green Energy"
+              ],
+              "serviceImageQuery": "electric vehicle charger wall mounted home garage"
+          },
+          {
+              "name": "Electrical Compliance Certificates",
+              "description": "Full electrical inspections and CoC issue for property transfers, insurance, and landlord compliance.",
+              "tags": [
+                  "CoC",
+                  "Inspections"
+              ],
+              "serviceImageQuery": "electrician testing distribution board multimeter"
           }
       ],
       "galleryHeading": "Work That Passes Inspection",
@@ -6582,6 +6870,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "maximize",
               "serviceImageQuery": "plastered boundary wall residential property completed"
+          },
+          {
+              "name": "Paving & Landscaping",
+              "description": "Driveways, pathways, and garden hardscaping to complete your outdoor living area.",
+              "tags": [
+                  "Paving",
+                  "Outdoor"
+              ],
+              "serviceImageQuery": "paving driveway construction bricks being laid"
+          },
+          {
+              "name": "Waterproofing & Damp-Proofing",
+              "description": "Roof, balcony, and below-grade waterproofing using proven membrane and coating systems.",
+              "tags": [
+                  "Waterproofing",
+                  "Damp-Proof"
+              ],
+              "serviceImageQuery": "waterproofing membrane being applied roof deck"
           }
       ],
       "galleryHeading": "Recent Builds",
@@ -6696,6 +7002,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "sun",
               "serviceImageQuery": "timber deck pergola outdoor patio garden completed"
+          },
+          {
+              "name": "Door & Window Frames",
+              "description": "Custom wooden door frames, window frames, and architraves fitted and finished to exact specifications.",
+              "tags": [
+                  "Door Frames",
+                  "Windows"
+              ],
+              "serviceImageQuery": "carpenter fitting wooden door frame workshop"
+          },
+          {
+              "name": "Shelving & Storage Solutions",
+              "description": "Floating shelves, pantry units, and custom storage systems designed for any room in your home.",
+              "tags": [
+                  "Shelving",
+                  "Storage"
+              ],
+              "serviceImageQuery": "custom wooden shelving unit modern home interior"
           }
       ],
       "galleryHeading": "From Our Workshop",
@@ -6810,6 +7134,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "lock",
               "serviceImageQuery": "steel security gate slam lock door installed"
+          },
+          {
+              "name": "Balustrades & Handrails",
+              "description": "Steel, stainless, and wrought iron balustrades for staircases, balconies, and mezzanines.",
+              "tags": [
+                  "Balustrades",
+                  "Staircases"
+              ],
+              "serviceImageQuery": "steel balustrade handrail modern staircase interior"
+          },
+          {
+              "name": "Industrial Fabrication",
+              "description": "Custom steel frames, brackets, platforms, and structural components for commercial and industrial projects.",
+              "tags": [
+                  "Fabrication",
+                  "Industrial"
+              ],
+              "serviceImageQuery": "industrial steel fabrication welding workshop sparks"
           }
       ],
       "galleryHeading": "From the Workshop",
@@ -6924,6 +7266,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "square",
               "serviceImageQuery": "kitchen splashback subway tiles white wall installed"
+          },
+          {
+              "name": "Stone & Natural Cladding",
+              "description": "Natural stone cladding for feature walls, fireplaces, and building facades with expert installation.",
+              "tags": [
+                  "Stone Cladding",
+                  "Feature Walls"
+              ],
+              "serviceImageQuery": "natural stone cladding feature wall installation"
+          },
+          {
+              "name": "Grouting & Re-Grouting",
+              "description": "Professional grout removal, colour-matched re-grouting, and epoxy grout application for lasting finishes.",
+              "tags": [
+                  "Re-Grouting",
+                  "Restoration"
+              ],
+              "serviceImageQuery": "tile grouting bathroom floor professional finish"
           }
       ],
       "galleryHeading": "Surfaces We've Laid",
@@ -7038,6 +7398,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "tool",
               "serviceImageQuery": "seamless aluminium gutter downpipe installed roof edge"
+          },
+          {
+              "name": "Skylights & Roof Windows",
+              "description": "Supply and install skylights, roof windows, and light tubes to bring natural light into dark spaces.",
+              "tags": [
+                  "Skylights",
+                  "Natural Light"
+              ],
+              "serviceImageQuery": "skylight installation roof window natural light"
+          },
+          {
+              "name": "Roof Inspections & Reports",
+              "description": "Comprehensive roof condition reports for insurance claims, property sales, and planned maintenance.",
+              "tags": [
+                  "Inspections",
+                  "Reports"
+              ],
+              "serviceImageQuery": "roofer inspecting tiles on residential roof"
           }
       ],
       "galleryHeading": "Roofs We've Fixed",
@@ -7152,6 +7530,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "epoxy garage floor coating grey glossy finish"
+          },
+          {
+              "name": "Wallpapering & Feature Walls",
+              "description": "Expert wallpaper hanging including patterned, textured, and bespoke mural installations.",
+              "tags": [
+                  "Wallpaper",
+                  "Feature Walls"
+              ],
+              "serviceImageQuery": "wallpaper installation feature wall modern bedroom"
+          },
+          {
+              "name": "Colour Consultation",
+              "description": "On-site colour consultations with sample boards to help you choose the perfect palette for every room.",
+              "tags": [
+                  "Colour Advice",
+                  "Consultation"
+              ],
+              "serviceImageQuery": "paint colour swatches samples interior design consultation"
           }
       ],
       "galleryHeading": "Fresh Coats",
@@ -7266,6 +7662,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "shield",
               "serviceImageQuery": "frameless glass balustrade balcony railing modern"
+          },
+          {
+              "name": "Shopfront & Commercial Glazing",
+              "description": "Storefronts, office partitions, and commercial glazing installations built to safety standards.",
+              "tags": [
+                  "Shopfronts",
+                  "Commercial"
+              ],
+              "serviceImageQuery": "glass shopfront commercial storefront installation"
+          },
+          {
+              "name": "Mirror Supply & Installation",
+              "description": "Custom-cut mirrors for bathrooms, gyms, wardrobes, and decorative feature walls.",
+              "tags": [
+                  "Mirrors",
+                  "Custom Cut"
+              ],
+              "serviceImageQuery": "large mirror installation bathroom vanity modern"
           }
       ],
       "galleryHeading": "Clear Results",
@@ -7380,6 +7794,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "box",
               "serviceImageQuery": "home safe vault fireproof installed wall mounted"
+          },
+          {
+              "name": "Automotive Locksmith",
+              "description": "Car key duplication, transponder programming, and emergency vehicle lockouts.",
+              "tags": [
+                  "Car Keys",
+                  "Transponder"
+              ],
+              "serviceImageQuery": "locksmith programming car key transponder vehicle"
+          },
+          {
+              "name": "CCTV & Surveillance",
+              "description": "Camera systems, DVR setup, and remote monitoring integration for homes and businesses.",
+              "tags": [
+                  "CCTV",
+                  "Surveillance"
+              ],
+              "serviceImageQuery": "security camera CCTV system installation wall"
           }
       ],
       "galleryHeading": "Secured & Sorted",
@@ -7494,6 +7926,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "layers",
               "serviceImageQuery": "decorative cornice ceiling installed white room"
+          },
+          {
+              "name": "Feature Walls & Mouldings",
+              "description": "Decorative plaster mouldings, ceiling roses, and feature wall textures for period and modern properties.",
+              "tags": [
+                  "Mouldings",
+                  "Decorative"
+              ],
+              "serviceImageQuery": "decorative plaster ceiling rose ornate moulding"
+          },
+          {
+              "name": "Waterproof Plastering",
+              "description": "Specialist waterproof plaster for bathrooms, pools, and damp-prone areas using approved systems.",
+              "tags": [
+                  "Waterproof",
+                  "Pool Plaster"
+              ],
+              "serviceImageQuery": "waterproof plaster swimming pool shell construction"
           }
       ],
       "galleryHeading": "Surfaces We've Finished",
@@ -7608,6 +8058,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "cpu",
               "serviceImageQuery": "automated sliding gate motor installed driveway"
+          },
+          {
+              "name": "Farm & Agricultural Fencing",
+              "description": "Stock fencing, game camp fencing, and perimeter boundaries for farms and smallholdings.",
+              "tags": [
+                  "Farm Fencing",
+                  "Agricultural"
+              ],
+              "serviceImageQuery": "farm fencing post wire rural agricultural boundary"
+          },
+          {
+              "name": "Access Control & Intercoms",
+              "description": "Gate motor installations, intercom systems, and remote access control for residential and commercial properties.",
+              "tags": [
+                  "Access Control",
+                  "Gate Motors"
+              ],
+              "serviceImageQuery": "automatic gate motor intercom system residential"
           }
       ],
       "galleryHeading": "Fences We've Built",
@@ -7722,6 +8190,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "box",
               "serviceImageQuery": "mobile scaffold tower platform wheels access"
+          },
+          {
+              "name": "Event & Stage Scaffolding",
+              "description": "Temporary stages, seating platforms, and event structures built to safety specifications.",
+              "tags": [
+                  "Event Stages",
+                  "Temporary"
+              ],
+              "serviceImageQuery": "scaffolding event stage construction outdoor concert"
+          },
+          {
+              "name": "Safety Inspections & Compliance",
+              "description": "Regular scaffold inspections, load testing, and compliance documentation as required by OHS regulations.",
+              "tags": [
+                  "Safety",
+                  "OHS Compliance"
+              ],
+              "serviceImageQuery": "scaffolding safety inspection worker checking structure"
           }
       ],
       "galleryHeading": "On the Scaffold",
@@ -7836,6 +8322,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "alert-triangle",
               "serviceImageQuery": "asbestos roof removal bagged sheets disposal site"
+          },
+          {
+              "name": "Selective Interior Strip-Out",
+              "description": "Precision interior demolition of kitchens, bathrooms, and offices while protecting surrounding structures.",
+              "tags": [
+                  "Interior",
+                  "Selective"
+              ],
+              "serviceImageQuery": "interior demolition strip out kitchen renovation"
+          },
+          {
+              "name": "Site Preparation & Earthworks",
+              "description": "Land clearing, levelling, and trenching to prepare your site for new construction.",
+              "tags": [
+                  "Earthworks",
+                  "Site Prep"
+              ],
+              "serviceImageQuery": "excavator earthworks site clearing construction preparation"
           }
       ],
       "galleryHeading": "Cleared for Development",
@@ -7950,6 +8454,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "battery-charging",
               "serviceImageQuery": "electric vehicle charger wall mounted home garage"
+          },
+          {
+              "name": "Energy Audits & Consultation",
+              "description": "Comprehensive energy usage analysis and customised recommendations to reduce your electricity bill.",
+              "tags": [
+                  "Energy Audit",
+                  "Consultation"
+              ],
+              "serviceImageQuery": "energy audit consultant reviewing electricity meter readings"
+          },
+          {
+              "name": "Solar Geyser Conversions",
+              "description": "Retrofit existing electric geysers with solar heating panels for significant hot water savings.",
+              "tags": [
+                  "Solar Geyser",
+                  "Hot Water"
+              ],
+              "serviceImageQuery": "solar geyser panel installed on residential roof"
           }
       ],
       "galleryHeading": "Live Off the Grid",
@@ -8064,6 +8586,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "thermometer",
               "serviceImageQuery": "heat pump water heater installed exterior wall unit"
+          },
+          {
+              "name": "Ducted & VRV Systems",
+              "description": "Centralised ducted systems and VRV/VRF installations for multi-room commercial buildings.",
+              "tags": [
+                  "Ducted",
+                  "VRV"
+              ],
+              "serviceImageQuery": "ducted air conditioning system ceiling vent installation"
+          },
+          {
+              "name": "Air Quality & Ventilation",
+              "description": "Extraction fans, air purifiers, and mechanical ventilation systems for healthy indoor air.",
+              "tags": [
+                  "Ventilation",
+                  "Air Quality"
+              ],
+              "serviceImageQuery": "ventilation system extraction fan ceiling mounted"
           }
       ],
       "galleryHeading": "Cool Work",
@@ -8178,6 +8718,24 @@ export const presetContent: Record<string, PresetContent> = {
               ],
               "icon": "filter",
               "serviceImageQuery": "water filtration system installed wall mounted home"
+          },
+          {
+              "name": "Borehole Testing & Yield Analysis",
+              "description": "Pump testing, water quality analysis, and yield assessments to maximise your groundwater resource.",
+              "tags": [
+                  "Testing",
+                  "Water Quality"
+              ],
+              "serviceImageQuery": "borehole water testing analysis pump yield"
+          },
+          {
+              "name": "Rainwater Harvesting",
+              "description": "Tank installations, first-flush diverters, and pump systems to capture and reuse rainwater.",
+              "tags": [
+                  "Rainwater Tanks",
+                  "Harvesting"
+              ],
+              "serviceImageQuery": "rainwater harvesting tank garden water collection"
           }
       ],
       "galleryHeading": "Water on Your Terms",
@@ -10913,6 +11471,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Conversational"
               ],
               "serviceImageQuery": "Afrikaans language textbook vocabulary flashcards desk study"
+          },
+          {
+              "name": "Corporate Language Training",
+              "description": "On-site and online language programmes tailored for workplace communication and business writing.",
+              "tags": [
+                  "Corporate",
+                  "Business"
+              ],
+              "serviceImageQuery": "corporate language training business meeting presentation"
+          },
+          {
+              "name": "isiZulu & isiXhosa",
+              "description": "Learn South Africa\u2019s most spoken indigenous languages for professional and personal enrichment.",
+              "tags": [
+                  "isiZulu",
+                  "isiXhosa"
+              ],
+              "serviceImageQuery": "south african language class diverse students learning"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -11026,6 +11602,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Revision"
               ],
               "serviceImageQuery": "exam revision bootcamp past papers whiteboard study notes"
+          },
+          {
+              "name": "STEM & Robotics",
+              "description": "Hands-on science, technology, engineering, and maths programmes with robotics kits and coding challenges.",
+              "tags": [
+                  "STEM",
+                  "Robotics"
+              ],
+              "serviceImageQuery": "children robotics STEM class building programming"
+          },
+          {
+              "name": "Leadership & Life Skills",
+              "description": "Confidence building, public speaking, and teamwork programmes designed for primary and high school students.",
+              "tags": [
+                  "Leadership",
+                  "Life Skills"
+              ],
+              "serviceImageQuery": "children leadership teamwork activity group learning"
           }
       ],
       "galleryHeading": "Learning Beyond the Bell",
@@ -11139,6 +11733,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Team Building"
               ],
               "serviceImageQuery": "corporate team building art workshop group painting canvas"
+          },
+          {
+              "name": "Printmaking & Linocut",
+              "description": "Traditional printmaking techniques including linocut, monotype, and screen printing for all levels.",
+              "tags": [
+                  "Printmaking",
+                  "Linocut"
+              ],
+              "serviceImageQuery": "printmaking linocut art class creative workshop"
+          },
+          {
+              "name": "Textile & Fibre Arts",
+              "description": "Weaving, macram\u00e9, and needle felting workshops in a relaxed, social studio setting.",
+              "tags": [
+                  "Textile Arts",
+                  "Weaving"
+              ],
+              "serviceImageQuery": "textile weaving fibre art workshop handmade craft"
           }
       ],
       "galleryHeading": "Made in Our Studio",
@@ -11252,6 +11864,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Service Plan"
             ],
             "serviceImageQuery": "car warranty certificate document keys desk"
+          },
+          {
+              "name": "Extended Warranties",
+              "description": "Comprehensive mechanical and electrical warranty plans for added peace of mind on your purchase.",
+              "tags": [
+                  "Warranty",
+                  "Protection"
+              ],
+              "serviceImageQuery": "car dealership handshake customer warranty document signing"
+          },
+          {
+              "name": "Fleet & Corporate Sales",
+              "description": "Volume discounts, dedicated fleet management, and corporate leasing options for businesses.",
+              "tags": [
+                  "Fleet Sales",
+                  "Corporate"
+              ],
+              "serviceImageQuery": "car fleet corporate vehicles dealership lot row"
           }
       ],
       "galleryHeading": "Current Stock",
@@ -11588,6 +12218,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Percussion"
               ],
               "serviceImageQuery": "drum kit sticks snare cymbal lesson close-up studio"
+          },
+          {
+              "name": "Music Theory & Composition",
+              "description": "Structured theory lessons from grade 1 through diploma level, plus creative composition workshops.",
+              "tags": [
+                  "Theory",
+                  "Composition"
+              ],
+              "serviceImageQuery": "music theory sheet music notation piano lesson"
+          },
+          {
+              "name": "Band & Ensemble Coaching",
+              "description": "Group rehearsals, band coaching, and ensemble performance preparation for school and community groups.",
+              "tags": [
+                  "Band",
+                  "Ensemble"
+              ],
+              "serviceImageQuery": "music band rehearsal group instruments playing together"
           }
       ],
       "galleryHeading": "In the Studio",
@@ -11697,6 +12345,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Business Studies"
               ],
               "serviceImageQuery": "accounting textbook calculator financial statements study desk"
+          },
+          {
+              "name": "Primary School Support",
+              "description": "Foundation phase and intermediate phase tutoring in literacy, numeracy, and general subjects.",
+              "tags": [
+                  "Primary",
+                  "Foundation Phase"
+              ],
+              "serviceImageQuery": "young student tutoring primary school homework help"
+          },
+          {
+              "name": "Study Skills & Exam Strategy",
+              "description": "Time management, note-taking techniques, and exam strategies to build confident independent learners.",
+              "tags": [
+                  "Study Skills",
+                  "Exam Strategy"
+              ],
+              "serviceImageQuery": "student study skills planning exam revision notes"
           }
       ],
       "galleryHeading": "Learning in Action",
@@ -11806,6 +12472,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Heavy Vehicle"
               ],
               "serviceImageQuery": "heavy truck driving training yard manoeuvre code 14 vehicle"
+          },
+          {
+              "name": "Defensive Driving Course",
+              "description": "Advanced defensive driving techniques for safer road awareness and accident avoidance.",
+              "tags": [
+                  "Defensive Driving",
+                  "Advanced"
+              ],
+              "serviceImageQuery": "defensive driving course car road safety training"
+          },
+          {
+              "name": "Motorcycle & Scooter Lessons",
+              "description": "Code A1 and A motorcycle training from basics to licence-ready, including bike supplied.",
+              "tags": [
+                  "Motorcycle",
+                  "Code A"
+              ],
+              "serviceImageQuery": "motorcycle riding lesson training cones practice"
           }
       ],
       "galleryHeading": "New Drivers, New Freedom",
@@ -11915,6 +12599,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Outdoor Learning"
               ],
               "serviceImageQuery": "sensory garden mud kitchen outdoor play sandpit water table"
+          },
+          {
+              "name": "Holiday Care Programme",
+              "description": "Full-day supervised holiday care with themed activities, outings, and creative play for ages 2\u20136.",
+              "tags": [
+                  "Holiday Care",
+                  "School Holidays"
+              ],
+              "serviceImageQuery": "children holiday care programme playing creative activities"
+          },
+          {
+              "name": "Aftercare & Extended Hours",
+              "description": "Extended afternoon supervision with homework support, outdoor play, and a nutritious afternoon snack.",
+              "tags": [
+                  "Aftercare",
+                  "Extended Hours"
+              ],
+              "serviceImageQuery": "children aftercare programme outdoor playground afternoon"
           }
       ],
       "galleryHeading": "A Day at Preschool",
@@ -12024,6 +12726,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Fire Safety"
               ],
               "serviceImageQuery": "fire safety training extinguisher demonstration workplace PPE"
+          },
+          {
+              "name": "Skills Assessment & RPL",
+              "description": "Recognition of Prior Learning evaluations and skills gap analysis for career advancement.",
+              "tags": [
+                  "RPL",
+                  "Skills Assessment"
+              ],
+              "serviceImageQuery": "skills assessment evaluation training centre professional"
+          },
+          {
+              "name": "Online & Blended Learning",
+              "description": "Flexible online courses with optional in-person practicals for working professionals.",
+              "tags": [
+                  "Online Learning",
+                  "Blended"
+              ],
+              "serviceImageQuery": "online learning laptop virtual training course"
           }
       ],
       "galleryHeading": "In the Classroom",
@@ -12133,6 +12853,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Game Design"
               ],
               "serviceImageQuery": "kids coding holiday camp robotics challenge project building"
+          },
+          {
+              "name": "Python & Data Science",
+              "description": "Introduction to Python programming, data analysis, and visualisation for teens and adults.",
+              "tags": [
+                  "Python",
+                  "Data Science"
+              ],
+              "serviceImageQuery": "python coding data science computer programming screen"
+          },
+          {
+              "name": "Game Design & 3D Modelling",
+              "description": "Create your own games using Unity or Scratch, plus intro to 3D modelling with Blender.",
+              "tags": [
+                  "Game Design",
+                  "3D Modelling"
+              ],
+              "serviceImageQuery": "game design development computer 3D modelling screen"
           }
       ],
       "galleryHeading": "In the Lab",
@@ -12242,6 +12980,24 @@ export const presetContent: Record<string, PresetContent> = {
                   "Outdoor First Aid"
               ],
               "serviceImageQuery": "wilderness first aid outdoor backpack splint bandage trail"
+          },
+          {
+              "name": "Fire Safety & Evacuation",
+              "description": "Fire marshal training, evacuation drills, and fire extinguisher use for offices and factories.",
+              "tags": [
+                  "Fire Safety",
+                  "Evacuation"
+              ],
+              "serviceImageQuery": "fire safety training extinguisher workplace drill"
+          },
+          {
+              "name": "Working at Heights",
+              "description": "Fall protection awareness and certification for construction, maintenance, and industrial workers.",
+              "tags": [
+                  "Heights",
+                  "Fall Protection"
+              ],
+              "serviceImageQuery": "working at heights safety training harness construction"
           }
       ],
       "galleryHeading": "Training That Saves Lives",
@@ -12351,6 +13107,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Regassing"
             ],
             "serviceImageQuery": "car aircon system regas gauge hose connected"
+          },
+          {
+              "name": "Pre-Purchase Inspections",
+              "description": "Comprehensive vehicle inspections before you buy, covering engine, gearbox, suspension, and body condition.",
+              "tags": [
+                  "Pre-Purchase",
+                  "Inspection"
+              ],
+              "serviceImageQuery": "mechanic inspecting car engine pre purchase check"
+          },
+          {
+              "name": "Clutch & Gearbox Repairs",
+              "description": "Manual and automatic gearbox rebuilds, clutch replacements, and drivetrain diagnostics.",
+              "tags": [
+                  "Clutch",
+                  "Gearbox"
+              ],
+              "serviceImageQuery": "gearbox clutch repair mechanic workshop transmission"
           }
       ],
       "galleryHeading": "In the Workshop",
@@ -12460,6 +13234,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Chip Repair"
             ],
             "serviceImageQuery": "windscreen glass replacement fitted car workshop suction"
+          },
+          {
+              "name": "Dent & Scratch Removal",
+              "description": "Paintless dent repair and micro-scratch removal to restore your vehicle without full respray.",
+              "tags": [
+                  "PDR",
+                  "Scratch Removal"
+              ],
+              "serviceImageQuery": "paintless dent repair car body panel removal"
+          },
+          {
+              "name": "Custom Paint & Vinyl Wraps",
+              "description": "Full custom colour changes, matte finishes, and vinyl wrapping for a fresh new look.",
+              "tags": [
+                  "Custom Paint",
+                  "Vinyl Wrap"
+              ],
+              "serviceImageQuery": "car vinyl wrap custom paint colour change workshop"
           }
       ],
       "galleryHeading": "Before & After",
@@ -12569,6 +13361,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Deep Clean"
             ],
             "serviceImageQuery": "engine bay cleaned detailed shiny hoses cover"
+          },
+          {
+              "name": "Headlight Restoration",
+              "description": "UV-damaged and yellowed headlight lens polishing and protective coating for improved visibility.",
+              "tags": [
+                  "Headlights",
+                  "Restoration"
+              ],
+              "serviceImageQuery": "headlight restoration polishing car lens cleaning"
+          },
+          {
+              "name": "Upholstery & Leather Care",
+              "description": "Deep cleaning, conditioning, and stain removal for leather and fabric seats and trim.",
+              "tags": [
+                  "Upholstery",
+                  "Leather Care"
+              ],
+              "serviceImageQuery": "car interior upholstery leather cleaning detailing"
           }
       ],
       "galleryHeading": "Showroom Finish",
@@ -12678,6 +13488,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Refurbishment"
             ],
             "serviceImageQuery": "alloy mag wheel refurbished polished gleaming silver"
+          },
+          {
+              "name": "Fleet & Commercial Tyres",
+              "description": "Bulk tyre supply, on-site fitment, and fleet management programmes for trucks and delivery vehicles.",
+              "tags": [
+                  "Fleet",
+                  "Commercial"
+              ],
+              "serviceImageQuery": "commercial truck tyre fitment fleet vehicle service"
+          },
+          {
+              "name": "Run-Flat & Performance Tyres",
+              "description": "Specialist run-flat, performance, and 4x4 tyre supply with expert advice on the best fit for your vehicle.",
+              "tags": [
+                  "Run-Flat",
+                  "Performance"
+              ],
+              "serviceImageQuery": "performance tyres sports car wheel fitment close up"
           }
       ],
       "galleryHeading": "On the Rims",
@@ -12787,6 +13615,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Starter Motor"
             ],
             "serviceImageQuery": "car alternator starter motor removed engine bay parts"
+          },
+          {
+              "name": "LED & HID Lighting Upgrades",
+              "description": "Headlight, fog light, and interior LED conversions for improved visibility and modern aesthetics.",
+              "tags": [
+                  "LED Upgrade",
+                  "Lighting"
+              ],
+              "serviceImageQuery": "LED headlight upgrade car auto electrician installation"
+          },
+          {
+              "name": "Wiring & Loom Repairs",
+              "description": "Full wiring harness repairs, loom replacements, and short-circuit diagnostics for all vehicle makes.",
+              "tags": [
+                  "Wiring",
+                  "Loom Repair"
+              ],
+              "serviceImageQuery": "car wiring harness repair auto electrician diagnostic"
           }
       ],
       "galleryHeading": "Wired Right",
@@ -12896,6 +13742,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Vehicle Transport"
             ],
             "serviceImageQuery": "flatbed truck loaded car highway long distance transport"
+          },
+          {
+              "name": "Flatbed & Specialised Transport",
+              "description": "Low-loader and flatbed transport for luxury, vintage, and non-running vehicles.",
+              "tags": [
+                  "Flatbed",
+                  "Specialised"
+              ],
+              "serviceImageQuery": "flatbed tow truck loading luxury car transport"
+          },
+          {
+              "name": "Battery Jump-Start & Tyre Change",
+              "description": "On-the-spot battery jump-starts, flat tyre changes, and fuel delivery to get you moving again.",
+              "tags": [
+                  "Jump-Start",
+                  "Tyre Change"
+              ],
+              "serviceImageQuery": "roadside assistance battery jump start vehicle breakdown"
           }
       ],
       "galleryHeading": "On the Road",
@@ -13005,6 +13869,24 @@ export const presetContent: Record<string, PresetContent> = {
               "Performance"
             ],
             "serviceImageQuery": "custom motorcycle exhaust pipes chrome modified close-up"
+          },
+          {
+              "name": "Riding Gear & Apparel",
+              "description": "Premium helmets, jackets, gloves, boots, and riding apparel from top brands for every season.",
+              "tags": [
+                  "Riding Gear",
+                  "Helmets"
+              ],
+              "serviceImageQuery": "motorcycle riding gear helmets jackets shop display"
+          },
+          {
+              "name": "Finance & Insurance",
+              "description": "Flexible motorcycle finance options and comprehensive insurance packages arranged in-store.",
+              "tags": [
+                  "Finance",
+                  "Insurance"
+              ],
+              "serviceImageQuery": "motorcycle finance paperwork dealership customer signing"
           }
       ],
       "galleryHeading": "In the Shop",
