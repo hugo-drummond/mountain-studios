@@ -571,18 +571,18 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
     <a href="#contact" class="ms-menu-link" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a>
   </div>
   <script>
-    (function(){
-      var menu = document.getElementById('ms-mob-menu');
-      var openBtn = document.getElementById('ms-menu-open');
-      var closeBtn = document.getElementById('ms-close-btn');
-      if(openBtn) openBtn.addEventListener('click', function(){ menu.classList.add('open'); });
-      if(closeBtn) closeBtn.addEventListener('click', function(){ menu.classList.remove('open'); });
-      var links = document.querySelectorAll('.ms-menu-link');
-      for(var i=0;i<links.length;i++){
-        links[i].addEventListener('click', function(){ menu.classList.remove('open'); });
-      }
-    })();
-  </script>`
+  setTimeout(function(){
+    var m=document.getElementById('ms-mob-menu');
+    if(!m)return;
+    var o=document.getElementById('ms-menu-open');
+    if(o)o.onclick=function(){m.style.display='flex'};
+    var c=document.getElementById('ms-close-btn');
+    if(c)c.onclick=function(){m.style.display='none'};
+    var a=m.getElementsByTagName('a');
+    for(var i=0;i<a.length;i++)a[i].addEventListener('click',function(){m.style.display='none'});
+  },0);
+  </script>
+`
 }
 
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
