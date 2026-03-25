@@ -574,23 +574,19 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
 
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
   const allLinks = navFlags.allLinks
-  const desktopLinks = allLinks.slice(0, 3).map(l =>
-    `<a href="${l.href}" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">${l.label}</a>`
-  )
-  const hasOverflow = allLinks.length > 3
 
   return `
   <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${desktopLinks.join('\n          ')}
-        </div>
-        ${hasOverflow ? `<button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:0.25rem;line-height:1" class="ms-nav-links" aria-label="More">&#9776;</button>` : ''}
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:none;border:none;color:#fff;cursor:pointer;padding:0.25rem;display:flex;flex-direction:column;gap:4px" aria-label="Menu">
+          <span style="display:block;width:22px;height:2px;background:#fff"></span>
+          <span style="display:block;width:22px;height:2px;background:#fff"></span>
+          <span style="display:block;width:22px;height:2px;background:#fff"></span>
+        </button>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
-      ${buildBurgerButton('#fff')}
     </div>
   </nav>
   ${buildMobileMenu(content, allLinks)}`
