@@ -272,9 +272,8 @@ async function fetchPexelsImage(query: string, apiKey: string, orientation: stri
         return url
       }
     }
-    // Fallback to first result if all are "used"
-    const fallback = photos[0]
-    return fallback?.src?.landscape || fallback?.src?.large2x || fallback?.src?.large || null
+    // All results already used — return null to force picsum fallback instead of repeating
+    return null
   } catch {
     return null
   }
@@ -304,14 +303,15 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
 
     const svcQueries = queries.serviceImageQueries || []
     const svcResults: (string | null)[] = []
-    for (let i = 0; i < 3; i++) {
-      svcResults.push(await fetchPexelsImage(svcQueries[i] || `${typeName} ${i}`, apiKey, 'landscape', usedUrls))
+    for (let i = 0; i < Math.max(7, svcQueries.length); i++) {
+      svcResults.push(await fetchPexelsImage(svcQueries[i] || `${typeName} professional ${['office', 'workspace', 'team', 'interior', 'detail', 'product', 'service'][i] || i}`, apiKey, 'landscape', usedUrls))
     }
 
     const galQueries = queries.galleryImageQueries || []
     const galResults: (string | null)[] = []
-    for (let i = 0; i < 4; i++) {
-      galResults.push(await fetchPexelsImage(galQueries[i] || `${typeName} space ${i}`, apiKey, 'landscape', usedUrls))
+    const galFallbacks = ['interior design', 'storefront exterior', 'workspace detail', 'product closeup', 'team meeting', 'customer experience', 'brand lifestyle']
+    for (let i = 0; i < Math.max(7, galQueries.length); i++) {
+      galResults.push(await fetchPexelsImage(galQueries[i] || `${typeName} ${galFallbacks[i] || 'business ' + i}`, apiKey, 'landscape', usedUrls))
     }
 
     const fallback = (url: string | null, seed: string) => url || `https://picsum.photos/seed/${seed}/600/400`
@@ -319,13 +319,8 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
     return {
       hero: fallback(heroUrl, `${typeName}-hero`),
       cards: [
-        fallback(svcResults[0], `${typeName}-svc0`),
-        fallback(svcResults[1], `${typeName}-svc1`),
-        fallback(svcResults[2], `${typeName}-svc2`),
-        fallback(galResults[0], `${typeName}-gal0`),
-        fallback(galResults[1], `${typeName}-gal1`),
-        fallback(galResults[2], `${typeName}-gal2`),
-        fallback(galResults[3], `${typeName}-gal3`),
+        ...svcResults.map((r, i) => fallback(r, `${typeName}-svc${i}`)),
+        ...galResults.map((r, i) => fallback(r, `${typeName}-gal${i}`)),
       ],
       avatar: `https://picsum.photos/seed/${typeName}-avatar/200/200`,
     }
@@ -3512,17 +3507,19 @@ function buildRetailTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
-    stockImages.cards[6],
-  ]
+  // Build one unique image pool — pad with unique picsum fallbacks to avoid any repeats
+  const uniquePool = [...new Set([
+    ...images.slice(1),
+    ...stockImages.cards,
+  ].filter(Boolean))]
+  // Pad pool to at least 16 unique images using picsum with unique seeds
+  while (uniquePool.length < 16) {
+    uniquePool.push(`https://picsum.photos/seed/${businessName}-${uniquePool.length}/600/400`)
+  }
+  let imgIdx = 0
+  const nextImg = () => uniquePool[imgIdx++] || uniquePool[0]
+  const serviceImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
+  const galleryImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
 
   // Retail uses a warm light theme
   const retailBg = '#f5f0eb'
@@ -3643,7 +3640,8 @@ function buildRetailTemplate(data: TemplateData): string {
   </section>`
 
   // Section 6: People / product cards — even grid with square images
-  // Pick the largest even-friendly count: 4→2x2, 3→1x3, 2→1x2, 6→2x3
+  // Pre-assign unique images for product cards
+  const cardImgs = content.services.map(() => nextImg())
   const cardItems = content.services.slice(0, content.services.length <= 3 ? content.services.length : content.services.length % 2 === 0 ? content.services.length : content.services.length - 1)
   const gridCols = cardItems.length === 4 ? 2 : cardItems.length >= 6 ? 3 : cardItems.length
   const productCards = `
@@ -3652,7 +3650,7 @@ function buildRetailTemplate(data: TemplateData): string {
       ${cardItems.map((s, i) => `
       <div style="text-align:center">
         <div style="border-radius:8px;overflow:hidden;width:100%;aspect-ratio:1;margin-bottom:1.25rem">
-          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${cardImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${s.description}</p>
@@ -3664,7 +3662,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const aboutSection = `
   <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 1rem;border-radius:24px">
     <div style="position:absolute;inset:0">
-      <img src="${galleryImgs[3] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <img src="${nextImg()}" alt="" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35)"></div>
     </div>
     <div style="position:relative;text-align:center;padding:3rem">
@@ -3827,7 +3825,8 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 5: Alternating feature showcases (badge + heading + text left, image right, then swap)
+  // Section 5: Alternating feature showcases — pre-assign unique images
+  const showcaseImgs = content.services.map(() => nextImg())
   const featureShowcases = content.services.length > 0 ? `
   <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
@@ -3841,10 +3840,10 @@ function buildTechDigitalTemplate(data: TemplateData): string {
           <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
         </div>
         <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:350px;object-fit:cover" />
+          <img src="${showcaseImgs[i]}" alt="" style="width:100%;height:350px;object-fit:cover" />
         </div>` : `
         <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:350px;object-fit:cover" />
+          <img src="${showcaseImgs[i]}" alt="" style="width:100%;height:350px;object-fit:cover" />
         </div>
         <div>
           <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>

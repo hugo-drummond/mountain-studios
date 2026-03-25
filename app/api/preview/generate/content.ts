@@ -14751,7 +14751,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Abstract"
         ],
         "icon": "star",
-        "serviceImageQuery": "large colorful abstract painting gallery wall"
+        "serviceImageQuery": "professional artist standing in front of abstract painting studio portrait"
       },
       {
         "name": "Jordan Ellis",
@@ -14761,7 +14761,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Landscape"
         ],
         "icon": "layers",
-        "serviceImageQuery": "oil painting landscape artwork canvas framed"
+        "serviceImageQuery": "professional painter artist working at easel in bright studio"
       },
       {
         "name": "Riley Chen",
@@ -14771,7 +14771,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Installation"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "bronze sculpture contemporary art gallery pedestal"
+        "serviceImageQuery": "professional sculptor artist working with clay in workshop"
       },
       {
         "name": "Sam Okafor",
@@ -14780,7 +14780,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Photography",
           "Prints"
         ],
-        "serviceImageQuery": "black and white fine art photography urban architecture print"
+        "serviceImageQuery": "professional photographer artist holding camera in studio portrait"
       }
     ],
     "galleryHeading": "Current Exhibition",
