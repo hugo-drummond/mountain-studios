@@ -3746,12 +3746,6 @@ function buildRetailTemplate(data: TemplateData): string {
   const retailFooter = `
   <footer style="padding:60px 2rem 30px;background:${retailBg};border-top:1px solid rgba(0,0,0,0.08)">
     <div style="max-width:600px;margin:0 auto;text-align:center">
-      <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:var(--primary);margin-bottom:1.5rem">${businessName}</div>
-      <div style="display:flex;justify-content:center;gap:2rem;margin-bottom:2rem">
-        ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${s.tags?.[0] || s.name}</a>`).join('')}
-        <a href="#about" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">About</a>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">Contact</a>
-      </div>
       <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Join Our Newsletter</p>
       <form style="display:flex;max-width:400px;margin:0 auto 2rem;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.1)" onsubmit="return false">
         <input type="email" placeholder="Your email..." style="flex:1;font-family:var(--body-font);padding:0.75rem 1.25rem;border:none;background:${retailCardBg};color:${retailText};font-size:0.85rem;outline:none;letter-spacing:0.06em;text-transform:uppercase" />

@@ -1094,7 +1094,7 @@ export default function StartYourProject() {
                 maxWidth: '1100px',
                 marginLeft: '50%',
                 transform: 'translateX(-50%)',
-                height: '420px',
+                height: '500px',
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px',
                 display: 'flex',
@@ -1138,17 +1138,16 @@ export default function StartYourProject() {
                   title={`Site preview for ${businessName}`}
                   referrerPolicy="no-referrer"
                   style={{
-                    width: '1200px',
-                    height: '2400px',
+                    width: '200%',
+                    height: '400%',
                     border: 'none',
-                    borderRadius: '12px',
-                    transform: 'scale(0.583)',
-                    transformOrigin: 'top center',
+                    borderRadius: '0',
+                    transform: 'scale(0.5)',
+                    transformOrigin: 'top left',
                     pointerEvents: 'none',
                     position: 'absolute',
                     top: 0,
-                    left: '50%',
-                    marginLeft: '-600px',
+                    left: 0,
                   }}
                 />
               )}
