@@ -585,6 +585,17 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
 `
 }
 
+// Ensures items fill grid rows evenly — no orphans
+function evenGrid(items: unknown[], cols: number): { items: unknown[]; cols: number } {
+  if (items.length <= cols) return { items, cols: items.length }
+  // If items fill evenly, great
+  if (items.length % cols === 0) return { items, cols }
+  // Try 2 columns
+  if (items.length % 2 === 0) return { items, cols: 2 }
+  // Drop last item to make it even
+  return { items: items.slice(0, items.length - (items.length % cols)), cols }
+}
+
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
   const allLinks = navFlags.allLinks
 
@@ -1455,7 +1466,7 @@ function buildEventsTemplate(data: TemplateData): string {
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${evtMuted};line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
         </div>
         <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr)">
-          ${content.services.map((s, i) => `
+          ${content.services.slice(0, 6).map((s, i) => `
           <div style="border-left:${i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};padding:1.5rem">
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
             <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
@@ -1631,8 +1642,9 @@ function buildProfessionalTemplate(data: TemplateData): string {
   // Section 2: 4-column (or 3) service cards — photos + title + description + red link
   const serviceCards = `
   <section id="services" style="padding:80px 2rem;background:${proBg}">
-    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
-      ${content.services.map((s, i) => `
+    ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
+    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem">
+      ${(eg.items as typeof content.services).map((s, i) => `
       <div>
         <div class="ms-img" style="height:200px;overflow:hidden;margin-bottom:1.25rem">
           <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
@@ -1641,7 +1653,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proRed};text-decoration:none;font-weight:500">${content.ctaSecondary || 'Read more'}</a>
       </div>`).join('')}
-    </div>
+    </div>`; })()}
   </section>`
 
   // Section 3: People / about — full-width photo bg with heading + text overlay
@@ -1803,7 +1815,7 @@ function buildEducationTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:2rem;text-align:center;text-transform:capitalize">${content.servicesHeading}</h2>
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-      ${content.services.map(s => `
+      ${content.services.slice(0, 6).map(s => `
       <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1rem">
         <div style="font-size:1.5rem;flex-shrink:0">${s.icon || '&#9998;'}</div>
         <div style="flex:1">
@@ -2130,8 +2142,9 @@ function buildFitnessTemplate(data: TemplateData): string {
   <section id="services" style="padding:80px 2rem;background:${fitBg};text-align:center">
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2.5rem">
-        ${content.services.map(s => `
+      ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2.5rem">
+        ${(eg.items as typeof content.services).map(s => `
         <div style="text-align:center">
           <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.8rem;color:${fitMuted};line-height:1.6;margin-top:0.5rem">${s.description}</p>
@@ -2139,7 +2152,7 @@ function buildFitnessTemplate(data: TemplateData): string {
             ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:${fitMuted};text-transform:uppercase;letter-spacing:0.05em">${t}</span>`).join('')}
           </div>
         </div>`).join('')}
-      </div>
+      </div>`; })()}
     </div>
   </section>`
 
@@ -2366,7 +2379,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.map((s, i) => `
+        ${content.services.slice(0, 6).map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
           <div class="ms-img" style="height:220px;overflow:hidden">
             <img src="${allCardImgs[i % allCardImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2490,7 +2503,7 @@ function buildPetsTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.map((s, i) => `
+        ${content.services.slice(0, 6).map((s, i) => `
         <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
           <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
             <span style="font-size:1.3rem">${s.icon || '&#128062;'}</span>
@@ -2873,8 +2886,9 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${hwText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${hwMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem">
-        ${content.services.map(s => `
+      ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem">
+        ${(eg.items as typeof content.services).map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem;text-align:left">
           <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
             <span style="color:${hwTeal};font-size:1.2rem">${mapIcon(s.icon)}</span>
@@ -2882,7 +2896,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
           <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${hwText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${hwMuted};line-height:1.7">${s.description}</p>
         </div>`).join('')}
-      </div>
+      </div>`; })()}
     </div>
   </section>`
 
@@ -3322,7 +3336,7 @@ function buildTradesTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};max-width:600px;line-height:1.7;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.map(s => `
+        ${content.services.slice(0, 6).map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="width:48px;height:48px;border-radius:12px;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
             <span style="color:${trBlue};font-size:1.2rem">${mapIcon(s.icon)}</span>
