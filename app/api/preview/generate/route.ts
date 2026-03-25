@@ -580,12 +580,12 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:1.25rem">
-        <button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:none;border:none;color:#fff;cursor:pointer;padding:0.25rem;display:flex;flex-direction:column;gap:4px" aria-label="Menu">
-          <span style="display:block;width:22px;height:2px;background:#fff"></span>
-          <span style="display:block;width:22px;height:2px;background:#fff"></span>
-          <span style="display:block;width:22px;height:2px;background:#fff"></span>
-        </button>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </button>
       </div>
     </div>
   </nav>
