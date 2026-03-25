@@ -1084,8 +1084,9 @@ export default function StartYourProject() {
             <div
               onClick={() => {
                 if (previewHtml && !previewLoading) {
-                  const w = window.open('', '_blank')
-                  if (w) { w.document.write(previewHtml); w.document.close() }
+                  const blob = new Blob([previewHtml], { type: 'text/html' })
+                  const url = URL.createObjectURL(blob)
+                  window.open(url, '_blank')
                 }
               }}
               style={{
