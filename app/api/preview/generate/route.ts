@@ -3256,27 +3256,7 @@ function buildTradesTemplate(data: TemplateData): string {
   const trMuted = '#64748b'
   const trBlue = primaryColor || '#2563eb'
 
-  // Nav — logo left, links center, phone + blue CTA right
-  const trNavLinks: string[] = []
-  if (navFlags.navServices) trNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) trNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  trNavLinks.push(`<a href="#testimonials" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Testimonials</a>`)
-  if (navFlags.navContact) trNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const trNav = `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${trNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
+  const trNav = buildStandardNav(businessName, content, navFlags)
 
   // Section 1: Full-bleed hero with badge, heading, subtitle, 2 CTAs, trust strip
   const heroSection = `
@@ -3540,26 +3520,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const retailText = '#1a1a1a'
   const retailMuted = '#6b6560'
 
-  // Retail nav — standardised: primary bg, business name + links left, white pill CTA right
-  const retailNavLinks: string[] = []
-  if (navFlags.navServices) retailNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">${content.servicesHeading || 'Shop'}</a>`)
-  if (navFlags.navAbout) retailNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) retailNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const retailNav = `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${retailNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
+  const retailNav = buildStandardNav(businessName, content, navFlags)
 
   // Section 1: Full-bleed hero — huge heading overlay on lifestyle photo
   const heroSection = `
@@ -3769,26 +3730,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
 
-  // Tech nav — clean, two CTAs (outline + filled)
-  const techNavLinks: string[] = []
-  if (navFlags.navServices) techNavLinks.push(`<a href="#services" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Services</a>`)
-  if (navFlags.navAbout) techNavLinks.push(`<a href="#about" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">About</a>`)
-  if (navFlags.navContact) techNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
-
-  const techNav = `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
-    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
-      <div style="display:flex;align-items:center;gap:2rem">
-        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-          ${techNavLinks.join('\n          ')}
-        </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-      ${buildBurgerButton('#fff')}
-    </div>
-  </nav>
-  ${buildMobileMenu(content)}`
+  const techNav = buildStandardNav(businessName, content, navFlags)
 
   // Section 1: Centered text hero — green accent heading + screenshot below
   const heroSection = `
