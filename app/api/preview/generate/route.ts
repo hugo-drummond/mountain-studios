@@ -1930,28 +1930,22 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>`
 
   // Section 2: Meet the Artists / Team — upriseart-inspired
-  const artistNames = ['Alex Morgan', 'Jordan Ellis', 'Riley Chen']
-  const artistLocations = [locationInfo.city, locationInfo.city, locationInfo.city]
-  const artistBios = [
-    content.services[0]?.description || '',
-    content.services[1]?.description || '',
-    content.services[2]?.description || '',
-  ]
+  // Use service names and descriptions as the "team" — they represent the people/work
   const meetSection = `
   <section style="padding:100px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">Meet the Artists</h2>
-      <a href="#" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">${content.servicesHeading}</h2>
+      <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
-        ${[0,1,2].map(i => `
+        ${content.services.slice(0, 3).map((s, i) => `
         <div>
           <div class="ms-img" style="height:450px;overflow:hidden;margin-bottom:1.25rem">
             <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${artistNames[i]}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${artistLocations[i]}</p>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7;margin-bottom:1rem">${artistBios[i]}</p>
-          <a href="#" style="font-family:var(--body-font);font-size:0.85rem;color:${crText};text-decoration:underline;text-underline-offset:4px">View Artist</a>
+          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${s.tags.join(' · ')}</p>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7;margin-bottom:1rem">${s.description}</p>
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:${crText};text-decoration:underline;text-underline-offset:4px">Learn More</a>
         </div>`).join('')}
       </div>
     </div>
