@@ -447,7 +447,29 @@ function resolveNavLinks(pages: string[]) {
 
 type Theme = 'dark' | 'light'
 
+function lightenColor(hex: string, amount: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  const lr = Math.min(255, r + Math.round((255 - r) * amount))
+  const lg = Math.min(255, g + Math.round((255 - g) * amount))
+  const lb = Math.min(255, b + Math.round((255 - b) * amount))
+  return `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`
+}
+
+function getLuminance(hex: string): number {
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+  return 0.299 * r + 0.587 * g + 0.114 * b
+}
+
 function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, secondaryColor: string, theme: Theme = 'dark'): string {
+  // Create a readable version of primary for dark backgrounds
+  const primaryLum = getLuminance(primaryColor)
+  const primaryOnDark = primaryLum < 0.4 ? lightenColor(primaryColor, 0.6) : primaryColor
+  const primaryOnLight = primaryLum > 0.7 ? '#1a1a2e' : primaryColor
+
   const vars = theme === 'light' ? `
       --bg: #fafafa;
       --bg-alt: #f0f0f0;
@@ -466,7 +488,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     :root {
       --heading-font: ${fonts.headingFamily};
       --body-font: 'Inter', sans-serif;
-      --primary: ${primaryColor};
+      --primary: ${theme === 'dark' ? primaryOnDark : primaryOnLight};
+      --primary-raw: ${primaryColor};
       --secondary: ${secondaryColor};${vars}
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -545,7 +568,7 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
   <div id="ms-mob-menu" class="ms-mobile-menu">
     <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
     ${menuLinks.map(l => `<a href="${l.href}" onclick="this.parentElement.classList.remove('open')">${l.label}</a>`).join('\n    ')}
-    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary);border-color:var(--primary)">${content.ctaPrimary}</a>
+    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a>
   </div>`
 }
 
@@ -557,7 +580,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
   const hasOverflow = allLinks.length > 3
 
   return `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
@@ -565,7 +588,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
           ${desktopLinks.join('\n          ')}
         </div>
         ${hasOverflow ? `<button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer;padding:0.25rem;line-height:1" class="ms-nav-links" aria-label="More">&#9776;</button>` : ''}
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
       ${buildBurgerButton('#fff')}
     </div>
@@ -3245,14 +3268,14 @@ function buildTradesTemplate(data: TemplateData): string {
   if (navFlags.navContact) trNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
 
   const trNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${trNavLinks.join('\n          ')}
         </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
       ${buildBurgerButton('#fff')}
     </div>
@@ -3528,14 +3551,14 @@ function buildRetailTemplate(data: TemplateData): string {
   if (navFlags.navContact) retailNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
 
   const retailNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${retailNavLinks.join('\n          ')}
         </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
       ${buildBurgerButton('#fff')}
     </div>
@@ -3757,14 +3780,14 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   if (navFlags.navContact) techNavLinks.push(`<a href="#contact" style="color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.85rem;font-weight:400">Contact</a>`)
 
   const techNav = `
-  <nav class="ms-sticky" style="background:var(--primary);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${techNavLinks.join('\n          ')}
         </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
       </div>
       ${buildBurgerButton('#fff')}
     </div>
