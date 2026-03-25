@@ -2008,7 +2008,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const meetSection = `
   <section style="padding:100px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">${content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">Meet the Team</h2>
       <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
         ${content.services.slice(0, 3).map((s, i) => `
@@ -2045,7 +2045,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.servicesHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.galleryHeading || 'Featured Work'}</h2>
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
@@ -2379,7 +2379,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const whySection = `
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.aboutHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
       <div class="ms-grid" style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
         ${content.stats.slice(0, 4).map((s, i) => `
         <div style="padding:2rem;${i < Math.min(content.stats.length, 4) - 1 ? 'border-right:1px solid var(--border)' : ''}">
@@ -2502,7 +2502,7 @@ function buildPetsTemplate(data: TemplateData): string {
         <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.servicesHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutMission || content.heroSubtitle}</p>
         <a href="#services" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Check out our services.'}</a>
       </div>
@@ -3151,7 +3151,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const benefitsSection = `
   <section id="services" style="padding:80px 2rem;background:${homeBg};text-align:center">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.aboutHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
         ${content.services.slice(0, 4).map(s => `
         <div style="text-align:left">
@@ -3967,7 +3967,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const finalCta = `
   <section style="padding:120px 2rem;background:var(--bg);text-align:center">
     <div style="max-width:700px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:2rem">${content.contactHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:2rem">Ready to get started?</h2>
       <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaPrimary}</a>
         <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaSecondary}</a>
