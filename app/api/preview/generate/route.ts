@@ -511,7 +511,7 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     /* CSS-only burger menu — no JavaScript needed */
     #ms-menu-toggle { display: none; }
     #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
-    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
     #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
     #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
     .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
@@ -569,11 +569,13 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
   ]
   return `
   <input type="checkbox" id="ms-menu-toggle" />
-  <div id="ms-mob-menu">
+  <label for="ms-menu-toggle" id="ms-mob-menu">
     <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
-    ${menuLinks.map(l => `<label for="ms-menu-toggle"><a href="${l.href}">${l.label}</a></label>`).join('\n    ')}
-    <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">${content.ctaPrimary}</a></label>
-  </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      ${menuLinks.map(l => `<label for="ms-menu-toggle"><a href="${l.href}">${l.label}</a></label>`).join('\n      ')}
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">${content.ctaPrimary}</a></label>
+    </div>
+  </label>
 `
 }
 
