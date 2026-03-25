@@ -2042,6 +2042,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   // Section 4: Featured Work — 2-column portfolio grid with tag labels (even rows)
   const allPortfolioImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
+  const featuresData = content.features || content.services.slice(0, 4)
   const portfolioGrid = `
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto">
@@ -2050,7 +2051,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
-        ${content.services.slice(0, 4).map((s, i) => `
+        ${featuresData.slice(0, 4).map((s, i) => `
         <div>
           <div class="ms-img" style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
             <img src="${allPortfolioImgs[i % allPortfolioImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2363,10 +2364,11 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   </section>`
 
   // Section 3: Large CTA links — Polestar "Book a test drive" style
+  const featuresData = content.features || content.services.slice(0, 3)
   const ctaLinks = `
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1300px;margin:0 auto">
-      ${content.services.slice(0, 3).map(s => `
+      ${featuresData.slice(0, 3).map(s => `
       <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
         <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">${s.name}</h3>
         <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
@@ -3212,12 +3214,13 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   </section>`
 
   // Section 7: 3-column support/FAQ cards
+  const featuresData = content.features || content.services.slice(0, 3)
   const supportCards = `
   <section style="padding:80px 2rem;background:${homeAlt}">
     <div style="max-width:1100px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.contactHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 3).map(s => `
+        ${featuresData.slice(0, 3).map(s => `
         <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
           <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
             <span style="font-size:1.2rem;color:var(--primary)">${s.icon || '&#9881;'}</span>
