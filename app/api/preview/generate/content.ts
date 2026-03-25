@@ -108,7 +108,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to book your table?",
     "testimonial": {
       "quote": "Best dining experience in Cape Town. Every course was a revelation.",
-      "author": "Alex M., Local Client",
+      "author": "Alex M., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, moody, intimate",
@@ -200,7 +200,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to know our hours or location?",
     "testimonial": {
       "quote": "Best flat white in the city. The pastries disappear fast \u2014 arrive early.",
-      "author": "Jordan K., Local Client",
+      "author": "Jordan K., Verified Client",
       "rating": 5
     },
     "imageMood": "bright, cosy, textured",
@@ -242,7 +242,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Croissants",
           "French Butter"
         ],
-        "serviceImageQuery": "decorated wedding cake tiered white flowers bakery"
+        "serviceImageQuery": "golden butter croissant flaky pastry bakery display tray professional"
       },
       {
         "name": "Custom Celebration Cakes",
@@ -251,7 +251,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom Cakes",
           "Wedding Cakes"
         ],
-        "serviceImageQuery": "pastry croissant danish display tray bakery"
+        "serviceImageQuery": "elegant tiered wedding cake white flowers beautiful bakery professional"
       },
       {
         "name": "Bread Subscriptions",
@@ -334,7 +334,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pub Grub",
           "Burgers"
         ],
-        "serviceImageQuery": "cocktail mixing bartender shaker bar counter"
+        "serviceImageQuery": "gourmet burger fries plate pub table wooden board delicious"
       },
       {
         "name": "Live Sport & Events",
@@ -343,7 +343,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Live Sport",
           "Quiz Night"
         ],
-        "serviceImageQuery": "bar food burger fries plate pub table"
+        "serviceImageQuery": "sports bar big screen TV crowd watching game pub"
       },
       {
         "name": "Cocktail Menu",
@@ -426,7 +426,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Biltong",
           "Boerewors"
         ],
-        "serviceImageQuery": "deli sandwich prepared counter meats cheeses"
+        "serviceImageQuery": "cured meats charcuterie biltong hanging display artisan butcher"
       },
       {
         "name": "Deli & Platters",
@@ -435,7 +435,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cheese Board",
           "Antipasti"
         ],
-        "serviceImageQuery": "biltong dried meat South African snack display"
+        "serviceImageQuery": "charcuterie board cheese meats antipasti platter wooden board beautiful"
       },
       {
         "name": "Braai Packs & Marinades",
@@ -886,7 +886,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Seasonal",
           "Creative"
         ],
-        "serviceImageQuery": "pizza delivery box opened pepperoni cheese"
+        "serviceImageQuery": "gourmet specialty pizza fresh toppings prosciutto arugula close-up"
       },
       {
         "name": "Dine-In & Takeaway",
@@ -978,7 +978,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Maki",
           "Specialty Rolls"
         ],
-        "serviceImageQuery": "dim sum bamboo steamer dumplings Asian"
+        "serviceImageQuery": "sushi maki rolls platter colourful fresh Japanese restaurant"
       },
       {
         "name": "Omakase Experience",
@@ -987,7 +987,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Omakase",
           "Chef's Choice"
         ],
-        "serviceImageQuery": "stir fry wok noodles vegetables Asian kitchen"
+        "serviceImageQuery": "omakase chef plating sushi counter Japanese fine dining"
       },
       {
         "name": "Bento & Lunch Boxes",
@@ -1070,7 +1070,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Seasonal",
           "Creative"
         ],
-        "serviceImageQuery": "ice cream sundae bowl toppings chocolate"
+        "serviceImageQuery": "colourful gelato scoops waffle cone fresh fruit toppings"
       },
       {
         "name": "Cakes & Catering",
@@ -1079,7 +1079,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gelato Cakes",
           "Wholesale"
         ],
-        "serviceImageQuery": "frozen yogurt cup toppings fruit sprinkles"
+        "serviceImageQuery": "ice cream cake layers frozen dessert sliced beautiful"
       },
       {
         "name": "Milkshakes & Floats",
@@ -1304,7 +1304,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to check availability?",
     "testimonial": {
       "quote": "Felt like staying with family. The breakfast alone is worth booking for.",
-      "author": "James T., London",
+      "author": "James T., Verified Client",
       "rating": 5
     },
     "imageMood": "warm, inviting, Cape Dutch",
@@ -1346,7 +1346,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rooftop Pool",
           "Table Mountain Views"
         ],
-        "serviceImageQuery": "hotel conference room meeting table chairs"
+        "serviceImageQuery": "luxury hotel rooftop pool loungers panoramic city view sunset"
       },
       {
         "name": "Fine Dining Restaurant",
@@ -1355,7 +1355,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Restaurant",
           "Fine Dining"
         ],
-        "serviceImageQuery": "hotel spa pool indoor treatment wellness"
+        "serviceImageQuery": "fine dining hotel restaurant table set elegant evening ambience"
       },
       {
         "name": "Conference & Events",
@@ -1396,7 +1396,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Ready to plan your Cape Town stay?",
     "testimonial": {
       "quote": "The rooftop pool at sunset with Table Mountain behind you. Nothing compares.",
-      "author": "Sarah L., London",
+      "author": "Sarah L., Verified Client",
       "rating": 5
     },
     "imageMood": "luxurious, airy, South African",
@@ -2108,7 +2108,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Trade Accounts",
           "Delivery"
         ],
-        "serviceImageQuery": "key cutting machine hardware store counter"
+        "serviceImageQuery": "hardware store delivery van building materials trade supplies"
       },
       {
         "name": "Key Cutting & Gas Refills",
@@ -2117,7 +2117,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Key Cutting",
           "Gas Refills"
         ],
-        "serviceImageQuery": "plumbing fittings pipes display hardware aisle"
+        "serviceImageQuery": "key cutting machine brass keys hardware store counter service"
       }
     ],
     "galleryHeading": "In the Store",
@@ -2191,7 +2191,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Staff Picks",
           "Author Events"
         ],
-        "serviceImageQuery": "children story time reading bookshop corner"
+        "serviceImageQuery": "book signing author event bookshop audience evening"
       },
       {
         "name": "Special Orders & Gift Cards",
@@ -2467,7 +2467,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Smart Home",
           "Accessories"
         ],
-        "serviceImageQuery": "phone repair technician tools screen electronics"
+        "serviceImageQuery": "smart home speakers wireless earbuds accessories display modern"
       },
       {
         "name": "Repairs & Trade-Ins",
@@ -2476,7 +2476,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Repairs",
           "Trade-Ins"
         ],
-        "serviceImageQuery": "home entertainment TV display electronics showroom"
+        "serviceImageQuery": "phone screen repair technician tools electronics workbench close-up"
       },
       {
         "name": "Setup & Installation",
@@ -2559,7 +2559,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hiking",
           "Trail"
         ],
-        "serviceImageQuery": "sports clothing activewear rack display store"
+        "serviceImageQuery": "hiking backpacks outdoor adventure gear trail display store"
       },
       {
         "name": "Team Sport Equipment",
@@ -2568,7 +2568,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Team Sport",
           "Cricket"
         ],
-        "serviceImageQuery": "outdoor camping gear backpacks tents display"
+        "serviceImageQuery": "rugby cricket soccer balls equipment sports store display"
       },
       {
         "name": "Racket Restringing & Repairs",
@@ -2651,7 +2651,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Butchery",
           "In-Store Bakery"
         ],
-        "serviceImageQuery": "grocery delivery bags doorstep packed products"
+        "serviceImageQuery": "butcher counter fresh meat display supermarket bakery bread shelves"
       },
       {
         "name": "Online Shopping & Delivery",
@@ -2660,7 +2660,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery",
           "Click & Collect"
         ],
-        "serviceImageQuery": "deli counter prepared food supermarket"
+        "serviceImageQuery": "grocery delivery bags packed products doorstep online order"
       },
       {
         "name": "Loyalty Card & Weekly Specials",
@@ -5043,7 +5043,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Bath & Brush",
           "De-shed"
         ],
-        "serviceImageQuery": "dog haircut clippers trim grooming table"
+        "serviceImageQuery": "dog blow dry brushing fluffy coat grooming table professional"
       },
       {
         "name": "Puppy's First Groom",
@@ -5052,7 +5052,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Puppy Groom",
           "First Visit"
         ],
-        "serviceImageQuery": "dog nail trimming groomer hands close-up"
+        "serviceImageQuery": "cute puppy first grooming session gentle handling table"
       },
       {
         "name": "Teeth Cleaning & Oral Care",
@@ -5411,7 +5411,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Obedience",
           "Leash Manners"
         ],
-        "serviceImageQuery": "dog agility obstacle jump training course"
+        "serviceImageQuery": "dog obedience training leash heel walk outdoor park"
       },
       {
         "name": "Behaviour & Reactivity",
@@ -5595,7 +5595,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Surgery",
           "Desexing"
         ],
-        "serviceImageQuery": "cat receiving vaccination at vet clinic"
+        "serviceImageQuery": "veterinary surgery operating room sterile instruments professional"
       },
       {
         "name": "Diagnostics & Imaging",
@@ -5737,7 +5737,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to start planning your event?",
     "testimonial": {
       "quote": "200 guests and not a single thing went wrong. That doesn't happen without an exceptional team.",
-      "author": "Thembi N., Verified Client",
+      "author": "Tamara N., Verified Client",
       "rating": 5
     },
     "imageMood": "elegant, dramatic, celebratory",
@@ -5921,7 +5921,7 @@ export const presetContent: Record<string, PresetContent> = {
     "contactHeading": "Want to come and see the venue?",
     "testimonial": {
       "quote": "Every single guest told us it was the most beautiful wedding they'd ever attended.",
-      "author": "Caitlin & Ryan M.",
+      "author": "Caitlin & Ryan M., Verified Client",
       "rating": 5
     },
     "imageMood": "romantic, golden, Cape",
@@ -8227,7 +8227,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Struck water at 28m with excellent yield. Haven't used municipal water for the garden since.",
-          "author": "Kobus V., Stellenbosch",
+          "author": "Kobus V., Verified Client",
           "rating": 5
       },
       "imageMood": "natural, clean, resourceful",
@@ -8911,7 +8911,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Third placement in 18 months and all three are still with us. Outstanding calibre consistently.",
-          "author": "Helen A., Cape Town CEO",
+          "author": "Helen A., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, dynamic, people-focused",
@@ -9595,7 +9595,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "Container cleared in 48 hours. They knew exactly what was needed and just got it done.",
-          "author": "Greg S., Cape Town importer",
+          "author": "Greg S., Verified Client",
           "rating": 5
       },
       "imageMood": "industrial, precise, global",
@@ -11414,7 +11414,7 @@ export const presetContent: Record<string, PresetContent> = {
       ],
       "testimonial": {
           "quote": "They built our MVP in 10 weeks and it's been downloaded 40,000 times. Exceptional team.",
-          "author": "Liam P., Cape Town startup founder",
+          "author": "Liam P., Verified Client",
           "rating": 5
       },
       "imageMood": "modern, technical, sharp",
@@ -13690,7 +13690,7 @@ export const presetContent: Record<string, PresetContent> = {
       "contactHeading": "Ready to discuss your needs?",
       "testimonial": {
           "quote": "Professional, reliable, and they delivered exactly what they promised. Highly recommended.",
-          "author": "Client, Verified Client",
+          "author": "Lauren K., Verified Client",
           "rating": 5
       },
       "imageMood": "professional, trustworthy, clean",
@@ -14314,7 +14314,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The mix made our sound commercial without losing what makes us us. Brilliant producer.",
-      "author": "Kagiso M., Verified Client",
+      "author": "Kyle M., Verified Client",
       "rating": 5
     },
     "imageMood": "moody, professional, warm",
@@ -14819,7 +14819,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "The advisory service helped me buy three pieces I genuinely love. Priceless experience.",
-      "author": "Catherine D., Cape Town collector",
+      "author": "Catherine D., Verified Client",
       "rating": 5
     },
     "imageMood": "curated, minimal, artistic",
@@ -15425,7 +15425,7 @@ export const presetContent: Record<string, PresetContent> = {
     ],
     "testimonial": {
       "quote": "Got approval for a rezoning three other planners said was impossible. She found a way.",
-      "author": "Alan R., Cape Town developer",
+      "author": "Alan R., Verified Client",
       "rating": 5
     },
     "imageMood": "professional, precise, authoritative",
