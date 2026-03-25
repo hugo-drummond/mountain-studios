@@ -28,6 +28,7 @@ export interface PresetContent {
   ogImageQuery: string
   aboutImageQuery: string
   galleryImageQueries: string[]
+  features?: { name: string; description: string; imageQuery?: string }[]
 }
 
 export const presetContent: Record<string, PresetContent> = {

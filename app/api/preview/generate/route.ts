@@ -382,6 +382,7 @@ interface GeneratedContent {
   heroImageQuery?: string
   aboutImageQuery?: string
   galleryImageQueries?: string[]
+  features?: { name: string; description: string; imageQuery?: string }[]
 }
 
 // ---------- Shared template helpers ----------
@@ -3863,15 +3864,15 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   </section>`
 
   // Section 5: Alternating feature showcases
-  const showcaseImgs = content.services.map((_, i) => stockPool[_pi++])
-  const featureShowcases = content.services.length > 0 ? `
-  <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
+  const featuresData = content.features || content.services.slice(0, 3)
+  const showcaseImgs = featuresData.map(() => stockPool[_pi++])
+  const featureShowcases = featuresData.length > 0 ? `
+  <section style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
-      ${content.services.map((s, i) => `
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < content.services.length - 1 ? '6rem' : '0'}">
+      ${featuresData.map((s, i) => `
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < featuresData.length - 1 ? '6rem' : '0'}">
         ${i % 2 === 0 ? `
         <div>
-          <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>
           <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
           <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
@@ -3883,7 +3884,6 @@ function buildTechDigitalTemplate(data: TemplateData): string {
           <img src="${showcaseImgs[i]}" alt="" style="width:100%;height:350px;object-fit:cover" />
         </div>
         <div>
-          <div style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid var(--border);border-radius:6px;color:var(--text-muted);margin-bottom:1.25rem;font-weight:600">${s.tags[0] || 'Feature'}</div>
           <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
           <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
@@ -4066,6 +4066,7 @@ export async function POST(req: NextRequest) {
         heroImageQuery: preset.heroImageQuery,
         aboutImageQuery: preset.aboutImageQuery,
         galleryImageQueries: preset.galleryImageQueries,
+        features: preset.features,
       }
     } else {
       // Generic fallback content — no external API calls
