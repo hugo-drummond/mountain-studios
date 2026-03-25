@@ -511,7 +511,7 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     .ms-mobile-menu.open { display: flex; }
     .ms-mobile-menu a { color: #fff; text-decoration: none; font-family: var(--body-font); font-size: 1.2rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; transition: all 0.3s; }
     .ms-mobile-menu a:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
-    .ms-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; }
+    .ms-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; z-index: 200; }
 
     @media (max-width: 768px) {
       .ms-burger { display: flex; }
@@ -566,10 +566,23 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
   ]
   return `
   <div id="ms-mob-menu" class="ms-mobile-menu">
-    <button class="ms-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
-    ${menuLinks.map(l => `<a href="${l.href}" onclick="this.parentElement.classList.remove('open')">${l.label}</a>`).join('\n    ')}
-    <a href="#contact" onclick="this.parentElement.classList.remove('open')" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a>
-  </div>`
+    <button id="ms-close-btn" class="ms-close">&times;</button>
+    ${menuLinks.map(l => `<a href="${l.href}" class="ms-menu-link">${l.label}</a>`).join('\n    ')}
+    <a href="#contact" class="ms-menu-link" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a>
+  </div>
+  <script>
+    (function(){
+      var menu = document.getElementById('ms-mob-menu');
+      var openBtn = document.getElementById('ms-menu-open');
+      var closeBtn = document.getElementById('ms-close-btn');
+      if(openBtn) openBtn.addEventListener('click', function(){ menu.classList.add('open'); });
+      if(closeBtn) closeBtn.addEventListener('click', function(){ menu.classList.remove('open'); });
+      var links = document.querySelectorAll('.ms-menu-link');
+      for(var i=0;i<links.length;i++){
+        links[i].addEventListener('click', function(){ menu.classList.remove('open'); });
+      }
+    })();
+  </script>`
 }
 
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
@@ -581,10 +594,10 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:1.25rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-        <button onclick="document.getElementById('ms-mob-menu').classList.add('open')" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
-          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
-          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
-          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        <button id="ms-menu-open" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center;position:relative;z-index:10" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
         </button>
       </div>
     </div>
