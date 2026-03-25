@@ -3691,22 +3691,23 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: People / product cards — even grid with square images
-  // Pre-assign unique images for product cards
-  const cardImgs = content.services.map(() => nextImg())
-  const cardItems = content.services.slice(0, content.services.length <= 3 ? content.services.length : content.services.length % 2 === 0 ? content.services.length : content.services.length - 1)
-  const gridCols = cardItems.length === 4 ? 2 : cardItems.length >= 6 ? 3 : cardItems.length
+  // Section 6: Why Choose Us — uses features (unique selling points), NOT services
+  const featuresData = content.features || content.services.slice(0, 3)
+  const featureImgs = featuresData.map(() => nextImg())
   const productCards = `
-  <section id="services" style="padding:80px 2rem;background:${retailBg}">
-    <div class="ms-grid" style="max-width:${gridCols <= 2 ? '800' : '1200'}px;margin:0 auto;display:grid;grid-template-columns:repeat(${gridCols},1fr);gap:2rem">
-      ${cardItems.map((s, i) => `
-      <div style="text-align:center">
-        <div style="border-radius:8px;overflow:hidden;width:100%;aspect-ratio:1;margin-bottom:1.25rem">
-          <img src="${cardImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${s.description}</p>
-      </div>`).join('')}
+  <section style="padding:80px 2rem;background:${retailBg}">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${retailText};text-align:center;margin-bottom:3rem">Why Choose Us</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+        ${featuresData.slice(0, 3).map((f, i) => `
+        <div style="text-align:center">
+          <div style="border-radius:12px;overflow:hidden;width:100%;aspect-ratio:4/3;margin-bottom:1.25rem">
+            <img src="${featureImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${f.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${f.description}</p>
+        </div>`).join('')}
+      </div>
     </div>
   </section>`
 
