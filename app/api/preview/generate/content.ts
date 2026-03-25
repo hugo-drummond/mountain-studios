@@ -5210,6 +5210,11 @@ export const presetContent: Record<string, PresetContent> = {
       "small dog getting haircut on grooming table",
       "dog grooming salon interior bath stations clean"
     ],
+    "features": [
+      { "name": "Calm, Fear-Free Environment", "description": "We use low-stress handling techniques so even anxious and rescue dogs feel safe. No rushing, no restraint \u2014 just patience.", "imageQuery": "calm dog being gently held by groomer relaxed pet salon" },
+      { "name": "One Dog at a Time", "description": "Your dog gets our full attention. We don't double-book or cage-dry \u2014 every groom is hands-on from start to finish.", "imageQuery": "single dog on grooming table undivided attention professional" },
+      { "name": "Skin & Coat Health Focus", "description": "We don't just make them look good. Every groom includes a skin check, ear clean, and nail trim so you leave with a healthier pet.", "imageQuery": "healthy shiny coat dog after grooming beautiful fur" }
+    ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
   "Pet Shop": {
@@ -5319,6 +5324,11 @@ export const presetContent: Record<string, PresetContent> = {
       "dog toys bones treats colourful display shelf",
       "premium pet food bags stacked on shelf varieties",
       "rabbit guinea pig small animal enclosure pet shop"
+    ],
+    "features": [
+      { "name": "Expert Nutrition Advice", "description": "Our staff are trained in pet nutrition and can recommend the right food for your animal's age, breed, and health needs.", "imageQuery": "pet shop staff advising customer about pet food nutrition" },
+      { "name": "Loyalty Rewards That Add Up", "description": "Every purchase earns points toward free food, toys, and grooming. Regulars save hundreds a year without thinking about it.", "imageQuery": "happy customer with shopping bags pet store rewards loyalty" },
+      { "name": "Ethically Sourced Products Only", "description": "We vet every brand we stock. No puppy mills, no harmful ingredients, no cheap imports \u2014 just products we'd use on our own pets.", "imageQuery": "premium natural pet food products display shelf quality" }
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 08:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -5430,6 +5440,11 @@ export const presetContent: Record<string, PresetContent> = {
       "dog sleeping on comfortable bed in kennel room",
       "clean indoor kennel suite with dog bed and water bowl"
     ],
+    "features": [
+      { "name": "24-Hour On-Site Supervision", "description": "Someone is always here. Day and night, your pet is never left alone \u2014 giving you genuine peace of mind while you're away.", "imageQuery": "kennel staff member sitting with dogs overnight care facility" },
+      { "name": "Daily Photo Updates", "description": "You'll receive photos and a short update every day so you can see exactly how your pet is doing.", "imageQuery": "happy dog playing outdoors kennel facility daycare" },
+      { "name": "Individual Attention, Not Warehouse Care", "description": "We limit numbers deliberately. Each animal gets personal interaction, exercise time, and their own sleeping space.", "imageQuery": "spacious clean individual kennel suite comfortable dog bed" }
+    ],
     "contactHours": "Mon\u2013Sun: 07:30\u201318:00 \u00b7 Drop-off & collection daily \u00b7 Emergency line available"
   },
   "Dog Walker / Pet Sitter": {
@@ -5539,6 +5554,11 @@ export const presetContent: Record<string, PresetContent> = {
       "happy dog running park field off-leash play",
       "pet sitter cat home couch relaxed cuddle",
       "dog walker beach dogs running sand water"
+    ],
+    "features": [
+      { "name": "GPS-Tracked Walks", "description": "Every walk is GPS-tracked and you get a map, distance, and duration sent straight to your phone when we're done.", "imageQuery": "dog walker with multiple dogs park trail GPS tracking" },
+      { "name": "Same Walker Every Time", "description": "Your dog builds a bond with one person, not a rotating roster. Consistency means less anxiety and better behaviour.", "imageQuery": "dog walker bonding with happy dog familiar trusted caregiver" },
+      { "name": "Fully Insured & Background Checked", "description": "Every walker is vetted, insured, and trained in pet first aid. Your home keys and your pet are in safe hands.", "imageQuery": "professional pet sitter entering home trusted secure reliable" }
     ],
     "contactHours": "Mon\u2013Fri: 06:30\u201318:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Weekend sitting by arrangement"
   },
@@ -5650,6 +5670,11 @@ export const presetContent: Record<string, PresetContent> = {
       "agility training dog jumping obstacle course",
       "dog and trainer bond leash walk heel"
     ],
+    "features": [
+      { "name": "Science-Based, Force-Free Methods", "description": "We use positive reinforcement only. No choke chains, no dominance theory \u2014 just methods backed by veterinary behavioural science.", "imageQuery": "dog trainer using positive reinforcement treat reward training" },
+      { "name": "Real-World Results", "description": "We train in your home, your neighbourhood, and around your triggers \u2014 not just in a sterile facility where everything is easy.", "imageQuery": "dog training outdoors real environment street neighbourhood walk" },
+      { "name": "Owner Coaching Included", "description": "Your dog's behaviour is only as good as what happens between sessions. We coach you so the results stick long after training ends.", "imageQuery": "dog trainer coaching pet owner handling techniques demonstration" }
+    ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 By appointment only"
   },
   "Pet Services": {
@@ -5760,6 +5785,11 @@ export const presetContent: Record<string, PresetContent> = {
       "dogs running playing together daycare yard",
       "pet food treats toys accessories display shelf"
     ],
+    "features": [
+      { "name": "All Services Under One Roof", "description": "Grooming, daycare, training, and retail in one place. One relationship, one location, and no running around town.", "imageQuery": "modern pet services facility grooming daycare retail combined" },
+      { "name": "Qualified, Passionate Staff", "description": "Everyone on our team is a trained animal handler and genuine animal lover. It's not a job for us \u2014 it's a calling.", "imageQuery": "pet care professional staff team smiling with animals" },
+      { "name": "Flexible Booking & Packages", "description": "Mix and match services, book online, and save with monthly packages designed around how often you actually need us.", "imageQuery": "smartphone booking app pet services appointment scheduling" }
+    ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
   "Veterinarian": {
@@ -5869,6 +5899,11 @@ export const presetContent: Record<string, PresetContent> = {
       "dog on examination table vet clinic",
       "cat receiving check-up vaccination at clinic",
       "vet surgery operating room sterile equipment"
+    ],
+    "features": [
+      { "name": "Gentle, Low-Stress Consultations", "description": "We take our time. Separate cat and dog waiting areas, calm handling, and treat rewards mean less fear for your pet.", "imageQuery": "veterinarian gently examining calm dog on consultation table" },
+      { "name": "In-House Lab & Digital X-Ray", "description": "Most diagnostics are done on-site within minutes. No waiting days for results or being sent across town for an X-ray.", "imageQuery": "veterinary clinic digital xray equipment modern diagnostic lab" },
+      { "name": "Transparent Pricing, No Surprises", "description": "We quote before we treat. You'll know the cost upfront and we'll always discuss options before proceeding with anything.", "imageQuery": "vet explaining treatment plan to pet owner consultation room" }
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Emergency line 24hrs"
   },
@@ -6772,6 +6807,11 @@ export const presetContent: Record<string, PresetContent> = {
           "new water heater tank installed utility room",
           "kitchen sink tap installation granite countertop",
           "underfloor heating pipes installation concrete"
+      ],
+      "features": [
+        { "name": "Same-Day Callouts", "description": "Burst geyser at 7am? We'll be there. Most emergency jobs are attended within 2 hours, with parts on the van to fix it first visit.", "imageQuery": "plumber arriving at house with tools professional prompt service" },
+        { "name": "Upfront Pricing, No Surprises", "description": "You get a written quote before any work starts. No hourly creep, no hidden call-out fees \u2014 just honest pricing.", "imageQuery": "plumber explaining quote to homeowner clipboard professional" },
+        { "name": "12-Month Workmanship Guarantee", "description": "Every job is guaranteed for a full year. If something we fitted or repaired fails, we come back and fix it at no cost.", "imageQuery": "modern bathroom plumbing renovation completed quality finish" }
       ]
   },
   "Electrician": {
@@ -6904,6 +6944,11 @@ export const presetContent: Record<string, PresetContent> = {
           "solar panel array residential rooftop",
           "recessed LED downlights installed ceiling",
           "outdoor garden lighting pathway bollard lights night"
+      ],
+      "features": [
+        { "name": "CoC Issued on Every Job", "description": "Every qualifying installation comes with a Certificate of Compliance \u2014 essential for insurance, property sales, and peace of mind.", "imageQuery": "electrician testing electrical panel compliance certificate safety" },
+        { "name": "Clean, Respectful Workmanship", "description": "We wear boot covers, clean up after ourselves, and leave your walls looking like we were never there. The work is invisible \u2014 on purpose.", "imageQuery": "neat electrical wiring installation clean professional finish" },
+        { "name": "Load-Shedding & Backup Solutions", "description": "From inverters to full off-grid setups, we design and install backup power systems so your home keeps running when the grid doesn't.", "imageQuery": "home inverter battery backup power installation electrical" }
       ]
   },
   "Builder / General Contractor": {
@@ -7036,6 +7081,11 @@ export const presetContent: Record<string, PresetContent> = {
           "renovated open plan kitchen living room interior",
           "house extension second storey addition completed",
           "bathroom renovation modern tiles vanity mirror"
+      ],
+      "features": [
+        { "name": "Fixed-Price Contracts", "description": "We quote a fixed price and stick to it. No cost overruns, no vague allowances \u2014 you know exactly what you're paying before we break ground.", "imageQuery": "builder reviewing building plans with homeowner contract meeting" },
+        { "name": "NHBRC Registered", "description": "We're registered with the National Home Builders Registration Council, which means your new build is backed by a structural warranty.", "imageQuery": "professional construction site quality residential build progress" },
+        { "name": "Weekly Progress Reports", "description": "Every Friday you get photos, a progress summary, and the schedule for the week ahead. You're never left wondering what's happening on site.", "imageQuery": "construction progress report photos building site documentation" }
       ]
   },
   "Joiner / Carpenter": {
@@ -7168,6 +7218,11 @@ export const presetContent: Record<string, PresetContent> = {
           "modern kitchen cabinetry wooden island completed",
           "solid wood desk home office bespoke furniture",
           "floating timber shelves mounted living room wall"
+      ],
+      "features": [
+        { "name": "Bespoke, Made-to-Measure", "description": "Nothing is off the shelf. Every piece is designed around your space, your style, and your exact measurements.", "imageQuery": "custom built-in wardrobe bespoke carpentry fitted furniture" },
+        { "name": "Workshop & On-Site Capability", "description": "We build in our workshop for precision and install on-site for a perfect fit. Best of both worlds, no compromises.", "imageQuery": "carpenter workshop bench tools precision woodworking craftsmanship" },
+        { "name": "Sustainably Sourced Timber", "description": "We use FSC-certified and locally milled timber wherever possible. Beautiful furniture shouldn't cost the planet.", "imageQuery": "natural wood grain timber sustainable quality material close-up" }
       ]
   },
   "Welder / Metalworker": {
@@ -7300,6 +7355,11 @@ export const presetContent: Record<string, PresetContent> = {
           "metal spiral staircase interior industrial style",
           "wrought iron window security bars decorative",
           "steel pergola frame outdoor patio structure"
+      ],
+      "features": [
+        { "name": "Structural & Decorative Expertise", "description": "From load-bearing steel beams to ornamental balustrades, we handle both the heavy-duty and the fine detail.", "imageQuery": "decorative wrought iron gate custom metalwork fabrication" },
+        { "name": "Coded Welding Certified", "description": "Our welders hold coded certifications for structural steel, pressure vessels, and aluminium \u2014 meeting the highest safety standards.", "imageQuery": "professional welder sparks protective gear precision welding" },
+        { "name": "On-Site Mobile Welding", "description": "We come to you with a fully equipped mobile rig. No need to remove or transport heavy items \u2014 we weld wherever the job is.", "imageQuery": "mobile welding truck workshop equipment on-site service" }
       ]
   },
   "Paving / Tiling": {
@@ -7432,6 +7492,11 @@ export const presetContent: Record<string, PresetContent> = {
           "outdoor patio tiled seating area garden view",
           "marble bathroom floor tiles herringbone pattern",
           "slate pool surround tiles completed water feature"
+      ],
+      "features": [
+        { "name": "Laser-Level Precision", "description": "Every surface we lay is laser-levelled. No lippage, no uneven grout lines \u2014 just flawless finishes you can see from any angle.", "imageQuery": "perfectly laid floor tiles even grout lines precision finish" },
+        { "name": "Full Prep Included", "description": "We handle everything from screed and waterproofing to cutting and grouting. You don't need to coordinate multiple trades.", "imageQuery": "tile preparation waterproofing substrate floor construction" },
+        { "name": "Indoor & Outdoor Specialists", "description": "Porcelain, natural stone, clay pavers, cobble \u2014 we work with every material and surface, inside and out.", "imageQuery": "outdoor stone paving patio garden landscaping beautiful" }
       ]
   },
   "Roofer": {
@@ -7564,6 +7629,11 @@ export const presetContent: Record<string, PresetContent> = {
           "flat roof waterproofing membrane white coating",
           "new corrugated metal roof installed building",
           "copper gutters downpipes installed house fascia"
+      ],
+      "features": [
+        { "name": "Full Waterproofing Guarantee", "description": "Every roof we touch comes with a written waterproofing guarantee. If it leaks within the warranty period, we fix it free.", "imageQuery": "completed roof installation waterproof quality professional" },
+        { "name": "Emergency Leak Response", "description": "Storm damage doesn't wait for business hours. We offer rapid-response leak repairs to protect your home when it matters most.", "imageQuery": "roofer emergency repair storm damage rapid response" },
+        { "name": "Drone Roof Inspections", "description": "We inspect your roof by drone before quoting \u2014 so you get an accurate assessment without anyone walking on fragile tiles.", "imageQuery": "drone flying over residential roof inspection technology" }
       ]
   },
   "Painter / Decorator": {
@@ -7696,6 +7766,11 @@ export const presetContent: Record<string, PresetContent> = {
           "house exterior painted white trim neat finish",
           "venetian plaster texture accent wall interior",
           "painted hallway staircase white bright transformation"
+      ],
+      "features": [
+        { "name": "Proper Surface Preparation", "description": "We spend as much time prepping as painting. Cracks filled, surfaces sanded, primer applied \u2014 that's why our finishes last years, not months.", "imageQuery": "painter preparing wall surface sanding filling cracks professional" },
+        { "name": "Colour Consultation Included", "description": "Not sure which colour to choose? We bring sample pots, test patches, and years of experience to help you get it right first time.", "imageQuery": "paint colour swatches samples consultation interior design" },
+        { "name": "Furniture & Floors Protected", "description": "We cover everything properly with dust sheets and masking before a single brush stroke. Your home is treated with respect.", "imageQuery": "painter professional dust sheets covering furniture neat preparation" }
       ]
   },
   "Glazier": {
@@ -7828,6 +7903,11 @@ export const presetContent: Record<string, PresetContent> = {
           "aluminium window frames installed modern house",
           "glass bi-fold doors opening to garden patio",
           "glass balustrade balcony railing modern home"
+      ],
+      "features": [
+        { "name": "Emergency Board-Up & Replacement", "description": "Broken window? We'll board up within hours and have your new glass fitted fast \u2014 keeping your home safe and weatherproof.", "imageQuery": "glazier replacing broken window glass emergency repair" },
+        { "name": "Energy-Efficient Glass Options", "description": "We supply and fit low-E, double-glazed, and tinted glass that keeps your home cooler in summer and warmer in winter.", "imageQuery": "modern double glazed window energy efficient home installation" },
+        { "name": "Shower Glass & Custom Cut", "description": "From frameless shower doors to custom mirrors and glass balustrades, we measure, cut, and install to exact specifications.", "imageQuery": "frameless glass shower door modern bathroom installation" }
       ]
   },
   "Locksmith": {
@@ -7960,6 +8040,11 @@ export const presetContent: Record<string, PresetContent> = {
           "keypad entry system gate access control installed",
           "smart lock digital keypad front door modern",
           "intercom video system mounted wall entrance"
+      ],
+      "features": [
+        { "name": "24/7 Emergency Lockout Service", "description": "Locked out at midnight? We're on call around the clock. Most lockouts are resolved within 30 minutes of arrival.", "imageQuery": "locksmith opening door emergency lockout service night" },
+        { "name": "Non-Destructive Entry", "description": "We pick locks, we don't break them. Our technicians use specialist tools to get you in without damaging your door or frame.", "imageQuery": "locksmith using professional pick tools non-destructive entry" },
+        { "name": "Security Upgrade Specialists", "description": "From basic deadbolts to high-security mul-T-lock systems, we assess your home and recommend the right level of protection.", "imageQuery": "high security door lock installation deadbolt upgrade" }
       ]
   },
   "Plasterer": {
@@ -8092,6 +8177,11 @@ export const presetContent: Record<string, PresetContent> = {
           "rendered exterior building facade finished",
           "repaired wall crack smooth finish painted",
           "newly plastered room ready for painting light"
+      ],
+      "features": [
+        { "name": "Seamless, Invisible Finishes", "description": "Our plastering blends so cleanly with existing walls that you won't be able to tell where the new work starts.", "imageQuery": "smooth plastered wall seamless finish professional quality" },
+        { "name": "Decorative & Specialist Finishes", "description": "From smooth skim coats to textured feature walls and cornicing, we handle functional and decorative plastering equally well.", "imageQuery": "decorative plaster cornice ceiling detail ornamental finish" },
+        { "name": "Crack Repair That Lasts", "description": "We don't just skim over cracks. We cut them out, mesh them, and replaster properly so they don't come back next winter.", "imageQuery": "plasterer repairing wall crack mesh tape professional repair" }
       ]
   },
   "Fencing Contractor": {
@@ -8224,6 +8314,11 @@ export const presetContent: Record<string, PresetContent> = {
           "electric fence strands wall top perimeter security",
           "timber palisade garden fence panels neat row",
           "precast concrete wall boundary residential installed"
+      ],
+      "features": [
+        { "name": "Security & Aesthetic Combined", "description": "Our fences don't just keep people out \u2014 they look good doing it. We design solutions that match your property's style.", "imageQuery": "modern residential fence design security aesthetic property" },
+        { "name": "All Materials, One Contractor", "description": "Palisade, wooden, precast, mesh, glass \u2014 we work with every fencing material and recommend the best option for your site.", "imageQuery": "various fence types palisade wooden precast residential" },
+        { "name": "Free Site Survey & Quote", "description": "We measure your boundary, assess the terrain, and give you a fixed quote before any work begins. No obligation, no pressure.", "imageQuery": "fencing contractor measuring property boundary survey professional" }
       ]
   },
   "Scaffolding": {
@@ -8356,6 +8451,11 @@ export const presetContent: Record<string, PresetContent> = {
           "scaffolding commercial building multiple stories facade",
           "scaffolding platform boards walkway safety rails",
           "clean construction site scaffolding removed completed"
+      ],
+      "features": [
+        { "name": "Rapid Erect & Dismantle", "description": "We get scaffolding up fast and take it down the moment it's not needed. Your project isn't delayed and your site stays clear.", "imageQuery": "scaffolding being erected quickly professional construction site" },
+        { "name": "Full OHSA Compliance", "description": "Every scaffold we erect meets Occupational Health & Safety Act standards. We supply inspection certificates and handover documentation.", "imageQuery": "scaffolding safety inspection compliance certificate construction" },
+        { "name": "Flexible Hire Periods", "description": "Whether you need scaffolding for two days or two months, we offer flexible hire with no penalties for early return.", "imageQuery": "scaffolding residential building renovation access structure" }
       ]
   },
   "Demolition": {
@@ -8488,6 +8588,11 @@ export const presetContent: Record<string, PresetContent> = {
           "excavator breaking concrete structure demolition",
           "skip bin loaded rubble bricks site clearing",
           "cleared level site after demolition clean"
+      ],
+      "features": [
+        { "name": "Controlled, Surgical Demolition", "description": "We don't just knock things down. We remove exactly what needs to go and protect everything that doesn't \u2014 walls, floors, services, all of it.", "imageQuery": "controlled demolition interior selective strip-out professional" },
+        { "name": "Waste Sorted & Recycled", "description": "We separate rubble, timber, metal, and recyclables on-site. Responsible disposal is included in every quote.", "imageQuery": "construction waste sorting recycling bins demolition site" },
+        { "name": "Council Permits Handled", "description": "If your demolition needs council approval, we handle the application and paperwork so you don't have to navigate the red tape.", "imageQuery": "demolition permit documentation planning approval paperwork" }
       ]
   },
   "Solar / Renewable Energy": {
@@ -8620,6 +8725,11 @@ export const presetContent: Record<string, PresetContent> = {
           "battery storage unit wall mounted garage",
           "solar inverter display monitoring energy output",
           "modern house exterior with solar panels roof"
+      ],
+      "features": [
+        { "name": "Custom System Design", "description": "We don't sell one-size-fits-all kits. Every system is designed around your roof, your usage patterns, and your budget.", "imageQuery": "solar panel system design blueprint roof layout planning" },
+        { "name": "Grid-Tied & Off-Grid Options", "description": "Whether you want to feed back to the grid, go fully off-grid, or just survive load-shedding, we build the right solution.", "imageQuery": "solar panel battery storage home installation renewable energy" },
+        { "name": "Monitoring & Aftercare", "description": "Every installation includes app-based monitoring so you can see exactly what you're generating, using, and saving in real time.", "imageQuery": "solar energy monitoring app dashboard smartphone production data" }
       ]
   },
   "HVAC / Air Conditioning": {
@@ -8752,6 +8862,11 @@ export const presetContent: Record<string, PresetContent> = {
           "ducted air conditioning ceiling vent office",
           "air conditioner outdoor condenser unit mounted wall",
           "cassette air conditioning ceiling unit open plan office"
+      ],
+      "features": [
+        { "name": "Energy-Efficient Systems", "description": "We recommend and install inverter-driven units that use up to 40% less electricity than standard systems \u2014 saving you money from day one.", "imageQuery": "modern energy efficient air conditioning unit installed" },
+        { "name": "Maintenance Plans That Prevent Breakdowns", "description": "Our quarterly service plans keep your system running at peak efficiency and catch problems before they become expensive repairs.", "imageQuery": "HVAC technician servicing air conditioning unit maintenance" },
+        { "name": "Ducted & Ductless Solutions", "description": "From concealed ducted systems for new builds to split units for retrofits, we design cooling solutions for every building type.", "imageQuery": "ducted air conditioning ceiling vent modern office installation" }
       ]
   },
   "Borehole / Irrigation": {
@@ -8884,6 +8999,11 @@ export const presetContent: Record<string, PresetContent> = {
           "submersible pump equipment pressure tank installed",
           "drip irrigation lines installed garden beds plants",
           "lush green lawn sprinkler system running sunset"
+      ],
+      "features": [
+        { "name": "Professional Yield Testing", "description": "We test every borehole for yield, water quality, and sustainability before you commit to a pump \u2014 so you know exactly what you're getting.", "imageQuery": "borehole drilling rig yield testing water extraction professional" },
+        { "name": "Smart Irrigation Controllers", "description": "Our systems use weather-based smart controllers that adjust watering automatically \u2014 saving water and keeping your garden in perfect shape.", "imageQuery": "smart irrigation controller sprinkler system garden automated" },
+        { "name": "Full Municipal Compliance", "description": "We handle all registration, water-use licensing, and backflow prevention so your borehole is fully legal and compliant.", "imageQuery": "borehole pump installation completed professional clean setup" }
       ]
   },
   "Lawyer / Attorney": {
@@ -10366,6 +10486,11 @@ export const presetContent: Record<string, PresetContent> = {
           "sparkling clean office workspace desks organized",
           "deep cleaned bathroom tiles grout shining",
           "polished hardwood floor living room gleaming"
+      ],
+      "features": [
+        { "name": "Same Team Every Visit", "description": "You get the same vetted, trained cleaners every time. They learn your home, your preferences, and your standards.", "imageQuery": "professional cleaning team arriving at home trusted reliable" },
+        { "name": "Eco-Friendly Products", "description": "We use non-toxic, biodegradable cleaning products that are safe for children, pets, and the environment \u2014 without compromising on clean.", "imageQuery": "eco-friendly green cleaning products natural spray bottles" },
+        { "name": "100% Satisfaction Guarantee", "description": "If you're not happy with any part of the clean, we come back and redo it within 24 hours at no extra charge.", "imageQuery": "sparkling clean modern home interior bright satisfied customer" }
       ]
   },
   "Landscaper / Gardener": {
@@ -10480,6 +10605,11 @@ export const presetContent: Record<string, PresetContent> = {
           "timber deck outdoor dining area garden view",
           "indigenous fynbos garden rockery succulents",
           "water feature pond garden stones plants"
+      ],
+      "features": [
+        { "name": "Water-Wise Design Expertise", "description": "We specialise in indigenous and drought-resistant planting that thrives in the Cape climate without wasting water.", "imageQuery": "water-wise indigenous garden design drought resistant plants" },
+        { "name": "Design-to-Maintenance Continuity", "description": "The same team that designs your garden maintains it. Nobody knows your landscape better than the people who built it.", "imageQuery": "landscaper maintaining beautiful garden ongoing care professional" },
+        { "name": "3D Design Visuals Before We Plant", "description": "See your garden before a single plant goes in the ground. We provide 3D renders so you can approve the design with confidence.", "imageQuery": "landscape design render 3D garden plan modern visual" }
       ]
   },
   "Pest Control": {
@@ -10594,6 +10724,11 @@ export const presetContent: Record<string, PresetContent> = {
           "rodent bait station placed garden perimeter",
           "termite damage inspection wooden beam close up",
           "fumigation tent over house structure treatment"
+      ],
+      "features": [
+        { "name": "Child & Pet-Safe Treatments", "description": "All our products are approved for use in homes with children and animals. Effective on pests, safe for your family.", "imageQuery": "family home safe pest control treatment child pet friendly" },
+        { "name": "Guaranteed Knock-Down", "description": "If the pests come back within the guarantee period, so do we \u2014 at no extra cost. We don't leave until the problem is solved.", "imageQuery": "pest control technician inspecting home thorough professional" },
+        { "name": "Discreet, Unmarked Vehicles", "description": "We arrive in plain vehicles so your neighbours don't need to know. Professional service without the stigma.", "imageQuery": "professional unmarked service vehicle arriving residential home" }
       ]
   },
   "Security Company": {
@@ -10708,6 +10843,11 @@ export const presetContent: Record<string, PresetContent> = {
           "CCTV camera dome mounted building exterior",
           "boom gate access control estate entrance point",
           "security control room monitors screens surveillance"
+      ],
+      "features": [
+        { "name": "Armed Response Under 4 Minutes", "description": "Our average response time is under 4 minutes in our coverage area. When seconds count, we're already on our way.", "imageQuery": "armed response vehicle security patrol neighbourhood fast" },
+        { "name": "24/7 Control Room Monitoring", "description": "Your alarm is monitored around the clock by trained operators who verify every signal and dispatch immediately when needed.", "imageQuery": "security control room monitors CCTV alarm monitoring centre" },
+        { "name": "Smart Home Integration", "description": "Our systems integrate with your smartphone so you can arm, disarm, and view cameras from anywhere in the world.", "imageQuery": "smartphone security app home monitoring camera smart system" }
       ]
   },
   "Moving / Removals": {
@@ -10822,6 +10962,11 @@ export const presetContent: Record<string, PresetContent> = {
           "office relocation desks stacked boxes corridor",
           "bubble wrap packing fragile items boxes",
           "storage facility unit open organized boxes"
+      ],
+      "features": [
+        { "name": "Nothing Broken, Guaranteed", "description": "Every item is blanket-wrapped and secured. If anything is damaged during the move, we cover the replacement cost \u2014 no arguments.", "imageQuery": "movers carefully wrapping furniture blanket protection packing" },
+        { "name": "Fixed Quotes, Not Estimates", "description": "We do an in-home assessment and give you a fixed price. The number you're quoted is the number you pay, full stop.", "imageQuery": "moving company consultant assessing home inventory quote" },
+        { "name": "Packing Service Available", "description": "Don't want to pack? We'll send a team the day before to box everything professionally, labelled by room and ready to go.", "imageQuery": "professional packers boxing up home belongings labelled organised" }
       ]
   },
   "Pool Service": {
@@ -10936,6 +11081,11 @@ export const presetContent: Record<string, PresetContent> = {
           "pool pump room equipment filter plumbing",
           "renovated pool new tiles mosaic blue surface",
           "infinity pool edge garden view sunset residential"
+      ],
+      "features": [
+        { "name": "Proactive Equipment Monitoring", "description": "We don't wait for things to break. Every visit includes a full equipment check so we catch problems before they cost you.", "imageQuery": "pool technician checking pump equipment professional maintenance" },
+        { "name": "WhatsApp Reports After Every Visit", "description": "You'll get a photo report with chemical readings and notes after every clean \u2014 full transparency, no guesswork.", "imageQuery": "smartphone showing maintenance report checklist professional" },
+        { "name": "Fixed Monthly Pricing", "description": "One monthly fee covers everything \u2014 visits, chemicals, and routine maintenance. No surprises on your bill.", "imageQuery": "crystal clear swimming pool backyard beautiful well maintained" }
       ]
   },
   "Laundry / Dry Cleaning": {
@@ -11050,6 +11200,11 @@ export const presetContent: Record<string, PresetContent> = {
           "folded pressed white shirts stacked neat",
           "seamstress sewing machine fabric alteration close up",
           "laundry delivery van garments bags hanging"
+      ],
+      "features": [
+        { "name": "Free Collection & Delivery", "description": "We pick up your laundry and deliver it back to your door, cleaned and pressed. You don't need to leave the house.", "imageQuery": "laundry delivery service driver handing over clean clothes" },
+        { "name": "Garment Care Specialists", "description": "From wedding dresses to suede jackets, we know how to handle delicate fabrics that other cleaners won't touch.", "imageQuery": "delicate garment dry cleaning specialist handling dress" },
+        { "name": "24-Hour Turnaround", "description": "Drop off in the morning, collect the next day. Need it faster? Same-day express is available for an extra fee.", "imageQuery": "clean pressed shirts hanging laundry rack professional service" }
       ]
   },
   "Appliance Repair": {
@@ -11164,6 +11319,11 @@ export const presetContent: Record<string, PresetContent> = {
           "refrigerator compressor repair back panel open",
           "dishwasher interior spray arm pump repair",
           "oven element thermostat repair door open"
+      ],
+      "features": [
+        { "name": "Most Repairs Done in One Visit", "description": "Our vans carry the most common parts for all major brands. Most repairs are completed on the spot \u2014 no waiting for parts to arrive.", "imageQuery": "appliance repair technician fixing washing machine parts van" },
+        { "name": "All Major Brands Covered", "description": "Samsung, LG, Bosch, Whirlpool, Defy, Hisense \u2014 if it's in your kitchen or laundry, we can fix it.", "imageQuery": "kitchen appliances modern home oven fridge washing machine" },
+        { "name": "Honest Repair-or-Replace Advice", "description": "If a repair costs more than the appliance is worth, we'll tell you. We'd rather earn your trust than charge you for a bad fix.", "imageQuery": "technician explaining repair options to customer honest advice" }
       ]
   },
   "Handyman": {
@@ -11278,6 +11438,11 @@ export const presetContent: Record<string, PresetContent> = {
           "floating shelves mounted wall living room books",
           "freshly patched painted wall smooth finish",
           "flat pack furniture assembled desk bedroom neat"
+      ],
+      "features": [
+        { "name": "One Call Covers Everything", "description": "Leaky tap, broken shelf, squeaky door \u2014 bring us your whole list and we'll knock it out in one visit. No job too small.", "imageQuery": "handyman fixing shelf tools belt residential home repair" },
+        { "name": "Hourly Rate, No Call-Out Fee", "description": "You pay for the time we work, not for showing up. Transparent hourly billing with no minimum charge.", "imageQuery": "handyman working on home repairs tools professional affordable" },
+        { "name": "Trusted & Background-Checked", "description": "Every handyman on our team is vetted, referenced, and insured. We work in your home \u2014 trust is non-negotiable.", "imageQuery": "trusted professional handyman ID badge verified background check" }
       ]
   },
   "Upholstery / Curtains": {
@@ -11392,6 +11557,11 @@ export const presetContent: Record<string, PresetContent> = {
           "custom curtains drapes hanging bay window interior",
           "roman blinds fitted bedroom window styled",
           "upholstery workroom fabric bolts sewing machine"
+      ],
+      "features": [
+        { "name": "Fabric Library With 500+ Options", "description": "We bring the showroom to you. Choose from hundreds of fabrics, textures, and patterns in the comfort of your own home.", "imageQuery": "fabric samples swatches upholstery selection variety colours" },
+        { "name": "Restore, Don't Replace", "description": "Your grandmother's wingback doesn't need to go to the skip. We strip it back, re-spring, re-pad, and re-cover it to last another generation.", "imageQuery": "antique chair being reupholstered workshop restoration craft" },
+        { "name": "Measure, Make & Fit Included", "description": "From first measurement to final fitting, we handle the entire process. No subcontractors, no miscommunication.", "imageQuery": "curtain fitting professional installer measuring window treatment" }
       ]
   },
   "Waste Removal / Skip Hire": {
@@ -11506,6 +11676,11 @@ export const presetContent: Record<string, PresetContent> = {
           "builders rubble removal tipper truck site clearance",
           "garden waste green refuse truck loaded branches",
           "waste sorting recycling facility bins separated"
+      ],
+      "features": [
+        { "name": "Same-Day Drop & Collect", "description": "Need a skip today? We deliver same-day across Cape Town and collect when you're done \u2014 even if that's the same afternoon.", "imageQuery": "skip bin being delivered truck crane residential driveway" },
+        { "name": "Responsible Disposal & Recycling", "description": "We sort and recycle wherever possible. Your waste is handled legally and sustainably \u2014 with disposal certificates on request.", "imageQuery": "waste sorting recycling facility responsible disposal professional" },
+        { "name": "Any Size, Any Waste Type", "description": "From a single bakkie load to 40-cubic-metre roll-on containers, we handle garden refuse, rubble, office clearouts, and everything in between.", "imageQuery": "various skip sizes construction waste removal different containers" }
       ]
   },
   "Language School": {
@@ -12030,6 +12205,11 @@ export const presetContent: Record<string, PresetContent> = {
           "silver hatchback car side view clean",
           "white pickup truck front angle outdoor",
           "grey BMW sedan parked side view"
+      ],
+      "features": [
+        { "name": "Every Vehicle Inspected & Warranted", "description": "Each car on our floor passes a multi-point mechanical inspection. Nothing goes on sale until we'd be happy driving it ourselves.", "imageQuery": "car dealership mechanic inspecting vehicle quality check" },
+        { "name": "Finance Pre-Approval On-Site", "description": "We work with multiple finance houses to get you the best rate. Walk in, get approved, and drive out \u2014 often on the same day.", "imageQuery": "car dealership finance office customer signing documents" },
+        { "name": "Trade-In Valuations in 15 Minutes", "description": "Thinking of upgrading? We'll value your current vehicle on the spot and deduct it from your new purchase. Quick, fair, transparent.", "imageQuery": "car trade-in valuation dealership customer vehicle assessment" }
       ]
   },
   "App Developer": {
@@ -12143,6 +12323,11 @@ export const presetContent: Record<string, PresetContent> = {
           "code on dark screen programming syntax IDE",
           "web dashboard analytics charts browser screen",
           "wireframe prototype sketches UX design whiteboard"
+      ],
+      "features": [
+        { "name": "Prototype Before You Pay to Build", "description": "We create a clickable prototype first so you can test the flow, gather feedback, and validate the idea before investing in full development.", "imageQuery": "app prototype wireframe testing smartphone UX design" },
+        { "name": "Post-Launch Iteration", "description": "Launch is just the beginning. We offer ongoing development sprints so your app evolves based on real user feedback.", "imageQuery": "app analytics user feedback iteration development team" },
+        { "name": "App Store Submission Handled", "description": "We manage the entire submission process for Apple and Google Play \u2014 screenshots, descriptions, compliance, and approval.", "imageQuery": "mobile app store listing screenshots submission approval" }
       ]
   },
   "E-commerce": {
@@ -12256,6 +12441,11 @@ export const presetContent: Record<string, PresetContent> = {
           "ecommerce analytics dashboard conversion charts",
           "product page design photography online store",
           "email marketing campaign newsletter laptop screen"
+      ],
+      "features": [
+        { "name": "Revenue-Focused, Not Just Pretty", "description": "We design stores that convert. Every layout decision, product page, and checkout flow is optimised to increase your average order value.", "imageQuery": "e-commerce store conversion optimisation checkout design screen" },
+        { "name": "Multi-Channel Integration", "description": "Sell on your website, Instagram, Facebook, and marketplaces from one dashboard. We connect all your channels into a single system.", "imageQuery": "multi-channel e-commerce dashboard integration platforms screen" },
+        { "name": "Ongoing Growth Management", "description": "Launch is step one. We offer monthly retainers covering SEO, email campaigns, and conversion rate optimisation to keep revenue climbing.", "imageQuery": "e-commerce growth analytics revenue chart upward trend" }
       ]
   },
   "Music Teacher / School": {
@@ -13256,6 +13446,11 @@ export const presetContent: Record<string, PresetContent> = {
           "brake disc pads suspension spring close-up",
           "workshop interior tool wall organised equipment"
       ],
+      "features": [
+        { "name": "Manufacturer Warranty Protected", "description": "We service according to manufacturer specifications with OEM parts, so your warranty stays intact \u2014 without dealership prices.", "imageQuery": "mechanic using diagnostic computer modern car workshop" },
+        { "name": "Transparent Pricing, Always", "description": "You get a detailed quote before we start, and we call you before doing anything extra. No nasty surprises on collection day.", "imageQuery": "mechanic explaining quote to car owner workshop transparent" },
+        { "name": "Courtesy Car Available", "description": "Need to get to work while your car is in? We offer a courtesy vehicle so your day isn't disrupted.", "imageQuery": "customer collecting courtesy car from mechanic workshop" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -13382,6 +13577,11 @@ export const presetContent: Record<string, PresetContent> = {
           "spray paint booth car colour matched respray",
           "panel beater workshop tools equipment organised",
           "repaired car gleaming after full respray"
+      ],
+      "features": [
+        { "name": "Insurance Claims Handled for You", "description": "We deal directly with all major insurers. From assessment to authorisation to collection, we manage the entire claims process.", "imageQuery": "panel beater assessing car damage insurance claim inspection" },
+        { "name": "Factory-Match Paint Technology", "description": "Our computerised colour-matching system ensures your repair is invisible. No mismatched panels, no orange peel \u2014 just factory finish.", "imageQuery": "auto body paint booth spray gun factory colour match" },
+        { "name": "Lifetime Workmanship Guarantee", "description": "We stand behind every repair with a written lifetime guarantee on workmanship. If the paint peels or the filler cracks, we fix it.", "imageQuery": "repaired car panel perfect finish showroom quality result" }
       ],
       "processSteps": [
           {
@@ -13510,6 +13710,11 @@ export const presetContent: Record<string, PresetContent> = {
           "ceramic coated car water beading on hood",
           "car being hand washed foam mitt bucket"
       ],
+      "features": [
+        { "name": "Hand Wash Only, No Machines", "description": "Every vehicle is washed by hand using pH-neutral products. No swirl marks, no scratches \u2014 just a finish that's safe for your clear coat.", "imageQuery": "hand car wash detailing soft cloth gentle paint safe" },
+        { "name": "Interior Deep Clean Specialists", "description": "Leather conditioning, fabric extraction, air vent detailing, and odour removal. We make your cabin feel brand new.", "imageQuery": "car interior detailing leather seats cleaning professional" },
+        { "name": "Ceramic Coating & Paint Protection", "description": "We offer professional ceramic coatings that protect your paint for years, not weeks. One application saves you hundreds in future washes.", "imageQuery": "ceramic coating application car paint protection glossy shine" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -13636,6 +13841,11 @@ export const presetContent: Record<string, PresetContent> = {
           "computerised wheel alignment machine display readings",
           "new tyres stacked rows display tyre shop",
           "tyre tread depth gauge measurement close-up"
+      ],
+      "features": [
+        { "name": "Free Alignment Check With Every Fitting", "description": "Every set of new tyres includes a complimentary wheel alignment check \u2014 because new rubber on a misaligned car wears out fast.", "imageQuery": "wheel alignment machine tyre shop laser measurement" },
+        { "name": "All Brands, All Budgets", "description": "From premium Continentals to reliable budget options, we stock tyres for every vehicle and every wallet. Honest advice, no upselling.", "imageQuery": "tyre shop wall display various brands sizes selection" },
+        { "name": "While-You-Wait Service", "description": "Most fittings take under 30 minutes. Grab a coffee in our waiting area and we'll have you back on the road before it goes cold.", "imageQuery": "tyre fitting bay quick service mechanic working efficiently" }
       ],
       "processSteps": [
           {
@@ -13764,6 +13974,11 @@ export const presetContent: Record<string, PresetContent> = {
           "dash camera mounted on car windscreen",
           "car electrical wiring repair soldering workshop"
       ],
+      "features": [
+        { "name": "Advanced Diagnostic Equipment", "description": "We use dealer-level diagnostic tools to read fault codes, trace wiring issues, and pinpoint electrical problems \u2014 not guess at them.", "imageQuery": "auto electrician diagnostic scanner car wiring computer" },
+        { "name": "Aftermarket Installation Specialists", "description": "Towbars, spotlights, dual-battery systems, dashcams \u2014 we install aftermarket accessories properly, with no warranty issues.", "imageQuery": "auto electrician installing towbar wiring vehicle accessories" },
+        { "name": "Mobile Service Available", "description": "Car won't start? We come to you with a fully equipped mobile unit. Roadside diagnosis and repair without a tow truck.", "imageQuery": "mobile auto electrician service van roadside repair" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -13890,6 +14105,11 @@ export const presetContent: Record<string, PresetContent> = {
           "roadside battery jump start cables connected",
           "accident vehicle recovery tow truck crane",
           "tow truck amber lights operating at night road"
+      ],
+      "features": [
+        { "name": "Average 30-Minute Response Time", "description": "We have vehicles stationed across the metro. When you're stranded, you won't wait long \u2014 our average arrival is under 30 minutes.", "imageQuery": "tow truck arriving quickly roadside assistance fast response" },
+        { "name": "Flatbed Towing for Zero Damage", "description": "We use flatbed trucks that lift your vehicle clear of the road. No dragging, no diff damage, no scratched bumpers.", "imageQuery": "flatbed tow truck loading car safely vehicle transport" },
+        { "name": "24/7 All-Hours Service", "description": "Breakdowns don't keep office hours and neither do we. Call any time, any day \u2014 including weekends and public holidays.", "imageQuery": "tow truck night time emergency roadside service lights" }
       ],
       "processSteps": [
           {
@@ -14018,6 +14238,11 @@ export const presetContent: Record<string, PresetContent> = {
           "riding helmets gloves boots gear display wall",
           "classic vintage motorcycle restored showroom"
       ],
+      "features": [
+        { "name": "Riders Who Wrench", "description": "Every mechanic in our workshop rides. We understand bikes because we live them \u2014 not because we read a manual.", "imageQuery": "motorcycle mechanic passionate rider workshop experienced" },
+        { "name": "Genuine & Aftermarket Parts In Stock", "description": "We carry OEM and quality aftermarket parts for major brands. Most repairs and upgrades are completed without ordering delays.", "imageQuery": "motorcycle parts display shelves workshop stock inventory" },
+        { "name": "Custom Builds & Modifications", "description": "From exhaust upgrades to full cafe racer builds, we turn your vision into a machine you'll never want to park.", "imageQuery": "custom motorcycle build cafe racer workshop modification" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -14126,6 +14351,11 @@ export const presetContent: Record<string, PresetContent> = {
           "ecommerce store product grid Shopify design",
           "SEO analytics traffic growth chart dashboard",
           "responsive website design mobile tablet desktop screens"
+      ],
+      "features": [
+        { "name": "Performance-First Development", "description": "Every site we build scores 90+ on Google PageSpeed. Fast-loading pages mean better SEO, lower bounce rates, and more conversions.", "imageQuery": "web developer coding laptop performance optimisation screen" },
+        { "name": "You Own Everything", "description": "Your code, your domain, your hosting account. We don't hold websites hostage \u2014 if you leave, everything goes with you.", "imageQuery": "web design project handover client meeting files transfer" },
+        { "name": "Post-Launch Support Included", "description": "Every build includes 30 days of free support. Bug fixes, content tweaks, and training so you can manage your own site.", "imageQuery": "developer providing support training client website management" }
       ],
       "processSteps": [
           {
@@ -14236,6 +14466,11 @@ export const presetContent: Record<string, PresetContent> = {
           "server room racks cables networking infrastructure",
           "firewall security appliance network rack installed"
       ],
+      "features": [
+        { "name": "15-Minute Remote Response", "description": "Most issues are resolved remotely within the hour. Our average first-response time is under 15 minutes during business hours.", "imageQuery": "IT support technician remote desktop helping client screen" },
+        { "name": "Proactive Monitoring", "description": "We don't wait for things to break. Our monitoring tools flag issues before they cause downtime \u2014 so you rarely need to call us.", "imageQuery": "server monitoring dashboard alerts proactive IT management" },
+        { "name": "Flat Monthly Fee, Unlimited Support", "description": "One predictable monthly cost covers all your IT support. No per-ticket charges, no clock-watching.", "imageQuery": "IT managed services agreement handshake business partnership" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -14344,6 +14579,11 @@ export const presetContent: Record<string, PresetContent> = {
           "SEO keyword ranking chart growth analytics",
           "social media content calendar posts scheduled",
           "email marketing campaign open rate dashboard"
+      ],
+      "features": [
+        { "name": "Data-Driven, Not Guesswork", "description": "Every campaign is built on analytics, not hunches. We track, measure, and optimise weekly so your budget works harder over time.", "imageQuery": "digital marketing analytics dashboard data performance metrics" },
+        { "name": "No Long-Term Lock-In", "description": "We earn your business every month. No 12-month contracts \u2014 stay because the results speak for themselves.", "imageQuery": "marketing team meeting results review client satisfaction" },
+        { "name": "Full Funnel Strategy", "description": "From awareness ads to retargeting to email nurture, we build the complete pipeline \u2014 not just the top of the funnel.", "imageQuery": "marketing funnel strategy whiteboard planning conversion pipeline" }
       ],
       "processSteps": [
           {
@@ -14454,6 +14694,11 @@ export const presetContent: Record<string, PresetContent> = {
           "SOC monitoring dashboard threat alerts screens",
           "firewall configuration network security appliance"
       ],
+      "features": [
+        { "name": "Vulnerability Assessments & Pen Testing", "description": "We find the holes before hackers do. Regular penetration testing and vulnerability scans keep your systems hardened.", "imageQuery": "cybersecurity penetration testing security audit screen code" },
+        { "name": "Incident Response Planning", "description": "If a breach happens, you need a plan \u2014 not panic. We create and drill response protocols so your team knows exactly what to do.", "imageQuery": "cybersecurity incident response team planning strategy meeting" },
+        { "name": "Employee Security Training", "description": "90% of breaches start with human error. We train your staff to spot phishing, use strong passwords, and handle data safely.", "imageQuery": "cybersecurity training workshop employees computer security awareness" }
+      ],
       "processSteps": [
           {
               "step": "1",
@@ -14562,6 +14807,11 @@ export const presetContent: Record<string, PresetContent> = {
           "data visualisation bar charts pie graphs screen",
           "database schema diagram data integration flow",
           "predictive analytics forecast chart machine learning"
+      ],
+      "features": [
+        { "name": "Dashboards That Drive Decisions", "description": "We don't just visualise data \u2014 we build dashboards that answer the questions your team actually asks, in real time.", "imageQuery": "business intelligence dashboard data visualisation charts screen" },
+        { "name": "Clean Data, Reliable Insights", "description": "Garbage in, garbage out. We audit, clean, and structure your data first so every insight you act on is trustworthy.", "imageQuery": "data cleaning ETL pipeline database management professional" },
+        { "name": "Platform-Agnostic Expertise", "description": "Power BI, Tableau, Looker, custom SQL \u2014 we work with whatever tools you have and recommend what fits your team best.", "imageQuery": "analytics tools multiple platforms Power BI Tableau screens" }
       ],
       "processSteps": [
           {
@@ -14789,6 +15039,11 @@ export const presetContent: Record<string, PresetContent> = {
       "product flat lay overhead styled arrangement",
       "couple candid outdoor golden hour lifestyle",
       "architectural interior photo natural light room"
+    ],
+    "features": [
+      { "name": "Edited Gallery in 7 Days", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing photos on computer screen lightroom gallery" },
+      { "name": "Natural, Unposed Direction", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "natural candid portrait session couple laughing relaxed outdoors" },
+      { "name": "Full Commercial Licensing", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "professional photography portfolio printed website marketing usage" }
     ]
   },
   "Videographer": {
@@ -14890,6 +15145,11 @@ export const presetContent: Record<string, PresetContent> = {
       "vertical video filming social media content",
       "drone aerial shot filming landscape cinematic",
       "video editing timeline colour grading screen"
+    ],
+    "features": [
+      { "name": "Concept-to-Delivery Production", "description": "We don't just point a camera. We develop the creative concept, script, shoot, edit, and deliver \u2014 one team, one vision.", "imageQuery": "video production team planning creative concept storyboard" },
+      { "name": "Licensed Music & Sound Design", "description": "Every video includes commercially licensed music and professional sound mixing. No copyright strikes, no muffled audio.", "imageQuery": "video editing suite audio mixing sound design professional" },
+      { "name": "Platform-Optimised Cuts", "description": "You get versions formatted for Instagram, YouTube, TikTok, and your website. One shoot, every platform covered.", "imageQuery": "social media video formats multiple screens devices content" }
     ]
   },
   "Graphic Designer": {
@@ -14991,6 +15251,11 @@ export const presetContent: Record<string, PresetContent> = {
       "packaging design product boxes printed layouts",
       "social media post design template phone screen",
       "typography poster design large format print"
+    ],
+    "features": [
+      { "name": "Brand Strategy, Not Just Pretty Pictures", "description": "We start with who you are, who you're talking to, and what you're trying to achieve. Design follows strategy, not the other way around.", "imageQuery": "brand strategy workshop mood board design thinking creative" },
+      { "name": "Print & Digital Consistency", "description": "Your brand looks the same on a business card as it does on a billboard. We design systems, not one-offs.", "imageQuery": "brand identity mockup business card letterhead digital consistent" },
+      { "name": "Source Files Always Yours", "description": "You own everything we create. All source files, fonts, and assets are handed over \u2014 you're never locked in.", "imageQuery": "designer handing over files USB drive client meeting" }
     ]
   },
   "Interior Designer": {
@@ -15092,6 +15357,11 @@ export const presetContent: Record<string, PresetContent> = {
       "kitchen interior design modern marble countertop",
       "commercial office interior open plan design",
       "hospitality restaurant interior design elegant"
+    ],
+    "features": [
+      { "name": "3D Renders Before We Order Anything", "description": "See your room in photorealistic 3D before a single item is purchased. No guesswork, no expensive mistakes.", "imageQuery": "interior design 3D render photorealistic living room visualisation" },
+      { "name": "Trade-Only Pricing on Furniture", "description": "We pass on our trade discounts to you. Access brands and pieces that aren't available to the public, often at better prices.", "imageQuery": "luxury furniture showroom exclusive designer pieces trade" },
+      { "name": "Project Management Included", "description": "We coordinate contractors, deliveries, and installations so you don't have to. One point of contact from concept to completion.", "imageQuery": "interior designer managing project site coordinating installation" }
     ]
   },
   "Copywriter / Content Creator": {
@@ -15193,6 +15463,11 @@ export const presetContent: Record<string, PresetContent> = {
       "blog content article screen laptop writing",
       "advertising campaign headline creative layout",
       "social media content posts planned calendar"
+    ],
+    "features": [
+      { "name": "SEO-Informed, Human-Written", "description": "Every piece is written for people first, search engines second. You get content that ranks and reads naturally.", "imageQuery": "writer at desk laptop creative content professional workspace" },
+      { "name": "Brand Voice Development", "description": "We create a documented tone-of-voice guide so your brand sounds consistent whether we write it or your intern does.", "imageQuery": "brand voice guide document style writing tone professional" },
+      { "name": "Fast Turnaround, No Fluff", "description": "Most projects are delivered within 5 business days. Clean, concise copy that says what it needs to \u2014 nothing more.", "imageQuery": "content calendar planning editorial schedule organised efficient" }
     ]
   },
   "Music Producer / Studio": {
@@ -15294,6 +15569,11 @@ export const presetContent: Record<string, PresetContent> = {
       "mixing mastering console monitor speakers close-up",
       "podcast recording microphone headphones desk",
       "vocalist singing into condenser microphone studio"
+    ],
+    "features": [
+      { "name": "Acoustically Treated, Pro-Grade Studio", "description": "Our rooms are purpose-built and acoustically treated. What you hear in the monitors is what the world hears.", "imageQuery": "professional recording studio acoustically treated mixing desk" },
+      { "name": "Session Musicians on Call", "description": "Need live drums, bass, or guitar? We have a network of session musicians who can lay down tracks to elevate your project.", "imageQuery": "session musician recording guitar in studio professional" },
+      { "name": "Mix & Master for All Platforms", "description": "We master for Spotify, Apple Music, vinyl, and broadcast. Your track sounds perfect wherever people listen.", "imageQuery": "audio mastering engineer studio monitors mixing console" }
     ]
   },
   "Craft / Handmade Goods": {
@@ -15395,6 +15675,11 @@ export const presetContent: Record<string, PresetContent> = {
       "woven textile cushion throw natural fibre",
       "hand-stitched leather goods wallet bag belt",
       "artisan craft market stall handmade goods"
+    ],
+    "features": [
+      { "name": "Every Piece Made by Hand", "description": "Nothing is mass-produced. Each item is crafted individually, which means you're getting something truly one-of-a-kind.", "imageQuery": "artisan hands crafting handmade product workshop detail" },
+      { "name": "Custom Orders Welcome", "description": "Want a specific colour, size, or personalisation? We love custom work and we'll collaborate with you to get it exactly right.", "imageQuery": "custom handmade order personalised crafts gift bespoke" },
+      { "name": "Locally Sourced Materials", "description": "We use South African materials wherever possible \u2014 supporting local suppliers and keeping our carbon footprint small.", "imageQuery": "natural local materials raw craft supplies sustainable sourced" }
     ]
   },
   "Fashion Designer": {
@@ -15496,6 +15781,11 @@ export const presetContent: Record<string, PresetContent> = {
       "bespoke dress fitting mannequin pins studio",
       "clothing collection lookbook styled garments rack",
       "sewing machine fabric construction studio detail"
+    ],
+    "features": [
+      { "name": "Made-to-Measure Fit", "description": "Every garment is cut to your measurements. Off-the-rack can't compete with clothes that are literally shaped around your body.", "imageQuery": "fashion designer measuring client bespoke tailoring fitting" },
+      { "name": "Sustainable, Limited-Run Collections", "description": "We produce in small batches to minimise waste. You wear something exclusive, and the planet doesn't pay for it.", "imageQuery": "sustainable fashion small batch clothing rack studio production" },
+      { "name": "From Sketch to Wardrobe", "description": "We handle the full process \u2014 design, fabric sourcing, pattern-making, sewing, and final fitting. One designer, one vision.", "imageQuery": "fashion design sketch to finished garment process studio" }
     ]
   },
   "Animator / Motion Design": {
@@ -15597,6 +15887,11 @@ export const presetContent: Record<string, PresetContent> = {
       "broadcast title sequence motion graphics animated",
       "3D product render visualisation floating angle",
       "social media motion content animated story"
+    ],
+    "features": [
+      { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "animated explainer video production colourful motion graphics" },
+      { "name": "Style Frames Before Production", "description": "We design the look before we animate. You approve key frames so there are no surprises when the final video arrives.", "imageQuery": "motion design style frames storyboard animation planning" },
+      { "name": "Lottie & Web-Ready Formats", "description": "We deliver in every format you need \u2014 MP4, GIF, Lottie, After Effects \u2014 optimised for web, app, and social.", "imageQuery": "animation software after effects timeline motion design screen" }
     ]
   },
   "Tattoo / Piercing Studio": {
@@ -16006,6 +16301,11 @@ export const presetContent: Record<string, PresetContent> = {
       "home extension renovation contemporary glass design",
       "commercial office interior architecture open plan",
       "heritage building renovation restored facade"
+    ],
+    "features": [
+      { "name": "Full Council Submission Service", "description": "We handle site development plans, council submissions, and all the back-and-forth so you don't have to sit in planning offices.", "imageQuery": "architect reviewing council building plans submission documents" },
+      { "name": "Energy-Efficient Design Focus", "description": "Every project considers passive cooling, natural light, and insulation from day one \u2014 reducing your running costs for decades.", "imageQuery": "energy efficient building design natural light sustainable architecture" },
+      { "name": "3D Walkthroughs Before Construction", "description": "We build your project virtually before anyone picks up a brick. Walk through your future home or office in photorealistic 3D.", "imageQuery": "architectural 3D render walkthrough modern building visualisation" }
     ]
   },
   "Surveyor": {
@@ -16512,6 +16812,11 @@ export const presetContent: Record<string, PresetContent> = {
       "branded vehicle wrap van fleet graphics",
       "event banner wall exhibition display stand",
       "window vinyl graphics storefront branding installed"
+    ],
+    "features": [
+      { "name": "Same-Day Rush Available", "description": "Need it yesterday? We offer same-day turnaround on selected products so your deadline is never missed.", "imageQuery": "print shop production fast turnaround printing machine" },
+      { "name": "In-House Design Service", "description": "Don't have artwork? Our design team will create it for you at no extra charge on qualifying orders.", "imageQuery": "graphic designer creating signage artwork computer design studio" },
+      { "name": "Installation Team on Staff", "description": "We don't just print it \u2014 we install it. Vehicle wraps, building signage, window graphics, all fitted by our own crew.", "imageQuery": "signage installer fitting shop fascia professional installation" }
     ]
   },
 }
