@@ -2056,7 +2056,7 @@ function buildCreativeTemplate(data: TemplateData): string {
           <div class="ms-img" style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
             <img src="${allPortfolioImgs[i % allPortfolioImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
-          <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${s.tags.join(' &#8226; ')}</p>
+          <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${('tags' in s && s.tags) ? s.tags.join(' &#8226; ') : s.name}</p>
           <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:${crText};display:flex;align-items:center;gap:0.5rem">&rarr; ${s.name}</h3>
         </div>`).join('')}
       </div>
@@ -3223,7 +3223,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         ${featuresData.slice(0, 3).map(s => `
         <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
           <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
-            <span style="font-size:1.2rem;color:var(--primary)">${s.icon || '&#9881;'}</span>
+            <span style="font-size:1.2rem;color:var(--primary)">${('icon' in s && s.icon) || '&#9881;'}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
