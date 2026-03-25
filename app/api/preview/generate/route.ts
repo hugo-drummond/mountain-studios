@@ -565,23 +565,11 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
     { label: 'Contact', href: '#contact' },
   ]
   return `
-  <div id="ms-mob-menu" class="ms-mobile-menu">
-    <button id="ms-close-btn" class="ms-close">&times;</button>
-    ${menuLinks.map(l => `<a href="${l.href}" class="ms-menu-link">${l.label}</a>`).join('\n    ')}
-    <a href="#contact" class="ms-menu-link" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a>
+  <div id="ms-mob-menu" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:150;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem">
+    <button onclick="document.getElementById('ms-mob-menu').style.display='none'" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;z-index:200">&times;</button>
+    ${menuLinks.map(l => `<a href="${l.href}" onclick="document.getElementById('ms-mob-menu').style.display='none'" style="color:#fff;text-decoration:none;font-family:var(--body-font);font-size:1.2rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 2rem;border:1px solid rgba(255,255,255,0.2);border-radius:999px">${l.label}</a>`).join('\n    ')}
+    <a href="#contact" onclick="document.getElementById('ms-mob-menu').style.display='none'" style="color:#fff;text-decoration:none;font-family:var(--body-font);font-size:1.2rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 2rem;background:var(--primary-raw);border:1px solid var(--primary-raw);border-radius:999px">${content.ctaPrimary}</a>
   </div>
-  <script>
-  setTimeout(function(){
-    var m=document.getElementById('ms-mob-menu');
-    if(!m)return;
-    var o=document.getElementById('ms-menu-open');
-    if(o)o.onclick=function(){m.style.display='flex'};
-    var c=document.getElementById('ms-close-btn');
-    if(c)c.onclick=function(){m.style.display='none'};
-    var a=m.getElementsByTagName('a');
-    for(var i=0;i<a.length;i++)a[i].addEventListener('click',function(){m.style.display='none'});
-  },0);
-  </script>
 `
 }
 
@@ -604,8 +592,8 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:1.25rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-        <button id="ms-menu-open" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center;position:relative;z-index:10" aria-label="Menu">
+        <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
+        <button onclick="document.getElementById('ms-mob-menu').style.display='flex'" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center;position:relative;z-index:10" aria-label="Menu">
           <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
           <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
           <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
