@@ -3831,8 +3831,8 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 5: Alternating feature showcases — pre-assign unique images
-  const showcaseImgs = content.services.map(() => nextImg())
+  // Section 5: Alternating feature showcases
+  const showcaseImgs = content.services.map((_, i) => serviceImgs[i % serviceImgs.length])
   const featureShowcases = content.services.length > 0 ? `
   <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
