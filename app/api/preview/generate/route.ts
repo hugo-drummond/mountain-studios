@@ -507,11 +507,13 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
     .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
     .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
-    .ms-mobile-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; }
-    .ms-mobile-menu.open { display: flex; }
-    .ms-mobile-menu a { color: #fff; text-decoration: none; font-family: var(--body-font); font-size: 1.2rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; transition: all 0.3s; }
-    .ms-mobile-menu a:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
-    .ms-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; z-index: 200; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 150; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--body-font); font-size: 1.2rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.75rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; transition: all 0.3s; }
+    #ms-mob-menu a:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.05); }
+    .ms-close-label { position: absolute; top: 1.5rem; right: 1.5rem; color: #fff; font-size: 2rem; cursor: pointer; z-index: 200; }
 
     @media (max-width: 768px) {
       .ms-burger { display: flex; }
@@ -565,12 +567,34 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
     { label: 'Contact', href: '#contact' },
   ]
   return `
-  <div id="ms-mob-menu" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:150;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem">
-    <button onclick="document.getElementById('ms-mob-menu').style.display='none'" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer;z-index:200">&times;</button>
-    ${menuLinks.map(l => `<a href="${l.href}" onclick="document.getElementById('ms-mob-menu').style.display='none'" style="color:#fff;text-decoration:none;font-family:var(--body-font);font-size:1.2rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 2rem;border:1px solid rgba(255,255,255,0.2);border-radius:999px">${l.label}</a>`).join('\n    ')}
-    <a href="#contact" onclick="document.getElementById('ms-mob-menu').style.display='none'" style="color:#fff;text-decoration:none;font-family:var(--body-font);font-size:1.2rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.75rem 2rem;background:var(--primary-raw);border:1px solid var(--primary-raw);border-radius:999px">${content.ctaPrimary}</a>
+  <input type="checkbox" id="ms-menu-toggle" />
+  <div id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    ${menuLinks.map(l => `<label for="ms-menu-toggle"><a href="${l.href}">${l.label}</a></label>`).join('\n    ')}
+    <label for="ms-menu-toggle"><a href="#contact" style="background:var(--primary-raw);border-color:var(--primary-raw)">${content.ctaPrimary}</a></label>
   </div>
 `
+}
+
+// Build a unique image pool from user images + stock, padded with picsum to avoid repeats
+function buildImagePool(images: string[], stockImages: { hero: string; cards: string[] }, businessName: string): string[] {
+  // Deduplicate by photo ID — also exclude the hero image
+  const heroId = (images[0] || stockImages.hero).match(/photos\/(\d+)/)?.[1] || ''
+  const all = [...images.slice(1), ...stockImages.cards].filter(Boolean)
+  const seen = new Set<string>([heroId])
+  const pool: string[] = []
+  for (const url of all) {
+    const id = url.match(/photos\/(\d+)/)?.[1] || url
+    if (!seen.has(id)) {
+      seen.add(id)
+      pool.push(url)
+    }
+  }
+  // Pad with unique picsum images so we NEVER repeat
+  for (let i = pool.length; i < 20; i++) {
+    pool.push(`https://picsum.photos/seed/${encodeURIComponent(businessName)}-img${i}/600/400`)
+  }
+  return pool
 }
 
 // Ensures items fill grid rows evenly — no orphans
@@ -592,12 +616,12 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
       <div style="display:flex;align-items:center;gap:1.25rem">
-        <a href="#contact" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});return false" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
-        <button onclick="document.getElementById('ms-mob-menu').style.display='flex'" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center;position:relative;z-index:10" aria-label="Menu">
-          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
-          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
-          <span style="display:block;width:18px;height:1.5px;background:#fff;pointer-events:none"></span>
-        </button>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
       </div>
     </div>
   </nav>
@@ -762,6 +786,8 @@ function buildVisualTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -781,7 +807,7 @@ function buildVisualTemplate(data: TemplateData): string {
         <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
           <!-- Left: featured image -->
           <div class="ms-img" style="overflow:hidden;border-radius:16px;height:520px">
-            <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <!-- Right: stacked services list -->
           <div>
@@ -805,13 +831,13 @@ function buildVisualTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
         <div class="ms-grid" style="display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;grid-template-rows:auto auto">
           <div class="ms-img" style="grid-row:1/3;border-radius:16px;overflow:hidden;min-height:400px">
-            <img src="${galleryImgs[0]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[8]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="border-radius:16px;overflow:hidden;min-height:190px">
-            <img src="${galleryImgs[1]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[9]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="border-radius:16px;overflow:hidden;min-height:190px">
-            <img src="${galleryImgs[2]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[10]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
           </div>
         </div>
       </div>
@@ -1037,6 +1063,8 @@ function buildPortfolioTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1109,27 +1137,27 @@ function buildPortfolioTemplate(data: TemplateData): string {
       <div style="max-width:1200px;margin:0 auto">
         <div class="ms-grid" style="display:grid;grid-template-columns:65% 35%;height:400px;gap:2px">
           <div class="pf-cell">
-            <img src="${galleryImgs[0]}" alt="${captions[0] || 'Project'}" />
+            <img src="${stockPool[8]}" alt="${captions[0] || 'Project'}" />
             <div class="pf-cap"><span>${captions[0] || 'Project'}</span></div>
           </div>
           <div class="pf-cell">
-            <img src="${galleryImgs[1]}" alt="${captions[1] || 'Project'}" />
+            <img src="${stockPool[9]}" alt="${captions[1] || 'Project'}" />
             <div class="pf-cap"><span>${captions[1] || 'Project'}</span></div>
           </div>
         </div>
         <div class="ms-grid" style="display:grid;grid-template-columns:40% 60%;height:340px;gap:2px;margin-top:2px">
           <div class="pf-cell">
-            <img src="${galleryImgs[2]}" alt="${captions[2] || 'Project'}" />
+            <img src="${stockPool[10]}" alt="${captions[2] || 'Project'}" />
             <div class="pf-cap"><span>${captions[2] || 'Project'}</span></div>
           </div>
           <div class="pf-cell">
-            <img src="${galleryImgs[3]}" alt="${captions[3] || 'Project'}" />
+            <img src="${stockPool[11]}" alt="${captions[3] || 'Project'}" />
             <div class="pf-cap"><span>${captions[3] || 'Project'}</span></div>
           </div>
         </div>
-        ${galleryImgs[4] ? `<div style="display:grid;grid-template-columns:1fr;height:360px;gap:2px;margin-top:2px">
+        ${stockPool[12] ? `<div style="display:grid;grid-template-columns:1fr;height:360px;gap:2px;margin-top:2px">
           <div class="pf-cell">
-            <img src="${galleryImgs[4]}" alt="${captions[4] || 'Project'}" />
+            <img src="${stockPool[12]}" alt="${captions[4] || 'Project'}" />
             <div class="pf-cap"><span>${captions[4] || 'Project'}</span></div>
           </div>
         </div>` : ''}
@@ -1179,6 +1207,8 @@ function buildPropertyTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1216,7 +1246,7 @@ function buildPropertyTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
         <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:${prCopper};border-radius:12px;padding:1.5rem 2rem;color:#fff">
           <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;line-height:1">${content.stats[0]?.value || '15+'}</div>
@@ -1249,7 +1279,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         ${content.services.slice(0, 3).map((s, i) => `
         <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
           <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
           </div>
           <div style="padding:1.5rem">
@@ -1416,6 +1446,8 @@ function buildEventsTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1459,7 +1491,7 @@ function buildEventsTemplate(data: TemplateData): string {
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
             <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
             <div class="ms-img" style="border-radius:12px;overflow:hidden;height:200px">
-              <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+              <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             </div>
           </div>`).join('')}
         </div>
@@ -1473,7 +1505,7 @@ function buildEventsTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:70vh">
       ${i % 2 === 0 ? `
       <div style="overflow:hidden">
-        <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
@@ -1492,7 +1524,7 @@ function buildEventsTemplate(data: TemplateData): string {
         </div>
       </div>
       <div style="overflow:hidden">
-        <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>`}
     </div>
   </section>`).join('')
@@ -1502,7 +1534,7 @@ function buildEventsTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${evtBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-        <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:1.5rem">${content.aboutHeading}</h2>
@@ -1602,6 +1634,8 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1635,7 +1669,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
       ${(eg.items as typeof content.services).map((s, i) => `
       <div>
         <div class="ms-img" style="height:200px;overflow:hidden;margin-bottom:1.25rem">
-          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
+          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
@@ -1648,7 +1682,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const peopleSection = `
   <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;overflow:hidden">
     <div style="position:absolute;inset:0">
-      <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.2) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem;width:100%">
@@ -1690,7 +1724,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   // Full-width image
   const fullImage = `
   <section style="height:40vh;overflow:hidden">
-    <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
   </section>`
 
   // Footer — dark, 4-column links + subscribe + social
@@ -1759,6 +1793,8 @@ function buildEducationTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1850,7 +1886,7 @@ function buildEducationTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:1rem;color:${eduMuted};text-align:center;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
         <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-          <img src="${serviceImgs[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div>
           <p style="font-family:var(--heading-font);font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;color:${eduText};line-height:1.4;margin-bottom:1.5rem">${content.testimonial.quote}</p>
@@ -1873,7 +1909,7 @@ function buildEducationTemplate(data: TemplateData): string {
         </div>
       </div>
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:400px">
-        <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
@@ -1930,6 +1966,8 @@ function buildCreativeTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1972,7 +2010,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         ${content.services.slice(0, 3).map((s, i) => `
         <div>
           <div class="ms-img" style="height:450px;overflow:hidden;margin-bottom:1.25rem">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${s.tags.join(' · ')}</p>
@@ -1988,7 +2026,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${crBg}">
     <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:500px">
-        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:1.1rem;color:${crText};line-height:1.8;margin-bottom:1.5rem">${p}</p>`).join('')}
@@ -2095,6 +2133,8 @@ function buildFitnessTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -2166,7 +2206,7 @@ function buildFitnessTemplate(data: TemplateData): string {
       ${content.services.slice(0, 3).map((s, i) => `
       <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
         <div style="position:absolute;inset:0">
-          <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
         </div>
         <div style="position:relative;padding:2rem">
@@ -2199,7 +2239,7 @@ function buildFitnessTemplate(data: TemplateData): string {
         ${content.services.slice(0, 3).map((s, i) => `
         <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
           <div style="position:absolute;inset:0">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
           </div>
           <div style="position:relative;padding:2rem">
@@ -2273,6 +2313,8 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -2350,7 +2392,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const featureImage = `
   <section id="about" style="position:relative;min-height:60vh;display:flex;align-items:flex-end;overflow:hidden">
     <div style="position:absolute;inset:0">
-      <img src="${galleryImgs[0] || serviceImgs[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <img src="${stockPool[8] || stockPool[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.5) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
@@ -2420,6 +2462,8 @@ function buildPetsTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -2451,7 +2495,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <section id="services" style="padding:80px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
-        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.servicesHeading}</h2>
@@ -2471,7 +2515,7 @@ function buildPetsTemplate(data: TemplateData): string {
         <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaPrimary}</a>
       </div>
       <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
-        <img src="${serviceImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
@@ -2595,6 +2639,8 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -2635,7 +2681,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
         <div style="border-radius:50%;overflow:hidden;width:90%;aspect-ratio:1;margin:0 auto">
-          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>
       <div>
@@ -2679,7 +2725,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
         ${content.services.map((s, i) => `
         <div style="display:flex;align-items:center;gap:1rem;text-align:left">
           <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
-            <img src="${serviceImgs[i % serviceImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="flex:1">
             <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.25rem">
@@ -2739,7 +2785,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   // Section 8: Full-width food image
   const fullImage = `
   <section style="padding:0;height:50vh;overflow:hidden">
-    <img src="${galleryImgs[3] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    <img src="${stockPool[11] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
   </section>`
 
   // Section 9: 4-column contact footer
@@ -2814,6 +2860,8 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -2849,7 +2897,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${hwBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.badge || 'About Us'}</p>
@@ -3021,6 +3069,8 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -3150,7 +3200,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         </div>
       </div>
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-        <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
@@ -3259,6 +3309,8 @@ function buildTradesTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -3344,7 +3396,7 @@ function buildTradesTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
         <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem">
           <div style="width:48px;height:48px;border-radius:50%;background:${trBlue};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1rem;font-weight:700">${content.stats[0]?.value || '15+'}</div>
@@ -3526,6 +3578,8 @@ function buildRetailTemplate(data: TemplateData): string {
   }
   let imgIdx = 0
   const nextImg = () => uniquePool[imgIdx++] || uniquePool[0]
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
   const galleryImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
 
@@ -3577,10 +3631,10 @@ function buildRetailTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative;min-height:500px">
         <div style="position:absolute;top:0;left:0;width:65%;height:75%;border-radius:16px;overflow:hidden;z-index:1">
-          <img src="${galleryImgs[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:0;right:0;width:55%;height:65%;border-radius:16px;overflow:hidden;z-index:2;box-shadow:0 8px 30px rgba(0,0,0,0.1)">
-          <img src="${galleryImgs[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[9]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>
       <div style="text-align:center;padding:2rem">
@@ -3595,7 +3649,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const fullWidthImage = `
   <section style="padding:40px 2rem;background:${retailBg}">
     <div style="max-width:1200px;margin:0 auto;border-radius:24px;overflow:hidden;height:60vh">
-      <img src="${galleryImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <img src="${stockPool[10] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
     </div>
   </section>`
 
@@ -3614,7 +3668,7 @@ function buildRetailTemplate(data: TemplateData): string {
           </div>`).join('')}
         </div>
         <div style="border-radius:16px;overflow:hidden">
-          <img src="${serviceImgs[0]}" alt="" style="width:100%;height:auto;display:block" />
+          <img src="${stockPool[0]}" alt="" style="width:100%;height:auto;display:block" />
         </div>
         <div>
           ${content.stats.slice(2, 4).map((s, i) => `
@@ -3739,6 +3793,8 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -3802,7 +3858,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   </section>`
 
   // Section 5: Alternating feature showcases
-  const showcaseImgs = content.services.map((_, i) => serviceImgs[i % serviceImgs.length])
+  const showcaseImgs = content.services.map((_, i) => stockPool[_pi++])
   const featureShowcases = content.services.length > 0 ? `
   <section id="services" style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
@@ -3883,7 +3939,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
           </div>
         </div>
         <div style="overflow:hidden">
-          <img src="${serviceImgs[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>
     </div>
