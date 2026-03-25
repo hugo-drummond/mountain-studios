@@ -3203,7 +3203,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     }
   </style>
 
-${homeNav}
+${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${benefitsSection}
