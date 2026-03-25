@@ -930,7 +930,7 @@ function buildServiceTemplate(data: TemplateData): string {
           ${content.services.map((s, i) => `${i > 0 ? `
             <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>` : ''}
             <div style="flex:1;${serviceCardStyle}">
@@ -971,7 +971,7 @@ function buildServiceTemplate(data: TemplateData): string {
         ${tileImgs.map((img, i) => `
         <div class="ms-img" style="position:relative;height:280px;overflow:hidden">
           <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)" />
-          <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#1a1a1a;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
+          <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#fff;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
         </div>`).join('')}
       </div>
       <!-- Stats bar -->
@@ -997,7 +997,7 @@ function buildServiceTemplate(data: TemplateData): string {
           ${steps.map((s, i) => `${i > 0 ? `
             <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0;padding:0 0.75rem">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>` : ''}
             <div style="flex:1;${cardStyle};text-align:center;display:flex;flex-direction:column;align-items:center">
@@ -1226,11 +1226,11 @@ function buildPropertyTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45)"></div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
     </div>
     <div style="position:relative;max-width:900px;padding:0 2rem">
-      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">${content.heroEyebrow || 'Premium Real Estate Services'}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.02em">${businessName}</h1>
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow || 'Premium Real Estate Services'}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.02em;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${businessName}</h1>
       <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 2rem;line-height:1.7">${content.heroSubtitle}</p>
       <div style="display:flex;gap:0.75rem;justify-content:center">
         <a href="#properties" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">View Properties &rarr;</a>
@@ -1303,14 +1303,15 @@ function buildPropertyTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;text-align:left">
-        ${content.services.map(s => `
+      ${(() => { const eg = evenGrid(content.services, 2); return `
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem;text-align:left">
+        ${(eg.items as typeof content.services).map(s => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon)}</div>
           <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${prMuted};line-height:1.7">${s.description}</p>
         </div>`).join('')}
-      </div>
+      </div>`; })()}
     </div>
   </section>`
 
@@ -1464,11 +1465,11 @@ function buildEventsTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
     </div>
     <div style="position:relative;text-align:center;max-width:800px;padding:0 2rem">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.25rem"><em>${content.tagline}</em></h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:2rem;max-width:550px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.25rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)"><em>${content.tagline}</em></h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:2rem;max-width:550px;margin-left:auto;margin-right:auto;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${evtText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:transparent;color:#fff;border:1px solid #fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
@@ -1652,11 +1653,11 @@ function buildProfessionalTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.55) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.65) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1rem;max-width:600px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1rem;max-width:600px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.85);max-width:450px;line-height:1.7;margin-bottom:2rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
       <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.75rem;background:${proRed};color:#fff;border-radius:4px;text-decoration:none">${content.ctaPrimary}</a>
     </div>
   </section>`
@@ -1673,7 +1674,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${proRed};text-decoration:none;font-weight:500">${content.ctaSecondary || 'Read more'}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:var(--primary);text-decoration:none;font-weight:500">${content.ctaSecondary || 'Read more'}</a>
       </div>`).join('')}
     </div>`; })()}
   </section>`
@@ -1707,7 +1708,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
       ${tileImgs.map((img, i) => `
       <div style="position:relative;aspect-ratio:1;overflow:hidden">
         <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        <div style="position:absolute;bottom:1rem;left:1rem;font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:#1a1a1a;padding:0.5rem 1rem;background:var(--primary)">${tileLabels[i]}</div>
+        <div style="position:absolute;bottom:1rem;left:1rem;font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:#fff;padding:0.5rem 1rem;background:var(--primary)">${tileLabels[i]}</div>
       </div>`).join('')}
     </div>
   </section>`
@@ -1750,7 +1751,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Legal</h4>
         <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
         <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;border:1px solid ${proRed};color:${proRed};text-decoration:none;margin-top:1rem">Subscribe</a>
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;border:1px solid var(--primary);color:var(--primary);text-decoration:none;margin-top:1rem">Subscribe</a>
       </div>
     </div>
     <div style="max-width:1300px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);text-align:left">
@@ -2233,8 +2234,8 @@ function buildFitnessTemplate(data: TemplateData): string {
   const packagesSection = `
   <section id="about" style="padding:80px 2rem;background:${fitBg}">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitOrange};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.galleryHeading || 'Packages'}</h2>
-      <div style="width:50px;height:3px;background:${fitOrange};margin-bottom:3rem"></div>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.galleryHeading || 'Packages'}</h2>
+      <div style="width:50px;height:3px;background:var(--primary);margin-bottom:3rem"></div>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.slice(0, 3).map((s, i) => `
         <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
@@ -2331,12 +2332,12 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.5) 80%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.6) 80%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:0.5rem">${content.heroEyebrow}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.75rem;max-width:550px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:450px;line-height:1.7;margin-bottom:1.5rem">${content.heroSubtitle}</p>
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:0.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.75rem;max-width:550px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
       <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaPrimary} &rarr;</a>
     </div>
   </section>`
@@ -2580,7 +2581,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <footer style="padding:60px 2rem 30px;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
       <div>
-        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.5rem">${businessName}</div>
+        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${petDark};margin-bottom:0.5rem">${businessName}</div>
       </div>
       ${content.contactHours ? `<div>
         <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Hours</h4>
@@ -2721,8 +2722,9 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div style="max-width:1000px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.heroEyebrow} -</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem 3rem">
-        ${content.services.map((s, i) => `
+      ${(() => { const eg = evenGrid(content.services, 2); return `
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem 3rem">
+        ${(eg.items as typeof content.services).map((s, i) => `
         <div style="display:flex;align-items:center;gap:1rem;text-align:left">
           <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
             <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2737,7 +2739,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
             </div>
           </div>
         </div>`).join('')}
-      </div>
+      </div>`; })()}
     </div>
   </section>`
 
@@ -3114,7 +3116,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `
         <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>` : ''}
         <div style="flex:1;padding:2.5rem 1.5rem;background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;text-align:center">
@@ -3362,7 +3364,7 @@ function buildTradesTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap">
       ${content.stats.slice(0, 4).map(s => `
       <div style="text-align:center">
-        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:${trBlue}">${s.value}</div>
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">${s.value}</div>
         <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">${s.label}</div>
       </div>`).join('')}
     </div>
