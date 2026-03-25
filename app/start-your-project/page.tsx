@@ -512,7 +512,7 @@ export default function StartYourProject() {
       GH: 'Ghana', NA: 'Namibia', BW: 'Botswana', MZ: 'Mozambique', ZW: 'Zimbabwe',
       MU: 'Mauritius',
     }
-    fetch('https://api.country.is', { signal: AbortSignal.timeout(3000) })
+    fetch('https://api.country.is', { signal: AbortSignal.timeout(8000) })
       .then(r => r.json())
       .then(data => {
         const name = codeToName[data.country]
