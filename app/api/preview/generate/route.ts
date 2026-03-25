@@ -2161,7 +2161,7 @@ function buildFitnessTemplate(data: TemplateData): string {
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.6) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.08em;max-width:700px">${content.tagline}</h1>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.08em;max-width:700px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
       <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
     </div>
   </section>`
@@ -2394,11 +2394,11 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <section id="about" style="position:relative;min-height:60vh;display:flex;align-items:flex-end;overflow:hidden">
     <div style="position:absolute;inset:0">
       <img src="${stockPool[8] || stockPool[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.5) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.6) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;color:#fff;margin-bottom:0.5rem">${content.aboutHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:450px;line-height:1.7;margin-bottom:1.25rem">${content.aboutText.split('\n')[0]}</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;color:#fff;margin-bottom:0.5rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.aboutHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.25rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.aboutText.split('\n')[0]}</p>
       <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.7rem 1.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaSecondary || 'Read more'} &rarr;</a>
     </div>
   </section>`
@@ -2942,7 +2942,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   const testimonialSection = content.testimonial ? `
   <section id="testimonials" style="padding:80px 2rem;background:${hwText}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Patients Say</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
@@ -3598,11 +3598,11 @@ function buildRetailTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:85vh;display:flex;align-items:center;overflow:hidden;background:${retailBg}">
     <div style="position:absolute;inset:1rem;border-radius:20px;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.35) 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.5) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 3rem;width:100%;text-align:center">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.85);max-width:500px;margin:0 auto 2rem;line-height:1.6">${content.heroSubtitle}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 8px rgba(0,0,0,0.4)">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.9);max-width:500px;margin:0 auto 2rem;line-height:1.6;text-shadow:0 1px 4px rgba(0,0,0,0.4)">${content.heroSubtitle}</p>
       <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:transform 0.2s">${content.ctaPrimary}</a>
     </div>
   </section>`
