@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Barlow Condensed', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #a8c1f7;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #0f0f0f;
+      --bg-alt: #141414;
+      --card-bg: #1a1a1a;
+      --text: #f5f5f0;
+      --text-muted: #a3a3a0;
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">Book a Service</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">Book a Service</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.pexels.com/photos/8478219/pexels-photo-8478219.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.6) 80%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:0.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">MOTOR WORKSHOP CAPE TOWN</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.75rem;max-width:550px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">Your car, <em>properly</em> looked after</h1>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">Full-service motor workshop for logbook services, repairs, diagnostics, and everything your vehicle needs to run perfectly.</p>
+      <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">Book a Service &rarr;</a>
+    </div>
+  </section>
+  
+  <section style="padding:0;background:var(--bg);border-bottom:1px solid var(--border)">
+    <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr">
+      
+      <div style="padding:3rem 2.5rem;border-right:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);margin-bottom:0.5rem">Logbook & Major Services</h3>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem">Full manufacturer-specified services with genuine or OEM parts that keep your warranty intact.</p>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;font-weight:500">What We Fix &rarr;</a>
+        <div class="ms-img" style="margin-top:2rem;height:280px;overflow:hidden">
+          <img src="https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div style="padding:3rem 2.5rem;border-left:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);margin-bottom:0.5rem">Diagnostics & Repairs</h3>
+        <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem">Computerised fault code scanning, mechanical repairs, and electrical fault finding on all makes.</p>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;font-weight:500">What We Fix &rarr;</a>
+        <div class="ms-img" style="margin-top:2rem;height:280px;overflow:hidden">
+          <img src="https://images.pexels.com/photos/12271949/pexels-photo-12271949.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1300px;margin:0 auto">
+      
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">Manufacturer Warranty Protected</h3>
+        <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">Transparent Pricing, Always</h3>
+        <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
+        <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">Courtesy Car Available</h3>
+        <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">What We Do</h2>
+      <div class="ms-grid" style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(4,1fr)">
+        
+        <div style="padding:2rem;border-right:1px solid var(--border)">
+          <div style="border-left:3px solid var(--primary);padding-left:1rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">Years Servicing</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">since 2007</p>
+          </div>
+        </div>
+        <div style="padding:2rem;border-right:1px solid var(--border)">
+          <div style="border-left:3px solid var(--primary);padding-left:1rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">Vehicles Serviced</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">all makes & models</p>
+          </div>
+        </div>
+        <div style="padding:2rem;border-right:1px solid var(--border)">
+          <div style="border-left:3px solid var(--primary);padding-left:1rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">Qualified Technicians</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">incl. master technician</p>
+          </div>
+        </div>
+        <div style="padding:2rem;">
+          <div style="border-left:3px solid var(--primary);padding-left:1rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">Google Rating</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">from 800+ reviews</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" style="position:relative;min-height:60vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.pexels.com/photos/13065689/pexels-photo-13065689.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.6) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;color:#fff;margin-bottom:0.5rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)">Mechanics you can actually <em>trust</em></h2>
+      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.25rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">We are an RMI-registered workshop which means our technicians are qualified and our workshop meets industry standards. We use a job card for every vehicle — you know exactly what was done, what parts were used, and what it cost.</p>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.7rem 1.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">What We Fix &rarr;</a>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">In the Workshop</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/13065690/pexels-photo-13065690.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Logbook & Major Services</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Full manufacturer-specified services with genuine or OEM parts that keep your warranty intact.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Logbook Service</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">OEM Parts</span>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/12271949/pexels-photo-12271949.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Diagnostics & Repairs</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Computerised fault code scanning, mechanical repairs, and electrical fault finding on all makes.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Diagnostics</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Computer Scan</span>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/9735311/pexels-photo-9735311.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Brakes, Tyres & Suspension</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Brake pads and discs, wheel alignment, shock absorbers, and tyre replacement and balancing.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Brakes</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Wheel Alignment</span>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/2180836/pexels-photo-2180836.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Air Conditioning & Regassing</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Full aircon diagnostic, regassing, compressor repairs, and cabin filter replacements for all makes.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Aircon</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Regassing</span>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/6870298/pexels-photo-6870298.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Pre-Purchase Inspections</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Comprehensive vehicle inspections before you buy, covering engine, gearbox, suspension, and body condition.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Pre-Purchase</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Inspection</span>
+            </div>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <div class="ms-img" style="height:220px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/7568428/pexels-photo-7568428.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">Clutch & Gearbox Repairs</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">Manual and automatic gearbox rebuilds, clutch replacements, and drivetrain diagnostics.</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+              <span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Clutch</span><span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">Gearbox</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border)">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:1rem">"First time in 10 years I left a workshop not wondering if I was overcharged. Brilliant."</p>
+      <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">— Derek M., Verified Client</p>
+    </div>
+  </section>
+  
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:600px;margin:0 auto;padding:0 2rem;text-align:center">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Ready to book your service?</h2>
+        <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+          </div>
+          <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+          <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#0a0a0a;border-top:1px solid var(--border)">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase">TestBiz</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">Full-service motor workshop for logbook services, repairs, diagnostics, and everything your vehicle needs to run perfectly.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div>
+        <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Logbook Service</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Diagnostics</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Brakes</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Aircon</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">About Us</a>
+        <a href="#gallery" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Gallery</a>
+        <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Privacy Policy</a>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Terms of Service</a>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
+      <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; 2026 TestBiz. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

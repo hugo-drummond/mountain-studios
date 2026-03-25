@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Space Grotesk', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #a8c1f7;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #0f0f0f;
+      --bg-alt: #141414;
+      --card-bg: #1a1a1a;
+      --text: #f5f5f0;
+      --text-muted: #a3a3a0;
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">Get a Proposal</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">Get a Proposal</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="padding:160px 2rem 80px;text-align:center;background:var(--bg)">
+    <div style="max-width:800px;margin:0 auto">
+      <div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;padding:0.4rem 1rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);margin-bottom:1.5rem;letter-spacing:0.04em">Shopify Partner & WooCommerce Expert</div>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem">
+        <span style="color:var(--primary)">Shopify, WooCommerce & custom builds</span><br />
+        <span style="color:var(--text)">Your store, open for business <em>always</em></span>
+      </h1>
+      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);line-height:1.7;max-width:600px;margin:0 auto 2.5rem">E-commerce strategy, store development, and growth management for brands that want to sell more online.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-bottom:4rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:opacity 0.2s">Get a Proposal</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:background 0.2s">Our Services</a>
+      </div>
+    </div>
+    <div style="max-width:1000px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 25px 60px rgba(0,0,0,0.5)">
+      <img src="https://images.pexels.com/photos/7191162/pexels-photo-7191162.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:auto;display:block" />
+    </div>
+  </section>
+  
+  <section style="padding:100px 2rem;background:var(--bg)">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
+        <div style="font-size:2rem;margin-bottom:1.25rem">shopping-cart</div>
+        <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.75rem">E-commerce Store Build</h3>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">Shopify, WooCommerce, and custom store builds with payment gateway integration and inventory setup.</p>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
+        <div style="font-size:2rem;margin-bottom:1.25rem">trending-up</div>
+        <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.75rem">Conversion Rate Optimisation</h3>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">UX improvements, A/B testing, and checkout flow optimisation to turn more visitors into buyers.</p>
+      </div>
+      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
+        <div style="font-size:2rem;margin-bottom:1.25rem">bar-chart-2</div>
+        <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.75rem">E-commerce Growth Management</h3>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">Ongoing SEO, Google Shopping, email marketing, and performance reporting for growing stores.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2rem;font-weight:600">E-COMMERCE SOLUTIONS CAPE TOWN</p>
+      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
+        
+        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">12+ Years in E-commerce</div>
+        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">150+ Stores Built</div>
+        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">3.8x Average ROAS</div>
+        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">4.8★ Google Rating</div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
+    <div style="max-width:850px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.5rem">How We Help</h2>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:var(--text-muted);line-height:1.7;max-width:650px;margin:0 auto">We believe a great online store should do most of the selling for you — we build stores that close.</p>
+    </div>
+  </section>
+  
+  <section style="padding:60px 2rem 100px;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto">
+      
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:6rem">
+        
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">Revenue-Focused, Not Just Pretty</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">We design stores that convert. Every layout decision, product page, and checkout flow is optimised to increase your average order value.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">Get a Proposal <span style="font-size:1.1rem">&rarr;</span></a>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+          <img src="https://images.pexels.com/photos/9218550/pexels-photo-9218550.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:350px;object-fit:cover" />
+        </div>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:6rem">
+        
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+          <img src="https://images.pexels.com/photos/5632397/pexels-photo-5632397.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:350px;object-fit:cover" />
+        </div>
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">Multi-Channel Integration</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">Sell on your website, Instagram, Facebook, and marketplaces from one dashboard. We connect all your channels into a single system.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">Get a Proposal <span style="font-size:1.1rem">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:0">
+        
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">Ongoing Growth Management</h3>
+          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">Launch is step one. We offer monthly retainers covering SEO, email campaigns, and conversion rate optimisation to keep revenue climbing.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">Get a Proposal <span style="font-size:1.1rem">&rarr;</span></a>
+        </div>
+        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+          <img src="https://images.pexels.com/photos/7857523/pexels-photo-7857523.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:350px;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:120px 2rem;background:#0a0a0a;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--primary);line-height:1.15;margin-bottom:1rem">E-commerce that actually <em>converts</em></h2>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:650px;margin:0 auto">Most e-commerce stores have a traffic problem or a conversion problem — or both. We fix both. We've been building and growing online stores in South Africa since 2012, working with brands selling everything from fashion to food.</p>
+    </div>
+  </section>
+  
+  <section id="about" style="padding:100px 2rem;background:var(--bg)">
+    <div style="max-width:1000px;margin:0 auto">
+      
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;border-bottom:1px solid var(--border)">
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">Free Store Audit</h3>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Get a Proposal &rarr;</a>
+        </div>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">We review your current store or brief and identify exactly where revenue is being lost.</p>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;border-bottom:1px solid var(--border)">
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">Build or Optimise</h3>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Get a Proposal &rarr;</a>
+        </div>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">New store built to spec or existing store optimised for conversion and SEO.</p>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;">
+        <div>
+          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">Grow & Report</h3>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Get a Proposal &rarr;</a>
+        </div>
+        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">Ongoing growth management with monthly performance reporting against agreed targets.</p>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:100px 2rem;background:var(--bg-alt)">
+    <div style="max-width:1100px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;font-weight:600;text-align:center">What our clients say</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
+      <div class="ms-grid" style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
+        <div style="background:var(--card-bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="font-size:1.5rem;color:var(--primary);margin-bottom:1.5rem">&#10077;&#10077;</div>
+            <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text-muted);line-height:1.7;font-style:italic">Revenue doubled in 4 months after they rebuilt our Shopify store. Worth every cent.</p>
+          </div>
+          <div style="margin-top:2rem;display:flex;align-items:center;gap:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">N</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">Nadia R., Verified Client</div>
+              <div style="color:#f59e0b;font-size:0.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            </div>
+          </div>
+        </div>
+        <div style="overflow:hidden">
+          <img src="https://images.pexels.com/photos/7662059/pexels-photo-7662059.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+      
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">12+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">Years in E-commerce</div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">since 2012</div>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">150+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">Stores Built</div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">Shopify & WooCommerce</div>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">3.8x</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">Average ROAS</div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">managed store campaigns</div>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">4.8★</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">Google Rating</div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">from 180+ reviews</div>
+      </div>
+    </div>
+  </section>
+  
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Want a free e-commerce audit?</h2>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">123 Main Road, Cape Town, 8001</p>
+            </div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.com<br />021 000 0000</p>
+            </div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">Mon–Fri: 08:30–17:30<br />Discovery calls by appointment<br />Remote meetings available</p>
+            </div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  
+  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
+    <div style="max-width:700px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:2rem">Ready to get started?</h2>
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Get a Proposal</a>
+        <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">Our Services</a>
+      </div>
+    </div>
+  </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#0a0a0a;border-top:1px solid var(--border)">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase">TestBiz</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">E-commerce strategy, store development, and growth management for brands that want to sell more online.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div>
+        <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Shopify</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">CRO</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Google Shopping</a>
+            <a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Product Photos</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">About Us</a>
+        <a href="#gallery" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Gallery</a>
+        <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Privacy Policy</a>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;transition:color 0.2s;display:block;margin-bottom:0.6rem">Terms of Service</a>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
+      <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; 2026 TestBiz. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

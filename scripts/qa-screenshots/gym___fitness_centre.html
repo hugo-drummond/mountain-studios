@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Bebas Neue', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #a8c1f7;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #0f0f0f;
+      --bg-alt: #141414;
+      --card-bg: #1a1a1a;
+      --text: #f5f5f0;
+      --text-muted: #a3a3a0;
+      --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <style>
+    :root {
+      --bg: #111111;
+      --bg-alt: #1a1a1a;
+      --card-bg: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #999999;
+      --border: rgba(255,255,255,0.08);
+    }
+  </style>
+
+
+  <div style="background:#2563EB;padding:0.6rem 2rem;text-align:center">
+    <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.04em">Biokineticists on Staff</p>
+  </div>
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">Get a Day Pass</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">Get a Day Pass</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="position:relative;min-height:85vh;display:flex;align-items:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.pexels.com/photos/7031705/pexels-photo-7031705.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.6) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.08em;max-width:700px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">Train harder. Recover smarter. Repeat <em>consistently</em>.</h1>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:#111111;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Get a Day Pass</a>
+    </div>
+  </section>
+  
+  <section style="padding:60px 2rem;background:#111111;text-align:center;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08)">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:2rem">We believe a gym should be the best part of your day — not something you dread.</h2>
+      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
+        
+        <div style="text-align:center">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:#ffffff">8+</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;color:#999999;letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">Years Open</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:#ffffff">1,200+</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;color:#999999;letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">Active Members</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:#ffffff">30+</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;color:#999999;letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">Group Classes Weekly</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:#ffffff">4.8★</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;color:#999999;letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">Google Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="services" style="padding:80px 2rem;background:#111111;text-align:center">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">What We Offer</h2>
+      
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2.5rem">
+        
+        <div style="text-align:center">
+          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase">Gym Floor & Equipment</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:#999999;line-height:1.6;margin-top:0.5rem">Free weights, cable machines, cardio equipment, and a lifting platform maintained to professional standards.</p>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Free Weights</span><span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Cardio</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase">Group Fitness Classes</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:#999999;line-height:1.6;margin-top:0.5rem">HIIT, cycling, boxing, and strength classes led by qualified instructors every day of the week.</p>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">HIIT</span><span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Cycling</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase">Personal Training & Biokinetics</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:#999999;line-height:1.6;margin-top:0.5rem">Gym-based personal training and biokinetic rehabilitation sessions from certified professionals.</p>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Personal Training</span><span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Biokinetics</span>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:#ffffff;letter-spacing:0.15em;text-transform:uppercase">Recovery & Wellness Zone</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:#999999;line-height:1.6;margin-top:0.5rem">Sauna, cold plunge, foam rolling stations, and stretching area for serious post-workout recovery.</p>
+          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Sauna</span><span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:#999999;text-transform:uppercase;letter-spacing:0.05em">Cold Plunge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:#111111">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      
+      <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #2563EB">
+        <div style="position:absolute;inset:0">
+          <img src="https://images.pexels.com/photos/7587466/pexels-photo-7587466.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
+        </div>
+        <div style="position:relative;padding:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:700;color:#ffffff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Gym Floor & Equipment</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem">Free weights, cable machines, cardio equipment, and a lifting platform maintained to professional standards.</p>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.65rem 1.5rem;background:#fff;color:#111111;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Membership Options</a>
+        </div>
+      </div>
+      <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #2563EB">
+        <div style="position:absolute;inset:0">
+          <img src="https://images.pexels.com/photos/6873119/pexels-photo-6873119.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
+        </div>
+        <div style="position:relative;padding:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:700;color:#ffffff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Group Fitness Classes</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem">HIIT, cycling, boxing, and strength classes led by qualified instructors every day of the week.</p>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.65rem 1.5rem;background:#fff;color:#111111;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Membership Options</a>
+        </div>
+      </div>
+      <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid #2563EB">
+        <div style="position:absolute;inset:0">
+          <img src="https://images.pexels.com/photos/6429666/pexels-photo-6429666.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
+        </div>
+        <div style="position:relative;padding:2rem">
+          <h3 style="font-family:var(--heading-font);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:700;color:#ffffff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Personal Training & Biokinetics</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem">Gym-based personal training and biokinetic rehabilitation sessions from certified professionals.</p>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.65rem 1.5rem;background:#fff;color:#111111;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">Membership Options</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:0;background:#111111">
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+      
+      <div class="ms-img" style="height:350px;overflow:hidden">
+        <img src="https://images.pexels.com/photos/6046983/pexels-photo-6046983.png?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div class="ms-img" style="height:350px;overflow:hidden">
+        <img src="https://images.pexels.com/photos/7031717/pexels-photo-7031717.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div class="ms-img" style="height:350px;overflow:hidden">
+        <img src="https://images.pexels.com/photos/6740041/pexels-photo-6740041.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" style="padding:80px 2rem;background:#111111">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">In the Gym</h2>
+      <div style="width:50px;height:3px;background:var(--primary);margin-bottom:3rem"></div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        
+        <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+          <div style="position:absolute;inset:0">
+            <img src="https://images.pexels.com/photos/6812445/pexels-photo-6812445.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
+          </div>
+          <div style="position:relative;padding:2rem">
+            <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:#ffffff;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Gym Floor & Equipment</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:1.25rem">Free weights, cable machines, cardio equipment, and a lifting platform maintained to professional standards.</p>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;Free Weights</div><div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;Cardio</div>
+          </div>
+        </div>
+        <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+          <div style="position:absolute;inset:0">
+            <img src="https://images.pexels.com/photos/140955/pexels-photo-140955.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
+          </div>
+          <div style="position:relative;padding:2rem">
+            <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:#ffffff;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Group Fitness Classes</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:1.25rem">HIIT, cycling, boxing, and strength classes led by qualified instructors every day of the week.</p>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;HIIT</div><div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;Cycling</div>
+          </div>
+        </div>
+        <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+          <div style="position:absolute;inset:0">
+            <img src="https://images.pexels.com/photos/4944970/pexels-photo-4944970.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
+          </div>
+          <div style="position:relative;padding:2rem">
+            <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:#ffffff;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">Personal Training & Biokinetics</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:1.25rem">Gym-based personal training and biokinetic rehabilitation sessions from certified professionals.</p>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;Personal Training</div><div style="font-family:var(--body-font);font-size:0.8rem;color:#ffffff;padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;Biokinetics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Want to try us out first?</h2>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">123 Main Road, Cape Town, 8001</p>
+            </div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.com<br />021 000 0000</p>
+            </div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">Mon–Fri: 05:30–21:00<br />Sat: 07:00–18:00<br />Sun: 08:00–14:00</p>
+            </div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#111111;border-top:1px solid rgba(255,255,255,0.08)">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:#ffffff;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">About Us</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#999999;line-height:1.7;max-width:350px">We built this gym because we wanted a space that felt serious without feeling intimidating. The equipment is premium. The floors are clean. The coaches actually watch your form.</p>
+        <a href="#about" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;color:#ffffff;text-decoration:underline;text-underline-offset:4px;margin-top:1rem">Learn More</a>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:#ffffff;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Links</h3>
+        <a href="#services" style="color:#999999;text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Free Weights</a><a href="#services" style="color:#999999;text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">HIIT</a><a href="#services" style="color:#999999;text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Personal Training</a>
+        <a href="#contact" style="color:#999999;text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
+      </div>
+      <div>
+        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:#ffffff;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Follow Us</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#999999">hello@testbiz.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#999999;margin-top:0.5rem">021 000 0000</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:left">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; 2026 TestBiz. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

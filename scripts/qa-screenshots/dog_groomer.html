@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Nunito', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #2563EB;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #fafafa;
+      --bg-alt: #f0f0f0;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <style>
+    :root {
+      --bg: #c5d9b2;
+      --bg-alt: #c5d9b2;
+      --card-bg: rgba(255,255,255,0.4);
+      --text: #2d4a2d;
+      --text-muted: #5a7a5a;
+      --border: rgba(0,0,0,0.08);
+    }
+  </style>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">Book a Groom</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">Book a Groom</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="padding:80px 2rem;background:#c5d9b2">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
+      <div>
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:#2d4a2d;line-height:1.15;margin-bottom:1.5rem">Your dog, looking their absolute <em>best</em></h1>
+        <p style="font-family:var(--body-font);font-size:1.1rem;color:#5a7a5a;line-height:1.7;margin-bottom:1rem">Professional dog grooming with patient, experienced groomers who understand anxious dogs and specific breed requirements.</p>
+        <a href="#about" style="font-family:var(--body-font);font-size:1.1rem;color:#2d4a2d;text-decoration:underline;text-underline-offset:4px;font-weight:500">Our Services</a>
+      </div>
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:500px">
+        <img src="https://images.pexels.com/photos/7391070/pexels-photo-7391070.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>
+  
+  <section id="services" style="padding:80px 2rem;background:#c5d9b2">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
+        <img src="https://images.pexels.com/photos/1436139/pexels-photo-1436139.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#2d4a2d;line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:#5a7a5a;line-height:1.7;margin-bottom:1rem">We believe grooming should be a positive experience — not something dogs fear or owners worry about.</p>
+        <a href="#services" style="font-family:var(--body-font);font-size:1rem;color:#2d4a2d;text-decoration:underline;text-underline-offset:4px;font-weight:500">Our Services</a>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:#c5d9b2">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#2d4a2d;line-height:1.15;margin-bottom:1rem">Groomers who actually <em>love</em> dogs</h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:#5a7a5a;line-height:1.7;margin-bottom:1rem">We only employ groomers who genuinely love dogs. That sounds obvious. It isn't. An anxious dog knows the difference between someone who's processing them and someone who cares.</p>
+        <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:#2d4a2d;text-decoration:underline;text-underline-offset:4px;font-weight:500">Book a Groom</a>
+      </div>
+      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
+        <img src="https://images.pexels.com/photos/6131575/pexels-photo-6131575.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:120px 2rem;background:#c5d9b2;text-align:center">
+    <div style="max-width:800px;margin:0 auto">
+      <div style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:700;color:#3a5a3a;letter-spacing:0.04em;margin-bottom:1rem">TestBiz</div>
+      <p style="font-family:var(--body-font);font-size:1.1rem;color:#5a7a5a;letter-spacing:0.08em;text-transform:uppercase">DOG GROOMING CAPE TOWN</p>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:#c5d9b2">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:#2d4a2d;text-align:center;margin-bottom:3rem">What We Offer</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">Full Groom</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Breed-specific bath, dry, clip, and styling — looking show-ready without the show stress.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">Bath & Brush</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Thorough bath, blow-dry, brush-out, and ear cleaning for dogs between full grooms.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">Puppy's First Groom</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Gentle, positive first grooming experiences to socialise puppies to the grooming process.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">Teeth Cleaning & Oral Care</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Non-anaesthetic teeth cleaning, breath treatment, and gum health checks to keep those chompers in top shape.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">Breed-Specific Styling</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Poodle clips, Schnauzer trims, and breed-standard cuts by groomers who know your dog's coat type.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
+          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+            <span style="font-size:1.3rem">&#128062;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#2d4a2d;margin-bottom:0.5rem">De-Shedding Treatment</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Deep de-shedding blowout and undercoat removal for double-coated breeds like Huskies and Labradors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:#c5d9b2">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:#2d4a2d;text-align:center;margin-bottom:3rem">What TestBiz clients are saying</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        
+        <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:#f59e0b;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">B</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#2d4a2d">Bianca M., Verified Client</div>
+            </div>
+          </div>
+          <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">My anxious rescue finally enjoyed a groom. They're magic with nervous dogs.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:#4a9e4a;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">B</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#2d4a2d">Bath & Brush</div>
+            </div>
+          </div>
+          <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Thorough bath, blow-dry, brush-out, and ear cleaning for dogs between full grooms.</p>
+        </div>
+        <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:#6a7aba;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">P</div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#2d4a2d">Puppy's First Groom</div>
+            </div>
+          </div>
+          <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#5a7a5a;line-height:1.7">Gentle, positive first grooming experiences to socialise puppies to the grooming process.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Ready to book your dog's groom?</h2>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">123 Main Road, Cape Town, 8001</p>
+            </div>
+            <div style="margin-bottom:2rem">
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.com<br />021 000 0000</p>
+            </div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">Mon–Fri: 08:00–17:00<br />Sat: 08:00–13:00<br />By appointment</p>
+            </div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  <footer style="padding:60px 2rem 30px;background:#c5d9b2">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#3a5a3a;margin-bottom:0.5rem">TestBiz</div>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:#2d4a2d;margin-bottom:0.75rem">Hours</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#5a7a5a;line-height:1.7">Mon–Fri: 08:00–17:00<br />Sat: 08:00–13:00<br />By appointment</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:#2d4a2d;margin-bottom:0.75rem">Contact</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#5a7a5a;line-height:1.7">021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#5a7a5a;line-height:1.7">hello@testbiz.com</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:#2d4a2d;margin-bottom:0.75rem">Location</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#5a7a5a;line-height:1.7">123 Main Road<br />Cape Town, 8001</p>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:#5a7a5a">&copy; 2026 TestBiz. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

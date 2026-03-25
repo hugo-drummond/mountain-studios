@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Oswald', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #2563EB;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #fafafa;
+      --bg-alt: #f0f0f0;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: rgba(0,0,0,0.08);
+    }
+  </style>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">Get a Quote</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">Get a Quote</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="position:relative;min-height:90vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.pexels.com/photos/6419128/pexels-photo-6419128.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.65) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 2rem 3rem;width:100%">
+      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);padding:0.5rem 1rem;border-radius:999px;margin-bottom:1.5rem">
+        <span style="width:8px;height:8px;border-radius:50%;background:#22c55e"></span>
+        <span style="font-family:var(--body-font);font-size:0.8rem;color:#fff;font-weight:500">IOPSA Registered Plumber</span>
+      </div>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.25rem;max-width:700px">Plumbing sorted before it becomes a <em>crisis</em></h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:550px;line-height:1.7;margin-bottom:2rem">Fast, reliable plumbing repairs, installations, and maintenance for residential and commercial properties.</p>
+      <div style="display:flex;gap:0.75rem;margin-bottom:3rem">
+        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:#2563EB;color:#fff;border-radius:8px;text-decoration:none">Get a Quote &rarr;</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:8px;text-decoration:none">Our Services</a>
+      </div>
+      <div style="display:flex;gap:3rem">
+        
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem">&#9733;</div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:0.95rem;font-weight:700;color:#fff">Years Trading</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.6)">since 2005</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem">&#9733;</div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:0.95rem;font-weight:700;color:#fff">Jobs Completed</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.6)">residential & commercial</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem">&#9733;</div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:0.95rem;font-weight:700;color:#fff">Workmanship Guarantee</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.6)">on all work</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="background:#0f172a;padding:60px 2rem">
+    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap">
+      
+      <div style="text-align:center">
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">19+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">Years Trading</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">6,000+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">Jobs Completed</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">12mo</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">Workmanship Guarantee</div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">4.8★</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">Google Rating</div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="services" style="padding:80px 2rem;background:#ffffff">
+    <div style="max-width:1200px;margin:0 auto">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#2563EB;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Our Services</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#0f172a;margin-bottom:1rem">What We Fix</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:#64748b;max-width:600px;line-height:1.7;margin-bottom:3rem">We believe a plumber should leave your home in better condition than they found it — every single time.</p>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#128167;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Leak Detection & Repair</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">Fast leak location using non-invasive detection technology and permanent repair on the same visit.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#128293;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Geyser Installation & Repair</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">New geyser installations, element replacements, thermostat repairs, and solar geyser conversions.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#128295;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Drainage & Blockage Clearing</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">High-pressure drain jetting and CCTV inspection to clear and diagnose blocked drains fast.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#9638;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Bathroom & Kitchen Plumbing</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">Full plumbing rough-in and fit-out for new bathrooms and kitchens — basins, toilets, showers, and dishwasher points.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#9881;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Water Pressure Solutions</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">Pressure valve installation, pressure pump fitting, and municipal supply optimisation for consistent flow.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+            <span style="color:#2563EB;font-size:1.2rem">&#9881;</span>
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Gas Installations & Certificates</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7;margin-bottom:1rem">LP gas installations, compliance certificates, and gas hob and geyser connections to SANS 10087 standards.</p>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:#2563EB;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" style="padding:80px 2rem;background:#f8fafc">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div style="position:relative">
+        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
+          <img src="https://images.pexels.com/photos/2113127/pexels-photo-2113127.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem">
+          <div style="width:48px;height:48px;border-radius:50%;background:#2563EB;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1rem;font-weight:700">19+</div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Years Trading</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:#64748b">since 2005</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#2563EB;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:#0f172a;margin-bottom:1.5rem">Plumbing done <em>properly</em></h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.8;margin-bottom:1rem">We're a family-run plumbing business that has been fixing Cape Town's leaks since 2005. No subcontractors, no surprises on the invoice, no excuses if something isn't right.</p><p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.8;margin-bottom:1rem">Every job is quoted upfront. Every job is guaranteed. We arrive when we say we will.</p>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem">
+          
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">Leak Detection</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">Same Day</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">Geyser</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">Solar Conversion</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">Drain Jetting</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <span style="color:#2563EB;font-size:1rem">&#10003;</span>
+            <span style="font-family:var(--body-font);font-size:0.85rem;color:#0f172a;font-weight:500">CCTV</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="testimonials" style="padding:80px 2rem;background:#f8fafc">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#2563EB;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:#0f172a;margin-bottom:1rem">What Our Customers Say</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:#64748b;margin-bottom:3rem">Don't just take our word for it.</p>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:#0f172a;line-height:1.7;margin-bottom:1.5rem">"Found and fixed a slab leak in 2 hours that three other plumbers couldn't locate."</p>
+          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Warren B.</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Verified Client</div>
+          </div>
+        </div>
+        
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:#0f172a;line-height:1.7;margin-bottom:1.5rem">"Professional, reliable, and fair pricing. Couldn't ask for more."</p>
+          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Mike R.</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Business Owner</div>
+          </div>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:#0f172a;line-height:1.7;margin-bottom:1.5rem">"Fast response time and excellent workmanship. Highly recommend."</p>
+          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Jennifer L.</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Homeowner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:60px 2rem;background:#ffffff">
+    <div style="max-width:900px;margin:0 auto;display:flex;justify-content:center;gap:5rem;flex-wrap:wrap;text-align:center">
+      
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#2563EB">19+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Years Trading</div>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#2563EB">6,000+</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Jobs Completed</div>
+      </div>
+      <div>
+        <div style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#2563EB">12mo</div>
+        <div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Workmanship Guarantee</div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="contact" style="padding:80px 2rem;background:#f8fafc">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#2563EB;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Contact Us</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:#0f172a;margin-bottom:1rem">Got a leak that needs fixing today?</h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.7;margin-bottom:2.5rem">Fast, reliable plumbing repairs, installations, and maintenance for residential and commercial properties.</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9742;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">021 000 0000</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9993;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">hello@testbiz.com</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9906;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Service Area</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Cape Town &amp; surrounds</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9200;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#0f172a">Hours</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Mon–Fri: 07:00–18:00<br />Sat: 08:00–14:00<br />Emergency callouts 24hrs</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
+        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#0f172a;margin-bottom:0.5rem">Send Us a Message</h3>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#64748b;margin-bottom:1.5rem">We'll get back to you as soon as possible.</p>
+        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#0f172a;display:block;margin-bottom:0.35rem">Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#0f172a;display:block;margin-bottom:0.35rem">Email</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#0f172a;display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#0f172a;display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your project..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
+          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:#2563EB;color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#0f172a">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">TestBiz</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">Fast, reliable plumbing repairs, installations, and maintenance for residential and commercial properties.</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6)">&#9742; 021 000 0000</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Quick Links</h4>
+        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
+        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About</a>
+        <a href="#testimonials" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Testimonials</a>
+        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Contact</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9742; 021 000 0000</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9993; hello@testbiz.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">&#9906; Cape Town &amp; surrounds</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; 2026 TestBiz. All rights reserved.</p>
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">IOPSA Registered Plumber</p>
+    </div>
+  </footer>
+
+</body>
+</html>

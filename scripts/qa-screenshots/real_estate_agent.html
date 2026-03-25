@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestBiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #2563EB;
+      --primary-on-dark: #a8c1f7;
+      --primary-raw: #2563EB;
+      --secondary: #F59E0B;
+      --bg: #fafafa;
+      --bg-alt: #f0f0f0;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    a:active, button:active { pointer-events: none; }
+    em { font-style: italic; }
+
+    /* Mobile responsive — class-based for reliability */
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+
+    /* Burger menu */
+    .ms-burger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; z-index: 200; }
+    .ms-burger span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s ease; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    /* CSS-only burger menu — no JavaScript needed */
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; border: none; border-bottom: 1.5px solid transparent; transition: border-color 0.3s; }
+    #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-nav-links { display: none !important; }
+      nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+
+      section { padding: 40px 0 !important; }
+      section > div { padding: 0 1.25rem !important; }
+
+      /* All multi-col grids → 1 col */
+      .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Flex process rows → vertical */
+      .ms-flex { flex-direction: column !important; }
+      .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
+
+      /* Hero sections */
+      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+
+      /* Fixed heights → sensible mobile height */
+      .ms-img { height: 220px !important; }
+
+      /* Sticky → static on mobile */
+      .ms-sticky { position: static !important; }
+
+      /* Footer */
+      footer div { grid-template-columns: 1fr !important; }
+      footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
+
+      /* Scale type */
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+
+      /* Form */
+      form .ms-grid { grid-template-columns: 1fr !important; }
+
+      /* Gallery cells */
+      .pf-cell { height: 180px !important; }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 30px 0 !important; }
+      nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #faf7f4;
+      --card-bg: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #64748b;
+      --border: rgba(0,0,0,0.06);
+    }
+  </style>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">TestBiz</a>
+      <div style="display:flex;align-items:center;gap:1.25rem">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">List Your Property</a>
+        <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+      <label for="ms-menu-toggle"><a href="#contact" style="margin-top:1rem;font-size:1rem;padding:0.75rem 2.5rem;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.3);border-radius:999px;border-bottom:1.5px solid rgba(255,255,255,0.3)">List Your Property</a></label>
+    </div>
+  </label>
+
+
+  
+  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
+    </div>
+    <div style="position:relative;max-width:900px;padding:0 2rem">
+      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">ESTATE AGENT CAPE TOWN</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.02em;text-shadow:0 2px 6px rgba(0,0,0,0.3)">TestBiz</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 2rem;line-height:1.7">Experienced property sales and rental agent specialising in Cape Town’s residential market — from first-time buyers to investment portfolios.</p>
+      <div style="display:flex;gap:0.75rem;justify-content:center">
+        <a href="#properties" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">View Properties &rarr;</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:#2563EB;color:#fff;border-radius:8px;text-decoration:none">List Your Property</a>
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" style="padding:80px 2rem;background:#ffffff">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div style="position:relative">
+        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
+          <img src="https://images.pexels.com/photos/7578849/pexels-photo-7578849.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#2563EB;border-radius:12px;padding:1.5rem 2rem;color:#fff">
+          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;line-height:1">19+</div>
+          <div style="font-family:var(--body-font);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem">Years in Property</div>
+        </div>
+      </div>
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#64748b;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#1a1a2e;margin-bottom:1.5rem">Property sold with <em>strategy</em></h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.8;margin-bottom:1rem">I have been selling and letting property in Cape Town for 19 years. The market rewards agents who know the street, know the buyer pool, and know how to price — not those who simply list and wait.</p><p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.8;margin-bottom:1rem">I am PPRA registered, hold a valid Fidelity Fund Certificate, and operate with complete transparency on commission structures.</p>
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem">
+          
+          <div>
+            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#2563EB">19+</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Years in Property</div>
+          </div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#2563EB">600+</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Properties Sold</div>
+          </div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#2563EB">97%</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">List-to-Sale Rate</div>
+          </div>
+          <div>
+            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#2563EB">4.9★</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Google Rating</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="properties" style="padding:80px 2rem;background:#faf7f4">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#64748b;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Our Portfolio</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#1a1a2e;margin-bottom:1rem">Recently Sold & Let</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:#64748b;margin-bottom:3rem">We believe selling your property should feel like you have an expert in your corner — not someone who disappears after the mandate.</p>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        
+        <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+          <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/7578975/pexels-photo-7578975.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;top:1rem;left:1rem;background:#2563EB;color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
+          </div>
+          <div style="padding:1.5rem">
+            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
+              <span style="color:#64748b;font-size:0.85rem">&#9906;</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Sales</span>
+            </div>
+            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Residential Sales</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:#64748b;line-height:1.6">Strategic pricing, professional photography, and targeted marketing to achieve maximum sale value.</p>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+          <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/7414927/pexels-photo-7414927.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;top:1rem;left:1rem;background:#2563EB;color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
+          </div>
+          <div style="padding:1.5rem">
+            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
+              <span style="color:#64748b;font-size:0.85rem">&#9906;</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Rentals</span>
+            </div>
+            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Rental Management</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:#64748b;line-height:1.6">Tenant sourcing, lease management, and ongoing property management for residential landlords.</p>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+          <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
+            <img src="https://images.pexels.com/photos/7414903/pexels-photo-7414903.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=627&w=1200" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;top:1rem;left:1rem;background:#2563EB;color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
+          </div>
+          <div style="padding:1.5rem">
+            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
+              <span style="color:#64748b;font-size:0.85rem">&#9906;</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:#64748b">Investment</span>
+            </div>
+            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Property Investment Advisory</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:#64748b;line-height:1.6">Investment property sourcing, yield analysis, and portfolio strategy for buy-to-let investors.</p>
+          </div>
+        </div>
+      </div>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#2563EB;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:2.5rem">View All Properties &rarr;</a>
+    </div>
+  </section>
+  
+  <section id="services" style="padding:80px 2rem;background:#faf7f4">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#64748b;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#1a1a2e;margin-bottom:1rem">How We Help</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:#64748b;margin-bottom:3rem">Experienced property sales and rental agent specialising in Cape Town’s residential market — from first-time buyers to investment portfolios.</p>
+      
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;text-align:left">
+        
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="font-size:2rem;color:#2563EB;margin-bottom:1rem">&#127968;</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Residential Sales</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7">Strategic pricing, professional photography, and targeted marketing to achieve maximum sale value.</p>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="font-size:2rem;color:#2563EB;margin-bottom:1rem">&#128273;</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Rental Management</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7">Tenant sourcing, lease management, and ongoing property management for residential landlords.</p>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="font-size:2rem;color:#2563EB;margin-bottom:1rem">&#9881;</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">Property Investment Advisory</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7">Investment property sourcing, yield analysis, and portfolio strategy for buy-to-let investors.</p>
+        </div>
+        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
+          <div style="font-size:2rem;color:#2563EB;margin-bottom:1rem">&#9881;</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem">First-Time Buyer Guidance</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#64748b;line-height:1.7">Step-by-step guidance through the home-buying process — bond pre-approval, offer to purchase, transfer, and registration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section style="padding:80px 2rem;background:#2563EB">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Client Stories</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Clients Say</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
+          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"Sold for R200k above asking in under 2 weeks. She knows exactly how to position a property."</p>
+          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">Michael & Jane D.</div>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">Verified Client</div>
+        </div>
+        
+        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
+          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"Sold our property above asking price. Expert marketing and negotiation."</p>
+          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">Robert W.</div>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">Seller</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
+          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"Patient guidance through every step. Now proud homeowners!"</p>
+          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">Emily & David P.</div>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">First-time Buyers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="contact" style="padding:80px 2rem;background:#ffffff">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+      <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#2563EB;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:#1a1a2e;margin-bottom:1rem">Want a free property valuation?</h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:#64748b;line-height:1.7;margin-bottom:2.5rem">We believe selling your property should feel like you have an expert in your corner — not someone who disappears after the mandate.</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9906;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#1a1a2e">Office Location</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">123 Main Road, Cape Town</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9742;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#1a1a2e">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">021 000 0000</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9993;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#1a1a2e">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">hello@testbiz.com</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:#2563EB;font-size:1.1rem">&#9200;</div>
+            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#1a1a2e">Hours</div><div style="font-family:var(--body-font);font-size:0.85rem;color:#64748b">Mon–Fri: 08:00–18:00<br />Sat: 09:00–14:00<br />Viewings 7 days by appointment</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
+        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#1a1a2e;margin-bottom:1.5rem">Send Us a Message</h3>
+        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#1a1a2e;display:block;margin-bottom:0.35rem">Full Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#1a1a2e;display:block;margin-bottom:0.35rem">Email Address</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#1a1a2e;display:block;margin-bottom:0.35rem">Phone Number</label><input type="tel" placeholder="021 000 0000" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
+          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#1a1a2e;display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your real estate needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
+          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:#2563EB;color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#1a1a2e">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">TestBiz</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">Experienced property sales and rental agent specialising in Cape Town’s residential market — from first-time buyers to investment portfolios.</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Quick Links</h4>
+        <a href="#properties" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Properties</a>
+        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
+        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
+        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Services</h4>
+        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Sales</a><a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Rentals</a><a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Investment</a><a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">First-Time Buyer</a>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Connect</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">hello@testbiz.com</p>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">021 000 0000</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; 2026 TestBiz. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
