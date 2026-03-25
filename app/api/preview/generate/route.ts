@@ -3658,16 +3658,17 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 7: About — full-bleed textured photo with heading overlay + CTA
+  // Section 7: Mailing list signup
   const aboutSection = `
-  <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 1rem;border-radius:24px">
-    <div style="position:absolute;inset:0">
-      <img src="${nextImg()}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35)"></div>
-    </div>
-    <div style="position:relative;text-align:center;padding:3rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:900;color:#fff;line-height:0.95;text-transform:uppercase;margin-bottom:2rem">About<br />${businessName}</h2>
-      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2.5rem;border:2px solid #fff;color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'Learn More'}</a>
+  <section id="about" style="padding:100px 2rem;background:var(--primary);text-align:center">
+    <div style="max-width:600px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:0.75rem">Join Our Mailing List</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:2.5rem">Be the first to hear about new arrivals, exclusive offers, and upcoming events.</p>
+      <form onsubmit="return false" style="display:flex;gap:0.75rem;max-width:480px;margin:0 auto">
+        <input type="email" placeholder="Your email address" style="flex:1;font-family:var(--body-font);font-size:0.95rem;padding:0.85rem 1.25rem;border:2px solid rgba(255,255,255,0.3);border-radius:999px;background:transparent;color:#fff;outline:none" />
+        <button type="submit" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 1.75rem;background:#fff;color:var(--primary);border:none;border-radius:999px;cursor:pointer;letter-spacing:0.04em;white-space:nowrap">Subscribe</button>
+      </form>
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.45);margin-top:1rem">No spam. Unsubscribe anytime.</p>
     </div>
   </section>`
 
