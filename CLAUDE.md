@@ -96,6 +96,9 @@ All templates use CSS grid with fixed columns; needs media queries or responsive
 - **15-category redesign**: replacing 3 generic variants with 15 category-specific templates inspired by real reference websites. Each category gets a distinct layout optimized for its business type (e.g. tabbed menus for food, membership cards for health, tabbed galleries for property).
 - **Architect** belongs in `creative` category (not `property`) — portfolio-style template suits architects better.
 
+### QA Rules
+**READ `QA_RULES.md` before making ANY template or content.ts changes.** It contains mandatory rules for images, layout, testimonials, and headings. Every image query must be tested against the "would a stranger know what business this is?" test.
+
 ### Debugging
 - If images don't load: check `PEXELS_API_KEY` env var; falls back to picsum.photos placeholders
 - If content shows raw descriptions: JSON parse failed; check `max_tokens` (currently 768) and JSON extraction retry logic
