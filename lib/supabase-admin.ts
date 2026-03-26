@@ -1,21 +1,16 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import type { Brief, Lead, LeadStatus, Meeting } from '@/types'
 
-const supabaseUrl = process.env.SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY!
-
-if (!supabaseUrl) {
-  throw new Error('Missing SUPABASE_URL environment variable.')
-}
-if (!supabaseServiceKey) {
-  throw new Error('Missing SUPABASE_SERVICE_KEY environment variable.')
-}
-
-// Singleton pattern — one admin client per process
+// Lazy init — avoids build-time crash when env vars aren't set
 let _adminClient: SupabaseClient | null = null
 
 function getAdminClient(): SupabaseClient {
   if (!_adminClient) {
+    const supabaseUrl = process.env.SUPABASE_URL
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
+    if (!supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY environment variable.')
+    }
     _adminClient = createClient(supabaseUrl, supabaseServiceKey, {
       auth: {
         autoRefreshToken: false,
@@ -26,7 +21,11 @@ function getAdminClient(): SupabaseClient {
   return _adminClient
 }
 
-export const supabaseAdmin = getAdminClient()
+export const supabaseAdmin = new Proxy({} as SupabaseClient, {
+  get(_, prop) {
+    return (getAdminClient() as unknown as Record<string | symbol, unknown>)[prop]
+  },
+})
 
 // ─── Helper: leads ────────────────────────────────────────────────────────────
 

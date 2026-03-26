@@ -1282,7 +1282,7 @@ export default function StartYourProject() {
                   <select
                     value={referral}
                     onChange={(e) => setReferral(e.target.value)}
-                    style={{ ...fieldInput, backgroundColor: bg, borderBottom: '1px solid rgba(255,255,255,0.3)' }}
+                    style={{ ...fieldInput, backgroundColor: '#1a1a2e', borderBottom: '1px solid rgba(255,255,255,0.3)' }}
                   >
                     <option value="">Select...</option>
                     {referralOptions.map((r) => (

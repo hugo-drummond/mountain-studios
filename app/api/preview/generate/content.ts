@@ -13261,15 +13261,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, energetic, creative",
-      "heroImageQuery": "coding lab interior computers screens bright modern classroom",
-      "heroBgImageQuery": "code screen programming syntax dark background green text",
-      "ogImageQuery": "coding lab computers screens modern bright classroom",
-      "aboutImageQuery": "coding instructor helping student debug code screen laptop",
+      "heroImageQuery": "modern computer coding lab bright classroom rows of iMac screens students learning programming",
+      "heroBgImageQuery": "computer code programming syntax screen dark background JavaScript Python developer monitor",
+      "ogImageQuery": "kids coding class bright modern lab computers screens colourful Scratch blocks game project",
+      "aboutImageQuery": "coding instructor leaning over student laptop debugging Python code screen classroom teaching",
       "galleryImageQueries": [
-          "kids Scratch coding colourful blocks game design screen",
-          "teen building website HTML CSS code screen laptop",
-          "adult learning computer skills Microsoft Office screen keyboard",
-          "student presenting coding project screen classmates applause"
+          "child using Scratch visual coding blocks on colourful screen game design primary school classroom",
+          "teenager building website HTML CSS code editor screen laptop modern coding class",
+          "adult learning Microsoft Office Excel spreadsheet computer screen beginner digital literacy class",
+          "student presenting completed coding project website on monitor to classmates standing proud"
       ],
       "processSteps": [
           {
@@ -16204,7 +16204,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pricing Strategy"
         ],
         "icon": "home",
-        "serviceImageQuery": "luxury house exterior for sale front garden"
+        "serviceImageQuery": "well-presented residential house exterior for sale sign front garden curb appeal listing"
       },
       {
         "name": "Rental Management",
@@ -16214,7 +16214,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Property Management"
         ],
         "icon": "key",
-        "serviceImageQuery": "modern apartment interior open plan living room"
+        "serviceImageQuery": "modern apartment open-plan living room dining area furnished neutral interior rental ready"
       },
       {
         "name": "Property Investment Advisory",
@@ -16224,7 +16224,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Yield Analysis"
         ],
         "icon": "trending-up",
-        "serviceImageQuery": "residential investment property building exterior balcony"
+        "serviceImageQuery": "residential investment apartment building exterior multiple units balconies Cape Town property"
       },
         {
           "name": "First-Time Buyer Guidance",
@@ -16233,7 +16233,7 @@ export const presetContent: Record<string, PresetContent> = {
             "First-Time Buyer",
             "Bond Guidance"
           ],
-          "serviceImageQuery": "house keys new home front door entrance welcome"
+          "serviceImageQuery": "young couple receiving house keys from estate agent new home front door smiling excited"
         }
     ],
     "galleryHeading": "Recently Sold & Let",
@@ -16276,14 +16276,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "premium, aspirational, professional",
-    "heroImageQuery": "luxury home exterior white facade garden driveway",
-    "ogImageQuery": "beautiful residential house curb appeal front view",
-    "aboutImageQuery": "estate agent team meeting around table discussing listings",
+    "heroImageQuery": "luxury white modern home exterior wide driveway garden landscaped curb appeal Cape Town residential",
+    "ogImageQuery": "beautiful Cape Town residential house curb appeal front view landscaped garden driveway modern architecture",
+    "aboutImageQuery": "estate agent in business attire showing couple through bright modern open-plan home interior listing",
     "galleryImageQueries": [
-      "luxury villa swimming pool exterior sunset",
-      "modern townhouse street view architecture",
-      "penthouse apartment balcony ocean view",
-      "suburban family home garden exterior"
+      "luxury Cape Town villa with swimming pool garden terrace outdoor entertaining area exterior view",
+      "modern townhouse street-facing facade architectural design clean lines windows residential",
+      "penthouse apartment interior open-plan living balcony view ocean mountains floor-to-ceiling glass",
+      "suburban family home exterior front garden well-maintained landscaping residential sale property"
     ]
   },
   "Architect": {
@@ -16411,7 +16411,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Transfer"
         ],
         "icon": "map",
-        "serviceImageQuery": "boundary pegs survey markers on land plot"
+        "serviceImageQuery": "land surveyor placing boundary peg survey marker on land plot measuring property line"
       },
       {
         "name": "Sectional Title Surveys",
@@ -16421,7 +16421,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Scheme"
         ],
         "icon": "layers",
-        "serviceImageQuery": "apartment building complex aerial view sectional plan"
+        "serviceImageQuery": "multi-storey apartment block complex aerial view residential units balconies sectional title"
       },
       {
         "name": "Subdivision & Consolidation",
@@ -16431,7 +16431,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rezoning"
         ],
         "icon": "scissors",
-        "serviceImageQuery": "vacant land plots subdivision fenced development site"
+        "serviceImageQuery": "vacant land plots fenced subdivision development site pegs string lines staked out"
       },
         {
           "name": "Topographic & As-Built Surveys",
@@ -16440,7 +16440,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Topographic",
             "As-Built"
           ],
-          "serviceImageQuery": "survey total station tripod instrument measuring land"
+          "serviceImageQuery": "surveyor operating total station theodolite on tripod measuring land contours outdoors site"
         }
     ],
     "galleryHeading": "Surveys Completed",
@@ -16512,7 +16512,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Lease Management"
         ],
         "icon": "user-check",
-        "serviceImageQuery": "apartment keys on lease agreement document table"
+        "serviceImageQuery": "property agent handing apartment keys to new tenant signed lease agreement documents table"
       },
       {
         "name": "Maintenance Coordination",
@@ -16522,7 +16522,7 @@ export const presetContent: Record<string, PresetContent> = {
           "24hr Line"
         ],
         "icon": "tool",
-        "serviceImageQuery": "building maintenance plumber fixing sink apartment"
+        "serviceImageQuery": "maintenance plumber fixing leaking sink pipe under kitchen cabinet rental apartment repair"
       },
       {
         "name": "Financial Reporting",
@@ -16532,7 +16532,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rental Collection"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "financial statement spreadsheet laptop rental income report"
+        "serviceImageQuery": "rental income financial statement spreadsheet laptop monthly report property management"
       },
         {
           "name": "Body Corporate Administration",
@@ -16541,7 +16541,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Body Corporate",
             "Levy Collection"
           ],
-          "serviceImageQuery": "apartment complex body corporate meeting room documents"
+          "serviceImageQuery": "body corporate AGM meeting room committee trustees documents voting apartment complex"
         }
     ],
     "galleryHeading": "Properties We Manage",
@@ -16613,7 +16613,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Furniture Hire"
         ],
         "icon": "home",
-        "serviceImageQuery": "beautifully staged living room modern furniture neutral tones"
+        "serviceImageQuery": "professionally staged open-plan living room modern neutral furniture cushions styled for property photography sale"
       },
       {
         "name": "Occupied Home Styling",
@@ -16623,7 +16623,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Declutter"
         ],
         "icon": "layers",
-        "serviceImageQuery": "decluttered minimalist bedroom white linen styling"
+        "serviceImageQuery": "decluttered minimalist master bedroom white linen crisp pillows styled for sale photography"
       },
       {
         "name": "Staging Consultation",
@@ -16633,7 +16633,7 @@ export const presetContent: Record<string, PresetContent> = {
           "DIY Guidance"
         ],
         "icon": "clipboard",
-        "serviceImageQuery": "interior mood board fabric swatches colour samples"
+        "serviceImageQuery": "home stager presenting interior mood board fabric swatches paint colour samples client meeting"
       },
         {
           "name": "Virtual Staging",
@@ -16642,7 +16642,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Virtual Staging",
             "Digital"
           ],
-          "serviceImageQuery": "virtual staged room before after empty furnished comparison"
+          "serviceImageQuery": "side-by-side comparison empty room virtually staged furnished interior photorealistic property listing"
         }
     ],
     "galleryHeading": "Staged to Sell",
@@ -16714,7 +16714,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Land Use"
         ],
         "icon": "map",
-        "serviceImageQuery": "zoning map urban plan coloured land use districts"
+        "serviceImageQuery": "coloured urban zoning map residential commercial industrial land use districts planning district"
       },
       {
         "name": "Departure & Consent Use",
@@ -16724,7 +16724,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Consent Use"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "residential neighbourhood aerial view mixed use buildings"
+        "serviceImageQuery": "mixed-use residential neighbourhood aerial view apartments shops ground floor Cape Town buildings"
       },
       {
         "name": "Environmental & Heritage",
@@ -16734,7 +16734,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Heritage"
         ],
         "icon": "shield",
-        "serviceImageQuery": "heritage building facade preserved restoration exterior"
+        "serviceImageQuery": "heritage building Victorian facade preserved restored exterior Cape Town streetscape architecture"
       },
         {
           "name": "Subdivision & Development Coordination",
@@ -16743,7 +16743,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Subdivision",
             "Development"
           ],
-          "serviceImageQuery": "subdivision development plan map layout site blocks"
+          "serviceImageQuery": "land subdivision site plan layout map showing individual development blocks plots survey"
         }
     ],
     "galleryHeading": "Applications Approved",
