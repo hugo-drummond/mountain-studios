@@ -4517,14 +4517,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, motivating, dynamic",
-    "heroImageQuery": "gym training floor weights barbells kettlebells functional equipment",
-    "ogImageQuery": "gym training floor weights equipment functional area",
-    "aboutImageQuery": "trainer coaching client through squat form gym session",
+    "heroImageQuery": "personal trainer coaching client barbell squat rack modern gym bright lights mirrors",
+    "ogImageQuery": "personal trainer guiding client through exercise gym session bright modern",
+    "aboutImageQuery": "personal trainer correcting client squat form hands-on coaching gym floor weights",
     "galleryImageQueries": [
-      "gym floor kettlebells dumbbells rack functional training area",
-      "barbell squat rack training session loaded bar gym",
-      "outdoor bootcamp training park group pushups grass",
-      "stretching foam roller recovery cool down mat gym"
+      "client doing kettlebell swings personal training session gym floor bright lights",
+      "woman doing barbell deadlift personal trainer spotting gym mirrors weights",
+      "small group outdoor bootcamp training park pushups green grass sunny",
+      "athlete stretching foam roller cool down gym floor after workout session"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 By appointment"
   },
@@ -4555,7 +4555,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Yin Yoga",
           "Restorative"
         ],
-        "serviceImageQuery": "yin yoga restorative bolster supported pose dim candles"
+        "serviceImageQuery": "yin yoga restorative class person lying bolster supported pose dim studio blankets props"
       },
       {
         "name": "Yoga Teacher Training",
@@ -4564,7 +4564,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Teacher Training",
           "200hr"
         ],
-        "serviceImageQuery": "yoga teacher training group circle seated studio discussion"
+        "serviceImageQuery": "yoga teacher training instructor demonstrating pose to students seated circle studio mats"
       },
       {
         "name": "Prenatal & Postnatal Yoga",
@@ -4609,14 +4609,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, natural light",
-    "heroImageQuery": "yoga studio interior wooden floor mats blocks natural light",
-    "ogImageQuery": "yoga studio interior mats wooden floor natural light",
-    "aboutImageQuery": "yoga instructor adjusting student pose hands-on studio class",
+    "heroImageQuery": "yoga class group warrior two pose bright airy studio wooden floor natural light large windows",
+    "ogImageQuery": "yoga class group pose bright studio wooden floor mats natural light",
+    "aboutImageQuery": "yoga instructor adjusting student downward dog pose hands-on studio warm light",
     "galleryImageQueries": [
-      "yoga studio interior mats blocks blankets props warm light",
-      "downward dog pose yoga class students hands feet mats",
-      "seated meditation cushion incense candle calm studio floor",
-      "headstand inversion practice wall support yoga studio"
+      "bright yoga studio interior mats blocks bolsters props wooden floor natural light",
+      "group yoga class downward dog pose students mats studio mirrors",
+      "woman seated meditation cushion eyes closed candles incense calm studio",
+      "woman headstand inversion pose yoga studio wall support wooden floor"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201320:00 \u00b7 Sat: 07:00\u201315:00 \u00b7 Sun: 08:00\u201313:00"
   },
@@ -4647,7 +4647,7 @@ export const presetContent: Record<string, PresetContent> = {
           "HIIT",
           "Cycling"
         ],
-        "serviceImageQuery": "group spinning cycling class studio bikes energy"
+        "serviceImageQuery": "group fitness class people doing HIIT exercises bright gym studio spinning bikes energy"
       },
       {
         "name": "Personal Training & Biokinetics",
@@ -4701,14 +4701,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
-    "heroImageQuery": "gym interior wide angle weights machines cardio floor modern",
-    "ogImageQuery": "gym floor weights machines cardio equipment wide",
-    "aboutImageQuery": "gym members working out weights floor energetic atmosphere",
+    "heroImageQuery": "modern gym interior wide angle free weights machines cardio equipment bright clean spacious floor",
+    "ogImageQuery": "modern gym floor free weights machines cardio equipment bright spacious",
+    "aboutImageQuery": "people working out gym floor dumbbells barbells energetic atmosphere mirrors bright lights",
     "galleryImageQueries": [
-      "gym weight room barbells racks mirrors squat area",
-      "treadmill running cardio machines row gym floor",
-      "boxing HIIT class gloves pads group gym studio",
-      "functional training area ropes kettlebells tyres gym"
+      "gym weight room barbell squat racks mirrors dumbbells lifting area bright",
+      "people running treadmill row cardio machines gym floor modern",
+      "group HIIT fitness class people exercising gym bright modern studio",
+      "functional training area battle ropes kettlebells tyres gym floor workout"
     ],
     "contactHours": "Mon\u2013Fri: 05:30\u201321:00 \u00b7 Sat: 07:00\u201318:00 \u00b7 Sun: 08:00\u201314:00"
   },
@@ -4739,7 +4739,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Muay Thai",
           "Striking"
         ],
-        "serviceImageQuery": "muay thai pad work kick training gloves gym"
+        "serviceImageQuery": "muay thai fighter throwing roundhouse kick pads trainer gym ring action shot"
       },
       {
         "name": "Kids Martial Arts",
@@ -4748,7 +4748,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Kids Classes",
           "Confidence"
         ],
-        "serviceImageQuery": "children martial arts class kids white uniforms bowing dojo"
+        "serviceImageQuery": "children martial arts class kids in white gi uniforms bowing on dojo mats instructor"
       },
       {
         "name": "Self-Defence Workshops",
@@ -4793,14 +4793,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "intense, disciplined, powerful",
-    "heroImageQuery": "martial arts dojo interior mats heavy bags mirrors training",
-    "ogImageQuery": "martial arts dojo interior mats bags training area",
-    "aboutImageQuery": "martial arts instructor demonstrating technique students dojo mats",
+    "heroImageQuery": "martial arts dojo interior students training on mats heavy bags mirrors bright gym",
+    "ogImageQuery": "martial arts class students sparring on mats dojo gym bright",
+    "aboutImageQuery": "martial arts instructor demonstrating kick technique to students dojo mats training",
     "galleryImageQueries": [
-      "martial arts dojo interior mats heavy bags wall mirrors",
-      "BJJ ground grappling submission hold mats close-up",
-      "muay thai heavy bag knee strike training gym",
-      "kids martial arts class drilling kicks pads dojo"
+      "martial arts students training dojo floor mats heavy bags wall mirrors bright gym",
+      "brazilian jiu-jitsu grappling sparring on mats close-up two athletes gi",
+      "muay thai kickboxing pad work knee strike gloves training gym ring",
+      "children martial arts class kids in white uniforms drilling kicks pads dojo"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:30 \u00b7 Sat: 08:00\u201314:00 \u00b7 Class times on schedule"
   },
@@ -4831,7 +4831,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contemporary",
           "Jazz"
         ],
-        "serviceImageQuery": "contemporary dance class floor work students studio movement"
+        "serviceImageQuery": "contemporary jazz dance class students performing floor work studio bright mirrors"
       },
       {
         "name": "Children's Dance",
@@ -4840,7 +4840,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ballet",
           "Children"
         ],
-        "serviceImageQuery": "children ballet class tutu barre studio mirrors"
+        "serviceImageQuery": "young children ballet class tutus at barre studio mirrors pink leotards"
       },
       {
         "name": "Wedding & First Dance Coaching",
@@ -4885,14 +4885,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "expressive, warm, energetic",
-    "heroImageQuery": "dance studio interior mirror barre wooden floor bright spacious",
-    "ogImageQuery": "dance studio interior barre mirror spacious wooden floor",
-    "aboutImageQuery": "dance instructor teaching class students studio mirror action",
+    "heroImageQuery": "dancers in studio rehearsal mirror barre wooden floor bright spacious movement",
+    "ogImageQuery": "dance class students practising in bright studio mirror barre wooden floor",
+    "aboutImageQuery": "dance instructor teaching choreography to students in studio mirror warm lighting",
     "galleryImageQueries": [
-      "dance studio empty interior barre mirror spotlights wooden floor",
-      "ballet pointe shoes relevé barre practice studio close-up",
-      "hip hop dance class students studio street style energy",
-      "latin ballroom dance couple tango hold studio elegance"
+      "ballet dancers practising at barre in bright studio mirror spotlights wooden floor",
+      "ballet dancer pointe shoes relevé at barre close-up studio practice",
+      "hip hop dance class students performing moves in studio bright energy",
+      "latin ballroom dance couple tango hold in studio elegant lighting"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201320:00 \u00b7 Sat: 08:00\u201316:00 \u00b7 Class schedule on website"
   },
@@ -4914,7 +4914,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Learn to Swim",
           "Water Safety"
         ],
-        "serviceImageQuery": "child swimming lesson instructor pool kickboard water"
+        "serviceImageQuery": "young child swimming lesson with instructor in pool kickboard water splashing bright"
       },
       {
         "name": "Adult Swimming Lessons",
@@ -4932,7 +4932,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Squad Training",
           "Competition"
         ],
-        "serviceImageQuery": "competitive squad swimmer freestyle stroke lane racing"
+        "serviceImageQuery": "competitive swimmers racing freestyle stroke indoor pool lanes splashing water action"
       },
       {
         "name": "Aqua Fitness & Rehabilitation",
@@ -4977,14 +4977,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, bright, aquatic",
-    "heroImageQuery": "indoor swimming pool lanes blue water overhead facility clean",
-    "ogImageQuery": "indoor swimming pool lanes blue water clean bright",
-    "aboutImageQuery": "swimming coach in water teaching child technique pool",
+    "heroImageQuery": "bright indoor swimming pool blue water lane ropes overhead view clean modern facility",
+    "ogImageQuery": "indoor swimming pool lanes blue water bright clean overhead modern facility",
+    "aboutImageQuery": "swimming coach in water teaching young child stroke technique pool lesson",
     "galleryImageQueries": [
-      "swimming pool underwater view blue water lane lines",
-      "swimmer diving blocks starting position splash pool",
-      "toddler parent baby swimming lesson pool warm water",
-      "aqua aerobics class water exercise group pool noodles"
+      "swimmer underwater view blue pool lane lines freestyle stroke action",
+      "competitive swimmer diving off starting blocks splash indoor pool race",
+      "toddler baby swimming lesson parent holding child warm indoor pool instructor",
+      "aqua aerobics fitness class group exercising in pool with noodles bright"
     ],
     "contactHours": "Mon\u2013Fri: 06:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -5015,7 +5015,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Club Fitting",
           "Trackman"
         ],
-        "serviceImageQuery": "golf club fitting launch monitor trackman data screen"
+        "serviceImageQuery": "golf club fitting bay person hitting ball launch monitor screen trackman indoor professional"
       },
       {
         "name": "Pro Shop & Equipment",
@@ -5024,7 +5024,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pro Shop",
           "Titleist"
         ],
-        "serviceImageQuery": "golf pro shop interior clubs bags apparel display racks"
+        "serviceImageQuery": "golf pro shop interior display racks golf clubs bags shoes apparel merchandise bright"
       },
       {
         "name": "Short Game & Putting Clinics",
@@ -5069,14 +5069,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "green, classic, precision",
-    "heroImageQuery": "golf driving range green fairway practice area scenic",
-    "ogImageQuery": "golf driving range fairway practice scenic green",
-    "aboutImageQuery": "golf coach watching student swing driving range lesson",
+    "heroImageQuery": "golfer mid-swing driving range green fairway tee shot scenic course background",
+    "ogImageQuery": "golfer teeing off driving range green fairway scenic course",
+    "aboutImageQuery": "golf coach watching student swing technique driving range lesson one-on-one instruction",
     "galleryImageQueries": [
-      "golf course hole aerial view fairway bunker green scenic",
-      "golf ball driver tee box close-up grass morning dew",
-      "golf simulator indoor screen launch monitor club fitting",
-      "golf putting practice green hole flag approach shot"
+      "golf course aerial view fairway bunker green scenic landscape trees",
+      "golf ball on tee close-up driver club grass morning dew sunrise",
+      "golf club fitting session launch monitor screen data indoor bay professional",
+      "golfer putting practice green hole flag pin short game close-up"
     ],
     "contactHours": "Mon\u2013Sun: 07:00\u201318:00 \u00b7 Lessons by appointment \u00b7 Pro shop open daily"
   },
@@ -5107,7 +5107,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Performance",
           "Competitive"
         ],
-        "serviceImageQuery": "athlete sprint training starting blocks track field"
+        "serviceImageQuery": "athlete sprinting training on track starting blocks coach watching field action"
       },
       {
         "name": "School Holiday Camps",
@@ -5116,7 +5116,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Holiday Camps",
           "Skills"
         ],
-        "serviceImageQuery": "children holiday sports camp outdoor games field group"
+        "serviceImageQuery": "children playing sports at holiday camp outdoor field running games group fun sunny"
       },
       {
         "name": "Strength & Conditioning Programmes",
@@ -5125,7 +5125,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Strength & Conditioning",
           "Injury Prevention"
         ],
-        "serviceImageQuery": "strength conditioning barbell squat rack athletic training gym"
+        "serviceImageQuery": "athlete strength conditioning barbell squat rack gym weights training session professional"
       }
     ],
     "galleryHeading": "In Action",
@@ -5161,14 +5161,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "active, outdoor, energetic",
-    "heroImageQuery": "sports field training area cones markers grass athletic track",
-    "ogImageQuery": "sports training field cones markers athletic track grass",
-    "aboutImageQuery": "coach guiding young athletes technique field training action",
+    "heroImageQuery": "sports coaching session athletes training on green field cones agility drills outdoor sunny",
+    "ogImageQuery": "coach training young athletes on sports field agility cones drills outdoor",
+    "aboutImageQuery": "sports coach demonstrating technique to young athletes on field training session action",
     "galleryImageQueries": [
-      "agility training cones ladder athletes running field drills",
-      "coach demonstrating throwing technique athlete field close-up",
-      "team huddle sports field discussion strategy coach",
-      "children sports camp relay race running field outdoor"
+      "athletes running agility cone ladder drills on sports field outdoor training",
+      "coach demonstrating throwing technique to athlete on field one-on-one close-up",
+      "youth sports team huddle on field strategy discussion with coach outdoor",
+      "children running relay race at sports holiday camp outdoor field sunny"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201319:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Holiday camps seasonal"
   },
@@ -5271,14 +5271,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, clean",
-    "heroImageQuery": "fluffy dog sitting on grooming table freshly groomed",
-    "ogImageQuery": "small white dog groomed with bow tie fluffy",
-    "aboutImageQuery": "groomer gently brushing dog on grooming table",
+    "heroImageQuery": "fluffy white dog sitting on grooming table freshly groomed bow tie professional salon bright",
+    "ogImageQuery": "small fluffy white dog freshly groomed with bow tie on grooming table salon",
+    "aboutImageQuery": "professional groomer gently brushing dog on grooming table salon bright clean",
     "galleryImageQueries": [
-      "poodle freshly groomed fluffy white salon",
-      "golden retriever being bathed in grooming tub",
-      "small dog getting haircut on grooming table",
-      "dog grooming salon interior bath stations clean"
+      "white poodle freshly groomed fluffy clean on grooming table professional salon",
+      "golden retriever being bathed shampooed in grooming tub water suds salon",
+      "small dog getting haircut scissors trimming on grooming table professional",
+      "dog grooming salon interior bath stations dryers tables clean bright modern"
     ],
     "features": [
       { "name": "Calm, Fear-Free Environment", "description": "We use low-stress handling techniques so even anxious and rescue dogs feel safe. No rushing, no restraint \u2014 just patience.", "imageQuery": "calm dog being gently held by groomer relaxed pet salon" },
@@ -5386,19 +5386,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, friendly, colourful",
-    "heroImageQuery": "puppy sitting in pet shop surrounded by toys",
-    "ogImageQuery": "kitten and puppy together pet shop cute",
-    "aboutImageQuery": "pet shop staff member helping customer with dog food",
+    "heroImageQuery": "cute puppy sitting in pet shop surrounded by colourful toys and accessories bright store",
+    "ogImageQuery": "kitten and puppy together sitting on pet shop counter cute bright",
+    "aboutImageQuery": "pet shop staff member helping customer choose dog food aisle products shelves bright store",
     "galleryImageQueries": [
-      "colourful tropical fish aquarium tank pet shop",
-      "dog toys bones treats colourful display shelf",
-      "premium pet food bags stacked on shelf varieties",
-      "rabbit guinea pig small animal enclosure pet shop"
+      "colourful tropical fish swimming in aquarium tank pet shop display bright",
+      "dog toys bones treats colourful display shelf pet shop interior bright",
+      "premium pet food bags brands stacked on shelf pet store aisle varieties",
+      "rabbit guinea pig small animal enclosure pet shop display bedding bright"
     ],
     "features": [
-      { "name": "Expert Nutrition Advice", "description": "Our staff are trained in pet nutrition and can recommend the right food for your animal's age, breed, and health needs.", "imageQuery": "pet shop staff advising customer about pet food nutrition" },
-      { "name": "Loyalty Rewards That Add Up", "description": "Every purchase earns points toward free food, toys, and grooming. Regulars save hundreds a year without thinking about it.", "imageQuery": "happy customer with shopping bags pet store rewards loyalty" },
-      { "name": "Ethically Sourced Products Only", "description": "We vet every brand we stock. No puppy mills, no harmful ingredients, no cheap imports \u2014 just products we'd use on our own pets.", "imageQuery": "premium natural pet food products display shelf quality" }
+      { "name": "Expert Nutrition Advice", "description": "Our staff are trained in pet nutrition and can recommend the right food for your animal's age, breed, and health needs.", "imageQuery": "pet shop staff advising customer about dog food nutrition aisle products bright store" },
+      { "name": "Loyalty Rewards That Add Up", "description": "Every purchase earns points toward free food, toys, and grooming. Regulars save hundreds a year without thinking about it.", "imageQuery": "happy customer carrying shopping bag leaving pet store with dog smiling bright" },
+      { "name": "Ethically Sourced Products Only", "description": "We vet every brand we stock. No puppy mills, no harmful ingredients, no cheap imports \u2014 just products we'd use on our own pets.", "imageQuery": "premium natural organic pet food products display shelf pet shop bright quality" }
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 08:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -5501,19 +5501,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, safe",
-    "heroImageQuery": "happy dogs playing together in outdoor yard kennel",
-    "ogImageQuery": "dogs running and playing in large outdoor kennel yard",
-    "aboutImageQuery": "kennel staff walking dogs in outdoor exercise area",
+    "heroImageQuery": "happy dogs playing together running in large outdoor kennel boarding facility grassy yard sunny",
+    "ogImageQuery": "group of dogs running playing in large outdoor kennel boarding yard grass sunny",
+    "aboutImageQuery": "kennel staff member walking multiple dogs on leads in outdoor exercise area boarding facility",
     "galleryImageQueries": [
-      "dogs playing fetch in large grassy kennel yard",
-      "cat relaxing on climbing tree in cattery room",
-      "dog sleeping on comfortable bed in kennel room",
-      "clean indoor kennel suite with dog bed and water bowl"
+      "dogs playing fetch ball in large grassy kennel boarding yard outdoor sunny",
+      "cat relaxing on climbing tree perch in cattery boarding room cosy warm",
+      "dog sleeping peacefully on comfortable bed blanket in clean kennel suite",
+      "clean spacious indoor kennel suite dog bed water bowl boarding facility"
     ],
     "features": [
-      { "name": "24-Hour On-Site Supervision", "description": "Someone is always here. Day and night, your pet is never left alone \u2014 giving you genuine peace of mind while you're away.", "imageQuery": "kennel staff member sitting with dogs overnight care facility" },
-      { "name": "Daily Photo Updates", "description": "You'll receive photos and a short update every day so you can see exactly how your pet is doing.", "imageQuery": "happy dog playing outdoors kennel facility daycare" },
-      { "name": "Individual Attention, Not Warehouse Care", "description": "We limit numbers deliberately. Each animal gets personal interaction, exercise time, and their own sleeping space.", "imageQuery": "spacious clean individual kennel suite comfortable dog bed" }
+      { "name": "24-Hour On-Site Supervision", "description": "Someone is always here. Day and night, your pet is never left alone \u2014 giving you genuine peace of mind while you're away.", "imageQuery": "kennel staff member sitting with dogs petting them in boarding facility care room" },
+      { "name": "Daily Photo Updates", "description": "You'll receive photos and a short update every day so you can see exactly how your pet is doing.", "imageQuery": "happy dog playing with ball outdoors in kennel boarding yard grassy sunny" },
+      { "name": "Individual Attention, Not Warehouse Care", "description": "We limit numbers deliberately. Each animal gets personal interaction, exercise time, and their own sleeping space.", "imageQuery": "spacious clean individual kennel suite with comfortable dog bed blanket water bowl" }
     ],
     "contactHours": "Mon\u2013Sun: 07:30\u201318:00 \u00b7 Drop-off & collection daily \u00b7 Emergency line available"
   },
@@ -5616,19 +5616,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, active",
-    "heroImageQuery": "happy dogs running together on park path",
-    "ogImageQuery": "group of dogs walking on leashes park trail",
-    "aboutImageQuery": "dog walker with group of dogs on beach trail",
+    "heroImageQuery": "dog walker with group of happy dogs on leads walking park path green trees sunny",
+    "ogImageQuery": "group of dogs walking on leashes park trail with dog walker sunny green",
+    "aboutImageQuery": "professional dog walker with pack of dogs on beach trail leads happy walking sunny",
     "galleryImageQueries": [
-      "dogs walking together park trail leashes group",
-      "happy dog running park field off-leash play",
-      "pet sitter cat home couch relaxed cuddle",
-      "dog walker beach dogs running sand water"
+      "dog walker leading group of dogs on leashes park trail green trees sunny",
+      "happy dog running off-leash in park field green grass playing ball sunny",
+      "pet sitter sitting on couch at home with cat on lap relaxed cosy",
+      "dog walker with dogs running on sandy beach waves water happy sunny"
     ],
     "features": [
-      { "name": "GPS-Tracked Walks", "description": "Every walk is GPS-tracked and you get a map, distance, and duration sent straight to your phone when we're done.", "imageQuery": "dog walker with multiple dogs park trail GPS tracking" },
-      { "name": "Same Walker Every Time", "description": "Your dog builds a bond with one person, not a rotating roster. Consistency means less anxiety and better behaviour.", "imageQuery": "dog walker bonding with happy dog familiar trusted caregiver" },
-      { "name": "Fully Insured & Background Checked", "description": "Every walker is vetted, insured, and trained in pet first aid. Your home keys and your pet are in safe hands.", "imageQuery": "professional pet sitter entering home trusted secure reliable" }
+      { "name": "GPS-Tracked Walks", "description": "Every walk is GPS-tracked and you get a map, distance, and duration sent straight to your phone when we're done.", "imageQuery": "dog walker with multiple dogs on leads walking park trail green trees outdoor exercise" },
+      { "name": "Same Walker Every Time", "description": "Your dog builds a bond with one person, not a rotating roster. Consistency means less anxiety and better behaviour.", "imageQuery": "dog walker kneeling petting happy dog park bonding trust affection outdoors" },
+      { "name": "Fully Insured & Background Checked", "description": "Every walker is vetted, insured, and trained in pet first aid. Your home keys and your pet are in safe hands.", "imageQuery": "professional pet sitter greeting dog at front door home visit keys uniform" }
     ],
     "contactHours": "Mon\u2013Fri: 06:30\u201318:00 \u00b7 Sat: 07:00\u201314:00 \u00b7 Weekend sitting by arrangement"
   },
@@ -5731,14 +5731,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, outdoor, trust-building",
-    "heroImageQuery": "dog sitting attentively looking up during training session outdoor",
-    "ogImageQuery": "dog performing sit stay command outdoors training",
-    "aboutImageQuery": "trainer rewarding dog with treat during obedience session",
+    "heroImageQuery": "dog sitting attentively looking up at trainer during outdoor training session park green grass",
+    "ogImageQuery": "obedient dog performing sit stay command outdoors with trainer park training",
+    "aboutImageQuery": "dog trainer rewarding golden retriever with treat during obedience session outdoor park",
     "galleryImageQueries": [
-      "dog training class outdoor field group dogs",
-      "puppy training treats reward obedience sit",
-      "agility training dog jumping obstacle course",
-      "dog and trainer bond leash walk heel"
+      "dog training class group of dogs and owners outdoor field park session",
+      "puppy sitting looking up at trainer receiving treat reward obedience training outdoor",
+      "dog jumping over agility course obstacle hurdle outdoor training competition",
+      "dog walking at heel with trainer on leash park path obedience outdoor"
     ],
     "features": [
       { "name": "Science-Based, Force-Free Methods", "description": "We use positive reinforcement only. No choke chains, no dominance theory \u2014 just methods backed by veterinary behavioural science.", "imageQuery": "dog trainer using positive reinforcement treat reward training" },
@@ -5846,19 +5846,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, welcoming, animal-loving",
-    "heroImageQuery": "happy golden retriever puppy sitting looking at camera",
-    "ogImageQuery": "cat and dog sitting together looking at camera",
-    "aboutImageQuery": "pet care staff member playing with dogs in daycare yard",
+    "heroImageQuery": "happy golden retriever puppy sitting looking at camera bright warm pet care facility",
+    "ogImageQuery": "cat and dog sitting together looking at camera bright studio pet portrait",
+    "aboutImageQuery": "pet care staff member playing with group of dogs in outdoor daycare yard sunny",
     "galleryImageQueries": [
-      "fluffy dog freshly groomed with bow tie",
-      "cat being gently brushed grooming session",
-      "dogs running playing together daycare yard",
-      "pet food treats toys accessories display shelf"
+      "fluffy white dog freshly groomed with bow tie on grooming table salon",
+      "cat being gently brushed grooming session professional groomer close-up",
+      "group of dogs running playing together in outdoor daycare yard happy sunny",
+      "pet food treats toys accessories colourful display shelf pet shop bright"
     ],
     "features": [
-      { "name": "All Services Under One Roof", "description": "Grooming, daycare, training, and retail in one place. One relationship, one location, and no running around town.", "imageQuery": "modern pet services facility grooming daycare retail combined" },
-      { "name": "Qualified, Passionate Staff", "description": "Everyone on our team is a trained animal handler and genuine animal lover. It's not a job for us \u2014 it's a calling.", "imageQuery": "pet care professional staff team smiling with animals" },
-      { "name": "Flexible Booking & Packages", "description": "Mix and match services, book online, and save with monthly packages designed around how often you actually need us.", "imageQuery": "smartphone booking app pet services appointment scheduling" }
+      { "name": "All Services Under One Roof", "description": "Grooming, daycare, training, and retail in one place. One relationship, one location, and no running around town.", "imageQuery": "modern pet care facility interior grooming area daycare dogs bright clean spacious" },
+      { "name": "Qualified, Passionate Staff", "description": "Everyone on our team is a trained animal handler and genuine animal lover. It's not a job for us \u2014 it's a calling.", "imageQuery": "pet care staff team members smiling holding dogs and cats in facility uniforms" },
+      { "name": "Flexible Booking & Packages", "description": "Mix and match services, book online, and save with monthly packages designed around how often you actually need us.", "imageQuery": "person booking pet appointment on smartphone screen pet services app dog nearby" }
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -5961,19 +5961,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, caring, professional",
-    "heroImageQuery": "golden retriever sitting on vet examination table clinic",
-    "ogImageQuery": "cat on vet examination table clinic",
-    "aboutImageQuery": "vet gently examining puppy on clinic table",
+    "heroImageQuery": "veterinarian examining golden retriever dog on examination table in bright modern clinic stethoscope",
+    "ogImageQuery": "veterinarian holding cat on examination table in bright clean clinic",
+    "aboutImageQuery": "veterinarian gently examining puppy on clinic table stethoscope white coat bright room",
     "galleryImageQueries": [
-      "vet clinic reception area clean modern interior",
-      "dog on examination table vet clinic",
-      "cat receiving check-up vaccination at clinic",
-      "vet surgery operating room sterile equipment"
+      "veterinary clinic reception area modern clean bright interior counter waiting room",
+      "veterinarian examining dog on consultation table clinic bright stethoscope white coat",
+      "cat receiving vaccination injection at veterinary clinic vet hands close-up",
+      "veterinary surgery operating room sterile equipment bright lights instruments table"
     ],
     "features": [
-      { "name": "Gentle, Low-Stress Consultations", "description": "We take our time. Separate cat and dog waiting areas, calm handling, and treat rewards mean less fear for your pet.", "imageQuery": "veterinarian gently examining calm dog on consultation table" },
-      { "name": "In-House Lab & Digital X-Ray", "description": "Most diagnostics are done on-site within minutes. No waiting days for results or being sent across town for an X-ray.", "imageQuery": "veterinary clinic digital xray equipment modern diagnostic lab" },
-      { "name": "Transparent Pricing, No Surprises", "description": "We quote before we treat. You'll know the cost upfront and we'll always discuss options before proceeding with anything.", "imageQuery": "vet explaining treatment plan to pet owner consultation room" }
+      { "name": "Gentle, Low-Stress Consultations", "description": "We take our time. Separate cat and dog waiting areas, calm handling, and treat rewards mean less fear for your pet.", "imageQuery": "veterinarian gently examining calm relaxed dog on consultation table in bright clinic room" },
+      { "name": "In-House Lab & Digital X-Ray", "description": "Most diagnostics are done on-site within minutes. No waiting days for results or being sent across town for an X-ray.", "imageQuery": "veterinary clinic digital xray machine equipment modern diagnostic lab room bright" },
+      { "name": "Transparent Pricing, No Surprises", "description": "We quote before we treat. You'll know the cost upfront and we'll always discuss options before proceeding with anything.", "imageQuery": "veterinarian explaining treatment plan to pet owner in consultation room with dog on table" }
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Emergency line 24hrs"
   },
@@ -6868,20 +6868,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, clean, reliable",
-      "heroImageQuery": "modern bathroom renovation white tiles rainfall shower",
-      "heroBgImageQuery": "plumbing pipes tools dark background",
-      "ogImageQuery": "modern kitchen sink faucet renovation",
-      "aboutImageQuery": "plumber repairing pipe under sink working",
+      "heroImageQuery": "plumber fitting copper pipes under kitchen sink close up hands tools professional",
+      "heroBgImageQuery": "copper plumbing pipes fittings valves dark moody background",
+      "ogImageQuery": "completed modern bathroom renovation double basin vanity taps",
+      "aboutImageQuery": "plumber tightening pipe fitting wrench under sink residential working",
       "galleryImageQueries": [
-          "modern bathroom renovation freestanding bathtub",
-          "new water heater tank installed utility room",
-          "kitchen sink tap installation granite countertop",
-          "underfloor heating pipes installation concrete"
+          "modern bathroom renovation freestanding bathtub brass taps completed",
+          "new geyser water heater installed wall mounted utility room",
+          "kitchen mixer tap installed granite countertop undermount sink",
+          "underfloor heating pipes laid screed floor installation"
       ],
       "features": [
-        { "name": "Same-Day Callouts", "description": "Burst geyser at 7am? We'll be there. Most emergency jobs are attended within 2 hours, with parts on the van to fix it first visit.", "imageQuery": "plumber arriving at house with tools professional prompt service" },
-        { "name": "Upfront Pricing, No Surprises", "description": "You get a written quote before any work starts. No hourly creep, no hidden call-out fees \u2014 just honest pricing.", "imageQuery": "plumber explaining quote to homeowner clipboard professional" },
-        { "name": "12-Month Workmanship Guarantee", "description": "Every job is guaranteed for a full year. If something we fitted or repaired fails, we come back and fix it at no cost.", "imageQuery": "modern bathroom plumbing renovation completed quality finish" }
+        { "name": "Same-Day Callouts", "description": "Burst geyser at 7am? We'll be there. Most emergency jobs are attended within 2 hours, with parts on the van to fix it first visit.", "imageQuery": "plumber van arriving residential house tools equipment ready service" },
+        { "name": "Upfront Pricing, No Surprises", "description": "You get a written quote before any work starts. No hourly creep, no hidden call-out fees \u2014 just honest pricing.", "imageQuery": "plumber showing written quote clipboard homeowner kitchen discussion" },
+        { "name": "12-Month Workmanship Guarantee", "description": "Every job is guaranteed for a full year. If something we fitted or repaired fails, we come back and fix it at no cost.", "imageQuery": "completed bathroom plumbing renovation modern fixtures quality finish" }
       ]
   },
   "Electrician": {
@@ -7005,20 +7005,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "precise, professional, safe",
-      "heroImageQuery": "modern home lighting recessed downlights living room",
-      "heroBgImageQuery": "electrical panel wiring dark background",
-      "ogImageQuery": "neat electrical wiring distribution board installed",
-      "aboutImageQuery": "electrician wiring distribution board working",
+      "heroImageQuery": "electrician installing recessed LED downlights modern home ceiling hands tools",
+      "heroBgImageQuery": "electrical cables wire connectors dark moody background",
+      "ogImageQuery": "neat residential distribution board RCBO switches wiring installed",
+      "aboutImageQuery": "electrician wiring residential distribution board screwdriver close up working",
       "galleryImageQueries": [
-          "new distribution board RCBO switches installed",
-          "solar panel array residential rooftop",
-          "recessed LED downlights installed ceiling",
-          "outdoor garden lighting pathway bollard lights night"
+          "new distribution board RCBO switches neatly wired residential",
+          "solar panels installed residential rooftop blue sky house",
+          "recessed LED downlights installed modern living room ceiling",
+          "outdoor garden pathway bollard lights illuminated night landscaping"
       ],
       "features": [
-        { "name": "CoC Issued on Every Job", "description": "Every qualifying installation comes with a Certificate of Compliance \u2014 essential for insurance, property sales, and peace of mind.", "imageQuery": "electrician testing electrical panel compliance certificate safety" },
-        { "name": "Clean, Respectful Workmanship", "description": "We wear boot covers, clean up after ourselves, and leave your walls looking like we were never there. The work is invisible \u2014 on purpose.", "imageQuery": "neat electrical wiring installation clean professional finish" },
-        { "name": "Load-Shedding & Backup Solutions", "description": "From inverters to full off-grid setups, we design and install backup power systems so your home keeps running when the grid doesn't.", "imageQuery": "home inverter battery backup power installation electrical" }
+        { "name": "CoC Issued on Every Job", "description": "Every qualifying installation comes with a Certificate of Compliance \u2014 essential for insurance, property sales, and peace of mind.", "imageQuery": "electrician testing residential DB board multimeter compliance" },
+        { "name": "Clean, Respectful Workmanship", "description": "We wear boot covers, clean up after ourselves, and leave your walls looking like we were never there. The work is invisible \u2014 on purpose.", "imageQuery": "neat electrical wiring conduit installation residential wall clean" },
+        { "name": "Load-Shedding & Backup Solutions", "description": "From inverters to full off-grid setups, we design and install backup power systems so your home keeps running when the grid doesn't.", "imageQuery": "home inverter battery backup system wall mounted garage installation" }
       ]
   },
   "Builder / General Contractor": {
@@ -7142,20 +7142,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "solid, professional, crafted",
-      "heroImageQuery": "completed modern house exterior architecture garden",
-      "heroBgImageQuery": "construction site building dark background tools",
-      "ogImageQuery": "finished residential home exterior landscaping",
-      "aboutImageQuery": "builder laying bricks construction site working",
+      "heroImageQuery": "beautiful new build modern house completed exterior landscaped garden",
+      "heroBgImageQuery": "construction hard hat spirit level tools dark moody background",
+      "ogImageQuery": "completed modern residential home exterior landscaped driveway",
+      "aboutImageQuery": "builder carefully laying brick wall spirit level quality construction site",
       "galleryImageQueries": [
-          "new build house completed exterior landscaped",
-          "renovated open plan kitchen living room interior",
-          "house extension second storey addition completed",
-          "bathroom renovation modern tiles vanity mirror"
+          "new build house completed exterior modern architecture landscaped",
+          "renovated open plan kitchen island white cabinets living room",
+          "house extension second storey addition completed render",
+          "luxury bathroom renovation modern tiles vanity freestanding bath"
       ],
       "features": [
-        { "name": "Fixed-Price Contracts", "description": "We quote a fixed price and stick to it. No cost overruns, no vague allowances \u2014 you know exactly what you're paying before we break ground.", "imageQuery": "builder reviewing building plans with homeowner contract meeting" },
-        { "name": "NHBRC Registered", "description": "We're registered with the National Home Builders Registration Council, which means your new build is backed by a structural warranty.", "imageQuery": "professional construction site quality residential build progress" },
-        { "name": "Weekly Progress Reports", "description": "Every Friday you get photos, a progress summary, and the schedule for the week ahead. You're never left wondering what's happening on site.", "imageQuery": "construction progress report photos building site documentation" }
+        { "name": "Fixed-Price Contracts", "description": "We quote a fixed price and stick to it. No cost overruns, no vague allowances \u2014 you know exactly what you're paying before we break ground.", "imageQuery": "builder reviewing building plans blueprints with homeowner table meeting" },
+        { "name": "NHBRC Registered", "description": "We're registered with the National Home Builders Registration Council, which means your new build is backed by a structural warranty.", "imageQuery": "residential construction site progress quality brickwork new build" },
+        { "name": "Weekly Progress Reports", "description": "Every Friday you get photos, a progress summary, and the schedule for the week ahead. You're never left wondering what's happening on site.", "imageQuery": "construction site progress photos clipboard documentation builder" }
       ]
   },
   "Joiner / Carpenter": {
@@ -7279,20 +7279,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, crafted, precise",
-      "heroImageQuery": "custom built in bookshelf living room warm wood",
-      "heroBgImageQuery": "carpenter workshop wood shavings dark background",
-      "ogImageQuery": "fitted wardrobe doors open organized interior",
-      "aboutImageQuery": "carpenter hand planing wood workshop crafting",
+      "heroImageQuery": "custom built-in wooden bookshelf living room warm oak shelving",
+      "heroBgImageQuery": "wood shavings chisel plane carpentry tools dark workshop background",
+      "ogImageQuery": "fitted wardrobe doors open organized shelving interior lighting",
+      "aboutImageQuery": "carpenter hand planing timber plank workshop bench shavings craftsmanship",
       "galleryImageQueries": [
-          "built in wardrobe walk in closet organized",
-          "modern kitchen cabinetry wooden island completed",
-          "solid wood desk home office bespoke furniture",
-          "floating timber shelves mounted living room wall"
+          "built-in wardrobe walk-in closet organized shelving drawers",
+          "custom kitchen cabinetry wooden island shaker doors completed",
+          "handmade solid wood desk home office bespoke furniture",
+          "floating timber shelves mounted white wall living room books"
       ],
       "features": [
-        { "name": "Bespoke, Made-to-Measure", "description": "Nothing is off the shelf. Every piece is designed around your space, your style, and your exact measurements.", "imageQuery": "custom built-in wardrobe bespoke carpentry fitted furniture" },
-        { "name": "Workshop & On-Site Capability", "description": "We build in our workshop for precision and install on-site for a perfect fit. Best of both worlds, no compromises.", "imageQuery": "carpenter workshop bench tools precision woodworking craftsmanship" },
-        { "name": "Sustainably Sourced Timber", "description": "We use FSC-certified and locally milled timber wherever possible. Beautiful furniture shouldn't cost the planet.", "imageQuery": "natural wood grain timber sustainable quality material close-up" }
+        { "name": "Bespoke, Made-to-Measure", "description": "Nothing is off the shelf. Every piece is designed around your space, your style, and your exact measurements.", "imageQuery": "custom fitted built-in wardrobe bespoke carpentry bedroom storage" },
+        { "name": "Workshop & On-Site Capability", "description": "We build in our workshop for precision and install on-site for a perfect fit. Best of both worlds, no compromises.", "imageQuery": "carpenter woodworking workshop bench hand tools timber precision" },
+        { "name": "Sustainably Sourced Timber", "description": "We use FSC-certified and locally milled timber wherever possible. Beautiful furniture shouldn't cost the planet.", "imageQuery": "natural hardwood timber grain texture quality material close up" }
       ]
   },
   "Welder / Metalworker": {
@@ -7416,20 +7416,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, precise, strong",
-      "heroImageQuery": "custom steel driveway gate installed modern house",
-      "heroBgImageQuery": "welding sparks dark metal fabrication workshop background",
-      "ogImageQuery": "ornamental iron gate entrance finished installed",
-      "aboutImageQuery": "welder sparks metal fabrication workshop action",
+      "heroImageQuery": "custom ornamental steel driveway gate installed modern residential entrance",
+      "heroBgImageQuery": "welder MIG welding sparks flying dark workshop close up",
+      "ogImageQuery": "ornamental wrought iron gate entrance powder coated black installed",
+      "aboutImageQuery": "welder wearing helmet MIG welding steel sparks flying workshop action",
       "galleryImageQueries": [
-          "modern steel sliding gate driveway installed",
-          "metal spiral staircase interior industrial style",
-          "wrought iron window security bars decorative",
-          "steel pergola frame outdoor patio structure"
+          "modern steel sliding gate driveway motor automated installed",
+          "metal spiral staircase wood treads interior industrial design",
+          "decorative wrought iron window security bars residential",
+          "steel pergola frame outdoor patio structure powder coated"
       ],
       "features": [
-        { "name": "Structural & Decorative Expertise", "description": "From load-bearing steel beams to ornamental balustrades, we handle both the heavy-duty and the fine detail.", "imageQuery": "decorative wrought iron gate custom metalwork fabrication" },
-        { "name": "Coded Welding Certified", "description": "Our welders hold coded certifications for structural steel, pressure vessels, and aluminium \u2014 meeting the highest safety standards.", "imageQuery": "professional welder sparks protective gear precision welding" },
-        { "name": "On-Site Mobile Welding", "description": "We come to you with a fully equipped mobile rig. No need to remove or transport heavy items \u2014 we weld wherever the job is.", "imageQuery": "mobile welding truck workshop equipment on-site service" }
+        { "name": "Structural & Decorative Expertise", "description": "From load-bearing steel beams to ornamental balustrades, we handle both the heavy-duty and the fine detail.", "imageQuery": "ornamental wrought iron gate custom metalwork fabrication detail" },
+        { "name": "Coded Welding Certified", "description": "Our welders hold coded certifications for structural steel, pressure vessels, and aluminium \u2014 meeting the highest safety standards.", "imageQuery": "welder protective helmet precision TIG welding stainless steel" },
+        { "name": "On-Site Mobile Welding", "description": "We come to you with a fully equipped mobile rig. No need to remove or transport heavy items \u2014 we weld wherever the job is.", "imageQuery": "mobile welding service truck equipment tools on-site residential" }
       ]
   },
   "Paving / Tiling": {
@@ -7553,20 +7553,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, precise, durable",
-      "heroImageQuery": "beautiful paved driveway natural stone entrance",
-      "heroBgImageQuery": "paving stones tiles dark background texture",
-      "ogImageQuery": "completed natural stone paved driveway house",
-      "aboutImageQuery": "tiler laying floor tiles close up hands working",
+      "heroImageQuery": "freshly laid brick paved driveway herringbone pattern residential house entrance",
+      "heroBgImageQuery": "paving brick stone tiles neatly arranged dark textured background",
+      "ogImageQuery": "completed brick paved driveway residential house entrance neat",
+      "aboutImageQuery": "tiler laying large porcelain floor tiles spacer close up hands working",
       "galleryImageQueries": [
-          "cobblestone driveway pattern completed front entrance",
-          "outdoor patio tiled seating area garden view",
-          "marble bathroom floor tiles herringbone pattern",
-          "slate pool surround tiles completed water feature"
+          "herringbone brick paved driveway completed residential entrance",
+          "outdoor stone patio tiled seating area garden furniture",
+          "marble herringbone bathroom floor tiles modern vanity",
+          "natural stone pool surround tiles completed blue water"
       ],
       "features": [
-        { "name": "Laser-Level Precision", "description": "Every surface we lay is laser-levelled. No lippage, no uneven grout lines \u2014 just flawless finishes you can see from any angle.", "imageQuery": "perfectly laid floor tiles even grout lines precision finish" },
-        { "name": "Full Prep Included", "description": "We handle everything from screed and waterproofing to cutting and grouting. You don't need to coordinate multiple trades.", "imageQuery": "tile preparation waterproofing substrate floor construction" },
-        { "name": "Indoor & Outdoor Specialists", "description": "Porcelain, natural stone, clay pavers, cobble \u2014 we work with every material and surface, inside and out.", "imageQuery": "outdoor stone paving patio garden landscaping beautiful" }
+        { "name": "Laser-Level Precision", "description": "Every surface we lay is laser-levelled. No lippage, no uneven grout lines \u2014 just flawless finishes you can see from any angle.", "imageQuery": "perfectly laid porcelain floor tiles even grout lines close up" },
+        { "name": "Full Prep Included", "description": "We handle everything from screed and waterproofing to cutting and grouting. You don't need to coordinate multiple trades.", "imageQuery": "tiler applying adhesive screed substrate preparation floor" },
+        { "name": "Indoor & Outdoor Specialists", "description": "Porcelain, natural stone, clay pavers, cobble \u2014 we work with every material and surface, inside and out.", "imageQuery": "beautiful outdoor stone paved patio garden seating landscaping" }
       ]
   },
   "Roofer": {
@@ -7690,20 +7690,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "solid, professional, weatherproof",
-      "heroImageQuery": "newly tiled residential roof aerial view house",
-      "heroBgImageQuery": "roof tiles dark sky background roofing",
-      "ogImageQuery": "completed roof clay tiles house blue sky",
-      "aboutImageQuery": "roofer installing tiles on roof ridge working",
+      "heroImageQuery": "roofer installing new clay tiles on residential roof blue sky sunny",
+      "heroBgImageQuery": "clay roof tiles stacked neatly dark moody background",
+      "ogImageQuery": "completed new clay tile roof residential house blue sky",
+      "aboutImageQuery": "roofer nailing tile battens on roof ridge working harness sunny day",
       "galleryImageQueries": [
-          "clay tile roof completed residential house",
-          "flat roof waterproofing membrane white coating",
-          "new corrugated metal roof installed building",
-          "copper gutters downpipes installed house fascia"
+          "new clay tile roof completed residential house aerial view",
+          "flat roof waterproofing membrane white coating applied",
+          "new corrugated metal IBR roof sheets installed building",
+          "seamless aluminium gutters downpipes installed house fascia"
       ],
       "features": [
-        { "name": "Full Waterproofing Guarantee", "description": "Every roof we touch comes with a written waterproofing guarantee. If it leaks within the warranty period, we fix it free.", "imageQuery": "completed roof installation waterproof quality professional" },
-        { "name": "Emergency Leak Response", "description": "Storm damage doesn't wait for business hours. We offer rapid-response leak repairs to protect your home when it matters most.", "imageQuery": "roofer emergency repair storm damage rapid response" },
-        { "name": "Drone Roof Inspections", "description": "We inspect your roof by drone before quoting \u2014 so you get an accurate assessment without anyone walking on fragile tiles.", "imageQuery": "drone flying over residential roof inspection technology" }
+        { "name": "Full Waterproofing Guarantee", "description": "Every roof we touch comes with a written waterproofing guarantee. If it leaks within the warranty period, we fix it free.", "imageQuery": "completed new roof tiles waterproof quality residential house" },
+        { "name": "Emergency Leak Response", "description": "Storm damage doesn't wait for business hours. We offer rapid-response leak repairs to protect your home when it matters most.", "imageQuery": "roofer repairing roof tiles storm damage emergency tarp" },
+        { "name": "Drone Roof Inspections", "description": "We inspect your roof by drone before quoting \u2014 so you get an accurate assessment without anyone walking on fragile tiles.", "imageQuery": "drone flying inspecting residential rooftop tiles aerial technology" }
       ]
   },
   "Painter / Decorator": {
@@ -7827,20 +7827,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, bright, clean",
-      "heroImageQuery": "freshly painted modern home interior bright airy rooms",
-      "heroBgImageQuery": "paint roller brush dark background painting supplies",
-      "ogImageQuery": "painted living room fresh white walls furniture",
-      "aboutImageQuery": "painter rolling paint on wall interior working",
+      "heroImageQuery": "painter rolling white paint on living room wall roller tray interior bright",
+      "heroBgImageQuery": "paint brushes rollers tins dark background decorating supplies",
+      "ogImageQuery": "freshly painted white living room bright modern furniture",
+      "aboutImageQuery": "professional painter cutting in with brush wall edge interior working",
       "galleryImageQueries": [
-          "freshly painted bedroom soft colours feature wall",
-          "house exterior painted white trim neat finish",
-          "venetian plaster texture accent wall interior",
-          "painted hallway staircase white bright transformation"
+          "freshly painted bedroom sage green feature wall white trim",
+          "house exterior freshly painted white facade trim gutters",
+          "venetian plaster textured accent wall warm grey interior",
+          "painted hallway staircase bright white transformation clean"
       ],
       "features": [
-        { "name": "Proper Surface Preparation", "description": "We spend as much time prepping as painting. Cracks filled, surfaces sanded, primer applied \u2014 that's why our finishes last years, not months.", "imageQuery": "painter preparing wall surface sanding filling cracks professional" },
-        { "name": "Colour Consultation Included", "description": "Not sure which colour to choose? We bring sample pots, test patches, and years of experience to help you get it right first time.", "imageQuery": "paint colour swatches samples consultation interior design" },
-        { "name": "Furniture & Floors Protected", "description": "We cover everything properly with dust sheets and masking before a single brush stroke. Your home is treated with respect.", "imageQuery": "painter professional dust sheets covering furniture neat preparation" }
+        { "name": "Proper Surface Preparation", "description": "We spend as much time prepping as painting. Cracks filled, surfaces sanded, primer applied \u2014 that's why our finishes last years, not months.", "imageQuery": "painter sanding wall surface preparation filling cracks masking tape" },
+        { "name": "Colour Consultation Included", "description": "Not sure which colour to choose? We bring sample pots, test patches, and years of experience to help you get it right first time.", "imageQuery": "paint colour swatch cards fan deck samples interior wall consultation" },
+        { "name": "Furniture & Floors Protected", "description": "We cover everything properly with dust sheets and masking before a single brush stroke. Your home is treated with respect.", "imageQuery": "painter dust sheets covering furniture floor masking tape preparation" }
       ]
   },
   "Glazier": {
@@ -7964,20 +7964,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, light, precise",
-      "heroImageQuery": "modern home large glass windows natural light interior",
-      "heroBgImageQuery": "glass reflection dark background architectural glazing",
-      "ogImageQuery": "frameless glass shower door installed modern bathroom",
-      "aboutImageQuery": "glazier installing glass panel window working",
+      "heroImageQuery": "glazier carrying large glass panel window installation residential suction cups",
+      "heroBgImageQuery": "glass panes stacked dark reflective background glazing workshop",
+      "ogImageQuery": "frameless glass shower door installed modern white bathroom",
+      "aboutImageQuery": "glazier fitting aluminium window frame glass panel residential installation working",
       "galleryImageQueries": [
-          "frameless shower glass enclosure walk in bathroom",
-          "aluminium window frames installed modern house",
-          "glass bi-fold doors opening to garden patio",
-          "glass balustrade balcony railing modern home"
+          "frameless glass shower enclosure walk-in modern bathroom installed",
+          "aluminium sliding window frames installed modern house exterior",
+          "glass bi-fold doors open garden patio natural light",
+          "frameless glass balustrade balcony railing stainless steel modern"
       ],
       "features": [
-        { "name": "Emergency Board-Up & Replacement", "description": "Broken window? We'll board up within hours and have your new glass fitted fast \u2014 keeping your home safe and weatherproof.", "imageQuery": "glazier replacing broken window glass emergency repair" },
-        { "name": "Energy-Efficient Glass Options", "description": "We supply and fit low-E, double-glazed, and tinted glass that keeps your home cooler in summer and warmer in winter.", "imageQuery": "modern double glazed window energy efficient home installation" },
-        { "name": "Shower Glass & Custom Cut", "description": "From frameless shower doors to custom mirrors and glass balustrades, we measure, cut, and install to exact specifications.", "imageQuery": "frameless glass shower door modern bathroom installation" }
+        { "name": "Emergency Board-Up & Replacement", "description": "Broken window? We'll board up within hours and have your new glass fitted fast \u2014 keeping your home safe and weatherproof.", "imageQuery": "glazier measuring replacing window glass pane residential" },
+        { "name": "Energy-Efficient Glass Options", "description": "We supply and fit low-E, double-glazed, and tinted glass that keeps your home cooler in summer and warmer in winter.", "imageQuery": "double glazed window unit installed residential energy efficient" },
+        { "name": "Shower Glass & Custom Cut", "description": "From frameless shower doors to custom mirrors and glass balustrades, we measure, cut, and install to exact specifications.", "imageQuery": "frameless glass shower screen door fitted modern bathroom chrome" }
       ]
   },
   "Locksmith": {
@@ -8101,20 +8101,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "trustworthy, secure, professional",
-      "heroImageQuery": "secure front door brass handle deadbolt lock",
-      "heroBgImageQuery": "lock security door dark background metal",
-      "ogImageQuery": "high security door lock deadbolt installed",
-      "aboutImageQuery": "locksmith picking lock working on door close up",
+      "heroImageQuery": "secure front door brass handle high security deadbolt lock close up",
+      "heroBgImageQuery": "lock cylinder key mechanism dark metallic background close up",
+      "ogImageQuery": "high security deadbolt lock installed front door residential",
+      "aboutImageQuery": "locksmith installing deadbolt lock front door screwdriver close up working",
       "galleryImageQueries": [
-          "deadbolt lock installed wooden front door",
-          "keypad entry system gate access control installed",
-          "smart lock digital keypad front door modern",
-          "intercom video system mounted wall entrance"
+          "high security deadbolt lock installed solid wooden front door",
+          "keypad access control entry system gate wall mounted installed",
+          "smart digital lock keypad front door modern residential",
+          "video intercom system screen mounted wall entrance gate"
       ],
       "features": [
-        { "name": "24/7 Emergency Lockout Service", "description": "Locked out at midnight? We're on call around the clock. Most lockouts are resolved within 30 minutes of arrival.", "imageQuery": "locksmith opening door emergency lockout service night" },
-        { "name": "Non-Destructive Entry", "description": "We pick locks, we don't break them. Our technicians use specialist tools to get you in without damaging your door or frame.", "imageQuery": "locksmith using professional pick tools non-destructive entry" },
-        { "name": "Security Upgrade Specialists", "description": "From basic deadbolts to high-security mul-T-lock systems, we assess your home and recommend the right level of protection.", "imageQuery": "high security door lock installation deadbolt upgrade" }
+        { "name": "24/7 Emergency Lockout Service", "description": "Locked out at midnight? We're on call around the clock. Most lockouts are resolved within 30 minutes of arrival.", "imageQuery": "locksmith arriving front door emergency lockout tools night service" },
+        { "name": "Non-Destructive Entry", "description": "We pick locks, we don't break them. Our technicians use specialist tools to get you in without damaging your door or frame.", "imageQuery": "locksmith professional pick tools non-destructive entry door close up" },
+        { "name": "Security Upgrade Specialists", "description": "From basic deadbolts to high-security mul-T-lock systems, we assess your home and recommend the right level of protection.", "imageQuery": "high security mul-T-lock deadbolt installation front door upgrade" }
       ]
   },
   "Plasterer": {
@@ -8238,20 +8238,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, smooth, professional",
-      "heroImageQuery": "smooth white plastered walls empty room bright light",
-      "heroBgImageQuery": "plastering wall dark textured background",
-      "ogImageQuery": "smooth skim plaster finish interior white wall",
-      "aboutImageQuery": "plasterer trowelling skim coat wall working",
+      "heroImageQuery": "plasterer applying smooth skim coat plaster white wall trowel working",
+      "heroBgImageQuery": "plastering trowel hawk tools dark textured plaster background",
+      "ogImageQuery": "smooth skim coat plaster finish interior white wall bright room",
+      "aboutImageQuery": "plasterer smoothing skim coat wall trowel close up hands working",
       "galleryImageQueries": [
-          "smooth interior plastered room white walls ceiling",
-          "rendered exterior building facade finished",
-          "repaired wall crack smooth finish painted",
-          "newly plastered room ready for painting light"
+          "smooth freshly plastered interior room white walls ceiling bright",
+          "rendered exterior building facade smooth finish completed",
+          "repaired wall crack smooth plaster finish painted seamless",
+          "newly plastered room walls ceiling ready for painting"
       ],
       "features": [
-        { "name": "Seamless, Invisible Finishes", "description": "Our plastering blends so cleanly with existing walls that you won't be able to tell where the new work starts.", "imageQuery": "smooth plastered wall seamless finish professional quality" },
-        { "name": "Decorative & Specialist Finishes", "description": "From smooth skim coats to textured feature walls and cornicing, we handle functional and decorative plastering equally well.", "imageQuery": "decorative plaster cornice ceiling detail ornamental finish" },
-        { "name": "Crack Repair That Lasts", "description": "We don't just skim over cracks. We cut them out, mesh them, and replaster properly so they don't come back next winter.", "imageQuery": "plasterer repairing wall crack mesh tape professional repair" }
+        { "name": "Seamless, Invisible Finishes", "description": "Our plastering blends so cleanly with existing walls that you won't be able to tell where the new work starts.", "imageQuery": "smooth plastered wall skim coat seamless finish close up" },
+        { "name": "Decorative & Specialist Finishes", "description": "From smooth skim coats to textured feature walls and cornicing, we handle functional and decorative plastering equally well.", "imageQuery": "decorative plaster cornice ceiling moulding ornate detail installed" },
+        { "name": "Crack Repair That Lasts", "description": "We don't just skim over cracks. We cut them out, mesh them, and replaster properly so they don't come back next winter.", "imageQuery": "plasterer applying mesh tape wall crack repair professional skim" }
       ]
   },
   "Fencing Contractor": {
@@ -8375,20 +8375,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "secure, clean, residential",
-      "heroImageQuery": "black palisade fence installed around residential property",
-      "heroBgImageQuery": "fencing security palisade dark background",
-      "ogImageQuery": "completed palisade fence boundary residential neat",
-      "aboutImageQuery": "fencing installer drilling post holes working",
+      "heroImageQuery": "attractive black steel palisade fence installed modern residential property garden",
+      "heroBgImageQuery": "steel palisade fence posts dark moody background close up",
+      "ogImageQuery": "completed steel palisade fence residential property boundary neat garden",
+      "aboutImageQuery": "fencing contractor installing steel fence post concrete foundation working",
       "galleryImageQueries": [
-          "steel palisade boundary fence residential property",
-          "electric fence strands wall top perimeter security",
-          "timber palisade garden fence panels neat row",
-          "precast concrete wall boundary residential installed"
+          "black steel palisade boundary fence residential property garden",
+          "wooden timber fence panels garden boundary privacy neat",
+          "automated sliding gate motor driveway residential installed",
+          "precast concrete boundary wall residential property clean"
       ],
       "features": [
-        { "name": "Security & Aesthetic Combined", "description": "Our fences don't just keep people out \u2014 they look good doing it. We design solutions that match your property's style.", "imageQuery": "modern residential fence design security aesthetic property" },
-        { "name": "All Materials, One Contractor", "description": "Palisade, wooden, precast, mesh, glass \u2014 we work with every fencing material and recommend the best option for your site.", "imageQuery": "various fence types palisade wooden precast residential" },
-        { "name": "Free Site Survey & Quote", "description": "We measure your boundary, assess the terrain, and give you a fixed quote before any work begins. No obligation, no pressure.", "imageQuery": "fencing contractor measuring property boundary survey professional" }
+        { "name": "Security & Aesthetic Combined", "description": "Our fences don't just keep people out \u2014 they look good doing it. We design solutions that match your property's style.", "imageQuery": "modern attractive residential steel fence garden property landscaped" },
+        { "name": "All Materials, One Contractor", "description": "Palisade, wooden, precast, mesh, glass \u2014 we work with every fencing material and recommend the best option for your site.", "imageQuery": "timber palisade fence panels residential garden attractive boundary" },
+        { "name": "Free Site Survey & Quote", "description": "We measure your boundary, assess the terrain, and give you a fixed quote before any work begins. No obligation, no pressure.", "imageQuery": "fencing contractor measuring boundary tape measure property survey" }
       ]
   },
   "Scaffolding": {
@@ -8512,20 +8512,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, safe, structured",
-      "heroImageQuery": "scaffolding structure erected building facade blue sky",
-      "heroBgImageQuery": "scaffolding dark construction site background",
-      "ogImageQuery": "scaffolding around building renovation work access",
-      "aboutImageQuery": "workers assembling scaffolding tubes clamps erecting",
+      "heroImageQuery": "scaffolding erected around house facade painting renovation blue sky",
+      "heroBgImageQuery": "scaffolding steel tubes clamps dark construction background close up",
+      "ogImageQuery": "scaffolding erected around residential building renovation access platforms",
+      "aboutImageQuery": "workers assembling scaffolding tubes clamps connecting erecting building",
       "galleryImageQueries": [
-          "scaffolding around house residential renovation access",
-          "scaffolding commercial building multiple stories facade",
-          "scaffolding platform boards walkway safety rails",
-          "clean construction site scaffolding removed completed"
+          "scaffolding erected around residential house exterior painting renovation",
+          "scaffolding commercial multi-storey building facade construction access",
+          "scaffolding platform boards walkway safety rails workers",
+          "completed building renovation scaffolding removed clean result"
       ],
       "features": [
-        { "name": "Rapid Erect & Dismantle", "description": "We get scaffolding up fast and take it down the moment it's not needed. Your project isn't delayed and your site stays clear.", "imageQuery": "scaffolding being erected quickly professional construction site" },
-        { "name": "Full OHSA Compliance", "description": "Every scaffold we erect meets Occupational Health & Safety Act standards. We supply inspection certificates and handover documentation.", "imageQuery": "scaffolding safety inspection compliance certificate construction" },
-        { "name": "Flexible Hire Periods", "description": "Whether you need scaffolding for two days or two months, we offer flexible hire with no penalties for early return.", "imageQuery": "scaffolding residential building renovation access structure" }
+        { "name": "Rapid Erect & Dismantle", "description": "We get scaffolding up fast and take it down the moment it's not needed. Your project isn't delayed and your site stays clear.", "imageQuery": "workers erecting scaffolding quickly building facade professional" },
+        { "name": "Full OHSA Compliance", "description": "Every scaffold we erect meets Occupational Health & Safety Act standards. We supply inspection certificates and handover documentation.", "imageQuery": "scaffolding safety inspection worker checking clamps compliance" },
+        { "name": "Flexible Hire Periods", "description": "Whether you need scaffolding for two days or two months, we offer flexible hire with no penalties for early return.", "imageQuery": "scaffolding residential house painting renovation access platforms" }
       ]
   },
   "Demolition": {
@@ -8649,20 +8649,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, clear, professional",
-      "heroImageQuery": "cleared building site ready for construction flat ground",
-      "heroBgImageQuery": "demolition site rubble dark background",
-      "ogImageQuery": "cleared site after demolition clean flat ready",
-      "aboutImageQuery": "excavator demolishing structure operator working",
+      "heroImageQuery": "excavator demolishing small building controlled demolition rubble dust action",
+      "heroBgImageQuery": "concrete rubble debris demolition dark background texture",
+      "ogImageQuery": "cleared level site after demolition ready for construction clean",
+      "aboutImageQuery": "excavator arm breaking concrete wall active demolition dust debris operator",
       "galleryImageQueries": [
-          "interior stripped out gutted room bare walls",
-          "excavator breaking concrete structure demolition",
-          "skip bin loaded rubble bricks site clearing",
-          "cleared level site after demolition clean"
+          "interior completely stripped out gutted bare walls renovation ready",
+          "excavator breaking concrete structure demolition rubble dust",
+          "skip bin loaded rubble bricks debris site clearing truck",
+          "cleared flat level site after demolition clean ready build"
       ],
       "features": [
-        { "name": "Controlled, Surgical Demolition", "description": "We don't just knock things down. We remove exactly what needs to go and protect everything that doesn't \u2014 walls, floors, services, all of it.", "imageQuery": "controlled demolition interior selective strip-out professional" },
-        { "name": "Waste Sorted & Recycled", "description": "We separate rubble, timber, metal, and recyclables on-site. Responsible disposal is included in every quote.", "imageQuery": "construction waste sorting recycling bins demolition site" },
-        { "name": "Council Permits Handled", "description": "If your demolition needs council approval, we handle the application and paperwork so you don't have to navigate the red tape.", "imageQuery": "demolition permit documentation planning approval paperwork" }
+        { "name": "Controlled, Surgical Demolition", "description": "We don't just knock things down. We remove exactly what needs to go and protect everything that doesn't \u2014 walls, floors, services, all of it.", "imageQuery": "selective interior strip-out demolition worker sledgehammer controlled" },
+        { "name": "Waste Sorted & Recycled", "description": "We separate rubble, timber, metal, and recyclables on-site. Responsible disposal is included in every quote.", "imageQuery": "construction waste sorted recycling bins demolition site rubble" },
+        { "name": "Council Permits Handled", "description": "If your demolition needs council approval, we handle the application and paperwork so you don't have to navigate the red tape.", "imageQuery": "building demolition permit planning documents clipboard site" }
       ]
   },
   "Solar / Renewable Energy": {
@@ -8786,20 +8786,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, modern, sustainable",
-      "heroImageQuery": "solar panels on modern house roof blue sky sunny",
-      "heroBgImageQuery": "solar panel array dark sky background renewable energy",
-      "ogImageQuery": "residential rooftop solar panel array installed",
-      "aboutImageQuery": "solar installer mounting panel on roof working",
+      "heroImageQuery": "solar panels installed modern house roof blue sky sunny residential",
+      "heroBgImageQuery": "solar panel cells close up dark blue photovoltaic background",
+      "ogImageQuery": "residential rooftop solar panel array installed modern house",
+      "aboutImageQuery": "solar installer technician mounting panel on residential roof harness working",
       "galleryImageQueries": [
-          "solar panel rows installed residential rooftop",
-          "battery storage unit wall mounted garage",
-          "solar inverter display monitoring energy output",
-          "modern house exterior with solar panels roof"
+          "solar panel rows installed residential rooftop sunny blue sky",
+          "lithium battery storage unit wall mounted garage inverter",
+          "solar inverter display screen monitoring energy output wall",
+          "modern house exterior solar panels roof completed installation"
       ],
       "features": [
-        { "name": "Custom System Design", "description": "We don't sell one-size-fits-all kits. Every system is designed around your roof, your usage patterns, and your budget.", "imageQuery": "solar panel system design blueprint roof layout planning" },
-        { "name": "Grid-Tied & Off-Grid Options", "description": "Whether you want to feed back to the grid, go fully off-grid, or just survive load-shedding, we build the right solution.", "imageQuery": "solar panel battery storage home installation renewable energy" },
-        { "name": "Monitoring & Aftercare", "description": "Every installation includes app-based monitoring so you can see exactly what you're generating, using, and saving in real time.", "imageQuery": "solar energy monitoring app dashboard smartphone production data" }
+        { "name": "Custom System Design", "description": "We don't sell one-size-fits-all kits. Every system is designed around your roof, your usage patterns, and your budget.", "imageQuery": "solar panel system design roof layout blueprint planning residential" },
+        { "name": "Grid-Tied & Off-Grid Options", "description": "Whether you want to feed back to the grid, go fully off-grid, or just survive load-shedding, we build the right solution.", "imageQuery": "solar panels battery storage home inverter installation residential" },
+        { "name": "Monitoring & Aftercare", "description": "Every installation includes app-based monitoring so you can see exactly what you're generating, using, and saving in real time.", "imageQuery": "solar energy monitoring app smartphone dashboard production graphs" }
       ]
   },
   "HVAC / Air Conditioning": {
@@ -8923,20 +8923,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, modern, cool",
-      "heroImageQuery": "modern living room air conditioner mounted wall cool interior",
-      "heroBgImageQuery": "HVAC air conditioning unit dark background cooling",
-      "ogImageQuery": "split unit air conditioner installed living room wall",
-      "aboutImageQuery": "HVAC technician servicing air conditioner unit working",
+      "heroImageQuery": "HVAC technician installing wall mounted split air conditioner unit residential",
+      "heroBgImageQuery": "air conditioner condenser unit dark background HVAC cooling",
+      "ogImageQuery": "wall mounted split air conditioner unit installed modern living room",
+      "aboutImageQuery": "HVAC technician servicing split air conditioner unit open panel tools working",
       "galleryImageQueries": [
-          "wall split unit air conditioner bedroom installed",
-          "ducted air conditioning ceiling vent office",
-          "air conditioner outdoor condenser unit mounted wall",
-          "cassette air conditioning ceiling unit open plan office"
+          "wall mounted split air conditioner installed modern living room",
+          "ducted air conditioning ceiling vent grille office interior",
+          "outdoor air conditioner condenser unit mounted wall bracket",
+          "cassette ceiling air conditioning unit installed open plan office"
       ],
       "features": [
-        { "name": "Energy-Efficient Systems", "description": "We recommend and install inverter-driven units that use up to 40% less electricity than standard systems \u2014 saving you money from day one.", "imageQuery": "modern energy efficient air conditioning unit installed" },
-        { "name": "Maintenance Plans That Prevent Breakdowns", "description": "Our quarterly service plans keep your system running at peak efficiency and catch problems before they become expensive repairs.", "imageQuery": "HVAC technician servicing air conditioning unit maintenance" },
-        { "name": "Ducted & Ductless Solutions", "description": "From concealed ducted systems for new builds to split units for retrofits, we design cooling solutions for every building type.", "imageQuery": "ducted air conditioning ceiling vent modern office installation" }
+        { "name": "Energy-Efficient Systems", "description": "We recommend and install inverter-driven units that use up to 40% less electricity than standard systems \u2014 saving you money from day one.", "imageQuery": "modern inverter split air conditioner unit installed energy efficient" },
+        { "name": "Maintenance Plans That Prevent Breakdowns", "description": "Our quarterly service plans keep your system running at peak efficiency and catch problems before they become expensive repairs.", "imageQuery": "HVAC technician cleaning air conditioner filter service maintenance" },
+        { "name": "Ducted & Ductless Solutions", "description": "From concealed ducted systems for new builds to split units for retrofits, we design cooling solutions for every building type.", "imageQuery": "ducted air conditioning ceiling vent installed modern office building" }
       ]
   },
   "Borehole / Irrigation": {
@@ -9060,20 +9060,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "natural, clean, resourceful",
-      "heroImageQuery": "lush green garden irrigation sprinklers running water",
-      "heroBgImageQuery": "borehole water pump dark background natural earth",
-      "ogImageQuery": "garden lawn green healthy irrigation sprinkler system",
-      "aboutImageQuery": "borehole drilling rig crew operating site working",
+      "heroImageQuery": "borehole drilling rig operating residential garden yard water extraction",
+      "heroBgImageQuery": "water pump pipes underground dark earth background borehole",
+      "ogImageQuery": "lush green garden lawn sprinkler irrigation system running healthy",
+      "aboutImageQuery": "borehole drilling rig machine crew operating residential property working",
       "galleryImageQueries": [
-          "borehole drilling rig operating garden yard",
-          "submersible pump equipment pressure tank installed",
-          "drip irrigation lines installed garden beds plants",
-          "lush green lawn sprinkler system running sunset"
+          "borehole drilling rig operating residential garden property yard",
+          "submersible water pump pressure tank installed pump house",
+          "drip irrigation lines installed garden beds plants growing",
+          "green lawn pop-up sprinkler system running residential garden"
       ],
       "features": [
-        { "name": "Professional Yield Testing", "description": "We test every borehole for yield, water quality, and sustainability before you commit to a pump \u2014 so you know exactly what you're getting.", "imageQuery": "borehole drilling rig yield testing water extraction professional" },
-        { "name": "Smart Irrigation Controllers", "description": "Our systems use weather-based smart controllers that adjust watering automatically \u2014 saving water and keeping your garden in perfect shape.", "imageQuery": "smart irrigation controller sprinkler system garden automated" },
-        { "name": "Full Municipal Compliance", "description": "We handle all registration, water-use licensing, and backflow prevention so your borehole is fully legal and compliant.", "imageQuery": "borehole pump installation completed professional clean setup" }
+        { "name": "Professional Yield Testing", "description": "We test every borehole for yield, water quality, and sustainability before you commit to a pump \u2014 so you know exactly what you're getting.", "imageQuery": "borehole water yield testing pump equipment extraction professional" },
+        { "name": "Smart Irrigation Controllers", "description": "Our systems use weather-based smart controllers that adjust watering automatically \u2014 saving water and keeping your garden in perfect shape.", "imageQuery": "irrigation smart controller sprinkler system timer garden automated" },
+        { "name": "Full Municipal Compliance", "description": "We handle all registration, water-use licensing, and backflow prevention so your borehole is fully legal and compliant.", "imageQuery": "borehole pump installation completed clean professional piping setup" }
       ]
   },
   "Lawyer / Attorney": {
