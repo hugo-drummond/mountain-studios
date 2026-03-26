@@ -6076,14 +6076,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, dramatic, celebratory",
-    "heroImageQuery": "elegant event venue decorated tables centrepieces flowers lighting",
-    "ogImageQuery": "event venue hall decorated tables flowers evening lighting",
-    "aboutImageQuery": "event coordinator arranging table settings at venue",
+    "heroImageQuery": "beautifully decorated banquet hall round tables white linen centrepieces warm lighting",
+    "ogImageQuery": "elegant dinner event long table candles flowers evening gala",
+    "aboutImageQuery": "woman event planner with clipboard checking table settings at formal dinner",
     "galleryImageQueries": [
-      "event venue setup decorated tables chairs flowers",
-      "corporate event conference stage podium screen",
-      "outdoor event tent marquee fairy lights evening",
-      "event decor centrepiece flowers candles table"
+      "wedding reception round tables gold chairs floral centrepieces",
+      "corporate conference stage screen podium audience seated",
+      "outdoor marquee tent string lights evening garden party",
+      "close-up table setting wine glasses napkin folded candles"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:00 \u00b7 Weekend consultations available \u00b7 By appointment"
   },
@@ -6114,7 +6114,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Gala Dinner"
         ],
-        "serviceImageQuery": "packed dance floor party lights crowd dancing"
+        "serviceImageQuery": "corporate gala dinner event DJ dance floor people dancing party lights"
       },
       {
         "name": "Sound & Lighting",
@@ -6186,14 +6186,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, nightlife, electric",
-    "heroImageQuery": "DJ decks mixer turntables close-up neon lights",
-    "ogImageQuery": "DJ turntables mixer headphones club lights",
-    "aboutImageQuery": "DJ mixing tracks behind decks at event",
+    "heroImageQuery": "DJ hands on turntable mixer knobs coloured club lights close-up",
+    "ogImageQuery": "DJ wearing headphones mixing music turntables neon purple lights",
+    "aboutImageQuery": "DJ performing behind decks at wedding reception dance floor crowd",
     "galleryImageQueries": [
-      "DJ booth setup turntables mixer lights club",
-      "dance floor crowd party lights DJ event",
-      "MC microphone stage event speaker audience",
-      "sound equipment speakers amplifier DJ setup"
+      "DJ booth turntable mixer laptop coloured LED lights nightclub",
+      "packed dance floor people dancing party purple blue lights",
+      "man with microphone MC speaking on stage audience event",
+      "large speakers subwoofers lighting truss rig concert stage setup"
     ],
     "contactHours": "Available 7 days for events \u00b7 Consultations Mon\u2013Fri 10:00\u201318:00"
   },
@@ -6215,7 +6215,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Exclusive Use",
           "Coordination"
         ],
-        "serviceImageQuery": "wedding ceremony arch flowers chairs aisle outdoor garden"
+        "serviceImageQuery": "outdoor wedding ceremony setup white chairs floral arch garden estate"
       },
       {
         "name": "Catering & Bar",
@@ -6224,7 +6224,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Catering",
           "Open Bar"
         ],
-        "serviceImageQuery": "wedding reception dinner tables set candles flowers elegant"
+        "serviceImageQuery": "wedding reception catering food buffet display champagne glasses elegant"
       },
       {
         "name": "Ceremony & Chapel",
@@ -6233,7 +6233,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Garden Ceremony",
           "Chapel"
         ],
-        "serviceImageQuery": "wedding chapel interior aisle seats natural light"
+        "serviceImageQuery": "wedding chapel interior white wooden pews aisle natural light stained glass"
       },
         {
           "name": "Décor & Floral Styling",
@@ -6296,14 +6296,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "romantic, golden, Cape",
-    "heroImageQuery": "wedding ceremony arch flowers aisle chairs garden venue",
-    "ogImageQuery": "wedding ceremony aisle flowers arch venue outdoor",
-    "aboutImageQuery": "wedding coordinator setting up table flowers at venue",
+    "heroImageQuery": "outdoor wedding ceremony floral arch white chairs garden estate mountain backdrop",
+    "ogImageQuery": "bride and groom walking down aisle outdoor garden wedding ceremony",
+    "aboutImageQuery": "wedding coordinator arranging white roses floral centrepiece at reception table",
     "galleryImageQueries": [
-      "wedding ceremony outdoor arch flowers aisle chairs",
-      "wedding reception hall decorated tables centrepieces",
-      "wedding cake tiered white flowers elegant display",
-      "wedding dance floor couple first dance lights"
+      "bride walking down aisle outdoor ceremony garden arch flowers",
+      "wedding reception hall long tables candles white linen chandelier",
+      "three tier white wedding cake flowers on table reception",
+      "bride groom first dance fairy lights wedding reception"
     ],
     "contactHours": "Mon\u2013Sun: 09:00\u201317:00 \u00b7 Venue viewings by appointment \u00b7 Events 7 days"
   },
@@ -6325,7 +6325,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Mirror Booth",
           "Open Air"
         ],
-        "serviceImageQuery": "mirror photo booth glowing ring light event venue"
+        "serviceImageQuery": "woman posing in front of LED mirror photo booth at event party"
       },
       {
         "name": "360\u00b0 Video Booth",
@@ -6334,7 +6334,7 @@ export const presetContent: Record<string, PresetContent> = {
           "360 Booth",
           "Slow Motion"
         ],
-        "serviceImageQuery": "360 video booth spinning platform event party"
+        "serviceImageQuery": "person standing on 360 degree video booth spinning platform at event"
       },
       {
         "name": "Custom Branding & Props",
@@ -6343,7 +6343,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Branded",
           "Prop Box"
         ],
-        "serviceImageQuery": "photo strip prints with custom branded overlay"
+        "serviceImageQuery": "photo booth print strips with custom overlay branding logo event"
       },
         {
           "name": "GIF & Boomerang Station",
@@ -6352,7 +6352,7 @@ export const presetContent: Record<string, PresetContent> = {
             "GIF Station",
             "Social Sharing"
           ],
-          "serviceImageQuery": "animated GIF booth screen social sharing station event"
+          "serviceImageQuery": "friends taking GIF boomerang photo at party booth touchscreen"
         },
           {
               "name": "Green Screen & Virtual Backgrounds",
@@ -6361,7 +6361,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Green Screen",
                   "Virtual"
               ],
-              "serviceImageQuery": "photo booth green screen party event fun background"
+              "serviceImageQuery": "people posing in front of green screen photo booth fun props"
           },
           {
               "name": "Social Media Sharing Station",
@@ -6370,7 +6370,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Social Media",
                   "Digital Sharing"
               ],
-              "serviceImageQuery": "photo booth social media sharing screen digital event"
+              "serviceImageQuery": "woman scanning QR code on photo booth screen sharing photos phone"
           }
     ],
     "galleryHeading": "In the Booth",
@@ -6406,14 +6406,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fun, vibrant, celebratory",
-    "heroImageQuery": "photo booth setup backdrop neon sign lights event",
-    "ogImageQuery": "photo booth backdrop props party guests fun",
-    "aboutImageQuery": "photo booth attendant setting up backdrop props event",
+    "heroImageQuery": "group of friends posing with funny props in photo booth at party",
+    "ogImageQuery": "people laughing holding props mustache lips signs photo booth party",
+    "aboutImageQuery": "photo strip printout four frames friends posing silly faces party",
     "galleryImageQueries": [
-      "photo booth backdrop lights setup event venue",
-      "photo booth props signs guests posing fun",
-      "photo strip prints collected party event",
-      "inflatable photo booth setup event outdoor tent"
+      "mirror photo booth glowing LED frame woman posing event",
+      "group posing with oversized sunglasses props photo booth wedding",
+      "printed photo strips scattered on table party event",
+      "360 spinning video booth platform woman posing slow motion event"
     ],
     "contactHours": "Available 7 days for events \u00b7 Bookings & admin Mon\u2013Fri 09:00\u201317:00"
   },
@@ -6444,7 +6444,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Party Packs",
           "Tableware"
         ],
-        "serviceImageQuery": "party table setting themed decorations plates cups"
+        "serviceImageQuery": "themed birthday party table plates cups napkins banner colourful setup"
       },
       {
         "name": "Backdrop & D\u00e9cor Hire",
@@ -6462,7 +6462,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Sweet Table",
             "Grazing Board"
           ],
-          "serviceImageQuery": "dessert table sweet treats styled display party event"
+          "serviceImageQuery": "dessert table cupcakes macarons candy jars styled party display"
         },
           {
               "name": "Balloon Installations",
@@ -6471,7 +6471,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Balloons",
                   "Installations"
               ],
-              "serviceImageQuery": "balloon arch installation party decoration colourful event"
+              "serviceImageQuery": "large organic balloon garland arch pink white gold event entrance"
           },
           {
               "name": "Kids' Party Packages",
@@ -6480,7 +6480,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Kids Parties",
                   "Themed"
               ],
-              "serviceImageQuery": "kids birthday party supplies themed decoration table"
+              "serviceImageQuery": "children birthday party table superhero princess themed plates cups balloons"
           }
     ],
     "galleryHeading": "Party Moments",
@@ -6516,14 +6516,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "colourful, festive, joyful",
-    "heroImageQuery": "balloon arch garland colourful party entrance decoration",
-    "ogImageQuery": "party supplies balloons streamers decorations colourful",
-    "aboutImageQuery": "balloon artist creating arch installation for party",
+    "heroImageQuery": "colourful balloon arch garland pastel pink gold entrance party decoration",
+    "ogImageQuery": "birthday party table setup balloons streamers confetti plates cups colourful",
+    "aboutImageQuery": "woman arranging balloon garland installation for birthday party decoration",
     "galleryImageQueries": [
-      "party shop interior balloons banners shelves display",
-      "balloon arch decoration entrance event colourful",
-      "party table setup plates cups napkins themed",
-      "birthday decorations bunting cake topper balloons"
+      "party supply shop interior shelves balloons banners plates cups",
+      "pastel balloon arch organic garland entrance baby shower decoration",
+      "kids birthday party table themed plates cups napkins banner",
+      "birthday cake table balloons bunting confetti celebration setup"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201314:00 \u00b7 Same-day collection available"
   },
@@ -6554,7 +6554,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate Acts",
           "Emcee"
         ],
-        "serviceImageQuery": "comedian MC performing stage microphone corporate event"
+        "serviceImageQuery": "comedian speaker performing on stage microphone corporate dinner audience laughing"
       },
       {
         "name": "Children's Entertainment",
@@ -6626,14 +6626,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "vibrant, live, celebratory",
-    "heroImageQuery": "live band performing on stage instruments lights concert",
-    "ogImageQuery": "performer stage spotlight microphone live show",
-    "aboutImageQuery": "musician performing guitar on stage event lighting",
+    "heroImageQuery": "live band singer guitarist performing on stage spotlights concert audience",
+    "ogImageQuery": "performer singing into microphone on stage dramatic spotlight",
+    "aboutImageQuery": "jazz band saxophone trumpet bass performing at corporate dinner event",
     "galleryImageQueries": [
-      "stage performance lights performer audience live",
-      "magician performing trick audience amazed show",
-      "live band performing instruments stage concert",
-      "children entertainer party balloon animal making"
+      "singer performing on stage coloured lights audience watching concert",
+      "magician performing card trick to amazed audience close-up",
+      "live acoustic band guitarist singer performing wedding reception",
+      "children party entertainer clown making balloon animals kids laughing"
     ],
     "contactHours": "Available 7 days for events \u00b7 Bookings Mon\u2013Fri 09:00\u201317:00"
   },
@@ -6655,7 +6655,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Boardroom",
           "AV Equipped"
         ],
-        "serviceImageQuery": "boardroom meeting room screen projector chairs table"
+        "serviceImageQuery": "modern boardroom meeting room long table chairs projector screen glass walls"
       },
       {
         "name": "Event Hall & Function Room",
@@ -6664,7 +6664,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Event Hall",
           "Flexible Layout"
         ],
-        "serviceImageQuery": "event hall large open space decorated for dinner"
+        "serviceImageQuery": "large function hall interior round tables set for dinner event chandeliers"
       },
       {
         "name": "Outdoor Terrace & Garden",
@@ -6682,7 +6682,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Workshop",
             "Training Room"
           ],
-          "serviceImageQuery": "training room workshop seminar space chairs whiteboard"
+          "serviceImageQuery": "seminar training room rows of chairs desks whiteboard projector"
         },
           {
               "name": "Catering & Bar Packages",
@@ -6691,7 +6691,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Catering",
                   "Bar"
               ],
-              "serviceImageQuery": "catering buffet food venue event function hall"
+              "serviceImageQuery": "catering buffet table food platters chafing dishes event function hall"
           },
           {
               "name": "Audio-Visual & Tech Setup",
@@ -6700,7 +6700,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "AV Equipment",
                   "Projector"
               ],
-              "serviceImageQuery": "conference room projector audio visual setup meeting"
+              "serviceImageQuery": "conference room projector screen microphone podium AV setup presentation"
           }
     ],
     "galleryHeading": "Our Spaces",
@@ -6736,14 +6736,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "versatile, elegant, professional",
-    "heroImageQuery": "event venue hall interior set tables chairs elegant evening",
-    "ogImageQuery": "venue hire hall interior chairs tables setup",
-    "aboutImageQuery": "venue manager preparing event space tables setup",
+    "heroImageQuery": "large elegant function hall interior set round tables white linen chandeliers",
+    "ogImageQuery": "empty conference venue interior rows of chairs stage projector screen",
+    "aboutImageQuery": "event hall interior decorated for gala dinner tables chairs flowers lighting",
     "galleryImageQueries": [
-      "venue hall interior empty chairs tables setup",
-      "conference room projector screen chairs meeting",
-      "outdoor venue garden marquee tent evening lights",
-      "venue cocktail area lounge seating evening"
+      "modern boardroom interior long table leather chairs screen window",
+      "conference room rows chairs projector screen podium corporate meeting",
+      "outdoor garden venue terrace fairy string lights evening cocktails",
+      "cocktail event venue lounge sofas high tables bar evening"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201317:00 \u00b7 Events & functions 7 days"
   },
@@ -10547,15 +10547,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, bright, spotless",
-      "heroImageQuery": "spotless bright living room clean white interior home",
-      "heroBgImageQuery": "cleaning supplies spray bottles dark background",
-      "ogImageQuery": "immaculate clean home interior bright airy rooms",
-      "aboutImageQuery": "cleaner wiping kitchen counter spray cloth working",
+      "heroImageQuery": "spotless bright living room interior freshly cleaned white sofa cushions sunlight",
+      "heroBgImageQuery": "professional cleaning supplies spray bottles gloves microfibre cloths dark background",
+      "ogImageQuery": "immaculate clean modern home interior bright airy living room freshly cleaned",
+      "aboutImageQuery": "professional cleaner wiping kitchen countertop with spray bottle and microfibre cloth",
       "galleryImageQueries": [
-          "clean tidy bedroom freshly made bed white sheets",
-          "sparkling clean office workspace desks organized",
-          "deep cleaned bathroom tiles grout shining",
-          "polished hardwood floor living room gleaming"
+          "freshly made bed white crisp sheets plumped pillows clean tidy bedroom",
+          "sparkling clean office workspace desks monitors organized tidy",
+          "deep cleaned bathroom white tiles grout sparkling shower glass",
+          "polished hardwood floor living room gleaming clean bright"
       ],
       "features": [
         { "name": "Same Team Every Visit", "description": "You get the same vetted, trained cleaners every time. They learn your home, your preferences, and your standards.", "imageQuery": "professional cleaning team arriving at home trusted reliable" },
@@ -10666,15 +10666,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "lush, natural, crafted",
-      "heroImageQuery": "beautiful landscaped garden outdoor seating flowers lush",
-      "heroBgImageQuery": "garden landscaping dark background lush green",
-      "ogImageQuery": "stunning garden design pathways plants flowers",
-      "aboutImageQuery": "gardener planting flowers bed landscaping working",
+      "heroImageQuery": "beautiful landscaped residential garden with outdoor seating colourful flower beds pathways lush green",
+      "heroBgImageQuery": "lush green garden foliage plants dark background landscaping",
+      "ogImageQuery": "stunning landscaped garden design stone pathways colourful flower beds shrubs",
+      "aboutImageQuery": "professional gardener planting flowers in garden bed kneeling soil trowel landscaping",
       "galleryImageQueries": [
-          "landscaped garden design curved pathway flower beds",
-          "timber deck outdoor dining area garden view",
-          "indigenous fynbos garden rockery succulents",
-          "water feature pond garden stones plants"
+          "landscaped garden curved stone pathway bordered by colourful flower beds shrubs",
+          "timber deck outdoor dining table chairs overlooking landscaped garden",
+          "indigenous water-wise garden rockery succulents gravel mulch drought resistant",
+          "garden water feature stone pond with plants ferns surrounding stones"
       ],
       "features": [
         { "name": "Water-Wise Design Expertise", "description": "We specialise in indigenous and drought-resistant planting that thrives in the Cape climate without wasting water.", "imageQuery": "water-wise indigenous garden design drought resistant plants" },
@@ -10785,15 +10785,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, professional, trustworthy",
-      "heroImageQuery": "clean pest free home interior bright kitchen",
-      "heroBgImageQuery": "pest control equipment sprayer dark background",
-      "ogImageQuery": "clean healthy home interior pest free living",
-      "aboutImageQuery": "pest control technician spraying treatment working",
+      "heroImageQuery": "pest control technician in uniform spraying treatment along baseboard in clean kitchen",
+      "heroBgImageQuery": "pest control spray equipment pump nozzle protective gear dark background",
+      "ogImageQuery": "pest control technician treating residential home interior spray nozzle baseboard",
+      "aboutImageQuery": "pest control technician in uniform and gloves spraying treatment along wall skirting residential",
       "galleryImageQueries": [
-          "pest control spray treatment along baseboard wall",
-          "rodent bait station placed garden perimeter",
-          "termite damage inspection wooden beam close up",
-          "fumigation tent over house structure treatment"
+          "pest control technician spraying insecticide treatment along baseboard wall interior residential",
+          "rodent tamper-resistant bait station placed along garden perimeter wall fence",
+          "termite damage inspection close up damaged wooden beam structural timber",
+          "pest control fumigation tent covering residential house structure treatment outdoor"
       ],
       "features": [
         { "name": "Child & Pet-Safe Treatments", "description": "All our products are approved for use in homes with children and animals. Effective on pests, safe for your family.", "imageQuery": "family home safe pest control treatment child pet friendly" },
@@ -10904,15 +10904,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, secure, authoritative",
-      "heroImageQuery": "secure residential estate entrance gate camera bollards",
-      "heroBgImageQuery": "security dark background shield protection",
-      "ogImageQuery": "CCTV cameras installed building entrance security",
-      "aboutImageQuery": "security officer patrolling residential area night",
+      "heroImageQuery": "CCTV security camera installed on residential house wall monitoring property entrance",
+      "heroBgImageQuery": "security control room CCTV monitors dark background surveillance screens",
+      "ogImageQuery": "security camera alarm system installed residential building entrance",
+      "aboutImageQuery": "uniformed security guard patrolling residential estate at night with flashlight",
       "galleryImageQueries": [
-          "security patrol vehicle driving residential street night",
-          "CCTV camera dome mounted building exterior",
-          "boom gate access control estate entrance point",
-          "security control room monitors screens surveillance"
+          "armed response security vehicle patrolling residential suburb night lights",
+          "CCTV dome camera mounted on building exterior wall close up",
+          "estate boom gate access control guardhouse entrance barrier",
+          "security monitoring control room operator watching CCTV screens"
       ],
       "features": [
         { "name": "Armed Response Under 4 Minutes", "description": "Our average response time is under 4 minutes in our coverage area. When seconds count, we're already on our way.", "imageQuery": "armed response vehicle security patrol neighbourhood fast" },
@@ -11023,15 +11023,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, reliable, careful",
-      "heroImageQuery": "moving truck parked outside house loading furniture",
-      "heroBgImageQuery": "removals boxes truck dark background",
-      "ogImageQuery": "removal truck loaded furniture boxes residential street",
-      "aboutImageQuery": "movers carrying sofa down stairs teamwork careful",
+      "heroImageQuery": "removal truck parked outside residential house movers loading furniture on ramp",
+      "heroBgImageQuery": "cardboard moving boxes stacked dark background removals packing",
+      "ogImageQuery": "professional movers carrying furniture into removal truck residential street",
+      "aboutImageQuery": "two movers carefully carrying sofa wrapped in blankets down stairs residential home",
       "galleryImageQueries": [
-          "removal truck loaded furniture blankets residential",
-          "office relocation desks stacked boxes corridor",
-          "bubble wrap packing fragile items boxes",
-          "storage facility unit open organized boxes"
+          "removal truck open back loaded with furniture blankets straps residential driveway",
+          "office furniture desks chairs stacked with moving boxes corridor relocation",
+          "professional packer bubble wrapping fragile items into labelled cardboard boxes",
+          "storage unit open shelves organized labelled boxes furniture stored"
       ],
       "features": [
         { "name": "Nothing Broken, Guaranteed", "description": "Every item is blanket-wrapped and secured. If anything is damaged during the move, we cover the replacement cost \u2014 no arguments.", "imageQuery": "movers carefully wrapping furniture blanket protection packing" },
@@ -11142,15 +11142,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, clean, aquatic",
-      "heroImageQuery": "sparkling blue swimming pool backyard garden sunny",
-      "heroBgImageQuery": "swimming pool dark background blue water",
-      "ogImageQuery": "crystal clear pool turquoise water residential garden",
-      "aboutImageQuery": "pool technician testing water chemistry skimmer net",
+      "heroImageQuery": "sparkling crystal clear blue swimming pool residential backyard garden sunny day",
+      "heroBgImageQuery": "swimming pool underwater blue water surface ripples dark background",
+      "ogImageQuery": "crystal clear turquoise swimming pool residential garden patio loungers",
+      "aboutImageQuery": "pool technician testing water chemistry with test kit skimmer net poolside",
       "galleryImageQueries": [
-          "clear blue pool water sunlight ripples residential",
-          "pool pump room equipment filter plumbing",
-          "renovated pool new tiles mosaic blue surface",
-          "infinity pool edge garden view sunset residential"
+          "crystal clear blue pool water sunlight ripples residential backyard",
+          "pool pump room equipment filter pipes plumbing motor installed",
+          "renovated swimming pool new mosaic tiles blue surface water feature",
+          "infinity edge pool overlooking garden view residential luxury"
       ],
       "features": [
         { "name": "Proactive Equipment Monitoring", "description": "We don't wait for things to break. Every visit includes a full equipment check so we catch problems before they cost you.", "imageQuery": "pool technician checking pump equipment professional maintenance" },
@@ -11261,15 +11261,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "clean, fresh, professional",
-      "heroImageQuery": "row of pressed suits hanging rack dry cleaner shop",
-      "heroBgImageQuery": "clothes hangers garments dark background clean",
-      "ogImageQuery": "freshly pressed shirts suits hanging ready collection",
-      "aboutImageQuery": "dry cleaner staff pressing garment steam iron working",
+      "heroImageQuery": "row of pressed suits and shirts hanging on rack in dry cleaner shop plastic covers",
+      "heroBgImageQuery": "clothes hangers garments suits on rail dark background dry cleaning",
+      "ogImageQuery": "freshly pressed white shirts suits hanging on rack ready for collection dry cleaner",
+      "aboutImageQuery": "dry cleaner staff pressing shirt with professional steam iron garment care working",
       "galleryImageQueries": [
-          "suits jackets wrapped plastic dry cleaned rack",
-          "folded pressed white shirts stacked neat",
-          "seamstress sewing machine fabric alteration close up",
-          "laundry delivery van garments bags hanging"
+          "suits jackets wrapped in plastic covers on rack dry cleaned pressed ready",
+          "folded pressed white shirts neatly stacked laundry service crisp clean",
+          "seamstress at sewing machine doing garment alteration fabric close up stitching",
+          "laundry delivery service garment bags hanging clean clothes van"
       ],
       "features": [
         { "name": "Free Collection & Delivery", "description": "We pick up your laundry and deliver it back to your door, cleaned and pressed. You don't need to leave the house.", "imageQuery": "laundry delivery service driver handing over clean clothes" },
@@ -11380,15 +11380,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "practical, reliable, professional",
-      "heroImageQuery": "modern kitchen appliances washing machine fridge interior",
-      "heroBgImageQuery": "appliance repair tools multimeter dark background",
-      "ogImageQuery": "kitchen appliances working properly washing machine fridge",
-      "aboutImageQuery": "technician repairing washing machine tools working",
+      "heroImageQuery": "appliance repair technician fixing washing machine in residential kitchen tools parts",
+      "heroBgImageQuery": "open washing machine drum repair parts tools dark background",
+      "ogImageQuery": "technician repairing kitchen appliance fridge washing machine home",
+      "aboutImageQuery": "appliance repair technician diagnosing fridge compressor with multimeter in kitchen",
       "galleryImageQueries": [
-          "washing machine drum repair parts close up",
-          "refrigerator compressor repair back panel open",
-          "dishwasher interior spray arm pump repair",
-          "oven element thermostat repair door open"
+          "washing machine repair technician replacing drum bearing parts residential laundry",
+          "refrigerator compressor repair technician back panel open residential kitchen",
+          "dishwasher repair open door spray arm pump tools technician",
+          "oven element replacement technician tools open door kitchen repair"
       ],
       "features": [
         { "name": "Most Repairs Done in One Visit", "description": "Our vans carry the most common parts for all major brands. Most repairs are completed on the spot \u2014 no waiting for parts to arrive.", "imageQuery": "appliance repair technician fixing washing machine parts van" },
@@ -11499,15 +11499,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "practical, reliable, friendly",
-      "heroImageQuery": "well maintained home interior repairs completed tidy",
-      "heroBgImageQuery": "tool belt tools dark background workshop",
-      "ogImageQuery": "neat home interior shelves mounted walls painted",
-      "aboutImageQuery": "handyman drilling wall shelf mounting working",
+      "heroImageQuery": "handyman using power drill mounting shelf bracket on white wall residential home",
+      "heroBgImageQuery": "handyman tool belt hammer drill screwdriver dark workshop background",
+      "ogImageQuery": "handyman installing floating shelves screwdriver level measuring tape residential",
+      "aboutImageQuery": "handyman kneeling repairing kitchen cabinet hinge screwdriver toolbox residential",
       "galleryImageQueries": [
-          "new tap installed kitchen sink dripping fixed",
-          "floating shelves mounted wall living room books",
-          "freshly patched painted wall smooth finish",
-          "flat pack furniture assembled desk bedroom neat"
+          "handyman replacing kitchen tap faucet wrench under sink plumbing repair",
+          "wall mounted floating shelves level drill brackets installed living room",
+          "handyman patching drywall crack filler spackle knife smooth wall repair",
+          "flat pack furniture assembled by handyman Allen key instructions bedroom"
       ],
       "features": [
         { "name": "One Call Covers Everything", "description": "Leaky tap, broken shelf, squeaky door \u2014 bring us your whole list and we'll knock it out in one visit. No job too small.", "imageQuery": "handyman fixing shelf tools belt residential home repair" },
@@ -11618,15 +11618,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, crafted, interior",
-      "heroImageQuery": "reupholstered sofa velvet fabric elegant living room",
-      "heroBgImageQuery": "fabric swatches dark background textile upholstery",
-      "ogImageQuery": "reupholstered armchair new fabric interior styled",
-      "aboutImageQuery": "upholsterer sewing fabric workroom hands close up",
+      "heroImageQuery": "reupholstered velvet sofa in elegant living room styled cushions interior design",
+      "heroBgImageQuery": "fabric swatches samples upholstery textile rolls dark background",
+      "ogImageQuery": "reupholstered wingback armchair new fabric interior styled living room",
+      "aboutImageQuery": "upholsterer hand-sewing fabric in workshop workbench tools staple gun close up",
       "galleryImageQueries": [
-          "reupholstered sofa before after new fabric",
-          "custom curtains drapes hanging bay window interior",
-          "roman blinds fitted bedroom window styled",
-          "upholstery workroom fabric bolts sewing machine"
+          "reupholstered sofa before and after new fabric transformation living room",
+          "custom made curtains drapes hanging in bay window living room interior elegant",
+          "roman blinds fitted bedroom window soft light styled interior",
+          "upholstery workshop interior fabric bolts rolls industrial sewing machine workbench"
       ],
       "features": [
         { "name": "Fabric Library With 500+ Options", "description": "We bring the showroom to you. Choose from hundreds of fabrics, textures, and patterns in the comfort of your own home.", "imageQuery": "fabric samples swatches upholstery selection variety colours" },
@@ -11737,15 +11737,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, clean, efficient",
-      "heroImageQuery": "skip bin hire delivery residential driveway loaded",
-      "heroBgImageQuery": "waste skip bin dark background industrial",
-      "ogImageQuery": "skip hire bin residential waste removal street",
-      "aboutImageQuery": "waste removal crew loading skip bin truck site",
+      "heroImageQuery": "yellow skip bin on residential driveway loaded with rubble waste debris",
+      "heroBgImageQuery": "industrial waste skip bin container dark background",
+      "ogImageQuery": "skip bin hire on residential driveway loaded waste removal street",
+      "aboutImageQuery": "waste removal crew operating grab truck loading skip bin onto flatbed truck site",
       "galleryImageQueries": [
-          "skip bin loaded residential driveway waste",
-          "builders rubble removal tipper truck site clearance",
-          "garden waste green refuse truck loaded branches",
-          "waste sorting recycling facility bins separated"
+          "loaded skip bin on residential driveway filled with rubble building waste debris",
+          "tipper truck dumping builders rubble at construction site clearance demolition waste",
+          "garden waste green refuse branches loaded onto truck green waste removal",
+          "waste sorting recycling facility workers separating materials into bins responsible disposal"
       ],
       "features": [
         { "name": "Same-Day Drop & Collect", "description": "Need a skip today? We deliver same-day across Cape Town and collect when you're done \u2014 even if that's the same afternoon.", "imageQuery": "skip bin being delivered truck crane residential driveway" },
@@ -11874,15 +11874,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, international, engaged",
-      "heroImageQuery": "language school classroom interior desks whiteboard bright modern",
-      "heroBgImageQuery": "language classroom dark background desks whiteboard modern",
-      "ogImageQuery": "language school classroom desks whiteboard bright modern",
-      "aboutImageQuery": "language teacher explaining lesson student whiteboard interaction",
+      "heroImageQuery": "bright modern language school classroom with desks chairs whiteboard students learning",
+      "heroBgImageQuery": "language classroom desks textbooks whiteboard dark background modern education",
+      "ogImageQuery": "language school classroom students at desks whiteboard vocabulary words bright modern",
+      "aboutImageQuery": "language teacher at whiteboard explaining grammar to adult students engaged classroom interaction",
       "galleryImageQueries": [
-          "language classroom students desks whiteboard engaged learning",
-          "business English group lesson adults conversation practice",
-          "IELTS Cambridge exam study materials practice papers desk",
-          "language students paired conversation practice speaking activity"
+          "diverse adult students in language classroom desks whiteboard engaged learning speaking",
+          "business English group lesson adult professionals practising conversation pair work",
+          "IELTS exam preparation study materials practice test papers textbooks on desk",
+          "language students in pairs practising conversation speaking activity face to face classroom"
       ]
   },
   "After-school / Enrichment": {
@@ -12006,15 +12006,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, engaged, bright",
-      "heroImageQuery": "bright classroom interior desks bookshelves children learning warm",
-      "heroBgImageQuery": "classroom desks books dark warm background education",
-      "ogImageQuery": "classroom children learning desks books bright warm",
-      "aboutImageQuery": "teacher helping child with reading book desk warm classroom",
+      "heroImageQuery": "bright colourful classroom interior with desks bookshelves children doing homework after school",
+      "heroBgImageQuery": "school classroom desks books stationery dark warm background education",
+      "ogImageQuery": "children at desks doing homework bright classroom books pencils after school programme",
+      "aboutImageQuery": "teacher sitting beside child helping with reading book at desk warm classroom after school",
       "galleryImageQueries": [
-          "children homework time pencils books desks supervision classroom",
-          "science experiment children classroom hands-on learning engaged",
-          "children outdoor sports activity running playing field grass",
-          "children reading books library corner colourful cushions"
+          "children seated at desks doing homework pencils books supervised after school classroom",
+          "children doing hands-on science experiment in classroom excited engaged learning",
+          "children running playing outdoor sports on grass field after school activity",
+          "children reading books in cosy library corner colourful beanbag cushions"
       ]
   },
   "Art / Craft Classes": {
@@ -12138,15 +12138,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, creative, joyful",
-      "heroImageQuery": "art studio interior easels canvases paints bright natural light",
-      "heroBgImageQuery": "art studio dark background canvases paints brushes creative",
-      "ogImageQuery": "art studio interior easels canvases paints ceramics bright",
-      "aboutImageQuery": "art instructor guiding student brush technique canvas easel",
+      "heroImageQuery": "bright art studio interior with easels canvases paint tubes brushes natural light windows",
+      "heroBgImageQuery": "artist paint palette brushes canvases dark studio background creative supplies",
+      "ogImageQuery": "art class studio interior easels canvases students painting ceramics bright workshop",
+      "aboutImageQuery": "art instructor demonstrating brush technique to adult student at easel canvas painting class",
       "galleryImageQueries": [
-          "watercolour painting class adult wet on wet technique studio",
-          "ceramics kiln glazed pottery finished pieces display shelf",
-          "children finger painting messy fun colourful art class table",
-          "art studio wall completed paintings canvases exhibition display"
+          "adult watercolour painting class students at easels wet on wet technique art studio",
+          "finished ceramic pottery pieces glazed on display shelf kiln fired art studio",
+          "children painting at easels colourful art class brushes aprons messy creative fun",
+          "art studio gallery wall completed paintings canvases framed exhibition display"
       ]
   },
   "Car Dealership": {
@@ -12197,7 +12197,7 @@ export const presetContent: Record<string, PresetContent> = {
               "Warranty",
               "Service Plan"
             ],
-            "serviceImageQuery": "car warranty certificate document keys desk"
+            "serviceImageQuery": "car keys on signed warranty document contract desk dealership"
           },
           {
               "name": "Extended Warranties",
@@ -12206,7 +12206,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Warranty",
                   "Protection"
               ],
-              "serviceImageQuery": "car dealership handshake customer warranty document signing"
+              "serviceImageQuery": "customer signing car purchase warranty paperwork at dealership desk"
           },
           {
               "name": "Fleet & Corporate Sales",
@@ -12269,20 +12269,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "premium, trustworthy, clean",
-      "heroImageQuery": "luxury car showroom dark interior modern dealership",
-      "heroBgImageQuery": "car showroom dark background luxury vehicles row",
-      "ogImageQuery": "car dealership showroom row of vehicles",
-      "aboutImageQuery": "car salesperson shaking hands with customer at dealership",
+      "heroImageQuery": "car dealership showroom interior luxury vehicles lined up polished floor lights",
+      "heroBgImageQuery": "dark car showroom interior moody lighting luxury sedan on display",
+      "ogImageQuery": "row of cars parked in dealership lot for sale clean",
+      "aboutImageQuery": "car salesman handing keys to happy customer at dealership handshake",
       "galleryImageQueries": [
-          "black luxury SUV parked front view",
-          "silver hatchback car side view clean",
-          "white pickup truck front angle outdoor",
-          "grey BMW sedan parked side view"
+          "black SUV parked in dealership lot front angle clean",
+          "silver sedan car parked side view clean background",
+          "white double cab pickup truck front angle outdoor",
+          "blue BMW sedan parked three quarter view dealership"
       ],
       "features": [
-        { "name": "Every Vehicle Inspected & Warranted", "description": "Each car on our floor passes a multi-point mechanical inspection. Nothing goes on sale until we'd be happy driving it ourselves.", "imageQuery": "car dealership mechanic inspecting vehicle quality check" },
-        { "name": "Finance Pre-Approval On-Site", "description": "We work with multiple finance houses to get you the best rate. Walk in, get approved, and drive out \u2014 often on the same day.", "imageQuery": "car dealership finance office customer signing documents" },
-        { "name": "Trade-In Valuations in 15 Minutes", "description": "Thinking of upgrading? We'll value your current vehicle on the spot and deduct it from your new purchase. Quick, fair, transparent.", "imageQuery": "car trade-in valuation dealership customer vehicle assessment" }
+        { "name": "Every Vehicle Inspected & Warranted", "description": "Each car on our floor passes a multi-point mechanical inspection. Nothing goes on sale until we'd be happy driving it ourselves.", "imageQuery": "mechanic inspecting car underneath on lift pre-purchase check" },
+        { "name": "Finance Pre-Approval On-Site", "description": "We work with multiple finance houses to get you the best rate. Walk in, get approved, and drive out \u2014 often on the same day.", "imageQuery": "customer signing vehicle finance paperwork at car dealership desk" },
+        { "name": "Trade-In Valuations in 15 Minutes", "description": "Thinking of upgrading? We'll value your current vehicle on the spot and deduct it from your new purchase. Quick, fair, transparent.", "imageQuery": "car salesman appraising trade-in vehicle on dealership lot clipboard" }
       ]
   },
   "App Developer": {
@@ -12621,15 +12621,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "warm, creative, inspiring",
-      "heroImageQuery": "music school studio interior piano guitar instruments warm",
-      "heroBgImageQuery": "piano keys dark moody background music instruments",
-      "ogImageQuery": "music school studio instruments piano guitar warm bright",
-      "aboutImageQuery": "music teacher guiding student hands piano keys lesson",
+      "heroImageQuery": "music school studio room with upright piano guitar stands sheet music warm lighting",
+      "heroBgImageQuery": "grand piano keys close up dark moody studio lighting music",
+      "ogImageQuery": "music lesson room piano guitar instruments sheet music stands warm bright studio",
+      "aboutImageQuery": "music teacher sitting beside student guiding hands on piano keys during lesson",
       "galleryImageQueries": [
-          "piano practice upright keys sheet music student hands",
-          "guitar lesson student chord finger placement fretboard",
-          "violin lesson bow technique student close-up strings",
-          "music school recital concert students performing stage"
+          "child practising upright piano hands on keys sheet music stand lesson room",
+          "guitar teacher showing student chord finger placement on acoustic guitar fretboard lesson",
+          "young violin student bowing technique close up strings lesson room",
+          "music school recital children performing on stage audience parents watching concert"
       ],
       "processSteps": [
           {
@@ -12749,15 +12749,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "focused, warm, encouraging",
-      "heroImageQuery": "study desk books stationery bright room academic learning",
-      "heroBgImageQuery": "books study desk dark background academic learning",
-      "ogImageQuery": "tutoring desk books study materials academic bright",
-      "aboutImageQuery": "tutor explaining concept whiteboard student one-on-one session",
+      "heroImageQuery": "tutor and student at desk with open textbooks stationery bright study room academic",
+      "heroBgImageQuery": "stack of textbooks open notebook pencils study desk dark background academic",
+      "ogImageQuery": "private tutoring session tutor and student at desk books notes bright academic",
+      "aboutImageQuery": "tutor explaining maths concept on whiteboard to student one-on-one session desk",
       "galleryImageQueries": [
-          "maths whiteboard equations student pencil working problem",
-          "matric revision past papers study notes highlighter desk",
-          "essay writing feedback red pen notebook student desk",
-          "online tutoring session laptop screen student desk webcam"
+          "student working maths equations on whiteboard pencil problem solving tutoring",
+          "matric exam revision past papers study notes highlighter on desk preparation",
+          "essay writing feedback teacher marking with red pen notebook student desk",
+          "online tutoring session laptop screen webcam student at desk headphones"
       ],
       "processSteps": [
           {
@@ -12877,15 +12877,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "confident, fresh, practical",
-      "heroImageQuery": "driving school car dual-control interior dashboard road view",
-      "heroBgImageQuery": "car dashboard driving road dark background view",
-      "ogImageQuery": "driving school car road lesson dual-control interior",
-      "aboutImageQuery": "driving instructor guiding student hands steering wheel lesson car",
+      "heroImageQuery": "driving school car interior dual controls instructor and learner dashboard steering wheel road view",
+      "heroBgImageQuery": "car dashboard night driving road ahead dark background headlights view",
+      "ogImageQuery": "driving school car on road with learner L plates instructor student driving lesson",
+      "aboutImageQuery": "driving instructor in passenger seat guiding learner student steering wheel car lesson calm",
       "galleryImageQueries": [
-          "driving lesson car road view steering wheel dashboard mirrors",
-          "parallel parking cones yard test K53 practice manoeuvre",
-          "K53 learner licence study materials road signs book",
-          "driving school branded car road lesson student confidence"
+          "learner driver hands on steering wheel car road view dashboard mirrors driving lesson",
+          "car parallel parking between cones yard test K53 practice driving school manoeuvre",
+          "K53 learner licence study guide road signs rules of the road book desk",
+          "driving school branded car with L plates on road student driving confidently"
       ],
       "processSteps": [
           {
@@ -13005,15 +13005,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "bright, nurturing, playful",
-      "heroImageQuery": "preschool classroom interior bright colourful toys shelves learning",
-      "heroBgImageQuery": "preschool classroom colourful toys learning bright background",
-      "ogImageQuery": "preschool classroom bright colourful toys learning area",
-      "aboutImageQuery": "preschool teacher reading story children circle mat classroom",
+      "heroImageQuery": "bright colourful preschool classroom interior small tables chairs toys bookshelves learning",
+      "heroBgImageQuery": "preschool classroom colourful educational toys blocks shelves bright warm",
+      "ogImageQuery": "happy children playing in bright colourful preschool classroom toys learning",
+      "aboutImageQuery": "preschool teacher reading storybook to small children sitting on mat circle time classroom",
       "galleryImageQueries": [
-          "preschool play-based learning building blocks water table classroom",
-          "preschool outdoor playground climbing frame sandpit children",
-          "grade R preparation writing letters numbers worksheet desk",
-          "preschool art activity messy play painting children table"
+          "toddlers playing with building blocks water table sensory play preschool classroom",
+          "preschool outdoor playground children climbing frame sandpit playing",
+          "grade R child writing letters numbers pencil grip worksheet desk school readiness",
+          "preschool children finger painting messy play art activity colourful table smocks"
       ],
       "processSteps": [
           {
@@ -13133,15 +13133,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, focused, empowering",
-      "heroImageQuery": "training academy classroom interior projector desks modern bright",
-      "heroBgImageQuery": "training classroom dark background desks projector modern",
-      "ogImageQuery": "training academy classroom desks projector modern bright",
-      "aboutImageQuery": "facilitator leading workshop flipchart team discussion engaged",
+      "heroImageQuery": "professional training classroom interior rows of desks projector screen whiteboard bright modern",
+      "heroBgImageQuery": "corporate training classroom desks chairs projector screen dark modern background",
+      "ogImageQuery": "training academy classroom adult students desks projector presentation modern bright",
+      "aboutImageQuery": "training facilitator presenting at flipchart whiteboard team discussion corporate workshop engaged",
       "galleryImageQueries": [
-          "training classroom students taking notes whiteboard presentation",
-          "corporate team workshop boardroom collaborative exercise",
-          "learnership youth practical workplace mentoring on-the-job training",
-          "training certificate ceremony graduation group achievement"
+          "adult students in training classroom taking notes whiteboard presentation facilitator",
+          "corporate team building workshop breakout group activity boardroom collaborative",
+          "young adult learnership mentoring practical on-the-job workplace training supervisor",
+          "training certificate ceremony group of graduates holding certificates achievement"
       ],
       "processSteps": [
           {
@@ -13343,7 +13343,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Fire Safety",
                   "Evacuation"
               ],
-              "serviceImageQuery": "fire safety training extinguisher workplace drill"
+              "serviceImageQuery": "fire marshal training using fire extinguisher on small controlled fire workplace safety drill"
           },
           {
               "name": "Working at Heights",
@@ -13352,7 +13352,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Heights",
                   "Fall Protection"
               ],
-              "serviceImageQuery": "working at heights safety training harness construction"
+              "serviceImageQuery": "worker wearing safety harness hard hat working at heights on scaffolding construction fall protection"
           }
       ],
       "galleryHeading": "Training That Saves Lives",
@@ -13389,15 +13389,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "confident, practical, professional",
-      "heroImageQuery": "first aid training room mannequins bandages equipment bright",
-      "heroBgImageQuery": "first aid medical training dark background bandages equipment",
-      "ogImageQuery": "first aid training room CPR mannequins equipment bright",
-      "aboutImageQuery": "first aid instructor demonstrating bandaging technique student arm",
+      "heroImageQuery": "first aid CPR training classroom mannequins bandages red cross equipment bright room",
+      "heroBgImageQuery": "first aid kit open bandages stethoscope medical supplies dark background",
+      "ogImageQuery": "first aid training class CPR mannequins students practising chest compressions bright room",
+      "aboutImageQuery": "first aid instructor demonstrating arm bandaging technique to student in training room",
       "galleryImageQueries": [
-          "CPR training group students mannequins chest compressions floor",
-          "AED defibrillator device open pads ready emergency training",
-          "fire safety training extinguisher demonstration workplace outdoor",
-          "first aid training recovery position patient floor demonstration"
+          "group of students practising CPR chest compressions on mannequins first aid training floor",
+          "AED defibrillator device open with electrode pads attached to mannequin training demonstration",
+          "workplace fire safety training group using fire extinguisher on controlled fire outdoor drill",
+          "first aid recovery position demonstration instructor positioning patient on floor training room"
       ],
       "processSteps": [
           {
@@ -13516,20 +13516,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "technical, clean, professional",
-      "heroImageQuery": "car on hydraulic lift in mechanic workshop garage",
-      "heroBgImageQuery": "car engine bay close-up dark workshop background",
-      "ogImageQuery": "mechanic tools laid out on workshop bench engine parts",
-      "aboutImageQuery": "mechanic working under vehicle bonnet in workshop",
+      "heroImageQuery": "car raised on hydraulic lift mechanic working underneath in garage workshop",
+      "heroBgImageQuery": "close-up car engine bay oil cap hoses dark moody workshop",
+      "ogImageQuery": "mechanic tools spanners wrenches laid out on workshop bench",
+      "aboutImageQuery": "male mechanic in overalls working under open car bonnet hood engine",
       "galleryImageQueries": [
-          "car on hydraulic lift in clean workshop",
-          "mechanic using diagnostic laptop on engine bay",
-          "brake disc pads suspension spring close-up",
-          "workshop interior tool wall organised equipment"
+          "car raised on hydraulic lift in clean modern auto workshop",
+          "mechanic using laptop diagnostic tool plugged into car engine bay",
+          "close-up brake disc caliper pads new car repair",
+          "auto mechanic workshop interior tool wall pegboard wrenches organised"
       ],
       "features": [
-        { "name": "Manufacturer Warranty Protected", "description": "We service according to manufacturer specifications with OEM parts, so your warranty stays intact \u2014 without dealership prices.", "imageQuery": "mechanic using diagnostic computer modern car workshop" },
-        { "name": "Transparent Pricing, Always", "description": "You get a detailed quote before we start, and we call you before doing anything extra. No nasty surprises on collection day.", "imageQuery": "mechanic explaining quote to car owner workshop transparent" },
-        { "name": "Courtesy Car Available", "description": "Need to get to work while your car is in? We offer a courtesy vehicle so your day isn't disrupted.", "imageQuery": "customer collecting courtesy car from mechanic workshop" }
+        { "name": "Manufacturer Warranty Protected", "description": "We service according to manufacturer specifications with OEM parts, so your warranty stays intact \u2014 without dealership prices.", "imageQuery": "mechanic plugging OBD laptop diagnostic tool into car engine bay" },
+        { "name": "Transparent Pricing, Always", "description": "You get a detailed quote before we start, and we call you before doing anything extra. No nasty surprises on collection day.", "imageQuery": "mechanic showing repair quote on clipboard to car owner in workshop" },
+        { "name": "Courtesy Car Available", "description": "Need to get to work while your car is in? We offer a courtesy vehicle so your day isn't disrupted.", "imageQuery": "happy customer receiving car keys from mechanic at workshop counter" }
       ],
       "processSteps": [
           {
@@ -13648,20 +13648,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "precise, professional, clean",
-      "heroImageQuery": "car being spray painted in auto body booth",
-      "heroBgImageQuery": "spray paint booth car dark workshop background",
-      "ogImageQuery": "car dent repair panel beating hammer body filler",
-      "aboutImageQuery": "panel beater sanding car body in workshop",
+      "heroImageQuery": "man in protective suit spray painting car panel in booth orange sparks",
+      "heroBgImageQuery": "auto body spray paint booth dark interior car masked off tape",
+      "ogImageQuery": "panel beater using body filler sanding car fender dent repair",
+      "aboutImageQuery": "man wet sanding car body panel in auto body workshop",
       "galleryImageQueries": [
-          "car before and after panel repair restoration",
-          "spray paint booth car colour matched respray",
-          "panel beater workshop tools equipment organised",
-          "repaired car gleaming after full respray"
+          "car fender before and after dent repair panel beating",
+          "car inside spray paint booth freshly painted red",
+          "auto body repair shop interior car on stand tools organised",
+          "gleaming repaired car after full respray showroom finish"
       ],
       "features": [
-        { "name": "Insurance Claims Handled for You", "description": "We deal directly with all major insurers. From assessment to authorisation to collection, we manage the entire claims process.", "imageQuery": "panel beater assessing car damage insurance claim inspection" },
-        { "name": "Factory-Match Paint Technology", "description": "Our computerised colour-matching system ensures your repair is invisible. No mismatched panels, no orange peel \u2014 just factory finish.", "imageQuery": "auto body paint booth spray gun factory colour match" },
-        { "name": "Lifetime Workmanship Guarantee", "description": "We stand behind every repair with a written lifetime guarantee on workmanship. If the paint peels or the filler cracks, we fix it.", "imageQuery": "repaired car panel perfect finish showroom quality result" }
+        { "name": "Insurance Claims Handled for You", "description": "We deal directly with all major insurers. From assessment to authorisation to collection, we manage the entire claims process.", "imageQuery": "panel beater inspecting dented car fender damage assessment clipboard" },
+        { "name": "Factory-Match Paint Technology", "description": "Our computerised colour-matching system ensures your repair is invisible. No mismatched panels, no orange peel \u2014 just factory finish.", "imageQuery": "man spraying car panel in paint booth protective suit mask" },
+        { "name": "Lifetime Workmanship Guarantee", "description": "We stand behind every repair with a written lifetime guarantee on workmanship. If the paint peels or the filler cracks, we fix it.", "imageQuery": "freshly repaired painted car panel gleaming perfect finish" }
       ],
       "processSteps": [
           {
@@ -13699,7 +13699,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Full Valet",
                   "Interior Deep Clean"
               ],
-              "serviceImageQuery": "car interior deep clean leather seats dashboard valet"
+              "serviceImageQuery": "man vacuuming car interior seats dashboard deep clean valet"
           },
           {
               "name": "Paint Correction",
@@ -13708,7 +13708,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Paint Correction",
                   "Swirl Removal"
               ],
-              "serviceImageQuery": "machine polisher removing swirl marks car paint close-up"
+              "serviceImageQuery": "dual action polisher buffing car paint removing swirl marks close-up"
           },
           {
               "name": "Ceramic Coating",
@@ -13780,20 +13780,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "glossy, precise, clean",
-      "heroImageQuery": "glossy black car hood reflection after detailing polish",
-      "heroBgImageQuery": "glossy wet car paintwork reflection dark background",
-      "ogImageQuery": "car paint ceramic coating water beading glossy",
-      "aboutImageQuery": "detailer machine polishing car paintwork close-up",
+      "heroImageQuery": "glossy black car hood mirror reflection after professional detailing polish",
+      "heroBgImageQuery": "close-up wet glossy car paint water droplets dark reflection",
+      "ogImageQuery": "water beading on ceramic coated car hood close-up",
+      "aboutImageQuery": "man using dual action polisher machine on car paint detailing",
       "galleryImageQueries": [
-          "car interior vacuumed clean leather conditioned",
-          "paint correction before after swirl marks removed",
-          "ceramic coated car water beading on hood",
-          "car being hand washed foam mitt bucket"
+          "clean car interior leather seats vacuumed dashboard conditioned",
+          "car paint correction polish buffing swirl marks removed close-up",
+          "water droplets beading on ceramic coated car bonnet",
+          "man hand washing car with foam mitt and soapy bucket"
       ],
       "features": [
-        { "name": "Hand Wash Only, No Machines", "description": "Every vehicle is washed by hand using pH-neutral products. No swirl marks, no scratches \u2014 just a finish that's safe for your clear coat.", "imageQuery": "hand car wash detailing soft cloth gentle paint safe" },
-        { "name": "Interior Deep Clean Specialists", "description": "Leather conditioning, fabric extraction, air vent detailing, and odour removal. We make your cabin feel brand new.", "imageQuery": "car interior detailing leather seats cleaning professional" },
-        { "name": "Ceramic Coating & Paint Protection", "description": "We offer professional ceramic coatings that protect your paint for years, not weeks. One application saves you hundreds in future washes.", "imageQuery": "ceramic coating application car paint protection glossy shine" }
+        { "name": "Hand Wash Only, No Machines", "description": "Every vehicle is washed by hand using pH-neutral products. No swirl marks, no scratches \u2014 just a finish that's safe for your clear coat.", "imageQuery": "man hand washing car with microfiber mitt soapy foam gentle" },
+        { "name": "Interior Deep Clean Specialists", "description": "Leather conditioning, fabric extraction, air vent detailing, and odour removal. We make your cabin feel brand new.", "imageQuery": "detailer cleaning car leather seat with brush and conditioner" },
+        { "name": "Ceramic Coating & Paint Protection", "description": "We offer professional ceramic coatings that protect your paint for years, not weeks. One application saves you hundreds in future washes.", "imageQuery": "applying ceramic coating to car bonnet with applicator pad glossy" }
       ],
       "processSteps": [
           {
@@ -13831,7 +13831,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "New Tyres",
                   "Michelin"
               ],
-              "serviceImageQuery": "new tyres stacked on display rack tyre shop"
+              "serviceImageQuery": "mechanic holding new tyre next to car wheel in tyre shop"
           },
           {
               "name": "Wheel Alignment & Balancing",
@@ -13840,7 +13840,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Wheel Alignment",
                   "Balancing"
               ],
-              "serviceImageQuery": "computerised wheel alignment machine laser car"
+              "serviceImageQuery": "car on four wheel alignment machine laser beams measuring angles"
           },
           {
               "name": "Puncture Repairs",
@@ -13912,20 +13912,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, practical, fast",
-      "heroImageQuery": "new tyre on rim close-up tread pattern rubber",
-      "heroBgImageQuery": "tyre tread close-up rubber dark background",
-      "ogImageQuery": "stack of new tyres in tyre shop",
-      "aboutImageQuery": "technician fitting tyre onto wheel rim with machine",
+      "heroImageQuery": "wall of new tyres stacked on rack in tyre shop store",
+      "heroBgImageQuery": "close-up tyre tread pattern rubber texture dark background",
+      "ogImageQuery": "new tyres stacked rows on shelf in tyre fitting shop",
+      "aboutImageQuery": "mechanic fitting tyre onto wheel rim using tyre changer machine",
       "galleryImageQueries": [
-          "car lifted on jack tyre being changed",
-          "computerised wheel alignment machine display readings",
-          "new tyres stacked rows display tyre shop",
-          "tyre tread depth gauge measurement close-up"
+          "car raised on jack mechanic removing wheel tyre change",
+          "computerised four wheel alignment machine laser beam readings car",
+          "rows of new tyres on display rack tyre shop interior",
+          "measuring tyre tread depth with gauge tool close-up"
       ],
       "features": [
-        { "name": "Free Alignment Check With Every Fitting", "description": "Every set of new tyres includes a complimentary wheel alignment check \u2014 because new rubber on a misaligned car wears out fast.", "imageQuery": "wheel alignment machine tyre shop laser measurement" },
-        { "name": "All Brands, All Budgets", "description": "From premium Continentals to reliable budget options, we stock tyres for every vehicle and every wallet. Honest advice, no upselling.", "imageQuery": "tyre shop wall display various brands sizes selection" },
-        { "name": "While-You-Wait Service", "description": "Most fittings take under 30 minutes. Grab a coffee in our waiting area and we'll have you back on the road before it goes cold.", "imageQuery": "tyre fitting bay quick service mechanic working efficiently" }
+        { "name": "Free Alignment Check With Every Fitting", "description": "Every set of new tyres includes a complimentary wheel alignment check \u2014 because new rubber on a misaligned car wears out fast.", "imageQuery": "car on computerised wheel alignment rack laser sensors measuring" },
+        { "name": "All Brands, All Budgets", "description": "From premium Continentals to reliable budget options, we stock tyres for every vehicle and every wallet. Honest advice, no upselling.", "imageQuery": "wall rack of new tyres stacked various brands sizes tyre shop" },
+        { "name": "While-You-Wait Service", "description": "Most fittings take under 30 minutes. Grab a coffee in our waiting area and we'll have you back on the road before it goes cold.", "imageQuery": "mechanic fitting tyre on wheel balancing machine in tyre bay" }
       ],
       "processSteps": [
           {
@@ -14044,20 +14044,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "technical, precise, professional",
-      "heroImageQuery": "car electrical wiring harness dashboard close-up",
-      "heroBgImageQuery": "vehicle wiring loom electrical connections dark background",
-      "ogImageQuery": "car OBD diagnostic tool plugged into dashboard",
-      "aboutImageQuery": "auto electrician testing vehicle wiring with multimeter",
+      "heroImageQuery": "car engine bay wiring harness electrical connectors fuses close-up",
+      "heroBgImageQuery": "car wiring loom cables connectors dark engine bay close-up",
+      "ogImageQuery": "OBD2 diagnostic scan tool plugged into car dashboard port",
+      "aboutImageQuery": "auto electrician man testing car wiring with digital multimeter",
       "galleryImageQueries": [
-          "car OBD diagnostic scanner display readings",
-          "vehicle alarm immobiliser module installed",
-          "dash camera mounted on car windscreen",
-          "car electrical wiring repair soldering workshop"
+          "OBD diagnostic scanner screen fault codes car engine bay",
+          "car alarm immobiliser keypad module installed under dashboard",
+          "dashcam camera mounted on car windscreen interior view",
+          "electrician soldering car wiring repair workshop close-up"
       ],
       "features": [
-        { "name": "Advanced Diagnostic Equipment", "description": "We use dealer-level diagnostic tools to read fault codes, trace wiring issues, and pinpoint electrical problems \u2014 not guess at them.", "imageQuery": "auto electrician diagnostic scanner car wiring computer" },
-        { "name": "Aftermarket Installation Specialists", "description": "Towbars, spotlights, dual-battery systems, dashcams \u2014 we install aftermarket accessories properly, with no warranty issues.", "imageQuery": "auto electrician installing towbar wiring vehicle accessories" },
-        { "name": "Mobile Service Available", "description": "Car won't start? We come to you with a fully equipped mobile unit. Roadside diagnosis and repair without a tow truck.", "imageQuery": "mobile auto electrician service van roadside repair" }
+        { "name": "Advanced Diagnostic Equipment", "description": "We use dealer-level diagnostic tools to read fault codes, trace wiring issues, and pinpoint electrical problems \u2014 not guess at them.", "imageQuery": "OBD2 diagnostic scanner screen showing fault codes plugged into car" },
+        { "name": "Aftermarket Installation Specialists", "description": "Towbars, spotlights, dual-battery systems, dashcams \u2014 we install aftermarket accessories properly, with no warranty issues.", "imageQuery": "man installing towbar wiring harness underneath vehicle rear" },
+        { "name": "Mobile Service Available", "description": "Car won't start? We come to you with a fully equipped mobile unit. Roadside diagnosis and repair without a tow truck.", "imageQuery": "mobile mechanic working on car engine roadside with service van" }
       ],
       "processSteps": [
           {
@@ -14176,20 +14176,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "urgent, reliable, professional",
-      "heroImageQuery": "flatbed tow truck loading car on ramp roadside",
-      "heroBgImageQuery": "tow truck headlights road dark night background",
-      "ogImageQuery": "tow truck flatbed with car loaded road",
-      "aboutImageQuery": "tow truck operator securing vehicle straps for transport",
+      "heroImageQuery": "yellow flatbed tow truck loading white car on ramp roadside highway",
+      "heroBgImageQuery": "tow truck amber flashing lights on dark road night breakdown",
+      "ogImageQuery": "flatbed tow truck carrying car driving on highway road",
+      "aboutImageQuery": "tow truck driver securing car with straps on flatbed trailer",
       "galleryImageQueries": [
-          "flatbed tow truck with car loaded highway",
-          "roadside battery jump start cables connected",
-          "accident vehicle recovery tow truck crane",
-          "tow truck amber lights operating at night road"
+          "flatbed tow truck loaded with car driving on highway road",
+          "man connecting jumper cables battery jump start car roadside",
+          "tow truck crane winch recovering crashed car accident scene",
+          "tow truck with amber warning lights operating on road at night"
       ],
       "features": [
-        { "name": "Average 30-Minute Response Time", "description": "We have vehicles stationed across the metro. When you're stranded, you won't wait long \u2014 our average arrival is under 30 minutes.", "imageQuery": "tow truck arriving quickly roadside assistance fast response" },
-        { "name": "Flatbed Towing for Zero Damage", "description": "We use flatbed trucks that lift your vehicle clear of the road. No dragging, no diff damage, no scratched bumpers.", "imageQuery": "flatbed tow truck loading car safely vehicle transport" },
-        { "name": "24/7 All-Hours Service", "description": "Breakdowns don't keep office hours and neither do we. Call any time, any day \u2014 including weekends and public holidays.", "imageQuery": "tow truck night time emergency roadside service lights" }
+        { "name": "Average 30-Minute Response Time", "description": "We have vehicles stationed across the metro. When you're stranded, you won't wait long \u2014 our average arrival is under 30 minutes.", "imageQuery": "tow truck driving fast on road responding to emergency call" },
+        { "name": "Flatbed Towing for Zero Damage", "description": "We use flatbed trucks that lift your vehicle clear of the road. No dragging, no diff damage, no scratched bumpers.", "imageQuery": "car being loaded onto flatbed tow truck ramp straps" },
+        { "name": "24/7 All-Hours Service", "description": "Breakdowns don't keep office hours and neither do we. Call any time, any day \u2014 including weekends and public holidays.", "imageQuery": "tow truck with flashing amber lights on dark road at night" }
       ],
       "processSteps": [
           {
@@ -14308,20 +14308,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "bold, adventurous, mechanical",
-      "heroImageQuery": "motorcycles lined up in showroom floor display",
-      "heroBgImageQuery": "motorcycle close-up engine detail dark moody garage",
-      "ogImageQuery": "row of motorcycles in showroom gleaming",
-      "aboutImageQuery": "motorcycle mechanic working on engine in workshop",
+      "heroImageQuery": "row of sport motorcycles parked in dealer showroom floor shiny",
+      "heroBgImageQuery": "motorcycle engine chrome exhaust pipes dark moody close-up garage",
+      "ogImageQuery": "motorcycles lined up in showroom new bikes for sale",
+      "aboutImageQuery": "motorcycle mechanic man working on bike engine in workshop",
       "galleryImageQueries": [
-          "adventure motorcycle parked outdoor scenic road",
-          "motorcycle engine close-up chrome exhaust detail",
-          "riding helmets gloves boots gear display wall",
-          "classic vintage motorcycle restored showroom"
+          "adventure motorcycle BMW GS parked on mountain road scenic",
+          "motorcycle engine chrome exhaust pipes V-twin close-up detail",
+          "motorcycle helmets jackets gloves displayed on shop wall rack",
+          "classic vintage motorcycle restored cafe racer in showroom"
       ],
       "features": [
-        { "name": "Riders Who Wrench", "description": "Every mechanic in our workshop rides. We understand bikes because we live them \u2014 not because we read a manual.", "imageQuery": "motorcycle mechanic passionate rider workshop experienced" },
-        { "name": "Genuine & Aftermarket Parts In Stock", "description": "We carry OEM and quality aftermarket parts for major brands. Most repairs and upgrades are completed without ordering delays.", "imageQuery": "motorcycle parts display shelves workshop stock inventory" },
-        { "name": "Custom Builds & Modifications", "description": "From exhaust upgrades to full cafe racer builds, we turn your vision into a machine you'll never want to park.", "imageQuery": "custom motorcycle build cafe racer workshop modification" }
+        { "name": "Riders Who Wrench", "description": "Every mechanic in our workshop rides. We understand bikes because we live them \u2014 not because we read a manual.", "imageQuery": "motorcycle mechanic in workshop working on bike engine experienced" },
+        { "name": "Genuine & Aftermarket Parts In Stock", "description": "We carry OEM and quality aftermarket parts for major brands. Most repairs and upgrades are completed without ordering delays.", "imageQuery": "motorcycle parts shelves organised brake pads chains sprockets filters" },
+        { "name": "Custom Builds & Modifications", "description": "From exhaust upgrades to full cafe racer builds, we turn your vision into a machine you'll never want to park.", "imageQuery": "custom cafe racer motorcycle build in workshop stripped frame" }
       ],
       "processSteps": [
           {
@@ -16483,14 +16483,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "precise, professional, technical",
-    "heroImageQuery": "theodolite tripod survey equipment on construction site",
-    "ogImageQuery": "surveying total station instrument on tripod outdoors",
-    "aboutImageQuery": "survey team with equipment on building site",
+    "heroImageQuery": "land surveyor using theodolite total station on tripod surveying construction site",
+    "ogImageQuery": "surveyor with total station instrument on tripod measuring land outdoors",
+    "aboutImageQuery": "survey team with measuring equipment hard hats on building construction site",
     "galleryImageQueries": [
-      "surveying theodolite on tripod measuring land",
-      "cadastral map boundary plan drawing",
-      "residential building site pegs and string layout",
-      "aerial view land parcels subdivision lots"
+      "surveyor operating theodolite total station tripod measuring land boundary",
+      "cadastral boundary survey map plan drawing property lines diagram",
+      "residential building site survey pegs string lines marking foundation layout",
+      "aerial view land parcels property boundaries subdivision development lots"
     ]
   },
   "Property Management": {
@@ -16584,14 +16584,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "professional, reliable, residential",
-    "heroImageQuery": "modern apartment building exterior balconies blue sky",
-    "ogImageQuery": "residential apartment complex courtyard garden",
-    "aboutImageQuery": "property management team meeting in office with laptops",
+    "heroImageQuery": "well maintained residential apartment building exterior balconies landscaped garden",
+    "ogImageQuery": "residential apartment complex exterior courtyard well maintained garden paths",
+    "aboutImageQuery": "property manager inspecting rental apartment interior clipboard maintenance checklist",
     "galleryImageQueries": [
-      "apartment block exterior well maintained garden",
-      "modern kitchen interior rental apartment clean",
-      "commercial office building glass facade",
-      "holiday rental apartment sea view balcony"
+      "apartment block exterior well maintained landscaped garden entrance pathway",
+      "modern kitchen interior clean white rental apartment ready for tenant",
+      "commercial office building exterior glass facade entrance professional",
+      "holiday rental apartment interior sea view balcony furnished modern"
     ]
   },
   "Home Staging": {
@@ -16685,14 +16685,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, aspirational, residential",
-    "heroImageQuery": "staged luxury living room fireplace neutral decor",
-    "ogImageQuery": "beautifully furnished open plan living dining room",
-    "aboutImageQuery": "home stager arranging cushions on sofa in living room",
+    "heroImageQuery": "professionally staged modern living room neutral furniture cushions styled for property sale",
+    "ogImageQuery": "beautifully staged open plan living room dining area neutral decor property showing",
+    "aboutImageQuery": "home stager styling cushions on sofa arranging decor items in living room for property sale",
     "galleryImageQueries": [
-      "empty room transformed into styled living space",
-      "staged dining room table set with flowers",
-      "staged master bedroom luxury bedding lamps",
-      "staged entrance hallway console mirror fresh flowers"
+      "before after empty room transformed into styled living room with furniture staging",
+      "staged dining room table set with flowers vase candles neutral tones property",
+      "staged master bedroom luxury white bedding lamps side tables neutral decor",
+      "staged entrance hallway console table mirror fresh flowers property styling"
     ]
   },
   "Town Planner": {
@@ -16786,14 +16786,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "professional, precise, authoritative",
-    "heroImageQuery": "city urban skyline aerial view mixed use development",
-    "ogImageQuery": "urban development plan aerial view buildings roads",
-    "aboutImageQuery": "planners reviewing architectural drawings and site maps at desk",
+    "heroImageQuery": "aerial view urban city buildings mixed use residential commercial development planning",
+    "ogImageQuery": "aerial view urban development suburb buildings roads infrastructure city planning",
+    "aboutImageQuery": "town planner reviewing zoning maps site plans architectural drawings at desk meeting",
     "galleryImageQueries": [
-      "urban zoning map coloured districts planning",
-      "construction site new development breaking ground",
-      "heritage building victorian facade restoration",
-      "environmental wetland conservation natural landscape"
+      "urban zoning map coloured land use districts residential commercial industrial planning",
+      "new residential development construction site foundation phase buildings rising",
+      "heritage building facade preserved restored Victorian architecture urban streetscape",
+      "town planning site inspection urban development infrastructure roads buildings"
     ]
   },
   "Print Shop / Signage": {
