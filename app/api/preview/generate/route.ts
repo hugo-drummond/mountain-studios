@@ -521,6 +521,7 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
 
     @media (max-width: 768px) {
       .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
       .ms-nav-links { display: none !important; }
       nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
 
@@ -687,7 +688,31 @@ function getFallbackTestimonials(content: GeneratedContent, category: string): {
 
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
   const allLinks = navFlags.allLinks
+  const inline = allLinks.length <= 4
 
+  if (inline) {
+    // Inline nav: logo | links | CTA button (no burger on desktop, burger on mobile)
+    return `
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
+          ${allLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">${l.label}</a>`).join('\n          ')}
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
+        <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+          <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
+        </label>
+      </div>
+    </div>
+  </nav>
+  ${buildMobileMenu(content, allLinks)}`
+  }
+
+  // Burger nav: logo | CTA + burger (5+ pages)
   return `
   <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
