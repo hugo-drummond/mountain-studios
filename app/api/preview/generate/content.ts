@@ -20,8 +20,10 @@ export interface PresetContent {
   contactHeading: string
   contactHours?: string
   processSteps?: { step: string; title: string; description: string }[]
+  stepsHeading?: string
   projectCaptions?: string[]
   testimonial: { quote: string; author: string; rating: number }
+  testimonials?: { quote: string; author: string; rating: number }[]
   imageMood: string
   heroImageQuery: string
   heroBgImageQuery?: string
@@ -11779,6 +11781,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Ready for a free level assessment?",
+      "stepsHeading": "To Start Speaking",
       "contactHours": "Mon\u2013Fri: 08:00\u201319:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Online classes available",
       "processSteps": [
           {
@@ -11910,6 +11913,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a trial week?",
+      "stepsHeading": "To Get Your Child Started",
       "contactHours": "Mon\u2013Fri: 13:00\u201318:00 \u00b7 Office: 08:00\u201314:00 \u00b7 School terms only",
       "processSteps": [
           {
@@ -12041,6 +12045,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Ready to create something?",
+      "stepsHeading": "To Start Creating",
       "contactHours": "Mon\u2013Fri: 09:00\u201319:00 \u00b7 Sat: 08:30\u201316:00 \u00b7 Sun: 10:00\u201314:00",
       "processSteps": [
           {
@@ -12541,6 +12546,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a free trial lesson?",
+      "stepsHeading": "To Start Playing",
       "testimonial": {
           "quote": "My daughter went from refusing to practise to playing for an hour every day. Incredible teacher.",
           "author": "Anthea S., Verified Client",
@@ -12668,6 +12674,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a trial session?",
+      "stepsHeading": "To Get Your Child Back On Track",
       "testimonial": {
           "quote": "Maths went from 42% to 78% in one term. The tutor found exactly where the gaps were.",
           "author": "Miriam T., Verified Client",
@@ -12795,6 +12802,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Ready to start your lessons?",
+      "stepsHeading": "To Get Your Licence",
       "testimonial": {
           "quote": "Passed my road test first time. My instructor was endlessly patient and incredibly thorough.",
           "author": "Zara K., Verified Client",
@@ -12922,6 +12930,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a school tour?",
+      "stepsHeading": "To Enrol Your Child",
       "testimonial": {
           "quote": "My son runs to school every morning. He's thriving socially and academically. Wonderful place.",
           "author": "Sage K., Verified Client",
@@ -13049,6 +13058,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to discuss training for your team?",
+      "stepsHeading": "To Get Certified",
       "testimonial": {
           "quote": "Measurable change in team performance within 6 weeks. Practical, relevant, excellent.",
           "author": "Liezel M., Verified Client",
@@ -13176,6 +13186,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a free trial class?",
+      "stepsHeading": "To Start Coding",
       "testimonial": {
           "quote": "My 10-year-old built his own game in 8 weeks. He is obsessed. Best investment.",
           "author": "David O., Verified Client",
@@ -13303,6 +13314,7 @@ export const presetContent: Record<string, PresetContent> = {
           }
       ],
       "contactHeading": "Want to book a first aid course?",
+      "stepsHeading": "To Get Certified",
       "testimonial": {
           "quote": "Used my training for real 3 months later. It worked. That instructor potentially saved a life.",
           "author": "Drew M., Verified Client",

@@ -371,6 +371,7 @@ interface GeneratedContent {
   contactHeading: string
   contactHours?: string
   processSteps?: { step: string; title: string; description: string }[]
+  stepsHeading?: string
   projectCaptions?: string[]
   // Extended fields from preset content
   heroAccent?: string
@@ -378,6 +379,7 @@ interface GeneratedContent {
   badge?: string
   aboutMission?: string
   testimonial?: { quote: string; author: string; rating: number }
+  testimonials?: { quote: string; author: string; rating: number }[]
   imageMood?: string
   heroImageQuery?: string
   aboutImageQuery?: string
@@ -610,6 +612,77 @@ function evenGrid(items: unknown[], cols: number): { items: unknown[]; cols: num
   if (items.length % 2 === 0) return { items, cols: 2 }
   // Drop last item to make it even
   return { items: items.slice(0, items.length - (items.length % cols)), cols }
+}
+
+// Category-specific fallback testimonials (used when content.testimonials is not populated)
+const categoryTestimonials: Record<string, { quote: string; author: string; rating: number }[]> = {
+  'food-hospitality': [
+    { quote: 'The food was incredible and the service even better. We\'ll be back every weekend.', author: 'Sarah M., Regular Guest', rating: 5 },
+    { quote: 'Celebrated our anniversary here — the atmosphere was perfect and the staff made us feel so special.', author: 'David & Lisa K., Cape Town', rating: 5 },
+  ],
+  'retail': [
+    { quote: 'Always find exactly what I\'m looking for. The staff really know their products.', author: 'Priya N., Loyal Customer', rating: 5 },
+    { quote: 'Great selection and fair prices. My go-to shop for years now.', author: 'James V., Local Shopper', rating: 5 },
+  ],
+  'trades-construction': [
+    { quote: 'Arrived on time, did a clean job, and charged exactly what they quoted. Rare to find these days.', author: 'Mark D., Homeowner', rating: 5 },
+    { quote: 'Used them twice now — both times excellent workmanship and no mess left behind.', author: 'Zanele K., Property Manager', rating: 5 },
+  ],
+  'health-wellness': [
+    { quote: 'Caring, thorough, and always takes the time to explain everything properly.', author: 'Rachel S., Regular Client', rating: 5 },
+    { quote: 'Finally found a practice that actually listens. My whole family goes here now.', author: 'Thomas B., Family Client', rating: 5 },
+  ],
+  'professional': [
+    { quote: 'Handled our case with real expertise. Clear communication throughout the process.', author: 'Linda P., Business Client', rating: 5 },
+    { quote: 'Responsive, knowledgeable, and genuinely invested in getting the best outcome for us.', author: 'Andrew F., Director', rating: 5 },
+  ],
+  'fitness-sport': [
+    { quote: 'The trainers push you just the right amount. Best shape of my life.', author: 'Chris W., Member since 2022', rating: 5 },
+    { quote: 'Great community vibe and top-notch facilities. Worth every cent of the membership.', author: 'Naledi M., Active Member', rating: 5 },
+  ],
+  'pets': [
+    { quote: 'They treat our dogs like family. Wouldn\'t trust anyone else.', author: 'Emma & Grant H., Pet Owners', rating: 5 },
+    { quote: 'Friendly, gentle with nervous animals, and always go the extra mile.', author: 'Fatima A., Cat & Dog Mom', rating: 5 },
+  ],
+  'home-services': [
+    { quote: 'Reliable, affordable, and our house has never looked better. Highly recommend.', author: 'Karen L., Homeowner', rating: 5 },
+    { quote: 'Booking was easy, they showed up on time, and did a brilliant job. Will use again.', author: 'Sipho M., Repeat Customer', rating: 5 },
+  ],
+  'education': [
+    { quote: 'My child\'s confidence has grown so much since starting here. The teachers are wonderful.', author: 'Nicole V., Parent', rating: 5 },
+    { quote: 'Patient, encouraging, and really knows how to make learning enjoyable.', author: 'Brian T., Adult Learner', rating: 5 },
+  ],
+  'events-entertainment': [
+    { quote: 'Made our event absolutely unforgettable. Every detail was taken care of.', author: 'Tamara J., Bride', rating: 5 },
+    { quote: 'The crowd loved every moment. Professional from start to finish.', author: 'Kevin R., Corporate Client', rating: 5 },
+  ],
+  'automotive': [
+    { quote: 'Honest pricing and they explain exactly what needs doing. My mechanic for life.', author: 'Johan P., Car Owner', rating: 5 },
+    { quote: 'Quick turnaround and quality work. My car runs better than when I bought it.', author: 'Michelle D., Regular Customer', rating: 5 },
+  ],
+  'creative': [
+    { quote: 'Captured exactly what we envisioned — actually even better. Real creative talent.', author: 'Samantha L., Brand Owner', rating: 5 },
+    { quote: 'Delivered on time, on brief, and the quality was exceptional. Already booked them again.', author: 'Ruan V., Marketing Manager', rating: 5 },
+  ],
+  'property': [
+    { quote: 'Found us the perfect home in two weeks. Knowledgeable, patient, and zero pressure.', author: 'The Naidoo Family, New Homeowners', rating: 5 },
+    { quote: 'Professional, transparent, and genuinely had our best interests at heart throughout.', author: 'Carol M., Seller', rating: 5 },
+  ],
+  'tech-digital': [
+    { quote: 'Transformed our online presence completely. Traffic is up 300% since launch.', author: 'Laura H., Startup Founder', rating: 5 },
+    { quote: 'They actually understood our business, not just the tech. That made all the difference.', author: 'Peter G., MD', rating: 5 },
+  ],
+  'other': [
+    { quote: 'Exceeded our expectations in every way. Truly outstanding service.', author: 'Amanda S., Client', rating: 5 },
+    { quote: 'Professional, reliable, and a pleasure to work with from start to finish.', author: 'Daniel K., Business Owner', rating: 5 },
+  ],
+}
+
+function getFallbackTestimonials(content: GeneratedContent, category: string): { quote: string; author: string; rating: number }[] {
+  if (content.testimonials && content.testimonials.length >= 3) {
+    return content.testimonials.slice(1, 3)
+  }
+  return categoryTestimonials[category] || categoryTestimonials['other']!
 }
 
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
@@ -1869,7 +1942,7 @@ function buildEducationTemplate(data: TemplateData): string {
   const processSection = `
   <section style="padding:80px 2rem;background:${eduBg}">
     <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> To Get Your Child Back On Track</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> ${content.stepsHeading || 'To Get Started'}</h2>
       <!-- Steps: circle + connector + text in one grid -->
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
         ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed #ccc;margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
@@ -2237,25 +2310,19 @@ function buildFitnessTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: HYP-style packages — 3 cards with bg images
+  // Section 6: About — text left, photo right
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const packagesSection = `
   <section id="about" style="padding:80px 2rem;background:${fitBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.galleryHeading || 'Packages'}</h2>
-      <div style="width:50px;height:3px;background:var(--primary);margin-bottom:3rem"></div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 3).map((s, i) => `
-        <div class="ms-img" style="position:relative;min-height:400px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
-          <div style="position:absolute;inset:0">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.75) 100%)"></div>
-          </div>
-          <div style="position:relative;padding:2rem">
-            <h3 style="font-family:var(--heading-font);font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700;color:${fitText};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.7);margin-bottom:1.25rem">${s.description}</p>
-            ${s.tags.map(t => `<div style="font-family:var(--body-font);font-size:0.8rem;color:${fitText};padding:0.35rem 0;border-bottom:1px solid rgba(255,255,255,0.1)">&#10003; &nbsp;${t}</div>`).join('')}
-          </div>
-        </div>`).join('')}
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.aboutHeading}</h2>
+        <div style="width:50px;height:3px;background:var(--primary);margin-bottom:2rem"></div>
+        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${fitMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.75rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem">${content.ctaPrimary}</a>
+      </div>
+      <div class="ms-img" style="border-radius:8px;overflow:hidden;height:500px">
+        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
@@ -2562,24 +2629,29 @@ function buildPetsTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${[0,1,2].map(i => {
-          const t = i === 0 && content.testimonial ? content.testimonial : null
-          const quote = t ? t.quote : (content.services[i]?.description || content.heroSubtitle)
-          const author = t ? t.author : (content.services[i]?.name || 'Happy Customer')
-          const rating = t ? t.rating : 5
+        ${(() => {
+          const fallbacks = getFallbackTestimonials(content, businessCategory)
+          const allTestimonials = [
+            content.testimonial,
+            ...(content.testimonials?.slice(1, 3) || fallbacks)
+          ]
           const colors = ['#f59e0b', '#4a9e4a', '#6a7aba']
+          return allTestimonials.map((t, i) => {
+          const quote = t.quote
+          const author = t.author
+          const rating = t.rating || 5
           return `
         <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
             <div style="width:40px;height:40px;border-radius:50%;background:${colors[i % 3]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">${author.charAt(0)}</div>
             <div>
-              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${petText}">${author}</div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${petText}">${author.split(',')[0]}</div>
             </div>
           </div>
           <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">${'&#9733;'.repeat(rating)}</div>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${petMuted};line-height:1.7">${quote}</p>
         </div>`
-        }).join('')}
+        }).join('') })()}
       </div>
     </div>
   </section>` : ''
@@ -2951,23 +3023,23 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   <section id="testimonials" style="padding:80px 2rem;background:${hwText}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary-on-dark);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Patients Say</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Clients Say</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
           <div style="position:absolute;top:1.5rem;right:1.5rem;font-size:3rem;color:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.3);line-height:1">&#10077;</div>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
           <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem">
             <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${content.testimonial.author.split(',')[0]}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">${content.testimonial.author.split(',')[1]?.trim() || 'Patient'}</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">${content.testimonial.author.split(',')[1]?.trim() || 'Client'}</div>
           </div>
         </div>
-        ${[0,1].map(i => `
+        ${getFallbackTestimonials(content, businessCategory).map(t => `
         <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
           <div style="position:absolute;top:1.5rem;right:1.5rem;font-size:3rem;color:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.3);line-height:1">&#10077;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${i === 0 ? 'Professional, gentle, and they truly care about their patients.' : 'Wonderful with kids and adults alike. Highly recommend!'}"</p>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${t.quote}"</p>
           <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${i === 0 ? 'Michael R.' : 'Jennifer L.'}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">Patient</div>
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${t.author.split(',')[0]}</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">${t.author.split(',')[1]?.trim() || 'Client'}</div>
           </div>
         </div>`).join('')}
       </div>
@@ -3177,19 +3249,24 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:0.75rem">What Our Customers Say</h2>
       <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};margin-bottom:3rem">${content.aboutMission || 'Read reviews from happy customers.'}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${[0,1,2].map(i => {
-          const t = i === 0 && content.testimonial ? content.testimonial : null
-          const quote = t ? t.quote : (content.services[i]?.description || '')
-          const author = t ? t.author : (content.services[i]?.name || 'Happy Customer')
-          const rating = t ? t.rating : 5
+        ${(() => {
+          const fallbacks = getFallbackTestimonials(content, businessCategory)
+          const allTestimonials = [
+            content.testimonial!,
+            ...(content.testimonials?.slice(1, 3) || fallbacks)
+          ]
+          return allTestimonials.map((t, i) => {
+          const quote = t.quote
+          const author = t.author
+          const rating = t.rating || 5
           return `
         <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2rem 1.5rem;text-align:center;position:relative;margin-top:2rem">
           <div style="width:64px;height:64px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.2rem;font-weight:700;position:absolute;top:-32px;left:50%;transform:translateX(-50%)">${author.charAt(0)}</div>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7;font-style:italic;margin-top:1.5rem;margin-bottom:1rem">"${quote}"</p>
-          <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${homeText};margin-bottom:0.5rem">${author}</p>
+          <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${homeText};margin-bottom:0.5rem">${author.split(',')[0]}</p>
           <div style="color:#f59e0b;font-size:0.9rem">${'&#9733;'.repeat(rating)}</div>
         </div>`
-        }).join('')}
+        }).join('') })()}
       </div>
     </div>
   </section>` : ''
@@ -3448,30 +3525,20 @@ function buildTradesTemplate(data: TemplateData): string {
             <div style="font-family:var(--body-font);font-size:0.8rem;color:${trMuted}">${content.testimonial.author.split(',')[1]?.trim() || 'Customer'}</div>
           </div>
         </div>
-        ${content.stats.slice(1, 3).map((s, i) => `
+        ${getFallbackTestimonials(content, businessCategory).map(t => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:${trText};line-height:1.7;margin-bottom:1.5rem">"${i === 0 ? 'Professional, reliable, and fair pricing. Couldn\'t ask for more.' : 'Fast response time and excellent workmanship. Highly recommend.'}"</p>
+          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">${'&#9733;'.repeat(t.rating || 5)}</div>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:${trText};line-height:1.7;margin-bottom:1.5rem">"${t.quote}"</p>
           <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">${i === 0 ? 'Mike R.' : 'Jennifer L.'}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:${trMuted}">${i === 0 ? 'Business Owner' : 'Homeowner'}</div>
+            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">${t.author.split(',')[0]}</div>
+            <div style="font-family:var(--body-font);font-size:0.8rem;color:${trMuted}">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
           </div>
         </div>`).join('')}
       </div>
     </div>
   </section>` : ''
 
-  // Section 6: Stats row — coloured numbers
-  const statsRow = `
-  <section style="padding:60px 2rem;background:${trBg}">
-    <div style="max-width:900px;margin:0 auto;display:flex;justify-content:center;gap:5rem;flex-wrap:wrap;text-align:center">
-      ${content.stats.slice(0, 3).map(s => `
-      <div>
-        <div style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${trBlue}">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${s.label}</div>
-      </div>`).join('')}
-    </div>
-  </section>`
+  // Section 6: Stats row removed — stats already shown in darkBand above
 
   // Section 7: Contact — 2-column: info left, form right
   const contactSection = `
@@ -3562,7 +3629,6 @@ ${trNav}
   ${servicesSection}
   ${aboutSection}
   ${testimonialSection}
-  ${statsRow}
   ${contactSection}
 
 ${trFooter}
@@ -3693,13 +3759,13 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 6: Why Choose Us — uses features (unique selling points), NOT services
+  // Section 6: What Sets Us Apart — uses features (unique selling points), NOT services
   const featuresData = content.features || content.services.slice(0, 3)
   const featureImgs = featuresData.map(() => nextImg())
   const productCards = `
   <section style="padding:80px 2rem;background:${retailBg}">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${retailText};text-align:center;margin-bottom:3rem">Why Choose Us</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${retailText};text-align:center;margin-bottom:3rem">What Sets Us Apart</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
         ${featuresData.slice(0, 3).map((f, i) => `
         <div style="text-align:center">
@@ -3782,8 +3848,8 @@ ${retailNav}
   ${fullWidthImage}
   ${featureSection}
   ${productCards}
-  ${aboutSection}
   ${communitySection}
+  ${aboutSection}
   ${buildContactSection(content, locationInfo)}
 
 ${retailFooter}
