@@ -1392,7 +1392,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   const propertyListings = (content.projectCaptions && content.projectCaptions.length >= 3)
     ? content.projectCaptions.slice(0, 3).map((caption: string, i: number) => ({
         name: caption,
-        suburb: (content.features && content.features[i]) ? content.features[i].title : locationInfo.city,
+        suburb: (content.features && content.features[i]) ? content.features[i].name : locationInfo.city,
         details: (content.features && content.features[i]) ? content.features[i].description : defaultPropertyListings[i].details,
         label: i === 2 ? 'Recently Sold' : 'For Sale',
       }))
@@ -3716,9 +3716,6 @@ function buildRetailTemplate(data: TemplateData): string {
   const stockPool = buildImagePool(images, stockImages, businessName)
   const aboutImg = stockImages.about
   let _pi = 3
-  const serviceImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
-  const galleryImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
-
   // Retail uses a warm light theme
   const retailBg = '#f5f0eb'
   const retailCardBg = '#ffffff'
