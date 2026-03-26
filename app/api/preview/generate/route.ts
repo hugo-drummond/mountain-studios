@@ -1620,7 +1620,7 @@ function buildEventsTemplate(data: TemplateData): string {
           <div style="border-left:${i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};padding:1.5rem">
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
             <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
-            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:200px">
+            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:180px">
               <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             </div>
           </div>`).join('')}
@@ -1629,23 +1629,23 @@ function buildEventsTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 3: Alternating 50/50 feature sections — teal bg blocks
+  // Section 3: Alternating 50/50 feature sections — white bg with rounded-corner images
   const featureSections = content.services.slice(0, 2).map((s, i) => `
-  <section style="background:${i % 2 === 0 ? evtTeal : evtBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:70vh">
+  <section style="background:${evtBg};padding:60px 2rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       ${i % 2 === 0 ? `
-      <div style="overflow:hidden">
+      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:400px">
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
-      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem">${s.description}</p>
+      <div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
+        <p style="font-family:var(--body-font);font-size:1rem;color:${evtMuted};line-height:1.7;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:#fff;color:${evtText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid #fff;color:#fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
         </div>
       </div>` : `
-      <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
+      <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${evtMuted};line-height:1.7;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
@@ -1653,7 +1653,7 @@ function buildEventsTemplate(data: TemplateData): string {
           <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
         </div>
       </div>
-      <div style="overflow:hidden">
+      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:400px">
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>`}
     </div>
@@ -1745,8 +1745,11 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${serviceGrid}
-  ${featureSections}
   ${aboutSection}
+  <section style="padding:40px 2rem 0;background:${evtBg};text-align:center">
+    <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
+  </section>
+  ${featureSections}
   ${testimonialSection}
   ${buildContactSection(content, locationInfo)}
 

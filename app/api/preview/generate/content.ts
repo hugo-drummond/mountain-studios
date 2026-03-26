@@ -4638,7 +4638,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Free Weights",
           "Cardio"
         ],
-        "serviceImageQuery": "free weights area dumbbells barbell bench press rack gym"
+        "serviceImageQuery": "man lifting heavy barbell squat rack commercial gym weights"
       },
       {
         "name": "Group Fitness Classes",
@@ -4647,7 +4647,7 @@ export const presetContent: Record<string, PresetContent> = {
           "HIIT",
           "Cycling"
         ],
-        "serviceImageQuery": "group fitness class people doing HIIT exercises bright gym studio spinning bikes energy"
+        "serviceImageQuery": "group fitness class women exercising aerobics bright studio instructor"
       },
       {
         "name": "Personal Training & Biokinetics",
@@ -4656,7 +4656,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Training",
           "Biokinetics"
         ],
-        "serviceImageQuery": "personal training session TRX suspension straps gym"
+        "serviceImageQuery": "personal trainer spotting client bench press gym session"
       },
       {
         "name": "Recovery & Wellness Zone",
@@ -4665,7 +4665,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sauna",
           "Cold Plunge"
         ],
-        "serviceImageQuery": "sauna interior wooden benches steam heat wellness recovery"
+        "serviceImageQuery": "wooden sauna interior hot stones steam dim lighting relaxation"
       }
     ],
     "galleryHeading": "In the Gym",
@@ -15068,7 +15068,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Drone",
             "Aerial"
           ],
-          "serviceImageQuery": "aerial drone photo coastline landscape overhead view"
+          "serviceImageQuery": "person operating drone controller outdoors field open sky"
         }
     ],
     "galleryHeading": "From the Portfolio",
@@ -15121,9 +15121,10 @@ export const presetContent: Record<string, PresetContent> = {
       "interior architectural photography bright living room natural light windows"
     ],
     "features": [
-      { "name": "Edited Gallery in 7 Days", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing portrait photos on computer monitor lightroom retouching" },
-      { "name": "Natural, Unposed Direction", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "photographer directing couple during portrait session outdoors natural light" },
-      { "name": "Full Commercial Licensing", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "printed photography portfolio book open on desk professional images layout" }
+      { "name": "Wedding & Events", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing portrait photos on computer monitor lightroom retouching" },
+      { "name": "Commercial & Product", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "photographer directing couple during portrait session outdoors natural light" },
+      { "name": "Portrait & Headshots", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "printed photography portfolio book open on desk professional images layout" },
+      { "name": "Architecture & Interiors", "description": "Property, construction, events, and landscape — dramatic perspectives from above.", "imageQuery": "modern house exterior architectural photography twilight blue hour" }
     ]
   },
   "Videographer": {
@@ -15887,7 +15888,7 @@ export const presetContent: Record<string, PresetContent> = {
           "2D Animation"
         ],
         "icon": "play",
-        "serviceImageQuery": "person working at computer with colourful graphics on large monitor creative studio"
+        "serviceImageQuery": "person sitting at desk large computer monitor colourful screen creative studio"
       },
       {
         "name": "Motion Graphics & Titles",
@@ -15897,7 +15898,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Logo Animation"
         ],
         "icon": "film",
-        "serviceImageQuery": "video editor working at desk with two monitors colourful timeline creative office"
+        "serviceImageQuery": "hands typing keyboard multiple monitors dark room colourful screens"
       },
       {
         "name": "3D Animation & Visualisation",
@@ -15907,7 +15908,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product Vis"
         ],
         "icon": "box",
-        "serviceImageQuery": "designer working on 3D model computer screen dark studio multiple monitors"
+        "serviceImageQuery": "designer working two monitors dark studio 3D modelling creative"
       },
         {
           "name": "Interactive & UI Animation",
@@ -15916,7 +15917,7 @@ export const presetContent: Record<string, PresetContent> = {
             "UI Animation",
             "Micro-Interaction"
           ],
-          "serviceImageQuery": "designer working on mobile app prototype wireframe desk notebook laptop screen"
+          "serviceImageQuery": "designer sketching wireframe notebook laptop desk overhead view"
         }
     ],
     "galleryHeading": "Things We’ve Set in Motion",
@@ -15963,10 +15964,10 @@ export const presetContent: Record<string, PresetContent> = {
     "ogImageQuery": "colourful abstract light trails long exposure neon purple blue creative",
     "aboutImageQuery": "artist drawing on graphics tablet pen stylus at desk with computer monitor",
     "galleryImageQueries": [
-      "person working at computer large colourful screen creative office workspace",
-      "close up hands drawing on graphics tablet digital pen stylus",
-      "modern creative studio workspace desk monitors colourful lights dark room",
-      "team watching presentation on large screen colourful office meeting"
+      "team watching presentation large screen colourful office meeting room",
+      "creative professional drawing graphics tablet pen monitor desk",
+      "dark creative studio multiple computer screens colourful editing workspace",
+      "person working laptop coffee shop table creative freelancer"
     ],
     "features": [
       { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "woman watching video on laptop screen colourful content bright living room" },
