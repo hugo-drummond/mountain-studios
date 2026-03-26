@@ -1429,19 +1429,19 @@ export const presetContent: Record<string, PresetContent> = {
         "name": "Women's & Men's Collections",
         "description": "Seasonal clothing lines from emerging and established designers, refreshed monthly.",
         "tags": ["Women's", "Men's"],
-        "serviceImageQuery": "clothing rack dresses hanging in fashion store"
+        "serviceImageQuery": "women clothing rack dresses blouses hanging fashion store warm lighting"
       },
       {
         "name": "Shoes & Accessories",
         "description": "Curated footwear, bags, jewellery, and accessories to complete every outfit.",
         "tags": ["Shoes", "Accessories"],
-        "serviceImageQuery": "shoes displayed on shelves fashion retail store"
+        "serviceImageQuery": "women shoes heels boots displayed shelves fashion retail store"
       },
       {
         "name": "Personal Styling",
         "description": "Complimentary personal styling consultations in-store \u2014 we help you find what works for you.",
         "tags": ["Styling", "Consultation"],
-        "serviceImageQuery": "fashion accessories scarves bags jewellery counter display"
+        "serviceImageQuery": "personal stylist helping woman choose outfit clothing store mirror"
       },
       {
         "name": "Alterations & Tailoring",
@@ -1450,7 +1450,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Alterations",
           "Tailoring"
         ],
-        "serviceImageQuery": "sewing machine thread fabric alteration close-up"
+        "serviceImageQuery": "seamstress sewing machine pinning dress alteration close up fashion"
       }
     ],
     "galleryHeading": "In the Store",
@@ -1470,19 +1470,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "stylish, warm, curated",
-    "heroImageQuery": "clothing store interior hanging rails garments organised racks",
-    "ogImageQuery": "clothing rack fashion store garments hanging",
-    "aboutImageQuery": "shop assistant arranging clothing on display table",
+    "heroImageQuery": "woman browsing clothing rack boutique store warm lighting fashion retail interior",
+    "ogImageQuery": "curated clothing rack dresses hanging boutique warm lighting",
+    "aboutImageQuery": "fashion retail shop assistant styling mannequin warm interior display",
     "galleryImageQueries": [
-      "clothing store interior racks hangers organised",
-      "fashion accessories display scarves bags shelf",
-      "fitting room mirror clothing store curtain",
-      "clothing store window display mannequins dressed"
+      "women clothing store interior warm lighting racks organised dresses",
+      "fashion accessories display handbags scarves jewellery shelf boutique",
+      "fitting room mirror clothing store woman trying on dress",
+      "clothing store window display mannequins styled outfits street view",
+      "customer browsing denim jeans rack fashion retail store",
+      "folded knitwear sweaters stacked shelves fashion retail display",
+      "fashion retail store checkout counter shopping bags branded",
+      "clothing store interior wide angle racks warm wooden floors"
     ],
     "features": [
-      { "name": "Hand-Picked Curation", "description": "Every item on our rails is personally selected — we carry fewer pieces, but every single one earns its place. No filler, no fast fashion.", "imageQuery": "fashion buyer selecting clothing from rack curated boutique" },
-      { "name": "Complimentary Styling", "description": "Our in-store stylists work with you one-on-one to build outfits that suit your body, lifestyle, and budget — no appointment needed.", "imageQuery": "personal stylist helping customer try on outfit fitting room mirror" },
-      { "name": "Alterations On-Site", "description": "Everything you buy can be tailored to fit perfectly. Our in-house seamstress ensures nothing leaves the store unless it looks like it was made for you.", "imageQuery": "seamstress measuring fabric alteration sewing machine fashion store" }
+      { "name": "Hand-Picked Curation", "description": "Every item on our rails is personally selected — we carry fewer pieces, but every single one earns its place. No filler, no fast fashion.", "imageQuery": "fashion buyer selecting garments from clothing rack curated boutique warm light" },
+      { "name": "Complimentary Styling", "description": "Our in-store stylists work with you one-on-one to build outfits that suit your body, lifestyle, and budget — no appointment needed.", "imageQuery": "personal stylist helping woman choose outfit fitting room mirror clothing store" },
+      { "name": "Alterations On-Site", "description": "Everything you buy can be tailored to fit perfectly. Our in-house seamstress ensures nothing leaves the store unless it looks like it was made for you.", "imageQuery": "seamstress pinning hem dress alteration sewing clothing store" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1501,19 +1505,19 @@ export const presetContent: Record<string, PresetContent> = {
         "name": "Fresh Produce & Dairy",
         "description": "Locally sourced fruit, vegetables, free-range eggs, and artisan dairy delivered fresh every morning.",
         "tags": ["Fresh Produce", "Dairy"],
-        "serviceImageQuery": "fresh produce fruit vegetables displayed grocery"
+        "serviceImageQuery": "fresh produce fruit vegetables colourful display crates grocery store"
       },
       {
         "name": "Artisan & Specialty Goods",
         "description": "Craft breads, local honey, preserves, coffee, and specialty foods you won't find in chain stores.",
         "tags": ["Artisan", "Specialty"],
-        "serviceImageQuery": "deli counter prepared meals salads grocery"
+        "serviceImageQuery": "artisan bread loaves honey jars preserves specialty food shelf grocery"
       },
       {
         "name": "Everyday Essentials",
         "description": "Pantry staples, household goods, and everyday groceries at fair prices with no membership needed.",
         "tags": ["Pantry", "Household"],
-        "serviceImageQuery": "grocery delivery bags packed products doorstep"
+        "serviceImageQuery": "pantry staples pasta rice canned goods organised grocery shelf"
       },
       {
         "name": "Online Ordering & Delivery",
@@ -1522,7 +1526,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Online Orders",
           "Same-Day Delivery"
         ],
-        "serviceImageQuery": "grocery basket filled products counter checkout"
+        "serviceImageQuery": "online grocery order packed brown bags ready collection counter"
       }
     ],
     "galleryHeading": "Fresh from the Shelves",
@@ -1542,19 +1546,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, natural, inviting",
-    "heroImageQuery": "grocery store fresh produce fruit vegetables display shelves",
-    "ogImageQuery": "grocery store produce aisle fresh vegetables fruit",
-    "aboutImageQuery": "grocer arranging fresh produce on display shelf",
+    "heroImageQuery": "fresh produce fruit vegetables colourful display independent grocery store warm lighting",
+    "ogImageQuery": "fresh fruit vegetables stacked crates grocery store display",
+    "aboutImageQuery": "grocer in apron arranging fresh tomatoes produce shelf local store",
     "galleryImageQueries": [
-      "grocery store interior aisles shelves stocked products",
-      "fresh vegetables crates market display tomatoes peppers",
-      "deli counter meats cheeses grocery store",
-      "bakery section bread loaves grocery store"
+      "grocery store interior aisles stocked shelves warm lighting",
+      "fresh vegetables crates wooden display tomatoes peppers carrots market",
+      "artisan deli counter meats cheeses olives grocery store glass case",
+      "bakery section fresh bread loaves rolls crusty grocery display",
+      "local honey jars preserves artisan products shelf grocery",
+      "free range eggs dairy milk bottles displayed grocery refrigerator",
+      "grocery store exterior storefront awning fresh produce street",
+      "woman shopping selecting fresh fruit oranges apples grocery store"
     ],
     "features": [
-      { "name": "Farm-Direct Freshness", "description": "We source produce directly from local farms and deliver it to our shelves the same morning. If it’s not fresh, it’s not on the floor.", "imageQuery": "fresh vegetables crates farmer delivery morning market" },
-      { "name": "Every Item Quality-Checked", "description": "Our buyers personally taste-test and approve every product we stock. If we wouldn’t eat it ourselves, we don’t sell it to you.", "imageQuery": "quality inspector checking fresh produce grocery warehouse" },
-      { "name": "Community-First Pricing", "description": "We keep our margins fair because we’d rather have loyal neighbours than one-time customers. Weekly specials that actually save you money.", "imageQuery": "family shopping grocery store aisle pushing cart smiling" }
+      { "name": "Farm-Direct Freshness", "description": "We source produce directly from local farms and deliver it to our shelves the same morning. If it’s not fresh, it’s not on the floor.", "imageQuery": "farmer unloading fresh vegetable crates delivery morning grocery store" },
+      { "name": "Every Item Quality-Checked", "description": "Our buyers personally taste-test and approve every product we stock. If we wouldn’t eat it ourselves, we don’t sell it to you.", "imageQuery": "grocer inspecting quality fresh produce tomatoes hands close up" },
+      { "name": "Community-First Pricing", "description": "We keep our margins fair because we’d rather have loyal neighbours than one-time customers. Weekly specials that actually save you money.", "imageQuery": "family shopping fresh produce grocery store aisle pushing cart smiling" }
     ],
     "contactHours": "Mon\u2013Sat: 07:00\u201319:00 \u00b7 Sun: 08:00\u201315:00 \u00b7 Delivery Mon\u2013Sat"
   },
@@ -1573,19 +1581,19 @@ export const presetContent: Record<string, PresetContent> = {
         "name": "In-Store Shopping",
         "description": "Browse our curated floor personally and get genuine recommendations from our team.",
         "tags": ["In-Store", "Expert Advice"],
-        "serviceImageQuery": "retail products displayed shelves organised store"
+        "serviceImageQuery": "curated retail products displayed wooden shelves homeware candles store warm"
       },
       {
         "name": "Online Store",
         "description": "Shop our full range online with fast dispatch and free delivery on orders over R500.",
         "tags": ["Online", "Fast Delivery"],
-        "serviceImageQuery": "gift wrapping counter retail store packaging"
+        "serviceImageQuery": "online shop products packaged boxes ready dispatch retail"
       },
       {
         "name": "Gift Wrapping & Cards",
         "description": "Complimentary gift wrapping and personalised cards on any in-store or online purchase.",
         "tags": ["Gift Wrap", "Personalised"],
-        "serviceImageQuery": "retail delivery packages boxed products"
+        "serviceImageQuery": "gift wrapping ribbon tissue paper hands counter retail store"
       },
       {
         "name": "Loyalty Programme",
@@ -1594,7 +1602,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Loyalty",
           "Rewards"
         ],
-        "serviceImageQuery": "retail counter shopping bags branded packaging"
+        "serviceImageQuery": "customer at retail counter branded shopping bags loyalty card purchase"
       }
     ],
     "galleryHeading": "In the Shop",
@@ -1614,19 +1622,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, curated, inviting",
-    "heroImageQuery": "retail shop interior shelves products display counter",
-    "ogImageQuery": "retail shop interior display shelves products",
-    "aboutImageQuery": "shop owner arranging products on display shelf",
+    "heroImageQuery": "independent retail shop interior curated products shelves warm lighting wooden display",
+    "ogImageQuery": "curated retail store shelves products homeware warm interior",
+    "aboutImageQuery": "shop owner arranging curated products display table independent store warm light",
     "galleryImageQueries": [
-      "retail store interior shelves products organised",
-      "shop counter products gift wrap display",
-      "retail store window display storefront street view",
-      "curated homeware products displayed on shelf"
+      "independent retail store interior shelves curated products warm wood",
+      "gift wrapping station ribbon tissue paper retail counter hands",
+      "retail store window display storefront charming street view awning",
+      "curated homeware ceramics candles products displayed wooden shelf",
+      "customer browsing products shelves independent retail store",
+      "branded shopping bags retail counter purchase packaging",
+      "retail store interior wide angle warm lighting products organised",
+      "shop assistant recommending product to smiling customer retail store"
     ],
     "features": [
-      { "name": "Genuinely Independent", "description": "We’re not a franchise and we don’t answer to a head office. Every product on our shelves was chosen by us, for our community.", "imageQuery": "independent shop owner standing proudly in front of store" },
-      { "name": "Staff Who Actually Know the Stock", "description": "Ask our team about any product and they’ll give you an honest answer. We train everyone to advise, not just ring up sales.", "imageQuery": "shop assistant helping customer at retail counter product advice" },
-      { "name": "Hassle-Free Returns", "description": "Changed your mind? Bring it back. Our return policy is simple and fair because we’d rather keep your trust than keep your money.", "imageQuery": "customer returning product at retail store counter receipt" }
+      { "name": "Genuinely Independent", "description": "We’re not a franchise and we don’t answer to a head office. Every product on our shelves was chosen by us, for our community.", "imageQuery": "independent shop owner standing proudly inside curated retail store" },
+      { "name": "Staff Who Actually Know the Stock", "description": "Ask our team about any product and they’ll give you an honest answer. We train everyone to advise, not just ring up sales.", "imageQuery": "retail shop assistant helping customer select product from shelf advice" },
+      { "name": "Hassle-Free Returns", "description": "Changed your mind? Bring it back. Our return policy is simple and fair because we’d rather keep your trust than keep your money.", "imageQuery": "friendly customer service exchange retail counter shopping bag" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1648,7 +1660,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Local Designers",
           "Limited Pieces"
         ],
-        "serviceImageQuery": "boutique clothing rack curated dresses elegant"
+        "serviceImageQuery": "designer dresses hanging curated clothing rack boutique warm elegant lighting"
       },
       {
         "name": "Accessories & Jewellery",
@@ -1657,7 +1669,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Accessories",
           "Jewellery"
         ],
-        "serviceImageQuery": "designer handbags jewellery accessories displayed boutique shelf"
+        "serviceImageQuery": "designer leather handbags gold jewellery necklaces displayed boutique glass shelf"
       },
       {
         "name": "Personal Styling",
@@ -1666,7 +1678,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Styling",
           "Wardrobe Edit"
         ],
-        "serviceImageQuery": "clothing rack with curated designer dresses elegant boutique"
+        "serviceImageQuery": "woman having personal styling consultation boutique fashion store mirror outfit"
       },
       {
         "name": "Trunk Shows & Pop-Ups",
@@ -1675,7 +1687,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Trunk Shows",
           "Limited Edition"
         ],
-        "serviceImageQuery": "fashion pop-up event clothing displayed gallery"
+        "serviceImageQuery": "fashion trunk show pop up event designer clothing displayed boutique guests"
       }
     ],
     "galleryHeading": "The Current Edit",
@@ -1711,19 +1723,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, minimal, editorial",
-    "heroImageQuery": "boutique interior clothing rack elegant minimal hangers",
-    "ogImageQuery": "boutique fashion store interior clothing display",
-    "aboutImageQuery": "boutique owner styling mannequin in store",
+    "heroImageQuery": "elegant boutique interior clothing rack designer dresses minimal warm lighting hangers",
+    "ogImageQuery": "boutique fashion store interior designer clothing rack elegant minimal",
+    "aboutImageQuery": "boutique owner styling dress on mannequin elegant store interior",
     "galleryImageQueries": [
-      "boutique interior minimal clothing rack hangers",
-      "designer handbags displayed shelf boutique store",
-      "boutique fitting room mirror curtain elegant",
-      "boutique window display mannequin dressed storefront"
+      "boutique interior minimal designer dresses hanging rack warm lighting",
+      "designer leather handbags displayed glass shelf boutique store luxury",
+      "woman trying on dress boutique fitting room mirror elegant curtain",
+      "boutique storefront window display mannequin styled outfit evening",
+      "silk scarves jewellery accessories displayed velvet tray boutique",
+      "woman browsing designer clothing rack boutique store elegant interior",
+      "boutique checkout counter tissue paper shopping bag branded luxury",
+      "close up designer dress fabric texture hanger boutique rail"
     ],
     "features": [
-      { "name": "Ruthless Edit", "description": "We stock fewer labels than a department store on purpose. Every designer on our rails was chosen because their work is exceptional — not because they paid for shelf space.", "imageQuery": "minimalist boutique interior few carefully selected garments display" },
-      { "name": "Private Styling Appointments", "description": "Book the store to yourself for an hour. Our stylists pull looks based on your body, colouring, and lifestyle — no upselling, just honest advice.", "imageQuery": "private fashion styling session boutique personal shopper client" },
-      { "name": "Pieces That Last", "description": "We prioritise quality fabrics and timeless cuts over trends. Most of what we carry will look just as good in five years as it does today.", "imageQuery": "high quality fabric clothing close up texture stitching detail" }
+      { "name": "Ruthless Edit", "description": "We stock fewer labels than a department store on purpose. Every designer on our rails was chosen because their work is exceptional — not because they paid for shelf space.", "imageQuery": "minimalist boutique interior carefully selected designer garments spaced rack" },
+      { "name": "Private Styling Appointments", "description": "Book the store to yourself for an hour. Our stylists pull looks based on your body, colouring, and lifestyle — no upselling, just honest advice.", "imageQuery": "personal stylist selecting outfit for woman boutique private appointment" },
+      { "name": "Pieces That Last", "description": "We prioritise quality fabrics and timeless cuts over trends. Most of what we carry will look just as good in five years as it does today.", "imageQuery": "luxury fabric cashmere wool clothing detail quality stitching close up" }
     ],
     "contactHours": "Mon\u2013Fri: 09:30\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1745,7 +1761,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Same-Day",
           "Hand-Tied"
         ],
-        "serviceImageQuery": "fresh flower bouquet wrapped hand delivery"
+        "serviceImageQuery": "hand tied fresh flower bouquet roses wrapped paper florist hands ribbon"
       },
       {
         "name": "Wedding & Event Florals",
@@ -1754,7 +1770,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding Flowers",
           "Event Design"
         ],
-        "serviceImageQuery": "wedding flowers bouquet arrangement ceremony"
+        "serviceImageQuery": "wedding bridal bouquet white roses greenery ceremony arch flowers"
       },
       {
         "name": "Weekly Flower Subscriptions",
@@ -1763,7 +1779,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Subscription",
           "Weekly Delivery"
         ],
-        "serviceImageQuery": "corporate flower arrangement vase office reception"
+        "serviceImageQuery": "weekly flower subscription arrangement vase fresh blooms home table"
       },
       {
         "name": "Dried & Preserved Florals",
@@ -1772,7 +1788,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dried Flowers",
           "Preserved"
         ],
-        "serviceImageQuery": "dried flower arrangement vase preserved bouquet"
+        "serviceImageQuery": "dried preserved flower arrangement pampas grass eucalyptus vase neutral tones"
       }
     ],
     "galleryHeading": "In Bloom",
@@ -1808,19 +1824,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "lush, romantic, botanical",
-    "heroImageQuery": "florist shop buckets fresh flowers roses tulips colourful",
-    "ogImageQuery": "flower bouquet roses wrapped florist shop",
-    "aboutImageQuery": "florist arranging bouquet hands flowers ribbon table",
+    "heroImageQuery": "florist shop interior colourful fresh flower buckets roses peonies tulips display warm lighting",
+    "ogImageQuery": "hand tied flower bouquet roses eucalyptus wrapped kraft paper florist",
+    "aboutImageQuery": "florist hands arranging fresh flower bouquet ribbon cutting table workshop",
     "galleryImageQueries": [
-      "florist shop interior buckets flowers display",
-      "wedding bouquet white roses greenery ribbon",
-      "flower arrangement vase table centrepiece",
-      "dried flower bouquet wrapped kraft paper"
+      "florist shop interior buckets fresh flowers roses colourful display",
+      "bridal wedding bouquet white roses greenery ribbon soft light",
+      "flower arrangement centrepiece vase dinner table elegant",
+      "dried flower bouquet preserved pampas grass kraft paper wrap",
+      "florist delivering wrapped bouquet to customer front door smiling",
+      "colourful peony roses tulips close up fresh petals detail",
+      "florist studio workbench ribbons secateurs stems flowers preparation",
+      "flower subscription box weekly delivery arrangement vase home"
     ],
     "features": [
-      { "name": "Seasonal, Never Forced", "description": "We only work with what’s blooming right now. That means every arrangement is genuinely fresh, naturally vibrant, and impossible to replicate.", "imageQuery": "seasonal flowers bucket fresh morning flower market colourful" },
-      { "name": "Same-Day Delivery You Can Trust", "description": "Order before noon and we’ll hand-deliver across Cape Town the same day. Every bouquet arrives exactly as it left our studio.", "imageQuery": "flower delivery driver carrying bouquet to front door residential" },
-      { "name": "Wedding Specialists", "description": "We’ve designed flowers for over 200 weddings. From intimate elopements to grand receptions, we handle every stem from concept to cleanup.", "imageQuery": "wedding venue table decorated flowers centrepiece elegant reception" }
+      { "name": "Seasonal, Never Forced", "description": "We only work with what’s blooming right now. That means every arrangement is genuinely fresh, naturally vibrant, and impossible to replicate.", "imageQuery": "seasonal fresh flowers bucket morning flower market colourful roses peonies" },
+      { "name": "Same-Day Delivery You Can Trust", "description": "Order before noon and we’ll hand-deliver across Cape Town the same day. Every bouquet arrives exactly as it left our studio.", "imageQuery": "florist delivering fresh bouquet wrapped flowers to front door residential home" },
+      { "name": "Wedding Specialists", "description": "We’ve designed flowers for over 200 weddings. From intimate elopements to grand receptions, we handle every stem from concept to cleanup.", "imageQuery": "wedding reception table flowers centrepiece roses candles elegant venue" }
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 Sun: By appointment"
   },
@@ -1842,7 +1862,7 @@ export const presetContent: Record<string, PresetContent> = {
           "SA-Made",
           "Curated"
         ],
-        "serviceImageQuery": "gift hamper basket wrapped products ribbon"
+        "serviceImageQuery": "curated gift shop shelves ceramics candles homeware lifestyle products warm"
       },
       {
         "name": "Custom Gift Boxes",
@@ -1851,7 +1871,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gift Boxes",
           "Personalised"
         ],
-        "serviceImageQuery": "scented candles display jars gift shop shelf"
+        "serviceImageQuery": "custom gift box products arranged ribbon tissue paper branded packaging"
       },
       {
         "name": "Corporate Gifting",
@@ -1860,7 +1880,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate Gifts",
           "Bulk Orders"
         ],
-        "serviceImageQuery": "personalised gifts engraved mugs frames"
+        "serviceImageQuery": "corporate gift hampers branded packaging bulk order boxes stacked"
       },
       {
         "name": "Kids & Baby Gifts",
@@ -1869,7 +1889,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Baby Gifts",
           "Kids"
         ],
-        "serviceImageQuery": "baby gift set blanket toy box wrapped"
+        "serviceImageQuery": "baby gift set soft blanket wooden toy rattle wrapped box"
       }
     ],
     "galleryHeading": "Worth Giving",
@@ -1905,19 +1925,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, curated, celebratory",
-    "heroImageQuery": "gift shop interior shelves candles homeware mugs display",
-    "ogImageQuery": "gift shop interior curated display homeware",
-    "aboutImageQuery": "shop owner wrapping gift with ribbon at counter",
+    "heroImageQuery": "gift shop interior shelves scented candles ceramics mugs homeware curated warm display",
+    "ogImageQuery": "curated gift shop interior candles homeware ceramics warm shelves",
+    "aboutImageQuery": "hands wrapping gift box ribbon tissue paper gift shop counter",
     "galleryImageQueries": [
-      "gift shop shelves products candles ceramics",
-      "greeting cards display rack gift shop",
-      "gift wrapping ribbon bows tissue paper table",
-      "handmade crafts pottery display gift shop"
+      "gift shop shelves candles ceramics handmade products warm display",
+      "greeting cards display rack stationery colourful gift shop",
+      "gift wrapping station ribbon bows tissue paper hands counter",
+      "handmade pottery ceramics mugs display shelf gift shop",
+      "curated gift hamper basket products wrapped ribbon bow",
+      "scented candles jars displayed wooden shelf warm lighting gift",
+      "baby gifts blanket soft toy wooden rattle gift shop display",
+      "customer browsing gift shop shelves selecting present smiling"
     ],
     "features": [
-      { "name": "Locally Sourced, Always", "description": "Over 80% of our products are made by South African artisans and small makers. When you buy here, you’re supporting real people, not factories.", "imageQuery": "handmade artisan products ceramics candles local craft market" },
-      { "name": "Gift Wrapping Included", "description": "Every purchase is wrapped beautifully at no extra charge. Walk out with something that’s ready to give — no last-minute scramble for paper and ribbon.", "imageQuery": "gift being wrapped with ribbon bow tissue paper elegant" },
-      { "name": "We’ll Help You Choose", "description": "Not sure what to get? Tell us who it’s for and we’ll suggest three perfect options. Our staff are genuinely great at this.", "imageQuery": "shop assistant helping customer select gift from display shelf" }
+      { "name": "Locally Sourced, Always", "description": "Over 80% of our products are made by South African artisans and small makers. When you buy here, you’re supporting real people, not factories.", "imageQuery": "handmade artisan ceramics candles products displayed local craft market stall" },
+      { "name": "Gift Wrapping Included", "description": "Every purchase is wrapped beautifully at no extra charge. Walk out with something that’s ready to give — no last-minute scramble for paper and ribbon.", "imageQuery": "hands wrapping gift box elegant ribbon bow tissue paper close up" },
+      { "name": "We’ll Help You Choose", "description": "Not sure what to get? Tell us who it’s for and we’ll suggest three perfect options. Our staff are genuinely great at this.", "imageQuery": "shop assistant helping customer choose gift from curated shelf display" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -1939,7 +1963,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Bespoke",
           "Engagement"
         ],
-        "serviceImageQuery": "engagement ring diamond gold jewellery close-up"
+        "serviceImageQuery": "diamond engagement ring solitaire gold setting close up velvet cushion"
       },
       {
         "name": "Fine Jewellery Collection",
@@ -1948,7 +1972,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Jewellery",
           "Ethical Stones"
         ],
-        "serviceImageQuery": "custom jewellery design workshop goldsmith bench"
+        "serviceImageQuery": "fine jewellery collection gold necklaces bracelets rings display case velvet"
       },
       {
         "name": "Repairs & Remodelling",
@@ -1957,7 +1981,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Repairs",
           "Heirloom Reset"
         ],
-        "serviceImageQuery": "jewellery repair polishing tools workbench"
+        "serviceImageQuery": "jeweller repairing gold ring polishing workbench tools magnifier"
       },
       {
         "name": "Engraving & Personalisation",
@@ -1966,7 +1990,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Engraving",
           "Personalised"
         ],
-        "serviceImageQuery": "engraved ring inscription close-up jewellery"
+        "serviceImageQuery": "engraved wedding ring inscription inside band close up jewellery personalised"
       }
     ],
     "galleryHeading": "From the Bench",
@@ -2002,19 +2026,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "luxurious, intimate, precise",
-    "heroImageQuery": "jewellery display case rings necklaces velvet tray",
-    "ogImageQuery": "diamond ring jewellery display velvet box",
-    "aboutImageQuery": "jeweller goldsmith workbench tools magnifier close-up",
+    "heroImageQuery": "fine jewellery display case diamond rings gold necklaces velvet tray warm spotlight",
+    "ogImageQuery": "diamond engagement ring velvet box jewellery display elegant",
+    "aboutImageQuery": "jeweller goldsmith hands crafting ring workbench magnifier loupe close up",
     "galleryImageQueries": [
-      "jewellery store display case rings gold silver",
-      "engagement ring diamond close-up velvet box",
-      "gold necklace pendant chain jewellery display",
-      "jeweller workshop tools bench magnifier lamp"
+      "jewellery store glass display case rings necklaces gold silver spotlight",
+      "diamond engagement ring close up velvet cushion box elegant",
+      "gold necklace pendant chain displayed velvet stand jewellery",
+      "jeweller goldsmith workshop bench tools loupe lamp crafting",
+      "woman trying on diamond ring jewellery store counter consultation",
+      "loose gemstones diamonds sapphires displayed velvet tray inspection",
+      "engraved wedding bands gold platinum close up jewellery",
+      "jewellery store interior elegant display cases warm lighting"
     ],
     "features": [
-      { "name": "Handcrafted In-House", "description": "Every piece is made by our goldsmiths in our Cape Town workshop. You can watch your ring being crafted — there’s no middleman and no mass production.", "imageQuery": "goldsmith jeweller crafting ring at workbench tools close up" },
-      { "name": "Ethically Sourced Stones", "description": "We trace every diamond and gemstone back to its origin. Conflict-free sourcing isn’t a marketing claim for us — it’s a non-negotiable.", "imageQuery": "loose diamonds gemstones on velvet tray jeweller inspection" },
-      { "name": "Lifetime Care Guarantee", "description": "Every piece includes complimentary cleaning, inspection, and minor repairs for life. We build relationships, not just jewellery.", "imageQuery": "jeweller cleaning polishing ring professional service close up" }
+      { "name": "Handcrafted In-House", "description": "Every piece is made by our goldsmiths in our Cape Town workshop. You can watch your ring being crafted — there’s no middleman and no mass production.", "imageQuery": "goldsmith hands crafting gold ring workbench tools flame close up" },
+      { "name": "Ethically Sourced Stones", "description": "We trace every diamond and gemstone back to its origin. Conflict-free sourcing isn’t a marketing claim for us — it’s a non-negotiable.", "imageQuery": "loose diamonds gemstones sorted velvet tray jeweller loupe inspection" },
+      { "name": "Lifetime Care Guarantee", "description": "Every piece includes complimentary cleaning, inspection, and minor repairs for life. We build relationships, not just jewellery.", "imageQuery": "jeweller polishing gold ring buffing wheel professional service" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201313:00 \u00b7 Consultations by appointment"
   },
@@ -2036,7 +2064,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Solid Wood",
           "Handcrafted"
         ],
-        "serviceImageQuery": "living room sofa armchair coffee table showroom"
+        "serviceImageQuery": "modern living room sofa armchair coffee table styled furniture showroom warm"
       },
       {
         "name": "Custom Orders",
@@ -2045,7 +2073,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom",
           "Bespoke"
         ],
-        "serviceImageQuery": "custom furniture workshop carpenter wood crafting"
+        "serviceImageQuery": "carpenter craftsman measuring wood custom furniture workshop bespoke"
       },
       {
         "name": "Interior Styling",
@@ -2054,7 +2082,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Styling",
           "Space Planning"
         ],
-        "serviceImageQuery": "interior styled room armchair lamp side table"
+        "serviceImageQuery": "interior styled living room armchair lamp side table rug warm decor"
       },
       {
         "name": "Delivery & Assembly",
@@ -2063,7 +2091,7 @@ export const presetContent: Record<string, PresetContent> = {
           "White-Glove",
           "Assembly"
         ],
-        "serviceImageQuery": "furniture delivery wrapped moving blanket truck"
+        "serviceImageQuery": "furniture delivery men carrying wrapped sofa through front door home"
       }
     ],
     "galleryHeading": "In the Showroom",
@@ -2099,19 +2127,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, natural, crafted",
-    "heroImageQuery": "furniture showroom sofa dining table chairs display",
-    "ogImageQuery": "furniture showroom interior sofa table chairs",
-    "aboutImageQuery": "carpenter sanding solid wood table in workshop",
+    "heroImageQuery": "modern furniture showroom living room sofa dining table chairs warm lighting display",
+    "ogImageQuery": "furniture showroom interior contemporary sofa dining table styled",
+    "aboutImageQuery": "carpenter craftsman sanding solid wood dining table workshop sawdust",
     "galleryImageQueries": [
-      "furniture showroom living room sofa coffee table",
-      "dining table solid wood chairs set showroom",
-      "bedroom furniture bed headboard side tables",
-      "outdoor furniture patio table chairs garden"
+      "furniture showroom living room sofa coffee table rug styled warm",
+      "solid wood dining table chairs set showroom overhead pendant light",
+      "bedroom furniture wooden bed frame headboard side tables lamp",
+      "outdoor patio furniture teak table chairs garden setting",
+      "bookshelf sideboard solid wood furniture showroom display",
+      "carpenter workshop wood shavings tools crafting furniture",
+      "upholstered armchair fabric sofa cushions showroom detail",
+      "furniture showroom interior wide angle contemporary styled rooms"
     ],
     "features": [
-      { "name": "Solid Wood, No Chipboard", "description": "Every timber piece in our range is made from kiln-dried solid hardwood. We don’t sell veneered particleboard disguised as real furniture.", "imageQuery": "solid wood furniture close up grain texture quality craftsmanship" },
-      { "name": "Lifetime Structural Guarantee", "description": "We guarantee the structural integrity of every piece we sell. If a joint fails, we’ll repair or replace it — no questions, no time limit.", "imageQuery": "carpenter inspecting furniture joint quality workshop professional" },
-      { "name": "Custom Sizes Available", "description": "Need a dining table for an awkward space? We’ll build it to your exact dimensions. Custom orders delivered in 6–8 weeks.", "imageQuery": "custom furniture workshop measuring wood craftsman building table" }
+      { "name": "Solid Wood, No Chipboard", "description": "Every timber piece in our range is made from kiln-dried solid hardwood. We don’t sell veneered particleboard disguised as real furniture.", "imageQuery": "solid hardwood furniture grain texture close up quality craftsmanship detail" },
+      { "name": "Lifetime Structural Guarantee", "description": "We guarantee the structural integrity of every piece we sell. If a joint fails, we’ll repair or replace it — no questions, no time limit.", "imageQuery": "carpenter inspecting dovetail joint solid wood furniture workshop" },
+      { "name": "Custom Sizes Available", "description": "Need a dining table for an awkward space? We’ll build it to your exact dimensions. Custom orders delivered in 6–8 weeks.", "imageQuery": "craftsman measuring solid wood plank workshop custom furniture building" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201314:00 \u00b7 Sun: By appointment"
   },
@@ -2133,7 +2165,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Power Tools",
           "Professional Grade"
         ],
-        "serviceImageQuery": "power tools drill saw display hardware shelf"
+        "serviceImageQuery": "power tools cordless drill impact driver display shelf hardware store"
       },
       {
         "name": "Fixings, Paint & Materials",
@@ -2142,7 +2174,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fixings",
           "Paint Range"
         ],
-        "serviceImageQuery": "paint mixing machine colour matching hardware store"
+        "serviceImageQuery": "paint cans colour swatches mixing machine hardware store counter"
       },
       {
         "name": "Trade Accounts & Delivery",
@@ -2151,7 +2183,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Trade Accounts",
           "Delivery"
         ],
-        "serviceImageQuery": "hardware store delivery van building materials trade supplies"
+        "serviceImageQuery": "trade delivery van loading building materials timber hardware store"
       },
       {
         "name": "Key Cutting & Gas Refills",
@@ -2160,7 +2192,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Key Cutting",
           "Gas Refills"
         ],
-        "serviceImageQuery": "key cutting machine brass keys hardware store counter service"
+        "serviceImageQuery": "key cutting machine brass keys close up hardware store counter service"
       }
     ],
     "galleryHeading": "In the Store",
@@ -2196,19 +2228,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "industrial, practical, reliable",
-    "heroImageQuery": "hardware store interior shelves tools drills screws",
-    "ogImageQuery": "hardware store tools display shelves organised",
-    "aboutImageQuery": "hardware store aisle tools organised shelves pegboard",
+    "heroImageQuery": "hardware store interior aisles shelves power tools drills organised pegboard display",
+    "ogImageQuery": "hardware store shelves tools drills organised display aisle",
+    "aboutImageQuery": "hardware store aisle power tools pegboard organised shelves wide angle",
     "galleryImageQueries": [
-      "hardware store shelves power tools drills saws",
-      "paint cans colour swatches display hardware store",
-      "plumbing fittings pipes shelf hardware store",
-      "nuts bolts screws organised bins hardware"
+      "hardware store shelves power tools drills impact drivers saws display",
+      "paint cans colour swatches mixing station hardware store counter",
+      "plumbing fittings copper pipes valves shelf hardware store",
+      "nuts bolts screws nails organised small bins drawers hardware",
+      "garden tools shovels rakes display outdoor hardware section",
+      "electrical supplies cable wire switches hardware store shelf",
+      "hardware store counter staff serving customer tools advice",
+      "hardware store exterior storefront signage entrance"
     ],
     "features": [
-      { "name": "Staff Who’ve Done the Job", "description": "Our counter staff are ex-tradespeople. They don’t just point you to an aisle — they’ll tell you exactly what you need and how to use it.", "imageQuery": "hardware store staff helping customer tools advice counter" },
-      { "name": "15,000+ Lines in Stock", "description": "If we don’t have it on the shelf, it probably doesn’t exist. We carry the widest range in the area so you never have to make two trips.", "imageQuery": "hardware store fully stocked shelves tools supplies organised aisle" },
-      { "name": "Trade Accounts Welcome", "description": "Builders, plumbers, and electricians get 30-day accounts, bulk pricing, and priority service. We know your time on site is money.", "imageQuery": "contractor builder loading supplies pickup truck hardware store" }
+      { "name": "Staff Who’ve Done the Job", "description": "Our counter staff are ex-tradespeople. They don’t just point you to an aisle — they’ll tell you exactly what you need and how to use it.", "imageQuery": "hardware store staff advising customer at counter showing tools expert" },
+      { "name": "15,000+ Lines in Stock", "description": "If we don’t have it on the shelf, it probably doesn’t exist. We carry the widest range in the area so you never have to make two trips.", "imageQuery": "hardware store fully stocked shelves tools supplies aisle deep perspective" },
+      { "name": "Trade Accounts Welcome", "description": "Builders, plumbers, and electricians get 30-day accounts, bulk pricing, and priority service. We know your time on site is money.", "imageQuery": "contractor loading building supplies timber pickup truck hardware store" }
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:30 \u00b7 Sat: 07:00\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -2230,7 +2266,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Literary Fiction",
           "African Lit"
         ],
-        "serviceImageQuery": "book display stack new releases table"
+        "serviceImageQuery": "books stacked display table new releases fiction bookshop warm lighting"
       },
       {
         "name": "Staff Picks & Events",
@@ -2239,7 +2275,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Staff Picks",
           "Author Events"
         ],
-        "serviceImageQuery": "book signing author event bookshop audience evening"
+        "serviceImageQuery": "author book reading event audience seated independent bookshop evening"
       },
       {
         "name": "Special Orders & Gift Cards",
@@ -2248,7 +2284,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Special Orders",
           "Gift Cards"
         ],
-        "serviceImageQuery": "book gift wrapped ribbon bow"
+        "serviceImageQuery": "book gift wrapped brown paper ribbon bow bookshop counter"
       },
       {
         "name": "Children's Section",
@@ -2257,7 +2293,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Children's Books",
           "Picture Books"
         ],
-        "serviceImageQuery": "children books colourful shelf display illustrated"
+        "serviceImageQuery": "children picture books colourful illustrated shelf display bookshop kids section"
       }
     ],
     "galleryHeading": "In the Stacks",
@@ -2293,19 +2329,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, literary, inviting",
-    "heroImageQuery": "bookshop interior shelves books stacked warm light cosy",
-    "ogImageQuery": "bookshop shelves books stacked warm lighting",
-    "aboutImageQuery": "person reading book armchair bookshop cosy corner",
+    "heroImageQuery": "independent bookshop interior floor to ceiling bookshelves warm lighting cosy wood",
+    "ogImageQuery": "bookshop interior shelves stacked books warm lighting wooden",
+    "aboutImageQuery": "person reading book cosy armchair corner independent bookshop warm lamp",
     "galleryImageQueries": [
-      "bookshop interior shelves floor ceiling books",
-      "book display table new releases bestsellers",
-      "children books section colourful bookshop shelf",
-      "book stack reading glasses coffee table"
+      "bookshop interior floor to ceiling bookshelves filled warm wood",
+      "book display table new releases staff picks bookshop",
+      "children books section colourful picture books bookshop low shelf",
+      "stack of books reading glasses coffee cup wooden table",
+      "author book signing event audience seated independent bookshop",
+      "bookshop counter register friendly staff customer purchasing",
+      "person browsing bookshelves hand selecting title bookshop",
+      "bookshop window display books arranged storefront inviting warm"
     ],
     "features": [
-      { "name": "Every Book Personally Read", "description": "Our staff recommendations aren’t algorithm-generated — they’re based on books we’ve actually read and loved. Ask us anything.", "imageQuery": "bookshop staff member recommending book to customer shelves" },
-      { "name": "Special Orders, No Fuss", "description": "Can’t find what you’re looking for? We’ll order any title in print and have it in-store within a week — no minimum spend, no extra charge.", "imageQuery": "bookshop counter ordering books customer service friendly" },
-      { "name": "A Space to Stay", "description": "Comfortable chairs, good light, and no pressure to buy. We built this shop to be a place you want to spend time in, not just pass through.", "imageQuery": "cosy bookshop interior armchair reading nook warm lighting" }
+      { "name": "Every Book Personally Read", "description": "Our staff recommendations aren’t algorithm-generated — they’re based on books we’ve actually read and loved. Ask us anything.", "imageQuery": "bookshop staff member recommending book to customer standing at shelves" },
+      { "name": "Special Orders, No Fuss", "description": "Can’t find what you’re looking for? We’ll order any title in print and have it in-store within a week — no minimum spend, no extra charge.", "imageQuery": "bookshop counter staff member helping customer order book friendly" },
+      { "name": "A Space to Stay", "description": "Comfortable chairs, good light, and no pressure to buy. We built this shop to be a place you want to spend time in, not just pass through.", "imageQuery": "cosy bookshop reading nook armchair lamp warm lighting books" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2327,7 +2367,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dispensing",
           "Medicine Counselling"
         ],
-        "serviceImageQuery": "prescription medicine bottles pharmacy counter"
+        "serviceImageQuery": "pharmacist dispensing prescription medicine bottles counter pharmacy white coat"
       },
       {
         "name": "Chronic Medication Management",
@@ -2336,7 +2376,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Chronic Meds",
           "Home Delivery"
         ],
-        "serviceImageQuery": "vitamins supplements shelf display pharmacy"
+        "serviceImageQuery": "pharmacist preparing chronic medication blister pack dispensary counter"
       },
       {
         "name": "Health Screenings",
@@ -2345,7 +2385,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Blood Pressure",
           "Glucose"
         ],
-        "serviceImageQuery": "pharmacist blood pressure check health screening"
+        "serviceImageQuery": "pharmacist checking blood pressure patient health screening arm cuff"
       },
       {
         "name": "Vaccinations & Travel Health",
@@ -2354,7 +2394,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vaccinations",
           "Travel Health"
         ],
-        "serviceImageQuery": "vaccination injection syringe medical vial"
+        "serviceImageQuery": "pharmacist administering flu vaccination injection patient arm pharmacy"
       }
     ],
     "galleryHeading": "Your Health, Our Priority",
@@ -2390,19 +2430,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, trustworthy, professional",
-    "heroImageQuery": "pharmacy interior shelves medicine counter dispensary clean",
-    "ogImageQuery": "pharmacy counter dispensary shelves medicine",
-    "aboutImageQuery": "pharmacist dispensing medicine counter patient consultation",
+    "heroImageQuery": "pharmacy interior clean white shelves medicine boxes dispensary counter professional",
+    "ogImageQuery": "pharmacy dispensary counter medicine shelves clean professional",
+    "aboutImageQuery": "pharmacist in white coat dispensing medicine at counter patient consultation friendly",
     "galleryImageQueries": [
-      "pharmacy interior clean shelves products organised",
-      "pharmacist consultation counter patient medicine",
-      "vitamins supplements display shelf pharmacy",
-      "prescription medication bottles pharmacy dispensary"
+      "pharmacy interior clean organised shelves medicine health products",
+      "pharmacist consulting patient at counter explaining medication friendly",
+      "vitamins supplements health products display shelf pharmacy organised",
+      "prescription medicine bottles labelled pharmacy dispensary shelf",
+      "blood pressure monitoring pharmacist patient health screening",
+      "pharmacy exterior storefront signage clean professional entrance",
+      "pharmacist hands counting pills dispensing tray close up",
+      "mother child pharmacy counter pharmacist smiling community"
     ],
     "features": [
-      { "name": "Pharmacists Who Take Their Time", "description": "We don’t rush consultations. Every prescription is dispensed with a proper explanation — side effects, interactions, and what to expect.", "imageQuery": "pharmacist explaining medication to patient counter consultation" },
-      { "name": "Chronic Medication Management", "description": "We manage your repeat scripts proactively. Your medication is pre-packed and ready before you even walk in — no waiting, no chasing.", "imageQuery": "chronic medication prepacked pharmacy blister pack organised" },
-      { "name": "Trusted Since 2001", "description": "We’ve been dispensing in this community for over two decades. Three generations of families trust us with their health — that’s not by accident.", "imageQuery": "established pharmacy storefront trusted community local business" }
+      { "name": "Pharmacists Who Take Their Time", "description": "We don’t rush consultations. Every prescription is dispensed with a proper explanation — side effects, interactions, and what to expect.", "imageQuery": "pharmacist explaining medication instructions to patient counter consultation" },
+      { "name": "Chronic Medication Management", "description": "We manage your repeat scripts proactively. Your medication is pre-packed and ready before you even walk in — no waiting, no chasing.", "imageQuery": "pharmacist preparing chronic medication blister pack dispensary organised" },
+      { "name": "Trusted Since 2001", "description": "We’ve been dispensing in this community for over two decades. Three generations of families trust us with their health — that’s not by accident.", "imageQuery": "established community pharmacy storefront exterior professional signage" }
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:30\u201313:00 \u00b7 Sun: 09:00\u201312:00"
   },
@@ -2424,7 +2468,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Educational",
           "STEM"
         ],
-        "serviceImageQuery": "educational building blocks STEM toys display shelf"
+        "serviceImageQuery": "educational STEM wooden building blocks toys colourful display shelf store"
       },
       {
         "name": "Games & Puzzles",
@@ -2433,7 +2477,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Board Games",
           "Puzzles"
         ],
-        "serviceImageQuery": "board games puzzles stacked on shelf toy store"
+        "serviceImageQuery": "board games puzzles stacked colourful boxes shelf toy store display"
       },
       {
         "name": "Birthday Gifting",
@@ -2442,7 +2486,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Birthday Gifts",
           "Wrapping"
         ],
-        "serviceImageQuery": "toy gift wrapped ribbon box birthday"
+        "serviceImageQuery": "children birthday gift wrapped colourful ribbon bow toy box present"
       },
       {
         "name": "Outdoor & Active Play",
@@ -2451,7 +2495,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Outdoor Toys",
           "Active Play"
         ],
-        "serviceImageQuery": "outdoor toys scooter trampoline garden play"
+        "serviceImageQuery": "outdoor toys children scooter balls garden play equipment bright"
       }
     ],
     "galleryHeading": "The Toy Box",
@@ -2487,19 +2531,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, playful, warm",
-    "heroImageQuery": "toy store interior shelves colourful toys stuffed animals display",
-    "ogImageQuery": "toy store shelves colourful toys display",
-    "aboutImageQuery": "children toys educational blocks puzzles colourful display",
+    "heroImageQuery": "toy store interior colourful shelves stuffed animals wooden toys bright lighting display",
+    "ogImageQuery": "colourful toy store shelves stuffed animals educational toys bright",
+    "aboutImageQuery": "educational wooden building blocks puzzles colourful display toy store shelf",
     "galleryImageQueries": [
-      "toy store interior colourful shelves stuffed animals",
-      "board games puzzles stacked display shelf",
-      "educational toys building blocks LEGO display",
-      "toy store window display children dolls cars"
+      "toy store interior bright colourful shelves stuffed animals teddy bears",
+      "board games puzzles stacked neatly display shelf toy store",
+      "educational building blocks construction toys display shelf colourful",
+      "toy store window display dolls toy cars trains colourful",
+      "child playing wooden train set toy store demonstration table",
+      "art supplies crayons paint craft kits display toy store shelf",
+      "outdoor toys scooter ball sports equipment toy store section",
+      "parent child browsing toy store shelves choosing gift smiling"
     ],
     "features": [
-      { "name": "Screen-Free by Design", "description": "We deliberately stock toys that develop creativity, motor skills, and imagination. You won’t find tablets or video games here — just real play.", "imageQuery": "children playing wooden toys educational blocks creative play" },
-      { "name": "Age-Appropriate Guidance", "description": "Every toy in our store is labelled with honest age recommendations. Our staff can match any child’s developmental stage to the perfect gift.", "imageQuery": "parent and child exploring toy store educational section" },
-      { "name": "Try Before You Buy", "description": "Our play tables let kids test toys in-store. We’d rather your child loves what you take home than you guess from the box.", "imageQuery": "children playing at toy demonstration table in bright toy store" }
+      { "name": "Screen-Free by Design", "description": "We deliberately stock toys that develop creativity, motor skills, and imagination. You won’t find tablets or video games here — just real play.", "imageQuery": "children playing wooden educational blocks creative play floor bright room" },
+      { "name": "Age-Appropriate Guidance", "description": "Every toy in our store is labelled with honest age recommendations. Our staff can match any child’s developmental stage to the perfect gift.", "imageQuery": "parent and child exploring educational toys section toy store staff helping" },
+      { "name": "Try Before You Buy", "description": "Our play tables let kids test toys in-store. We’d rather your child loves what you take home than you guess from the box.", "imageQuery": "children playing demonstration table bright colourful toy store interactive" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201317:30 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2521,7 +2569,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Apple",
           "Samsung"
         ],
-        "serviceImageQuery": "laptop computers display electronics store counter"
+        "serviceImageQuery": "laptops smartphones tablets displayed table electronics store modern bright"
       },
       {
         "name": "Smart Home & Accessories",
@@ -2530,7 +2578,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Smart Home",
           "Accessories"
         ],
-        "serviceImageQuery": "smart home speakers wireless earbuds accessories display modern"
+        "serviceImageQuery": "smart home speakers wireless earbuds headphones accessories shelf electronics modern"
       },
       {
         "name": "Repairs & Trade-Ins",
@@ -2539,7 +2587,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Repairs",
           "Trade-Ins"
         ],
-        "serviceImageQuery": "phone screen repair technician tools electronics workbench close-up"
+        "serviceImageQuery": "technician repairing smartphone screen tools tweezers electronics workbench close up"
       },
       {
         "name": "Setup & Installation",
@@ -2548,7 +2596,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Installation",
           "Home Setup"
         ],
-        "serviceImageQuery": "TV mounted wall living room entertainment system"
+        "serviceImageQuery": "TV mounted wall living room entertainment sound system setup installation"
       }
     ],
     "galleryHeading": "In the Store",
@@ -2584,19 +2632,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, modern, technical",
-    "heroImageQuery": "electronics store display laptops phones tablets counter",
-    "ogImageQuery": "electronics store laptops phones display counter",
-    "aboutImageQuery": "electronics shelf headphones speakers gadgets display",
+    "heroImageQuery": "electronics store interior display table laptops smartphones tablets modern clean counter",
+    "ogImageQuery": "electronics retail store laptops smartphones display counter modern",
+    "aboutImageQuery": "electronics store shelf headphones wireless speakers gadgets modern display",
     "galleryImageQueries": [
-      "electronics store interior displays screens phones",
-      "laptop display open screens electronics counter",
-      "headphones speakers audio display shelf electronics",
-      "smartphone accessories cases chargers display rack"
+      "electronics store interior modern displays smartphones laptops screens",
+      "laptop computers open display table electronics store bright",
+      "premium headphones wireless earbuds audio speakers shelf electronics store",
+      "smartphone phone cases accessories chargers cables display rack store",
+      "technician repairing smartphone screen tools electronics workshop close up",
+      "smart home devices speakers displays electronics store shelf modern",
+      "customer testing laptop electronics store staff demonstrating",
+      "electronics store interior wide angle modern shelves displays tech"
     ],
     "features": [
-      { "name": "Honest Tech Advice", "description": "We’ll recommend what you actually need, not the most expensive option. Our staff use the products they sell and give straight answers.", "imageQuery": "electronics store staff demonstrating laptop to customer advice" },
-      { "name": "In-House Repairs", "description": "Broken screen? Slow laptop? Our certified technicians fix it on-site, often same-day. No shipping it off and waiting weeks.", "imageQuery": "technician repairing laptop motherboard electronics workshop tools" },
-      { "name": "Authorised Dealer Warranties", "description": "We’re authorised dealers for every brand we carry. That means full manufacturer warranties, genuine parts, and proper after-sales support.", "imageQuery": "electronics store authorised dealer brand display professional" }
+      { "name": "Honest Tech Advice", "description": "We’ll recommend what you actually need, not the most expensive option. Our staff use the products they sell and give straight answers.", "imageQuery": "electronics store staff showing laptop to customer demonstrating features" },
+      { "name": "In-House Repairs", "description": "Broken screen? Slow laptop? Our certified technicians fix it on-site, often same-day. No shipping it off and waiting weeks.", "imageQuery": "technician repairing laptop circuit board electronics workshop tools close up" },
+      { "name": "Authorised Dealer Warranties", "description": "We’re authorised dealers for every brand we carry. That means full manufacturer warranties, genuine parts, and proper after-sales support.", "imageQuery": "electronics store branded display apple samsung authorised dealer modern" }
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201318:00 \u00b7 Sat: 09:00\u201315:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2618,7 +2670,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Running Shoes",
           "Gait Analysis"
         ],
-        "serviceImageQuery": "running shoes training sneakers display shelf"
+        "serviceImageQuery": "running shoes trainers colourful pairs wall display shelf sports store"
       },
       {
         "name": "Outdoor & Adventure",
@@ -2627,7 +2679,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hiking",
           "Trail"
         ],
-        "serviceImageQuery": "hiking backpacks outdoor adventure gear trail display store"
+        "serviceImageQuery": "hiking backpacks outdoor jackets trail gear display shelf sports store"
       },
       {
         "name": "Team Sport Equipment",
@@ -2636,7 +2688,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Team Sport",
           "Cricket"
         ],
-        "serviceImageQuery": "rugby cricket soccer balls equipment sports store display"
+        "serviceImageQuery": "rugby balls cricket bats soccer boots team sports equipment display store shelf"
       },
       {
         "name": "Racket Restringing & Repairs",
@@ -2645,7 +2697,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Restringing",
           "Equipment Repair"
         ],
-        "serviceImageQuery": "tennis racket strings close-up sports equipment"
+        "serviceImageQuery": "tennis racket restringing machine close up sports equipment repair service"
       }
     ],
     "galleryHeading": "Get Out There",
@@ -2681,19 +2733,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, technical, outdoors",
-    "heroImageQuery": "sports store interior running shoes display shelves gear",
-    "ogImageQuery": "sports gear shoes equipment store display",
-    "aboutImageQuery": "running shoes display wall sports store shelves",
+    "heroImageQuery": "sports store interior running shoes trainers display wall shelves colourful athletic",
+    "ogImageQuery": "sports store running shoes athletic gear display shelves colourful",
+    "aboutImageQuery": "sports store shoe wall display running trainers athletic colourful rows",
     "galleryImageQueries": [
-      "sports store running shoes wall display shelves",
-      "cycling gear helmets bikes sports store",
-      "fitness equipment dumbbells mats sports store",
-      "outdoor hiking backpacks camping gear display"
+      "running shoes trainers colourful wall display sports store shelves",
+      "cricket bat rugby ball soccer boots sports equipment display store",
+      "cycling jerseys helmets road bikes sports store display",
+      "tennis rackets badminton squash racquet display sports store shelf",
+      "fitness gym clothing athletic wear sports apparel display rack",
+      "swimming goggles caps swimwear display sports store section",
+      "sports store interior wide angle departments shoes equipment display",
+      "customer trying on running shoes sports store staff fitting advice"
     ],
     "features": [
-      { "name": "Staff Who Use the Gear", "description": "Our team are runners, cyclists, hikers, and surfers. We don’t sell anything we haven’t tested ourselves — ask us and we’ll tell you what’s actually worth it.", "imageQuery": "sports store staff athlete helping customer running shoes fitting" },
-      { "name": "Free Gait Analysis", "description": "Buy running shoes with us and we’ll do a complimentary gait analysis to match your stride to the right shoe. Proper fitting prevents injuries.", "imageQuery": "running gait analysis treadmill sports store shoe fitting technology" },
-      { "name": "Demo Before You Commit", "description": "We host demo weekends for bikes, paddles, and gear. Try it in real conditions before spending your money — no obligation.", "imageQuery": "outdoor sports demo event people testing equipment cycling" }
+      { "name": "Staff Who Use the Gear", "description": "Our team are runners, cyclists, hikers, and surfers. We don’t sell anything we haven’t tested ourselves — ask us and we’ll tell you what’s actually worth it.", "imageQuery": "sports store staff athlete helping customer fit running shoes expert" },
+      { "name": "Free Gait Analysis", "description": "Buy running shoes with us and we’ll do a complimentary gait analysis to match your stride to the right shoe. Proper fitting prevents injuries.", "imageQuery": "runner treadmill gait analysis sports store shoe fitting biomechanics" },
+      { "name": "Demo Before You Commit", "description": "We host demo weekends for bikes, paddles, and gear. Try it in real conditions before spending your money — no obligation.", "imageQuery": "people testing cycling equipment outdoor sports demo event bikes" }
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 09:00\u201316:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2715,7 +2771,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Local Produce",
           "Daily Delivery"
         ],
-        "serviceImageQuery": "fresh produce vegetables fruit supermarket display"
+        "serviceImageQuery": "fresh produce aisle vegetables fruit colourful stacked display supermarket"
       },
       {
         "name": "In-Store Butchery & Bakery",
@@ -2724,7 +2780,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Butchery",
           "In-Store Bakery"
         ],
-        "serviceImageQuery": "butcher counter fresh meat display supermarket bakery bread shelves"
+        "serviceImageQuery": "in store butcher counter fresh meat cuts display bakery bread loaves supermarket"
       },
       {
         "name": "Online Shopping & Delivery",
@@ -2733,7 +2789,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery",
           "Click & Collect"
         ],
-        "serviceImageQuery": "grocery delivery bags packed products doorstep online order"
+        "serviceImageQuery": "grocery delivery brown bags packed fresh products doorstep home online order"
       },
       {
         "name": "Loyalty Card & Weekly Specials",
@@ -2742,7 +2798,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Loyalty Card",
           "Weekly Specials"
         ],
-        "serviceImageQuery": "supermarket checkout counter bags groceries"
+        "serviceImageQuery": "supermarket loyalty card customer checkout counter groceries shopping"
       }
     ],
     "galleryHeading": "In the Aisles",
@@ -2778,19 +2834,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, abundant, community",
-    "heroImageQuery": "supermarket produce aisle fresh vegetables fruit display",
-    "ogImageQuery": "supermarket interior aisles shelves produce",
-    "aboutImageQuery": "fresh produce market vegetables stacked colourful crates",
+    "heroImageQuery": "supermarket fresh produce aisle colourful vegetables fruit display stacked abundant",
+    "ogImageQuery": "supermarket interior produce aisle fresh vegetables fruit stocked shelves",
+    "aboutImageQuery": "fresh produce vegetables fruit stacked wooden crates colourful market display",
     "galleryImageQueries": [
-      "supermarket aisles stocked shelves products overhead",
-      "fresh bakery section bread loaves supermarket",
-      "meat counter butcher supermarket display fresh",
-      "checkout counter supermarket cashier scanning"
+      "supermarket aisles fully stocked shelves products wide angle overhead",
+      "fresh bakery section crusty bread loaves rolls supermarket display",
+      "butcher counter fresh meat cuts steaks sausages supermarket display case",
+      "fresh produce vegetables fruit colourful display supermarket aisle stacked",
+      "deli counter prepared salads olives cheese supermarket glass case",
+      "wine beer beverages aisle supermarket bottles shelves stocked",
+      "frozen foods dairy refrigerated aisle supermarket shelves stocked",
+      "customer shopping fresh produce selecting fruit supermarket aisle"
     ],
     "features": [
-      { "name": "In-Store Butchery & Bakery", "description": "Our butcher cuts to order and our baker starts at 4am. You’re not buying pre-packaged — you’re buying fresh, made here, today.", "imageQuery": "in store butchery counter fresh meat cuts supermarket" },
-      { "name": "Local Supplier Partnerships", "description": "We work directly with farms and producers within 100km. That means fresher food, lower food miles, and money staying in the local economy.", "imageQuery": "local farm produce delivery crates vegetables supermarket receiving" },
-      { "name": "Click & Collect in 2 Hours", "description": "Order online, pick up in-store within two hours. We pick your items with the same care you would — no substitutions without your approval.", "imageQuery": "customer collecting grocery order click collect supermarket counter" }
+      { "name": "In-Store Butchery & Bakery", "description": "Our butcher cuts to order and our baker starts at 4am. You’re not buying pre-packaged — you’re buying fresh, made here, today.", "imageQuery": "butcher cutting fresh meat counter supermarket in store butchery apron" },
+      { "name": "Local Supplier Partnerships", "description": "We work directly with farms and producers within 100km. That means fresher food, lower food miles, and money staying in the local economy.", "imageQuery": "farmer delivering fresh vegetable crates produce local supermarket receiving" },
+      { "name": "Click & Collect in 2 Hours", "description": "Order online, pick up in-store within two hours. We pick your items with the same care you would — no substitutions without your approval.", "imageQuery": "customer collecting packed grocery bags click collect supermarket counter" }
     ],
     "contactHours": "Mon\u2013Sun: 07:30\u201320:00 \u00b7 Public holidays: 08:00\u201317:00"
   },
@@ -2812,7 +2872,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vintage",
           "Pre-Loved"
         ],
-        "serviceImageQuery": "vintage clothing rack browse thrift store"
+        "serviceImageQuery": "vintage clothing rack dresses jackets browsing thrift store colourful hangers"
       },
       {
         "name": "Furniture & Homeware",
@@ -2821,7 +2881,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vintage Furniture",
           "Homeware"
         ],
-        "serviceImageQuery": "second-hand furniture table chairs thrift"
+        "serviceImageQuery": "vintage second hand furniture wooden table chairs lamp thrift store display"
       },
       {
         "name": "Buy, Sell & Consign",
@@ -2830,7 +2890,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Buy & Sell",
           "Consignment"
         ],
-        "serviceImageQuery": "retro vinyl records crate browsing thrift"
+        "serviceImageQuery": "person selling consigning vintage clothing items thrift store counter"
       },
       {
         "name": "Upcycled & Restored Pieces",
@@ -2839,7 +2899,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Upcycled",
           "Restored"
         ],
-        "serviceImageQuery": "upcycled furniture painted restored chair table"
+        "serviceImageQuery": "upcycled restored painted vintage furniture chair table colourful"
       }
     ],
     "galleryHeading": "Recent Finds",
@@ -2875,19 +2935,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "eclectic, warm, nostalgic",
-    "heroImageQuery": "thrift store interior clothing racks vintage shelves",
-    "ogImageQuery": "thrift store vintage clothing racks display",
-    "aboutImageQuery": "vintage clothing rack thrift store browse hangers",
+    "heroImageQuery": "thrift store interior vintage clothing racks colourful eclectic shelves warm lighting",
+    "ogImageQuery": "curated thrift store vintage clothing racks eclectic display warm",
+    "aboutImageQuery": "woman browsing vintage clothing rack thrift store hangers denim jackets",
     "galleryImageQueries": [
-      "thrift store interior vintage clothing racks browse",
-      "second-hand books vinyl records shelf display",
-      "vintage furniture lamp vase thrift store",
-      "retro clothing denim jacket rack thrift store"
+      "thrift store interior vintage clothing racks organised browse warm",
+      "second hand vinyl records books shelf display thrift store eclectic",
+      "vintage furniture lamp side table vase thrift store display",
+      "retro denim jacket leather vintage clothing rack thrift store",
+      "vintage dresses blouses floral pattern rack thrift store browse",
+      "second hand homeware ceramics glassware shelf thrift store curated",
+      "customer browsing vintage clothing rack thrift store smiling discover",
+      "thrift store exterior storefront vintage sign welcoming entrance"
     ],
     "features": [
-      { "name": "Curated, Not Cluttered", "description": "We sort through hundreds of items so you don’t have to. Only the best condition, most interesting pieces make it to our floor.", "imageQuery": "curated vintage clothing rack neatly organised thrift store" },
-      { "name": "Sustainable Shopping", "description": "Every purchase here keeps something out of landfill. Shopping second-hand is the most impactful thing you can do for the planet — and your wallet.", "imageQuery": "sustainable fashion recycling clothing eco friendly second hand" },
-      { "name": "New Stock Every Week", "description": "We refresh our inventory weekly with new donations and sourced finds. Regular visitors always find something they didn’t see last time.", "imageQuery": "thrift store new arrivals rack fresh stock vintage clothing" }
+      { "name": "Curated, Not Cluttered", "description": "We sort through hundreds of items so you don’t have to. Only the best condition, most interesting pieces make it to our floor.", "imageQuery": "curated vintage clothing rack neatly organised colourful thrift store" },
+      { "name": "Sustainable Shopping", "description": "Every purchase here keeps something out of landfill. Shopping second-hand is the most impactful thing you can do for the planet — and your wallet.", "imageQuery": "sustainable fashion pre-loved clothing rack eco friendly thrift store" },
+      { "name": "New Stock Every Week", "description": "We refresh our inventory weekly with new donations and sourced finds. Regular visitors always find something they didn’t see last time.", "imageQuery": "new arrivals rack fresh vintage stock thrift store clothing tagged" }
     ],
     "contactHours": "Mon\u2013Sat: 09:00\u201317:00 \u00b7 Sun: 10:00\u201314:00"
   },
@@ -2909,7 +2973,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fynbos",
           "Indigenous"
         ],
-        "serviceImageQuery": "potted plants flowers display garden centre shelf"
+        "serviceImageQuery": "indigenous potted plants succulents proteas displayed rows garden centre nursery"
       },
       {
         "name": "Garden Design & Planting",
@@ -2918,7 +2982,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Garden Design",
           "Planting Plan"
         ],
-        "serviceImageQuery": "landscaping garden design outdoor plants installed"
+        "serviceImageQuery": "landscape gardener planting flower bed garden design outdoor installation"
       },
       {
         "name": "Pots, Soil & Garden Supplies",
@@ -2927,7 +2991,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pots",
           "Compost"
         ],
-        "serviceImageQuery": "garden tools soil bags fertiliser display shelf"
+        "serviceImageQuery": "terracotta pots compost bags garden tools display shelf nursery"
       },
       {
         "name": "Fruit Trees & Edible Garden",
@@ -2936,7 +3000,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fruit Trees",
           "Edible Garden"
         ],
-        "serviceImageQuery": "fruit tree citrus lemon potted nursery display"
+        "serviceImageQuery": "fruit trees citrus lemon orange potted nursery display outdoor row"
       }
     ],
     "galleryHeading": "In the Nursery",
@@ -2972,19 +3036,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "lush, natural, botanical",
-    "heroImageQuery": "garden centre plants pots greenhouse shelves rows",
-    "ogImageQuery": "garden centre nursery potted plants rows greenhouse",
-    "aboutImageQuery": "garden nursery potted plants succulents hands repotting",
+    "heroImageQuery": "garden centre nursery outdoor potted plants flowers rows greenhouse lush green",
+    "ogImageQuery": "garden centre nursery potted plants rows greenhouse outdoor lush",
+    "aboutImageQuery": "nursery worker hands repotting plant soil terracotta pot garden centre",
     "galleryImageQueries": [
-      "garden centre greenhouse plants rows shelves",
-      "potted succulents cacti display garden nursery",
-      "garden tools watering cans pots display shelf",
-      "outdoor trees shrubs garden centre yard"
+      "garden centre greenhouse interior plants rows shelves lush green",
+      "potted succulents cacti displayed wooden table garden nursery outdoor",
+      "terracotta pots garden tools watering cans display shelf nursery",
+      "outdoor trees shrubs large plants garden centre yard display",
+      "herb seedlings vegetable plants trays garden nursery spring",
+      "protea indigenous fynbos plants potted display garden nursery",
+      "customer selecting potted plant garden centre browsing greenery",
+      "garden centre outdoor area gravel paths plants flowers sunlight"
     ],
     "features": [
-      { "name": "Fynbos Specialists", "description": "We’ve specialised in indigenous Cape plants for 30 years. Our team can advise on water-wise gardens that thrive in our climate without constant irrigation.", "imageQuery": "indigenous fynbos plants protea garden nursery display" },
-      { "name": "Grow Guarantee", "description": "If a plant you bought from us doesn’t survive within the first 90 days and you followed our care advice, we’ll replace it. No receipt needed.", "imageQuery": "healthy potted plants nursery greenhouse thriving green growth" },
-      { "name": "Free Garden Design Consultations", "description": "Bring us your garden measurements and photos, and our horticulturist will sketch a planting plan for free. We want your garden to succeed.", "imageQuery": "garden designer landscape planning consultation plants layout sketch" }
+      { "name": "Fynbos Specialists", "description": "We’ve specialised in indigenous Cape plants for 30 years. Our team can advise on water-wise gardens that thrive in our climate without constant irrigation.", "imageQuery": "indigenous fynbos protea plants potted display garden nursery outdoor" },
+      { "name": "Grow Guarantee", "description": "If a plant you bought from us doesn’t survive within the first 90 days and you followed our care advice, we’ll replace it. No receipt needed.", "imageQuery": "healthy green potted plants thriving nursery greenhouse rows lush" },
+      { "name": "Free Garden Design Consultations", "description": "Bring us your garden measurements and photos, and our horticulturist will sketch a planting plan for free. We want your garden to succeed.", "imageQuery": "landscape designer sketching garden plan plants layout consultation outdoor" }
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201317:30 \u00b7 Sat: 07:30\u201315:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -15044,18 +15112,18 @@ export const presetContent: Record<string, PresetContent> = {
     },
     "imageMood": "cinematic, natural light, intimate",
     "heroImageQuery": "portrait photo natural light woman close-up studio",
-    "ogImageQuery": "professional camera lens portrait photography bokeh shallow depth",
-    "aboutImageQuery": "photographer adjusting lighting behind the scenes on shoot",
+    "ogImageQuery": "professional photographer holding camera DSLR lens studio portrait session",
+    "aboutImageQuery": "photographer adjusting studio softbox lighting equipment behind scenes portrait shoot",
     "galleryImageQueries": [
-      "portrait photo moody lighting studio close-up",
-      "product flat lay overhead styled arrangement",
-      "couple candid outdoor golden hour lifestyle",
-      "architectural interior photo natural light room"
+      "portrait photography woman moody lighting studio headshot close-up",
+      "product photography flat lay arrangement cosmetics styled overhead table",
+      "couple portrait outdoor golden hour laughing candid lifestyle photography",
+      "interior architectural photography bright living room natural light windows"
     ],
     "features": [
-      { "name": "Edited Gallery in 7 Days", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing photos on computer screen lightroom gallery" },
-      { "name": "Natural, Unposed Direction", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "natural candid portrait session couple laughing relaxed outdoors" },
-      { "name": "Full Commercial Licensing", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "professional photography portfolio printed website marketing usage" }
+      { "name": "Edited Gallery in 7 Days", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing portrait photos on computer monitor lightroom retouching" },
+      { "name": "Natural, Unposed Direction", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "photographer directing couple during portrait session outdoors natural light" },
+      { "name": "Full Commercial Licensing", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "printed photography portfolio book open on desk professional images layout" }
     ]
   },
   "Videographer": {
@@ -15077,7 +15145,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate"
         ],
         "icon": "film",
-        "serviceImageQuery": "cinema camera filming interview subject brand film"
+        "serviceImageQuery": "professional videographer filming interview subject seated studio lights camera"
       },
       {
         "name": "Social Media Content",
@@ -15087,7 +15155,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reels"
         ],
         "icon": "smartphone",
-        "serviceImageQuery": "smartphone vertical video filming social content"
+        "serviceImageQuery": "content creator filming with smartphone on tripod ring light social media video"
       },
       {
         "name": "Event & Documentary Coverage",
@@ -15097,7 +15165,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Documentary"
         ],
         "icon": "video",
-        "serviceImageQuery": "multi-camera event coverage conference recording"
+        "serviceImageQuery": "cameraman filming event conference stage multiple cameras professional setup"
       },
         {
           "name": "Drone & Aerial Video",
@@ -15106,7 +15174,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Drone",
             "Aerial"
           ],
-          "serviceImageQuery": "aerial drone footage coastline landscape cinematic view"
+          "serviceImageQuery": "drone operator holding DJI drone controller outdoors filming aerial video"
         }
     ],
     "galleryHeading": "From the Edit Suite",
@@ -15149,19 +15217,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "cinematic, moody, professional",
-    "heroImageQuery": "cinema camera on gimbal rig filming close-up",
-    "ogImageQuery": "video production professional Cape Town brand film cinematic",
-    "aboutImageQuery": "videographer operating cinema camera on set filming",
+    "heroImageQuery": "videographer holding cinema camera RED filming on set professional",
+    "ogImageQuery": "cinema camera lens close-up film production professional videography",
+    "aboutImageQuery": "videographer behind camera filming interview subject studio lights professional",
     "galleryImageQueries": [
-      "cinema camera on dolly track filming scene",
-      "vertical video filming social media content",
-      "drone aerial shot filming landscape cinematic",
-      "video editing timeline colour grading screen"
+      "cinema camera on dolly track rails professional film set crew",
+      "videographer filming vertical video smartphone gimbal stabilizer content creator",
+      "drone operator flying camera equipment outdoors filming aerial footage",
+      "video editor colour grading footage on monitor timeline software"
     ],
     "features": [
-      { "name": "Concept-to-Delivery Production", "description": "We don't just point a camera. We develop the creative concept, script, shoot, edit, and deliver \u2014 one team, one vision.", "imageQuery": "video production team planning creative concept storyboard" },
-      { "name": "Licensed Music & Sound Design", "description": "Every video includes commercially licensed music and professional sound mixing. No copyright strikes, no muffled audio.", "imageQuery": "video editing suite audio mixing sound design professional" },
-      { "name": "Platform-Optimised Cuts", "description": "You get versions formatted for Instagram, YouTube, TikTok, and your website. One shoot, every platform covered.", "imageQuery": "social media video formats multiple screens devices content" }
+      { "name": "Concept-to-Delivery Production", "description": "We don't just point a camera. We develop the creative concept, script, shoot, edit, and deliver \u2014 one team, one vision.", "imageQuery": "video production team gathered around storyboard script planning whiteboard" },
+      { "name": "Licensed Music & Sound Design", "description": "Every video includes commercially licensed music and professional sound mixing. No copyright strikes, no muffled audio.", "imageQuery": "video editor working at computer monitors audio waveform editing suite" },
+      { "name": "Platform-Optimised Cuts", "description": "You get versions formatted for Instagram, YouTube, TikTok, and your website. One shoot, every platform covered.", "imageQuery": "multiple device screens showing video content smartphone tablet laptop" }
     ]
   },
   "Graphic Designer": {
@@ -15183,7 +15251,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Brand Guidelines"
         ],
         "icon": "star",
-        "serviceImageQuery": "brand identity logo design stationery mockup layout"
+        "serviceImageQuery": "logo design sketches on paper brand identity development concepts desk"
       },
       {
         "name": "Print & Packaging Design",
@@ -15193,7 +15261,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Print"
         ],
         "icon": "layers",
-        "serviceImageQuery": "packaging design boxes printed brochure layout table"
+        "serviceImageQuery": "printed brochures packaging boxes product design samples spread on table"
       },
       {
         "name": "Digital & Social Design",
@@ -15203,7 +15271,7 @@ export const presetContent: Record<string, PresetContent> = {
           "UI Design"
         ],
         "icon": "monitor",
-        "serviceImageQuery": "social media template design phone screen mockup"
+        "serviceImageQuery": "designer creating social media graphics on computer screen digital design"
       },
         {
           "name": "Presentation & Pitch Deck Design",
@@ -15212,7 +15280,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Pitch Deck",
             "Presentation"
           ],
-          "serviceImageQuery": "pitch deck presentation slides screen clean layout design"
+          "serviceImageQuery": "presentation slides pitch deck laptop screen clean professional layout meeting"
         }
     ],
     "galleryHeading": "Selected Work",
@@ -15255,19 +15323,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, minimal, considered",
-    "heroImageQuery": "brand identity design logo mockup stationery layout",
-    "ogImageQuery": "graphic design brand identity professional Cape Town studio",
-    "aboutImageQuery": "designer sketching logo concepts pencil paper desk",
+    "heroImageQuery": "brand identity stationery mockup business cards letterhead logo design flat lay",
+    "ogImageQuery": "graphic designer working at iMac computer screen design software creative studio",
+    "aboutImageQuery": "graphic designer sketching logo concepts pencil paper notebook desk creative",
     "galleryImageQueries": [
-      "brand identity logo colour palette stationery",
-      "packaging design product boxes printed layouts",
-      "social media post design template phone screen",
-      "typography poster design large format print"
+      "brand identity logo printed on business card stationery colour palette swatches",
+      "packaging design cardboard product boxes mockup printed labels table",
+      "social media post template design mockup on smartphone screen colourful",
+      "large format poster typography graphic design print wall"
     ],
     "features": [
-      { "name": "Brand Strategy, Not Just Pretty Pictures", "description": "We start with who you are, who you're talking to, and what you're trying to achieve. Design follows strategy, not the other way around.", "imageQuery": "brand strategy workshop mood board design thinking creative" },
-      { "name": "Print & Digital Consistency", "description": "Your brand looks the same on a business card as it does on a billboard. We design systems, not one-offs.", "imageQuery": "brand identity mockup business card letterhead digital consistent" },
-      { "name": "Source Files Always Yours", "description": "You own everything we create. All source files, fonts, and assets are handed over \u2014 you're never locked in.", "imageQuery": "designer handing over files USB drive client meeting" }
+      { "name": "Brand Strategy, Not Just Pretty Pictures", "description": "We start with who you are, who you're talking to, and what you're trying to achieve. Design follows strategy, not the other way around.", "imageQuery": "creative team mood board colour swatches pinned cork board strategy workshop" },
+      { "name": "Print & Digital Consistency", "description": "Your brand looks the same on a business card as it does on a billboard. We design systems, not one-offs.", "imageQuery": "business card letterhead envelope brand identity printed stationery mockup set" },
+      { "name": "Source Files Always Yours", "description": "You own everything we create. All source files, fonts, and assets are handed over \u2014 you're never locked in.", "imageQuery": "graphic designer at desk iMac working on brand design files creative studio" }
     ]
   },
   "Interior Designer": {
@@ -15289,7 +15357,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Project Management"
         ],
         "icon": "home",
-        "serviceImageQuery": "modern living room interior styled sofa cushions art"
+        "serviceImageQuery": "beautifully designed living room interior sofa armchair rug styled decor"
       },
       {
         "name": "Furniture & Décor Sourcing",
@@ -15299,7 +15367,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sourcing"
         ],
         "icon": "layers",
-        "serviceImageQuery": "furniture décor fabric samples mood board table"
+        "serviceImageQuery": "fabric swatches colour samples material mood board interior design flat lay table"
       },
       {
         "name": "Commercial & Hospitality Design",
@@ -15309,7 +15377,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hospitality"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "modern office interior design workspace open plan"
+        "serviceImageQuery": "modern commercial office interior designed workspace desks chairs bright"
       },
         {
           "name": "Kitchen & Bathroom Design",
@@ -15318,7 +15386,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Kitchen Design",
             "Bathroom"
           ],
-          "serviceImageQuery": "modern kitchen design marble countertop island pendant lights"
+          "serviceImageQuery": "luxury kitchen white marble countertop island pendant lights modern cabinetry"
         }
     ],
     "galleryHeading": "Spaces We’ve Designed",
@@ -15361,19 +15429,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, considered, natural light",
-    "heroImageQuery": "elegant living room interior design sofa art natural light",
-    "ogImageQuery": "interior designer professional Cape Town residential project",
-    "aboutImageQuery": "interior designer reviewing fabric swatches mood board",
+    "heroImageQuery": "beautiful modern living room styled sofa coffee table cushions art wall bright interior",
+    "ogImageQuery": "interior designer woman reviewing fabric swatches samples at desk bright studio",
+    "aboutImageQuery": "interior designer reviewing material samples fabric swatches mood board bright studio table",
     "galleryImageQueries": [
-      "living room interior design elegant styled warm",
-      "kitchen interior design modern marble countertop",
-      "commercial office interior open plan design",
-      "hospitality restaurant interior design elegant"
+      "modern styled living room sofa cushions rug coffee table warm lighting",
+      "contemporary kitchen marble island pendant lights white cabinets interior",
+      "modern office interior open plan desks chairs bright windows workspace",
+      "boutique hotel lobby interior design elegant furniture warm lighting"
     ],
     "features": [
-      { "name": "3D Renders Before We Order Anything", "description": "See your room in photorealistic 3D before a single item is purchased. No guesswork, no expensive mistakes.", "imageQuery": "interior design 3D render photorealistic living room visualisation" },
-      { "name": "Trade-Only Pricing on Furniture", "description": "We pass on our trade discounts to you. Access brands and pieces that aren't available to the public, often at better prices.", "imageQuery": "luxury furniture showroom exclusive designer pieces trade" },
-      { "name": "Project Management Included", "description": "We coordinate contractors, deliveries, and installations so you don't have to. One point of contact from concept to completion.", "imageQuery": "interior designer managing project site coordinating installation" }
+      { "name": "3D Renders Before We Order Anything", "description": "See your room in photorealistic 3D before a single item is purchased. No guesswork, no expensive mistakes.", "imageQuery": "3D interior design render photorealistic modern living room computer visualisation" },
+      { "name": "Trade-Only Pricing on Furniture", "description": "We pass on our trade discounts to you. Access brands and pieces that aren't available to the public, often at better prices.", "imageQuery": "luxury furniture showroom designer sofa armchair display exclusive showroom" },
+      { "name": "Project Management Included", "description": "We coordinate contractors, deliveries, and installations so you don't have to. One point of contact from concept to completion.", "imageQuery": "interior designer with clipboard coordinating furniture delivery installation room" }
     ]
   },
   "Copywriter / Content Creator": {
@@ -15395,7 +15463,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Website Copy"
         ],
         "icon": "edit-3",
-        "serviceImageQuery": "website copy wireframe layout screen design words"
+        "serviceImageQuery": "website wireframe layout on laptop screen with text copy writing planning"
       },
       {
         "name": "Content Strategy & Creation",
@@ -15405,7 +15473,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Blog"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "blog post article writing screen content strategy"
+        "serviceImageQuery": "person writing blog post article laptop screen notebook desk content"
       },
       {
         "name": "Campaign & Ad Copy",
@@ -15415,7 +15483,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Email"
         ],
         "icon": "target",
-        "serviceImageQuery": "advertising headline layout magazine spread design"
+        "serviceImageQuery": "advertising creative magazine spread open pages headline text campaign layout"
       },
         {
           "name": "SEO Copywriting",
@@ -15424,7 +15492,7 @@ export const presetContent: Record<string, PresetContent> = {
             "SEO Copy",
             "Web Content"
           ],
-          "serviceImageQuery": "Google search results page ranking SEO content screen"
+          "serviceImageQuery": "SEO search engine optimization laptop screen analytics Google ranking results"
         }
     ],
     "galleryHeading": "Words We’ve Written",
@@ -15467,19 +15535,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "considered, creative, clean",
-    "heroImageQuery": "notebook pen laptop keyboard writing desk close-up",
-    "ogImageQuery": "copywriter content creator professional Cape Town brand",
-    "aboutImageQuery": "writer typing on laptop in bright creative workspace",
+    "heroImageQuery": "writer typing on laptop at clean desk notebook pen coffee creative workspace",
+    "ogImageQuery": "person typing on MacBook laptop keyboard close-up writing content creative",
+    "aboutImageQuery": "copywriter woman working at laptop bright desk notebook pen plants creative office",
     "galleryImageQueries": [
-      "brand manifesto copy layout print design",
-      "blog content article screen laptop writing",
-      "advertising campaign headline creative layout",
-      "social media content posts planned calendar"
+      "printed brand manifesto document booklet open pages elegant typography",
+      "person writing blog article on laptop screen coffee desk",
+      "advertising campaign creative layout magazine spread headlines text",
+      "social media content calendar planning board sticky notes organised desk"
     ],
     "features": [
-      { "name": "SEO-Informed, Human-Written", "description": "Every piece is written for people first, search engines second. You get content that ranks and reads naturally.", "imageQuery": "writer at desk laptop creative content professional workspace" },
-      { "name": "Brand Voice Development", "description": "We create a documented tone-of-voice guide so your brand sounds consistent whether we write it or your intern does.", "imageQuery": "brand voice guide document style writing tone professional" },
-      { "name": "Fast Turnaround, No Fluff", "description": "Most projects are delivered within 5 business days. Clean, concise copy that says what it needs to \u2014 nothing more.", "imageQuery": "content calendar planning editorial schedule organised efficient" }
+      { "name": "SEO-Informed, Human-Written", "description": "Every piece is written for people first, search engines second. You get content that ranks and reads naturally.", "imageQuery": "writer at desk typing laptop notebook pen creative bright workspace professional" },
+      { "name": "Brand Voice Development", "description": "We create a documented tone-of-voice guide so your brand sounds consistent whether we write it or your intern does.", "imageQuery": "brand guidelines document open pages typography colour palette style guide printed" },
+      { "name": "Fast Turnaround, No Fluff", "description": "Most projects are delivered within 5 business days. Clean, concise copy that says what it needs to \u2014 nothing more.", "imageQuery": "editorial content calendar planning board sticky notes schedule organised wall" }
     ]
   },
   "Music Producer / Studio": {
@@ -15501,7 +15569,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Production"
         ],
         "icon": "mic",
-        "serviceImageQuery": "studio microphone condenser vocal booth recording"
+        "serviceImageQuery": "condenser microphone in vocal booth pop filter recording studio professional"
       },
       {
         "name": "Mixing & Mastering",
@@ -15511,7 +15579,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Mastering"
         ],
         "icon": "sliders",
-        "serviceImageQuery": "mixing console faders equaliser studio monitors speakers"
+        "serviceImageQuery": "audio mixing console faders equaliser knobs studio monitor speakers professional"
       },
       {
         "name": "Podcast & Voiceover Recording",
@@ -15521,7 +15589,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Voiceover"
         ],
         "icon": "radio",
-        "serviceImageQuery": "podcast microphone headphones recording studio desk"
+        "serviceImageQuery": "podcast microphone headphones recording desk laptop audio interface studio"
       },
         {
           "name": "Film Scoring & Sync Licensing",
@@ -15530,7 +15598,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Film Score",
             "Sync Licensing"
           ],
-          "serviceImageQuery": "music score sheet notes composition manuscript paper"
+          "serviceImageQuery": "film score sheet music composition notes on piano keyboard manuscript"
         }
     ],
     "galleryHeading": "From the Studio",
@@ -15573,19 +15641,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "moody, professional, warm",
-    "heroImageQuery": "recording studio mixing console faders knobs close-up",
-    "ogImageQuery": "music studio professional recording Cape Town producer",
-    "aboutImageQuery": "music producer adjusting mixing console in studio",
+    "heroImageQuery": "recording studio mixing console faders knobs LED meters close-up professional audio",
+    "ogImageQuery": "music producer at mixing desk studio monitors speakers headphones professional recording",
+    "aboutImageQuery": "music producer engineer adjusting faders on mixing console recording studio monitors",
     "galleryImageQueries": [
-      "band recording live session instruments studio",
-      "mixing mastering console monitor speakers close-up",
-      "podcast recording microphone headphones desk",
-      "vocalist singing into condenser microphone studio"
+      "band recording live session drum kit guitar bass instruments in studio room",
+      "mixing console faders studio monitor speakers close-up professional audio mastering",
+      "podcast recording setup microphone pop filter headphones laptop desk",
+      "singer vocalist recording into condenser microphone headphones vocal booth studio"
     ],
     "features": [
-      { "name": "Acoustically Treated, Pro-Grade Studio", "description": "Our rooms are purpose-built and acoustically treated. What you hear in the monitors is what the world hears.", "imageQuery": "professional recording studio acoustically treated mixing desk" },
-      { "name": "Session Musicians on Call", "description": "Need live drums, bass, or guitar? We have a network of session musicians who can lay down tracks to elevate your project.", "imageQuery": "session musician recording guitar in studio professional" },
-      { "name": "Mix & Master for All Platforms", "description": "We master for Spotify, Apple Music, vinyl, and broadcast. Your track sounds perfect wherever people listen.", "imageQuery": "audio mastering engineer studio monitors mixing console" }
+      { "name": "Acoustically Treated, Pro-Grade Studio", "description": "Our rooms are purpose-built and acoustically treated. What you hear in the monitors is what the world hears.", "imageQuery": "professional recording studio interior acoustic treatment panels mixing desk monitors" },
+      { "name": "Session Musicians on Call", "description": "Need live drums, bass, or guitar? We have a network of session musicians who can lay down tracks to elevate your project.", "imageQuery": "guitarist playing electric guitar recording session studio headphones professional" },
+      { "name": "Mix & Master for All Platforms", "description": "We master for Spotify, Apple Music, vinyl, and broadcast. Your track sounds perfect wherever people listen.", "imageQuery": "audio mastering engineer at studio monitors speakers mixing console headphones" }
     ]
   },
   "Craft / Handmade Goods": {
@@ -15607,7 +15675,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wheel-Thrown"
         ],
         "icon": "circle",
-        "serviceImageQuery": "wheel-thrown ceramic bowls mugs earthy glazes display"
+        "serviceImageQuery": "handmade ceramic bowls mugs earthy glaze colours displayed wooden shelf pottery"
       },
       {
         "name": "Textile & Woven Goods",
@@ -15617,7 +15685,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Natural Fibres"
         ],
         "icon": "grid",
-        "serviceImageQuery": "hand-woven cushion covers throws natural fibre loom"
+        "serviceImageQuery": "hand-woven textile cushion throw blanket natural linen cotton loom weaving"
       },
       {
         "name": "Custom Leather Goods",
@@ -15627,7 +15695,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "hand-stitched leather wallet bag close-up craft"
+        "serviceImageQuery": "handmade leather wallet stitching detail close-up craftsman workshop tools"
       },
         {
           "name": "Candles & Home Fragrance",
@@ -15636,7 +15704,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Candles",
             "Home Fragrance"
           ],
-          "serviceImageQuery": "hand-poured soy candle glass jar flame warm light"
+          "serviceImageQuery": "handmade soy candle glass jar lit flame warm light artisan home fragrance"
         }
     ],
     "galleryHeading": "Made by Hand",
@@ -15679,19 +15747,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "earthy, warm, artisanal",
-    "heroImageQuery": "handmade ceramics pottery mugs bowls earthy tones display",
-    "ogImageQuery": "handmade ceramics leather craft Cape Town artisan",
-    "aboutImageQuery": "potter shaping clay on wheel in studio",
+    "heroImageQuery": "handmade ceramic mugs bowls pottery displayed on wooden shelf earthy glazes artisan",
+    "ogImageQuery": "artisan hands shaping clay pottery wheel studio close-up handmade ceramics",
+    "aboutImageQuery": "potter shaping clay bowl on pottery wheel hands close-up studio workshop",
     "galleryImageQueries": [
-      "ceramic vases bowls display earthy tones shelf",
-      "woven textile cushion throw natural fibre",
-      "hand-stitched leather goods wallet bag belt",
-      "artisan craft market stall handmade goods"
+      "handmade ceramic vases bowls arranged on shelf earthy tones pottery display",
+      "hand-woven textile cushion covers throws natural linen fabric texture",
+      "handmade leather wallet journal belt stitched goods close-up detail",
+      "artisan craft market stall handmade ceramics candles goods display table"
     ],
     "features": [
-      { "name": "Every Piece Made by Hand", "description": "Nothing is mass-produced. Each item is crafted individually, which means you're getting something truly one-of-a-kind.", "imageQuery": "artisan hands crafting handmade product workshop detail" },
-      { "name": "Custom Orders Welcome", "description": "Want a specific colour, size, or personalisation? We love custom work and we'll collaborate with you to get it exactly right.", "imageQuery": "custom handmade order personalised crafts gift bespoke" },
-      { "name": "Locally Sourced Materials", "description": "We use South African materials wherever possible \u2014 supporting local suppliers and keeping our carbon footprint small.", "imageQuery": "natural local materials raw craft supplies sustainable sourced" }
+      { "name": "Every Piece Made by Hand", "description": "Nothing is mass-produced. Each item is crafted individually, which means you're getting something truly one-of-a-kind.", "imageQuery": "artisan hands shaping clay on pottery wheel close-up handmade workshop" },
+      { "name": "Custom Orders Welcome", "description": "Want a specific colour, size, or personalisation? We love custom work and we'll collaborate with you to get it exactly right.", "imageQuery": "personalised handmade ceramic mug gift wrapped brown paper string custom order" },
+      { "name": "Locally Sourced Materials", "description": "We use South African materials wherever possible \u2014 supporting local suppliers and keeping our carbon footprint small.", "imageQuery": "natural raw materials clay linen thread leather supplies craft workshop table" }
     ]
   },
   "Fashion Designer": {
@@ -15713,7 +15781,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom-Made"
         ],
         "icon": "scissors",
-        "serviceImageQuery": "bespoke dress garment on mannequin fitting studio"
+        "serviceImageQuery": "bespoke dress on dress form mannequin pins fabric fashion design studio"
       },
       {
         "name": "Ready-to-Wear Collection",
@@ -15723,7 +15791,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Limited Edition"
         ],
         "icon": "star",
-        "serviceImageQuery": "ready-to-wear clothing rack styled editorial lookbook"
+        "serviceImageQuery": "ready-to-wear clothing collection hanging on rack fashion studio editorial styled"
       },
       {
         "name": "Capsule Wardrobe Consulting",
@@ -15733,7 +15801,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Styling"
         ],
         "icon": "layers",
-        "serviceImageQuery": "capsule wardrobe flat lay outfit combinations styled"
+        "serviceImageQuery": "capsule wardrobe outfit flat lay styled clothing accessories on white background"
       },
         {
           "name": "Bridal & Occasion Wear",
@@ -15742,7 +15810,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Bridal",
             "Occasion Wear"
           ],
-          "serviceImageQuery": "bridal gown white dress mannequin studio design detail"
+          "serviceImageQuery": "white bridal wedding gown dress on hanger detail lace fabric studio"
         }
     ],
     "galleryHeading": "From the Studio",
@@ -15785,19 +15853,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "considered, minimal, editorial",
-    "heroImageQuery": "fashion garments hanging on rack editorial lookbook",
-    "ogImageQuery": "fashion designer Cape Town bespoke ready-to-wear collection",
-    "aboutImageQuery": "fashion designer cutting fabric on table in studio",
+    "heroImageQuery": "fashion designer garments clothing rack styled editorial studio dresses hanging",
+    "ogImageQuery": "fashion designer woman working at sewing machine fabric studio professional",
+    "aboutImageQuery": "fashion designer cutting fabric pattern on large table scissors studio workshop",
     "galleryImageQueries": [
-      "fashion editorial model wearing designer garment",
-      "bespoke dress fitting mannequin pins studio",
-      "clothing collection lookbook styled garments rack",
-      "sewing machine fabric construction studio detail"
+      "fashion model wearing designer dress editorial portrait photography studio",
+      "dress on mannequin fitting pins adjustments fashion designer studio bespoke",
+      "clothing collection garments hanging on rack styled fashion lookbook studio",
+      "sewing machine close-up needle thread fabric fashion construction detail"
     ],
     "features": [
-      { "name": "Made-to-Measure Fit", "description": "Every garment is cut to your measurements. Off-the-rack can't compete with clothes that are literally shaped around your body.", "imageQuery": "fashion designer measuring client bespoke tailoring fitting" },
-      { "name": "Sustainable, Limited-Run Collections", "description": "We produce in small batches to minimise waste. You wear something exclusive, and the planet doesn't pay for it.", "imageQuery": "sustainable fashion small batch clothing rack studio production" },
-      { "name": "From Sketch to Wardrobe", "description": "We handle the full process \u2014 design, fabric sourcing, pattern-making, sewing, and final fitting. One designer, one vision.", "imageQuery": "fashion design sketch to finished garment process studio" }
+      { "name": "Made-to-Measure Fit", "description": "Every garment is cut to your measurements. Off-the-rack can't compete with clothes that are literally shaped around your body.", "imageQuery": "fashion designer measuring tape fitting client garment tailoring session studio" },
+      { "name": "Sustainable, Limited-Run Collections", "description": "We produce in small batches to minimise waste. You wear something exclusive, and the planet doesn't pay for it.", "imageQuery": "sustainable fashion small batch garments hanging rack organic fabric labels studio" },
+      { "name": "From Sketch to Wardrobe", "description": "We handle the full process \u2014 design, fabric sourcing, pattern-making, sewing, and final fitting. One designer, one vision.", "imageQuery": "fashion design sketches illustrations on paper pencil fabric swatches studio desk" }
     ]
   },
   "Animator / Motion Design": {
@@ -15819,7 +15887,7 @@ export const presetContent: Record<string, PresetContent> = {
           "2D Animation"
         ],
         "icon": "play",
-        "serviceImageQuery": "2D animation explainer video colourful characters screen"
+        "serviceImageQuery": "colourful 2D explainer video animation characters illustration on computer screen"
       },
       {
         "name": "Motion Graphics & Titles",
@@ -15829,7 +15897,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Logo Animation"
         ],
         "icon": "film",
-        "serviceImageQuery": "motion graphics title sequence animated logo screen"
+        "serviceImageQuery": "motion graphics logo animation text title sequence on screen colourful broadcast"
       },
       {
         "name": "3D Animation & Visualisation",
@@ -15839,7 +15907,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product Vis"
         ],
         "icon": "box",
-        "serviceImageQuery": "3D render product visualisation floating object screen"
+        "serviceImageQuery": "3D render product visualisation headphones floating black background studio lighting"
       },
         {
           "name": "Interactive & UI Animation",
@@ -15848,7 +15916,7 @@ export const presetContent: Record<string, PresetContent> = {
             "UI Animation",
             "Micro-Interaction"
           ],
-          "serviceImageQuery": "animated UI interface loading spinner button hover screen"
+          "serviceImageQuery": "UI UX designer working on mobile app interface design screen wireframe computer"
         }
     ],
     "galleryHeading": "Things We’ve Set in Motion",
@@ -15891,19 +15959,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, creative",
-    "heroImageQuery": "animation storyboard frames colourful character design screen",
-    "ogImageQuery": "motion design animation professional Cape Town studio",
-    "aboutImageQuery": "animator working on frame illustration tablet stylus",
+    "heroImageQuery": "animator artist working at computer dual monitors colourful animation software screen",
+    "ogImageQuery": "motion graphics animation colourful abstract shapes loop on computer monitor screen",
+    "aboutImageQuery": "digital artist animator drawing on graphics tablet stylus computer screen illustration",
     "galleryImageQueries": [
-      "2D animation explainer video colourful scene",
-      "broadcast title sequence motion graphics animated",
-      "3D product render visualisation floating angle",
-      "social media motion content animated story"
+      "colourful 2D animation character illustration explainer video frame scene",
+      "motion graphics title sequence text animation colourful broadcast screen",
+      "3D product render floating sneaker shoe angle visualisation studio lighting",
+      "animated social media story Instagram post motion graphics colourful screen"
     ],
     "features": [
-      { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "animated explainer video production colourful motion graphics" },
-      { "name": "Style Frames Before Production", "description": "We design the look before we animate. You approve key frames so there are no surprises when the final video arrives.", "imageQuery": "motion design style frames storyboard animation planning" },
-      { "name": "Lottie & Web-Ready Formats", "description": "We deliver in every format you need \u2014 MP4, GIF, Lottie, After Effects \u2014 optimised for web, app, and social.", "imageQuery": "animation software after effects timeline motion design screen" }
+      { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "colourful animated explainer video playing on laptop screen motion graphics characters" },
+      { "name": "Style Frames Before Production", "description": "We design the look before we animate. You approve key frames so there are no surprises when the final video arrives.", "imageQuery": "storyboard frames sketched on paper animation planning pencil drawings sequence" },
+      { "name": "Lottie & Web-Ready Formats", "description": "We deliver in every format you need \u2014 MP4, GIF, Lottie, After Effects \u2014 optimised for web, app, and social.", "imageQuery": "after effects animation timeline software layers keyframes on computer monitor screen" }
     ]
   },
   "Tattoo / Piercing Studio": {
@@ -16026,7 +16094,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Abstract"
         ],
         "icon": "star",
-        "serviceImageQuery": "professional artist standing in front of abstract painting studio portrait"
+        "serviceImageQuery": "artist standing beside large abstract painting studio portrait professional"
       },
       {
         "name": "Jordan Ellis",
@@ -16036,7 +16104,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Landscape"
         ],
         "icon": "layers",
-        "serviceImageQuery": "professional painter artist working at easel in bright studio"
+        "serviceImageQuery": "painter artist working at easel oil painting canvas bright studio natural light"
       },
       {
         "name": "Riley Chen",
@@ -16046,7 +16114,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Installation"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "professional sculptor artist working with clay in workshop"
+        "serviceImageQuery": "sculptor artist working clay bronze sculpture hands workshop tools"
       },
       {
         "name": "Sam Okafor",
@@ -16055,7 +16123,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Photography",
           "Prints"
         ],
-        "serviceImageQuery": "professional photographer artist holding camera in studio portrait"
+        "serviceImageQuery": "fine art photographer holding camera urban architecture street photography portrait"
       }
     ],
     "galleryHeading": "Current Exhibition",
@@ -16098,19 +16166,23 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "curated, minimal, artistic",
-    "heroImageQuery": "contemporary art paintings hanging white gallery wall",
-    "ogImageQuery": "art gallery Cape Town contemporary South African art",
-    "aboutImageQuery": "gallery curator hanging artwork on white wall",
+    "heroImageQuery": "contemporary art gallery white walls paintings hung spotlights modern exhibition space",
+    "ogImageQuery": "contemporary art gallery exhibition paintings white walls spotlights",
+    "aboutImageQuery": "gallery curator carefully hanging framed artwork on white gallery wall",
     "galleryImageQueries": [
-      "gallery exhibition paintings hung white wall spotlights",
-      "limited edition prints framed gallery display row",
-      "sculpture pedestal gallery interior contemporary art",
-      "gallery opening event visitors viewing artwork"
+      "art gallery exhibition large paintings hung white wall track lighting",
+      "limited edition framed prints row gallery display wall spotlights",
+      "bronze sculpture pedestal white gallery interior contemporary art",
+      "gallery opening night visitors viewing paintings wine glasses reception",
+      "abstract painting close up colourful brushstrokes canvas texture detail",
+      "person contemplating large artwork gallery white wall bench",
+      "framed photographs fine art prints gallery wall row display",
+      "art gallery interior wide angle white walls paintings sculptures exhibition"
     ],
     "features": [
-      { "name": "Curated with Intention", "description": "Every piece in our gallery is selected by our curatorial team — we don’t exhibit everything, only work that moves us.", "imageQuery": "contemporary art gallery white walls curated exhibition professional" },
-      { "name": "Artist-First Relationships", "description": "We represent our artists long-term, investing in their careers and ensuring fair, transparent pricing for collectors.", "imageQuery": "art gallery opening night people viewing paintings wine reception" },
-      { "name": "Art Advisory Included", "description": "Not sure where to start? Our advisory service helps you find the right piece for your space, style, and budget — at no extra charge.", "imageQuery": "interior designer selecting artwork for modern living room wall" }
+      { "name": "Curated with Intention", "description": "Every piece in our gallery is selected by our curatorial team — we don’t exhibit everything, only work that moves us.", "imageQuery": "contemporary art gallery exhibition white walls curated paintings spotlights" },
+      { "name": "Artist-First Relationships", "description": "We represent our artists long-term, investing in their careers and ensuring fair, transparent pricing for collectors.", "imageQuery": "art gallery opening night guests viewing paintings wine reception evening" },
+      { "name": "Art Advisory Included", "description": "Not sure where to start? Our advisory service helps you find the right piece for your space, style, and budget — at no extra charge.", "imageQuery": "person selecting artwork painting for modern living room wall advisory" }
     ],
   },
   "Real Estate Agent": {
@@ -16233,7 +16305,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Extensions"
         ],
         "icon": "home",
-        "serviceImageQuery": "modern residential house exterior architecture completed"
+        "serviceImageQuery": "modern house exterior architecture white walls glass windows completed residential"
       },
       {
         "name": "Council Submissions & Approvals",
@@ -16243,7 +16315,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Planning"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "architectural blueprints floor plan drawings desk"
+        "serviceImageQuery": "architectural blueprints floor plan drawings spread on desk pencil ruler scale"
       },
       {
         "name": "Commercial & Retail Design",
@@ -16253,7 +16325,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Retail Fit-Out"
         ],
         "icon": "briefcase",
-        "serviceImageQuery": "modern commercial building interior open plan office design"
+        "serviceImageQuery": "modern commercial office interior architecture designed open plan bright glass walls"
       },
         {
           "name": "Site Management & Contract Admin",
@@ -16262,7 +16334,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Site Management",
             "Contract Admin"
           ],
-          "serviceImageQuery": "construction site scaffold building progress concrete frame"
+          "serviceImageQuery": "architect with hard hat clipboard on construction site inspecting building progress"
         }
     ],
     "galleryHeading": "Projects We’ve Designed",
@@ -16305,19 +16377,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "architectural, clean, considered",
-    "heroImageQuery": "modern architecture residential building exterior white walls",
-    "ogImageQuery": "architectural model building design concept",
-    "aboutImageQuery": "architect reviewing blueprints at desk with scale model",
+    "heroImageQuery": "modern residential house architecture exterior white walls large windows garden completed",
+    "ogImageQuery": "architectural scale model white building hands architect desk blueprints",
+    "aboutImageQuery": "architect reviewing blueprints floor plans at desk scale model building office",
     "galleryImageQueries": [
-      "modern residential house architecture exterior completed",
-      "home extension renovation contemporary glass design",
-      "commercial office interior architecture open plan",
-      "heritage building renovation restored facade"
+      "modern residential house architecture completed exterior garden landscaping",
+      "contemporary home extension glass walls renovation architecture exterior",
+      "modern commercial office interior architecture open plan bright designed space",
+      "heritage building renovated restored facade period architecture exterior"
     ],
     "features": [
-      { "name": "Full Council Submission Service", "description": "We handle site development plans, council submissions, and all the back-and-forth so you don't have to sit in planning offices.", "imageQuery": "architect reviewing council building plans submission documents" },
-      { "name": "Energy-Efficient Design Focus", "description": "Every project considers passive cooling, natural light, and insulation from day one \u2014 reducing your running costs for decades.", "imageQuery": "energy efficient building design natural light sustainable architecture" },
-      { "name": "3D Walkthroughs Before Construction", "description": "We build your project virtually before anyone picks up a brick. Walk through your future home or office in photorealistic 3D.", "imageQuery": "architectural 3D render walkthrough modern building visualisation" }
+      { "name": "Full Council Submission Service", "description": "We handle site development plans, council submissions, and all the back-and-forth so you don't have to sit in planning offices.", "imageQuery": "architect reviewing building plans blueprints documents on desk council submission" },
+      { "name": "Energy-Efficient Design Focus", "description": "Every project considers passive cooling, natural light, and insulation from day one \u2014 reducing your running costs for decades.", "imageQuery": "modern sustainable house large windows natural light solar panels energy efficient design" },
+      { "name": "3D Walkthroughs Before Construction", "description": "We build your project virtually before anyone picks up a brick. Walk through your future home or office in photorealistic 3D.", "imageQuery": "3D architectural render modern house visualisation interior walkthrough photorealistic" }
     ]
   },
   "Surveyor": {
@@ -16743,7 +16815,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Banners"
         ],
         "icon": "monitor",
-        "serviceImageQuery": "custom signage outdoor banner large format printing"
+        "serviceImageQuery": "large outdoor signage banner installed on building facade colourful printed"
       },
       {
         "name": "Vinyl Branding & Wraps",
@@ -16753,7 +16825,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Vehicle Wraps"
         ],
         "icon": "truck",
-        "serviceImageQuery": "vinyl lettering window graphics storefront branding"
+        "serviceImageQuery": "vinyl cut lettering applied to glass shop window storefront branding graphics"
       },
       {
         "name": "Branding Materials & Print",
@@ -16763,7 +16835,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Stickers"
         ],
         "icon": "file-text",
-        "serviceImageQuery": "business cards brochures printed branding materials stacked"
+        "serviceImageQuery": "printed business cards brochures stickers branding materials stacked on table"
       },
       {
         "name": "Vehicle Wraps & Fleet Branding",
@@ -16773,7 +16845,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fleet Branding"
         ],
         "icon": "truck",
-        "serviceImageQuery": "vehicle wrap branded van fleet livery graphics"
+        "serviceImageQuery": "vehicle wrap colourful branded delivery van parked fleet livery graphics"
       }
     ],
     "galleryHeading": "Off the Press",
@@ -16816,19 +16888,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, commercial",
-    "heroImageQuery": "print shop wide format printer signage production",
-    "ogImageQuery": "signage vinyl banners printed display",
-    "aboutImageQuery": "print shop operator running wide format press",
+    "heroImageQuery": "wide format inkjet printer printing large colourful banner sign print shop production",
+    "ogImageQuery": "printed vinyl banner signage display colourful large format professional print shop",
+    "aboutImageQuery": "print shop operator worker checking wide format printer output colourful large banner",
     "galleryImageQueries": [
-      "retail fascia signage illuminated shopfront",
-      "branded vehicle wrap van fleet graphics",
-      "event banner wall exhibition display stand",
-      "window vinyl graphics storefront branding installed"
+      "illuminated retail shop fascia signage night lit up storefront lettering",
+      "branded vehicle wrap colourful graphics on delivery van fleet parked",
+      "exhibition trade show display stand pull-up banners printed backdrop event",
+      "vinyl window graphics frosted lettering installed on glass storefront shop"
     ],
     "features": [
-      { "name": "Same-Day Rush Available", "description": "Need it yesterday? We offer same-day turnaround on selected products so your deadline is never missed.", "imageQuery": "print shop production fast turnaround printing machine" },
-      { "name": "In-House Design Service", "description": "Don't have artwork? Our design team will create it for you at no extra charge on qualifying orders.", "imageQuery": "graphic designer creating signage artwork computer design studio" },
-      { "name": "Installation Team on Staff", "description": "We don't just print it \u2014 we install it. Vehicle wraps, building signage, window graphics, all fitted by our own crew.", "imageQuery": "signage installer fitting shop fascia professional installation" }
+      { "name": "Same-Day Rush Available", "description": "Need it yesterday? We offer same-day turnaround on selected products so your deadline is never missed.", "imageQuery": "industrial printing press machine running fast production print shop colourful output" },
+      { "name": "In-House Design Service", "description": "Don't have artwork? Our design team will create it for you at no extra charge on qualifying orders.", "imageQuery": "designer creating signage artwork layout on computer screen graphic design studio" },
+      { "name": "Installation Team on Staff", "description": "We don't just print it \u2014 we install it. Vehicle wraps, building signage, window graphics, all fitted by our own crew.", "imageQuery": "workers installing shop signage fascia on building exterior ladder professional" }
     ]
   },
 }
