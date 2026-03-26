@@ -242,6 +242,7 @@ const fontPairings: Record<BusinessCategory, { heading: string; headingFamily: s
 // ---------- Stock images ----------
 interface StockImages {
   hero: string
+  about: string
   cards: string[]
   avatar: string
 }
@@ -286,6 +287,7 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
   if (!apiKey) {
     return {
       hero: `https://picsum.photos/seed/${category}-hero/1200/600`,
+      about: `https://picsum.photos/seed/${category}-about/600/400`,
       cards: [0, 1, 2, 3, 4, 5, 6].map(i => `https://picsum.photos/seed/${category}-card${i}/600/400`),
       avatar: `https://picsum.photos/seed/${category}-avatar/200/200`,
     }
@@ -300,6 +302,10 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
   if (queries?.heroImageQuery || queries?.serviceImageQueries?.length || queries?.galleryImageQueries?.length) {
     // Fetch sequentially to allow deduplication via usedUrls
     const heroUrl = await fetchPexelsImage(queries.heroBgImageQuery || queries.heroImageQuery || typeName, apiKey, 'landscape', usedUrls)
+
+    const aboutUrl = queries.aboutImageQuery
+      ? await fetchPexelsImage(queries.aboutImageQuery, apiKey, 'landscape', usedUrls)
+      : null
 
     const svcQueries = queries.serviceImageQueries || []
     const svcResults: (string | null)[] = []
@@ -318,6 +324,7 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
 
     return {
       hero: fallback(heroUrl, `${typeName}-hero`),
+      about: fallback(aboutUrl, `${typeName}-about`),
       cards: [
         ...svcResults.map((r, i) => fallback(r, `${typeName}-svc${i}`)),
         ...galResults.map((r, i) => fallback(r, `${typeName}-gal${i}`)),
@@ -352,7 +359,8 @@ async function fetchStockImages(category: BusinessCategory, businessType: string
 
   const avatarUrl = photos[photos.length > 8 ? 8 : 1]?.src?.tiny || `https://picsum.photos/seed/${typeName}-avatar/200/200`
 
-  return { hero: heroUrl, cards: cardUrls, avatar: avatarUrl }
+  const aboutUrl = cardUrls.length > 0 ? cardUrls.shift()! : `https://picsum.photos/seed/${typeName}-about/600/400`
+  return { hero: heroUrl, about: aboutUrl, cards: cardUrls, avatar: avatarUrl }
 }
 
 // ---------- Content JSON from Claude ----------
@@ -891,6 +899,7 @@ function buildVisualTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -911,7 +920,7 @@ function buildVisualTemplate(data: TemplateData): string {
         <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
           <!-- Left: featured image -->
           <div class="ms-img" style="overflow:hidden;border-radius:16px;height:520px">
-            <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <!-- Right: stacked services list -->
           <div>
@@ -1168,6 +1177,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1312,6 +1322,7 @@ function buildPropertyTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1350,7 +1361,7 @@ function buildPropertyTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
         <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:${prCopper};border-radius:12px;padding:1.5rem 2rem;color:#fff">
           <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;line-height:1">${content.stats[0]?.value || '15+'}</div>
@@ -1552,6 +1563,7 @@ function buildEventsTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1740,6 +1752,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1899,6 +1912,7 @@ function buildEducationTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1909,7 +1923,7 @@ function buildEducationTemplate(data: TemplateData): string {
   const eduBg = '#ffffff'
   const eduText = '#1a1a1a'
   const eduMuted = '#6b6b6b'
-  const eduPink = '#f8c8d8'
+  const eduPink = lightenColor(primaryColor, 0.85)
 
   // Section 1: Split hero — pink bg, heading left, photo right
   const heroSection = `
@@ -2072,6 +2086,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2131,7 +2146,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${crBg}">
     <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:500px">
-        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:1.1rem;color:${crText};line-height:1.8;margin-bottom:1.5rem">${p}</p>`).join('')}
@@ -2142,7 +2157,9 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   // Section 4: Featured Work — 2-column portfolio grid with tag labels (even rows)
   const allPortfolioImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
-  const featuresData = content.features || content.services.slice(0, 4)
+  // Ensure exactly 4 items for 2x2 grid — pad from services if features < 4
+  const rawFeatures = content.features || content.services.slice(0, 4)
+  const featuresData = rawFeatures.length >= 4 ? rawFeatures : [...rawFeatures, ...content.services.filter(s => !rawFeatures.some(f => f.name === s.name)).slice(0, 4 - rawFeatures.length)]
   const portfolioGrid = `
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto">
@@ -2221,7 +2238,6 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${aboutSection}
-  ${servicesList}
   ${meetSection}
   ${portfolioGrid}
   ${buildContactSection(content, locationInfo)}
@@ -2240,6 +2256,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2414,6 +2431,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2564,6 +2582,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2596,7 +2615,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <section id="services" style="padding:80px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
-        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
@@ -2746,6 +2765,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2787,7 +2807,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
         <div style="border-radius:50%;overflow:hidden;width:90%;aspect-ratio:1;margin:0 auto">
-          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>
       <div>
@@ -2968,6 +2988,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3004,7 +3025,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${hwBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.badge || 'About Us'}</p>
@@ -3177,6 +3198,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3312,7 +3334,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         </div>
       </div>
       <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-        <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
@@ -3423,6 +3445,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3509,7 +3532,7 @@ function buildTradesTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div style="position:relative">
         <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-          <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem">
           <div style="width:48px;height:48px;border-radius:50%;background:${trBlue};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1rem;font-weight:700">${content.stats[0]?.value || '15+'}</div>
@@ -3681,6 +3704,7 @@ function buildRetailTemplate(data: TemplateData): string {
   let imgIdx = 0
   const nextImg = () => uniquePool[imgIdx++] || uniquePool[0]
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
   const galleryImgs = [nextImg(), nextImg(), nextImg(), nextImg()]
@@ -3770,7 +3794,7 @@ function buildRetailTemplate(data: TemplateData): string {
           </div>`).join('')}
         </div>
         <div style="border-radius:16px;overflow:hidden">
-          <img src="${stockPool[0]}" alt="" style="width:100%;height:auto;display:block" />
+          <img src="${aboutImg}" alt="" style="width:100%;height:auto;display:block" />
         </div>
         <div>
           ${content.stats.slice(2, 4).map((s, i) => `
@@ -3891,6 +3915,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
