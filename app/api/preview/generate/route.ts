@@ -1070,10 +1070,10 @@ function buildServiceTemplate(data: TemplateData): string {
   // Werksmans-style image grid + stats bar for professional types
   const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
   const tileImgs = [
-    stockImages.cards[3] || stockImages.hero,
-    stockImages.cards[4] || stockImages.cards[0],
-    stockImages.cards[5] || stockImages.cards[1],
-    stockImages.cards[6] || stockImages.cards[2],
+    stockImages.cards[7] || stockImages.hero,
+    stockImages.cards[8] || stockImages.cards[0],
+    stockImages.cards[9] || stockImages.cards[1],
+    stockImages.cards[10] || stockImages.cards[2],
   ]
   const statIcons = ['&#9878;', '&#9734;', '&#9823;'] // scales, star, person — generic professional
 
@@ -1082,8 +1082,8 @@ function buildServiceTemplate(data: TemplateData): string {
       <!-- 2x2 greyscale image grid with accent label pills -->
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
         ${tileImgs.map((img, i) => `
-        <div class="ms-img" style="position:relative;height:280px;overflow:hidden">
-          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(100%)" />
+        <div class="ms-img" style="position:relative;height:280px;overflow:hidden;border-radius:12px">
+          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
           <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#fff;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
         </div>`).join('')}
       </div>
@@ -1786,7 +1786,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
       ${(eg.items as typeof content.services).map((s, i) => `
       <div>
         <div class="ms-img" style="height:200px;overflow:hidden;margin-bottom:1.25rem">
-          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(0.3)" />
+          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
@@ -2587,14 +2587,14 @@ function buildPetsTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
 
-  const petBg = '#c5d9b2'
+  const petBg = lightenColor(primaryColor, 0.85)
   const petDark = '#3a5a3a'
   const petText = '#2d4a2d'
   const petMuted = '#5a7a5a'
 
   // Section 1: Split hero — large heading left, rounded photo right
   const heroSection = `
-  <section style="padding:80px 2rem;background:${petBg}">
+  <section style="padding:40px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
       <div>
         <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -2609,7 +2609,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // Section 2: 50/50 — photo left, heading + underline CTA right
   const featureSection = `
-  <section id="services" style="padding:80px 2rem;background:${petBg}">
+  <section id="services" style="padding:40px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
         <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2624,7 +2624,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // Section 3: 50/50 reversed — heading left, photo right
   const featureSection2 = `
-  <section style="padding:80px 2rem;background:${petBg}">
+  <section style="padding:40px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
@@ -2741,9 +2741,9 @@ function buildPetsTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
+  ${brandSection}
   ${featureSection}
   ${featureSection2}
-  ${brandSection}
   ${serviceCards}
   ${testimonialSection}
   ${buildContactSection(content, locationInfo)}
@@ -3276,8 +3276,8 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
         ${content.services.slice(0, 4).map(s => `
         <div style="text-align:left">
-          <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1rem">
-            <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon)}</span>
+          <div style="border-radius:12px;height:200px;overflow:hidden;margin-bottom:1rem">
+            <img src="${stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
