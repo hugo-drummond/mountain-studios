@@ -9491,7 +9491,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Liability"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "commercial building exterior office warehouse property"
+              "serviceImageQuery": "commercial office building exterior modern glass facade blue sky professional photography"
           },
           {
               "name": "Claims Assistance",
@@ -9501,7 +9501,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Settlement"
               ],
               "icon": "shield",
-              "serviceImageQuery": "car accident damage bumper claim scene"
+              "serviceImageQuery": "car accident damaged front bumper dent insurance claim roadside close-up professional"
           },
           {
               "name": "Specialist & High-Value Cover",
@@ -9511,7 +9511,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Art & Jewellery"
               ],
               "icon": "star",
-              "serviceImageQuery": "luxury watch jewellery collection velvet case display"
+              "serviceImageQuery": "luxury watch diamond jewellery ring velvet display case close-up professional photography"
           }
       ],
       "galleryHeading": "Cover That Counts",
@@ -9565,15 +9565,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, reassuring, trustworthy",
-      "heroImageQuery": "umbrella protecting house model safety shield concept",
-      "heroBgImageQuery": "dark moody umbrella rain protection dramatic lighting",
-      "ogImageQuery": "insurance policy documents house car model desk",
-      "aboutImageQuery": "insurance broker reviewing policy documents with client at desk",
+      "heroImageQuery": "insurance broker office desk policy documents laptop pen professional corporate photography",
+      "heroBgImageQuery": "miniature house model umbrella shield protection dark moody concept editorial",
+      "ogImageQuery": "insurance policy document house car model pen desk professional office",
+      "aboutImageQuery": "insurance broker reviewing policy documents with client seated at desk office professional",
       "galleryImageQueries": [
-          "insurance policy comparison documents spread on desk",
-          "family home exterior garden protected insured",
-          "warehouse commercial building exterior loading dock",
-          "water damage home interior insurance claim"
+          "insurance policy comparison documents paperwork spread desk pen professional photography",
+          "family home exterior garden pathway well-maintained suburban professional photography",
+          "commercial warehouse building exterior loading dock trucks professional photography",
+          "water damage flooded home interior insurance claim restoration professional"
       ]
   },
   "Recruitment / Staffing": {
@@ -9595,7 +9595,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "90-day Guarantee"
               ],
               "icon": "user-check",
-              "serviceImageQuery": "CV resume document on desk with pen shortlist"
+              "serviceImageQuery": "CV resume documents stacked on desk pen shortlist highlighter office professional"
           },
           {
               "name": "Contract & Temp Staffing",
@@ -9605,7 +9605,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Temp"
               ],
               "icon": "clock",
-              "serviceImageQuery": "busy office open plan workspace desks computers"
+              "serviceImageQuery": "busy open plan office workspace people at desks computers monitors professional photography"
           },
           {
               "name": "Executive Search",
@@ -9615,7 +9615,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "C-Suite"
               ],
               "icon": "star",
-              "serviceImageQuery": "boardroom executive chairs long table glass windows"
+              "serviceImageQuery": "corporate boardroom executive leather chairs long table glass windows professional photography"
           },
           {
               "name": "Psychometric & Skills Testing",
@@ -9625,7 +9625,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Skills Testing"
               ],
               "icon": "clipboard",
-              "serviceImageQuery": "aptitude test assessment paper desk pencil"
+              "serviceImageQuery": "aptitude test assessment paper multiple choice desk pencil office professional"
           }
       ],
       "galleryHeading": "Connections Made",
@@ -9679,15 +9679,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, dynamic, people-focused",
-      "heroImageQuery": "modern office space desks open plan bright workspace",
-      "heroBgImageQuery": "dark moody empty office desks chairs evening",
-      "ogImageQuery": "resume CV shortlist documents desk workspace",
-      "aboutImageQuery": "recruitment consultants collaborating around laptop in office",
+      "heroImageQuery": "professional job interview handshake across desk modern office boardroom professional photography",
+      "heroBgImageQuery": "empty corporate office desks chairs evening dark moody editorial professional",
+      "ogImageQuery": "resume CV documents shortlist pen desk professional office workspace photography",
+      "aboutImageQuery": "recruitment consultants team collaborating around laptop in modern office professional",
       "galleryImageQueries": [
-          "office workspace modern desks bright natural light",
-          "handshake two people meeting office job offer",
-          "corner office executive desk city view window",
-          "stack of CVs resumes printed on desk"
+          "modern open plan office workspace desks monitors bright natural light professional photography",
+          "two people handshake across desk job offer meeting office professional photography",
+          "executive corner office desk leather chair city view window professional photography",
+          "stack of printed CVs resumes on desk pen highlighter office professional"
       ]
   },
   "Marketing Agency": {
@@ -9709,7 +9709,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Positioning"
               ],
               "icon": "star",
-              "serviceImageQuery": "brand identity mockup logo business cards stationery"
+              "serviceImageQuery": "brand identity mockup logo business cards stationery flat lay desk professional photography"
           },
           {
               "name": "Digital Marketing & SEO",
@@ -9719,7 +9719,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "google analytics dashboard website traffic screen"
+              "serviceImageQuery": "Google analytics dashboard website traffic data laptop screen office desk professional"
           },
           {
               "name": "Content & Creative Production",
@@ -9729,7 +9729,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Video"
               ],
               "icon": "camera",
-              "serviceImageQuery": "video production camera studio creative shoot setup"
+              "serviceImageQuery": "video production cinema camera on tripod studio lights creative shoot setup professional"
           },
           {
               "name": "Website Design & Development",
@@ -9739,7 +9739,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Lead Generation"
               ],
               "icon": "monitor",
-              "serviceImageQuery": "responsive website design mockup laptop tablet phone"
+              "serviceImageQuery": "responsive website design mockup laptop tablet phone screens desk professional photography"
           }
       ],
       "galleryHeading": "Campaigns We've Built",
@@ -9793,15 +9793,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "creative, bold, modern",
-      "heroImageQuery": "creative workspace mood board design mockups colourful",
-      "heroBgImageQuery": "dark moody creative studio neon lights workspace",
-      "ogImageQuery": "brand campaign mockup billboard poster design",
-      "aboutImageQuery": "creative team brainstorming around whiteboard with post-its",
+      "heroImageQuery": "creative agency workspace mood board design mockups samples colourful desk professional",
+      "heroBgImageQuery": "creative studio workspace neon lights screens dark moody editorial professional",
+      "ogImageQuery": "brand campaign mockup poster billboard design printed professional photography",
+      "aboutImageQuery": "creative marketing team brainstorming around whiteboard post-it notes office professional",
       "galleryImageQueries": [
-          "brand campaign poster mockup billboard street",
-          "social media marketing phone screen notifications",
-          "photographer studio product shoot camera lighting",
-          "marketing analytics dashboard charts ROI screen"
+          "brand campaign poster mockup billboard urban street setting professional photography",
+          "social media marketing phone screen Instagram feed notifications desk professional",
+          "product photography studio camera lights softbox white backdrop professional setup",
+          "marketing analytics dashboard ROI charts graphs laptop screen professional photography"
       ]
   },
   "Business Coach": {
@@ -9823,7 +9823,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Leadership"
               ],
               "icon": "user",
-              "serviceImageQuery": "notebook goal setting written plan pen on desk"
+              "serviceImageQuery": "goal setting notebook open written plan pen on desk office close-up professional"
           },
           {
               "name": "Entrepreneur Coaching",
@@ -9833,7 +9833,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Founder"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "startup workspace laptop whiteboard ideas brainstorm"
+              "serviceImageQuery": "startup workspace laptop whiteboard ideas brainstorm sticky notes office professional"
           },
           {
               "name": "Team & Group Coaching",
@@ -9843,7 +9843,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Workshops"
               ],
               "icon": "users",
-              "serviceImageQuery": "workshop group session chairs circle flipchart"
+              "serviceImageQuery": "workshop group session people seated chairs circle flipchart meeting room professional"
           },
           {
               "name": "Leadership Development Programmes",
@@ -9853,7 +9853,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Emerging Managers"
               ],
               "icon": "award",
-              "serviceImageQuery": "leadership development workbook certificate pen desk"
+              "serviceImageQuery": "leadership development workbook certificate printed pen desk office professional photography"
           }
       ],
       "galleryHeading": "Coaching in Action",
@@ -9907,15 +9907,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, warm, purposeful",
-      "heroImageQuery": "mountain summit sunrise achievement peak view",
-      "heroBgImageQuery": "dark moody pathway leading forward light at end",
-      "ogImageQuery": "compass direction leadership navigation desk",
-      "aboutImageQuery": "coach and client in one on one session at small table",
+      "heroImageQuery": "business coach woman presenting whiteboard workshop small group corporate training room professional",
+      "heroBgImageQuery": "coaching session two people at table notebooks open dark moody editorial professional",
+      "ogImageQuery": "business coaching session whiteboard flipchart markers notebook desk professional photography",
+      "aboutImageQuery": "business coach one on one session client small table notebooks coffee office professional",
       "galleryImageQueries": [
-          "journal open on desk with pen goal list written",
-          "lightbulb idea creativity innovation concept",
-          "team workshop flipchart markers group activity",
-          "growth mindset books stack on desk motivation"
+          "open journal notebook pen goal list written desk coffee cup professional photography",
+          "business coaching workshop group people standing at flipchart discussion professional",
+          "team workshop flipchart markers sticky notes group brainstorming activity professional",
+          "business books stack on desk with reading glasses pen notebook professional"
       ]
   },
   "Translation / Interpreting": {
@@ -9937,7 +9937,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Legal"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "certified document stamp official translation seal"
+              "serviceImageQuery": "certified translated document official stamp seal papers desk close-up professional"
           },
           {
               "name": "Business & Technical Translation",
@@ -9947,7 +9947,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Technical"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "technical manual open multilingual pages text"
+              "serviceImageQuery": "technical manual open book multilingual text pages side by side desk professional"
           },
           {
               "name": "Conference & Court Interpreting",
@@ -9957,7 +9957,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Court"
               ],
               "icon": "mic",
-              "serviceImageQuery": "interpreting headset booth conference equipment"
+              "serviceImageQuery": "interpreter headset microphone booth conference simultaneous translation equipment professional"
           },
           {
               "name": "Website & App Localisation",
@@ -9967,7 +9967,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "App Translation"
               ],
               "icon": "globe",
-              "serviceImageQuery": "multilingual website screens different languages devices"
+              "serviceImageQuery": "multilingual website screens laptop tablet different languages text professional photography"
           }
       ],
       "galleryHeading": "Languages We Speak",
@@ -10021,15 +10021,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, precise, global",
-      "heroImageQuery": "multilingual dictionary pages open languages text",
-      "heroBgImageQuery": "dark moody world map text overlay languages",
-      "ogImageQuery": "translated document pages side by side languages",
-      "aboutImageQuery": "translator at desk comparing documents in two languages",
+      "heroImageQuery": "translator at desk with documents open laptop two language texts side by side professional",
+      "heroBgImageQuery": "open dictionary book pages languages text close-up dark moody editorial professional",
+      "ogImageQuery": "translated document pages side by side two languages desk pen professional photography",
+      "aboutImageQuery": "translator comparing documents two languages laptop desk office professional photography",
       "galleryImageQueries": [
-          "certified translation stamp seal on legal document",
-          "conference interpreting booth headphones microphone",
-          "multilingual brochure pages printed different languages",
-          "globe world map with different language flags"
+          "certified translation document official stamp seal close-up legal desk professional",
+          "conference interpreting booth headphones microphone glass panel professional photography",
+          "multilingual brochure printed pages different languages spread on desk professional",
+          "translator working at desk computer screen documents reference books professional"
       ]
   },
   "Notary / Commissioner of Oaths": {
@@ -10051,7 +10051,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "International"
               ],
               "icon": "award",
-              "serviceImageQuery": "notarial seal stamp pressed into wax on document"
+              "serviceImageQuery": "notarial seal stamp wax pressed on legal document parchment close-up professional"
           },
           {
               "name": "Apostille & Legalisation",
@@ -10061,7 +10061,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Hague"
               ],
               "icon": "check-square",
-              "serviceImageQuery": "apostille stamp certificate official government seal"
+              "serviceImageQuery": "apostille certificate official government stamp seal document desk close-up professional"
           },
           {
               "name": "Commissioner of Oaths",
@@ -10071,7 +10071,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Certified Copy"
               ],
               "icon": "stamp",
-              "serviceImageQuery": "affidavit sworn document stamped certified copy"
+              "serviceImageQuery": "affidavit sworn statement document stamped certified copy pen desk professional"
           },
           {
               "name": "Ante-Nuptial Contracts",
@@ -10081,7 +10081,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Marriage Contract"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "ante-nuptial contract marriage document signed rings"
+              "serviceImageQuery": "marriage contract document signed pen wedding rings desk close-up professional photography"
           }
       ],
       "galleryHeading": "Documents We Certify",
@@ -10135,15 +10135,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "authoritative, precise, professional",
-      "heroImageQuery": "official seal stamp embossed on legal document",
-      "heroBgImageQuery": "dark moody wax seal document parchment dramatic",
-      "ogImageQuery": "notarial seal wax stamp official parchment document",
-      "aboutImageQuery": "notary at desk stamping and signing official documents",
+      "heroImageQuery": "notary public desk official seal stamp legal documents pen ink professional photography",
+      "heroBgImageQuery": "wax seal embossed stamp on parchment document dark moody close-up editorial",
+      "ogImageQuery": "notarial seal wax stamp official document parchment desk close-up professional",
+      "aboutImageQuery": "notary at desk stamping signing official documents pen ink office professional",
       "galleryImageQueries": [
-          "official rubber stamp ink pad document desk",
-          "government certificate apostille ribbon official",
-          "stack of certified copies stamped and signed",
-          "wax seal stamp closeup on legal document red"
+          "official rubber stamp ink pad pressed on document desk close-up professional",
+          "government certificate apostille stamp ribbon seal official document professional photography",
+          "stack of certified copies documents stamped signed desk professional photography",
+          "red wax seal stamp pressed on legal document parchment close-up professional"
       ]
   },
   "Debt Counsellor": {
@@ -10165,7 +10165,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Reduced Instalments"
               ],
               "icon": "trending-down",
-              "serviceImageQuery": "calculator bills statements overdue pile on desk"
+              "serviceImageQuery": "calculator overdue bills invoices statements piled on desk pen stress professional"
           },
           {
               "name": "Creditor Protection",
@@ -10175,7 +10175,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Creditor Stop"
               ],
               "icon": "shield",
-              "serviceImageQuery": "shield icon protecting house from arrows concept art"
+              "serviceImageQuery": "hands protecting miniature house model on desk debt protection concept professional"
           },
           {
               "name": "Clearance Certificate",
