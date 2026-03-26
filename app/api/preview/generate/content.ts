@@ -10185,7 +10185,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Credit Record"
               ],
               "icon": "check-circle",
-              "serviceImageQuery": "clearance certificate document checkmark approved stamp"
+              "serviceImageQuery": "approved clearance certificate document green checkmark stamp desk close-up professional"
           },
           {
               "name": "Budgeting & Financial Literacy",
@@ -10195,7 +10195,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Financial Literacy"
               ],
               "icon": "book",
-              "serviceImageQuery": "budget planner spreadsheet income expenses savings"
+              "serviceImageQuery": "budget planner spreadsheet printed income expenses calculator pen desk professional"
           }
       ],
       "galleryHeading": "The Road to Financial Freedom",
@@ -10249,15 +10249,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "calm, trustworthy, hopeful",
-      "heroImageQuery": "broken chain links freedom release concept",
-      "heroBgImageQuery": "dark moody bridge pathway leading to light hope",
-      "ogImageQuery": "stack of bills envelopes financial stress desk",
-      "aboutImageQuery": "counsellor sitting with client reviewing paperwork empathetically",
+      "heroImageQuery": "debt counsellor office desk calculator documents pen financial consultation professional photography",
+      "heroBgImageQuery": "pile of bills invoices statements desk dark moody financial stress editorial",
+      "ogImageQuery": "stack of bills envelopes calculator pen financial documents desk professional",
+      "aboutImageQuery": "counsellor sitting with client reviewing paperwork empathetically across desk office professional",
       "galleryImageQueries": [
-          "overdue bills red letters pile on table",
-          "sunrise open road freedom new beginning",
-          "budget planner notebook pen calculator savings",
-          "happy family in garden home debt free celebration"
+          "overdue bills red final demand letters pile on desk table professional photography",
+          "person signing debt clearance certificate documents approved stamp desk professional",
+          "budget planner notebook pen calculator coins savings desk close-up professional",
+          "happy couple family at home living room smiling relief debt free professional"
       ]
   },
   "Customs / Freight Broker": {
@@ -10279,7 +10279,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Customs"
               ],
               "icon": "package",
-              "serviceImageQuery": "container ship port crane unloading cargo"
+              "serviceImageQuery": "container ship port crane unloading cargo containers harbour dock professional photography"
           },
           {
               "name": "Export Documentation",
@@ -10289,7 +10289,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Documentation"
               ],
               "icon": "send",
-              "serviceImageQuery": "shipping documents bill of lading customs forms"
+              "serviceImageQuery": "shipping documents bill of lading customs forms paperwork desk clipboard professional"
           },
           {
               "name": "Freight Forwarding & Logistics",
@@ -10299,7 +10299,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Air Freight"
               ],
               "icon": "truck",
-              "serviceImageQuery": "air cargo plane loading freight airport tarmac"
+              "serviceImageQuery": "air cargo plane loading freight pallets airport tarmac workers professional photography"
           },
           {
               "name": "Warehousing & Distribution",
@@ -10309,7 +10309,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Distribution"
               ],
               "icon": "archive",
-              "serviceImageQuery": "warehouse interior shelves pallets inventory storage"
+              "serviceImageQuery": "warehouse interior shelves pallets boxes inventory storage forklift professional photography"
           }
       ],
       "galleryHeading": "Cargo We've Cleared",
@@ -10363,15 +10363,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "industrial, precise, global",
-      "heroImageQuery": "container port stacked shipping containers crane harbour",
-      "heroBgImageQuery": "dark moody container port night cranes silhouette",
-      "ogImageQuery": "shipping containers stacked colourful port aerial",
-      "aboutImageQuery": "logistics team reviewing shipping documents in warehouse office",
+      "heroImageQuery": "container port stacked shipping containers colourful crane harbour dock aerial professional",
+      "heroBgImageQuery": "container port cranes silhouette night dark moody harbour editorial professional",
+      "ogImageQuery": "shipping containers stacked colourful port crane aerial view professional photography",
+      "aboutImageQuery": "logistics team reviewing shipping customs documents clipboard warehouse office professional",
       "galleryImageQueries": [
-          "container ship docked at port aerial view",
-          "customs declaration form stamp documents desk",
-          "air cargo loading bay plane freight pallets",
-          "warehouse interior shelves pallets forklift logistics"
+          "container ship docked at port cranes aerial view colourful containers professional",
+          "customs declaration form stamp pen documents desk close-up professional photography",
+          "air cargo loading bay plane freight pallets airport workers professional photography",
+          "warehouse interior shelves pallets forklift logistics worker professional photography"
       ]
   },
   "Cleaning Service": {
