@@ -1383,7 +1383,20 @@ function buildPropertyTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 3: Featured Properties — eyebrow + heading + 3 property cards with "For Sale" badge
+  // Section 3: Featured Properties — eyebrow + heading + 3 property listing cards
+  const defaultPropertyListings = [
+    { name: 'Camps Bay Villa', suburb: 'Camps Bay', details: '4 bed · 3 bath · 380m² · Pool · Sea views', label: 'For Sale' },
+    { name: 'Sea Point Apartment', suburb: 'Sea Point', details: '2 bed · 2 bath · 110m² · Balcony · Secure parking', label: 'For Sale' },
+    { name: 'Constantia Estate', suburb: 'Constantia', details: '5 bed · 4 bath · 620m² · Wine cellar · Mountain views', label: 'Recently Sold' },
+  ]
+  const propertyListings = (content.projectCaptions && content.projectCaptions.length >= 3)
+    ? content.projectCaptions.slice(0, 3).map((caption: string, i: number) => ({
+        name: caption,
+        suburb: (content.features && content.features[i]) ? content.features[i].title : locationInfo.city,
+        details: (content.features && content.features[i]) ? content.features[i].description : defaultPropertyListings[i].details,
+        label: i === 2 ? 'Recently Sold' : 'For Sale',
+      }))
+    : defaultPropertyListings
   const propertiesSection = `
   <section id="properties" style="padding:80px 2rem;background:${prAlt}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
@@ -1391,19 +1404,19 @@ function buildPropertyTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.galleryHeading || 'Featured Properties'}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        ${content.services.slice(0, 3).map((s, i) => `
+        ${propertyListings.map((prop: { name: string; suburb: string; details: string; label: string }) => `
         <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
           <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
             <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">For Sale</div>
+            <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">${prop.label}</div>
           </div>
           <div style="padding:1.5rem">
             <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
               <span style="color:${prMuted};font-size:0.85rem">&#9906;</span>
-              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.tags[0] || locationInfo.city}</span>
+              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${prop.suburb}</span>
             </div>
-            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted};line-height:1.6">${s.description}</p>
+            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${prop.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted};line-height:1.6">${prop.details}</p>
           </div>
         </div>`).join('')}
       </div>
@@ -3728,21 +3741,22 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 2: "Jump In" — centered heading + subtitle + 3 product circles
+  // Section 2: Collection — 4 proper product cards with photo, heading, description, tags
   const collectionSection = `
-  <section style="padding:100px 2rem;background:${retailBg};text-align:center">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.servicesHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:${retailMuted};line-height:1.7;max-width:500px;margin:0 auto 2rem">${content.aboutMission || content.heroSubtitle}</p>
-      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3rem">${content.ctaSecondary || 'Shop All'}</a>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
-        ${content.services.slice(0, 4).map((s, i) => `
-        <div style="display:flex;flex-direction:column;align-items:center">
-          <div style="width:100%;aspect-ratio:1;border-radius:16px;overflow:hidden;margin-bottom:1rem">
-            <img src="${i < serviceImgs.length ? serviceImgs[i] : (galleryImgs[i - serviceImgs.length] || heroImg)}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  <section style="padding:100px 2rem;background:${retailBg}">
+    <div style="max-width:1200px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">${content.servicesHeading}</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
+        ${content.services.slice(0, 4).map(s => `
+        <div style="background:${retailCardBg};border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
+          <div style="border-radius:12px;height:280px;overflow:hidden">
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
-          <h3 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.8rem;color:${retailMuted};line-height:1.6;text-align:center;margin-top:0.5rem">${s.description}</p>
+          <div style="padding:1.25rem">
+            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${s.name}</h3>
+            <p style="font-family:var(--body-font);font-size:0.85rem;color:${retailMuted};line-height:1.6;margin-bottom:0.75rem">${s.description}</p>
+            ${s.tags && s.tags.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.4rem">${s.tags.slice(0, 3).map((t: string) => `<span style="font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.2rem 0.6rem;background:rgba(0,0,0,0.05);border-radius:999px;color:${retailMuted};letter-spacing:0.04em;text-transform:uppercase">${t}</span>`).join('')}</div>` : ''}
+          </div>
         </div>`).join('')}
       </div>
     </div>
@@ -3807,16 +3821,15 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // Section 6: What Sets Us Apart — uses features (unique selling points), NOT services
   const featuresData = content.features || content.services.slice(0, 3)
-  const featureImgs = featuresData.map(() => nextImg())
   const productCards = `
   <section style="padding:80px 2rem;background:${retailBg}">
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${retailText};text-align:center;margin-bottom:3rem">What Sets Us Apart</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-        ${featuresData.slice(0, 3).map((f, i) => `
+        ${featuresData.slice(0, 3).map(f => `
         <div style="text-align:center">
           <div style="border-radius:12px;overflow:hidden;width:100%;aspect-ratio:4/3;margin-bottom:1.25rem">
-            <img src="${featureImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${f.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${f.description}</p>
@@ -3922,9 +3935,9 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 
   const techNav = buildStandardNav(businessName, content, navFlags)
 
-  // Section 1: Centered text hero — green accent heading + screenshot below
+  // Section 1: Centered text hero — green accent heading, no image below
   const heroSection = `
-  <section style="padding:160px 2rem 80px;text-align:center;background:var(--bg)">
+  <section style="padding:160px 2rem 100px;text-align:center;background:var(--bg)">
     <div style="max-width:800px;margin:0 auto">
       ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;padding:0.4rem 1rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);margin-bottom:1.5rem;letter-spacing:0.04em">${content.badge}</div>` : ''}
       <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem">
@@ -3932,13 +3945,10 @@ function buildTechDigitalTemplate(data: TemplateData): string {
         <span style="color:var(--text)">${content.heroAccent ? content.tagline : content.tagline.split(' ').slice(2).join(' ')}</span>
       </h1>
       <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);line-height:1.7;max-width:600px;margin:0 auto 2.5rem">${content.heroSubtitle}</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem;margin-bottom:4rem">
+      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:background 0.2s">${content.ctaSecondary}</a>
       </div>
-    </div>
-    <div style="max-width:1000px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid var(--border);box-shadow:0 25px 60px rgba(0,0,0,0.5)">
-      <img src="${heroImg}" alt="" style="width:100%;height:auto;display:block" />
     </div>
   </section>`
 
@@ -4014,25 +4024,26 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 7: Two-column value props with divider lines (Plain.com "When you need..." pattern)
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  // Section 7: "The Process" — education-style numbered circles + dashed connectors
+  const techProcessSteps = content.processSteps || [
+    { step: '1', title: 'Discovery & Strategy', description: 'We learn your business, goals, and target audience to map out the right approach.' },
+    { step: '2', title: 'Design, Build & Revise', description: 'We build your solution iteratively, incorporating your feedback at every stage.' },
+    { step: '3', title: 'Launch & Optimise', description: 'We go live, monitor performance, and continuously improve results.' },
+  ]
+  const techStepColors = [primaryColor, secondaryColor || '#f5a623', '#6c63ff']
   const valueProps = `
   <section id="about" style="padding:100px 2rem;background:var(--bg)">
-    <div style="max-width:1000px;margin:0 auto">
-      ${content.processSteps ? content.processSteps.map((step, i) => `
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < (content.processSteps?.length || 0) - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:0.75rem">${step.title}</h3>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} &rarr;</a>
-        </div>
-        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">${step.description}</p>
-      </div>`).join('') : aboutParagraphs.map((p, i) => `
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;padding:3rem 0;${i < aboutParagraphs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:1.35rem;font-weight:600;color:var(--text);line-height:1.3">${content.stats[i]?.label || 'Our Approach'}</h3>
-        </div>
-        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8">${p}</p>
-      </div>`).join('')}
+    <div style="max-width:1000px;margin:0 auto;text-align:center">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);margin-bottom:4rem">The Process</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
+        ${techProcessSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed rgba(255,255,255,0.2);margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
+          <div style="width:64px;height:64px;border-radius:50%;background:${techStepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
+          <div>
+            <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
+            <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7">${step.description}</p>
+          </div>
+        </div>`).join('')}
+      </div>
     </div>
   </section>`
 
@@ -4095,14 +4106,11 @@ ${techNav}
   ${heroSection}
   ${featureCards}
   ${trustStrip}
-  ${problemStatement}
   ${featureShowcases}
   ${darkAccentSection}
   ${valueProps}
   ${testimonialSection}
-  ${statsSection}
   ${buildContactSection(content, locationInfo)}
-  ${finalCta}
 
 ${buildFooter(businessName, content, 'dark')}
 
