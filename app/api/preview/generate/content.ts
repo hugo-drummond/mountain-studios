@@ -52,7 +52,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Dining",
           "Seasonal Menu"
         ],
-        "serviceImageQuery": "fine dining plated dish white tablecloth restaurant"
+        "serviceImageQuery": "fine dining main course plated garnished white plate restaurant table"
       },
       {
         "name": "Private Functions",
@@ -61,7 +61,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Hire",
           "Events"
         ],
-        "serviceImageQuery": "private dining room long table set for event"
+        "serviceImageQuery": "private dining room long table elegant place settings chandelier event"
       },
       {
         "name": "Wine Pairing",
@@ -70,7 +70,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sommelier",
           "Cape Wines"
         ],
-        "serviceImageQuery": "wine bottle glasses poured at restaurant table"
+        "serviceImageQuery": "sommelier pouring red wine into glass at restaurant table candlelight"
       },
       {
         "name": "Sunday Brunch",
@@ -79,7 +79,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Brunch",
           "Weekend"
         ],
-        "serviceImageQuery": "brunch table spread eggs pastries juice morning"
+        "serviceImageQuery": "brunch table spread eggs benedict pastries fresh juice sunny morning restaurant"
       }
     ],
     "galleryHeading": "From Our Kitchen",
@@ -115,14 +115,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, moody, intimate",
-    "heroImageQuery": "restaurant dining table plates wine glasses candlelight evening",
-    "ogImageQuery": "fine dining table set white plates wine restaurant",
-    "aboutImageQuery": "chef plating dishes in restaurant kitchen line",
+    "heroImageQuery": "elegant restaurant dining table candlelight wine glasses white tablecloth intimate evening setting",
+    "ogImageQuery": "fine dining plated dish garnished white plate restaurant table overhead",
+    "aboutImageQuery": "chef plating gourmet dish kitchen pass restaurant line professional",
     "galleryImageQueries": [
-      "restaurant interior booth seating warm pendant lights",
-      "grilled steak plated garnished fine dining",
-      "cocktails bar counter restaurant evening",
-      "restaurant outdoor terrace dining table set"
+      "restaurant interior warm ambient lighting booth seating pendant lamps",
+      "seared steak fillet plated with garnish fine dining presentation",
+      "chef hands finishing dish with tweezers restaurant kitchen close-up",
+      "restaurant outdoor terrace table set for dinner evening golden hour"
     ],
     "contactHours": "Mon\u2013Sat: 12:00\u201322:30 \u00b7 Sun: 12:00\u201321:00 \u00b7 Closed Tuesdays"
   },
@@ -144,7 +144,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Single Origin",
           "Flat White"
         ],
-        "serviceImageQuery": "espresso machine pouring shot coffee café"
+        "serviceImageQuery": "barista pulling espresso shot from machine steam cafe counter close-up"
       },
       {
         "name": "All-Day Brunch",
@@ -153,7 +153,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Brunch",
           "Baked Fresh"
         ],
-        "serviceImageQuery": "café display cabinet pastries sandwiches glass counter"
+        "serviceImageQuery": "cafe display cabinet croissants pastries sandwiches glass counter bakery"
       },
       {
         "name": "Retail Beans",
@@ -162,7 +162,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Take-Home",
           "Gift Bags"
         ],
-        "serviceImageQuery": "coffee beans roasted bag scoop wooden surface"
+        "serviceImageQuery": "roasted coffee beans bag scoop wooden table cafe retail packaging"
       },
       {
         "name": "Meeting & Co-Working Space",
@@ -171,7 +171,7 @@ export const presetContent: Record<string, PresetContent> = {
           "WiFi",
           "Co-Working"
         ],
-        "serviceImageQuery": "café interior laptop table coffee cup workspace"
+        "serviceImageQuery": "person working laptop cafe table coffee cup cosy co-working space natural light"
       }
     ],
     "galleryHeading": "Life at the Counter",
@@ -207,14 +207,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bright, cosy, textured",
-    "heroImageQuery": "latte art coffee cup wooden table café warm light",
-    "ogImageQuery": "cappuccino latte art ceramic cup café table",
-    "aboutImageQuery": "barista making espresso behind café counter",
+    "heroImageQuery": "latte art rosetta pattern coffee cup wooden table cafe warm morning light",
+    "ogImageQuery": "latte art cappuccino ceramic cup saucer cafe table overhead",
+    "aboutImageQuery": "barista pouring steamed milk latte art behind cafe counter apron",
     "galleryImageQueries": [
-      "café interior wooden tables pendant lights cosy",
-      "croissant pastry plate coffee cup café table",
-      "espresso machine portafilter coffee beans close-up",
-      "iced coffee glass straw café counter summer"
+      "cosy cafe interior wooden tables pendant lights warm brick walls",
+      "barista pouring latte art into cup at espresso machine close-up",
+      "fresh croissant on plate next to cappuccino cafe table morning",
+      "iced coffee glass cold brew straw cafe counter summer daylight"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:00 \u00b7 Sat\u2013Sun: 08:00\u201315:00"
   },
@@ -236,7 +236,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sourdough",
           "Stone-Baked"
         ],
-        "serviceImageQuery": "artisan sourdough loaf crusty golden bakery"
+        "serviceImageQuery": "artisan sourdough bread loaf crusty golden crust scoring pattern bakery shelf"
       },
       {
         "name": "Pastries & Viennoiserie",
@@ -245,7 +245,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Croissants",
           "French Butter"
         ],
-        "serviceImageQuery": "golden butter croissant flaky pastry bakery display tray professional"
+        "serviceImageQuery": "golden flaky croissants rows on baking tray fresh from oven bakery"
       },
       {
         "name": "Custom Celebration Cakes",
@@ -254,7 +254,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom Cakes",
           "Wedding Cakes"
         ],
-        "serviceImageQuery": "elegant tiered wedding cake white flowers beautiful bakery professional"
+        "serviceImageQuery": "elegant tiered white wedding cake decorated fresh flowers bakery table"
       },
       {
         "name": "Bread Subscriptions",
@@ -263,7 +263,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Subscription",
           "Weekly Delivery"
         ],
-        "serviceImageQuery": "bread loaves basket assorted fresh baked"
+        "serviceImageQuery": "assorted fresh bread loaves in wicker basket rustic wooden counter bakery"
       }
     ],
     "galleryHeading": "This Morning's Bake",
@@ -299,14 +299,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, golden, rustic",
-    "heroImageQuery": "artisan bread loaves sourdough display shelf bakery",
-    "ogImageQuery": "fresh baked bread loaves bakery shelf morning",
-    "aboutImageQuery": "baker kneading dough flour wooden table hands",
+    "heroImageQuery": "artisan sourdough bread loaves displayed on wooden bakery shelf warm morning light",
+    "ogImageQuery": "fresh baked sourdough loaves arranged on wooden shelf bakery display",
+    "aboutImageQuery": "baker kneading dough on flour-dusted wooden table hands close-up bakery kitchen",
     "galleryImageQueries": [
-      "bakery display case cupcakes pastries croissants glass",
-      "sourdough bread sliced cutting board rustic table",
-      "cinnamon rolls tray fresh baked golden icing",
-      "bakery interior counter shelves bread warm light"
+      "bakery display case glass counter rows of pastries croissants cupcakes warm lighting",
+      "sourdough loaf sliced open crumb texture cutting board rustic bakery table",
+      "fresh cinnamon rolls tray drizzled icing golden baked bakery kitchen",
+      "bakery interior warm shelves stacked with fresh bread loaves counter morning"
     ],
     "contactHours": "Tue\u2013Fri: 07:00\u201315:00 \u00b7 Sat\u2013Sun: 07:00\u201312:00 \u00b7 Closed Mon"
   },
@@ -328,7 +328,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Craft Beer",
           "Local Breweries"
         ],
-        "serviceImageQuery": "craft beer taps row bar counter pouring glass"
+        "serviceImageQuery": "row of craft beer tap handles bar counter bartender pouring draught pint glass"
       },
       {
         "name": "Pub Kitchen",
@@ -337,7 +337,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pub Grub",
           "Burgers"
         ],
-        "serviceImageQuery": "gourmet burger fries plate pub table wooden board delicious"
+        "serviceImageQuery": "loaded gourmet burger fries on wooden board pub table beer glass background"
       },
       {
         "name": "Live Sport & Events",
@@ -346,7 +346,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Live Sport",
           "Quiz Night"
         ],
-        "serviceImageQuery": "sports bar big screen TV crowd watching game pub"
+        "serviceImageQuery": "crowd watching sport on big screen TV sports bar pub cheering pints"
       },
       {
         "name": "Cocktail Menu",
@@ -355,7 +355,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cocktails",
           "Signature Drinks"
         ],
-        "serviceImageQuery": "cocktail drinks colourful glasses bar counter"
+        "serviceImageQuery": "bartender garnishing colourful cocktails lined up on bar counter evening lighting"
       }
     ],
     "galleryHeading": "Nights at the Bar",
@@ -391,14 +391,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "dark, warm, lively",
-    "heroImageQuery": "bar counter cocktails glasses neon light evening interior",
-    "ogImageQuery": "craft beer tap handles bar counter glasses",
-    "aboutImageQuery": "bartender mixing cocktail shaker bar counter close-up",
+    "heroImageQuery": "busy bar counter amber lighting cocktail glasses craft beer taps neon signs evening atmosphere",
+    "ogImageQuery": "craft beer tap handles row bar counter amber lighting pub",
+    "aboutImageQuery": "bartender shaking cocktail shaker behind bar counter moody evening light close-up",
     "galleryImageQueries": [
-      "pub interior wooden bar stools warm lighting",
-      "cocktail glasses garnished bar counter colourful drinks",
-      "craft beer flight tasting glasses wooden paddle",
-      "bar snacks platter nachos wings table"
+      "pub interior wooden bar counter stools warm pendant lighting evening crowd",
+      "pint of craft beer golden ale on bar counter pub atmosphere close-up",
+      "craft beer flight four tasting glasses on wooden paddle bar counter",
+      "pub food platter nachos wings sharing board on table pints background"
     ],
     "contactHours": "Mon\u2013Thu: 12:00\u201300:00 \u00b7 Fri\u2013Sat: 12:00\u201302:00 \u00b7 Sun: 12:00\u201322:00"
   },
@@ -420,7 +420,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Dry-Aged",
           "Free-Range"
         ],
-        "serviceImageQuery": "fresh meat cuts steak butcher counter display"
+        "serviceImageQuery": "fresh beef steak cuts displayed on butcher counter refrigerated glass case"
       },
       {
         "name": "House Charcuterie",
@@ -429,7 +429,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Biltong",
           "Boerewors"
         ],
-        "serviceImageQuery": "cured meats charcuterie biltong hanging display artisan butcher"
+        "serviceImageQuery": "cured meats salami biltong hanging in butcher shop deli display"
       },
       {
         "name": "Deli & Platters",
@@ -438,7 +438,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cheese Board",
           "Antipasti"
         ],
-        "serviceImageQuery": "charcuterie board cheese meats antipasti platter wooden board beautiful"
+        "serviceImageQuery": "charcuterie grazing board cheese cured meats olives figs on wooden platter"
       },
       {
         "name": "Braai Packs & Marinades",
@@ -447,7 +447,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Braai Packs",
           "Marinades"
         ],
-        "serviceImageQuery": "marinated meat skewers braai pack tray"
+        "serviceImageQuery": "marinated meat kebab skewers and sausages arranged on tray ready for barbecue grill"
       }
     ],
     "galleryHeading": "From the Block",
@@ -483,14 +483,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "rich, rustic, earthy",
-    "heroImageQuery": "butcher shop counter fresh meat cuts display refrigerated",
-    "ogImageQuery": "premium steak cuts displayed butcher counter",
-    "aboutImageQuery": "butcher cutting meat cleaver wooden block apron",
+    "heroImageQuery": "butcher shop counter fresh meat cuts steak chops displayed refrigerated glass case",
+    "ogImageQuery": "premium marbled beef steak cuts displayed on butcher counter",
+    "aboutImageQuery": "butcher in apron cutting meat with cleaver on wooden chopping block shop",
     "galleryImageQueries": [
-      "deli counter meats cheeses display glass case",
-      "raw steak cuts marbled beef wooden board",
-      "sausages hanging butcher shop cured meats",
-      "butcher shop interior counter scale refrigerator"
+      "deli counter display case cured meats cheeses salads behind glass butcher shop",
+      "raw marbled ribeye steak cuts arranged on wooden board butcher paper",
+      "handmade sausages and boerewors coils on butcher shop counter tray",
+      "butcher shop interior refrigerated counter weighing scale tiles clean"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 07:30\u201314:00 \u00b7 Sun: 08:00\u201312:00"
   },
@@ -512,7 +512,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate",
           "Buffet"
         ],
-        "serviceImageQuery": "corporate catering buffet platters conference room"
+        "serviceImageQuery": "corporate catering buffet spread platters sandwiches salads on long table conference event"
       },
       {
         "name": "Wedding & Private Events",
@@ -521,7 +521,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Wedding",
           "Table Service"
         ],
-        "serviceImageQuery": "wedding reception dinner table set flowers candles"
+        "serviceImageQuery": "wedding reception dinner table place settings flowers candles elegant white linen"
       },
       {
         "name": "Cocktail & Canape Parties",
@@ -530,7 +530,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Canapes",
           "Cocktail Events"
         ],
-        "serviceImageQuery": "canapes finger food platter served catering event"
+        "serviceImageQuery": "canapes finger food on silver serving tray passed at cocktail event party"
       },
       {
         "name": "Meal Prep & Drop-Off",
@@ -539,7 +539,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Meal Prep",
           "Drop-Off"
         ],
-        "serviceImageQuery": "meal prep containers portioned food packed"
+        "serviceImageQuery": "meal prep containers portioned healthy food stacked kitchen counter labelled"
       }
     ],
     "galleryHeading": "Events We've Fed",
@@ -575,14 +575,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "elegant, abundant, professional",
-    "heroImageQuery": "catering buffet table elegant setup platters trays event",
-    "ogImageQuery": "catering event buffet table platters serving dishes",
-    "aboutImageQuery": "catering team preparing food trays in kitchen",
+    "heroImageQuery": "elegant catering buffet table platters trays garnished food at outdoor event venue",
+    "ogImageQuery": "catering buffet spread platters chafing dishes elegant event table",
+    "aboutImageQuery": "catering team chefs preparing plated dishes in commercial kitchen event prep",
     "galleryImageQueries": [
-      "catering banquet table set with plates cutlery glasses",
-      "canapes appetizer platters on serving trays event",
-      "wedding reception long table set with flowers plates",
-      "dessert table catering display cakes macarons"
+      "banquet table set with white plates cutlery wine glasses napkins catering event",
+      "canapes appetizers arranged on slate platters catering cocktail party close-up",
+      "long wedding reception table decorated flowers candles place settings outdoor",
+      "dessert table display tiered cakes macarons pastries catering event elegant"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Consultations by appointment \u00b7 Events 7 days"
   },
@@ -604,7 +604,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Signature",
           "Daily Fresh"
         ],
-        "serviceImageQuery": "burger meal fries drink fast food combo"
+        "serviceImageQuery": "juicy cheeseburger meal with golden fries and drink on fast food tray close-up"
       },
       {
         "name": "Family Packs",
@@ -613,7 +613,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Family Value",
           "Bulk Orders"
         ],
-        "serviceImageQuery": "pizza box open takeaway delivery pepperoni"
+        "serviceImageQuery": "family takeaway meal boxes open on table burgers wraps fries sharing"
       },
       {
         "name": "Delivery & Collect",
@@ -622,7 +622,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Delivery",
           "Click & Collect"
         ],
-        "serviceImageQuery": "chicken wrap burrito fast food foil packaging"
+        "serviceImageQuery": "chicken wrap burrito wrapped in foil paper takeaway packaging counter"
       },
       {
         "name": "Loyalty & Rewards",
@@ -631,7 +631,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Loyalty Card",
           "Rewards"
         ],
-        "serviceImageQuery": "takeaway paper bags counter fast food packaged"
+        "serviceImageQuery": "brown paper takeaway bags lined up on fast food counter ready for collection"
       }
     ],
     "galleryHeading": "Hot Off the Grill",
@@ -667,14 +667,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, appetising",
-    "heroImageQuery": "burger fries takeaway container fast food close-up",
-    "ogImageQuery": "burger and fries takeaway box fast food",
-    "aboutImageQuery": "fast food kitchen grill preparation counter",
+    "heroImageQuery": "smash burger loaded cheese bacon fries in takeaway container close-up appetising",
+    "ogImageQuery": "loaded cheeseburger and golden fries in takeaway box fast food close-up",
+    "aboutImageQuery": "fast food kitchen cook flipping burgers on flat grill busy preparation counter",
     "galleryImageQueries": [
-      "takeaway counter ordering screen fast food restaurant",
-      "loaded burger cheese bacon close-up bun",
-      "fried chicken wings crispy plate dipping sauce",
-      "milkshake tall glass straw fast food counter"
+      "fast food restaurant counter ordering screen menu board customers queueing",
+      "double smash burger melted cheese sesame bun close-up hands holding",
+      "crispy fried chicken wings on plate with dipping sauce coleslaw",
+      "thick milkshake tall glass whipped cream straw fast food counter retro"
     ],
     "contactHours": "Mon\u2013Sun: 10:00\u201322:00 \u00b7 Delivery until 21:30"
   },
@@ -696,7 +696,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rotating Menu",
           "Seasonal"
         ],
-        "serviceImageQuery": "food truck burger served window outdoor market"
+        "serviceImageQuery": "food truck serving burger through window to customer outdoor street market"
       },
       {
         "name": "Market Weekends",
@@ -705,7 +705,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Markets",
           "Weekend"
         ],
-        "serviceImageQuery": "food truck tacos street food plated"
+        "serviceImageQuery": "street tacos plated with salsa lime garnish served from food truck market stall"
       },
       {
         "name": "Private Events & Catering",
@@ -714,7 +714,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Private Hire",
           "Events"
         ],
-        "serviceImageQuery": "food truck coffee served window latte cup"
+        "serviceImageQuery": "food truck parked at corporate event outdoor party string lights guests"
       },
       {
         "name": "Festival & Pop-Up Bookings",
@@ -723,7 +723,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Festivals",
           "Pop-Ups"
         ],
-        "serviceImageQuery": "outdoor food market stalls street festival"
+        "serviceImageQuery": "outdoor food festival market stalls food trucks crowd eating street food night"
       }
     ],
     "galleryHeading": "From the Window",
@@ -759,14 +759,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "vibrant, casual, energetic",
-    "heroImageQuery": "food truck serving window customers street food market",
-    "ogImageQuery": "food truck street vendor serving customers queue",
-    "aboutImageQuery": "food truck chef cooking grill serving window",
+    "heroImageQuery": "colourful food truck serving window customers queuing at outdoor street food market sunny day",
+    "ogImageQuery": "food truck serving window chef handing food to customer street market",
+    "aboutImageQuery": "food truck chef cooking on flat grill inside truck serving window steam",
     "galleryImageQueries": [
-      "food truck parked colourful painted exterior market",
-      "street tacos plate food truck served",
-      "food truck festival night lights crowd eating",
-      "food truck menu board handwritten specials"
+      "colourful painted food truck parked at outdoor market with bunting and customers",
+      "gourmet street food burger being served from food truck window hands",
+      "food truck festival evening string lights crowd eating at standing tables",
+      "handwritten chalkboard menu board outside food truck at market specials listed"
     ],
     "contactHours": "Sat\u2013Sun: 09:00\u201315:00 at markets \u00b7 Weekday locations on Instagram"
   },
@@ -788,7 +788,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Cold-Pressed",
           "Raw"
         ],
-        "serviceImageQuery": "fresh pressed juice bottles green orange colourful"
+        "serviceImageQuery": "cold pressed juice bottles green orange red lined up on counter fresh healthy"
       },
       {
         "name": "Superfood Smoothies",
@@ -797,7 +797,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Smoothie Bowl",
           "Protein"
         ],
-        "serviceImageQuery": "smoothie bowl acai topped berries granola"
+        "serviceImageQuery": "acai smoothie bowl topped with granola banana slices blueberries coconut on table"
       },
       {
         "name": "Wellness Shots & Cleanses",
@@ -806,7 +806,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Immunity Shots",
           "Cleanse"
         ],
-        "serviceImageQuery": "detox juice cleanse bottles labelled refrigerator"
+        "serviceImageQuery": "juice cleanse detox bottles labelled colourful in row refrigerator shelf health bar"
       },
       {
         "name": "Açaí & Smoothie Bowls",
@@ -815,7 +815,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Açaí Bowls",
           "Toppings"
         ],
-        "serviceImageQuery": "acai bowl topped granola fruit seeds close-up"
+        "serviceImageQuery": "pitaya dragon fruit smoothie bowl bright pink topped seeds fruit spoon close-up"
       }
     ],
     "galleryHeading": "Fresh Every Morning",
@@ -851,14 +851,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, bright, clean",
-    "heroImageQuery": "fresh juice glasses colourful smoothie bowls fruit counter",
-    "ogImageQuery": "colourful smoothie glasses fruit garnish juice bar",
-    "aboutImageQuery": "blender smoothie preparation fresh fruit counter juice bar",
+    "heroImageQuery": "colourful fresh juice glasses and smoothie bowls on juice bar counter with fruit display",
+    "ogImageQuery": "row of colourful fresh smoothie glasses garnished fruit straws juice bar counter",
+    "aboutImageQuery": "barista blending smoothie in commercial blender fresh fruit on counter juice bar",
     "galleryImageQueries": [
-      "juice bar counter fresh fruit display blender",
-      "acai bowl topped granola banana berries",
-      "green juice celery spinach glass fresh pressed",
-      "smoothie bottles colourful lined up refrigerator"
+      "juice bar counter with fresh whole fruit display blender cutting board bright clean",
+      "acai smoothie bowl topped with granola sliced banana blueberries coconut flakes",
+      "green celery spinach juice in glass fresh cold pressed healthy close-up",
+      "colourful smoothie juice bottles lined up in refrigerator display juice bar"
     ],
     "contactHours": "Mon\u2013Fri: 07:00\u201317:00 \u00b7 Sat: 08:00\u201314:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -9027,7 +9027,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Property Transfer"
               ],
               "icon": "home",
-              "serviceImageQuery": "property deed title document signed sealed"
+              "serviceImageQuery": "property deed documents house keys on table with lawyer hand pointing at signature line"
           },
           {
               "name": "Contracts & Commercial Law",
@@ -9037,7 +9037,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Commercial"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "commercial contract document pen signature close up"
+              "serviceImageQuery": "business person reviewing printed commercial contract with pen at office desk close up"
           },
           {
               "name": "Dispute Resolution & Litigation",
@@ -9047,7 +9047,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Mediation"
               ],
               "icon": "shield",
-              "serviceImageQuery": "courtroom interior empty wooden bench judge seat"
+              "serviceImageQuery": "empty courtroom interior wooden judge bench chairs high ceiling formal"
           },
           {
               "name": "Wills & Estate Administration",
@@ -9057,7 +9057,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Estate Admin"
               ],
               "icon": "clipboard",
-              "serviceImageQuery": "last will testament document signed witnessed"
+              "serviceImageQuery": "last will and testament document with fountain pen glasses on wooden desk"
           }
       ],
       "galleryHeading": "Our Practice",
@@ -9111,15 +9111,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, authoritative, trustworthy",
-      "heroImageQuery": "law library shelves leather bound books gavel",
-      "heroBgImageQuery": "dark moody scales of justice closeup dramatic lighting",
-      "ogImageQuery": "legal scales justice books dark wooden desk",
-      "aboutImageQuery": "attorneys discussing case files around conference table",
+      "heroImageQuery": "lawyer in suit reading legal brief at mahogany desk with law books on shelf behind",
+      "heroBgImageQuery": "dark dramatic closeup brass scales of justice on wooden desk with leather law books",
+      "ogImageQuery": "senior attorney reviewing contract at polished wooden desk with gavel and open law book",
+      "aboutImageQuery": "two attorneys in suits discussing case files across boardroom table with legal folders",
       "galleryImageQueries": [
-          "law office interior mahogany desk bookshelves",
-          "legal contract signature pen close up document",
-          "courtroom wooden interior high ceiling formal",
-          "scales of justice brass on desk with law books"
+          "law office interior dark wood bookshelves leather chairs framed certificates on wall",
+          "lawyer hand signing legal contract with fountain pen on mahogany desk close up",
+          "empty courtroom interior wooden judge bench witness stand formal",
+          "open law book pages close up with brass scales of justice and reading glasses on desk"
       ]
   },
   "Accountant": {
@@ -9141,7 +9141,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Management Accounts"
               ],
               "icon": "book",
-              "serviceImageQuery": "spreadsheet financial statements laptop screen numbers"
+              "serviceImageQuery": "accountant working on financial statements spreadsheet on laptop screen with printed reports beside"
           },
           {
               "name": "Tax Compliance & Returns",
@@ -9151,7 +9151,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "VAT"
               ],
               "icon": "file-text",
-              "serviceImageQuery": "tax return forms calculator pen on desk"
+              "serviceImageQuery": "tax return documents with calculator pen and coffee on office desk overhead view"
           },
           {
               "name": "Payroll & HR Administration",
@@ -9161,7 +9161,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "IRP5"
               ],
               "icon": "users",
-              "serviceImageQuery": "payroll payslip documents stacked on office desk"
+              "serviceImageQuery": "payroll payslip printed documents stacked with calculator and pen on office desk"
           },
           {
               "name": "Company Registration & Compliance",
@@ -9171,7 +9171,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Annual Returns"
               ],
               "icon": "check-square",
-              "serviceImageQuery": "company registration certificate CIPC documents desk"
+              "serviceImageQuery": "company registration certificate official documents with rubber stamp on office desk"
           }
       ],
       "galleryHeading": "Your Finances, Our Focus",
@@ -9225,15 +9225,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, precise, trustworthy",
-      "heroImageQuery": "financial reports charts graphs on desk calculator",
-      "heroBgImageQuery": "dark moody spreadsheet numbers financial data screen",
-      "ogImageQuery": "accounting ledger financial statements desk workspace",
-      "aboutImageQuery": "accounting team reviewing financial reports in boardroom",
+      "heroImageQuery": "accountant at desk with calculator laptop and printed financial statements spreadsheets",
+      "heroBgImageQuery": "dark moody close up of financial spreadsheet numbers on computer monitor blue glow",
+      "ogImageQuery": "chartered accountant reviewing annual financial statements with calculator at wooden desk",
+      "aboutImageQuery": "accounting team of three people reviewing financial reports around boardroom table with laptops",
       "galleryImageQueries": [
-          "bookkeeping ledger open on desk with calculator",
-          "tax forms stacked with pen and calculator",
-          "annual financial report graphs pie charts printed",
-          "cloud accounting software dashboard laptop screen"
+          "open bookkeeping ledger with handwritten entries calculator and pen on wooden desk",
+          "tax return form documents stacked with calculator pen and reading glasses on desk",
+          "printed annual financial report with bar charts and pie graphs on conference table",
+          "accountant using cloud accounting software on laptop screen showing dashboard graphs"
       ]
   },
   "Consultant": {
@@ -9255,7 +9255,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Market Analysis"
               ],
               "icon": "target",
-              "serviceImageQuery": "strategy whiteboard diagram flowchart sticky notes"
+              "serviceImageQuery": "business strategy whiteboard with flowchart diagrams arrows and colourful sticky notes in office"
           },
           {
               "name": "Operational Improvement",
@@ -9265,7 +9265,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Efficiency"
               ],
               "icon": "settings",
-              "serviceImageQuery": "workflow process map diagram printed on table"
+              "serviceImageQuery": "printed workflow process map diagram with arrows spread on conference table with pen"
           },
           {
               "name": "Growth & Scale Advisory",
@@ -9275,7 +9275,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Scale"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "revenue growth chart upward trend on screen"
+              "serviceImageQuery": "revenue growth line chart showing upward trend on laptop screen with coffee beside"
           },
           {
               "name": "Change Management & Restructuring",
@@ -9285,7 +9285,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Change Management"
               ],
               "icon": "refresh-cw",
-              "serviceImageQuery": "organisational chart restructured diagram pinned board"
+              "serviceImageQuery": "organisational chart diagram with boxes and lines restructured pinned to cork board"
           }
       ],
       "galleryHeading": "Our Approach",
@@ -9339,15 +9339,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "sharp, professional, strategic",
-      "heroImageQuery": "whiteboard covered in strategy diagrams and sticky notes",
-      "heroBgImageQuery": "dark moody boardroom empty chairs long table",
-      "ogImageQuery": "strategy planning board post-it notes diagrams",
-      "aboutImageQuery": "consultant presenting strategy slides to client in meeting room",
+      "heroImageQuery": "business consultant presenting strategy on whiteboard with diagrams and sticky notes in meeting room",
+      "heroBgImageQuery": "dark moody empty corporate boardroom long glass table leather chairs evening lighting",
+      "ogImageQuery": "strategy planning whiteboard covered in colourful post-it notes and flow diagrams",
+      "aboutImageQuery": "consultant in suit presenting strategy slides on screen to two clients in modern meeting room",
       "galleryImageQueries": [
-          "strategy workshop whiteboard markers sticky notes",
-          "business plan document executive summary printed",
-          "KPI dashboard metrics graphs on monitor screen",
-          "process flowchart printed large format on wall"
+          "strategy workshop whiteboard covered in colourful sticky notes diagrams and markers in office",
+          "printed business plan executive summary document with graphs and charts on conference table",
+          "KPI performance dashboard with bar charts and metrics displayed on large monitor screen",
+          "business process flowchart diagram printed on large paper pinned to office wall"
       ]
   },
   "Financial Advisor": {
@@ -9369,7 +9369,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Preservation"
               ],
               "icon": "clock",
-              "serviceImageQuery": "retirement fund growth chart nest egg savings"
+              "serviceImageQuery": "retirement planning nest egg concept golden egg in nest on financial documents desk"
           },
           {
               "name": "Investment Portfolio Management",
@@ -9379,7 +9379,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Portfolio"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "investment portfolio pie chart asset allocation screen"
+              "serviceImageQuery": "investment portfolio allocation pie chart displayed on tablet screen with printed reports"
           },
           {
               "name": "Risk & Estate Planning",
@@ -9389,7 +9389,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Estate"
               ],
               "icon": "shield",
-              "serviceImageQuery": "estate planning documents will testament pen"
+              "serviceImageQuery": "estate planning documents last will with pen and family photo on desk"
           },
           {
               "name": "Tax-Efficient Savings & TFSA",
@@ -9399,7 +9399,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Tax Efficiency"
               ],
               "icon": "percent",
-              "serviceImageQuery": "savings account growth chart compound interest"
+              "serviceImageQuery": "savings growth compound interest chart on paper with calculator and coins stacked on desk"
           }
       ],
       "galleryHeading": "Your Financial Future",
@@ -9453,15 +9453,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, trustworthy, confident",
-      "heroImageQuery": "investment growth chart line graph upward trend",
-      "heroBgImageQuery": "dark moody stock market data financial charts screen",
-      "ogImageQuery": "financial planning documents charts calculator desk",
-      "aboutImageQuery": "financial planner explaining charts to couple at desk",
+      "heroImageQuery": "financial advisor in suit explaining investment portfolio charts on tablet to client at office desk",
+      "heroBgImageQuery": "dark moody stock market candlestick charts and financial data on multiple monitors blue glow",
+      "ogImageQuery": "certified financial planner reviewing retirement portfolio documents with calculator at polished desk",
+      "aboutImageQuery": "financial planner in office explaining printed charts and graphs to couple sitting across desk",
       "galleryImageQueries": [
-          "retirement savings jar coins growing plant money",
-          "stock market investment chart candlestick screen",
-          "life insurance policy document with family photos",
-          "financial plan printed document pie charts graphs"
+          "retirement savings concept glass jar with coins and small plant growing on wooden desk",
+          "stock market investment candlestick chart on computer monitor trader desk setup",
+          "life insurance policy document open on desk with pen and family photo frame beside",
+          "printed financial plan document showing pie charts bar graphs and portfolio allocation on table"
       ]
   },
   "Insurance Agent / Broker": {
@@ -9483,7 +9483,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Vehicle"
               ],
               "icon": "home",
-              "serviceImageQuery": "house and car miniature models umbrella protection"
+              "serviceImageQuery": "miniature house and car models under small umbrella on desk insurance protection concept"
           },
           {
               "name": "Business Insurance",
@@ -9493,7 +9493,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Liability"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "commercial building exterior office warehouse property"
+              "serviceImageQuery": "modern commercial office building exterior glass facade with business signage"
           },
           {
               "name": "Claims Assistance",
@@ -9503,7 +9503,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Settlement"
               ],
               "icon": "shield",
-              "serviceImageQuery": "car accident damage bumper claim scene"
+              "serviceImageQuery": "car accident fender bender damage assessment person inspecting bumper close up"
           },
           {
               "name": "Specialist & High-Value Cover",
@@ -9513,7 +9513,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Art & Jewellery"
               ],
               "icon": "star",
-              "serviceImageQuery": "luxury watch jewellery collection velvet case display"
+              "serviceImageQuery": "luxury watch collection and jewellery displayed in velvet lined case close up"
           }
       ],
       "galleryHeading": "Cover That Counts",
@@ -9567,15 +9567,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, reassuring, trustworthy",
-      "heroImageQuery": "umbrella protecting house model safety shield concept",
-      "heroBgImageQuery": "dark moody umbrella rain protection dramatic lighting",
-      "ogImageQuery": "insurance policy documents house car model desk",
-      "aboutImageQuery": "insurance broker reviewing policy documents with client at desk",
+      "heroImageQuery": "insurance broker in office explaining policy document to client with miniature house and car models on desk",
+      "heroBgImageQuery": "dark moody red umbrella protecting miniature house model from rain dramatic lighting",
+      "ogImageQuery": "insurance policy documents spread on desk with house and car miniature models and pen",
+      "aboutImageQuery": "insurance broker in suit reviewing policy comparison documents with client couple across office desk",
       "galleryImageQueries": [
-          "insurance policy comparison documents spread on desk",
-          "family home exterior garden protected insured",
-          "warehouse commercial building exterior loading dock",
-          "water damage home interior insurance claim"
+          "insurance policy comparison documents spread on desk with highlighter pen and calculator",
+          "family suburban home exterior front garden driveway well-maintained property",
+          "commercial warehouse building exterior loading dock trucks parked outside",
+          "water damage flooded home interior insurance claim assessment scene"
       ]
   },
   "Recruitment / Staffing": {
@@ -9597,7 +9597,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "90-day Guarantee"
               ],
               "icon": "user-check",
-              "serviceImageQuery": "CV resume document on desk with pen shortlist"
+              "serviceImageQuery": "printed CV resume document on desk with pen and recruiter hand highlighting qualifications"
           },
           {
               "name": "Contract & Temp Staffing",
@@ -9607,7 +9607,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Temp"
               ],
               "icon": "clock",
-              "serviceImageQuery": "busy office open plan workspace desks computers"
+              "serviceImageQuery": "busy open plan office with workers at desks computers and bright overhead lighting"
           },
           {
               "name": "Executive Search",
@@ -9617,7 +9617,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "C-Suite"
               ],
               "icon": "star",
-              "serviceImageQuery": "boardroom executive chairs long table glass windows"
+              "serviceImageQuery": "executive boardroom long polished table leather chairs glass windows city view"
           },
           {
               "name": "Psychometric & Skills Testing",
@@ -9627,7 +9627,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Skills Testing"
               ],
               "icon": "clipboard",
-              "serviceImageQuery": "aptitude test assessment paper desk pencil"
+              "serviceImageQuery": "psychometric aptitude test assessment paper with pencil and answer sheet on desk"
           }
       ],
       "galleryHeading": "Connections Made",
@@ -9681,15 +9681,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, dynamic, people-focused",
-      "heroImageQuery": "modern office space desks open plan bright workspace",
-      "heroBgImageQuery": "dark moody empty office desks chairs evening",
-      "ogImageQuery": "resume CV shortlist documents desk workspace",
-      "aboutImageQuery": "recruitment consultants collaborating around laptop in office",
+      "heroImageQuery": "recruitment consultant interviewing candidate across desk in modern bright office with resume on table",
+      "heroBgImageQuery": "dark moody empty modern open plan office desks and chairs in evening light",
+      "ogImageQuery": "stack of printed resumes CVs with pen and highlighter on recruiter desk",
+      "aboutImageQuery": "two recruitment consultants reviewing candidate profiles together on laptop in bright office",
       "galleryImageQueries": [
-          "office workspace modern desks bright natural light",
-          "handshake two people meeting office job offer",
-          "corner office executive desk city view window",
-          "stack of CVs resumes printed on desk"
+          "modern open plan office workspace with desks computers and bright natural light through windows",
+          "professional handshake between two people in office after job interview offer accepted",
+          "executive corner office with polished desk leather chair and city skyline view through window",
+          "stack of printed CVs and resumes spread on desk with highlighter pen and notes"
       ]
   },
   "Marketing Agency": {
@@ -9711,7 +9711,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Positioning"
               ],
               "icon": "star",
-              "serviceImageQuery": "brand identity mockup logo business cards stationery"
+              "serviceImageQuery": "brand identity design mockup with logo business cards letterhead and stationery flat lay on desk"
           },
           {
               "name": "Digital Marketing & SEO",
@@ -9721,7 +9721,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "google analytics dashboard website traffic screen"
+              "serviceImageQuery": "google analytics website traffic dashboard on laptop screen showing visitor graphs and metrics"
           },
           {
               "name": "Content & Creative Production",
@@ -9731,7 +9731,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Video"
               ],
               "icon": "camera",
-              "serviceImageQuery": "video production camera studio creative shoot setup"
+              "serviceImageQuery": "video production shoot in studio with camera on tripod lighting rig and creative team"
           },
           {
               "name": "Website Design & Development",
@@ -9741,7 +9741,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Lead Generation"
               ],
               "icon": "monitor",
-              "serviceImageQuery": "responsive website design mockup laptop tablet phone"
+              "serviceImageQuery": "responsive website design displayed on laptop tablet and phone screens showing same site"
           }
       ],
       "galleryHeading": "Campaigns We've Built",
@@ -9795,15 +9795,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "creative, bold, modern",
-      "heroImageQuery": "creative workspace mood board design mockups colourful",
-      "heroBgImageQuery": "dark moody creative studio neon lights workspace",
-      "ogImageQuery": "brand campaign mockup billboard poster design",
-      "aboutImageQuery": "creative team brainstorming around whiteboard with post-its",
+      "heroImageQuery": "marketing agency creative workspace with mood board colour swatches design mockups on desk",
+      "heroBgImageQuery": "dark moody creative agency studio with neon accent lights iMac screens and design work",
+      "ogImageQuery": "brand campaign billboard mockup with bold poster design on city street",
+      "aboutImageQuery": "creative marketing team of four brainstorming around whiteboard covered in colourful post-it notes",
       "galleryImageQueries": [
-          "brand campaign poster mockup billboard street",
-          "social media marketing phone screen notifications",
-          "photographer studio product shoot camera lighting",
-          "marketing analytics dashboard charts ROI screen"
+          "brand advertising campaign poster mockup displayed on billboard in urban street setting",
+          "social media marketing manager holding phone with notifications and analytics on screen",
+          "product photography studio shoot setup with camera tripod lighting and styled product on table",
+          "marketing analytics ROI dashboard showing campaign performance charts and graphs on desktop monitor"
       ]
   },
   "Business Coach": {
@@ -9909,15 +9909,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, warm, purposeful",
-      "heroImageQuery": "mountain summit sunrise achievement peak view",
-      "heroBgImageQuery": "dark moody pathway leading forward light at end",
-      "ogImageQuery": "compass direction leadership navigation desk",
-      "aboutImageQuery": "coach and client in one on one session at small table",
+      "heroImageQuery": "business coach in one on one session with executive client at small table in bright office with notebook",
+      "heroBgImageQuery": "dark moody coaching session silhouette two people at desk with warm lamp light conversation",
+      "ogImageQuery": "executive coaching session notebook pen and coffee on small table between two people",
+      "aboutImageQuery": "professional coach sitting across from client in focused one on one conversation at small round table",
       "galleryImageQueries": [
-          "journal open on desk with pen goal list written",
-          "lightbulb idea creativity innovation concept",
-          "team workshop flipchart markers group activity",
-          "growth mindset books stack on desk motivation"
+          "open journal notebook on desk with handwritten goals list pen and coffee cup",
+          "executive coaching workshop with flipchart showing goals and two professionals discussing at whiteboard",
+          "team leadership workshop group of six people around flipchart with markers doing group activity",
+          "professional development books stacked on desk with notebook pen and reading glasses"
       ]
   },
   "Translation / Interpreting": {
@@ -12236,7 +12236,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Android"
               ],
               "icon": "smartphone",
-              "serviceImageQuery": "smartphone showing app interface UI design colourful"
+              "serviceImageQuery": "hand holding iPhone showing polished mobile app home screen with colourful cards and navigation bar"
           },
           {
               "name": "Web Applications",
@@ -12246,7 +12246,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SaaS"
               ],
               "icon": "monitor",
-              "serviceImageQuery": "web application dashboard screen laptop browser"
+              "serviceImageQuery": "SaaS web application dashboard on laptop screen with sidebar navigation charts and data tables"
           },
           {
               "name": "MVP & Startup Builds",
@@ -12256,7 +12256,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Startup"
               ],
               "icon": "zap",
-              "serviceImageQuery": "wireframe sketches on paper app UX design process"
+              "serviceImageQuery": "UX designer sketching mobile app wireframes on paper with pen sticky notes and phone prototype"
           },
           {
             "name": "API Development & Integration",
@@ -12265,7 +12265,7 @@ export const presetContent: Record<string, PresetContent> = {
               "API",
               "Integration"
             ],
-            "serviceImageQuery": "API endpoint code JSON response terminal screen"
+            "serviceImageQuery": "developer terminal screen showing REST API JSON response code with syntax highlighting dark IDE"
           }
       ],
       "galleryHeading": "Apps We've Shipped",
@@ -12319,20 +12319,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, technical, sharp",
-      "heroImageQuery": "mobile app screens UI design mockup smartphone",
-      "heroBgImageQuery": "code editor dark screen syntax highlighted programming",
-      "ogImageQuery": "mobile app UI screens design mockup",
-      "aboutImageQuery": "developer writing code on laptop screen close-up",
+      "heroImageQuery": "smartphone showing colourful mobile app interface UI with navigation cards buttons modern design",
+      "heroBgImageQuery": "Swift or React Native code on dark IDE screen mobile app development syntax highlighting",
+      "ogImageQuery": "multiple smartphone screens showing mobile app UI mockups arranged on desk",
+      "aboutImageQuery": "app developer team working at desks with monitors showing Xcode Android Studio mobile code",
       "galleryImageQueries": [
-          "mobile app UI design screens colourful interface",
-          "code on dark screen programming syntax IDE",
-          "web dashboard analytics charts browser screen",
-          "wireframe prototype sketches UX design whiteboard"
+          "iPhone showing polished mobile app login screen with clean UI design colourful gradient",
+          "developer debugging mobile app code on large monitor with phone emulator running beside it",
+          "tablet and phone showing responsive app dashboard with charts cards and navigation menu",
+          "UX designer drawing app wireframes on whiteboard with sticky notes user flow arrows"
       ],
       "features": [
-        { "name": "Prototype Before You Pay to Build", "description": "We create a clickable prototype first so you can test the flow, gather feedback, and validate the idea before investing in full development.", "imageQuery": "app prototype wireframe testing smartphone UX design" },
-        { "name": "Post-Launch Iteration", "description": "Launch is just the beginning. We offer ongoing development sprints so your app evolves based on real user feedback.", "imageQuery": "app analytics user feedback iteration development team" },
-        { "name": "App Store Submission Handled", "description": "We manage the entire submission process for Apple and Google Play \u2014 screenshots, descriptions, compliance, and approval.", "imageQuery": "mobile app store listing screenshots submission approval" }
+        { "name": "Prototype Before You Pay to Build", "description": "We create a clickable prototype first so you can test the flow, gather feedback, and validate the idea before investing in full development.", "imageQuery": "clickable app prototype on smartphone screen with wireframe UI mockup user testing session" },
+        { "name": "Post-Launch Iteration", "description": "Launch is just the beginning. We offer ongoing development sprints so your app evolves based on real user feedback.", "imageQuery": "mobile app analytics dashboard showing downloads retention user engagement metrics on screen" },
+        { "name": "App Store Submission Handled", "description": "We manage the entire submission process for Apple and Google Play \u2014 screenshots, descriptions, compliance, and approval.", "imageQuery": "Apple App Store listing page with app screenshots ratings download button on iPhone screen" }
       ]
   },
   "E-commerce": {
@@ -12354,7 +12354,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "WooCommerce"
               ],
               "icon": "shopping-cart",
-              "serviceImageQuery": "Shopify store homepage design laptop product grid"
+              "serviceImageQuery": "Shopify store homepage on laptop showing product grid add to cart buttons modern ecommerce design"
           },
           {
               "name": "Conversion Rate Optimisation",
@@ -12364,7 +12364,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "A/B Testing"
               ],
               "icon": "trending-up",
-              "serviceImageQuery": "analytics dashboard conversion rate charts screen"
+              "serviceImageQuery": "ecommerce conversion rate optimisation dashboard showing A/B test results checkout funnel analytics on screen"
           },
           {
               "name": "E-commerce Growth Management",
@@ -12374,7 +12374,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO"
               ],
               "icon": "bar-chart-2",
-              "serviceImageQuery": "Google Shopping ads product listing screen"
+              "serviceImageQuery": "Google Shopping product listing ads showing product images prices and ratings on search results page"
           },
           {
             "name": "Product Photography & Listing",
@@ -12383,7 +12383,7 @@ export const presetContent: Record<string, PresetContent> = {
               "Product Photos",
               "Listing"
             ],
-            "serviceImageQuery": "ecommerce product photo white background styled item"
+            "serviceImageQuery": "product photography setup with white background lightbox camera and styled items for ecommerce listing"
           }
       ],
       "galleryHeading": "Stores We've Built",
@@ -12437,15 +12437,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, commercial, sharp",
-      "heroImageQuery": "ecommerce online store product page laptop screen",
-      "heroBgImageQuery": "online store checkout page dark screen background",
-      "ogImageQuery": "ecommerce product grid shopping cart laptop screen",
-      "aboutImageQuery": "person managing ecommerce store orders on laptop",
+      "heroImageQuery": "online store product page on laptop screen showing product image add to cart button and reviews ecommerce",
+      "heroBgImageQuery": "Shopify WooCommerce store backend admin dashboard dark screen with order management inventory",
+      "ogImageQuery": "ecommerce website on laptop showing product grid with prices shopping cart icon and featured products",
+      "aboutImageQuery": "ecommerce manager processing online orders on laptop with shipping boxes and packing materials on desk",
       "galleryImageQueries": [
-          "Shopify online store homepage products grid screen",
-          "ecommerce analytics dashboard conversion charts",
-          "product page design photography online store",
-          "email marketing campaign newsletter laptop screen"
+          "Shopify store homepage design on desktop showing hero banner product collections and featured items",
+          "ecommerce analytics dashboard showing revenue orders conversion rate graphs on large monitor",
+          "product detail page on phone screen with high-quality product photo size selector and buy button",
+          "warehouse worker scanning barcode on package for ecommerce order fulfilment shipping label"
       ],
       "features": [
         { "name": "Revenue-Focused, Not Just Pretty", "description": "We design stores that convert. Every layout decision, product page, and checkout flow is optimised to increase your average order value.", "imageQuery": "e-commerce store conversion optimisation checkout design screen" },
@@ -14291,7 +14291,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Custom Design",
                   "UX"
               ],
-              "serviceImageQuery": "website homepage design mockup browser clean layout"
+              "serviceImageQuery": "designer reviewing website homepage layout on large monitor browser mockup clean UI"
           },
           {
               "name": "E-Commerce Development",
@@ -14300,7 +14300,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Shopify",
                   "WooCommerce"
               ],
-              "serviceImageQuery": "ecommerce store design product page checkout screen"
+              "serviceImageQuery": "Shopify online store product page with add to cart button and product photos on laptop screen"
           },
           {
               "name": "SEO & Performance",
@@ -14309,7 +14309,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO",
                   "Page Speed"
               ],
-              "serviceImageQuery": "SEO analytics dashboard Google search results screen"
+              "serviceImageQuery": "Google Search Console SEO performance dashboard showing clicks impressions rankings on screen"
           },
           {
             "name": "Hosting & Maintenance",
@@ -14318,7 +14318,7 @@ export const presetContent: Record<string, PresetContent> = {
               "Hosting",
               "Maintenance"
             ],
-            "serviceImageQuery": "server rack hosting data centre blinking lights"
+            "serviceImageQuery": "server rack in data centre with blue LED lights ethernet cables networking equipment rows"
           }
       ],
       "galleryHeading": "Our Work",
@@ -14354,20 +14354,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "modern, clean, digital",
-      "heroImageQuery": "website design mockup on laptop screen modern clean",
-      "heroBgImageQuery": "website code HTML CSS dark editor screen background",
-      "ogImageQuery": "responsive website design desktop tablet mobile mockup",
-      "aboutImageQuery": "web developer coding on dual monitors desk",
+      "heroImageQuery": "developer writing HTML CSS code on widescreen monitor dark IDE syntax highlighting close-up",
+      "heroBgImageQuery": "lines of JavaScript code on dark screen code editor neon syntax colours background",
+      "ogImageQuery": "laptop showing responsive website design with browser dev tools open side by side",
+      "aboutImageQuery": "web designer working at desk with dual monitors showing Figma UI design wireframes",
       "galleryImageQueries": [
-          "website portfolio page design clean modern layout",
-          "ecommerce store product grid Shopify design",
-          "SEO analytics traffic growth chart dashboard",
-          "responsive website design mobile tablet desktop screens"
+          "modern website homepage displayed on laptop browser clean typography hero section",
+          "Shopify ecommerce store product grid page open on desktop screen bright layout",
+          "Google Analytics traffic dashboard showing charts graphs sessions on monitor screen",
+          "responsive website shown on phone tablet and desktop screens side by side mockup"
       ],
       "features": [
-        { "name": "Performance-First Development", "description": "Every site we build scores 90+ on Google PageSpeed. Fast-loading pages mean better SEO, lower bounce rates, and more conversions.", "imageQuery": "web developer coding laptop performance optimisation screen" },
-        { "name": "You Own Everything", "description": "Your code, your domain, your hosting account. We don't hold websites hostage \u2014 if you leave, everything goes with you.", "imageQuery": "web design project handover client meeting files transfer" },
-        { "name": "Post-Launch Support Included", "description": "Every build includes 30 days of free support. Bug fixes, content tweaks, and training so you can manage your own site.", "imageQuery": "developer providing support training client website management" }
+        { "name": "Performance-First Development", "description": "Every site we build scores 90+ on Google PageSpeed. Fast-loading pages mean better SEO, lower bounce rates, and more conversions.", "imageQuery": "Google PageSpeed Insights score results on laptop screen web performance metrics green" },
+        { "name": "You Own Everything", "description": "Your code, your domain, your hosting account. We don't hold websites hostage \u2014 if you leave, everything goes with you.", "imageQuery": "developer showing client website admin panel on laptop screen CMS handover meeting" },
+        { "name": "Post-Launch Support Included", "description": "Every build includes 30 days of free support. Bug fixes, content tweaks, and training so you can manage your own site.", "imageQuery": "developer and client sitting at desk laptop screen showing WordPress CMS training session" }
       ],
       "processSteps": [
           {
@@ -14405,7 +14405,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Helpdesk",
                   "SLA"
               ],
-              "serviceImageQuery": "helpdesk support screen monitoring dashboard alerts"
+              "serviceImageQuery": "IT helpdesk technician wearing headset looking at multiple monitoring screens with ticket system dashboard"
           },
           {
               "name": "Cloud & Microsoft 365",
@@ -14414,7 +14414,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Microsoft 365",
                   "Cloud Migration"
               ],
-              "serviceImageQuery": "Microsoft 365 cloud apps icons laptop screen"
+              "serviceImageQuery": "Microsoft Teams Outlook Office 365 apps open on laptop screen cloud migration workspace"
           },
           {
               "name": "Network & Security",
@@ -14423,7 +14423,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Network",
                   "Cybersecurity"
               ],
-              "serviceImageQuery": "network switch ethernet cables connected blinking"
+              "serviceImageQuery": "network switch rack with blinking green LED lights and ethernet patch cables plugged in close-up"
           },
           {
             "name": "Hardware Procurement & Setup",
@@ -14432,7 +14432,7 @@ export const presetContent: Record<string, PresetContent> = {
               "Hardware",
               "Procurement"
             ],
-            "serviceImageQuery": "new laptop unboxing setup workstation desk monitor"
+            "serviceImageQuery": "IT technician setting up new laptop workstation with monitor keyboard mouse on office desk"
           }
       ],
       "galleryHeading": "IT Done Right",
@@ -14468,20 +14468,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "professional, technical, reliable",
-      "heroImageQuery": "server rack data centre blinking lights networking",
-      "heroBgImageQuery": "server room data centre blue lights dark background",
-      "ogImageQuery": "server rack networking cables data centre blue",
-      "aboutImageQuery": "IT technician configuring server rack data centre",
+      "heroImageQuery": "IT technician working in server room with blue LED lit racks patching cables data centre",
+      "heroBgImageQuery": "dark server room corridor with rows of server racks blue ambient lighting data centre",
+      "ogImageQuery": "server room with rows of racks blinking status lights and cable management",
+      "aboutImageQuery": "IT support engineer assisting office worker at desk pointing at laptop screen troubleshooting",
       "galleryImageQueries": [
-          "helpdesk monitoring dashboard multiple screens alerts",
-          "Microsoft 365 cloud migration setup laptop",
-          "server room racks cables networking infrastructure",
-          "firewall security appliance network rack installed"
+          "network operations centre NOC with wall of monitoring screens showing dashboards alerts",
+          "Microsoft 365 admin portal open on laptop screen showing user management cloud settings",
+          "inside server room close-up of rack mounted servers with blinking green amber status LEDs",
+          "IT technician configuring firewall appliance in network rack with patch panel cables"
       ],
       "features": [
-        { "name": "15-Minute Remote Response", "description": "Most issues are resolved remotely within the hour. Our average first-response time is under 15 minutes during business hours.", "imageQuery": "IT support technician remote desktop helping client screen" },
-        { "name": "Proactive Monitoring", "description": "We don't wait for things to break. Our monitoring tools flag issues before they cause downtime \u2014 so you rarely need to call us.", "imageQuery": "server monitoring dashboard alerts proactive IT management" },
-        { "name": "Flat Monthly Fee, Unlimited Support", "description": "One predictable monthly cost covers all your IT support. No per-ticket charges, no clock-watching.", "imageQuery": "IT managed services agreement handshake business partnership" }
+        { "name": "15-Minute Remote Response", "description": "Most issues are resolved remotely within the hour. Our average first-response time is under 15 minutes during business hours.", "imageQuery": "IT support technician using remote desktop software to help client on dual monitor screen" },
+        { "name": "Proactive Monitoring", "description": "We don't wait for things to break. Our monitoring tools flag issues before they cause downtime \u2014 so you rarely need to call us.", "imageQuery": "server monitoring dashboard with uptime graphs CPU memory alerts on multiple screens dark room" },
+        { "name": "Flat Monthly Fee, Unlimited Support", "description": "One predictable monthly cost covers all your IT support. No per-ticket charges, no clock-watching.", "imageQuery": "IT manager and business client reviewing managed services agreement at desk with laptop" }
       ],
       "processSteps": [
           {
@@ -14519,7 +14519,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Google Ads",
                   "PPC"
               ],
-              "serviceImageQuery": "Google Ads campaign dashboard PPC metrics screen"
+              "serviceImageQuery": "Google Ads campaign manager dashboard showing cost per click impressions conversions on monitor screen"
           },
           {
               "name": "SEO & Content Marketing",
@@ -14528,7 +14528,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "SEO",
                   "Content"
               ],
-              "serviceImageQuery": "SEO ranking results Google search page screen"
+              "serviceImageQuery": "Google search results page showing top organic rankings SEO keyword positions on laptop screen"
           },
           {
               "name": "Social Media & Email",
@@ -14537,7 +14537,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Social Media",
                   "Email Marketing"
               ],
-              "serviceImageQuery": "social media feed posts scheduled content calendar screen"
+              "serviceImageQuery": "social media management tool with scheduled Instagram Facebook posts content calendar on screen"
           },
           {
             "name": "Marketing Automation & CRM",
@@ -14546,7 +14546,7 @@ export const presetContent: Record<string, PresetContent> = {
               "Marketing Automation",
               "CRM"
             ],
-            "serviceImageQuery": "CRM dashboard pipeline leads funnel automation screen"
+            "serviceImageQuery": "HubSpot CRM pipeline dashboard showing deals leads stages funnel on laptop screen"
           }
       ],
       "galleryHeading": "Campaigns We've Run",
@@ -14582,20 +14582,20 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "data-driven, modern, professional",
-      "heroImageQuery": "Google Ads analytics dashboard screen charts performance",
-      "heroBgImageQuery": "analytics dashboard charts dark background screen",
-      "ogImageQuery": "digital marketing analytics dashboard charts graphs",
-      "aboutImageQuery": "marketing analyst reviewing campaign performance on screen",
+      "heroImageQuery": "digital marketing team analysing Google Ads performance dashboard on large monitor showing conversion graphs",
+      "heroBgImageQuery": "marketing analytics dashboard with dark background showing campaign metrics click-through rate graphs",
+      "ogImageQuery": "laptop screen showing Google Analytics real-time traffic dashboard with pie charts and line graphs",
+      "aboutImageQuery": "marketing strategist pointing at campaign performance metrics on widescreen monitor in modern office",
       "galleryImageQueries": [
-          "Google Ads PPC campaign metrics conversion screen",
-          "SEO keyword ranking chart growth analytics",
-          "social media content calendar posts scheduled",
-          "email marketing campaign open rate dashboard"
+          "Google Ads campaign manager showing cost per conversion bidding strategy metrics on monitor",
+          "Ahrefs SEO tool showing keyword rankings backlink growth organic traffic chart on screen",
+          "Instagram Facebook social media posts feed with engagement likes comments on phone screen",
+          "Mailchimp email campaign dashboard showing open rate click rate audience statistics on laptop"
       ],
       "features": [
-        { "name": "Data-Driven, Not Guesswork", "description": "Every campaign is built on analytics, not hunches. We track, measure, and optimise weekly so your budget works harder over time.", "imageQuery": "digital marketing analytics dashboard data performance metrics" },
-        { "name": "No Long-Term Lock-In", "description": "We earn your business every month. No 12-month contracts \u2014 stay because the results speak for themselves.", "imageQuery": "marketing team meeting results review client satisfaction" },
-        { "name": "Full Funnel Strategy", "description": "From awareness ads to retargeting to email nurture, we build the complete pipeline \u2014 not just the top of the funnel.", "imageQuery": "marketing funnel strategy whiteboard planning conversion pipeline" }
+        { "name": "Data-Driven, Not Guesswork", "description": "Every campaign is built on analytics, not hunches. We track, measure, and optimise weekly so your budget works harder over time.", "imageQuery": "marketing analyst looking at Google Analytics dashboard with traffic sources conversion charts on dual monitors" },
+        { "name": "No Long-Term Lock-In", "description": "We earn your business every month. No 12-month contracts \u2014 stay because the results speak for themselves.", "imageQuery": "digital marketing team presenting monthly campaign report results to client on screen in meeting room" },
+        { "name": "Full Funnel Strategy", "description": "From awareness ads to retargeting to email nurture, we build the complete pipeline \u2014 not just the top of the funnel.", "imageQuery": "marketing funnel diagram on whiteboard showing awareness consideration conversion stages with arrows" }
       ],
       "processSteps": [
           {
