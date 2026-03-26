@@ -3006,7 +3006,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Check-Ups",
           "Family Dentistry"
         ],
-        "serviceImageQuery": "dental checkup mouth mirror tools examination close-up"
+        "serviceImageQuery": "dentist performing checkup patient open mouth dental mirror examination overhead light"
       },
       {
         "name": "Cosmetic & Whitening",
@@ -3015,7 +3015,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Whitening",
           "Veneers"
         ],
-        "serviceImageQuery": "teeth whitening LED light treatment dental chair close-up"
+        "serviceImageQuery": "patient receiving teeth whitening treatment blue LED light dental chair bright clinic"
       },
       {
         "name": "Implants & Orthodontics",
@@ -3024,7 +3024,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Implants",
           "Clear Aligners"
         ],
-        "serviceImageQuery": "dental implant model jaw bone cross-section close-up"
+        "serviceImageQuery": "dentist showing dental implant model to patient jaw bone cross-section clinic desk"
       },
       {
         "name": "Children's Dentistry",
@@ -3033,7 +3033,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Paediatric",
           "Preventive Care"
         ],
-        "serviceImageQuery": "colourful children dental chair equipment bright fun room"
+        "serviceImageQuery": "child sitting in colorful dental chair smiling dentist showing toothbrush bright pediatric clinic"
       }
     ],
     "galleryHeading": "Smile Transformations",
@@ -3069,14 +3069,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
-    "heroImageQuery": "modern dental clinic interior treatment room bright lights equipment",
-    "ogImageQuery": "dental practice treatment room bright modern equipment",
-    "aboutImageQuery": "dentist treating patient in dental chair examination light",
+    "heroImageQuery": "dentist examining patient teeth reclining dental chair bright overhead light modern clinic white walls",
+    "ogImageQuery": "smiling female dentist holding dental mirror professional portrait white coat clinic background",
+    "aboutImageQuery": "friendly dentist talking to patient seated in dental chair explaining treatment warm modern practice",
     "galleryImageQueries": [
-      "dental clinic waiting room modern clean reception",
-      "dental tools mirror scaler tray sterile close-up",
-      "dental x-ray screen teeth scan radiograph display",
-      "teeth whitening UV light treatment dental chair"
+      "modern dental clinic reception area white counters potted plants bright waiting room",
+      "dentist using dental mirror examining patient open mouth overhead light close-up",
+      "dental hygienist cleaning patient teeth ultrasonic scaler dental chair bright room",
+      "woman smiling bright white teeth after dental treatment happy result portrait"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 Emergencies by call"
   },
@@ -3098,7 +3098,7 @@ export const presetContent: Record<string, PresetContent> = {
           "GP Consultations",
           "Chronic Care"
         ],
-        "serviceImageQuery": "medical consultation desk computer notes stethoscope"
+        "serviceImageQuery": "doctor consulting with patient across desk stethoscope computer screen medical office"
       },
       {
         "name": "Chronic Disease Management",
@@ -3107,7 +3107,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes",
           "Hypertension"
         ],
-        "serviceImageQuery": "blood pressure monitor cuff arm reading check"
+        "serviceImageQuery": "nurse taking blood pressure reading patient arm cuff monitor medical clinic"
       },
       {
         "name": "Occupational & Travel Health",
@@ -3116,7 +3116,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Travel Vaccines",
           "Medicals"
         ],
-        "serviceImageQuery": "vaccination injection arm syringe clinic room"
+        "serviceImageQuery": "doctor administering vaccine injection patient upper arm syringe medical clinic room"
       },
       {
         "name": "Women's & Reproductive Health",
@@ -3125,7 +3125,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Women's Health",
           "Antenatal"
         ],
-        "serviceImageQuery": "gynaecology examination room ultrasound monitor equipment"
+        "serviceImageQuery": "female doctor discussing results with woman patient ultrasound screen medical consultation room"
       }
     ],
     "galleryHeading": "Your Health Matters",
@@ -3161,14 +3161,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, clean, professional",
-    "heroImageQuery": "medical practice interior waiting area modern clean bright",
-    "ogImageQuery": "medical practice consultation room modern clean",
-    "aboutImageQuery": "doctor listening to patient consultation desk warm",
+    "heroImageQuery": "friendly doctor in white coat greeting patient handshake modern medical practice reception bright clean",
+    "ogImageQuery": "smiling doctor white coat stethoscope professional portrait medical practice background",
+    "aboutImageQuery": "doctor sitting with patient having conversation across desk warm medical office natural light",
     "galleryImageQueries": [
-      "medical practice consultation room desk monitor warm",
-      "blood test sample tubes laboratory medical equipment",
-      "medical examination room bed equipment curtain",
-      "stethoscope checking heartbeat patient chest close-up"
+      "modern medical practice waiting room comfortable chairs reception desk bright clean",
+      "doctor examining patient with stethoscope chest heartbeat check medical room",
+      "nurse drawing blood sample from patient arm tourniquet medical practice",
+      "doctor reviewing medical results on computer screen consultation desk office"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:30 \u00b7 Emergencies: walk-in welcome"
   },
@@ -3190,7 +3190,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Rehab",
           "Runners"
         ],
-        "serviceImageQuery": "knee physiotherapy taping sports injury treatment table"
+        "serviceImageQuery": "physiotherapist applying kinesiology tape to athlete knee injury treatment table sports clinic"
       },
       {
         "name": "Chronic Pain & Back Care",
@@ -3199,7 +3199,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck"
         ],
-        "serviceImageQuery": "lower back manual therapy hands spine treatment bed"
+        "serviceImageQuery": "physiotherapist hands performing manual therapy on patient lower back spine treatment bed clinic"
       },
       {
         "name": "Post-Surgical Rehabilitation",
@@ -3208,7 +3208,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Op Rehab",
           "Orthopaedic"
         ],
-        "serviceImageQuery": "post-surgery rehabilitation exercise balance board physio gym"
+        "serviceImageQuery": "patient doing balance board exercise physio gym post-surgery rehabilitation therapist guiding"
       },
       {
         "name": "Women's Health Physio",
@@ -3217,7 +3217,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Pelvic Floor",
           "Postnatal"
         ],
-        "serviceImageQuery": "pelvic floor exercise ball rehabilitation mat physio equipment"
+        "serviceImageQuery": "woman doing pelvic floor exercise on mat with Swiss ball physiotherapy clinic bright room"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3253,14 +3253,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clinical, active, professional",
-    "heroImageQuery": "physiotherapy clinic interior treatment beds equipment bright",
-    "ogImageQuery": "physiotherapy clinic treatment room beds equipment",
-    "aboutImageQuery": "physiotherapist guiding patient leg stretch exercise mat",
+    "heroImageQuery": "physiotherapist helping patient stretch shoulder treatment bed bright modern physio clinic white walls",
+    "ogImageQuery": "physiotherapist assisting patient arm stretch exercise treatment room bright professional",
+    "aboutImageQuery": "physiotherapist guiding patient through leg stretch exercise on mat bright physio clinic equipment background",
     "galleryImageQueries": [
-      "physiotherapy clinic room treatment beds bright equipment",
-      "exercise ball rehabilitation patient balancing physio gym",
-      "ultrasound therapy probe knee joint treatment close-up",
-      "resistance band shoulder exercise patient physio clinic"
+      "modern physiotherapy clinic room treatment beds exercise equipment bright windows",
+      "patient balancing on exercise ball physiotherapist assisting physio gym rehabilitation",
+      "physiotherapist applying ultrasound therapy probe to patient knee joint treatment close-up",
+      "patient doing resistance band shoulder exercise guided by physiotherapist clinic room"
     ],
     "contactHours": "Mon\u2013Fri: 07:30\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 By appointment"
   },
@@ -3282,7 +3282,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Adjustments",
           "Spinal Health"
         ],
-        "serviceImageQuery": "chiropractic spinal adjustment hands on back treatment table"
+        "serviceImageQuery": "chiropractor performing spinal adjustment hands pressing patient back lying on treatment table clinic"
       },
       {
         "name": "Back & Neck Pain",
@@ -3291,7 +3291,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Back Pain",
           "Neck Pain"
         ],
-        "serviceImageQuery": "neck adjustment chiropractic treatment patient side view"
+        "serviceImageQuery": "chiropractor adjusting patient neck cervical spine treatment side view hands clinical room"
       },
       {
         "name": "Paediatric & Family Chiropractic",
@@ -3300,7 +3300,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Family",
           "Paediatric"
         ],
-        "serviceImageQuery": "gentle paediatric chiropractic infant adjustment hands"
+        "serviceImageQuery": "chiropractor gently treating infant baby on padded table hands supporting small child clinic"
       },
       {
         "name": "Sports Chiropractic",
@@ -3309,7 +3309,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Performance",
           "Biomechanics"
         ],
-        "serviceImageQuery": "sports biomechanics assessment running gait analysis screen"
+        "serviceImageQuery": "athlete running on treadmill gait analysis biomechanics assessment screen chiropractor observing clinic"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3345,14 +3345,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, clinical, calming",
-    "heroImageQuery": "chiropractic clinic interior treatment table modern bright",
-    "ogImageQuery": "chiropractic treatment room modern clean equipment",
-    "aboutImageQuery": "chiropractor adjusting patient spine hands treatment table",
+    "heroImageQuery": "chiropractor adjusting patient lying face down on treatment table modern bright chiropractic clinic",
+    "ogImageQuery": "chiropractor in white coat with patient treatment table professional chiropractic clinic",
+    "aboutImageQuery": "chiropractor explaining spine model to patient seated in consultation room warm professional",
     "galleryImageQueries": [
-      "chiropractic clinic treatment room table modern bright",
-      "spine anatomical model vertebrae desk display close-up",
-      "posture assessment standing side view alignment check",
-      "chiropractic heat therapy back warm pack treatment"
+      "modern chiropractic treatment room padded table adjustable equipment bright clean walls",
+      "anatomical spine model vertebrae on desk chiropractor office educational display",
+      "chiropractor assessing patient posture standing side view alignment check clinical room",
+      "patient receiving heat therapy warm pack on lower back treatment table chiropractic clinic"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -3374,7 +3374,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Eye Health",
           "Glaucoma Screening"
         ],
-        "serviceImageQuery": "phoropter eye test lenses patient eye exam close-up"
+        "serviceImageQuery": "optometrist using phoropter refractor lenses patient looking through eye examination chair clinic"
       },
       {
         "name": "Designer Frames & Lenses",
@@ -3383,7 +3383,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Designer Frames",
           "Varifocals"
         ],
-        "serviceImageQuery": "designer eyeglasses frames display wall rack shelves"
+        "serviceImageQuery": "rows of designer eyeglasses frames on illuminated display wall rack optical shop shelves"
       },
       {
         "name": "Contact Lens Fitting",
@@ -3392,7 +3392,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Contact Lenses",
           "Dry Eye"
         ],
-        "serviceImageQuery": "contact lens fitting finger tip insertion close-up"
+        "serviceImageQuery": "person inserting contact lens on fingertip into eye close-up optometry clinic"
       },
       {
         "name": "Children's Vision Screening",
@@ -3401,7 +3401,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Paediatric Vision",
           "Screening"
         ],
-        "serviceImageQuery": "children vision screening chart colourful shapes eye test"
+        "serviceImageQuery": "young child reading eye test chart with optometrist pointing at letters pediatric vision screening"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3437,14 +3437,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, precise, modern",
-    "heroImageQuery": "optometry practice interior eye test equipment phoropter modern",
-    "ogImageQuery": "optometry practice eye test room equipment modern",
-    "aboutImageQuery": "optometrist examining patient eyes slit lamp close-up",
+    "heroImageQuery": "optometrist examining patient through phoropter refractor lenses modern bright eye care clinic equipment",
+    "ogImageQuery": "woman trying on eyeglasses frames in modern optometry practice optical shop display",
+    "aboutImageQuery": "optometrist using slit lamp biomicroscope examining patient eyes close-up bright clinical room",
     "galleryImageQueries": [
-      "eyeglasses frames display wall shelves modern shop",
-      "slit lamp eye examination biomicroscope close-up",
-      "contact lens case solution daily lenses close-up",
-      "children eye test colourful chart shapes wall"
+      "modern optical shop eyeglasses frames display wall illuminated shelves glasses rows",
+      "optometrist performing slit lamp eye examination patient chin rest biomicroscope clinical",
+      "contact lens on fingertip close-up clear daily lens optometry clean",
+      "child having eye test optometrist colorful chart letters bright pediatric room"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:30 \u00b7 Sat: 08:30\u201313:00 \u00b7 By appointment"
   },
@@ -3466,7 +3466,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Precision Cut",
           "Natural Hair"
         ],
-        "serviceImageQuery": "precision haircut scissors comb wet hair sectioning close-up"
+        "serviceImageQuery": "hairdresser cutting client wet hair with scissors comb precision sectioning salon chair mirror"
       },
       {
         "name": "Colour & Balayage",
@@ -3475,7 +3475,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Balayage",
           "Colour Correction"
         ],
-        "serviceImageQuery": "balayage hair colour foils application process salon"
+        "serviceImageQuery": "colorist applying balayage hair colour foils highlights client seated salon chair"
       },
       {
         "name": "Treatments & Keratin",
@@ -3484,7 +3484,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Keratin",
           "Scalp Treatment"
         ],
-        "serviceImageQuery": "keratin hair treatment application smoothing iron salon"
+        "serviceImageQuery": "stylist applying keratin hair treatment flat iron smoothing client hair salon professional"
       },
       {
         "name": "Bridal & Event Styling",
@@ -3493,7 +3493,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Bridal Hair",
           "Updo"
         ],
-        "serviceImageQuery": "bridal updo hairstyle pins flowers elegant wedding styling"
+        "serviceImageQuery": "bride getting elegant updo hairstyle flowers pins stylist hands wedding morning preparation"
       }
     ],
     "galleryHeading": "From the Chair",
@@ -3529,14 +3529,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "stylish, warm, creative",
-    "heroImageQuery": "hair salon interior styling stations mirrors warm lighting",
-    "ogImageQuery": "hair salon interior mirrors chairs warm styling",
-    "aboutImageQuery": "stylist cutting client hair scissors salon chair action",
+    "heroImageQuery": "stylish hair salon interior styling stations large mirrors warm lighting chairs modern decor",
+    "ogImageQuery": "hairdresser styling client hair blow dry brush salon mirror warm lighting professional",
+    "aboutImageQuery": "experienced stylist cutting client hair scissors precise technique salon chair mirror warm light",
     "galleryImageQueries": [
-      "barber shop chair leather vintage mirror warm lighting",
-      "hair colouring foils highlights process salon client",
-      "hair wash basin shampoo backwash salon client reclined",
-      "blow dry round brush styling finish salon client"
+      "classic barber chair leather vintage mirror warm lighting barbershop interior",
+      "hair colorist applying foil highlights client seated salon chair process",
+      "client reclined at salon shampoo basin hair wash relaxing warm water",
+      "stylist blow drying client hair round brush finishing salon mirror"
     ],
     "contactHours": "Mon\u2013Fri: 09:00\u201318:00 \u00b7 Sat: 08:30\u201316:00 \u00b7 Sun: 09:00\u201313:00"
   },
@@ -3558,7 +3558,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Environ",
           "Anti-Ageing"
         ],
-        "serviceImageQuery": "skincare products serum bottles clean white shelf professional"
+        "serviceImageQuery": "aesthetician applying facial treatment mask client lying spa bed warm dim lighting professional"
       },
       {
         "name": "Body Treatments & Wraps",
@@ -3567,7 +3567,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Body Wraps",
           "Scrubs"
         ],
-        "serviceImageQuery": "spa treatment room towels essential oils candles professional"
+        "serviceImageQuery": "therapist applying body scrub exfoliation treatment client lying spa bed towels candles warm"
       },
       {
         "name": "Nails & Waxing",
@@ -3576,7 +3576,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gel Nails",
           "Waxing"
         ],
-        "serviceImageQuery": "gel manicure nail polish application hands close-up"
+        "serviceImageQuery": "nail technician applying gel polish manicure client hands under LED lamp salon close-up"
       },
       {
         "name": "Lash & Brow Artistry",
@@ -3585,7 +3585,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Lash Extensions",
           "Brow Lamination"
         ],
-        "serviceImageQuery": "eyelash extensions individual lash application tweezers close-up"
+        "serviceImageQuery": "lash technician applying individual eyelash extensions tweezers client lying down close-up salon"
       }
     ],
     "galleryHeading": "Your Escape Awaits",
@@ -3621,14 +3621,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "serene, luxurious, warm",
-    "heroImageQuery": "spa treatment room interior candles towels bed warm ambient",
-    "ogImageQuery": "spa treatment room candles towels ambient warm",
-    "aboutImageQuery": "beauty spa interior skincare products shelves clean professional",
+    "heroImageQuery": "luxury spa treatment room massage bed white towels candles orchids warm ambient dim lighting",
+    "ogImageQuery": "woman relaxing during facial treatment spa bed therapist hands skincare serene",
+    "aboutImageQuery": "beauty therapist performing facial skincare treatment on client lying spa bed warm ambient professional",
     "galleryImageQueries": [
-      "spa reception area flowers candles ambient lighting interior",
-      "pedicure foot spa warm water treatment soak",
-      "hot stone massage placement back spa treatment",
-      "manicure nail art design close-up hands polish"
+      "luxury spa reception area flowers candles ambient lighting white marble interior welcoming",
+      "woman enjoying pedicure foot spa warm water soak treatment salon relaxing",
+      "therapist placing hot stones on client back spa massage treatment warm room",
+      "woman hands receiving professional manicure nail polish application salon close-up"
     ],
     "contactHours": "Mon\u2013Sat: 09:00\u201319:00 \u00b7 Sun: 10:00\u201316:00 \u00b7 Evening slots available"
   },
@@ -3650,7 +3650,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Deep Tissue",
           "Remedial"
         ],
-        "serviceImageQuery": "massage therapy room professional treatment table setup"
+        "serviceImageQuery": "massage therapist performing deep tissue massage on client back hands pressing muscles treatment table"
       },
       {
         "name": "Swedish & Relaxation",
@@ -3659,7 +3659,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Swedish",
           "Relaxation"
         ],
-        "serviceImageQuery": "relaxation spa room warm lighting candles stones"
+        "serviceImageQuery": "woman receiving Swedish relaxation massage face down table therapist long strokes back spa dim candles"
       },
       {
         "name": "Sports & Recovery",
@@ -3668,7 +3668,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Recovery",
           "Athletes"
         ],
-        "serviceImageQuery": "sports recovery foam roller athletic training equipment"
+        "serviceImageQuery": "sports massage therapist working on athlete leg calf muscle recovery treatment table clinical"
       },
       {
         "name": "Prenatal & Postnatal Massage",
@@ -3677,7 +3677,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Prenatal",
           "Postnatal"
         ],
-        "serviceImageQuery": "prenatal wellness room cushions soft lighting peaceful"
+        "serviceImageQuery": "pregnant woman receiving gentle prenatal massage side lying position cushions therapist hands"
       }
     ],
     "galleryHeading": "A Space to Unwind",
@@ -3713,14 +3713,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, warm, healing",
-    "heroImageQuery": "massage therapy room interior table towels dim candles ambience",
-    "ogImageQuery": "massage room interior dim candles towels ambience",
-    "aboutImageQuery": "massage therapy room interior essential oils towels professional",
+    "heroImageQuery": "massage therapist hands working on client shoulders back lying on treatment table warm dim spa candles",
+    "ogImageQuery": "professional massage therapist massaging client back shoulders spa treatment table warm lighting",
+    "aboutImageQuery": "massage therapist applying pressure to client upper back muscles treatment table warm professional spa room",
     "galleryImageQueries": [
-      "massage room candles essential oils towels warm ambience",
-      "hot stone massage basalt stones placed back spine",
-      "aromatherapy essential oil bottles herbs treatment setup",
-      "foot reflexology massage pressure point treatment close-up"
+      "massage treatment room white towels folded on table candles essential oil bottles warm ambient light",
+      "hot stone massage therapist placing warm basalt stones along client spine back treatment",
+      "aromatherapy massage therapist applying essential oil to client back hands warm spa",
+      "reflexologist performing foot massage pressing pressure points client relaxing treatment chair"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201319:00 \u00b7 Sat: 09:00\u201317:00 \u00b7 By appointment only"
   },
@@ -3742,7 +3742,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Weight Management",
           "Metabolic"
         ],
-        "serviceImageQuery": "meal plan document printed paper desk pen notes"
+        "serviceImageQuery": "dietitian writing personalized meal plan notepad with healthy food items on desk consultation"
       },
       {
         "name": "Chronic Disease Nutrition",
@@ -3751,7 +3751,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetes Nutrition",
           "Cardiac Diet"
         ],
-        "serviceImageQuery": "blood glucose monitor diabetes management nutrition close-up"
+        "serviceImageQuery": "patient checking blood glucose level finger prick monitor diabetes management nutrition healthcare"
       },
       {
         "name": "Sports & Performance Nutrition",
@@ -3760,7 +3760,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sports Nutrition",
           "Endurance"
         ],
-        "serviceImageQuery": "sports nutrition smoothie protein powder blender preparation"
+        "serviceImageQuery": "athlete preparing protein smoothie blender fresh fruit banana berries sports nutrition kitchen"
       },
       {
         "name": "Gut Health & IBS Management",
@@ -3769,7 +3769,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Gut Health",
           "Low-FODMAP"
         ],
-        "serviceImageQuery": "gut health fermented foods probiotics kefir sauerkraut jars"
+        "serviceImageQuery": "fermented probiotic foods glass jars kefir sauerkraut kimchi yogurt on wooden table gut health"
       }
     ],
     "galleryHeading": "Your Nutrition Journey",
@@ -3805,14 +3805,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "fresh, warm, nourishing",
-    "heroImageQuery": "fresh healthy food spread table colourful vegetables fruits grains",
-    "ogImageQuery": "healthy food spread vegetables fruits grains table",
-    "aboutImageQuery": "dietitian consultation with client discussing meal plan desk",
+    "heroImageQuery": "colorful fresh healthy food spread on table vegetables fruits salmon avocado grains bright kitchen natural light",
+    "ogImageQuery": "registered dietitian in white coat consulting with client healthy food on desk professional office",
+    "aboutImageQuery": "dietitian sitting with client at desk discussing nutrition plan food diary healthy foods visible consultation room",
     "galleryImageQueries": [
-      "healthy meal prep containers colourful vegetables rice protein",
-      "body composition scale measurement health assessment",
-      "smoothie bowl acai berries seeds granola breakfast close-up",
-      "fresh produce market vegetables fruit colourful basket"
+      "healthy meal prep containers organized colorful vegetables chicken rice balanced portions kitchen counter",
+      "dietitian measuring client waist tape body composition assessment consultation room clinical",
+      "acai smoothie bowl topped with fresh berries granola seeds chia breakfast bright table",
+      "fresh fruit and vegetables colorful produce arranged on kitchen counter healthy eating ingredients"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Telehealth available evenings \u00b7 By appointment"
   },
@@ -3834,7 +3834,7 @@ export const presetContent: Record<string, PresetContent> = {
           "CBT",
           "Trauma Therapy"
         ],
-        "serviceImageQuery": "therapy room comfortable armchairs warm lamp conversation"
+        "serviceImageQuery": "psychologist office two comfortable armchairs facing each other warm lamp soft lighting therapy conversation room"
       },
       {
         "name": "Couples Therapy",
@@ -3843,7 +3843,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Couples",
           "Relationships"
         ],
-        "serviceImageQuery": "couple seated together couch therapy session room"
+        "serviceImageQuery": "couple sitting together on sofa in couples therapy session psychologist office warm professional"
       },
       {
         "name": "Child & Adolescent Therapy",
@@ -3852,7 +3852,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Child Therapy",
           "Adolescent"
         ],
-        "serviceImageQuery": "child play therapy toys sand tray art supplies room"
+        "serviceImageQuery": "child playing with toys sand tray in play therapy room colorful art supplies shelves child psychologist"
       },
       {
         "name": "Corporate & Workplace Wellness",
@@ -3861,7 +3861,7 @@ export const presetContent: Record<string, PresetContent> = {
           "EAP",
           "Workplace Wellness"
         ],
-        "serviceImageQuery": "corporate wellness workshop group discussion circle chairs office"
+        "serviceImageQuery": "group of employees seated in circle chairs corporate wellness workshop facilitator standing office meeting room"
       }
     ],
     "galleryHeading": "A Safe Space",
@@ -3897,14 +3897,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, safe, warm",
-    "heroImageQuery": "therapy room interior comfortable sofa warm lamp plants",
-    "ogImageQuery": "therapy room interior warm lamp comfortable sofa",
-    "aboutImageQuery": "therapist listening to client seated warm office empathy",
+    "heroImageQuery": "calm psychologist therapy room interior comfortable sofa two armchairs warm table lamp green plants soft natural light",
+    "ogImageQuery": "welcoming psychologist office comfortable armchair warm lamp books shelves plants professional therapy room",
+    "aboutImageQuery": "psychologist listening attentively to client seated across from each other armchairs warm therapy office empathetic",
     "galleryImageQueries": [
-      "therapy waiting room comfortable seating plants soft light",
-      "journal writing pen notebook self-reflection therapy homework",
-      "sand tray therapy miniature figures play therapy room",
-      "mindfulness meditation cushion candle calm peaceful space"
+      "psychology practice waiting room comfortable sofa plants soft warm lighting magazines peaceful",
+      "person writing in therapy journal reflective pen notebook wooden desk self-care mindfulness",
+      "sand tray therapy miniature figures arranged scene child therapy play room colorful",
+      "meditation space cushion on floor candle peaceful calm corner mindfulness therapy room"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 08:00\u201313:00 \u00b7 Telehealth available"
   },
@@ -3926,7 +3926,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Language Delay",
           "Literacy"
         ],
-        "serviceImageQuery": "child speech therapy session picture cards alphabet table"
+        "serviceImageQuery": "speech therapist showing picture cards to young child seated at table speech language therapy session bright room"
       },
       {
         "name": "Stuttering & Fluency",
@@ -3935,7 +3935,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fluency",
           "Stuttering"
         ],
-        "serviceImageQuery": "speech fluency exercises mouth mirror articulation practice"
+        "serviceImageQuery": "speech therapist holding mirror for child practicing mouth sounds articulation exercises therapy table"
       },
       {
         "name": "Voice & Swallowing",
@@ -3944,7 +3944,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Voice Therapy",
           "Dysphagia"
         ],
-        "serviceImageQuery": "voice therapy larynx model swallowing exercise demonstration"
+        "serviceImageQuery": "speech therapist demonstrating throat swallowing exercise with adult patient voice therapy clinical room"
       },
       {
         "name": "Augmentative & Alternative Communication",
@@ -3953,7 +3953,7 @@ export const presetContent: Record<string, PresetContent> = {
           "AAC",
           "Assistive Technology"
         ],
-        "serviceImageQuery": "AAC communication device tablet symbols buttons touchscreen"
+        "serviceImageQuery": "child using AAC communication tablet device with picture symbols touchscreen speech therapy assistive technology"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -3989,14 +3989,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, professional, encouraging",
-    "heroImageQuery": "speech therapy room interior colourful child-friendly posters table",
-    "ogImageQuery": "speech therapy room colourful child-friendly bright",
-    "aboutImageQuery": "speech therapist working with child letter sounds mirror",
+    "heroImageQuery": "speech therapist working with young child at colorful table picture cards alphabet posters bright therapy room",
+    "ogImageQuery": "speech therapist and child practicing sounds together smiling bright colorful therapy room professional",
+    "aboutImageQuery": "speech therapist sitting with child using mirror practicing letter sounds mouth shapes bright therapy room",
     "galleryImageQueries": [
-      "speech therapy practice room table chairs colourful posters bright",
-      "articulation picture cards letter sounds speech therapy close-up",
-      "child practicing speech sounds mirror mouth movements exercise",
-      "speech therapy puppets storytelling language engagement child"
+      "colorful speech therapy practice room small table chairs alphabet posters toys educational bright",
+      "speech therapy articulation picture cards spread on table letter sounds flashcards colorful",
+      "young child looking in mirror practicing mouth shapes sounds speech therapist guiding beside",
+      "speech therapist using hand puppet storytelling with child language engagement therapy play session"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -4018,7 +4018,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Sensory Processing",
           "Fine Motor"
         ],
-        "serviceImageQuery": "child sensory integration swing climbing occupational therapy gym"
+        "serviceImageQuery": "child on sensory integration swing occupational therapist guiding colorful OT gym climbing equipment"
       },
       {
         "name": "Neurological Rehabilitation",
@@ -4027,7 +4027,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Post-Stroke",
           "Neuro Rehab"
         ],
-        "serviceImageQuery": "stroke rehabilitation daily task hand grip exercise OT"
+        "serviceImageQuery": "occupational therapist helping stroke patient practice hand grip exercise daily living task rehabilitation clinic"
       },
       {
         "name": "Ergonomic & Workplace Assessment",
@@ -4036,7 +4036,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ergonomics",
           "Workstation"
         ],
-        "serviceImageQuery": "ergonomic workstation assessment desk chair monitor setup"
+        "serviceImageQuery": "occupational therapist assessing office worker ergonomic workstation desk chair monitor posture adjustment"
       },
       {
         "name": "School Readiness Assessment",
@@ -4045,7 +4045,7 @@ export const presetContent: Record<string, PresetContent> = {
           "School Readiness",
           "Perceptual Skills"
         ],
-        "serviceImageQuery": "school readiness assessment worksheet pencil grip shapes child"
+        "serviceImageQuery": "occupational therapist assessing child pencil grip writing shapes worksheet school readiness test table"
       }
     ],
     "galleryHeading": "In the Practice",
@@ -4081,14 +4081,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "warm, enabling, professional",
-    "heroImageQuery": "occupational therapy clinic interior sensory equipment bright room",
-    "ogImageQuery": "occupational therapy room sensory equipment bright",
-    "aboutImageQuery": "occupational therapist guiding patient hand exercise task activity",
+    "heroImageQuery": "occupational therapist working with child on sensory activities colorful OT clinic swings mats bright equipment",
+    "ogImageQuery": "occupational therapist helping child with fine motor activity at table colorful bright therapy room",
+    "aboutImageQuery": "occupational therapist guiding patient through hand exercise daily living task activity bright rehabilitation clinic",
     "galleryImageQueries": [
-      "occupational therapy sensory room swing ball pit bright",
-      "hand therapy putty grip squeeze exercise close-up",
-      "fine motor skills pencil grip exercise child OT table",
-      "stroke patient rehabilitation kitchen daily living task OT"
+      "colorful occupational therapy sensory room child on swing ball pit climbing wall bright fun",
+      "patient squeezing therapy putty hand grip strengthening exercise occupational therapy close-up",
+      "child practicing pencil grip writing exercise occupational therapist guiding hand at table",
+      "occupational therapist helping stroke patient in kitchen practicing daily living task pouring water rehabilitation"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:00 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -4110,7 +4110,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Test",
           "Diagnostic"
         ],
-        "serviceImageQuery": "hearing test soundproof booth headphones audiometry equipment"
+        "serviceImageQuery": "patient wearing headphones inside soundproof audiometry booth hearing test audiologist operating equipment"
       },
       {
         "name": "Hearing Aid Fitting",
@@ -4119,7 +4119,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Hearing Aids",
           "Phonak"
         ],
-        "serviceImageQuery": "hearing aid behind ear fitting close-up small device"
+        "serviceImageQuery": "audiologist fitting small hearing aid behind patient ear close-up hands adjusting device clinical"
       },
       {
         "name": "Tinnitus Management",
@@ -4128,7 +4128,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Tinnitus",
           "Sound Therapy"
         ],
-        "serviceImageQuery": "tinnitus sound therapy headphones audiologist screen display"
+        "serviceImageQuery": "audiologist counseling patient about tinnitus sound therapy headphones computer screen display clinical room"
       },
       {
         "name": "Paediatric Hearing Screening",
@@ -4137,7 +4137,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Newborn Screening",
           "Early Intervention"
         ],
-        "serviceImageQuery": "paediatric hearing screening OAE probe infant ear test"
+        "serviceImageQuery": "audiologist performing newborn hearing screening OAE probe in baby ear infant test clinical"
       }
     ],
     "galleryHeading": "Hear Better. Live Better.",
@@ -4173,14 +4173,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, calm, professional",
-    "heroImageQuery": "audiology clinic interior hearing test booth equipment modern",
-    "ogImageQuery": "audiology clinic hearing test equipment modern",
-    "aboutImageQuery": "audiologist fitting hearing aid patient ear close-up action",
+    "heroImageQuery": "audiologist examining patient ear with otoscope bright modern audiology clinic hearing test equipment visible",
+    "ogImageQuery": "audiologist in white coat with patient performing hearing assessment clinical room modern equipment",
+    "aboutImageQuery": "audiologist carefully fitting hearing aid behind elderly patient ear close-up warm clinical room",
     "galleryImageQueries": [
-      "audiology soundproof booth hearing test headphones equipment",
-      "hearing aid models display case small devices varieties",
-      "otoscope ear canal examination close-up medical",
-      "audiogram results graph screen hearing threshold display"
+      "patient sitting inside soundproof booth headphones hearing test audiometry audiology clinic",
+      "display case showing various hearing aid models small devices behind ear in ear clinical",
+      "audiologist using otoscope to examine patient ear canal close-up clinical examination",
+      "audiogram hearing test results graph displayed on computer screen audiologist reviewing clinical"
     ],
     "contactHours": "Mon\u2013Fri: 08:30\u201317:00 \u00b7 Sat: 08:30\u201312:00 \u00b7 By appointment"
   },
@@ -4202,7 +4202,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Plantar Fasciitis",
           "Orthotics"
         ],
-        "serviceImageQuery": "plantar fasciitis heel examination foot biomechanics assessment"
+        "serviceImageQuery": "podiatrist examining patient foot heel plantar fasciitis palpating sole treatment chair clinical room"
       },
       {
         "name": "Nail & Skin Conditions",
@@ -4211,7 +4211,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Ingrown Toenails",
           "Fungal"
         ],
-        "serviceImageQuery": "ingrown toenail treatment podiatry instruments foot close-up"
+        "serviceImageQuery": "podiatrist treating ingrown toenail with instruments patient foot elevated close-up clinical sterile"
       },
       {
         "name": "Diabetic Foot Care",
@@ -4220,7 +4220,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Diabetic Foot",
           "Risk Assessment"
         ],
-        "serviceImageQuery": "diabetic foot screening monofilament test sensation check"
+        "serviceImageQuery": "podiatrist performing diabetic foot screening monofilament sensation test patient foot clinical examination"
       },
       {
         "name": "Custom Orthotics",
@@ -4229,7 +4229,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Custom Orthotics",
           "Gait Analysis"
         ],
-        "serviceImageQuery": "custom orthotic insole moulding tray foot impression podiatry"
+        "serviceImageQuery": "podiatrist making custom orthotic insole foam mould impression patient foot podiatry clinic"
       }
     ],
     "galleryHeading": "Back on Your Feet",
@@ -4265,14 +4265,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "clean, professional, clinical",
-    "heroImageQuery": "podiatry clinic interior treatment chair instruments bright clean",
-    "ogImageQuery": "podiatry clinic treatment chair instruments modern",
-    "aboutImageQuery": "podiatrist treating patient foot instruments chair close-up",
+    "heroImageQuery": "podiatrist examining patient foot in treatment chair bright modern podiatry clinic instruments visible clean",
+    "ogImageQuery": "podiatrist in gloves treating patient foot elevated in treatment chair professional clinical room",
+    "aboutImageQuery": "podiatrist carefully examining patient foot sole with gloved hands treatment chair bright clinic room",
     "galleryImageQueries": [
-      "podiatry treatment room chair instruments bright modern clean",
-      "custom orthotics insoles moulded shoes fitting display",
-      "podiatry instruments scalpel clippers tray sterile close-up",
-      "gait analysis treadmill biomechanics running assessment screen"
+      "modern podiatry treatment room adjustable chair bright lighting instruments tray clinical clean",
+      "custom orthotic insoles displayed next to running shoes podiatry clinic fitting",
+      "podiatry surgical instruments scalpel nail clippers forceps sterile tray close-up clinical",
+      "patient walking on treadmill gait analysis screen podiatrist observing biomechanics assessment"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201317:30 \u00b7 Sat: 08:00\u201312:00 \u00b7 By appointment"
   },
@@ -4294,7 +4294,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Acupuncture",
           "TCM"
         ],
-        "serviceImageQuery": "acupuncture needles inserted back meridian points close-up"
+        "serviceImageQuery": "acupuncture practitioner inserting thin needles into patient back meridian points lying treatment table close-up"
       },
       {
         "name": "Homeopathy & Naturopathy",
@@ -4303,7 +4303,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Homeopathy",
           "Naturopathy"
         ],
-        "serviceImageQuery": "homeopathy naturopathy herbal tincture bottles remedies wooden shelf"
+        "serviceImageQuery": "naturopath consulting with patient herbal tincture bottles lined up on wooden shelf natural remedies clinic"
       },
       {
         "name": "Reflexology & Energy Work",
@@ -4312,7 +4312,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Reflexology",
           "Reiki"
         ],
-        "serviceImageQuery": "reflexology foot pressure point treatment hands close-up"
+        "serviceImageQuery": "reflexologist pressing pressure points on patient foot sole hands close-up treatment chair holistic clinic"
       },
       {
         "name": "Herbal Medicine & Nutrition",
@@ -4321,7 +4321,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Herbal Medicine",
           "Nutrition"
         ],
-        "serviceImageQuery": "herbal medicine dried herbs mortar pestle tincture bottles wooden"
+        "serviceImageQuery": "herbalist grinding dried herbs in mortar pestle tincture bottles glass jars natural medicine preparation wooden table"
       }
     ],
     "galleryHeading": "Your Healing Space",
@@ -4357,14 +4357,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "calm, earthy, healing",
-    "heroImageQuery": "holistic health clinic interior herbs plants warm natural light",
-    "ogImageQuery": "holistic clinic interior herbs candles warm natural",
-    "aboutImageQuery": "holistic practitioner consulting patient pulse reading wrist",
+    "heroImageQuery": "holistic health practitioner performing acupuncture on patient lying treatment bed herbs plants natural light calm clinic",
+    "ogImageQuery": "holistic health clinic interior herbal medicine jars shelves plants warm natural light peaceful treatment room",
+    "aboutImageQuery": "holistic practitioner taking patient pulse wrist reading traditional Chinese medicine consultation desk warm clinic",
     "galleryImageQueries": [
-      "acupuncture treatment needles back patient meridian table",
-      "dried medicinal herbs jars wooden apothecary shelf",
-      "cupping therapy round glass cups back treatment marks",
-      "crystal healing stones arrangement therapy treatment table"
+      "acupuncture needles placed along patient back meridian lines lying on treatment table practitioner hands",
+      "dried medicinal herbs in labeled glass jars on wooden apothecary shelf holistic clinic display",
+      "cupping therapy glass cups placed on patient back creating suction marks treatment table holistic",
+      "healing crystals gemstones arranged on treatment table amethyst quartz rose holistic therapy room"
     ],
     "contactHours": "Mon\u2013Fri: 08:00\u201318:00 \u00b7 Sat: 09:00\u201314:00 \u00b7 By appointment"
   },
@@ -15925,7 +15925,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Fine Line"
         ],
         "icon": "edit-3",
-        "serviceImageQuery": "fine line tattoo design botanical arm close-up"
+        "serviceImageQuery": "tattoo artist inking fine line botanical floral design on client inner arm tattoo machine close-up studio"
       },
       {
         "name": "Cover-Up & Rework",
@@ -15935,7 +15935,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Rework"
         ],
         "icon": "refresh-cw",
-        "serviceImageQuery": "tattoo cover-up before after arm transformation"
+        "serviceImageQuery": "tattoo artist working on cover-up design over old tattoo client arm tattoo machine ink studio"
       },
       {
         "name": "Professional Piercing",
@@ -15945,7 +15945,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Titanium Jewellery"
         ],
         "icon": "circle",
-        "serviceImageQuery": "ear piercing titanium jewellery stud close-up"
+        "serviceImageQuery": "professional piercer performing ear piercing with sterile needle titanium jewelry client seated studio"
       },
         {
           "name": "Laser Tattoo Removal",
@@ -15954,7 +15954,7 @@ export const presetContent: Record<string, PresetContent> = {
             "Laser Removal",
             "Fading"
           ],
-          "serviceImageQuery": "laser tattoo removal machine light beam skin treatment"
+          "serviceImageQuery": "laser tattoo removal treatment practitioner holding device light beam on skin fading tattoo clinical"
         }
     ],
     "galleryHeading": "Fresh Ink",
@@ -15997,14 +15997,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "dark, artistic, precise",
-    "heroImageQuery": "fine line tattoo close-up arm botanical floral design",
-    "ogImageQuery": "tattoo studio professional artist Cape Town custom",
-    "aboutImageQuery": "tattoo artist inking design on arm studio close-up",
+    "heroImageQuery": "tattoo artist with gloves inking detailed design on client arm tattoo machine ink cups studio dark moody lighting",
+    "ogImageQuery": "tattoo artist working on client arm close-up tattoo machine ink detail professional studio dark",
+    "aboutImageQuery": "tattoo artist drawing custom design sketch on paper stencil tracing studio desk ink references artwork",
     "galleryImageQueries": [
-      "fine line botanical tattoo arm close-up healed",
-      "black and grey realism portrait tattoo sleeve",
-      "geometric tattoo shoulder blade detailed linework",
-      "ear piercings multiple titanium studs healed"
+      "healed fine line botanical floral tattoo on woman inner arm detailed delicate close-up skin",
+      "black and grey realism portrait tattoo full sleeve arm detailed shading healed",
+      "geometric tattoo shoulder blade detailed linework symmetrical pattern healed close-up",
+      "multiple ear piercings healed titanium studs hoops cartilage tragus close-up jewelry"
     ]
   },
   "Art Gallery / Art Shop": {
