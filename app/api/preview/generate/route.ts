@@ -2109,7 +2109,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const meetSection = `
   <section style="padding:100px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">Meet the Team</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">${content.servicesHeading}</h2>
       <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
         ${content.services.slice(0, 3).map((s, i) => `
