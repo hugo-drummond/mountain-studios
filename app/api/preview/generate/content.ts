@@ -15039,7 +15039,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Personal Brand"
         ],
         "icon": "user",
-        "serviceImageQuery": "portrait headshot natural light warm tones close-up"
+        "serviceImageQuery": "photographer taking portrait of woman studio lighting umbrella softbox"
       },
       {
         "name": "Commercial & Product Photography",
@@ -15049,7 +15049,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product"
         ],
         "icon": "camera",
-        "serviceImageQuery": "product photography flat lay styled table overhead"
+        "serviceImageQuery": "overhead flat lay product photography table arrangement white background"
       },
       {
         "name": "Events & Corporate",
@@ -15059,7 +15059,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Corporate"
         ],
         "icon": "users",
-        "serviceImageQuery": "event photography crowd stage speakers conference"
+        "serviceImageQuery": "event photographer with camera crowd conference room corporate"
       },
         {
           "name": "Drone & Aerial Photography",

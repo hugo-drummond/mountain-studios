@@ -2250,7 +2250,6 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${aboutSection}
-  ${meetSection}
   ${portfolioGrid}
   ${buildContactSection(content, locationInfo)}
 
