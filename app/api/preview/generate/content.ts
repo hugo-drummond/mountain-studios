@@ -4669,7 +4669,7 @@ export const presetContent: Record<string, PresetContent> = {
       }
     ],
     "galleryHeading": "In the Gym",
-    "aboutHeading": "A gym that earns your <em>loyalty</em>",
+    "aboutHeading": "A gym you'll actually <em>love</em>",
     "aboutText": "We built this gym because we wanted a space that felt serious without feeling intimidating. The equipment is premium. The floors are clean. The coaches actually watch your form.\n\nNo contracts, no pushy upsells, no vibe that makes beginners feel unwelcome. Just a great facility and a genuinely good community.",
     "aboutMission": "We believe a gym should be the best part of your day \u2014 not something you dread.",
     "stats": [

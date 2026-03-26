@@ -907,9 +907,9 @@ function buildVisualTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
   const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
+    images[4] || stockImages.cards[7],
+    stockImages.cards[8],
+    stockImages.cards[9],
   ]
 
   const servicesSection = `
@@ -1734,7 +1734,6 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${serviceGrid}
   ${featureSections}
   ${aboutSection}
-  ${categoryGrid}
   ${testimonialSection}
   ${buildContactSection(content, locationInfo)}
 
@@ -2094,10 +2093,10 @@ function buildCreativeTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
   const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
-    stockImages.cards[6],
+    images[4] || stockImages.cards[7],
+    stockImages.cards[8],
+    stockImages.cards[9],
+    stockImages.cards[10],
   ]
 
   const crBg = '#f5f5f0'
@@ -2322,11 +2321,11 @@ function buildFitnessTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 4: 3-column location/service cards with photo bg
+  // Section 4: 4-column location/service cards with photo bg
   const locationCards = `
   <section style="padding:80px 2rem;background:${fitBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-      ${content.services.slice(0, 3).map((s, i) => `
+    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
+      ${content.services.slice(0, 4).map((s, i) => `
       <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
         <div style="position:absolute;inset:0">
           <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
@@ -2411,7 +2410,6 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${awardsStrip}
-  ${classTypes}
   ${locationCards}
   ${gallerySection}
   ${packagesSection}
@@ -2439,9 +2437,9 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
   const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
+    images[4] || stockImages.cards[7],
+    stockImages.cards[8],
+    stockImages.cards[9],
   ]
 
   // Section 1: Full-bleed cinematic hero — Polestar style
@@ -2561,7 +2559,6 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${serviceShowcase}
-  ${ctaLinks}
   ${whySection}
   ${featureImage}
   ${productCards}
@@ -2773,10 +2770,10 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     images[3] || stockImages.cards[2],
   ]
   const galleryImgs = [
-    images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
-    stockImages.cards[6],
+    images[4] || stockImages.cards[7],
+    stockImages.cards[8],
+    stockImages.cards[9],
+    stockImages.cards[10],
   ]
 
   const foodBg = '#ffffff'
@@ -2806,7 +2803,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   <section id="about" style="padding:100px 2rem;background:${foodBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
-        <div style="border-radius:50%;overflow:hidden;width:90%;aspect-ratio:1;margin:0 auto">
+        <div style="border-radius:16px;overflow:hidden;width:100%;aspect-ratio:4/5;margin:0 auto">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
       </div>
