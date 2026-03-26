@@ -1996,7 +1996,7 @@ function buildEducationTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> ${content.stepsHeading || 'To Get Started'}</h2>
       <!-- Steps: circle + connector + text in one grid -->
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
-        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed #ccc;margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
+        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="display:flex;align-items:center;justify-content:center;padding-top:0;margin-top:32px;align-self:start;color:#ccc;font-size:1.5rem">&rarr;</div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
           <div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
           <div>
             <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${eduText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
@@ -2505,7 +2505,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const whySection = `
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">Who We Are</h2>
       <div class="ms-grid" style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
         ${content.stats.slice(0, 4).map((s, i) => `
         <div style="padding:2rem;${i < Math.min(content.stats.length, 4) - 1 ? 'border-right:1px solid var(--border)' : ''}">
@@ -2542,7 +2542,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${content.services.slice(0, 6).map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
           <div class="ms-img" style="height:220px;overflow:hidden">
-            <img src="${allCardImgs[i % allCardImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="padding:1.5rem">
             <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">${s.name}</h3>
