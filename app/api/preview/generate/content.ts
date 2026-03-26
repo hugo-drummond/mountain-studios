@@ -15887,7 +15887,7 @@ export const presetContent: Record<string, PresetContent> = {
           "2D Animation"
         ],
         "icon": "play",
-        "serviceImageQuery": "colourful 2D explainer video animation characters illustration on computer screen"
+        "serviceImageQuery": "person working at computer with colourful graphics on large monitor creative studio"
       },
       {
         "name": "Motion Graphics & Titles",
@@ -15897,7 +15897,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Logo Animation"
         ],
         "icon": "film",
-        "serviceImageQuery": "motion graphics logo animation text title sequence on screen colourful broadcast"
+        "serviceImageQuery": "video editor working at desk with two monitors colourful timeline creative office"
       },
       {
         "name": "3D Animation & Visualisation",
@@ -15907,7 +15907,7 @@ export const presetContent: Record<string, PresetContent> = {
           "Product Vis"
         ],
         "icon": "box",
-        "serviceImageQuery": "3D render product visualisation headphones floating black background studio lighting"
+        "serviceImageQuery": "designer working on 3D model computer screen dark studio multiple monitors"
       },
         {
           "name": "Interactive & UI Animation",
@@ -15916,7 +15916,7 @@ export const presetContent: Record<string, PresetContent> = {
             "UI Animation",
             "Micro-Interaction"
           ],
-          "serviceImageQuery": "UI UX designer working on mobile app interface design screen wireframe computer"
+          "serviceImageQuery": "designer working on mobile app prototype wireframe desk notebook laptop screen"
         }
     ],
     "galleryHeading": "Things We’ve Set in Motion",
@@ -15959,19 +15959,19 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "bold, vibrant, creative",
-    "heroImageQuery": "animator artist working at computer dual monitors colourful animation software screen",
-    "ogImageQuery": "motion graphics animation colourful abstract shapes loop on computer monitor screen",
-    "aboutImageQuery": "digital artist animator drawing on graphics tablet stylus computer screen illustration",
+    "heroImageQuery": "creative person working at desk with large colourful monitor screen dark studio",
+    "ogImageQuery": "colourful abstract light trails long exposure neon purple blue creative",
+    "aboutImageQuery": "artist drawing on graphics tablet pen stylus at desk with computer monitor",
     "galleryImageQueries": [
-      "colourful 2D animation character illustration explainer video frame scene",
-      "motion graphics title sequence text animation colourful broadcast screen",
-      "3D product render floating sneaker shoe angle visualisation studio lighting",
-      "animated social media story Instagram post motion graphics colourful screen"
+      "person working at computer large colourful screen creative office workspace",
+      "close up hands drawing on graphics tablet digital pen stylus",
+      "modern creative studio workspace desk monitors colourful lights dark room",
+      "team watching presentation on large screen colourful office meeting"
     ],
     "features": [
-      { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "colourful animated explainer video playing on laptop screen motion graphics characters" },
-      { "name": "Style Frames Before Production", "description": "We design the look before we animate. You approve key frames so there are no surprises when the final video arrives.", "imageQuery": "storyboard frames sketched on paper animation planning pencil drawings sequence" },
-      { "name": "Lottie & Web-Ready Formats", "description": "We deliver in every format you need \u2014 MP4, GIF, Lottie, After Effects \u2014 optimised for web, app, and social.", "imageQuery": "after effects animation timeline software layers keyframes on computer monitor screen" }
+      { "name": "Explainer Videos That Convert", "description": "Our animated explainers turn complex ideas into 60-second stories that people actually watch to the end.", "imageQuery": "woman watching video on laptop screen colourful content bright living room" },
+      { "name": "Style Frames Before Production", "description": "We design the look before we animate. You approve key frames so there are no surprises when the final video arrives.", "imageQuery": "sketches and drawings pinned to wall storyboard creative planning mood board" },
+      { "name": "Lottie & Web-Ready Formats", "description": "We deliver in every format you need — MP4, GIF, Lottie, After Effects — optimised for web, app, and social.", "imageQuery": "close up computer screen code editor software developer colourful syntax dark" }
     ]
   },
   "Tattoo / Piercing Studio": {

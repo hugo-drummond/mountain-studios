@@ -2220,10 +2220,10 @@ function buildCreativeTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
-  ${meetSection}
   ${aboutSection}
-  ${portfolioGrid}
   ${servicesList}
+  ${meetSection}
+  ${portfolioGrid}
   ${buildContactSection(content, locationInfo)}
 
 ${crFooter}
