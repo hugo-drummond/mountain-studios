@@ -1617,7 +1617,7 @@ function buildEventsTemplate(data: TemplateData): string {
         </div>
         <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr)">
           ${content.services.slice(0, 6).map((s, i) => `
-          <div style="border-left:${i > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};padding:1.5rem">
+          <div style="border-left:${i % 3 > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};${i >= 3 ? 'border-top:1px solid rgba(0,0,0,0.08);' : ''}padding:1.5rem">
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
             <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
             <div class="ms-img" style="border-radius:12px;overflow:hidden;height:180px">
@@ -1634,7 +1634,7 @@ function buildEventsTemplate(data: TemplateData): string {
   <section style="background:${evtBg};padding:60px 2rem">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       ${i % 2 === 0 ? `
-      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:400px">
+      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:450px">
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
@@ -1653,7 +1653,7 @@ function buildEventsTemplate(data: TemplateData): string {
           <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
         </div>
       </div>
-      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:400px">
+      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:450px">
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>`}
     </div>
