@@ -2296,6 +2296,12 @@ function buildFitnessTemplate(data: TemplateData): string {
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
   ]
+  const galleryImgs = [
+    images[4] || stockImages.cards[7],
+    stockImages.cards[8],
+    stockImages.cards[9],
+    stockImages.cards[10],
+  ]
 
   const fitBg = '#111111'
   const fitText = '#ffffff'
