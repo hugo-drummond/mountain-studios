@@ -3826,7 +3826,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const productCards = `
   <section style="padding:80px 2rem;background:${retailBg}">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};text-align:center;margin-bottom:3rem">What Sets Us Apart</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">What Sets Us Apart</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
         ${featuresData.slice(0, 3).map(f => `
         <div style="text-align:center">
@@ -3849,7 +3849,7 @@ function buildRetailTemplate(data: TemplateData): string {
       <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
     </div>
     <div style="position:relative;text-align:center;padding:3rem;max-width:600px">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;margin-bottom:0.75rem">Join Our Mailing List</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:0.75rem;text-transform:uppercase">Join Our Mailing List</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2.5rem">Be the first to hear about new arrivals, exclusive offers, and upcoming events.</p>
       <form onsubmit="return false" style="display:flex;gap:0.75rem;max-width:480px;margin:0 auto">
         <input type="email" placeholder="Your email address" style="flex:1;font-family:var(--body-font);font-size:0.95rem;padding:0.85rem 1.25rem;border:2px solid rgba(255,255,255,0.3);border-radius:999px;background:rgba(0,0,0,0.2);backdrop-filter:blur(8px);color:#fff;outline:none" />
