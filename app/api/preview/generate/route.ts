@@ -1637,23 +1637,23 @@ function buildEventsTemplate(data: TemplateData): string {
 
   // Section 3: Alternating 50/50 feature sections — white bg with rounded-corner images
   const featureSections = content.services.slice(0, 2).map((s, i) => `
-  <section style="background:${evtBg};padding:60px 2rem">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+  <section style="background:${evtBg};padding:80px 2rem">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
       ${i % 2 === 0 ? `
       <div class="ms-img" style="overflow:hidden;border-radius:16px;height:450px">
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:${evtMuted};line-height:1.7;margin-bottom:2rem">${s.description}</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${s.name}</em></h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
           <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
           <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
         </div>
       </div>` : `
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.25rem"><em>${s.name}</em></h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:${evtMuted};line-height:1.7;margin-bottom:2rem">${s.description}</p>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${s.name}</em></h2>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
           <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
           <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
