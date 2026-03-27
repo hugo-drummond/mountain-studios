@@ -1638,7 +1638,7 @@ function buildEventsTemplate(data: TemplateData): string {
   // Section 3: Alternating 50/50 feature sections — white bg with rounded-corner images
   const featureSections = content.services.slice(0, 2).map((s, i) => `
   <section style="background:${evtBg};padding:80px 2rem">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};gap:4rem;align-items:center">
       ${i % 2 === 0 ? `
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${s.name}</em></h2>
