@@ -15118,10 +15118,10 @@ export const presetContent: Record<string, PresetContent> = {
       "interior architectural photography bright living room natural light windows"
     ],
     "features": [
-      { "name": "Wedding & Events", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing portrait photos on computer monitor lightroom retouching" },
-      { "name": "Commercial & Product", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "photographer directing couple during portrait session outdoors natural light" },
-      { "name": "Portrait & Headshots", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "professional headshot portrait woman dark background studio lighting confident" },
-      { "name": "Architecture & Interiors", "description": "Property, construction, events, and landscape — dramatic perspectives from above.", "imageQuery": "modern white house exterior front garden blue sky residential architecture" }
+      { "name": "Wedding & Events", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "bride and groom walking together garden wedding day romantic beautiful natural light" },
+      { "name": "Commercial & Product", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "cosmetics skincare products arranged on marble table flat lay overhead commercial photography" },
+      { "name": "Portrait & Headshots", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "confident businesswoman professional headshot portrait dark background studio lighting smile" },
+      { "name": "Architecture & Interiors", "description": "Property, construction, events, and landscape — dramatic perspectives from above.", "imageQuery": "beautiful modern living room interior design bright white sofa large windows natural light" }
     ]
   },
   "Videographer": {
