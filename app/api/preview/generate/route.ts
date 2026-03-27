@@ -2351,7 +2351,7 @@ function buildFitnessTemplate(data: TemplateData): string {
       ${content.services.slice(0, 4).map((s, i) => `
       <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
         <div style="position:absolute;inset:0">
-          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
         </div>
         <div style="position:relative;padding:2rem">
