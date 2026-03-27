@@ -1840,16 +1840,26 @@ function buildProfessionalTemplate(data: TemplateData): string {
     stockImages.cards[10] || `https://picsum.photos/seed/${businessName}-tile3/600/600`,
   ]
 
+  const tileDescriptions = [
+    content.aboutText.split('\n')[0] || 'A dedicated team with decades of combined experience.',
+    content.aboutMission || 'We take a thorough, considered approach to every matter.',
+    'Our track record speaks for itself — results that protect your interests.',
+    'Qualified professionals who understand your industry and your goals.',
+  ]
   const imageGridSection = `
   <section style="padding:40px 2rem;background:${proBg}">
-    <div style="max-width:1100px;margin:0 auto">
+    <div style="max-width:1100px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:${proText};margin-bottom:2rem">About Us</h2>
     </div>
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       ${tileImgs.map((img, i) => `
       <div style="position:relative;aspect-ratio:1;overflow:hidden">
         <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        <div style="position:absolute;bottom:1rem;left:1rem;font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:#fff;padding:0.5rem 1rem;background:var(--primary)">${tileLabels[i]}</div>
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
+        <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem">
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:#fff;margin-bottom:0.5rem">${tileLabels[i]}</h3>
+          <p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.75);line-height:1.6">${tileDescriptions[i]}</p>
+        </div>
       </div>`).join('')}
     </div>
   </section>`
