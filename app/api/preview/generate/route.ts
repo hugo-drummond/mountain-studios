@@ -2153,7 +2153,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         ${content.services.slice(0, 3).map((s, i) => `
         <div>
           <div class="ms-img" style="height:450px;overflow:hidden;margin-bottom:1.25rem">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${s.tags.join(' · ')}</p>
@@ -2552,7 +2552,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${content.services.slice(0, 6).map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
           <div class="ms-img" style="height:220px;overflow:hidden">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="padding:1.5rem">
             <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">${s.name}</h3>
@@ -3295,10 +3295,10 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     <div style="max-width:1100px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
-        ${content.services.slice(0, 4).map(s => `
+        ${content.services.slice(0, 4).map((s, i) => `
         <div style="text-align:left">
           <div style="border-radius:12px;height:200px;overflow:hidden;margin-bottom:1rem">
-            <img src="${stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
@@ -3752,10 +3752,10 @@ function buildRetailTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
-        ${content.services.slice(0, 4).map(s => `
+        ${content.services.slice(0, 4).map((s, i) => `
         <div style="background:${retailCardBg};border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
           <div style="border-radius:12px;height:280px;overflow:hidden">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="padding:1.25rem">
             <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${s.name}</h3>
@@ -3993,7 +3993,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 
   // Section 5: Alternating feature showcases
   const featuresData = content.features || content.services.slice(0, 3)
-  const showcaseImgs = featuresData.map(() => stockPool[_pi++])
+  const showcaseImgs = featuresData.map((_, i) => stockImages.cards[i] || stockPool[_pi++])
   const featureShowcases = featuresData.length > 0 ? `
   <section style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
