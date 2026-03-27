@@ -2368,7 +2368,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   const gallerySection = `
   <section style="padding:0;background:${fitBg}">
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
-      ${serviceImgs.map(img => `
+      ${galleryImgs.slice(0, 3).map(img => `
       <div class="ms-img" style="height:350px;overflow:hidden">
         <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>`).join('')}

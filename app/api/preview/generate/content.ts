@@ -4700,7 +4700,7 @@ export const presetContent: Record<string, PresetContent> = {
     "imageMood": "energetic, clean, motivating",
     "heroImageQuery": "athletic man lifting heavy barbell deadlift gym dark dramatic lighting intense workout",
     "ogImageQuery": "woman running on treadmill gym bright modern fitness training cardio",
-    "aboutImageQuery": "personal trainer coaching woman with kettlebell gym floor bright modern equipment",
+    "aboutImageQuery": "fit woman smiling in gym holding water bottle after workout bright clean modern",
     "galleryImageQueries": [
       "muscular man doing pull ups gym bar back muscles dark lighting",
       "women running on treadmills row bright modern gym cardio workout",
