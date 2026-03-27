@@ -16280,7 +16280,7 @@ export const presetContent: Record<string, PresetContent> = {
     "galleryImageQueries": [
       "luxury Cape Town villa with swimming pool garden terrace outdoor entertaining area exterior view",
       "modern townhouse street-facing facade architectural design clean lines windows residential",
-      "penthouse apartment interior open-plan living balcony view ocean mountains floor-to-ceiling glass",
+      "large luxury estate house white walls wine farm vineyard green garden driveway gate",
       "suburban family home exterior front garden well-maintained landscaping residential sale property"
     ]
   },
