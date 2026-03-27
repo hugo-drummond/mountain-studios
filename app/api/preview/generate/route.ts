@@ -2353,8 +2353,8 @@ function buildFitnessTemplate(data: TemplateData): string {
       <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
         ${content.stats.slice(0, 4).map(s => `
         <div style="text-align:center">
-          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:${fitText}">${s.value}</div>
-          <div style="font-family:var(--body-font);font-size:0.75rem;color:${fitMuted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.25rem">${s.label}</div>
+          <div style="font-family:var(--heading-font);font-size:clamp(2.5rem,4vw,3.5rem);font-weight:700;color:${fitText}">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.35rem">${s.label}</div>
         </div>`).join('')}
       </div>
       <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${content.aboutMission || content.heroEyebrow}</h2>
