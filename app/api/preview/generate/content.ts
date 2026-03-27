@@ -4701,14 +4701,14 @@ export const presetContent: Record<string, PresetContent> = {
       "rating": 5
     },
     "imageMood": "energetic, clean, motivating",
-    "heroImageQuery": "modern gym interior wide angle free weights machines cardio equipment bright clean spacious floor",
-    "ogImageQuery": "modern gym floor free weights machines cardio equipment bright spacious",
-    "aboutImageQuery": "people working out gym floor dumbbells barbells energetic atmosphere mirrors bright lights",
+    "heroImageQuery": "athletic man lifting heavy barbell deadlift gym dark dramatic lighting intense workout",
+    "ogImageQuery": "woman running on treadmill gym bright modern fitness training cardio",
+    "aboutImageQuery": "personal trainer coaching woman with kettlebell gym floor bright modern equipment",
     "galleryImageQueries": [
-      "gym weight room barbell squat racks mirrors dumbbells lifting area bright",
-      "people running treadmill row cardio machines gym floor modern",
-      "group HIIT fitness class people exercising gym bright modern studio",
-      "functional training area battle ropes kettlebells tyres gym floor workout"
+      "muscular man doing pull ups gym bar back muscles dark lighting",
+      "women running on treadmills row bright modern gym cardio workout",
+      "group fitness class people doing burpees gym studio instructor leading",
+      "man and woman high fiving after workout gym floor happy sweaty"
     ],
     "contactHours": "Mon\u2013Fri: 05:30\u201321:00 \u00b7 Sat: 07:00\u201318:00 \u00b7 Sun: 08:00\u201314:00"
   },
