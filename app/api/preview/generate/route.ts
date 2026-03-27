@@ -2573,7 +2573,6 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
-  ${serviceShowcase}
   ${whySection}
   ${featureImage}
   ${productCards}
