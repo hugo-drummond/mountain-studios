@@ -2868,7 +2868,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
         ${(eg.items as typeof content.services).map((s, i) => `
         <div style="display:flex;align-items:center;gap:1rem;text-align:left">
           <div style="width:80px;height:80px;border-radius:12px;overflow:hidden;flex-shrink:0">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="flex:1">
             <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.25rem">
