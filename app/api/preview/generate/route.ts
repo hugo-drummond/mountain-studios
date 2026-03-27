@@ -4041,7 +4041,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     <div style="max-width:1000px;margin:0 auto;text-align:center">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);margin-bottom:4rem">The Process</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
-        ${techProcessSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed rgba(255,255,255,0.2);margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
+        ${techProcessSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="display:flex;align-items:center;margin-top:32px;align-self:start;width:100%;padding:0 0.5rem"><svg width="100%" height="12" viewBox="0 0 100 12" preserveAspectRatio="none" style="display:block"><line x1="0" y1="6" x2="85" y2="6" stroke="rgba(255,255,255,0.25)" stroke-width="2.5"/><polygon points="85,0 100,6 85,12" fill="rgba(255,255,255,0.25)"/></svg></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
           <div style="width:64px;height:64px;border-radius:50%;background:${techStepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
           <div>
             <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
@@ -4112,7 +4112,6 @@ ${techNav}
   ${featureCards}
   ${trustStrip}
   ${featureShowcases}
-  ${darkAccentSection}
   ${valueProps}
   ${testimonialSection}
   ${buildContactSection(content, locationInfo)}
