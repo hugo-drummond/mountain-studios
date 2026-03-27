@@ -1641,6 +1641,7 @@ function buildEventsTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};gap:4rem;align-items:center">
       ${i % 2 === 0 ? `
       <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${evtMuted};font-style:italic;margin-bottom:0.75rem">${s.tags?.join(' · ') || ''}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${s.name}</em></h2>
         <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
@@ -1655,6 +1656,7 @@ function buildEventsTemplate(data: TemplateData): string {
         <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
+        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${evtMuted};font-style:italic;margin-bottom:0.75rem">${s.tags?.join(' · ') || ''}</p>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${s.name}</em></h2>
         <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${s.description}</p>
         <div style="display:flex;gap:0.75rem">
@@ -1675,7 +1677,10 @@ function buildEventsTemplate(data: TemplateData): string {
       <div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none;margin-top:1rem">${content.ctaPrimary}</a>
+        <div style="display:flex;gap:0.75rem;margin-top:1rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
+        </div>
       </div>
     </div>
   </section>`
@@ -1752,7 +1757,7 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${heroSection}
   ${serviceGrid}
   <section style="padding:40px 2rem 20px;background:${evtBg};text-align:center">
-    <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
+    <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>Our Work Style</em></h2>
   </section>
   ${aboutSection}
   ${featureSections}
