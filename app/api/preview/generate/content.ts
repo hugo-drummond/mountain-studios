@@ -15123,8 +15123,8 @@ export const presetContent: Record<string, PresetContent> = {
     "features": [
       { "name": "Wedding & Events", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "photographer editing portrait photos on computer monitor lightroom retouching" },
       { "name": "Commercial & Product", "description": "We guide you into moments, not stiff poses. The result is images that feel real, relaxed, and genuinely you.", "imageQuery": "photographer directing couple during portrait session outdoors natural light" },
-      { "name": "Portrait & Headshots", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "printed photography portfolio book open on desk professional images layout" },
-      { "name": "Architecture & Interiors", "description": "Property, construction, events, and landscape — dramatic perspectives from above.", "imageQuery": "modern house exterior architectural photography twilight blue hour" }
+      { "name": "Portrait & Headshots", "description": "Every image comes with a clear usage licence. Use them on your website, socials, print, and ads without any hidden fees.", "imageQuery": "professional headshot portrait woman dark background studio lighting confident" },
+      { "name": "Architecture & Interiors", "description": "Property, construction, events, and landscape — dramatic perspectives from above.", "imageQuery": "modern white house exterior front garden blue sky residential architecture" }
     ]
   },
   "Videographer": {
