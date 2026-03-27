@@ -1673,7 +1673,7 @@ function buildEventsTemplate(data: TemplateData): string {
         <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
         <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none;margin-top:1rem">${content.ctaPrimary}</a>
       </div>
@@ -1684,7 +1684,7 @@ function buildEventsTemplate(data: TemplateData): string {
   const categoryGrid = content.services.length > 0 ? `
   <section style="padding:60px 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.06)">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};margin-bottom:2.5rem">${content.galleryHeading || content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};margin-bottom:2.5rem">${content.galleryHeading || content.servicesHeading}</h2>
       <div style="display:flex;flex-wrap:wrap;gap:2.5rem;justify-content:center">
         ${content.services.map(s => `
         <div style="text-align:center">
@@ -2001,7 +2001,7 @@ function buildEducationTemplate(data: TemplateData): string {
   const processSection = `
   <section style="padding:80px 2rem;background:${eduBg}">
     <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> ${content.stepsHeading || 'To Get Started'}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-align:center;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> ${content.stepsHeading || 'To Get Started'}</h2>
       <!-- Steps: circle + connector + text in one grid -->
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
         ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="display:flex;align-items:center;margin-top:32px;align-self:start;width:100%;padding:0 0.5rem"><svg width="100%" height="12" viewBox="0 0 100 12" preserveAspectRatio="none" style="display:block"><line x1="0" y1="6" x2="85" y2="6" stroke="#cbd5e1" stroke-width="2.5"/><polygon points="85,0 100,6 85,12" fill="#cbd5e1"/></svg></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
@@ -2040,7 +2040,7 @@ function buildEducationTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:var(--primary)">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;margin-bottom:1rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:#fff;margin-bottom:1rem">${content.aboutHeading}</h2>
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
         <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
           <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${eduText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
@@ -2184,7 +2184,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   <section id="gallery" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1400px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(3rem,5vw,4.5rem);font-weight:500;color:${crText};line-height:1">${content.galleryHeading || 'Featured Work'}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};font-style:italic;line-height:1">${content.galleryHeading || 'Featured Work'}</h2>
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
       </div>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
@@ -2207,7 +2207,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const servicesList = `
   <section id="services" style="padding:80px 2rem;background:${crBg}">
     <div style="max-width:1000px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:${crText};margin-bottom:3rem">${content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};font-style:italic;margin-bottom:3rem">${content.servicesHeading}</h2>
       ${content.services.map(s => `
       <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">
         <h3 style="font-family:var(--body-font);font-size:1rem;font-weight:600;color:${crText}">${s.name}</h3>
@@ -2330,7 +2330,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   const awardsStrip = `
   <section style="padding:60px 2rem;background:${fitBg};text-align:center;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08)">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1rem,2vw,1.3rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:2rem">${content.aboutMission || content.heroEyebrow}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:2rem">${content.aboutMission || content.heroEyebrow}</h2>
       <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
         ${content.stats.slice(0, 4).map(s => `
         <div style="text-align:center">
@@ -2377,7 +2377,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${fitBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:var(--primary);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">${content.aboutHeading}</h2>
         <div style="width:50px;height:3px;background:var(--primary);margin-bottom:2rem"></div>
         ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${fitMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
         <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.75rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem">${content.ctaPrimary}</a>
@@ -2533,7 +2533,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.6) 100%)"></div>
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;color:#fff;margin-bottom:0.5rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.aboutHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:#fff;margin-bottom:0.5rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.aboutHeading}</h2>
       <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.25rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.aboutText.split('\n')[0]}</p>
       <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.7rem 1.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaSecondary || 'Read more'} &rarr;</a>
     </div>
@@ -2544,7 +2544,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const productCards = `
   <section style="padding:80px 2rem;background:var(--bg)">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.slice(0, 6).map((s, i) => `
         <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
@@ -2669,7 +2669,7 @@ function buildPetsTemplate(data: TemplateData): string {
   const serviceCards = `
   <section style="padding:80px 2rem;background:${petBg}">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${content.services.slice(0, 6).map((s, i) => `
         <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
@@ -2687,7 +2687,7 @@ function buildPetsTemplate(data: TemplateData): string {
   const testimonialSection = content.testimonial ? `
   <section style="padding:80px 2rem;background:${petBg}">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
         ${(() => {
           const fallbacks = getFallbackTestimonials(content, businessCategory)
@@ -3339,7 +3339,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   <section id="about" style="padding:80px 2rem;background:${homeBg}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${homeText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<div style="display:flex;align-items:start;gap:0.75rem;margin-bottom:0.75rem">
           <span style="color:var(--primary);font-size:1rem;flex-shrink:0;margin-top:2px">&#9632;</span>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};line-height:1.7">${p}</p>
@@ -3559,7 +3559,7 @@ function buildTradesTemplate(data: TemplateData): string {
       </div>
       <div>
         <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${trMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
         <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem">
           ${content.services.map(s => s.tags).flat().slice(0, 6).map(t => `
@@ -3577,7 +3577,7 @@ function buildTradesTemplate(data: TemplateData): string {
   <section id="testimonials" style="padding:80px 2rem;background:${trAlt}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1rem">What Our Customers Say</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">What Our Customers Say</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};margin-bottom:3rem">Don't just take our word for it.</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
@@ -3777,7 +3777,7 @@ function buildRetailTemplate(data: TemplateData): string {
         </div>
       </div>
       <div style="text-align:center;padding:2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4.5vw,3.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.aboutHeading}</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${retailMuted};line-height:1.7;margin-bottom:2rem">${content.aboutText.split('\n')[0]}</p>
         <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
       </div>
@@ -3826,7 +3826,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const productCards = `
   <section style="padding:80px 2rem;background:${retailBg}">
     <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${retailText};text-align:center;margin-bottom:3rem">What Sets Us Apart</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};text-align:center;margin-bottom:3rem">What Sets Us Apart</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
         ${featuresData.slice(0, 3).map(f => `
         <div style="text-align:center">
@@ -3849,7 +3849,7 @@ function buildRetailTemplate(data: TemplateData): string {
       <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
     </div>
     <div style="position:relative;text-align:center;padding:3rem;max-width:600px">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:0.75rem">Join Our Mailing List</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;margin-bottom:0.75rem">Join Our Mailing List</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2.5rem">Be the first to hear about new arrivals, exclusive offers, and upcoming events.</p>
       <form onsubmit="return false" style="display:flex;gap:0.75rem;max-width:480px;margin:0 auto">
         <input type="email" placeholder="Your email address" style="flex:1;font-family:var(--body-font);font-size:0.95rem;padding:0.85rem 1.25rem;border:2px solid rgba(255,255,255,0.3);border-radius:999px;background:rgba(0,0,0,0.2);backdrop-filter:blur(8px);color:#fff;outline:none" />
