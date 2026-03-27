@@ -1439,9 +1439,9 @@ function buildPropertyTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.heroSubtitle}</p>
       ${(() => { const eg = evenGrid(content.services, 2); return `
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem;text-align:left">
-        ${(eg.items as typeof content.services).map(s => `
+        ${(eg.items as typeof content.services).map((s, i) => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon)}</div>
+          <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon, i)}</div>
           <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${prMuted};line-height:1.7">${s.description}</p>
         </div>`).join('')}
@@ -1817,7 +1817,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
       ${(eg.items as typeof content.services).map((s, i) => `
       <div>
         <div style="width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-          <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon)}</span>
+          <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon, i)}</span>
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
@@ -3096,10 +3096,10 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
       <p style="font-family:var(--body-font);font-size:1rem;color:${hwMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem">
-        ${(eg.items as typeof content.services).map(s => `
+        ${(eg.items as typeof content.services).map((s, i) => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem;text-align:left">
           <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-            <span style="color:${hwTeal};font-size:1.2rem">${mapIcon(s.icon)}</span>
+            <span style="color:${hwTeal};font-size:1.2rem">${mapIcon(s.icon, i)}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${hwText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${hwMuted};line-height:1.7">${s.description}</p>
@@ -3477,9 +3477,10 @@ const iconMap: Record<string, string> = {
   'camera': '&#128247;', 'music': '&#127925;', 'book': '&#128214;', 'scissors': '&#9986;',
   'thermometer': '&#127777;', 'wind': '&#127744;', 'cloud': '&#9729;', 'umbrella': '&#9730;',
 }
-function mapIcon(icon?: string): string {
-  if (!icon) return '&#9881;'
-  return iconMap[icon] || '&#9881;'
+const fallbackIcons = ['&#9670;', '&#9733;', '&#9678;', '&#9632;', '&#9674;', '&#9656;', '&#10022;', '&#9830;']
+function mapIcon(icon?: string, index?: number): string {
+  if (icon && iconMap[icon]) return iconMap[icon]
+  return fallbackIcons[(index || 0) % fallbackIcons.length]
 }
 
 function buildTradesTemplate(data: TemplateData): string {
@@ -3556,10 +3557,10 @@ function buildTradesTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.servicesHeading}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};max-width:600px;line-height:1.7;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 6).map(s => `
+        ${content.services.slice(0, 6).map((s, i) => `
         <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
           <div style="width:48px;height:48px;border-radius:12px;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-            <span style="color:${trBlue};font-size:1.2rem">${mapIcon(s.icon)}</span>
+            <span style="color:${trBlue};font-size:1.2rem">${mapIcon(s.icon, i)}</span>
           </div>
           <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${trText};margin-bottom:0.5rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${trMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
