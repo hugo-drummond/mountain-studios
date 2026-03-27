@@ -10463,7 +10463,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Recurring"
               ],
               "icon": "home",
-              "serviceImageQuery": "spotless clean living room tidy bright interior"
+              "serviceImageQuery": "woman dusting shelves living room bright home cleaning gloves uniform"
           },
           {
               "name": "Office & Commercial Cleaning",
@@ -10473,7 +10473,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Commercial"
               ],
               "icon": "briefcase",
-              "serviceImageQuery": "clean modern office space desks tidy interior"
+              "serviceImageQuery": "cleaner vacuuming office floor after hours desks chairs commercial cleaning"
           },
           {
               "name": "Deep Cleans & Move-Out",
@@ -10483,7 +10483,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Move-Out"
               ],
               "icon": "zap",
-              "serviceImageQuery": "sparkling clean empty kitchen deep cleaned white"
+              "serviceImageQuery": "woman scrubbing kitchen oven on knees deep cleaning gloves spray bottle"
           },
           {
               "name": "Carpet & Upholstery Cleaning",
@@ -10493,7 +10493,7 @@ export const presetContent: Record<string, PresetContent> = {
                   "Steam Extraction"
               ],
               "icon": "wind",
-              "serviceImageQuery": "carpet steam cleaning extraction machine residential"
+              "serviceImageQuery": "man using carpet cleaning machine on floor residential home professional"
           }
       ],
       "galleryHeading": "Spotlessly Done",
@@ -10547,15 +10547,15 @@ export const presetContent: Record<string, PresetContent> = {
           "rating": 5
       },
       "imageMood": "fresh, bright, spotless",
-      "heroImageQuery": "spotless bright living room interior freshly cleaned white sofa cushions sunlight",
-      "heroBgImageQuery": "professional cleaning supplies spray bottles gloves microfibre cloths dark background",
-      "ogImageQuery": "immaculate clean modern home interior bright airy living room freshly cleaned",
-      "aboutImageQuery": "professional cleaner wiping kitchen countertop with spray bottle and microfibre cloth",
+      "heroImageQuery": "woman in uniform cleaning kitchen counter spray bottle smiling bright modern home",
+      "heroBgImageQuery": "cleaning team walking into house carrying supplies buckets mops professional uniform",
+      "ogImageQuery": "professional cleaner woman wiping table with cloth bright modern living room",
+      "aboutImageQuery": "two cleaners in uniform wiping kitchen surfaces teamwork bright home interior",
       "galleryImageQueries": [
-          "freshly made bed white crisp sheets plumped pillows clean tidy bedroom",
-          "sparkling clean office workspace desks monitors organized tidy",
-          "deep cleaned bathroom white tiles grout sparkling shower glass",
-          "polished hardwood floor living room gleaming clean bright"
+          "woman mopping hardwood floor living room bright sunlight cleaning uniform",
+          "man scrubbing bathroom tiles on knees gloves sponge deep clean",
+          "cleaning team carrying supplies walking into office building professional",
+          "woman vacuuming carpet living room bright modern home cleaner"
       ],
       "features": [
         { "name": "Same Team Every Visit", "description": "You get the same vetted, trained cleaners every time. They learn your home, your preferences, and your standards.", "imageQuery": "professional cleaning team arriving at home trusted reliable" },
