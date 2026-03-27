@@ -1426,31 +1426,28 @@ export const presetContent: Record<string, PresetContent> = {
     "servicesHeading": "What We Carry",
     "services": [
       {
-        "name": "Women's & Men's Collections",
-        "description": "Seasonal clothing lines from emerging and established designers, refreshed monthly.",
+        "name": "Tops & Blouses",
+        "description": "Shirts, blouses, knits, and t-shirts from local and international designers — refreshed every season.",
         "tags": ["Women's", "Men's"],
-        "serviceImageQuery": "women clothing rack dresses blouses hanging fashion store warm lighting"
+        "serviceImageQuery": "folded colourful tops blouses stacked on table fashion retail store display"
       },
       {
-        "name": "Shoes & Accessories",
-        "description": "Curated footwear, bags, jewellery, and accessories to complete every outfit.",
-        "tags": ["Shoes", "Accessories"],
-        "serviceImageQuery": "women shoes heels boots displayed shelves fashion retail store"
+        "name": "Bottoms & Skirts",
+        "description": "Jeans, trousers, skirts, and shorts — tailored fits and relaxed cuts for every occasion.",
+        "tags": ["Jeans", "Skirts"],
+        "serviceImageQuery": "row of jeans denim trousers hanging on rack fashion retail store"
       },
       {
-        "name": "Personal Styling",
-        "description": "Complimentary personal styling consultations in-store \u2014 we help you find what works for you.",
-        "tags": ["Styling", "Consultation"],
-        "serviceImageQuery": "personal stylist helping woman choose outfit clothing store mirror"
+        "name": "Outerwear & Jackets",
+        "description": "Coats, blazers, leather jackets, and layering pieces that carry you through every season.",
+        "tags": ["Jackets", "Coats"],
+        "serviceImageQuery": "leather jackets and blazers hanging on rail fashion store display warm lighting"
       },
       {
-        "name": "Alterations & Tailoring",
-        "description": "In-house alterations so everything you buy fits like it was made for you.",
-        "tags": [
-          "Alterations",
-          "Tailoring"
-        ],
-        "serviceImageQuery": "seamstress sewing machine pinning dress alteration close up fashion"
+        "name": "Footwear & Accessories",
+        "description": "Shoes, boots, bags, scarves, and jewellery — the finishing touches that complete every outfit.",
+        "tags": ["Shoes", "Bags"],
+        "serviceImageQuery": "women shoes boots and handbags displayed on shelves fashion retail store"
       }
     ],
     "galleryHeading": "In the Store",

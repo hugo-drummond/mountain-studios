@@ -3742,7 +3742,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const collectionSection = `
   <section style="padding:100px 2rem;background:${retailBg}">
     <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:var(--primary);line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">${content.servicesHeading}</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${lightenColor(primaryColor, 0.5)};line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">${content.servicesHeading}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
         ${content.services.slice(0, 4).map(s => `
         <div style="background:${retailCardBg};border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
