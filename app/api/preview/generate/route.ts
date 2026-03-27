@@ -4110,8 +4110,8 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 ${techNav}
 
   ${heroSection}
-  ${featureCards}
   ${trustStrip}
+  ${featureCards}
   ${featureShowcases}
   ${valueProps}
   ${testimonialSection}
