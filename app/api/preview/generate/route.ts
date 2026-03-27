@@ -2862,7 +2862,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem 3rem">
         ${(eg.items as typeof content.services).map((s, i) => `
         <div style="display:flex;align-items:center;gap:1rem;text-align:left">
-          <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
+          <div style="width:80px;height:80px;border-radius:12px;overflow:hidden;flex-shrink:0">
             <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="flex:1">
@@ -2981,7 +2981,6 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${gallerySection}
   ${testimonialSection}
   ${reviewStrip}
-  ${fullImage}
   ${buildContactSection(content, locationInfo)}
   ${contactRow}
 
