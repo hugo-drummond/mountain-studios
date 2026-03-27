@@ -2637,7 +2637,7 @@ function buildPetsTemplate(data: TemplateData): string {
         <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutMission || content.heroSubtitle}</p>
         <a href="#services" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Check out our services.'}</a>
       </div>
@@ -2649,7 +2649,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <section style="padding:40px 2rem;background:${petBg}">
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
       <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
         <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutText.split('\n')[0]}</p>
         <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaPrimary}</a>
       </div>
