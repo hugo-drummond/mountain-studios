@@ -1800,15 +1800,15 @@ function buildProfessionalTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // Section 2: 4-column (or 3) service cards — photos + title + description + red link
+  // Section 2: 4-column (or 3) service cards — icon + title + description + red link
   const serviceCards = `
   <section id="services" style="padding:80px 2rem;background:${proBg}">
     ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
     <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem">
       ${(eg.items as typeof content.services).map((s, i) => `
       <div>
-        <div class="ms-img" style="height:200px;overflow:hidden;margin-bottom:1.25rem">
-          <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <div style="width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
+          <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon)}</span>
         </div>
         <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
@@ -1842,6 +1842,9 @@ function buildProfessionalTemplate(data: TemplateData): string {
 
   const imageGridSection = `
   <section style="padding:40px 2rem;background:${proBg}">
+    <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:${proText};margin-bottom:2rem">About Us</h2>
+    </div>
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px">
       ${tileImgs.map((img, i) => `
       <div style="position:relative;aspect-ratio:1;overflow:hidden">
