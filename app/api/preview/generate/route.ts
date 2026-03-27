@@ -4017,6 +4017,9 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const featureShowcases = featuresData.length > 0 ? `
   <section style="padding:60px 2rem 100px;background:var(--bg)">
     <div style="max-width:1100px;margin:0 auto">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:4rem">Our Style</h2>
+    </div>
+    <div style="max-width:1100px;margin:0 auto">
       ${featuresData.map((s, i) => `
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < featuresData.length - 1 ? '6rem' : '0'}">
         ${i % 2 === 0 ? `
