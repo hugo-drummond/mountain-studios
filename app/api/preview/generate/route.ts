@@ -2403,7 +2403,7 @@ function buildFitnessTemplate(data: TemplateData): string {
         <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.75rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem">${content.ctaPrimary}</a>
       </div>
       <div class="ms-img" style="border-radius:8px;overflow:hidden;height:500px">
-        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
     </div>
   </section>`
