@@ -1828,10 +1828,10 @@ function buildProfessionalTemplate(data: TemplateData): string {
   // Werksmans-style 2x2 image grid with accent label pills
   const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
   const tileImgs = [
-    stockImages.cards[3] || `https://picsum.photos/seed/${businessName}-tile0/600/600`,
-    stockImages.cards[4] || `https://picsum.photos/seed/${businessName}-tile1/600/600`,
-    stockImages.cards[5] || `https://picsum.photos/seed/${businessName}-tile2/600/600`,
-    stockImages.cards[6] || `https://picsum.photos/seed/${businessName}-tile3/600/600`,
+    stockImages.cards[7] || `https://picsum.photos/seed/${businessName}-tile0/600/600`,
+    stockImages.cards[8] || `https://picsum.photos/seed/${businessName}-tile1/600/600`,
+    stockImages.cards[9] || `https://picsum.photos/seed/${businessName}-tile2/600/600`,
+    stockImages.cards[10] || `https://picsum.photos/seed/${businessName}-tile3/600/600`,
   ]
 
   const imageGridSection = `
@@ -1910,7 +1910,6 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${serviceCards}
   ${peopleSection}
   ${testimonialSection}
-  ${fullImage}
   ${buildContactSection(content, locationInfo)}
 
 ${proFooter}
