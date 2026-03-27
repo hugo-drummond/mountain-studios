@@ -15112,10 +15112,10 @@ export const presetContent: Record<string, PresetContent> = {
     "ogImageQuery": "professional photographer holding camera DSLR lens studio portrait session",
     "aboutImageQuery": "photographer adjusting studio softbox lighting equipment behind scenes portrait shoot",
     "galleryImageQueries": [
-      "portrait photography woman moody lighting studio headshot close-up",
-      "product photography flat lay arrangement cosmetics styled overhead table",
-      "couple portrait outdoor golden hour laughing candid lifestyle photography",
-      "interior architectural photography bright living room natural light windows"
+      "bride and groom first dance wedding reception beautiful venue warm lights romantic",
+      "cosmetics skincare products arranged marble table flat lay overhead commercial styled",
+      "professional headshot portrait confident businessman dark background studio lighting",
+      "modern house exterior white walls large windows garden blue sky architecture"
     ],
     "features": [
       { "name": "Wedding & Events", "description": "No month-long waits. You receive a curated, colour-graded online gallery within a week of your shoot.", "imageQuery": "bride and groom walking together garden wedding day romantic beautiful natural light" },

@@ -2179,7 +2179,8 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>`
 
   // Section 4: Featured Work — 2-column portfolio grid with tag labels (even rows)
-  const allPortfolioImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
+  // Use gallery images (from galleryImageQueries) + service images as fallback
+  const allPortfolioImgs = [...galleryImgs, ...serviceImgs].filter(Boolean)
   // Ensure exactly 4 items for 2x2 grid — pad from services if features < 4
   const rawFeatures = content.features || content.services.slice(0, 4)
   const featuresData = rawFeatures.length >= 4 ? rawFeatures : [...rawFeatures, ...content.services.filter(s => !rawFeatures.some(f => f.name === s.name)).slice(0, 4 - rawFeatures.length)]
