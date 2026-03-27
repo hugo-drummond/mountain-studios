@@ -1636,11 +1636,11 @@ function buildEventsTemplate(data: TemplateData): string {
   </section>`
 
   // Section 3: Alternating 50/50 feature sections — white bg with rounded-corner images
-  // Work style sections — use features (USPs), or generate from about text
+  // Work style sections — use features (USPs), or generate short-heading fallbacks from about text
   const aboutParts = content.aboutText.split('\n').filter(p => p.trim())
   const workStyleData = content.features || [
-    { name: content.aboutHeading.replace(/<\/?em>/g, ''), description: aboutParts[0] || content.heroSubtitle },
-    { name: content.aboutMission || 'Crafted with precision', description: aboutParts[1] || content.heroSubtitle },
+    { name: 'Crafted with precision', description: aboutParts[0] || content.heroSubtitle },
+    { name: 'No detail too small', description: aboutParts[1] || aboutParts[0] || content.heroSubtitle },
   ]
   const featureSections = workStyleData.slice(0, 2).map((f, i) => `
   <section style="background:${evtBg};padding:80px 2rem">
