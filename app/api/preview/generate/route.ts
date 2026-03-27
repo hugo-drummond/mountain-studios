@@ -1753,7 +1753,7 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${serviceGrid}
   ${aboutSection}
   <section style="padding:40px 2rem 0;background:${evtBg};text-align:center">
-    <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
+    <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
   </section>
   ${featureSections}
   ${testimonialSection}
@@ -4036,7 +4036,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const valueProps = `
   <section id="about" style="padding:100px 2rem;background:var(--bg)">
     <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);margin-bottom:4rem">The Process</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);margin-bottom:4rem">The Process</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
         ${techProcessSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="border-top:3px dashed rgba(255,255,255,0.2);margin-top:32px;align-self:start"></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
           <div style="width:64px;height:64px;border-radius:50%;background:${techStepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
@@ -4054,7 +4054,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   <section style="padding:100px 2rem;background:var(--bg-alt)">
     <div style="max-width:1100px;margin:0 auto">
       <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;font-weight:600;text-align:center">What our clients say</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
       <div class="ms-grid" style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
         <div style="background:var(--card-bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between">
           <div>
