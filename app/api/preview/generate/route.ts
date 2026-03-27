@@ -1621,13 +1621,13 @@ function buildEventsTemplate(data: TemplateData): string {
           <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:0.75rem"><em>${content.servicesHeading}</em></h2>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${evtMuted};line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
         </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr)">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr">
           ${content.services.slice(0, 6).map((s, i) => `
-          <div style="border-left:${i % 3 > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};${i >= 3 ? 'border-top:1px solid rgba(0,0,0,0.08);' : ''}padding:1.5rem">
+          <div style="border-left:${i % 3 > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};${i >= 3 ? 'border-top:1px solid rgba(0,0,0,0.08);' : ''}padding:1.5rem;display:flex;flex-direction:column">
             <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
-            <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${s.description}</p>
-            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:180px">
-              <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem;flex:1">${s.description}</p>
+            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:180px;flex-shrink:0">
+              <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             </div>
           </div>`).join('')}
         </div>
@@ -1752,7 +1752,7 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${heroSection}
   ${serviceGrid}
   ${aboutSection}
-  <section style="padding:40px 2rem 0;background:${evtBg};text-align:center">
+  <section style="padding:0 2rem 20px;background:${evtBg};text-align:center">
     <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
   </section>
   ${featureSections}
