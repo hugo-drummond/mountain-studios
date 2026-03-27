@@ -1751,10 +1751,10 @@ ${buildStandardNav(businessName, content, navFlags)}
 
   ${heroSection}
   ${serviceGrid}
-  ${aboutSection}
-  <section style="padding:0 2rem 20px;background:${evtBg};text-align:center">
+  <section style="padding:40px 2rem 20px;background:${evtBg};text-align:center">
     <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>How We Work</em></h2>
   </section>
+  ${aboutSection}
   ${featureSections}
   ${testimonialSection}
   ${buildContactSection(content, locationInfo)}
