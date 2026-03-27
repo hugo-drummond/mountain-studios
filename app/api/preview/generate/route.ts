@@ -1404,10 +1404,10 @@ function buildPropertyTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.galleryHeading || 'Featured Properties'}</h2>
       <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        ${propertyListings.map((prop: { name: string; suburb: string; details: string; label: string }) => `
+        ${propertyListings.map((prop: { name: string; suburb: string; details: string; label: string }, i: number) => `
         <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
           <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            <img src="${galleryImgs[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
             <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">${prop.label}</div>
           </div>
           <div style="padding:1.5rem">
