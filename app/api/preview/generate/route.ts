@@ -2754,8 +2754,8 @@ function buildPetsTemplate(data: TemplateData): string {
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-  ${heroSection}
   ${brandSection}
+  ${heroSection}
   ${featureSection}
   ${featureSection2}
   ${serviceCards}
