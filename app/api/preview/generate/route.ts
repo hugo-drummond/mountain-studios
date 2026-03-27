@@ -3977,6 +3977,9 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   // Section 2: 3-column feature cards
   const featureCards = `
   <section style="padding:100px 2rem;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:3rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text)">${content.servicesHeading}</h2>
+    </div>
     <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
       ${content.services.slice(0, 3).map(s => `
       <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
