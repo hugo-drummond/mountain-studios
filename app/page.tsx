@@ -23,33 +23,34 @@ export default function Home() {
   return (
     <div style={{
       background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
-      minHeight: '100vh', position: 'relative', overflow: 'hidden',
+      height: '100vh', position: 'relative', overflow: 'hidden',
+      display: 'flex', flexDirection: 'column',
     }}>
 
-      <div style={{ position: 'relative', zIndex: 10, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
+      {/* Nav */}
+      <div style={{ position: 'relative', zIndex: 10, flexShrink: 0, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
         <SiteNav />
       </div>
 
-      {/* Hero */}
+      {/* Hero — fills remaining space */}
       <div style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', minHeight: 'calc(100vh - 80px)',
-        padding: '0 2.5rem', position: 'relative', zIndex: 2,
-        textAlign: 'center',
+        flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+        justifyContent: 'center', padding: '0 2.5rem',
+        position: 'relative', zIndex: 2, textAlign: 'center',
       }}>
         {/* Eyebrow */}
         <p style={{
           fontFamily: font, fontSize: '0.7rem', fontWeight: 600,
           letterSpacing: '0.25em', textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem',
+          color: 'rgba(255,255,255,0.5)', marginBottom: '1rem',
           animation: anim('fadeUp 0.8s 0.5s forwards'), opacity: so,
         }}>The Ethereal Atelier</p>
 
         {/* Heading */}
         <h1 style={{
-          fontFamily: serif, fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+          fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
           fontWeight: 300, color: '#fff', lineHeight: 1.1,
-          margin: '0 0 1.5rem', maxWidth: '700px',
+          margin: '0 0 1.25rem', maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
           Web Design Done{' '}
@@ -58,9 +59,9 @@ export default function Home() {
 
         {/* Subtitle */}
         <p style={{
-          fontFamily: font, fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-          color: 'rgba(255,255,255,0.7)', maxWidth: '500px',
-          lineHeight: 1.7, marginBottom: '2.5rem',
+          fontFamily: font, fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
+          color: 'rgba(255,255,255,0.7)', maxWidth: '460px',
+          lineHeight: 1.7, marginBottom: '2rem',
           animation: anim('fadeUp 1s 0.8s forwards'), opacity: so,
         }}>
           Crafting intentional digital experiences that breathe space and sophistication into your brand's unique narrative.
@@ -83,8 +84,8 @@ export default function Home() {
 
       {/* Floating glass card — bottom left */}
       <div className="ms-float-card" style={{
-        position: 'absolute', bottom: '-3rem', left: '-1rem',
-        width: '240px', height: '300px', borderRadius: '16px',
+        position: 'absolute', bottom: '3rem', left: '-1rem',
+        width: '220px', height: '280px', borderRadius: '16px',
         background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
         transform: 'rotate(3deg)', overflow: 'hidden', zIndex: 3,
@@ -97,8 +98,8 @@ export default function Home() {
 
       {/* Floating glass card — top right */}
       <div className="ms-float-card" style={{
-        position: 'absolute', top: '20%', right: '-2rem',
-        width: '280px', height: '340px', borderRadius: '16px',
+        position: 'absolute', top: '18%', right: '-1.5rem',
+        width: '260px', height: '320px', borderRadius: '16px',
         background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
         transform: 'rotate(-2deg)', overflow: 'hidden', zIndex: 3,
@@ -118,32 +119,31 @@ export default function Home() {
         </svg>
       </div>
 
-      {/* Footer */}
-      <footer style={{
-        position: 'relative', zIndex: 10,
-        padding: '3rem 2rem 2rem',
-        background: 'rgba(26,26,46,0.07)',
+      {/* Footer — pinned to bottom */}
+      <div style={{
+        position: 'relative', zIndex: 10, flexShrink: 0,
+        padding: '1.25rem 2rem',
         borderTop: '1px solid rgba(255,255,255,0.1)',
       }}>
         <div style={{
           maxWidth: '1100px', margin: '0 auto',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          flexWrap: 'wrap', gap: '1rem',
+          flexWrap: 'wrap', gap: '0.75rem',
         }}>
           <a href="/" style={{
-            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
+            fontFamily: font, fontSize: '0.95rem', fontWeight: 700,
             color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
           }}>mountain studios</a>
-          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', margin: 0 }}>
             © {new Date().getFullYear()} Mountain Studios. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
             {['Privacy Policy', 'Terms of Service'].map(t => (
-              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', textDecoration: 'none' }}>{t}</a>
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
             ))}
           </div>
         </div>
-      </footer>
+      </div>
 
       <style>{`
         @keyframes fadeIn {
