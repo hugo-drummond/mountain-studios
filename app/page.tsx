@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import SiteNav from '../components/site/SiteNav'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
+const serif = 'Georgia, "Times New Roman", serif'
 
 export default function Home() {
   const [hasVisited, setHasVisited] = useState(true)
@@ -32,17 +33,80 @@ export default function Home() {
       {/* Hero */}
       <div style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'flex-end', minHeight: 'calc(100vh - 80px)',
-        padding: '0 2.5rem 20vh', position: 'relative', zIndex: 2,
+        justifyContent: 'center', minHeight: 'calc(100vh - 80px)',
+        padding: '0 2.5rem', position: 'relative', zIndex: 2,
+        textAlign: 'center',
       }}>
+        {/* Eyebrow */}
+        <p style={{
+          fontFamily: font, fontSize: '0.7rem', fontWeight: 600,
+          letterSpacing: '0.25em', textTransform: 'uppercase',
+          color: 'rgba(255,255,255,0.5)', marginBottom: '1.5rem',
+          animation: anim('fadeUp 0.8s 0.5s forwards'), opacity: so,
+        }}>The Ethereal Atelier</p>
+
+        {/* Heading */}
         <h1 style={{
-          fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-          fontWeight: 300, color: '#fff', textAlign: 'center',
-          lineHeight: 1.15, margin: 0, maxWidth: '700px',
+          fontFamily: serif, fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+          fontWeight: 300, color: '#fff', lineHeight: 1.1,
+          margin: '0 0 1.5rem', maxWidth: '700px',
           animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
         }}>
-          Web Design Done Simply.
+          Web Design Done{' '}
+          <em style={{ fontStyle: 'italic' }}>Simply</em>
         </h1>
+
+        {/* Subtitle */}
+        <p style={{
+          fontFamily: font, fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
+          color: 'rgba(255,255,255,0.7)', maxWidth: '500px',
+          lineHeight: 1.7, marginBottom: '2.5rem',
+          animation: anim('fadeUp 1s 0.8s forwards'), opacity: so,
+        }}>
+          Crafting intentional digital experiences that breathe space and sophistication into your brand's unique narrative.
+        </p>
+
+        {/* CTA */}
+        <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: so }}>
+          <a href="/start-your-project" style={{
+            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+            color: '#1a1a2e', background: '#fff', padding: '0.75rem 2rem',
+            borderRadius: '999px', textDecoration: 'none',
+            letterSpacing: '0.06em', textTransform: 'uppercase',
+            display: 'inline-block', transition: 'opacity 0.2s',
+          }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+          >Start Your Project</a>
+        </div>
+      </div>
+
+      {/* Floating glass card — bottom left */}
+      <div className="ms-float-card" style={{
+        position: 'absolute', bottom: '-3rem', left: '-1rem',
+        width: '240px', height: '300px', borderRadius: '16px',
+        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+        transform: 'rotate(3deg)', overflow: 'hidden', zIndex: 3,
+        boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+        animation: anim('fadeIn 1.2s 1.2s forwards'), opacity: so,
+      }}>
+        <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600"
+          alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+      </div>
+
+      {/* Floating glass card — top right */}
+      <div className="ms-float-card" style={{
+        position: 'absolute', top: '20%', right: '-2rem',
+        width: '280px', height: '340px', borderRadius: '16px',
+        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+        transform: 'rotate(-2deg)', overflow: 'hidden', zIndex: 3,
+        boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+        animation: anim('fadeIn 1.2s 1.4s forwards'), opacity: so,
+      }}>
+        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
+          alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
       </div>
 
       {/* Mountain silhouette */}
@@ -54,6 +118,33 @@ export default function Home() {
         </svg>
       </div>
 
+      {/* Footer */}
+      <footer style={{
+        position: 'relative', zIndex: 10,
+        padding: '3rem 2rem 2rem',
+        background: 'rgba(26,26,46,0.07)',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+      }}>
+        <div style={{
+          maxWidth: '1100px', margin: '0 auto',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: '1rem',
+        }}>
+          <a href="/" style={{
+            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
+          }}>mountain studios</a>
+          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+            © {new Date().getFullYear()} Mountain Studios. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: '1.5rem' }}>
+            {['Privacy Policy', 'Terms of Service'].map(t => (
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', textDecoration: 'none' }}>{t}</a>
+            ))}
+          </div>
+        </div>
+      </footer>
+
       <style>{`
         @keyframes fadeIn {
           from { opacity: 0 }
@@ -64,7 +155,7 @@ export default function Home() {
           to { opacity: 1; transform: translateY(0) }
         }
         @media (max-width: 768px) {
-          nav > div:last-child { display: none !important; }
+          .ms-float-card { display: none !important; }
         }
       `}</style>
     </div>
