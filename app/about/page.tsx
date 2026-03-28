@@ -2,8 +2,8 @@
 
 import SiteNav from '../../components/site/SiteNav'
 
-const bodyFont = 'var(--font-source-sans), "Plus Jakarta Sans", "Source Sans 3", sans-serif'
-const serifFont = '"Noto Serif", Georgia, "Times New Roman", serif'
+const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
+const serif = 'Georgia, "Times New Roman", serif'
 
 const steps = [
   {
@@ -45,34 +45,29 @@ const steps = [
 
 export default function About() {
   return (
-    <div style={{ minHeight: '100vh', fontFamily: bodyFont }}>
-      <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <div style={{
+      minHeight: '100vh', fontFamily: font,
+      background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
+    }}>
       <SiteNav />
 
-      <main style={{
-        background: 'linear-gradient(135deg, #d6e3ff 0%, #f9f9fe 50%, #f6d0dd 100%)',
-        minHeight: '100vh',
-        paddingTop: '8rem',
-        paddingBottom: '6rem',
-        overflow: 'hidden',
-      }}>
+      <main style={{ paddingTop: '4rem', paddingBottom: '6rem', overflow: 'hidden' }}>
         {/* Hero */}
-        <header style={{ maxWidth: '56rem', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '6rem' }}>
+        <header style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '5rem' }}>
           <h1 style={{
-            fontFamily: serifFont, fontSize: 'clamp(3rem, 7vw, 4.5rem)', fontWeight: 700,
-            color: '#2e333a', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '1.5rem',
+            fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 300,
+            color: '#fff', lineHeight: 1.15, marginBottom: '1rem',
           }}>How It Works</h1>
           <p style={{
-            fontFamily: bodyFont, fontSize: 'clamp(1rem, 2vw, 1.25rem)', color: '#5b5f68',
-            maxWidth: '40rem', margin: '0 auto', lineHeight: 1.7, opacity: 0.8,
+            fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)',
+            maxWidth: '500px', margin: '0 auto', lineHeight: 1.7,
           }}>
             A streamlined journey from initial vision to a living, breathing digital masterpiece. We've refined our process to be as collaborative as it is creative.
           </p>
         </header>
 
         {/* Process Steps */}
-        <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
           {steps.map((step, i) => {
             const isReversed = i % 2 === 1
             const isLast = step.style === 'cta'
@@ -80,24 +75,23 @@ export default function About() {
             if (isLast) {
               return (
                 <section key={step.num} style={{
-                  position: 'relative', maxWidth: '64rem', margin: '8rem auto 0',
-                  padding: '6rem 2rem', textAlign: 'center',
+                  position: 'relative', maxWidth: '700px', margin: '6rem auto 0',
+                  padding: '4rem 2rem', textAlign: 'center',
                 }}>
                   <div style={{ position: 'relative', zIndex: 1 }}>
-                    <span style={{ fontFamily: serifFont, fontStyle: 'italic', color: '#745762', fontSize: '4rem', opacity: 0.2, display: 'block' }}>{step.num}</span>
-                    <h2 style={{ fontFamily: serifFont, fontSize: 'clamp(2.5rem, 5vw, 3.5rem)', fontWeight: 700, color: '#2e333a', marginBottom: '1.5rem' }}>{step.title}</h2>
-                    <p style={{ color: '#5b5f68', lineHeight: 1.7, fontSize: '1.2rem', maxWidth: '36rem', margin: '0 auto 2.5rem' }}>{step.desc}</p>
+                    <span style={{ fontFamily: serif, fontStyle: 'italic', color: 'rgba(255,255,255,0.2)', fontSize: '3.5rem', display: 'block' }}>{step.num}</span>
+                    <h2 style={{ fontFamily: serif, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 300, color: '#fff', marginBottom: '1rem' }}>{step.title}</h2>
+                    <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, fontSize: '0.95rem', maxWidth: '500px', margin: '0 auto 2rem' }}>{step.desc}</p>
                     <a href="/start-your-project" style={{
-                      display: 'inline-block', fontFamily: bodyFont, fontSize: '1rem', fontWeight: 600,
-                      color: '#f9f9f9', background: '#5e5f60', padding: '1rem 2.5rem',
+                      display: 'inline-block', fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+                      color: '#1a1a2e', background: '#fff', padding: '0.65rem 1.5rem',
                       borderRadius: '999px', textDecoration: 'none',
-                      boxShadow: '0 8px 30px rgba(94,95,96,0.2)',
                     }}>Launch Your Journey</a>
                   </div>
                   <div style={{
                     position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    width: '100%', height: '100%', background: 'rgba(214,227,255,0.2)',
-                    filter: 'blur(100px)', borderRadius: '50%', zIndex: 0,
+                    width: '120%', height: '120%', background: 'rgba(255,255,255,0.06)',
+                    filter: 'blur(80px)', borderRadius: '50%', zIndex: 0,
                   }} />
                 </section>
               )
@@ -106,33 +100,34 @@ export default function About() {
             return (
               <section key={step.num} style={{
                 display: 'flex', flexDirection: isReversed ? 'row-reverse' : 'row',
-                alignItems: 'center', gap: 'clamp(3rem, 5vw, 6rem)',
-                marginBottom: '8rem', position: 'relative',
-                ...(step.style === 'bg' ? { padding: '3rem 2rem', position: 'relative' as const } : {}),
+                alignItems: 'center', gap: 'clamp(2rem, 4vw, 5rem)',
+                marginBottom: '6rem', position: 'relative',
+                ...(step.style === 'bg' ? { padding: '2.5rem 2rem' } : {}),
               }}>
                 {step.style === 'bg' && (
                   <div style={{
-                    position: 'absolute', inset: 0, background: '#f2f3fa',
+                    position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.06)',
                     borderRadius: '1rem', transform: 'rotate(-1deg) scale(1.05)', zIndex: -1,
+                    backdropFilter: 'blur(4px)',
                   }} />
                 )}
 
                 {/* Text */}
                 <div style={{ flex: 1 }}>
-                  <span style={{ fontFamily: serifFont, fontStyle: 'italic', color: '#745762', fontSize: '4rem', opacity: 0.2, display: 'block' }}>{step.num}</span>
-                  <h2 style={{ fontFamily: serifFont, fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)', fontWeight: 600, color: '#2e333a', marginBottom: '1rem' }}>{step.title}</h2>
-                  <p style={{ color: '#5b5f68', lineHeight: 1.7, fontSize: '1.1rem', marginBottom: '1.5rem' }}>{step.desc}</p>
+                  <span style={{ fontFamily: serif, fontStyle: 'italic', color: 'rgba(255,255,255,0.2)', fontSize: '3.5rem', display: 'block' }}>{step.num}</span>
+                  <h2 style={{ fontFamily: serif, fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', fontWeight: 300, color: '#fff', marginBottom: '0.75rem' }}>{step.title}</h2>
+                  <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, fontSize: '0.9rem', marginBottom: '1rem' }}>{step.desc}</p>
                   {step.badge && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#535f77', paddingTop: '0.5rem' }}>
-                      <span className="material-symbols-outlined" style={{ fontSize: '1.2rem' }}>calendar_today</span>
-                      <span style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase' as const }}>{step.badge}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.6)', paddingTop: '0.25rem' }}>
+                      <span style={{ fontSize: '0.85rem' }}>&#128197;</span>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' }}>{step.badge}</span>
                     </div>
                   )}
                   {step.bullets && (
-                    <ul style={{ listStyle: 'none', padding: 0, margin: '1rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: '0.75rem 0 0', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                       {step.bullets.map(b => (
-                        <li key={b} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#5b5f68' }}>
-                          <span className="material-symbols-outlined" style={{ color: '#5e5f60', fontVariationSettings: "'FILL' 1", fontSize: '1.2rem' }}>check_circle</span>
+                        <li key={b} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.75)', fontSize: '0.9rem' }}>
+                          <span style={{ color: 'rgba(255,255,255,0.5)' }}>&#10003;</span>
                           <span>{b}</span>
                         </li>
                       ))}
@@ -141,46 +136,44 @@ export default function About() {
                 </div>
 
                 {/* Image */}
-                <div style={{ flex: 1, width: '100%', maxWidth: '36rem' }}>
+                <div style={{ flex: 1, width: '100%', maxWidth: '480px' }}>
                   {step.style === 'photo' && step.img && (
                     <div style={{
-                      aspectRatio: '4/3', borderRadius: '1rem', overflow: 'hidden',
-                      boxShadow: '0 25px 50px rgba(0,0,0,0.15)', transform: 'rotate(1deg)',
+                      aspectRatio: '4/3', borderRadius: '16px', overflow: 'hidden',
+                      boxShadow: '0 20px 50px rgba(0,0,0,0.2)', transform: 'rotate(1deg)',
                     }}>
                       <img src={step.img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   )}
                   {step.style === 'glass' && step.img && (
                     <div style={{
-                      background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)', padding: '1rem', borderRadius: '1rem',
-                      boxShadow: '0 15px 40px rgba(0,0,0,0.1)', transform: 'rotate(-2deg)',
+                      background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)', padding: '0.75rem', borderRadius: '16px',
+                      boxShadow: '0 15px 40px rgba(0,0,0,0.15)', transform: 'rotate(-2deg)',
                       border: '1px solid rgba(255,255,255,0.2)',
                     }}>
-                      <img src={step.img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.5rem' }} />
+                      <img src={step.img} alt="" style={{ width: '100%', borderRadius: '12px' }} />
                     </div>
                   )}
                   {step.style === 'bg' && step.img && (
                     <img src={step.img} alt="" style={{
-                      width: '100%', height: '24rem', objectFit: 'cover', borderRadius: '1rem',
-                      boxShadow: '0 15px 40px rgba(83,95,119,0.1)',
+                      width: '100%', height: '20rem', objectFit: 'cover', borderRadius: '16px',
+                      boxShadow: '0 15px 40px rgba(0,0,0,0.15)',
                     }} />
                   )}
                   {step.style === 'icon' && (
                     <div style={{
-                      background: '#dfe2ec', aspectRatio: '16/9', borderRadius: '1rem',
+                      background: 'rgba(255,255,255,0.08)', aspectRatio: '16/9', borderRadius: '16px',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       position: 'relative', overflow: 'hidden',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      backdropFilter: 'blur(8px)',
                     }}>
+                      <span style={{ fontSize: '3rem', opacity: 0.3 }}>&#128249;</span>
                       <div style={{
-                        position: 'absolute', inset: 0,
-                        background: 'linear-gradient(135deg, rgba(83,95,119,0.1) 0%, transparent 100%)',
-                      }} />
-                      <span className="material-symbols-outlined" style={{ fontSize: '4rem', color: '#aeb2bb' }}>video_chat</span>
-                      <div style={{
-                        position: 'absolute', bottom: '1rem', right: '1rem',
-                        fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.15em',
-                        textTransform: 'uppercase' as const, color: 'rgba(94,95,104,0.4)',
+                        position: 'absolute', bottom: '0.75rem', right: '0.75rem',
+                        fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.1em',
+                        textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
                       }}>Design Presentation</div>
                     </div>
                   )}
@@ -191,23 +184,39 @@ export default function About() {
         </div>
       </main>
 
-      {/* Footer */}
+      {/* Footer — matching home page style */}
       <footer style={{
-        width: '100%', borderTop: '1px solid rgba(0,0,0,0.06)',
-        padding: '3rem 2rem', background: '#fafafa',
+        padding: '3rem 2rem 2rem',
+        background: 'rgba(26,26,46,0.07)',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
       }}>
         <div style={{
+          maxWidth: '1100px', margin: '0 auto',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          maxWidth: '80rem', margin: '0 auto', flexWrap: 'wrap', gap: '1rem',
+          flexWrap: 'wrap', gap: '1rem',
         }}>
-          <span style={{ fontFamily: serifFont, fontSize: '1.1rem', color: '#374151' }}>Mountain Studios</span>
-          <p style={{ fontSize: '0.85rem', color: '#9ca3af' }}>© {new Date().getFullYear()} Mountain Studios. All rights reserved.</p>
+          <a href="/" style={{
+            fontFamily: font, fontSize: '1.05rem', fontWeight: 700,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
+          }}>mountain studios</a>
+          <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>
+            © {new Date().getFullYear()} Mountain Studios. All rights reserved.
+          </p>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
-            <a href="#" style={{ color: '#9ca3af', fontSize: '0.85rem', textDecoration: 'none' }}>Privacy Policy</a>
-            <a href="#" style={{ color: '#9ca3af', fontSize: '0.85rem', textDecoration: 'none' }}>Terms of Service</a>
+            {['Privacy Policy', 'Terms of Service'].map(t => (
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', textDecoration: 'none' }}>{t}</a>
+            ))}
           </div>
         </div>
       </footer>
+
+      <style>{`
+        @media (max-width: 768px) {
+          section[style*="flex-direction"] {
+            flex-direction: column !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
