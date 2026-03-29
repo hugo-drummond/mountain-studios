@@ -4159,10 +4159,33 @@ ${buildFooter(businessName, content, 'dark')}
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country } = body
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country, scrapeId } = body
     const locationInfo = getLocationInfo(country || '')
 
-    if (!businessName || !businessType) {
+    // If scrape_id provided, pull scraped content from Supabase
+    let scrapeData: Record<string, unknown> | null = null
+    if (scrapeId) {
+      try {
+        const { supabaseAdmin } = await import('@/lib/supabase-admin')
+        const { data } = await supabaseAdmin
+          .from('prospect_scrapes')
+          .select('extracted_data')
+          .eq('id', scrapeId)
+          .single()
+        if (data?.extracted_data) {
+          scrapeData = data.extracted_data as Record<string, unknown>
+          // Update status
+          await supabaseAdmin.from('prospect_scrapes').update({ status: 'preview_generated' }).eq('id', scrapeId)
+        }
+      } catch {
+        // Failed to load scrape — fall through to normal flow
+      }
+    }
+
+    const effectiveBusinessName = (scrapeData?.businessName as string) || businessName
+    const effectiveBusinessType = (scrapeData?.businessType as string) || businessType
+
+    if (!effectiveBusinessName || !effectiveBusinessType) {
       return NextResponse.json(
         { success: false, error: 'businessName and businessType are required' },
         { status: 400 },
@@ -4170,19 +4193,21 @@ export async function POST(req: NextRequest) {
     }
 
     // Ensure primary color has enough contrast for buttons on dark backgrounds
-    const rawPrimary = noColors ? '#2563EB' : (primaryColor || '#6C5CE7')
+    const scrapedPrimary = (scrapeData?.brandColors as Record<string, string>)?.primary
+    const rawPrimary = noColors ? '#2563EB' : (scrapedPrimary || primaryColor || '#6C5CE7')
     const pR = parseInt(rawPrimary.slice(1, 3), 16) || 0
     const pG = parseInt(rawPrimary.slice(3, 5), 16) || 0
     const pB = parseInt(rawPrimary.slice(5, 7), 16) || 0
     const luminance = (0.299 * pR + 0.587 * pG + 0.114 * pB) / 255
     // If color is too light (near white), fall back to a visible accent
     const primary = luminance > 0.85 ? '#6C5CE7' : rawPrimary
-    const secondary = noColors ? '#10B981' : (secondaryColor || '#00CEC9')
+    const scrapedSecondary = (scrapeData?.brandColors as Record<string, string>)?.secondary
+    const secondary = noColors ? '#10B981' : (scrapedSecondary || secondaryColor || '#00CEC9')
     const category: BusinessCategory = businessCategory || 'other'
     const variant = categoryVariant[category] || 'service'
 
     // Check for pre-written content first
-    const preset: PresetContent | undefined = presetContent[businessType]
+    const preset: PresetContent | undefined = presetContent[effectiveBusinessType]
 
     // Build image queries from preset content if available
     const imageQueries: ImageQueries | undefined = preset ? {
@@ -4225,6 +4250,41 @@ export async function POST(req: NextRequest) {
         aboutImageQuery: preset.aboutImageQuery,
         galleryImageQueries: preset.galleryImageQueries,
         features: preset.features,
+      }
+    } else if (scrapeData) {
+      // Use scraped content from prospect's website
+      const sd = scrapeData
+      const sdServices = (sd.services as { name: string; description: string; tags: string[] }[]) || []
+      content = {
+        heroEyebrow: (sd.heroEyebrow as string) || `${effectiveBusinessType.toUpperCase()}`,
+        tagline: (sd.tagline as string) || `Welcome to <em>${effectiveBusinessName}</em>`,
+        heroSubtitle: (sd.heroSubtitle as string) || '',
+        ctaPrimary: (sd.ctaPrimary as string) || 'Get in Touch',
+        ctaSecondary: (sd.ctaSecondary as string) || 'Learn More',
+        servicesHeading: (sd.servicesHeading as string) || 'Our Services',
+        services: sdServices.length > 0 ? sdServices : [
+          { name: 'Service 1', description: 'Professional service tailored to your needs.', tags: ['Featured'] },
+          { name: 'Service 2', description: 'Quality solutions delivered with care.', tags: ['Popular'] },
+          { name: 'Service 3', description: 'Ongoing support and excellence.', tags: ['Trusted'] },
+        ],
+        galleryHeading: 'Our Work',
+        aboutHeading: (sd.aboutHeading as string) || `About <em>${effectiveBusinessName}</em>`,
+        aboutText: (sd.aboutText as string) || `${effectiveBusinessName} delivers professional ${effectiveBusinessType} services.\n\nWe are committed to quality and client satisfaction.`,
+        stats: (sd.stats as { value: string; label: string }[]) || [
+          { value: '10+', label: 'Years Experience' },
+          { value: '500+', label: 'Happy Clients' },
+          { value: '50+', label: 'Projects' },
+          { value: '100%', label: 'Satisfaction' },
+        ],
+        contactHeading: (sd.contactHeading as string) || 'Ready to get started?',
+        contactHours: (sd.contactHours as string) || undefined,
+        aboutMission: (sd.aboutMission as string) || undefined,
+        processSteps: [
+          { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+          { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+          { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+        ],
+        projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
       }
     } else {
       // Generic fallback content — no external API calls
@@ -4283,7 +4343,7 @@ export async function POST(req: NextRequest) {
 
     const templateData: TemplateData = {
       content,
-      businessName,
+      businessName: effectiveBusinessName,
       businessCategory: category,
       primaryColor: primary,
       secondaryColor: secondary,

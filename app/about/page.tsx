@@ -52,17 +52,123 @@ export default function About() {
       <SiteNav />
 
       <main style={{ paddingTop: '4rem', paddingBottom: '6rem', overflow: 'hidden' }}>
-        {/* Hero */}
-        <header style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '5rem' }}>
+        {/* ═══ THE NEW STANDARD ═══ */}
+        <section style={{ maxWidth: '900px', margin: '0 auto 4rem', padding: '0 2rem', textAlign: 'center' }}>
           <h1 style={{
             fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 300,
+            color: '#fff', lineHeight: 1.15, marginBottom: '0.5rem',
+          }}>The New Standard</h1>
+          <p style={{
+            fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.5)', marginBottom: '2.5rem',
+          }}>Why Mountain Studios Wins</p>
+
+          {/* Comparison Card */}
+          <div style={{
+            background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)', borderRadius: '20px',
+            border: '1px solid rgba(255,255,255,0.15)',
+            display: 'grid', gridTemplateColumns: '1fr 1.2fr 1fr',
+            overflow: 'hidden',
+          }}>
+            {/* AI Builders */}
+            <div style={{ padding: '2rem 1.5rem', textAlign: 'left' }}>
+              <h3 style={{ fontFamily: font, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: '0.25rem' }}>AI Builders</h3>
+              <p style={{ fontFamily: serif, fontSize: '0.8rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.45)', marginBottom: '1.5rem' }}>Generic & Fragmented</p>
+              {[
+                { text: 'Live in minutes', good: true },
+                { text: 'Unique design', good: false },
+                { text: 'Human expert review', good: false },
+                { text: 'Low initial cost', good: true },
+              ].map(item => (
+                <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.65rem' }}>
+                  <span style={{ fontSize: '0.85rem', color: item.good ? '#6ee7b7' : '#f87171' }}>{item.good ? '✓' : '✗'}</span>
+                  <span style={{ fontSize: '0.8rem', color: item.good ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)' }}>{item.text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Mountain Studios — center, highlighted */}
+            <div style={{
+              padding: '2rem 1.5rem', textAlign: 'left',
+              background: 'rgba(255,255,255,0.1)',
+              borderLeft: '1px solid rgba(255,255,255,0.1)',
+              borderRight: '1px solid rgba(255,255,255,0.1)',
+            }}>
+              <h3 style={{ fontFamily: font, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#fff', marginBottom: '0.25rem' }}>Mountain Studios</h3>
+              <p style={{ fontFamily: serif, fontSize: '0.8rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.55)', marginBottom: '1.5rem' }}>The Sweet Spot</p>
+              {[
+                'Live in 72 hours',
+                'Custom design system',
+                'Dedicated developer',
+                'Affordable fixed pricing',
+                'Unlimited revision rounds',
+              ].map(text => (
+                <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.65rem' }}>
+                  <span style={{ fontSize: '0.85rem', color: '#6ee7b7' }}>✓</span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#fff' }}>{text}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Agencies */}
+            <div style={{ padding: '2rem 1.5rem', textAlign: 'left' }}>
+              <h3 style={{ fontFamily: font, fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: '0.25rem' }}>Agencies</h3>
+              <p style={{ fontFamily: serif, fontSize: '0.8rem', fontStyle: 'italic', color: 'rgba(255,255,255,0.45)', marginBottom: '1.5rem' }}>Expensive & Slow</p>
+              {[
+                { text: 'Months to launch', good: false },
+                { text: 'Custom design', good: true },
+                { text: 'Personal service', good: true },
+                { text: 'High project minimums', good: false },
+              ].map(item => (
+                <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.65rem' }}>
+                  <span style={{ fontSize: '0.85rem', color: item.good ? '#6ee7b7' : '#f87171' }}>{item.good ? '✓' : '✗'}</span>
+                  <span style={{ fontSize: '0.8rem', color: item.good ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)' }}>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ VALUE PROPS ═══ */}
+        <section style={{ maxWidth: '900px', margin: '0 auto 5rem', padding: '0 2rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            {[
+              {
+                icon: '🤝',
+                title: 'The Sweet Spot of Affordability',
+                desc: "By automating the heavy lifting, we've removed the massive overhead typical agencies pass on to you. You get high-end, responsive design and professional copywriting at a fraction of the market rate.",
+              },
+              {
+                icon: '✉',
+                title: 'The Personal Touch',
+                desc: "You're not just a ticket number. Every client at Mountain Studios gets a direct line to a project manager who understands your business — be it a plumbing service, a local restaurant, or a boutique salon.",
+              },
+            ].map(v => (
+              <div key={v.title} style={{
+                background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)', borderRadius: '20px',
+                padding: '2rem', border: '1px solid rgba(255,255,255,0.1)',
+              }}>
+                <span style={{ fontSize: '1.5rem', display: 'block', marginBottom: '1rem', opacity: 0.7 }}>{v.icon}</span>
+                <h3 style={{ fontFamily: serif, fontSize: '1.15rem', fontWeight: 400, color: '#fff', marginBottom: '0.75rem' }}>{v.title}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, fontSize: '0.85rem' }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ═══ HOW IT WORKS ═══ */}
+        <header style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '5rem' }}>
+          <h2 style={{
+            fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 300,
             color: '#fff', lineHeight: 1.15, marginBottom: '1rem',
-          }}>How It Works</h1>
+          }}>How It Works</h2>
           <p style={{
             fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)',
             maxWidth: '500px', margin: '0 auto', lineHeight: 1.7,
           }}>
-            A streamlined journey from initial vision to a living, breathing digital masterpiece. We've refined our process to be as collaborative as it is creative.
+            A streamlined journey from initial vision to a living, breathing digital masterpiece.
           </p>
         </header>
 

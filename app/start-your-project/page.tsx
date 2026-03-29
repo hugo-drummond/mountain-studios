@@ -480,9 +480,49 @@ export default function StartYourProject() {
   const [secondaryColor, setSecondaryColor] = useState('#F59E0B')
   const [noColors, setNoColors] = useState(false)
 
+  // Website import
+  const [importUrl, setImportUrl] = useState('')
+  const [importing, setImporting] = useState(false)
+  const [importError, setImportError] = useState('')
+  const [scrapeId, setScrapeId] = useState<string | null>(null)
+
   // Images
   const [uploadedImages, setUploadedImages] = useState<{ url: string; name: string }[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Import website handler
+  const handleImport = async () => {
+    if (!importUrl.trim()) return
+    setImporting(true)
+    setImportError('')
+    try {
+      const r = await fetch('/api/preview/scrape', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: importUrl.trim() }),
+      })
+      const res = await r.json()
+      if (res.success && res.data) {
+        setScrapeId(res.id)
+        // Pre-fill form fields
+        if (res.data.businessName) setBusinessName(res.data.businessName)
+        if (res.data.businessType) {
+          // Map scrape businessType to our type names
+          setBusinessType(res.data.businessType)
+        }
+        if (res.data.brandColors?.primary) setPrimaryColor(res.data.brandColors.primary)
+        if (res.data.brandColors?.secondary) setSecondaryColor(res.data.brandColors.secondary)
+        // Skip to step 1 so they can review
+        setStep(1)
+      } else {
+        setImportError(res.error || 'Failed to analyze website')
+      }
+    } catch {
+      setImportError('Could not connect to the import service')
+    } finally {
+      setImporting(false)
+    }
+  }
 
   // Preview
   const [previewHtml, setPreviewHtml] = useState<string | null>(null)
@@ -600,6 +640,7 @@ export default function StartYourProject() {
             visualBalance,
             noColors,
             images: uploadedImages.map(img => img.url),
+            scrapeId,
           }),
         })
         const res = await r.json()
@@ -786,6 +827,48 @@ export default function StartYourProject() {
             <button onClick={() => setStep(1)} style={{ ...btnPrimary, padding: '0.75rem 2rem' }}>
               Let&apos;s Go &nbsp;→
             </button>
+
+            {/* Website Import */}
+            <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.15)' }}>
+              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
+                Already have a website? Paste your URL and we&apos;ll pre-fill your details.
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', maxWidth: '450px', margin: '0 auto' }}>
+                <input
+                  type="url"
+                  value={importUrl}
+                  onChange={e => setImportUrl(e.target.value)}
+                  placeholder="https://yourbusiness.com"
+                  disabled={importing}
+                  onKeyDown={e => e.key === 'Enter' && handleImport()}
+                  style={{
+                    flex: 1, fontFamily: font, fontSize: '0.9rem',
+                    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
+                    borderRadius: '999px', color: '#fff', padding: '0.6rem 1.25rem',
+                    outline: 'none', backdropFilter: 'blur(8px)',
+                  }}
+                />
+                <button
+                  onClick={handleImport}
+                  disabled={importing || !importUrl.trim()}
+                  style={{
+                    ...btnPrimary, padding: '0.6rem 1.25rem', fontSize: '0.8rem',
+                    opacity: importing || !importUrl.trim() ? 0.5 : 1,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {importing ? 'Analysing...' : 'Import'}
+                </button>
+              </div>
+              {importError && (
+                <p style={{ fontSize: '0.8rem', color: '#f87171', marginTop: '0.75rem' }}>{importError}</p>
+              )}
+              {importing && (
+                <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginTop: '0.75rem' }}>
+                  Analyzing your website... this takes about 10 seconds.
+                </p>
+              )}
+            </div>
           </div>
         )}
 
