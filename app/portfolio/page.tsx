@@ -13,9 +13,8 @@ const projects = [
   { name: 'Bali Blinds', category: 'Interiors & Home', image: '/images/portfolio/bali-blinds.jpg', url: 'https://baliblinds.co.za/' },
 ]
 
-// Stagger heights for masonry effect
-const cardHeights = ['340px', '380px', '320px', '360px', '340px', '380px']
-const cardOffsets = ['0', '2.5rem', '0', '1.5rem', '3rem', '0.5rem']
+// Uniform card height
+const cardHeight = '350px'
 
 export default function PortfolioPage() {
   return (
@@ -57,12 +56,11 @@ export default function PortfolioPage() {
               rel="noopener noreferrer"
               style={{
                 textDecoration: 'none', display: 'block',
-                marginTop: cardOffsets[i % cardOffsets.length],
               }}
             >
               <div style={{
                 borderRadius: '16px', overflow: 'hidden',
-                height: cardHeights[i % cardHeights.length],
+                height: cardHeight,
                 boxShadow: '0 10px 40px rgba(0,0,0,0.12)',
                 transition: 'transform 0.4s ease, box-shadow 0.4s ease',
               }}
