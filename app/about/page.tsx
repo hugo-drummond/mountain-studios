@@ -10,7 +10,7 @@ const steps = [
     num: '01',
     title: 'Start a Project',
     desc: "The journey begins with your spark. Reach out through our contact portal to share your vision, goals, and the mountain you want to climb next.",
-    img: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
+    img: '/images/start-form-preview.jpg',
     style: 'photo' as const,
   },
   {
