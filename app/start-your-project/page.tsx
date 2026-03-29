@@ -485,6 +485,7 @@ export default function StartYourProject() {
   const [importing, setImporting] = useState(false)
   const [importError, setImportError] = useState('')
   const [scrapeId, setScrapeId] = useState<string | null>(null)
+  const [scrapeData, setScrapeData] = useState<Record<string, unknown> | null>(null)
 
   // Images
   const [uploadedImages, setUploadedImages] = useState<{ url: string; name: string }[]>([])
@@ -504,6 +505,7 @@ export default function StartYourProject() {
       const res = await r.json()
       if (res.success && res.data) {
         setScrapeId(res.id)
+        setScrapeData(res.data)
         // Pre-fill form fields
         if (res.data.businessName) setBusinessName(res.data.businessName)
         if (res.data.businessType) {
@@ -641,6 +643,7 @@ export default function StartYourProject() {
             noColors,
             images: uploadedImages.map(img => img.url),
             scrapeId,
+            scrapeData,
           }),
         })
         const res = await r.json()

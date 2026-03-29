@@ -4159,12 +4159,12 @@ ${buildFooter(businessName, content, 'dark')}
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country, scrapeId } = body
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country, scrapeId, scrapeData: bodyScrapedData } = body
     const locationInfo = getLocationInfo(country || '')
 
-    // If scrape_id provided, pull scraped content from Supabase
-    let scrapeData: Record<string, unknown> | null = null
-    if (scrapeId) {
+    // Use scrape data from body (direct pass-through) or pull from Supabase via scrapeId
+    let scrapeData: Record<string, unknown> | null = bodyScrapedData || null
+    if (!scrapeData && scrapeId) {
       try {
         const { supabaseAdmin } = await import('@/lib/supabase-admin')
         const { data } = await supabaseAdmin

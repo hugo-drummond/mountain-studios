@@ -33,13 +33,14 @@ const steps = [
     num: '04',
     title: 'Second Meeting',
     desc: "Refinement and review. We present the evolved designs based on the Builder Exercise, ensuring every detail aligns with your studio's elevated standards.",
-    style: 'icon' as const,
+    img: '/images/whiteboard-wireframe.jpg',
+    style: 'photo' as const,
   },
   {
     num: '05',
     title: 'Your Website',
     desc: "The summit. We launch your bespoke digital experience, fully optimized and ready to represent Mountain Studios to the world.",
-    img: '/images/art-gallery-preview.jpg',
+    img: '/images/plumber-preview.jpg',
     style: 'photo' as const,
   },
 ]
@@ -103,7 +104,6 @@ export default function About() {
                 'Custom design system',
                 'Dedicated developer',
                 'Affordable fixed pricing',
-                'Unlimited revision rounds',
               ].map(text => (
                 <div key={text} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.65rem' }}>
                   <span style={{ fontSize: '0.85rem', color: '#6ee7b7' }}>✓</span>
