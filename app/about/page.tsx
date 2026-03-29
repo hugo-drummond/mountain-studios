@@ -39,7 +39,7 @@ const steps = [
     num: '05',
     title: 'Your Website',
     desc: "The summit. We launch your bespoke digital experience, fully optimized and ready to represent Mountain Studios to the world.",
-    img: '/images/plumber-preview.jpg',
+    img: '/images/art-gallery-preview.jpg',
     style: 'photo' as const,
   },
 ]
