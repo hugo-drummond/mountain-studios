@@ -17,7 +17,7 @@ const steps = [
     num: '02',
     title: 'First Meeting',
     desc: "We sit down (virtually or physically) to align our frequencies. We'll dive deep into your brand's DNA and define what success looks like for your studio.",
-    img: 'https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=800',
+    img: '/images/video-call-meeting.jpg',
     badge: 'Discovery Phase',
     style: 'glass' as const,
   },
