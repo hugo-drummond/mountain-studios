@@ -181,7 +181,7 @@ export default function TempPage() {
                   <label style={fieldLabel}>Primary</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', ...fieldInput, padding: '0.5rem 0.75rem' }}>
                     <input type="color" value={primaryColor} onChange={e => setPrimaryColor(e.target.value)}
-                      style={{ width: '28px', height: '28px', borderRadius: '50%', border: 'none', cursor: 'pointer', padding: 0 }} />
+                      style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', cursor: 'pointer', padding: 0, WebkitAppearance: 'none', appearance: 'none' }} />
                     <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>{primaryColor.toUpperCase()}</span>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default function TempPage() {
                   <label style={fieldLabel}>Secondary</label>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', ...fieldInput, padding: '0.5rem 0.75rem' }}>
                     <input type="color" value={secondaryColor} onChange={e => setSecondaryColor(e.target.value)}
-                      style={{ width: '28px', height: '28px', borderRadius: '50%', border: 'none', cursor: 'pointer', padding: 0 }} />
+                      style={{ width: '32px', height: '32px', borderRadius: '50%', border: 'none', cursor: 'pointer', padding: 0, WebkitAppearance: 'none', appearance: 'none' }} />
                     <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>{secondaryColor.toUpperCase()}</span>
                   </div>
                 </div>
@@ -488,6 +488,25 @@ export default function TempPage() {
         }
         input::placeholder, textarea::placeholder, select {
           color: rgba(255,255,255,0.3);
+        }
+        input[type="color"] {
+          -webkit-appearance: none;
+          appearance: none;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+          padding: 0;
+          border-radius: 50%;
+        }
+        input[type="color"]::-webkit-color-swatch {
+          border: none;
+          border-radius: 50%;
+        }
+        input[type="color"]::-moz-color-swatch {
+          border: none;
+          border-radius: 50%;
         }
       `}</style>
     </div>

@@ -25,7 +25,7 @@ const steps = [
     num: '03',
     title: 'The Builder Exercise',
     desc: "Our signature collaborative workshop where we prototype the core foundations. It's a hands-on exploration of structure, flow, and digital architecture.",
-    img: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
+    img: '/images/brief-preview.jpg',
     bullets: ['UX Logic Mapping', 'Core Feature Prioritization'],
     style: 'bg' as const,
   },
