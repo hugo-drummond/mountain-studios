@@ -19,7 +19,7 @@ const steps = [
     desc: "We sit down (virtually or physically) to align our frequencies. We'll dive deep into your brand's DNA and define what success looks like for your studio.",
     img: '/images/video-call-meeting.jpg',
     badge: 'Discovery Phase',
-    style: 'glass' as const,
+    style: 'photo' as const,
   },
   {
     num: '03',
