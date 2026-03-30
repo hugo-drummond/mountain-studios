@@ -39,11 +39,14 @@ Return this exact structure:
 }
 
 Rules:
+- CRITICAL: The businessName MUST come from the PAGE TITLE, logo text, or domain name — NOT from generic descriptions. If the title says "Coimbra Bakery" that IS the business name.
 - The businessType MUST be one of the exact values listed above. Pick the closest match.
+- Look for phone numbers, addresses, and hours in the footer/contact sections. Extract them exactly as shown — don't return null if the data is there.
+- If BRAND COLOURS are provided, use them for brandColors.primary and brandColors.secondary.
 - Stats should be realistic for the business type. Use numbers from the site if available, otherwise generate plausible ones.
 - The tagline should NOT include the business name.
 - Services array should have exactly 3 items. Tags should be specific to the service (not generic like "Popular").
-- If you can't find certain info, use null. Don't make up phone numbers or addresses.
+- If you genuinely can't find certain info, use null. But try hard — check footer text for phone/address/hours.
 - Content should feel professional and polished — you're a copywriter, not a scraper.
 - Image URLs must be absolute (start with https://).`
 
@@ -66,14 +69,18 @@ function makeAbsolute(src: string, baseUrl: string): string {
   }
 }
 
-function cleanHtml(html: string, baseUrl: string): { text: string; images: string[] } {
-  // Remove script, style, nav, footer, header, svg, noscript
+function cleanHtml(html: string, baseUrl: string): { text: string; images: string[]; title: string; metaDesc: string } {
+  // Extract title and meta description BEFORE stripping
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
+  const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : ''
+  const metaMatch = html.match(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i)
+    || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']description["']/i)
+  const metaDesc = metaMatch ? metaMatch[1].trim() : ''
+
+  // Remove script, style, svg, noscript — but KEEP nav, footer, header (they have business info)
   let cleaned = html
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<style[\s\S]*?<\/style>/gi, '')
-    .replace(/<nav[\s\S]*?<\/nav>/gi, '')
-    .replace(/<footer[\s\S]*?<\/footer>/gi, '')
-    .replace(/<header[\s\S]*?<\/header>/gi, '')
     .replace(/<svg[\s\S]*?<\/svg>/gi, '')
     .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
 
@@ -99,7 +106,7 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
     .replace(/\s+/g, ' ')
     .trim()
 
-  return { text, images: [...new Set(images)].slice(0, 20) }
+  return { text, images: [...new Set(images)].slice(0, 20), title, metaDesc }
 }
 
 async function fetchWithTimeout(url: string, timeout: number): Promise<Response | null> {
@@ -233,7 +240,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Clean HTML and extract text + images
-    const { text, images } = cleanHtml(html, normalizedUrl)
+    const { text, images, title, metaDesc } = cleanHtml(html, normalizedUrl)
 
     if (text.length < 100) {
       return NextResponse.json({
@@ -248,7 +255,20 @@ export async function POST(req: NextRequest) {
       }, { status: 500 })
     }
 
-    const textWithImages = text + '\n\nImages found on site:\n' + images.slice(0, 10).join('\n')
+    // Try to extract brand colours from CSS/inline styles
+    const hexMatches = html.match(/#[0-9a-fA-F]{6}/g) || []
+    const colourCounts: Record<string, number> = {}
+    for (const c of hexMatches) {
+      const lower = c.toLowerCase()
+      // Skip near-white, near-black, and common greys
+      if (['#ffffff', '#000000', '#333333', '#666666', '#999999', '#cccccc', '#f5f5f5', '#eeeeee', '#dddddd'].includes(lower)) continue
+      colourCounts[lower] = (colourCounts[lower] || 0) + 1
+    }
+    const topColours = Object.entries(colourCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0])
+    const colourHint = topColours.length > 0 ? `\nBRAND COLOURS FOUND IN CSS: ${topColours.join(', ')}` : ''
+
+    const contextHeader = `PAGE TITLE: ${title}\nMETA DESCRIPTION: ${metaDesc}\nURL: ${normalizedUrl}${colourHint}\n\n`
+    const textWithImages = contextHeader + text + '\n\nImages found on site:\n' + images.slice(0, 10).join('\n')
     const extracted = await callDeepSeek(textWithImages)
 
     if (!extracted) {
