@@ -7,7 +7,6 @@ const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const navLinks = [
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
-  { label: 'Temp', href: '/temp' },
   { label: 'Contact', href: '/contact' },
 ]
 
