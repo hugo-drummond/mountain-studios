@@ -2150,17 +2150,14 @@ function buildCreativeTemplate(data: TemplateData): string {
   const crText = '#0a0a0a'
   const crMuted = '#6b6b6b'
 
-  // Section 1: Hero — subtitle top right, full-bleed image, "SCROLL TO EXPLORE" label
+  // Section 1: Hero — full-bleed image, subtitle below, "SCROLL TO EXPLORE" label
   const heroSection = `
   <section style="background:${crBg};padding:0 2rem">
     <div style="max-width:1400px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:start;padding:2rem 0">
-        <div></div>
-        <p style="font-family:var(--body-font);font-size:1.05rem;color:${crText};max-width:500px;line-height:1.7">${content.heroSubtitle}</p>
-      </div>
-      <div style="border-radius:16px;overflow:hidden;height:70vh;margin-bottom:1rem">
+      <div style="border-radius:16px;overflow:hidden;height:70vh;margin-bottom:1.5rem">
         <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
       </div>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:${crText};max-width:500px;line-height:1.7;margin-left:auto;text-align:right;padding-bottom:1rem">${content.heroSubtitle}</p>
       <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:${crMuted};text-align:center;padding:1rem 0">+ &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; Scroll to explore &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; +</p>
     </div>
   </section>`
