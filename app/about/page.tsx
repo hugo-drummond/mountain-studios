@@ -237,6 +237,15 @@ export default function About() {
             )
           })}
         </div>
+
+        {/* CTA */}
+        <section style={{ textAlign: 'center', padding: '4rem 2rem 5rem' }}>
+          <a href="/start-your-project" style={{
+            display: 'inline-block', fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+            color: '#1a1a2e', background: '#fff', padding: '0.85rem 2.5rem',
+            borderRadius: '999px', textDecoration: 'none', letterSpacing: '0.04em',
+          }}>Ready To Get Started</a>
+        </section>
       </main>
 
       {/* Footer — matching home page style */}
