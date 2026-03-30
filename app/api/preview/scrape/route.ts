@@ -315,8 +315,36 @@ export async function POST(req: NextRequest) {
       }, { status: 500 })
     }
 
-    // Try to extract brand colours from CSS/inline styles
-    const hexMatches = html.match(/#[0-9a-fA-F]{6}/g) || []
+    // Fetch main CSS stylesheet for better colour extraction
+    const cssLinkRegex = /href=["'](https?:\/\/[^"']+\.css[^"']*)["']/gi
+    let cssText = ''
+    let cssMatch
+    let cssFetched = 0
+    while ((cssMatch = cssLinkRegex.exec(html)) !== null && cssFetched < 2) {
+      const cssUrl = cssMatch[1]
+      // Only fetch theme/elementor CSS, skip wp-includes and plugin CSS
+      if (/elementor|theme|style|custom/i.test(cssUrl) && !/wp-includes|jquery|font/i.test(cssUrl)) {
+        try {
+          const cssRes = await fetchWithTimeout(cssUrl, 4000)
+          if (cssRes && cssRes.ok) {
+            cssText += await cssRes.text()
+            cssFetched++
+          }
+        } catch { /* skip */ }
+      }
+    }
+
+    // Try to extract brand colours from HTML + CSS
+    const allSource = html + '\n' + cssText
+    // Also extract rgb() values and convert to hex
+    const rgbRegex = /rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/gi
+    const rgbHexes: string[] = []
+    let rgbMatch
+    while ((rgbMatch = rgbRegex.exec(allSource)) !== null) {
+      const hex = '#' + [rgbMatch[1], rgbMatch[2], rgbMatch[3]].map(n => parseInt(n).toString(16).padStart(2, '0')).join('')
+      rgbHexes.push(hex)
+    }
+    const hexMatches = [...(allSource.match(/#[0-9a-fA-F]{6}/g) || []), ...rgbHexes]
     const colourCounts: Record<string, number> = {}
     for (const c of hexMatches) {
       const lower = c.toLowerCase()
@@ -331,7 +359,28 @@ export async function POST(req: NextRequest) {
       if (Math.abs(r - g) < 15 && Math.abs(g - b) < 15 && Math.abs(r - b) < 15) continue
       colourCounts[lower] = (colourCounts[lower] || 0) + 1
     }
-    const topColours = Object.entries(colourCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0])
+    // Pick primary (most common), then secondary (most common with DIFFERENT hue)
+    const sorted = Object.entries(colourCounts).sort((a, b) => b[1] - a[1])
+    const topColours: string[] = []
+    if (sorted.length > 0) {
+      topColours.push(sorted[0][0])
+      // Find a contrasting colour for secondary
+      const pR = parseInt(sorted[0][0].slice(1, 3), 16)
+      const pG = parseInt(sorted[0][0].slice(3, 5), 16)
+      const pB = parseInt(sorted[0][0].slice(5, 7), 16)
+      for (const [hex] of sorted.slice(1)) {
+        const sR = parseInt(hex.slice(1, 3), 16)
+        const sG = parseInt(hex.slice(3, 5), 16)
+        const sB = parseInt(hex.slice(5, 7), 16)
+        // Must differ by at least 60 in at least one channel
+        if (Math.abs(pR - sR) > 60 || Math.abs(pG - sG) > 60 || Math.abs(pB - sB) > 60) {
+          topColours.push(hex)
+          break
+        }
+      }
+      // If no contrasting colour found, just take #2
+      if (topColours.length < 2 && sorted.length > 1) topColours.push(sorted[1][0])
+    }
     const colourHint = topColours.length > 0 ? `\nBRAND COLOURS FOUND IN CSS: ${topColours.join(', ')}` : ''
 
     const contextHeader = `PAGE TITLE: ${title}\nMETA DESCRIPTION: ${metaDesc}\nURL: ${normalizedUrl}${colourHint}\n\n`
