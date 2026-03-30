@@ -524,8 +524,8 @@ export default function StartYourProject() {
         }
         if (res.data.brandColors?.primary) setPrimaryColor(res.data.brandColors.primary)
         if (res.data.brandColors?.secondary) setSecondaryColor(res.data.brandColors.secondary)
-        // Skip to step 2 (business type) so they can review — step 1 (name) is already filled
-        setStep(2)
+        // Go to step 1 (business name) so they can review the pre-filled name
+        setStep(1)
       } else {
         setImportError(res.error || 'Failed to analyze website')
       }
