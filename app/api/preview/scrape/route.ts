@@ -84,11 +84,22 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
     .replace(/<svg[\s\S]*?<\/svg>/gi, '')
     .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
 
-  // Extract image src attributes
-  const imgRegex = /<img[^>]+src=["']([^"']+)["']/gi
+  // Extract ALL image URLs from ORIGINAL html — src, data-src, data-lazy-src, data-bg
+  const imgRegex = /(?:src|data-src|data-lazy-src|data-bg)=["'](https?:\/\/[^"']+\.(?:jpg|jpeg|png|webp)[^"']*)["']/gi
+  const bgRegex = /background(?:-image)?:\s*url\(['"]?([^'")\s]+)['"]?\)/gi
   const images: string[] = []
   let match
-  while ((match = imgRegex.exec(cleaned)) !== null) {
+  while ((match = imgRegex.exec(html)) !== null) {
+    const src = match[1]
+    // Skip tiny images by checking URL for small dimensions
+    const sizeMatch = src.match(/[_-](\d+)x(\d+)/)
+    if (sizeMatch && (parseInt(sizeMatch[1]) < 300 || parseInt(sizeMatch[2]) < 200)) continue
+    // Skip common logo/icon/asset filenames
+    if (/logo|favicon|icon|sprite|placeholder|removebg|asset|upload.*\.png/i.test(src)) continue
+    images.push(src)
+  }
+  // Also grab background-image URLs
+  while ((match = bgRegex.exec(html)) !== null) {
     const src = makeAbsolute(match[1], baseUrl)
     if (src.startsWith('http') && !src.includes('data:') && !src.includes('.svg')) {
       images.push(src)
@@ -284,10 +295,8 @@ export async function POST(req: NextRequest) {
       }, { status: 422 })
     }
 
-    // Add scraped images to extracted data if DeepSeek didn't find any
-    if (!extracted.imageUrls || (extracted.imageUrls as string[]).length === 0) {
-      extracted.imageUrls = images.slice(0, 6)
-    }
+    // ALWAYS use real scraped images — DeepSeek fabricates fake URLs
+    extracted.imageUrls = images.slice(0, 6)
 
     // Save to Supabase
     let scrapeId: string | null = null
