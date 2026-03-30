@@ -69,7 +69,7 @@ function makeAbsolute(src: string, baseUrl: string): string {
   }
 }
 
-function cleanHtml(html: string, baseUrl: string): { text: string; images: string[]; title: string; metaDesc: string } {
+function cleanHtml(html: string, baseUrl: string): { text: string; images: string[]; title: string; metaDesc: string; logoUrl: string | null } {
   // Extract title and meta description BEFORE stripping
   const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
   const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : ''
