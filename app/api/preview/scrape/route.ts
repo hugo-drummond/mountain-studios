@@ -234,23 +234,44 @@ export async function POST(req: NextRequest) {
 
     let html = await homeRes.text()
 
-    // Try to fetch /about page
-    // Fetch additional pages for more content and images
+    // Extract internal page links from the homepage nav/body
+    const siteDomain = getDomain(normalizedUrl)
+    const internalLinkRegex = /href="(https?:\/\/[^"]*)">/gi
+    const navLinks: string[] = []
+    let linkMatch
+    while ((linkMatch = internalLinkRegex.exec(html)) !== null) {
+      const href = linkMatch[1]
+      try {
+        const linkDomain = getDomain(href)
+        if (linkDomain === siteDomain && href !== normalizedUrl && href !== normalizedUrl + '/' && !href.includes('feed') && !href.includes('rest_route') && !href.includes('xmlrpc')) {
+          navLinks.push(href)
+        }
+      } catch { /* skip */ }
+    }
+    const uniqueNavLinks = [...new Set(navLinks)].slice(0, 5)
+
+    // Fetch additional pages — try nav links first, then common paths as fallback
     const extraPaths = [
       '/about', '/about-us',
       '/gallery', '/portfolio', '/our-work', '/projects',
       '/services', '/what-we-do',
       '/contact', '/contact-us',
     ]
+    const pagesToFetch = [
+      ...uniqueNavLinks,
+      ...extraPaths.map(p => { try { return new URL(p, normalizedUrl).href } catch { return '' } }).filter(Boolean),
+    ]
+    const fetchedUrls = new Set([normalizedUrl, normalizedUrl + '/'])
     let pagesScraped = 0
-    for (const path of extraPaths) {
-      if (pagesScraped >= 3) break // Limit to 3 extra pages for speed
+    for (const pageUrl of pagesToFetch) {
+      if (pagesScraped >= 4) break
+      if (fetchedUrls.has(pageUrl)) continue
+      fetchedUrls.add(pageUrl)
       try {
-        const pageUrl = new URL(path, normalizedUrl).href
         const pageRes = await fetchWithTimeout(pageUrl, 6000)
         if (pageRes && pageRes.ok) {
           const pageHtml = await pageRes.text()
-          html += '\n\n--- ' + path.toUpperCase() + ' ---\n\n' + pageHtml
+          html += '\n\n--- ' + pageUrl + ' ---\n\n' + pageHtml
           pagesScraped++
         }
       } catch {
