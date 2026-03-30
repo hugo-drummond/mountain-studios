@@ -4,9 +4,12 @@ import { useState } from 'react'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 
+const isLocal = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+
 const navLinks = [
   { label: 'About', href: '/about' },
   { label: 'Portfolio', href: '/portfolio' },
+  ...(isLocal ? [{ label: 'Temp', href: '/temp' }] : []),
   { label: 'Contact', href: '/contact' },
 ]
 
