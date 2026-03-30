@@ -260,8 +260,15 @@ export async function POST(req: NextRequest) {
     const colourCounts: Record<string, number> = {}
     for (const c of hexMatches) {
       const lower = c.toLowerCase()
-      // Skip near-white, near-black, and common greys
-      if (['#ffffff', '#000000', '#333333', '#666666', '#999999', '#cccccc', '#f5f5f5', '#eeeeee', '#dddddd'].includes(lower)) continue
+      // Skip near-white, near-black, and common greys — these are NOT brand colours
+      const r = parseInt(lower.slice(1, 3), 16)
+      const g = parseInt(lower.slice(3, 5), 16)
+      const b = parseInt(lower.slice(5, 7), 16)
+      const brightness = (r + g + b) / 3
+      // Skip too dark (<30) or too light (>225) — those are text/bg, not brand
+      if (brightness < 30 || brightness > 225) continue
+      // Skip pure greys (r ≈ g ≈ b)
+      if (Math.abs(r - g) < 15 && Math.abs(g - b) < 15 && Math.abs(r - b) < 15) continue
       colourCounts[lower] = (colourCounts[lower] || 0) + 1
     }
     const topColours = Object.entries(colourCounts).sort((a, b) => b[1] - a[1]).slice(0, 3).map(e => e[0])
