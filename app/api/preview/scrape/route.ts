@@ -235,18 +235,26 @@ export async function POST(req: NextRequest) {
     let html = await homeRes.text()
 
     // Try to fetch /about page
-    const aboutPaths = ['/about', '/about-us', '/about-us/']
-    for (const path of aboutPaths) {
+    // Fetch additional pages for more content and images
+    const extraPaths = [
+      '/about', '/about-us',
+      '/gallery', '/portfolio', '/our-work', '/projects',
+      '/services', '/what-we-do',
+      '/contact', '/contact-us',
+    ]
+    let pagesScraped = 0
+    for (const path of extraPaths) {
+      if (pagesScraped >= 3) break // Limit to 3 extra pages for speed
       try {
-        const aboutUrl = new URL(path, normalizedUrl).href
-        const aboutRes = await fetchWithTimeout(aboutUrl, 8000)
-        if (aboutRes && aboutRes.ok) {
-          const aboutHtml = await aboutRes.text()
-          html += '\n\n--- ABOUT PAGE ---\n\n' + aboutHtml
-          break
+        const pageUrl = new URL(path, normalizedUrl).href
+        const pageRes = await fetchWithTimeout(pageUrl, 6000)
+        if (pageRes && pageRes.ok) {
+          const pageHtml = await pageRes.text()
+          html += '\n\n--- ' + path.toUpperCase() + ' ---\n\n' + pageHtml
+          pagesScraped++
         }
       } catch {
-        // Skip if about page doesn't exist
+        // Skip if page doesn't exist
       }
     }
 
