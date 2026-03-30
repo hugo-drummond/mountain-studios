@@ -85,17 +85,23 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
     .replace(/<noscript[\s\S]*?<\/noscript>/gi, '')
 
   // Extract ALL image URLs from ORIGINAL html — src, data-src, data-lazy-src, data-bg
-  const imgRegex = /(?:src|data-src|data-lazy-src|data-bg)=["'](https?:\/\/[^"']+\.(?:jpg|jpeg|png|webp)[^"']*)["']/gi
+  const imgRegex = /(?:src|data-src|data-lazy-src|data-bg)=["'](https?:\/\/[^"']+\.(?:jpg|jpeg|png|webp|svg)[^"']*)["']/gi
   const bgRegex = /background(?:-image)?:\s*url\(['"]?([^'")\s]+)['"]?\)/gi
   const images: string[] = []
+  let logoUrl: string | null = null
   let match
   while ((match = imgRegex.exec(html)) !== null) {
     const src = match[1]
+    // Detect logo images — save separately
+    if (/logo/i.test(src) && !logoUrl) {
+      logoUrl = src
+      continue
+    }
     // Skip tiny images by checking URL for small dimensions
     const sizeMatch = src.match(/[_-](\d+)x(\d+)/)
     if (sizeMatch && (parseInt(sizeMatch[1]) < 300 || parseInt(sizeMatch[2]) < 200)) continue
-    // Skip common logo/icon/asset filenames
-    if (/logo|favicon|icon|sprite|placeholder|removebg|asset|upload.*\.png/i.test(src)) continue
+    // Skip common icon/asset filenames
+    if (/favicon|icon|sprite|placeholder|removebg|asset|upload.*\.png/i.test(src)) continue
     images.push(src)
   }
   // Also grab background-image URLs
@@ -117,7 +123,7 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
     .replace(/\s+/g, ' ')
     .trim()
 
-  return { text, images: [...new Set(images)].slice(0, 20), title, metaDesc }
+  return { text, images: [...new Set(images)].slice(0, 20), title, metaDesc, logoUrl }
 }
 
 async function fetchWithTimeout(url: string, timeout: number): Promise<Response | null> {
@@ -280,7 +286,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Clean HTML and extract text + images
-    const { text, images, title, metaDesc } = cleanHtml(html, normalizedUrl)
+    const { text, images, title, metaDesc, logoUrl } = cleanHtml(html, normalizedUrl)
 
     if (text.length < 100) {
       return NextResponse.json({
@@ -326,6 +332,8 @@ export async function POST(req: NextRequest) {
 
     // ALWAYS use real scraped images — DeepSeek fabricates fake URLs
     extracted.imageUrls = images.slice(0, 6)
+    // Add logo URL if found
+    if (logoUrl) extracted.logoUrl = logoUrl
 
     // Save to Supabase
     let scrapeId: string | null = null

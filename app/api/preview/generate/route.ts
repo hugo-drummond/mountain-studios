@@ -388,6 +388,7 @@ interface GeneratedContent {
   aboutMission?: string
   testimonial?: { quote: string; author: string; rating: number }
   testimonials?: { quote: string; author: string; rating: number }[]
+  logoUrl?: string
   imageMood?: string
   heroImageQuery?: string
   aboutImageQuery?: string
@@ -697,13 +698,16 @@ function getFallbackTestimonials(content: GeneratedContent, category: string): {
 function buildStandardNav(businessName: string, content: GeneratedContent, navFlags: ReturnType<typeof resolveNavLinks>): string {
   const allLinks = navFlags.allLinks
   const inline = allLinks.length <= 4
+  const logoHtml = content.logoUrl
+    ? `<a href="#" style="display:flex;align-items:center;text-decoration:none"><img src="${content.logoUrl}" alt="${businessName}" style="height:40px;max-width:200px;object-fit:contain" /></a>`
+    : `<a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>`
 
   if (inline) {
     // Inline nav: logo | links | CTA button (no burger on desktop, burger on mobile)
     return `
   <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      ${logoHtml}
       <div style="display:flex;align-items:center;gap:2rem">
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${allLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">${l.label}</a>`).join('\n          ')}
@@ -724,7 +728,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
   return `
   <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
-      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>
+      ${logoHtml}
       <div style="display:flex;align-items:center;gap:1.25rem">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
         <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
@@ -4285,6 +4289,7 @@ export async function POST(req: NextRequest) {
           { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
         ],
         projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
+        logoUrl: (sd.logoUrl as string) || undefined,
       }
     } else {
       // Generic fallback content — no external API calls
