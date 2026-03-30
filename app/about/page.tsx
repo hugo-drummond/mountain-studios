@@ -226,37 +226,11 @@ export default function About() {
                       <img src={step.img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   )}
-                  {step.style === 'glass' && step.img && (
-                    <div style={{
-                      background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)', padding: '0.75rem', borderRadius: '16px',
-                      boxShadow: '0 15px 40px rgba(0,0,0,0.15)', transform: 'rotate(-2deg)',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                    }}>
-                      <img src={step.img} alt="" style={{ width: '100%', borderRadius: '12px' }} />
-                    </div>
-                  )}
                   {step.style === 'bg' && step.img && (
                     <img src={step.img} alt="" style={{
                       width: '100%', height: '20rem', objectFit: 'cover', borderRadius: '16px',
                       boxShadow: '0 15px 40px rgba(0,0,0,0.15)',
                     }} />
-                  )}
-                  {step.style === 'icon' && (
-                    <div style={{
-                      background: 'rgba(255,255,255,0.08)', aspectRatio: '16/9', borderRadius: '16px',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      position: 'relative', overflow: 'hidden',
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      backdropFilter: 'blur(8px)',
-                    }}>
-                      <span style={{ fontSize: '3rem', opacity: 0.3 }}>&#128249;</span>
-                      <div style={{
-                        position: 'absolute', bottom: '0.75rem', right: '0.75rem',
-                        fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.1em',
-                        textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
-                      }}>Design Presentation</div>
-                    </div>
                   )}
                 </div>
               </section>
