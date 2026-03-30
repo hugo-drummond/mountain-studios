@@ -651,7 +651,9 @@ export default function StartYourProject() {
             secondaryColor,
             visualBalance,
             noColors,
-            images: uploadedImages.map(img => img.url),
+            images: uploadedImages.length > 0
+              ? uploadedImages.map(img => img.url)
+              : (scrapeData?.imageUrls as string[]) || [],
             scrapeId,
             scrapeData,
           }),

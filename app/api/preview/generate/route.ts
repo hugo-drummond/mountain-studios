@@ -4348,7 +4348,13 @@ export async function POST(req: NextRequest) {
       primaryColor: primary,
       secondaryColor: secondary,
       pages: pages || ['Home', 'About', 'Services', 'Contact'],
-      images: Array.isArray(images) ? images : [],
+      images: Array.isArray(images) ? images.map((url: string) => {
+        if (url.startsWith('http') && !url.includes('pexels.com') && !url.includes('picsum.photos')) {
+          const origin = req.headers.get('origin') || req.headers.get('referer')?.replace(/\/[^/]*$/, '') || ''
+          return `${origin}/api/proxy-image?url=${encodeURIComponent(url)}`
+        }
+        return url
+      }) : [],
       stockImages: stockImgs,
       variant,
       locationInfo,
