@@ -177,32 +177,6 @@ export default function About() {
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
           {steps.map((step, i) => {
             const isReversed = i % 2 === 1
-            const isLast = step.style === 'cta'
-
-            if (isLast) {
-              return (
-                <section key={step.num} style={{
-                  position: 'relative', maxWidth: '700px', margin: '6rem auto 0',
-                  padding: '4rem 2rem', textAlign: 'center',
-                }}>
-                  <div style={{ position: 'relative', zIndex: 1 }}>
-                    <span style={{ fontFamily: serif, fontStyle: 'italic', color: 'rgba(255,255,255,0.2)', fontSize: '3.5rem', display: 'block' }}>{step.num}</span>
-                    <h2 style={{ fontFamily: serif, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', fontWeight: 300, color: '#fff', marginBottom: '1rem' }}>{step.title}</h2>
-                    <p style={{ color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, fontSize: '0.95rem', maxWidth: '500px', margin: '0 auto 2rem' }}>{step.desc}</p>
-                    <a href="/start-your-project" style={{
-                      display: 'inline-block', fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-                      color: '#1a1a2e', background: '#fff', padding: '0.65rem 1.5rem',
-                      borderRadius: '999px', textDecoration: 'none',
-                    }}>Launch Your Journey</a>
-                  </div>
-                  <div style={{
-                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    width: '120%', height: '120%', background: 'rgba(255,255,255,0.06)',
-                    filter: 'blur(80px)', borderRadius: '50%', zIndex: 0,
-                  }} />
-                </section>
-              )
-            }
 
             return (
               <section key={step.num} style={{
