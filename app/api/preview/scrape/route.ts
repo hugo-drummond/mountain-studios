@@ -92,8 +92,10 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
   let match
   while ((match = imgRegex.exec(html)) !== null) {
     const src = match[1]
-    // Detect logo images — save separately
+    // Detect logo images — save separately, but skip theme/framework logos
     if (/logo/i.test(src) && !logoUrl) {
+      // Skip logos from theme/framework folders (Divi, Elementor, etc)
+      if (/\/themes\/|\/plugins\/|\/vendor\//i.test(src)) continue
       logoUrl = src
       continue
     }
@@ -122,6 +124,18 @@ function cleanHtml(html: string, baseUrl: string): { text: string; images: strin
     .replace(/&#\d+;/g, '')
     .replace(/\s+/g, ' ')
     .trim()
+
+  // If no logo found by filename, try to find first image in header/nav area
+  // But skip theme/framework images
+  if (!logoUrl) {
+    const headerMatch = html.match(/<header[\s\S]*?<\/header>/i)
+    if (headerMatch) {
+      const headerImgMatch = headerMatch[0].match(/(?:src|data-src)=["'](https?:\/\/[^"']+\.(?:jpg|jpeg|png|webp|svg)[^"']*)["']/i)
+      if (headerImgMatch && !/\/themes\/|\/plugins\/|\/vendor\//i.test(headerImgMatch[1])) {
+        logoUrl = headerImgMatch[1]
+      }
+    }
+  }
 
   return { text, images: [...new Set(images)].slice(0, 20), title, metaDesc, logoUrl }
 }
