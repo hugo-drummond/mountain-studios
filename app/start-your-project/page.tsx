@@ -506,6 +506,7 @@ export default function StartYourProject() {
       if (res.success && res.data) {
         setScrapeId(res.id)
         setScrapeData(res.data)
+        console.log('📋 Scraped data:', JSON.stringify(res.data, null, 2))
         // Pre-fill form fields
         if (res.data.businessName) setBusinessName(res.data.businessName)
         if (res.data.businessType) {
