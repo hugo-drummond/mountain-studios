@@ -510,13 +510,22 @@ export default function StartYourProject() {
         // Pre-fill form fields
         if (res.data.businessName) setBusinessName(res.data.businessName)
         if (res.data.businessType) {
-          // Map scrape businessType to our type names
-          setBusinessType(res.data.businessType)
+          // Map scrape slug (e.g. "bakery") to display name (e.g. "Bakery")
+          const slug = res.data.businessType.toLowerCase()
+          const match = businessTypeData.find(t =>
+            t.name.toLowerCase() === slug ||
+            t.name.toLowerCase().replace(/[^a-z]/g, '') === slug.replace(/[^a-z]/g, '') ||
+            t.keywords?.some(k => k.toLowerCase() === slug)
+          )
+          if (match) {
+            setBusinessType(match.name)
+            setBusinessCategory(match.category)
+          }
         }
         if (res.data.brandColors?.primary) setPrimaryColor(res.data.brandColors.primary)
         if (res.data.brandColors?.secondary) setSecondaryColor(res.data.brandColors.secondary)
-        // Skip to step 1 so they can review
-        setStep(1)
+        // Skip to step 2 (business type) so they can review — step 1 (name) is already filled
+        setStep(2)
       } else {
         setImportError(res.error || 'Failed to analyze website')
       }
