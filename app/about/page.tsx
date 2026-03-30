@@ -55,7 +55,7 @@ export default function About() {
 
       <main style={{ paddingTop: '4rem', paddingBottom: '6rem', overflow: 'hidden' }}>
         {/* ═══ THE NEW STANDARD ═══ */}
-        <section style={{ maxWidth: '900px', margin: '0 auto 4rem', padding: '0 2rem', textAlign: 'center' }}>
+        <section style={{ maxWidth: 'min(900px, 85vw)', margin: '0 auto 4rem', padding: '0 2rem', textAlign: 'center' }}>
           <h1 style={{
             fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 300,
             color: '#fff', lineHeight: 1.15, marginBottom: '0.5rem',
@@ -132,7 +132,7 @@ export default function About() {
         </section>
 
         {/* ═══ VALUE PROPS ═══ */}
-        <section style={{ maxWidth: '900px', margin: '0 auto 5rem', padding: '0 2rem' }}>
+        <section style={{ maxWidth: 'min(900px, 85vw)', margin: '0 auto 5rem', padding: '0 2rem' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             {[
               {
@@ -160,7 +160,7 @@ export default function About() {
         </section>
 
         {/* ═══ HOW IT WORKS ═══ */}
-        <header style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '5rem' }}>
+        <header style={{ maxWidth: 'min(700px, 80vw)', margin: '0 auto', textAlign: 'center', padding: '0 2rem', marginBottom: '5rem' }}>
           <h2 style={{
             fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 3.2rem)', fontWeight: 300,
             color: '#fff', lineHeight: 1.15, marginBottom: '1rem',
@@ -174,7 +174,7 @@ export default function About() {
         </header>
 
         {/* Process Steps */}
-        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
+        <div style={{ maxWidth: 'min(1200px, 90vw)', margin: '0 auto', padding: '0 2rem', position: 'relative' }}>
           {steps.map((step, i) => {
             const isReversed = i % 2 === 1
 
@@ -217,7 +217,7 @@ export default function About() {
                 </div>
 
                 {/* Image */}
-                <div style={{ flex: 1, width: '100%', maxWidth: '480px' }}>
+                <div style={{ flex: 1, width: '100%', maxWidth: '550px' }}>
                   {step.style === 'photo' && step.img && (
                     <div style={{
                       aspectRatio: '4/3', borderRadius: '16px', overflow: 'hidden',
@@ -255,7 +255,7 @@ export default function About() {
         borderTop: '1px solid rgba(255,255,255,0.1)',
       }}>
         <div style={{
-          maxWidth: '1100px', margin: '0 auto',
+          maxWidth: 'min(1200px, 90vw)', margin: '0 auto',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           flexWrap: 'wrap', gap: '1rem',
         }}>
