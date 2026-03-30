@@ -899,7 +899,7 @@ function buildVisualTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1177,7 +1177,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1322,7 +1322,7 @@ function buildPropertyTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1582,7 +1582,7 @@ function buildEventsTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1782,7 +1782,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -1954,7 +1954,7 @@ function buildEducationTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2128,7 +2128,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2298,7 +2298,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2478,7 +2478,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2627,7 +2627,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -2810,7 +2810,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3032,7 +3032,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3242,7 +3242,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3490,7 +3490,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -3749,7 +3749,7 @@ function buildRetailTemplate(data: TemplateData): string {
   let imgIdx = 0
   const nextImg = () => uniquePool[imgIdx++] || uniquePool[0]
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   // Retail uses a warm light theme
   const retailBg = '#f5f0eb'
@@ -3957,7 +3957,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about
+  const aboutImg = images[5] || stockImages.about
   let _pi = 3
   const serviceImgs = [
     images[1] || stockImages.cards[0],
@@ -4348,7 +4348,16 @@ export async function POST(req: NextRequest) {
       primaryColor: primary,
       secondaryColor: secondary,
       pages: pages || ['Home', 'About', 'Services', 'Contact'],
-      images: Array.isArray(images) ? images : [],
+      images: (() => {
+        const raw = Array.isArray(images) ? images.filter((u: string) => u && typeof u === 'string') : []
+        if (raw.length === 0) return []
+        // Pad scraped images to fill all template slots (hero + 4 service + 4 gallery + about = ~10)
+        const padded = [...raw]
+        while (padded.length < 10) {
+          padded.push(raw[padded.length % raw.length])
+        }
+        return padded
+      })(),
       stockImages: stockImgs,
       variant,
       locationInfo,
