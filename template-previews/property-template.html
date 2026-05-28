@@ -4,148 +4,260 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>505 Atlantic Seaboard — Luxury Residential Cape Town</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #f7f5f2;
-    --bg-2: #efece7;
-    --bg-3: #e5e0d8;
-    --on-bg: #1a1814;
-    --on-bg-muted: #6b655c;
-    --primary: #2c2218;
-    --accent: #8b6f52;
-    --accent-light: #c9a882;
-    --serif: 'Noto Serif', Georgia, serif;
-    --sans: 'Plus Jakarta Sans', sans-serif;
-  }
-  html { scroll-behavior: smooth; }
-  body { font-family: var(--sans); color: var(--on-bg); background: var(--bg); overflow-x: hidden; line-height: 1.6; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --void: #080706;
+  --deep: #111009;
+  --surface: #1a1714;
+  --border: rgba(255,255,255,0.07);
+  --border-hover: rgba(255,255,255,0.18);
+  --text: #e8e4dc;
+  --muted: rgba(232,228,220,0.45);
+  --faint: rgba(232,228,220,0.2);
+  --gold: #c9a86c;
+  --gold-dim: #a88848;
+  --gold-faint: rgba(201,168,108,0.1);
+  --display: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', system-ui, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--void); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
-  /* NAV */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 56px; display: flex; align-items: center; justify-content: space-between; }
-  nav.scrolled { background: rgba(247,245,242,0.92); backdrop-filter: blur(20px); }
-  .nav-logo { font-family: var(--serif); font-size: 0.85rem; font-weight: 700; color: #fff; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
-  nav.scrolled .nav-logo { color: var(--primary); }
-  .nav-links { display: flex; gap: 12px; list-style: none; align-items: center; }
-  .nav-links a { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.8); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 16px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; }
-  .nav-links a:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); color: #fff; }
-  nav.scrolled .nav-links a { color: var(--on-bg-muted); border-color: rgba(0,0,0,0.12); }
-  nav.scrolled .nav-links a:hover { background: var(--bg-2); color: var(--primary); border-color: rgba(0,0,0,0.2); }
-  .nav-cta { background: #fff !important; color: var(--primary) !important; font-weight: 700 !important; border-color: transparent !important; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
-  nav.scrolled .nav-cta { background: var(--primary) !important; color: #fff !important; }
+/* ── NAV ── */
+#main-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 28px 56px; display: flex; align-items: center;
+  justify-content: space-between; transition: all 0.4s;
+}
+#main-nav.scrolled {
+  padding: 18px 56px; background: rgba(8,7,6,0.95);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--display); font-size: 1rem; font-weight: 400;
+  color: rgba(255,255,255,0.7); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.nav-links { display: flex; gap: 10px; list-style: none; align-items: center; }
+.nav-links a {
+  font-size: 0.65rem; font-weight: 300; color: rgba(255,255,255,0.45);
+  text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 8px 16px; border: 1px solid transparent; transition: all 0.25s;
+}
+.nav-links a:hover { color: rgba(255,255,255,0.8); border-color: var(--border); }
+.nav-cta {
+  background: var(--gold) !important; color: var(--void) !important;
+  font-weight: 600 !important; border-color: transparent !important;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--gold-dim) !important; }
 
-  /* HERO — full bleed, headline bottom-left */
-  .hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; }
-  .hero-bg { position: absolute; inset: 0; background-image: url('https://picsum.photos/seed/atlantic-hero/1800/1000'); background-size: cover; background-position: center 40%; }
-  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,8,6,0.85) 30%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.15) 100%); }
-  .hero-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 0 56px 64px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 32px; }
-  .hero-left { }
-  .hero-address { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 16px; }
-  .hero-left h1 { font-family: var(--serif); font-size: clamp(3.5rem, 7vw, 7rem); font-weight: 700; color: #fff; line-height: 0.95; letter-spacing: -0.04em; }
-  .hero-left h1 em { font-style: italic; display: block; font-weight: 400; }
-  .hero-right { text-align: right; }
-  .hero-right p { font-size: 0.95rem; color: rgba(255,255,255,0.7); line-height: 1.65; max-width: 340px; margin-bottom: 24px; font-weight: 300; }
-  .hero-actions { display: flex; gap: 12px; justify-content: flex-end; }
-  .btn-light { background: #fff; color: var(--primary); font-size: 0.78rem; font-weight: 700; padding: 12px 26px; border-radius: 999px; text-decoration: none; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s; }
-  .btn-light:hover { background: var(--bg-2); }
-  .btn-ghost-light { color: rgba(255,255,255,0.8); font-size: 0.78rem; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); padding: 11px 22px; border-radius: 999px; transition: background 0.2s; }
-  .btn-ghost-light:hover { background: rgba(255,255,255,0.1); }
+/* ── HERO ── */
+.hero { position: relative; height: 100vh; min-height: 640px; overflow: hidden; }
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://picsum.photos/seed/atlantic-hero/1800/1000');
+  background-size: cover; background-position: center 40%;
+}
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(160deg, rgba(8,7,6,0.2) 0%, rgba(8,7,6,0.6) 60%, rgba(8,7,6,0.92) 100%);
+}
+.hero-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 0 64px 72px;
+  display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 40px;
+}
+.hero-left { }
+.hero-address {
+  font-size: 0.65rem; font-weight: 400; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+}
+.hero-h1 {
+  font-family: var(--display); font-size: clamp(5rem, 10vw, 11rem);
+  font-weight: 300; color: var(--text); line-height: 0.88;
+  letter-spacing: -0.02em;
+}
+.hero-h1 em { display: block; font-style: italic; color: var(--gold); }
+.hero-right { text-align: right; max-width: 380px; }
+.hero-right p {
+  font-size: 0.95rem; font-weight: 300; color: var(--muted);
+  line-height: 1.7; margin-bottom: 28px;
+}
+.hero-actions { display: flex; gap: 12px; justify-content: flex-end; }
+.btn-gold {
+  background: var(--gold); color: var(--void); font-size: 0.68rem;
+  font-weight: 500; padding: 12px 28px; letter-spacing: 0.12em;
+  text-transform: uppercase; text-decoration: none; transition: background 0.2s;
+}
+.btn-gold:hover { background: var(--gold-dim); }
+.btn-ghost-gold {
+  color: var(--gold); font-size: 0.68rem; font-weight: 400;
+  padding: 11px 24px; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; border: 1px solid rgba(201,168,108,0.3);
+  transition: border-color 0.2s;
+}
+.btn-ghost-gold:hover { border-color: var(--gold); }
 
-  /* ATMOSPHERIC PHOTO STRIP */
-  .photo-strip { width: 100%; height: 500px; overflow: hidden; position: relative; }
-  .photo-strip img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block; }
+/* ── PHOTO STRIP ── */
+.photo-strip { width: 100%; height: 480px; overflow: hidden; }
+.photo-strip img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block; }
 
-  /* STATEMENT */
-  .statement-section { background: var(--bg); padding: 120px 56px; text-align: center; }
-  .statement-kicker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; }
-  .statement-text { font-family: var(--serif); font-size: clamp(2.2rem, 4.5vw, 4rem); font-weight: 400; color: var(--primary); line-height: 1.2; letter-spacing: -0.025em; max-width: 900px; margin: 0 auto 32px; }
-  .statement-text em { font-style: italic; }
-  .statement-sub { font-size: 1rem; color: var(--on-bg-muted); line-height: 1.75; max-width: 560px; margin: 0 auto; font-weight: 300; }
+/* ── STATEMENT ── */
+.statement-section { background: var(--deep); padding: 120px 64px; text-align: center; }
+.statement-kicker {
+  font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 32px;
+}
+.statement-text {
+  font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4.8rem);
+  font-weight: 300; color: var(--text); line-height: 1.2;
+  letter-spacing: -0.01em; max-width: 960px; margin: 0 auto 32px;
+}
+.statement-text em { font-style: italic; color: var(--gold); }
+.statement-sub {
+  font-size: 0.95rem; font-weight: 300; color: var(--muted);
+  line-height: 1.8; max-width: 540px; margin: 0 auto;
+}
 
-  /* ALTERNATING SERVICE SPLITS (60/40) */
-  .splits-section { background: var(--bg-2); }
-  .split-row { display: grid; align-items: stretch; }
-  .split-row.img-left { grid-template-columns: 60fr 40fr; }
-  .split-row.img-right { grid-template-columns: 40fr 60fr; }
-  .split-img { overflow: hidden; }
-  .split-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 480px; transition: transform 0.6s; }
-  .split-img:hover img { transform: scale(1.02); }
-  .split-text { padding: 72px 64px; display: flex; flex-direction: column; justify-content: center; background: var(--bg-2); }
-  .split-row.img-right .split-text { background: var(--bg); }
-  .split-num { font-family: var(--serif); font-style: italic; font-size: 5rem; font-weight: 700; color: rgba(139,111,82,0.15); line-height: 1; margin-bottom: 8px; }
-  .split-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
-  .split-title { font-family: var(--serif); font-size: clamp(1.6rem, 2.8vw, 2.4rem); font-weight: 700; color: var(--primary); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 20px; }
-  .split-title em { font-style: italic; font-weight: 400; }
-  .split-desc { font-size: 0.95rem; color: var(--on-bg-muted); line-height: 1.75; margin-bottom: 28px; max-width: 420px; }
-  .btn-outline-dark { display: inline-block; color: var(--primary); font-size: 0.78rem; font-weight: 600; text-decoration: none; border: 1px solid rgba(44,34,24,0.3); padding: 10px 22px; border-radius: 999px; letter-spacing: 0.04em; text-transform: uppercase; transition: all 0.2s; }
-  .btn-outline-dark:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold);
+}
 
-  /* STATS */
-  .stats-section { background: var(--primary); padding: 72px 56px; }
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 900px; margin: 0 auto; text-align: center; }
-  .stat-num { font-family: var(--serif); font-style: italic; font-size: 3.5rem; font-weight: 700; color: var(--accent-light); line-height: 1; }
-  .stat-label { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 10px; }
+/* ── SPLITS ── */
+.splits-section { }
+.split-row { display: grid; align-items: stretch; }
+.split-row.img-left { grid-template-columns: 60fr 40fr; }
+.split-row.img-right { grid-template-columns: 40fr 60fr; }
+.split-img { overflow: hidden; }
+.split-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 520px; transition: transform 0.7s; }
+.split-img:hover img { transform: scale(1.03); }
+.split-text {
+  padding: 80px 72px; display: flex; flex-direction: column;
+  justify-content: center; background: var(--surface); border-top: 1px solid var(--border);
+}
+.split-row.img-right .split-text { background: var(--deep); }
+.split-num {
+  font-family: var(--display); font-style: italic;
+  font-size: 6rem; font-weight: 300; color: rgba(201,168,108,0.08);
+  line-height: 1; margin-bottom: 4px;
+}
+.split-label { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.split-title {
+  font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300; color: var(--text); line-height: 1.15; margin-bottom: 20px;
+}
+.split-title em { font-style: italic; color: var(--gold); }
+.split-desc { font-size: 0.88rem; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 32px; max-width: 380px; }
+.btn-outline-gold {
+  display: inline-block; color: var(--gold); font-size: 0.65rem; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
+  border: 1px solid rgba(201,168,108,0.3); padding: 11px 22px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-outline-gold:hover { background: var(--gold-faint); border-color: var(--gold); }
 
-  /* GALLERY GRID — asymmetric */
-  .gallery-section { background: var(--bg); padding: 100px 56px; }
-  .gallery-header { margin-bottom: 56px; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: auto; gap: 16px; }
-  .gallery-item { overflow: hidden; border-radius: 8px; }
-  .gallery-item:nth-child(1) { grid-column: span 8; grid-row: span 2; }
-  .gallery-item:nth-child(2) { grid-column: span 4; }
-  .gallery-item:nth-child(3) { grid-column: span 4; }
-  .gallery-item:nth-child(4) { grid-column: span 5; }
-  .gallery-item:nth-child(5) { grid-column: span 7; }
-  .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 220px; transition: transform 0.5s; }
-  .gallery-item:nth-child(1) img { min-height: 460px; }
-  .gallery-item:hover img { transform: scale(1.04); }
-  .gallery-caption { padding: 10px 2px 0; font-size: 0.72rem; color: var(--on-bg-muted); letter-spacing: 0.04em; }
+/* ── STATS ── */
+.stats-section { background: var(--void); padding: 72px 64px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; max-width: 900px; margin: 0 auto; text-align: center; }
+.stat-num { font-family: var(--display); font-style: italic; font-size: 3.5rem; font-weight: 300; color: var(--gold); line-height: 1; }
+.stat-label { font-size: 0.62rem; font-weight: 400; color: var(--faint); text-transform: uppercase; letter-spacing: 0.14em; margin-top: 12px; }
 
-  /* ABOUT 50/50 */
-  .about-section { background: var(--bg-2); }
-  .about-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
-  .about-img { overflow: hidden; }
-  .about-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 580px; }
-  .about-text { padding: 80px 72px; display: flex; flex-direction: column; justify-content: center; }
-  .about-text .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  .about-heading { font-family: var(--serif); font-size: clamp(1.8rem, 2.8vw, 2.6rem); font-weight: 700; color: var(--primary); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 24px; }
-  .about-heading em { font-style: italic; font-weight: 400; }
-  .about-text p { font-size: 0.92rem; color: var(--on-bg-muted); line-height: 1.8; margin-bottom: 16px; }
-  .about-detail-row { display: flex; gap: 32px; margin-top: 32px; padding-top: 28px; border-top: 1px solid var(--bg-3); }
-  .about-detail { }
-  .about-detail-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-bg-muted); margin-bottom: 4px; }
-  .about-detail-value { font-family: var(--serif); font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+/* ── GALLERY ── */
+.gallery-section { background: var(--deep); padding: 100px 64px; }
+.gallery-header { margin-bottom: 56px; }
+.gallery-heading {
+  font-family: var(--display); font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 300; color: var(--text); line-height: 1.1; margin-top: 12px;
+}
+.gallery-heading em { font-style: italic; color: var(--gold); }
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: auto; gap: 2px;
+}
+.gallery-item { overflow: hidden; }
+.gallery-item:nth-child(1) { grid-column: span 8; grid-row: span 2; }
+.gallery-item:nth-child(2) { grid-column: span 4; }
+.gallery-item:nth-child(3) { grid-column: span 4; }
+.gallery-item:nth-child(4) { grid-column: span 5; }
+.gallery-item:nth-child(5) { grid-column: span 7; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 220px; transition: transform 0.5s; }
+.gallery-item:nth-child(1) img { min-height: 460px; }
+.gallery-item:hover img { transform: scale(1.04); }
+.gallery-caption { padding: 8px 2px 0; font-size: 0.65rem; font-weight: 300; color: var(--faint); letter-spacing: 0.06em; }
 
-  /* CONTACT FORM */
-  .contact-section { background: var(--bg); padding: 100px 56px; }
-  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1100px; margin: 0 auto; }
-  .contact-info .section-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-  .contact-heading { font-family: var(--serif); font-size: clamp(1.8rem, 2.8vw, 2.6rem); font-weight: 700; color: var(--primary); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 28px; }
-  .contact-heading em { font-style: italic; font-weight: 400; }
-  .contact-detail { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 22px; }
-  .contact-icon { font-size: 1.1rem; margin-top: 2px; }
-  .contact-detail-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-bg-muted); margin-bottom: 3px; }
-  .contact-detail-value { font-size: 0.88rem; color: var(--on-bg); line-height: 1.5; }
-  .form-group { margin-bottom: 16px; }
-  .form-label { display: block; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-bg-muted); margin-bottom: 7px; }
-  .form-input { width: 100%; padding: 12px 15px; font-family: var(--sans); font-size: 0.88rem; background: var(--bg-2); border: none; border-radius: 8px; color: var(--on-bg); outline: none; transition: background 0.2s; }
-  .form-input:focus { background: var(--bg-3); }
-  .form-input::placeholder { color: var(--on-bg-muted); opacity: 0.5; }
-  textarea.form-input { resize: vertical; min-height: 110px; }
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .form-submit { background: var(--primary); color: #fff; font-family: var(--sans); font-size: 0.8rem; font-weight: 700; padding: 13px; border-radius: 999px; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.07em; width: 100%; margin-top: 6px; transition: background 0.2s; }
-  .form-submit:hover { background: #3a2e22; }
+/* ── ABOUT ── */
+.about-section { }
+.about-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: stretch; }
+.about-img { overflow: hidden; }
+.about-img img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 580px; }
+.about-text { padding: 80px 72px; background: var(--surface); display: flex; flex-direction: column; justify-content: center; }
+.about-text .section-label { margin-bottom: 20px; }
+.about-heading {
+  font-family: var(--display); font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 300; color: var(--text); line-height: 1.1; margin-bottom: 28px;
+}
+.about-heading em { font-style: italic; color: var(--gold); }
+.about-text p { font-size: 0.88rem; font-weight: 300; color: var(--muted); line-height: 1.85; margin-bottom: 18px; }
+.about-detail-row {
+  display: flex; gap: 32px; margin-top: 36px; padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.about-det-label { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 4px; }
+.about-det-val { font-family: var(--display); font-size: 0.95rem; color: var(--gold); font-weight: 400; }
 
-  /* FOOTER — giant brand name */
-  footer { background: var(--primary); padding: 72px 56px 48px; }
-  .footer-brand { font-family: var(--serif); font-size: clamp(4rem, 12vw, 10rem); font-weight: 700; color: rgba(255,255,255,0.08); line-height: 0.85; letter-spacing: -0.04em; margin-bottom: 48px; pointer-events: none; white-space: nowrap; overflow: hidden; }
-  .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
-  .footer-logo { font-family: var(--serif); font-size: 0.85rem; font-weight: 700; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.1em; }
-  .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); }
-  .footer-links { display: flex; gap: 24px; list-style: none; }
-  .footer-links a { color: rgba(255,255,255,0.3); font-size: 0.75rem; text-decoration: none; transition: color 0.2s; }
-  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+/* ── CONTACT ── */
+.contact-section { background: var(--deep); padding: 100px 64px; }
+.contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1100px; margin: 0 auto; }
+.contact-info .section-label { margin-bottom: 20px; }
+.contact-heading {
+  font-family: var(--display); font-size: clamp(2rem, 3.2vw, 3rem);
+  font-weight: 300; color: var(--text); line-height: 1.1; margin-bottom: 36px;
+}
+.contact-heading em { font-style: italic; color: var(--gold); }
+.contact-detail { display: flex; gap: 14px; margin-bottom: 24px; }
+.contact-icon { font-size: 1rem; margin-top: 2px; }
+.contact-det-label { font-size: 0.6rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 3px; }
+.contact-det-val { font-size: 0.85rem; font-weight: 300; color: var(--muted); line-height: 1.5; }
+.form-group { margin-bottom: 18px; }
+.form-label { display: block; font-size: 0.6rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); margin-bottom: 8px; }
+.form-input {
+  width: 100%; padding: 12px 0; font-family: var(--sans); font-size: 0.88rem; font-weight: 300;
+  background: transparent; border: none; border-bottom: 1px solid var(--border);
+  color: var(--text); outline: none; transition: border-color 0.2s;
+}
+.form-input:focus { border-bottom-color: var(--gold); }
+.form-input::placeholder { color: var(--faint); }
+textarea.form-input { resize: vertical; min-height: 100px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-submit {
+  background: var(--gold); color: var(--void); font-family: var(--sans);
+  font-size: 0.7rem; font-weight: 500; padding: 14px; letter-spacing: 0.14em;
+  text-transform: uppercase; border: none; cursor: pointer; width: 100%;
+  margin-top: 12px; transition: background 0.2s;
+}
+.form-submit:hover { background: var(--gold-dim); }
+
+/* ── FOOTER ── */
+footer { background: var(--void); padding: 72px 64px 48px; border-top: 1px solid var(--border); }
+.footer-brand {
+  font-family: var(--display); font-size: clamp(4rem, 12vw, 11rem);
+  font-weight: 300; color: rgba(255,255,255,0.03); line-height: 0.85;
+  letter-spacing: -0.03em; margin-bottom: 48px; white-space: nowrap; overflow: hidden;
+}
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 20px; padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.footer-logo { font-family: var(--display); font-size: 0.9rem; font-weight: 400; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.footer-copy { font-size: 0.68rem; font-weight: 300; color: var(--faint); }
+.footer-links { display: flex; gap: 24px; list-style: none; }
+.footer-links a { font-size: 0.65rem; font-weight: 300; color: var(--faint); letter-spacing: 0.06em; text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -165,13 +277,13 @@
   <div class="hero-content">
     <div class="hero-left">
       <div class="hero-address">Sea Point · Cape Town · Western Cape</div>
-      <h1>505<br><em>Atlantic</em><br>Seaboard</h1>
+      <h1 class="hero-h1">505<br><em>Atlantic</em><br>Seaboard</h1>
     </div>
     <div class="hero-right">
       <p>An intimate collection of 24 residences set above the Atlantic Ocean. Crafted for those who refuse to compromise between city vibrancy and seaside calm.</p>
       <div class="hero-actions">
-        <a href="#contact" class="btn-light">Register Interest</a>
-        <a href="#residences" class="btn-ghost-light">View Residences</a>
+        <a href="#contact" class="btn-gold">Register Interest</a>
+        <a href="#residences" class="btn-ghost-gold">View Residences</a>
       </div>
     </div>
   </div>
@@ -197,7 +309,7 @@
       <div class="split-label">Interiors</div>
       <h3 class="split-title">Living Spaces<br>That <em>Breathe</em></h3>
       <p class="split-desc">Double-volume ceilings, full-height glazing, and raw concrete paired with warm timber create a sense of expansiveness that flows from inside to the sea.</p>
-      <a href="#" class="btn-outline-dark">Explore Interiors</a>
+      <a href="#" class="btn-outline-gold">Explore Interiors</a>
     </div>
   </div>
   <div class="split-row img-right">
@@ -206,7 +318,7 @@
       <div class="split-label">Kitchens</div>
       <h3 class="split-title"><em>Precision</em>-Fitted<br>Kitchens</h3>
       <p class="split-desc">Boffi cabinetry, Gaggenau appliances, and stone countertops extend the standard of material quality throughout every kitchen at 505.</p>
-      <a href="#" class="btn-outline-dark">Specification Details</a>
+      <a href="#" class="btn-outline-gold">Specification Details</a>
     </div>
     <div class="split-img">
       <img src="https://picsum.photos/seed/prop-2/900/700" alt="Kitchen">
@@ -221,36 +333,24 @@
       <div class="split-label">Building Amenities</div>
       <h3 class="split-title">Amenities That<br>Serve <em>Your Day</em></h3>
       <p class="split-desc">Infinity pool, private gym, concierge, secure basement parking, and a residents' roof terrace overlooking the full sweep of the Atlantic.</p>
-      <a href="#" class="btn-outline-dark">See All Amenities</a>
+      <a href="#" class="btn-outline-gold">See All Amenities</a>
     </div>
   </div>
 </div>
 
 <div class="stats-section">
   <div class="stats-grid">
-    <div>
-      <div class="stat-num">24</div>
-      <div class="stat-label">Private Residences</div>
-    </div>
-    <div>
-      <div class="stat-num">180°</div>
-      <div class="stat-label">Ocean Views</div>
-    </div>
-    <div>
-      <div class="stat-num">Q4</div>
-      <div class="stat-label">2026 Completion</div>
-    </div>
-    <div>
-      <div class="stat-num">A+</div>
-      <div class="stat-label">Green Star Rating</div>
-    </div>
+    <div><div class="stat-num">24</div><div class="stat-label">Private Residences</div></div>
+    <div><div class="stat-num">180°</div><div class="stat-label">Ocean Views</div></div>
+    <div><div class="stat-num">Q4</div><div class="stat-label">2026 Completion</div></div>
+    <div><div class="stat-num">A+</div><div class="stat-label">Green Star Rating</div></div>
   </div>
 </div>
 
 <section class="gallery-section">
   <div class="gallery-header">
-    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;">Gallery</div>
-    <h2 style="font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:700;color:var(--primary);line-height:1.15;letter-spacing:-0.02em;">The <em style="font-style:italic;font-weight:400;">Details</em></h2>
+    <div class="section-label">Gallery</div>
+    <h2 class="gallery-heading">The <em>Details</em></h2>
   </div>
   <div class="gallery-grid">
     <div class="gallery-item"><img src="https://picsum.photos/seed/gal-1/800/800" alt="View"><div class="gallery-caption">Living Room, Type A — Floor 8</div></div>
@@ -272,17 +372,17 @@
       <p>Atlantic Developments has delivered over R2.8 billion in residential and mixed-use property across the Western Cape since 2004. Every project is developed with the same discipline: rigorous site selection, best-in-class design, and construction quality that outlasts trends.</p>
       <p>505 is our most considered project to date — a building that takes its cues from the landscape and gives nothing back but quality.</p>
       <div class="about-detail-row">
-        <div class="about-detail">
-          <div class="about-detail-label">Est.</div>
-          <div class="about-detail-value">2004, Cape Town</div>
+        <div>
+          <div class="about-det-label">Est.</div>
+          <div class="about-det-val">2004, Cape Town</div>
         </div>
-        <div class="about-detail">
-          <div class="about-detail-label">Portfolio</div>
-          <div class="about-detail-value">38 Projects</div>
+        <div>
+          <div class="about-det-label">Portfolio</div>
+          <div class="about-det-val">38 Projects</div>
         </div>
-        <div class="about-detail">
-          <div class="about-detail-label">NHBRC</div>
-          <div class="about-detail-value">Registered</div>
+        <div>
+          <div class="about-det-label">NHBRC</div>
+          <div class="about-det-val">Registered</div>
         </div>
       </div>
     </div>
@@ -298,29 +398,29 @@
         <div class="contact-detail">
           <span class="contact-icon">📍</span>
           <div>
-            <div class="contact-detail-label">Show Unit</div>
-            <div class="contact-detail-value">505 Beach Road, Sea Point<br>Cape Town, 8005</div>
+            <div class="contact-det-label">Show Unit</div>
+            <div class="contact-det-val">505 Beach Road, Sea Point<br>Cape Town, 8005</div>
           </div>
         </div>
         <div class="contact-detail">
           <span class="contact-icon">📞</span>
           <div>
-            <div class="contact-detail-label">Sales Line</div>
-            <div class="contact-detail-value">021 555 0505</div>
+            <div class="contact-det-label">Sales Line</div>
+            <div class="contact-det-val">021 555 0505</div>
           </div>
         </div>
         <div class="contact-detail">
           <span class="contact-icon">✉️</span>
           <div>
-            <div class="contact-detail-label">Email</div>
-            <div class="contact-detail-value">sales@505atlantic.co.za</div>
+            <div class="contact-det-label">Email</div>
+            <div class="contact-det-val">sales@505atlantic.co.za</div>
           </div>
         </div>
         <div class="contact-detail">
           <span class="contact-icon">🕐</span>
           <div>
-            <div class="contact-detail-label">Show Unit Hours</div>
-            <div class="contact-detail-value">Mon – Sat: 09:00 – 17:00<br>Sunday by appointment</div>
+            <div class="contact-det-label">Show Unit Hours</div>
+            <div class="contact-det-val">Mon – Sat: 09:00 – 17:00<br>Sunday by appointment</div>
           </div>
         </div>
       </div>
@@ -378,6 +478,5 @@
     nav.classList.toggle('scrolled', window.scrollY > 80);
   });
 </script>
-
 </body>
 </html>

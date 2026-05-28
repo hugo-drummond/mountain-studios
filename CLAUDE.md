@@ -6,11 +6,16 @@
 - **Repo**: `hugodrummon/mountain-studios` (private)
 - **Dev server**: `localhost:3000`
 
-## Last Session (2026-03-18, session 2)
+## Last Session (2026-05-28, session 3)
 
 ### What was done
-1. **Built `buildPropertyTemplate()`** — dedicated property template inspired by 505statestreet.com. Structure: pill-button nav → full-bleed hero (headline bottom-left) → atmospheric full-width photo → large serif statement → alternating 60/40 service splits (zigzag) → lifestyle photo overlay → stats row → asymmetric gallery grid → 50/50 about + image → contact form → giant brand name footer. Wired into POST handler (`if (category === 'property')` before the variant switch).
-2. **Reference site for tech-digital** — plain.com selected, screenshots partially collected (session hit context limit before completion).
+1. **Redesigned all 5 static template preview files** using the `frontend-design` skill — completely new layouts, typography, and aesthetics per template:
+   - `gallery-template.html` → Editorial/magazine (Italiana + EB Garamond, terracotta-rose on black/white, stark split hero)
+   - `portfolio-template.html` → Brutalist/industrial (Bebas Neue + Lora, copper/charcoal on sand, dark left-panel hero)
+   - `property-template.html` → Ultra-luxury dark (Cormorant Garamond + Jost thin weights, gold on near-void black)
+   - `service-template.html` → Technical monospace — light mode reversal (IBM Plex Mono, teal accent, stat cards in hero)
+   - `visual-template.html` → Organic/artisanal heritage (Playfair Display + Lato, parchment/forest/blush, editorial borders)
+2. **Confirmed** template-previews are static demo files only — not connected to the generation pipeline (`categoryVariant` uses `visual | service | portfolio` variants, not these HTML files directly)
 
 ### What's working
 - All 3 template variants render correctly: **visual** (photo-heavy), **service** (icon cards + process steps), **portfolio** (gallery-focused)
