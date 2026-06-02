@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Builders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Oswald', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #e67e22;
+      --primary-on-dark: #e67e22;
+      --primary-raw: #e67e22;
+      --secondary: #888888;
+      --bg: #fafafa; --bg-alt: #f0f0f0; --card-bg: #ffffff;
+      --text: #1a1a1a; --text-muted: #555555; --border: rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body><link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f9f7f4;
+      --bg-alt: #f0ece5;
+      --card-bg: #ffffff;
+      --text: #2a2620;
+      --text-muted: #7a7068;
+      --border: rgba(0,0,0,0.08);
+      --heading-font: 'Oswald', sans-serif;
+      --body-font: 'Inter', sans-serif;
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    .tr-reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+    .tr-reveal.visible { opacity:1; transform:translateY(0); }
+    .tr-service-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.12); }
+    .tr-service-card { transition:transform 0.35s ease, box-shadow 0.35s ease; }
+    .tr-step-num { font-family:'Oswald',sans-serif; font-size:5rem; font-weight:700; color:#e67e22; line-height:1; opacity:0.15; position:absolute; top:-1.5rem; left:-0.5rem; pointer-events:none; }
+    @keyframes kbzoom { 0%{transform:scale(1)} 100%{transform:scale(1.06)} }
+    .tr-hero-img { animation: kbzoom 12s ease-in-out infinite alternate; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    .tr-fade1 { animation: fadeUp 0.9s ease forwards; }
+    .tr-fade2 { animation: fadeUp 0.9s 0.2s ease both; }
+    .tr-fade3 { animation: fadeUp 0.9s 0.4s ease both; }
+    .tr-tag { display:inline-block; font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.75rem; border:1px solid rgba(0,0,0,0.18); border-radius:2px; color:#7a7068; }
+    .tr-cta-primary { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:#e67e22; color:#fff; text-decoration:none; transition:opacity 0.25s; }
+    .tr-cta-primary:hover { opacity:0.88; }
+    .tr-cta-ghost { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.55); text-decoration:none; transition:border-color 0.25s; }
+    .tr-cta-ghost:hover { border-color:#fff; }
+    .tr-input { width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:0.9rem; padding:0.85rem 0 0.85rem; background:transparent; border:none; border-bottom:1.5px solid rgba(0,0,0,0.2); color:#2a2620; outline:none; transition:border-color 0.25s; }
+    .tr-input:focus { border-bottom-color:#e67e22; }
+    .tr-input::placeholder { color:#7a7068; }
+  </style>
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Apex Builders</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">Get a Free Quote</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+  <section style="position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#1c1a17">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80&auto=format&fit=crop" alt="" class="tr-hero-img" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
+      <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(28,26,23,0.3) 0%,rgba(28,26,23,0.85) 70%)"></div>
+    </div>
+    <!-- diagonal bottom cut -->
+    <div style="position:absolute;bottom:-2px;left:0;right:0;height:80px;background:#f9f7f4;clip-path:polygon(0 100%,100% 100%,100% 0)"></div>
+    <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 2rem 7rem;width:100%">
+      <div class="tr-fade1" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem">
+        <div style="width:36px;height:2px;background:#e67e22"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">MASTER CRAFTSMEN</span>
+      </div>
+      <h1 class="tr-fade2" style="font-family:'Oswald',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:#fff;line-height:1.0;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:1.5rem;max-width:820px">Built to last.<br/><em>Built to impress.</em></h1>
+      <p class="tr-fade3" style="font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,0.72);max-width:540px;line-height:1.75;margin-bottom:2.5rem">Quality construction and renovation delivered on time.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <a href="#contact" class="tr-cta-primary">Get a Free Quote &rarr;</a>
+        <a href="#services" class="tr-cta-ghost">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#1c1a17;padding:0 2rem">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06)">
+      
+      <div style="padding:2.5rem 1.5rem;border-right:1px solid rgba(255,255,255,0.06)">
+        <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:#e67e22;line-height:1;margin-bottom:0.35rem">12+</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">Years Experience</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">Industry leading</div>
+      </div>
+      <div style="padding:2.5rem 1.5rem;border-right:1px solid rgba(255,255,255,0.06)">
+        <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:#e67e22;line-height:1;margin-bottom:0.35rem">500+</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">Happy Clients</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">And counting</div>
+      </div>
+      <div style="padding:2.5rem 1.5rem;border-right:1px solid rgba(255,255,255,0.06)">
+        <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:#e67e22;line-height:1;margin-bottom:0.35rem">98%</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">Satisfaction</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">Verified reviews</div>
+      </div>
+      <div style="padding:2.5rem 1.5rem;">
+        <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:#e67e22;line-height:1;margin-bottom:0.35rem">24h</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">Response Time</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">Always available</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" style="padding:100px 2rem;background:#f9f7f4">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1.5rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+            <div style="width:28px;height:2px;background:#e67e22"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#7a7068">What We Do</span>
+          </div>
+          <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;color:#2a2620;text-transform:uppercase;line-height:1.05">What We Offer</h2>
+        </div>
+        <a href="#contact" class="tr-cta-primary" style="background:#e67e22;color:#fff">Get a Free Quote &rarr;</a>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+        
+        <div class="tr-service-card tr-reveal" style="background:#f9f7f4;padding:2.5rem 2rem;position:relative;overflow:hidden">
+          <span class="tr-step-num">01</span>
+          <div style="margin-bottom:1.25rem">
+            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">✦</span>
+          </div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:#2a2620;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">Premium Service One</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#7a7068;line-height:1.75;margin-bottom:1.25rem">Comprehensive solutions tailored to your specific needs.</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <span class="tr-tag">Quality</span><span class="tr-tag">Bespoke</span>
+          </div>
+        </div>
+        <div class="tr-service-card tr-reveal" style="background:#f9f7f4;padding:2.5rem 2rem;position:relative;overflow:hidden">
+          <span class="tr-step-num">02</span>
+          <div style="margin-bottom:1.25rem">
+            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">◈</span>
+          </div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:#2a2620;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">Expert Service Two</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#7a7068;line-height:1.75;margin-bottom:1.25rem">Professional expertise delivered with precision.</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <span class="tr-tag">Expert</span><span class="tr-tag">Reliable</span>
+          </div>
+        </div>
+        <div class="tr-service-card tr-reveal" style="background:#f9f7f4;padding:2.5rem 2rem;position:relative;overflow:hidden">
+          <span class="tr-step-num">03</span>
+          <div style="margin-bottom:1.25rem">
+            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">◉</span>
+          </div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:#2a2620;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">Complete Service Three</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#7a7068;line-height:1.75;margin-bottom:1.25rem">End-to-end support that simplifies every project.</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <span class="tr-tag">Full-Service</span><span class="tr-tag">Support</span>
+          </div>
+        </div>
+        <div class="tr-service-card tr-reveal" style="background:#f9f7f4;padding:2.5rem 2rem;position:relative;overflow:hidden">
+          <span class="tr-step-num">04</span>
+          <div style="margin-bottom:1.25rem">
+            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">◆</span>
+          </div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:#2a2620;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">Specialist Service Four</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:#7a7068;line-height:1.75;margin-bottom:1.25rem">Specialist knowledge for the most demanding briefs.</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            <span class="tr-tag">Specialist</span><span class="tr-tag">Trusted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 2rem;background:#1c1a17">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:#e67e22"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">How It Works</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:4rem">How We Work</h2>
+      <div class="ms-flex" style="display:flex;gap:0;align-items:stretch">
+        
+        <div style="flex:1;padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08);border-left:none">
+          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:#e67e22;opacity:0.4;line-height:1;margin-bottom:1.5rem">01</div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Discovery</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.75">We deeply understand your goals, challenges, and vision.</p>
+        </div>
+        <div style="flex:1;padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:#e67e22;opacity:0.4;line-height:1;margin-bottom:1.5rem">02</div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Strategy</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.75">We develop a tailored plan to achieve your objectives.</p>
+        </div>
+        <div style="flex:1;padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:#e67e22;opacity:0.4;line-height:1;margin-bottom:1.5rem">03</div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Execution</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.75">We deliver with precision, keeping you informed throughout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="padding:100px 2rem;background:#f9f7f4">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center">
+      <div style="position:relative">
+        <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:2px solid #e67e22;opacity:0.25;pointer-events:none"></div>
+        <div class="ms-img" style="height:580px;overflow:hidden">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;bottom:-2rem;right:-2rem;background:#1c1a17;padding:1.5rem 2rem">
+          <div style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:#e67e22">12+</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem">Years Experience</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+          <div style="width:28px;height:2px;background:#e67e22"></div>
+          <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#7a7068">About Us</span>
+        </div>
+        <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#2a2620;text-transform:uppercase;line-height:1.05;margin-bottom:1.5rem">Our Story</h2>
+        <p style="font-family:'Inter',sans-serif;font-size:1.05rem;font-style:italic;color:#2a2620;line-height:1.65;margin-bottom:1.25rem;border-left:3px solid #e67e22;padding-left:1.25rem">Our mission is to exceed expectations, every single time.</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#7a7068;line-height:1.8;margin-bottom:1rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#7a7068;line-height:1.8;margin-bottom:1rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:2rem">
+          
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Quality</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Bespoke</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Expert</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Reliable</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Full-Service</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:#e67e22;flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:#2a2620;font-weight:500">Support</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 2rem;background:#f0ece5">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:#e67e22"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#7a7068">Recent Work</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#2a2620;text-transform:uppercase;margin-bottom:3rem">Our Work</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+        
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Premium Project</div>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Recent Work</div>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1519671282429-b44ff759b7e0?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Client Success</div>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Latest Delivery</div>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Featured Case</div>
+          </div>
+        </div>
+        <div style="position:relative;overflow:hidden;background:#1c1a17">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7ed8b49d80?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">Expert Service Two</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" style="padding:100px 2rem;background:#1c1a17">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:#e67e22"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Testimonials</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:3.5rem">What Clients Say</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06)">
+        
+        <div style="background:#1c1a17;padding:2.5rem 2rem">
+          <div style="font-size:3rem;line-height:1;color:#e67e22;opacity:0.5;margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.75rem">Outstanding service from start to finish. They exceeded every expectation and truly transformed our business.</p>
+          <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em">Sarah M.</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">Director — Cape Town</div>
+            <div style="color:#e67e22;font-size:0.8rem;margin-top:0.4rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </div>
+        </div>
+        <div style="background:#1c1a17;padding:2.5rem 2rem">
+          <div style="font-size:3rem;line-height:1;color:#e67e22;opacity:0.5;margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.75rem">Professional, responsive, and genuinely invested in our success.</p>
+          <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em">Priya N.</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">Business Owner</div>
+            <div style="color:#e67e22;font-size:0.8rem;margin-top:0.4rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </div>
+        </div>
+        <div style="background:#1c1a17;padding:2.5rem 2rem">
+          <div style="font-size:3rem;line-height:1;color:#e67e22;opacity:0.5;margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.75rem">Delivered exactly what they promised, on time and on budget.</p>
+          <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em">Mark D.</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">Manager</div>
+            <div style="color:#e67e22;font-size:0.8rem;margin-top:0.4rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding:0;background:#f9f7f4">
+    <div class="ms-grid" style="max-width:100%;display:grid;grid-template-columns:1fr 1.4fr">
+      <div style="background:#1c1a17;padding:5rem 3rem;display:flex;flex-direction:column;justify-content:center">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+          <div style="width:28px;height:2px;background:#e67e22"></div>
+          <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Contact</span>
+        </div>
+        <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:2rem">Let's Work Together</h2>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.45);line-height:1.75;margin-bottom:2.5rem;max-width:340px">Quality construction and renovation delivered on time.</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#e67e22;font-size:1rem;flex-shrink:0">&#9742;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Phone</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">021 000 0000</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#e67e22;font-size:1rem;flex-shrink:0">&#9993;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Email</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">hello@apexbuilders.com</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#e67e22;font-size:1rem;flex-shrink:0">&#9906;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Service Area</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">Cape Town &amp; surrounds</div>
+            </div>
+          </div>
+          
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:#e67e22;font-size:1rem;flex-shrink:0">&#9200;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Hours</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.75)">Mon–Fri 8am–6pm<br />Sat 9am–2pm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:5rem 4rem;background:#f9f7f4">
+        <h3 style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:600;color:#2a2620;text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem">Get a Free Quote</h3>
+        <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#7a7068;margin-bottom:2.5rem">Tell us about your project — we'll get back to you within 24 hours.</p>
+        <form style="display:flex;flex-direction:column;gap:2rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+            <div>
+              <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7a7068;display:block;margin-bottom:0.5rem">Name</label>
+              <input type="text" placeholder="Your name" class="tr-input" />
+            </div>
+            <div>
+              <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7a7068;display:block;margin-bottom:0.5rem">Phone</label>
+              <input type="tel" placeholder="021 000 0000" class="tr-input" />
+            </div>
+          </div>
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7a7068;display:block;margin-bottom:0.5rem">Email</label>
+            <input type="email" placeholder="your@email.com" class="tr-input" />
+          </div>
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#7a7068;display:block;margin-bottom:0.5rem">Project Details</label>
+            <textarea placeholder="Describe your project..." rows="5" class="tr-input" style="resize:none"></textarea>
+          </div>
+          <button type="submit" class="tr-cta-primary" style="align-self:flex-start;background:#e67e22;color:#fff;border:none;cursor:pointer;font-size:0.875rem;letter-spacing:0.04em;padding:1rem 2.5rem">Get a Free Quote &rarr;</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:3.5rem 2rem 2rem;background:#1c1a17;border-top:1px solid rgba(255,255,255,0.05)">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.75rem">Apex Builders</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:280px">Quality construction and renovation delivered on time.</p>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Services</div>
+        <a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Quality</a><a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Expert</a><a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Full-Service</a><a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Specialist</a>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">Testimonials</a>
+        <a href="#contact" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9742; 021 000 0000</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9993; hello@apexbuilders.com</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45)">Cape Town</p>
+      </div>
+    </div>
+    <div style="max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; 2026 Apex Builders. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Terms</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const revealEls = document.querySelectorAll('.tr-reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

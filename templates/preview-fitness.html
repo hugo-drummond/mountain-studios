@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex Athletics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Bebas Neue', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #e63946;
+      --primary-on-dark: #e63946;
+      --primary-raw: #e63946;
+      --secondary: #888888;
+      --bg: #0f0f0f; --bg-alt: #141414; --card-bg: #1a1a1a;
+      --text: #f5f5f0; --text-muted: #a3a3a0; --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg-alt: #111111;
+    --card-bg: #161616;
+    --text: #ffffff;
+    --text-muted: #888888;
+    --border: rgba(255,255,255,0.06);
+  }
+  html { scroll-behavior: smooth; }
+  .fit-fade { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fit-fade.visible { opacity: 1; transform: none; }
+  .fit-card { transition: transform 0.3s ease; }
+  .fit-card:hover { transform: translateY(-6px); }
+  .fit-img-zoom { overflow: hidden; }
+  .fit-img-zoom img { transition: transform 0.6s ease; }
+  .fit-img-zoom:hover img { transform: scale(1.05); }
+  .fit-btn { transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease; }
+  .fit-btn:hover { transform: translateY(-2px); }
+  .fit-service-row { border-bottom: 1px solid rgba(255,255,255,0.06); transition: background 0.3s ease; cursor: pointer; }
+  .fit-service-row:hover { background: #161616; }
+  .fit-counter { font-variant-numeric: tabular-nums; }
+</style>
+
+<!-- PROMO BAR -->
+<div style="background:#e63946;padding:0.55rem 2rem;text-align:center">
+  <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#000">Rated #1 in Cape Town 2024</p>
+</div>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Apex Athletics</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">Start Training</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+<!-- HERO: Dark cinematic full-bleed, massive Bebas headline, split stats bar -->
+<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#0a0a0a">
+  <div style="position:absolute;inset:0">
+    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,1) 0%,rgba(10,10,10,0.65) 50%,rgba(10,10,10,0.15) 100%)"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,0.5) 0%,transparent 60%)"></div>
+  </div>
+  <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 3rem 6rem;width:100%">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+      <div style="width:40px;height:2px;background:#e63946"></div>
+      <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:#e63946">ELITE PERFORMANCE</p>
+    </div>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,11vw,11rem);font-weight:400;color:#ffffff;line-height:0.9;letter-spacing:0.02em;margin-bottom:2rem">TRAIN HARDER.<BR/><EM>PERFORM BETTER.</EM></h1>
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:#e63946;color:#000;text-decoration:none;display:inline-block">Start Training</a>
+      <a href="#services" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;border:1px solid rgba(255,255,255,0.3);color:#ffffff;text-decoration:none;display:inline-block">Learn More</a>
+    </div>
+  </div>
+  <!-- Bottom stats bar -->
+  <div style="position:relative;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.06)">
+    <div style="max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap">
+      
+      <div style="padding:1.5rem 0;border-right:1px solid rgba(255,255,255,0.06);padding-right:3rem;margin-right:3rem">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#ffffff;line-height:1">12+</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#888888;margin-top:0.2rem">Years Experience</div>
+      </div>
+      <div style="padding:1.5rem 0;border-right:1px solid rgba(255,255,255,0.06);padding-right:3rem;margin-right:3rem">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#ffffff;line-height:1">500+</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#888888;margin-top:0.2rem">Happy Clients</div>
+      </div>
+      <div style="padding:1.5rem 0;border-right:1px solid rgba(255,255,255,0.06);padding-right:3rem;margin-right:3rem">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#ffffff;line-height:1">98%</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#888888;margin-top:0.2rem">Satisfaction</div>
+      </div>
+      <div style="padding:1.5rem 0;">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:#ffffff;line-height:1">24h</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:#888888;margin-top:0.2rem">Response Time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES: Bold numbered list rows — editorial, high contrast -->
+<section id="services" style="padding:6rem 0;background:#0a0a0a">
+  <div style="max-width:1400px;margin:0 auto;padding:0 3rem">
+    <div class="fit-fade" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5rem);color:#ffffff;line-height:1;letter-spacing:0.04em">WHAT WE OFFER</h2>
+      <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#888888;text-decoration:none;border-bottom:1px solid #888888;padding-bottom:0.2rem">Start Training &rarr;</a>
+    </div>
+    <div>
+      
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#e63946;line-height:1;opacity:0.7">01</div>
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#ffffff;letter-spacing:0.05em;margin-bottom:0.35rem">PREMIUM SERVICE ONE</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#888888;font-weight:300;line-height:1.6;max-width:520px">Comprehensive solutions tailored to your specific needs.</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Quality</span><span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Bespoke</span>
+          </div>
+        </div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+      </div>
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#e63946;line-height:1;opacity:0.7">02</div>
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#ffffff;letter-spacing:0.05em;margin-bottom:0.35rem">EXPERT SERVICE TWO</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#888888;font-weight:300;line-height:1.6;max-width:520px">Professional expertise delivered with precision.</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Expert</span><span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Reliable</span>
+          </div>
+        </div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+      </div>
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#e63946;line-height:1;opacity:0.7">03</div>
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#ffffff;letter-spacing:0.05em;margin-bottom:0.35rem">COMPLETE SERVICE THREE</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#888888;font-weight:300;line-height:1.6;max-width:520px">End-to-end support that simplifies every project.</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Full-Service</span><span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Support</span>
+          </div>
+        </div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+      </div>
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#e63946;line-height:1;opacity:0.7">04</div>
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#ffffff;letter-spacing:0.05em;margin-bottom:0.35rem">SPECIALIST SERVICE FOUR</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#888888;font-weight:300;line-height:1.6;max-width:520px">Specialist knowledge for the most demanding briefs.</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
+            <span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Specialist</span><span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#e63946;background:rgba(230,57,70,0.1);padding:0.25rem 0.65rem">Trusted</span>
+          </div>
+        </div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GRID: Asymmetric 3+2 mosaic, full-bleed -->
+<section style="display:grid;grid-template-columns:3fr 2fr;background:#0a0a0a;gap:3px">
+  <div class="fit-img-zoom" style="height:520px">
+    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+  </div>
+  <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
+    <div class="fit-img-zoom" style="height:258px">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+    <div class="fit-img-zoom" style="height:258px">
+      <img src="https://images.unsplash.com/photo-1519671282429-b44ff759b7e0?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT: Dark, horizontal — bold quote + image side -->
+<section id="about" style="padding:7rem 0;background:#111111">
+  <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center">
+    <div class="fit-fade">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+        <div style="width:32px;height:2px;background:#e63946"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#e63946">Our Philosophy</p>
+      </div>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:#ffffff;line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">OUR STORY</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:#e63946;line-height:1.7;margin-bottom:1.5rem;font-weight:400">Our mission is to exceed expectations, every single time.</p>
+      <p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:#888888;line-height:1.9;margin-bottom:1rem;font-weight:300">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:#888888;line-height:1.9;margin-bottom:1rem;font-weight:300">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:#e63946;color:#000;text-decoration:none">Start Training</a>
+    </div>
+    <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
+      <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      <div style="position:absolute;bottom:2rem;left:-2rem;background:#e63946;padding:1.5rem 2rem;max-width:200px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#000;line-height:1">12+</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;margin-top:0.25rem">Years Experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS: Dark cards, accent quote marks -->
+<section id="testimonials" style="padding:7rem 0;background:#0a0a0a">
+  <div style="max-width:1400px;margin:0 auto;padding:0 3rem">
+    <div class="fit-fade" style="margin-bottom:4rem">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5rem);color:#ffffff;line-height:1;letter-spacing:0.03em">RESULTS<span style="color:#e63946">.</span> STORIES<span style="color:#e63946">.</span></h2>
+    </div>
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(255,255,255,0.06)">
+      
+      <div class="fit-card" style="background:#e63946;padding:2.5rem;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:rgba(0,0,0,0.12);position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
+        <div style="color:rgba(0,0,0,0.5);font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#000;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:500">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
+        <div style="border-top:1px solid rgba(0,0,0,0.15);padding-top:1rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#000">Sarah M.</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(0,0,0,0.5);margin-top:0.15rem">Director — Cape Town</div>
+        </div>
+      </div>
+      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:#e63946;position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
+        <div style="color:#e63946;font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"Professional, responsive, and genuinely invested in our success."</p>
+        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#ffffff">Priya N.</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;margin-top:0.15rem">Business Owner</div>
+        </div>
+      </div>
+      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:#e63946;position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
+        <div style="color:#e63946;font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"Delivered exactly what they promised, on time and on budget."</p>
+        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#ffffff">Mark D.</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;margin-top:0.15rem">Manager</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT: Dark 2-col, accent CTA bar above -->
+<div style="background:#e63946;padding:2.5rem 3rem;text-align:center">
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#000;letter-spacing:0.05em">START TRAINING — START TODAY</h3>
+</div>
+<section id="contact" style="padding:6rem 0;background:#111111">
+  <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start">
+    <div class="fit-fade">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4rem);color:#ffffff;line-height:1;letter-spacing:0.03em;margin-bottom:2rem">LET'S WORK TOGETHER</h2>
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        
+        <div style="border-left:2px solid #e63946;padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#e63946;margin-bottom:0.3rem">Location</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#888888;font-weight:300">123 Main Road, Cape Town</div>
+        </div>
+        <div style="border-left:2px solid #e63946;padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#e63946;margin-bottom:0.3rem">Phone</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#888888;font-weight:300">021 000 0000</div>
+        </div>
+        <div style="border-left:2px solid #e63946;padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#e63946;margin-bottom:0.3rem">Email</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#888888;font-weight:300">hello@apexathletics.com</div>
+        </div>
+        <div style="border-left:2px solid #e63946;padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#e63946;margin-bottom:0.3rem">Hours</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#888888;font-weight:300">Mon–Fri 8am–6pm · Sat 9am–2pm</div>
+        </div>
+      </div>
+    </div>
+    <div class="fit-fade">
+      <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text" placeholder="Full Name" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:#161616;border:1px solid rgba(255,255,255,0.06);color:#ffffff;font-size:0.88rem;outline:none;box-sizing:border-box" />
+          <input type="email" placeholder="Email" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:#161616;border:1px solid rgba(255,255,255,0.06);color:#ffffff;font-size:0.88rem;outline:none;box-sizing:border-box" />
+        </div>
+        <input type="tel" placeholder="Phone Number" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:#161616;border:1px solid rgba(255,255,255,0.06);color:#ffffff;font-size:0.88rem;outline:none" />
+        <select style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:#161616;border:1px solid rgba(255,255,255,0.06);color:#888888;font-size:0.88rem;outline:none;appearance:none">
+          <option value="">Select a program</option>
+          <option value="Premium Service One">Premium Service One</option><option value="Expert Service Two">Expert Service Two</option><option value="Complete Service Three">Complete Service Three</option><option value="Specialist Service Four">Specialist Service Four</option>
+        </select>
+        <textarea placeholder="Tell us about your fitness goals..." rows="4" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:#161616;border:1px solid rgba(255,255,255,0.06);color:#ffffff;font-size:0.88rem;outline:none;resize:none"></textarea>
+        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:#e63946;color:#000;border:none;cursor:pointer">Start Training</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:3rem;background:#0a0a0a;border-top:1px solid rgba(255,255,255,0.06)">
+  <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:#ffffff;letter-spacing:0.08em">APEX ATHLETICS</div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      <a href="#services" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Quality</a><a href="#services" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Expert</a><a href="#services" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Full-Service</a>
+      <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#888888;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Contact</a>
+    </div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; 2026 Apex Athletics</p>
+  </div>
+</footer>
+
+<script>
+  const fitObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fitObserver.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fit-fade').forEach(el => fitObserver.observe(el));
+</script>
+
+</body>
+</html>

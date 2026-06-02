@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Céleste Events</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Cormorant Garamond', Georgia, serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #d4a017;
+      --primary-on-dark: #d4a017;
+      --primary-raw: #d4a017;
+      --secondary: #888888;
+      --bg: #0f0f0f; --bg-alt: #141414; --card-bg: #1a1a1a;
+      --text: #f5f5f0; --text-muted: #a3a3a0; --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --bg-alt: #faf8f4;
+      --card-bg: #faf8f4;
+      --text: #faf8f4;
+      --text-muted: #7a7570;
+      --border: rgba(250,248,244,0.06);
+      --primary: #d4a017;
+      --secondary: #888888;
+    }
+  </style>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Céleste Events</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">Plan Your Event</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#0d0d12">
+    <div style="position:absolute;inset:0">
+      <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 4rem;width:100%;padding-top:100px;padding-bottom:100px">
+      <div style="max-width:800px">
+        <div style="display:inline-flex;align-items:center;gap:0.75rem;margin-bottom:2.5rem;background:rgba(232,65,10,0.12);border:1px solid rgba(232,65,10,0.3);padding:0.5rem 1.25rem">
+          <div style="width:6px;height:6px;border-radius:50%;background:#d4a017"></div>
+          <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">EVENT SPECIALISTS</span>
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.5rem,10vw,9rem);font-weight:300;color:#faf8f4;line-height:0.88;letter-spacing:-0.02em;margin-bottom:0.5rem">Céleste<br/>Events</h1>
+        <div style="margin-bottom:2.5rem"></div>
+        <div style="display:flex;align-items:flex-start;gap:4rem;flex-wrap:wrap">
+          <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:rgba(250,248,244,0.65);line-height:1.8;max-width:420px">Bespoke event planning and production for every occasion.</p>
+          <div style="display:flex;flex-direction:column;gap:1rem;flex-shrink:0">
+            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:#d4a017;color:#fff;text-decoration:none;display:inline-block">Plan Your Event</a>
+            <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;border:1px solid rgba(250,248,244,0.2);color:#faf8f4;text-decoration:none;display:inline-block;text-align:center">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;display:flex;background:rgba(13,13,18,0.8);backdrop-filter:blur(10px);border-top:1px solid rgba(250,248,244,0.06)">
+      
+      <div style="flex:1;padding:1.5rem 2rem;">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:#faf8f4;line-height:1">12+</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#7a7570;margin-top:0.35rem">Years Experience</div>
+      </div>
+      <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(250,248,244,0.06)">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:#faf8f4;line-height:1">500+</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#7a7570;margin-top:0.35rem">Happy Clients</div>
+      </div>
+      <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(250,248,244,0.06)">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:#faf8f4;line-height:1">98%</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#7a7570;margin-top:0.35rem">Satisfaction</div>
+      </div>
+      <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(250,248,244,0.06)">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:#faf8f4;line-height:1">24h</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#7a7570;margin-top:0.35rem">Response Time</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" style="padding:140px 0;background:#faf8f4">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:5rem;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#d4a017"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">What We Do</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:#0d0d12;line-height:1;font-style:italic">What We Offer</h2>
+        </div>
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:#7a7570;max-width:300px;line-height:1.7">Our mission is to exceed expectations, every single time.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(13,13,18,0.08)" class="ms-grid">
+        
+        <div style="padding:2.5rem;position:relative;overflow:hidden;background:#faf8f4;transition:background 0.3s ease" onmouseover="this.style.background='#f0ece6'" onmouseout="this.style.background='#faf8f4'">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+            <span style="font-size:1.2rem">✦</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#0d0d12;margin-bottom:0.75rem;font-style:italic">Premium Service One</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570;line-height:1.8;margin-bottom:1.5rem">Comprehensive solutions tailored to your specific needs.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Quality</span><span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Bespoke</span>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:#d4a017;transition:width 0.4s ease" onmouseover="this.parentElement.style.background='#f0ece6';this.style.width='100%'" onmouseout="this.parentElement.style.background='#faf8f4';this.style.width='0'"></div>
+        </div>
+        <div style="padding:2.5rem;border-left:1px solid rgba(13,13,18,0.08);position:relative;overflow:hidden;background:#faf8f4;transition:background 0.3s ease" onmouseover="this.style.background='#f0ece6'" onmouseout="this.style.background='#faf8f4'">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+            <span style="font-size:1.2rem">◈</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#0d0d12;margin-bottom:0.75rem;font-style:italic">Expert Service Two</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570;line-height:1.8;margin-bottom:1.5rem">Professional expertise delivered with precision.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Expert</span><span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Reliable</span>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:#d4a017;transition:width 0.4s ease" onmouseover="this.parentElement.style.background='#f0ece6';this.style.width='100%'" onmouseout="this.parentElement.style.background='#faf8f4';this.style.width='0'"></div>
+        </div>
+        <div style="padding:2.5rem;border-left:1px solid rgba(13,13,18,0.08);position:relative;overflow:hidden;background:#faf8f4;transition:background 0.3s ease" onmouseover="this.style.background='#f0ece6'" onmouseout="this.style.background='#faf8f4'">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+            <span style="font-size:1.2rem">◉</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#0d0d12;margin-bottom:0.75rem;font-style:italic">Complete Service Three</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570;line-height:1.8;margin-bottom:1.5rem">End-to-end support that simplifies every project.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Full-Service</span><span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Support</span>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:#d4a017;transition:width 0.4s ease" onmouseover="this.parentElement.style.background='#f0ece6';this.style.width='100%'" onmouseout="this.parentElement.style.background='#faf8f4';this.style.width='0'"></div>
+        </div>
+        <div style="padding:2.5rem;border-top:1px solid rgba(13,13,18,0.08);position:relative;overflow:hidden;background:#faf8f4;transition:background 0.3s ease" onmouseover="this.style.background='#f0ece6'" onmouseout="this.style.background='#faf8f4'">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+            <span style="font-size:1.2rem">◆</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#0d0d12;margin-bottom:0.75rem;font-style:italic">Specialist Service Four</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570;line-height:1.8;margin-bottom:1.5rem">Specialist knowledge for the most demanding briefs.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Specialist</span><span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:#7a7570">Trusted</span>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:#d4a017;transition:width 0.4s ease" onmouseover="this.parentElement.style.background='#f0ece6';this.style.width='100%'" onmouseout="this.parentElement.style.background='#faf8f4';this.style.width='0'"></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:#0d0d12;color:#faf8f4;text-decoration:none;display:inline-block">Plan Your Event</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" style="padding:140px 0;background:#0d0d12">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+        <div style="width:30px;height:1px;background:#d4a017"></div>
+        <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">Past Events</span>
+      </div>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:#faf8f4;font-style:italic;margin-bottom:4rem;line-height:1">Our Work</h2>
+      <div style="display:grid;grid-template-columns:5fr 3fr 4fr;gap:1.5px;background:rgba(250,248,244,0.06);margin-bottom:1.5px" class="ms-grid">
+        
+        <div style="overflow:hidden;height:480px;position:relative">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem">
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#d4a017;margin-bottom:0.35rem">Event</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:#faf8f4;font-style:italic">Premium Project</div>
+          </div>
+        </div>
+        <div style="overflow:hidden;height:480px;position:relative">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem">
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#d4a017;margin-bottom:0.35rem">Event</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:#faf8f4;font-style:italic">Recent Work</div>
+          </div>
+        </div>
+        <div style="overflow:hidden;height:480px;position:relative">
+          <img src="https://images.unsplash.com/photo-1519671282429-b44ff759b7e0?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem">
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#d4a017;margin-bottom:0.35rem">Event</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:#faf8f4;font-style:italic">Client Success</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:3fr 4fr 5fr;gap:1.5px;background:rgba(250,248,244,0.06)" class="ms-grid">
+        
+        <div style="overflow:hidden;height:360px;position:relative">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+        </div>
+        <div style="overflow:hidden;height:360px;position:relative">
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+        </div>
+        <div style="overflow:hidden;height:360px;position:relative">
+          <img src="https://images.unsplash.com/photo-1517248135467-4c7ed8b49d80?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="padding:140px 0;background:#f0ece6">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#d4a017"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">Our Story</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4.5rem);font-weight:300;color:#0d0d12;font-style:italic;line-height:1.05;margin-bottom:2.5rem">Our Story</h2>
+          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.3rem;font-weight:300;color:#0d0d12;font-style:italic;line-height:1.5;margin-bottom:2rem;border-left:3px solid #d4a017;padding-left:1.5rem">Our mission is to exceed expectations, every single time.</p>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:#7a7570;line-height:1.9;margin-bottom:1.25rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:#7a7570;line-height:1.9;margin-bottom:1.25rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(13,13,18,0.1)" class="ms-grid">
+            
+            <div>
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#d4a017;line-height:1">12+</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:#7a7570;margin-top:0.4rem">Years Experience</div>
+            </div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#d4a017;line-height:1">500+</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:#7a7570;margin-top:0.4rem">Happy Clients</div>
+            </div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#d4a017;line-height:1">98%</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:#7a7570;margin-top:0.4rem">Satisfaction</div>
+            </div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#d4a017;line-height:1">24h</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:#7a7570;margin-top:0.4rem">Response Time</div>
+            </div>
+          </div>
+        </div>
+        <div style="position:relative">
+          <div style="overflow:hidden;height:650px">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="position:absolute;top:-1rem;right:-1rem;bottom:1rem;left:1rem;border:1px solid rgba(232,65,10,0.2);z-index:-1;pointer-events:none"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:140px 0;background:#0d0d12;overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#d4a017"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">Testimonials</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3.5rem);font-weight:300;color:#faf8f4;font-style:italic;line-height:1.1">Client Stories</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3rem">
+          <div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:#d4a017;line-height:0.6;opacity:0.3;margin-bottom:1.5rem">&ldquo;</div>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:#faf8f4;font-style:italic;line-height:1.5;margin-bottom:2rem">Outstanding service from start to finish. They exceeded every expectation and truly transformed our business.</p>
+            <div style="display:flex;align-items:center;gap:1.5rem">
+              <div style="width:1px;height:40px;background:#d4a017"></div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;color:#faf8f4;letter-spacing:0.08em;text-transform:uppercase">Sarah M., Director — Cape Town</div>
+                <div style="color:#888888;font-size:0.75rem;margin-top:0.3rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="padding-top:3rem;border-top:1px solid rgba(250,248,244,0.06)">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:300;color:rgba(250,248,244,0.6);font-style:italic;line-height:1.6;margin-bottom:1.5rem">Professional, responsive, and genuinely invested in our success.</p>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;color:#7a7570;letter-spacing:0.08em">— Priya N., Business Owner</div>
+          </div>
+          <div style="padding-top:3rem;border-top:1px solid rgba(250,248,244,0.06)">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:300;color:rgba(250,248,244,0.6);font-style:italic;line-height:1.6;margin-bottom:1.5rem">Delivered exactly what they promised, on time and on budget.</p>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;color:#7a7570;letter-spacing:0.08em">— Mark D., Manager</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:120px 0;background:#d4a017">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="text-align:center;margin-bottom:5rem">
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:1rem">How We Work</div>
+        <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:#fff;font-style:italic;line-height:1">From Vision to Reality</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0" class="ms-grid">
+        
+        <div style="padding:2.5rem 2rem;">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:rgba(255,255,255,0.15);line-height:1;margin-bottom:1.5rem">01</div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#fff;font-style:italic;margin-bottom:0.75rem">Discovery</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.8">We deeply understand your goals, challenges, and vision.</p>
+        </div>
+        <div style="padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.15)">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:rgba(255,255,255,0.15);line-height:1;margin-bottom:1.5rem">02</div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#fff;font-style:italic;margin-bottom:0.75rem">Strategy</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.8">We develop a tailored plan to achieve your objectives.</p>
+        </div>
+        <div style="padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.15)">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:rgba(255,255,255,0.15);line-height:1;margin-bottom:1.5rem">03</div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#fff;font-style:italic;margin-bottom:0.75rem">Execution</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.8">We deliver with precision, keeping you informed throughout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding:140px 0;background:#faf8f4">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#d4a017"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017">Book Your Event</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:#0d0d12;font-style:italic;line-height:0.95;margin-bottom:2.5rem">Let's Work Together</h2>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:#7a7570;line-height:1.9;margin-bottom:3rem">Our mission is to exceed expectations, every single time.</p>
+          <div style="display:flex;flex-direction:column;gap:2rem">
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:#d4a017">&#9906;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#0d0d12;margin-bottom:0.35rem">Location</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570">123 Main Road, Cape Town</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:#d4a017">&#9742;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#0d0d12;margin-bottom:0.35rem">Phone</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570">021 000 0000</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:#d4a017">&#9993;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#0d0d12;margin-bottom:0.35rem">Email</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570">hello@célesteevents.com</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:#d4a017">&#9200;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#0d0d12;margin-bottom:0.35rem">Hours</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:#7a7570">Mon–Fri 8am–6pm<br/>Sat 9am–2pm</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <form style="display:flex;flex-direction:column;gap:1.5rem" onsubmit="return false">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="ms-grid">
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#0d0d12;display:block;margin-bottom:0.6rem">Name</label>
+                <input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:#f0ece6;border:1px solid rgba(13,13,18,0.08);color:#0d0d12;outline:none" />
+              </div>
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#0d0d12;display:block;margin-bottom:0.6rem">Email</label>
+                <input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:#f0ece6;border:1px solid rgba(13,13,18,0.08);color:#0d0d12;outline:none" />
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="ms-grid">
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#0d0d12;display:block;margin-bottom:0.6rem">Event Type</label>
+                <input type="text" placeholder="Wedding, Corporate..." style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:#f0ece6;border:1px solid rgba(13,13,18,0.08);color:#0d0d12;outline:none" />
+              </div>
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#0d0d12;display:block;margin-bottom:0.6rem">Event Date</label>
+                <input type="text" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:#f0ece6;border:1px solid rgba(13,13,18,0.08);color:#0d0d12;outline:none" />
+              </div>
+            </div>
+            <div>
+              <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#0d0d12;display:block;margin-bottom:0.6rem">Tell Us About Your Event</label>
+              <textarea placeholder="Guest count, venue, vision, budget..." rows="5" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:#f0ece6;border:1px solid rgba(13,13,18,0.08);color:#0d0d12;outline:none;resize:none"></textarea>
+            </div>
+            <button type="submit" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:#d4a017;color:#fff;border:none;cursor:pointer;align-self:flex-start">Send Enquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:6rem 4rem 3rem;background:#0d0d12;border-top:1px solid rgba(250,248,244,0.04)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:5rem" class="ms-grid">
+        <div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:#faf8f4;font-style:italic;margin-bottom:1.5rem;letter-spacing:0.05em">Céleste Events</div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;line-height:1.9;max-width:320px">Bespoke event planning and production for every occasion.</p>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017;margin-bottom:1.5rem">Navigate</div>
+          <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
+          <a href="#gallery" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Gallery</a>
+          <a href="#about" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
+          <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017;margin-bottom:1.5rem">Services</div>
+          <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Quality</a><a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Expert</a><a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Full-Service</a><a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;text-decoration:none;display:block;margin-bottom:0.75rem">Specialist</a>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:#d4a017;margin-bottom:1.5rem">Contact</div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:#7a7570;line-height:1.9">123 Main Road<br/>Cape Town<br/>021 000 0000</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(250,248,244,0.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:#7a7570">&copy; 2026 Céleste Events. All rights reserved.</p>
+        <div style="display:flex;gap:2rem">
+          <a href="#" style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:#7a7570;text-decoration:none">Privacy Policy</a>
+          <a href="#" style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:#7a7570;text-decoration:none">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

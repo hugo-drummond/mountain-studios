@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vantage Advisory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #a5b0bf;
+      --primary-on-dark: #a5b0bf;
+      --primary-raw: #1e3a5f;
+      --secondary: #888888;
+      --bg: #0f0f0f; --bg-alt: #141414; --card-bg: #1a1a1a;
+      --text: #f5f5f0; --text-muted: #a3a3a0; --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0b;
+      --bg-alt: #141410;
+      --card-bg: #1a1a16;
+      --text: #f0ede6;
+      --text-muted: #8a8780;
+      --border: rgba(240,237,230,0.08);
+      --primary: #1e3a5f;
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --body-font: 'DM Sans', sans-serif;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom cursor */
+    body { cursor: none; }
+    #ms-cursor-dot { position:fixed;width:6px;height:6px;background:#1e3a5f;border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s; }
+    #ms-cursor-ring { position:fixed;width:36px;height:36px;border:1px solid #1e3a5f;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s; }
+
+    /* Reveal animations */
+    .reveal { opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:0.1s; }
+    .reveal-delay-2 { transition-delay:0.2s; }
+    .reveal-delay-3 { transition-delay:0.3s; }
+
+    /* Horizontal rule accent */
+    .pro-rule { display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem; }
+    .pro-rule::before, .pro-rule::after { content:'';flex:1;height:1px;background:rgba(240,237,230,0.08); }
+    .pro-rule::before { max-width:40px; }
+
+    /* Service accordion */
+    .pro-accordion-item { border-bottom:1px solid rgba(240,237,230,0.08);overflow:hidden; }
+    .pro-accordion-trigger { display:flex;align-items:center;justify-content:space-between;width:100%;padding:1.75rem 0;background:none;border:none;cursor:pointer;text-align:left; }
+    .pro-accordion-body { max-height:0;overflow:hidden;transition:max-height 0.4s ease; }
+    .pro-accordion-body.open { max-height:400px; }
+    .pro-accordion-icon { width:28px;height:28px;border:1px solid rgba(240,237,230,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s,background 0.3s; }
+    .pro-accordion-trigger:hover .pro-accordion-icon { background:#1e3a5f;border-color:#1e3a5f; }
+  </style>
+
+  <!-- Custom cursor -->
+  <div id="ms-cursor-dot"></div>
+  <div id="ms-cursor-ring"></div>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Vantage Advisory</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">Book a Consultation</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+  <!-- ═══════════ HERO: Full-bleed, Ken Burns bg, text anchored bottom-left ═══════════ -->
+  <section style="position:relative;min-height:95vh;display:flex;align-items:flex-end;overflow:hidden;background:#0d0d0b">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;animation:kenBurns 20s ease-in-out infinite alternate" />
+      <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(13,13,11,0.82) 0%,rgba(13,13,11,0.45) 55%,rgba(13,13,11,0.15) 100%)"></div>
+    </div>
+
+    <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 2.5rem 7rem;width:100%">
+      <!-- Eyebrow with flanking lines -->
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+        <div style="width:32px;height:1px;background:#1e3a5f"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#1e3a5f;font-weight:500">PROFESSIONAL SERVICES</span>
+        <div style="width:32px;height:1px;background:#1e3a5f"></div>
+      </div>
+
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:#f0ede6;line-height:1.08;margin-bottom:1.75rem;max-width:700px;letter-spacing:-0.01em" class="reveal">Clarity in<br/><em>every decision</em></h1>
+
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(240,237,230,0.72);max-width:480px;line-height:1.75;margin-bottom:3rem;font-weight:300" class="reveal reveal-delay-1">Strategic advisory for businesses and ambitious growth.</p>
+
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap" class="reveal reveal-delay-2">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:#1e3a5f;color:#0d0d0b;text-decoration:none;transition:opacity 0.3s">Book a Consultation</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:#f0ede6;text-decoration:none;display:flex;align-items:center;gap:0.6rem;opacity:0.75;transition:opacity 0.3s">Learn More <span style="font-size:1.1rem">&#8594;</span></a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:2.5rem;right:2.5rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem">
+      <div style="width:1px;height:48px;background:linear-gradient(to bottom,#1e3a5f,transparent);animation:scrollPulse 2s ease-in-out infinite"></div>
+      <span style="font-family:var(--body-font);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#1e3a5f;writing-mode:vertical-rl">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS RIBBON ═══════════ -->
+  <section style="padding:0;background:#1e3a5f;overflow:hidden">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)">
+      
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:#0d0d0b;line-height:1;margin-bottom:0.35rem">12+</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">Years Experience</div>
+      </div>
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:#0d0d0b;line-height:1;margin-bottom:0.35rem">500+</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">Happy Clients</div>
+      </div>
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:#0d0d0b;line-height:1;margin-bottom:0.35rem">98%</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">Satisfaction</div>
+      </div>
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center;border-right:none">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:#0d0d0b;line-height:1;margin-bottom:0.35rem">24h</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">Response Time</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ SERVICES: Numbered accordion + sticky side image ═══════════ -->
+  <section id="services" style="padding:120px 0;background:#0d0d0b">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <!-- Section label -->
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:#1e3a5f"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#1e3a5f;font-weight:500">Our Services</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:#f0ede6;margin-bottom:4rem;max-width:560px;line-height:1.2" class="reveal">What We Offer</h2>
+
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start">
+        <!-- Accordion -->
+        <div id="pro-svc-accordion">
+          
+          <div class="pro-accordion-item">
+            <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=0;document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:#1e3a5f;font-weight:400;opacity:0.7;min-width:20px">01</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:#f0ede6">Premium Service One</span>
+              </div>
+              <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:#f0ede6">+</div>
+            </button>
+            <div class="pro-accordion-body open">
+              <div style="padding:0 0 1.75rem 2.8rem">
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.8;margin-bottom:1.25rem">Comprehensive solutions tailored to your specific needs.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem"><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Quality</span><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Bespoke</span></div>
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:#1e3a5f;text-decoration:none;font-weight:500">Enquire &#8594;</a>
+              </div>
+            </div>
+          </div>
+          <div class="pro-accordion-item">
+            <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=1;document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:#1e3a5f;font-weight:400;opacity:0.7;min-width:20px">02</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:#f0ede6">Expert Service Two</span>
+              </div>
+              <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:#f0ede6">+</div>
+            </button>
+            <div class="pro-accordion-body">
+              <div style="padding:0 0 1.75rem 2.8rem">
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.8;margin-bottom:1.25rem">Professional expertise delivered with precision.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem"><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Expert</span><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Reliable</span></div>
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:#1e3a5f;text-decoration:none;font-weight:500">Enquire &#8594;</a>
+              </div>
+            </div>
+          </div>
+          <div class="pro-accordion-item">
+            <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=2;document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:#1e3a5f;font-weight:400;opacity:0.7;min-width:20px">03</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:#f0ede6">Complete Service Three</span>
+              </div>
+              <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:#f0ede6">+</div>
+            </button>
+            <div class="pro-accordion-body">
+              <div style="padding:0 0 1.75rem 2.8rem">
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.8;margin-bottom:1.25rem">End-to-end support that simplifies every project.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem"><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Full-Service</span><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Support</span></div>
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:#1e3a5f;text-decoration:none;font-weight:500">Enquire &#8594;</a>
+              </div>
+            </div>
+          </div>
+          <div class="pro-accordion-item">
+            <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=3;document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:#1e3a5f;font-weight:400;opacity:0.7;min-width:20px">04</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:#f0ede6">Specialist Service Four</span>
+              </div>
+              <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:#f0ede6">+</div>
+            </button>
+            <div class="pro-accordion-body">
+              <div style="padding:0 0 1.75rem 2.8rem">
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.8;margin-bottom:1.25rem">Specialist knowledge for the most demanding briefs.</p>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem"><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Specialist</span><span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid rgba(240,237,230,0.08);color:#8a8780">Trusted</span></div>
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:#1e3a5f;text-decoration:none;font-weight:500">Enquire &#8594;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky image panel -->
+        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(240,237,230,0.08)">
+          
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="Premium Service One" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:1;transform:scale(1)" />
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="Expert Service Two" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:0;transform:scale(1.04)" />
+          <img src="https://images.unsplash.com/photo-1519671282429-b44ff759b7e0?w=800&q=80&auto=format&fit=crop" alt="Complete Service Three" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:0;transform:scale(1.04)" />
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop" alt="Specialist Service Four" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:0;transform:scale(1.04)" />
+          <!-- Overlay label -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem;background:linear-gradient(to top,rgba(13,13,11,0.85),transparent)">
+            <div id="pro-svc-label" style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:400;color:#f0ede6;font-style:italic">Premium Service One</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ABOUT: 2-col, image with offset border + stats grid ═══════════ -->
+  <section id="about" style="padding:120px 0;background:#141410">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center">
+
+      <!-- Left: Image with decorative offset border -->
+      <div style="position:relative" class="reveal">
+        <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:1px solid #1e3a5f;opacity:0.3;pointer-events:none"></div>
+        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;position:relative;z-index:1" />
+        <!-- Accent badge -->
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;z-index:2;background:#1e3a5f;padding:1.25rem 1.75rem">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:#0d0d0b;line-height:1">12+</div>
+          <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(13,13,11,0.65);margin-top:0.2rem">Years Experience</div>
+        </div>
+      </div>
+
+      <!-- Right: Heading + text + stats grid -->
+      <div>
+        <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
+          <div style="width:32px;height:1px;background:#1e3a5f"></div>
+          <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#1e3a5f;font-weight:500">About Us</span>
+        </div>
+        <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#f0ede6;line-height:1.2;margin-bottom:1.5rem" class="reveal">Our Story</h2>
+        <p style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:#f0ede6;line-height:1.65;font-style:italic;margin-bottom:1.5rem;opacity:0.85" class="reveal">Our mission is to exceed expectations, every single time.</p>
+        <p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.85;margin-bottom:1rem;font-weight:300" class="reveal">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:var(--body-font);font-size:0.95rem;color:#8a8780;line-height:1.85;margin-bottom:1rem;font-weight:300" class="reveal">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+
+        <!-- Stats grid -->
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid rgba(240,237,230,0.08)">
+          
+          <div class="reveal">
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:#1e3a5f;line-height:1;margin-bottom:0.3rem">500+</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#8a8780;font-weight:400">Happy Clients</div>
+            <div style="font-family:var(--body-font);font-size:0.7rem;color:#8a8780;opacity:0.6;margin-top:0.15rem">And counting</div>
+          </div>
+          <div class="reveal">
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:#1e3a5f;line-height:1;margin-bottom:0.3rem">98%</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#8a8780;font-weight:400">Satisfaction</div>
+            <div style="font-family:var(--body-font);font-size:0.7rem;color:#8a8780;opacity:0.6;margin-top:0.15rem">Verified reviews</div>
+          </div>
+          <div class="reveal">
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:#1e3a5f;line-height:1;margin-bottom:0.3rem">24h</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:#8a8780;font-weight:400">Response Time</div>
+            <div style="font-family:var(--body-font);font-size:0.7rem;color:#8a8780;opacity:0.6;margin-top:0.15rem">Always available</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PROCESS ═══════════ -->
+  
+  <section style="padding:120px 0;background:#0d0d0b">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:#1e3a5f"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#1e3a5f;font-weight:500">How We Work</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#f0ede6;margin-bottom:5rem;max-width:500px;line-height:1.2" class="reveal">How We Work</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem">
+        
+        <div class="reveal reveal-delay-1" style="position:relative">
+          <div style="position:absolute;top:1.25rem;left:calc(100% + 1.5rem);width:calc(3rem - 1px);height:1px;background:rgba(240,237,230,0.08)"></div>
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:400;color:#1e3a5f;opacity:0.35;line-height:1;margin-bottom:1.25rem">01</div>
+          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:#f0ede6;margin-bottom:0.75rem">Discovery</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:#8a8780;line-height:1.8;font-weight:300">We deeply understand your goals, challenges, and vision.</p>
+        </div>
+        <div class="reveal reveal-delay-2" style="position:relative">
+          <div style="position:absolute;top:1.25rem;left:calc(100% + 1.5rem);width:calc(3rem - 1px);height:1px;background:rgba(240,237,230,0.08)"></div>
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:400;color:#1e3a5f;opacity:0.35;line-height:1;margin-bottom:1.25rem">02</div>
+          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:#f0ede6;margin-bottom:0.75rem">Strategy</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:#8a8780;line-height:1.8;font-weight:300">We develop a tailored plan to achieve your objectives.</p>
+        </div>
+        <div class="reveal reveal-delay-3" style="position:relative">
+          
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:400;color:#1e3a5f;opacity:0.35;line-height:1;margin-bottom:1.25rem">03</div>
+          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:#f0ede6;margin-bottom:0.75rem">Execution</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:#8a8780;line-height:1.8;font-weight:300">We deliver with precision, keeping you informed throughout.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section style="padding:120px 0;background:#141410">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:#1e3a5f"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:#1e3a5f;font-weight:500">Client Testimonials</span>
+      </div>
+
+      
+      <!-- Large feature testimonial -->
+      <div class="reveal" style="margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(240,237,230,0.08)">
+        <div style="position:relative;padding-left:4rem">
+          <div style="position:absolute;top:-1rem;left:0;font-family:'Playfair Display',Georgia,serif;font-size:6rem;line-height:1;color:#1e3a5f;opacity:0.3;font-style:italic">&ldquo;</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:400;color:#f0ede6;line-height:1.55;font-style:italic;margin-bottom:1.75rem">Outstanding service from start to finish. They exceeded every expectation and truly transformed our business.</p>
+          <div style="display:flex;align-items:center;gap:1.25rem">
+            <div style="width:1px;height:36px;background:#1e3a5f"></div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#f0ede6;letter-spacing:0.04em">Sarah M., Director — Cape Town</div>
+              <div style="color:#1e3a5f;font-size:0.75rem;margin-top:0.25rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary testimonials grid -->
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+        
+        <div class="reveal" style="background:#1a1a16;border:1px solid rgba(240,237,230,0.08);padding:2.5rem">
+          <div style="color:#1e3a5f;font-size:0.75rem;margin-bottom:1.25rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:#f0ede6;line-height:1.7;font-style:italic;margin-bottom:1.5rem">"Professional, responsive, and genuinely invested in our success."</p>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:#8a8780;font-weight:500;letter-spacing:0.04em">— Priya N., Business Owner</div>
+        </div>
+        <div class="reveal" style="background:#1a1a16;border:1px solid rgba(240,237,230,0.08);padding:2.5rem">
+          <div style="color:#1e3a5f;font-size:0.75rem;margin-bottom:1.25rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:#f0ede6;line-height:1.7;font-style:italic;margin-bottom:1.5rem">"Delivered exactly what they promised, on time and on budget."</p>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:#8a8780;font-weight:500;letter-spacing:0.04em">— Mark D., Manager</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FULL-BLEED IMAGE BREAK ═══════════ -->
+  <section style="height:45vh;overflow:hidden;position:relative">
+    <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,13,11,0.6),rgba(13,13,11,0.1))"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 4rem">
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:400;color:#fff;line-height:1.2;font-style:italic;max-width:600px">Let's Work Together</h2>
+    </div>
+  </section>
+
+
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Let's Work Together</h2>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:1.5rem"><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Address</div>
+            <p style="color:var(--text-muted)">123 Main Road, Cape Town</p></div>
+            <div style="margin-bottom:1.5rem"><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Phone</div>
+            <p style="color:var(--text-muted)">021 000 0000</p></div>
+            <div><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Hours</div><p style="color:var(--text-muted)">Mon–Fri 8am–6pm · Sat 9am–2pm</p></div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <textarea placeholder="Message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer style="padding:5rem 2.5rem 2rem;background:#080806;border-top:1px solid rgba(240,237,230,0.08)">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem">
+      <div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:400;color:#f0ede6;margin-bottom:0.5rem;letter-spacing:0.02em">Vantage Advisory</div>
+        <div style="width:32px;height:1px;background:#1e3a5f;margin-bottom:1.25rem"></div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:#8a8780;line-height:1.75;max-width:280px;font-weight:300">Strategic advisory for businesses and ambitious growth.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#1e3a5f;font-weight:600;margin-bottom:1.5rem">Navigate</div>
+        <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Services</a>
+        <a href="#about" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">About Us</a>
+        <a href="#contact" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#1e3a5f;font-weight:600;margin-bottom:1.5rem">Services</div>
+        <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Quality</a><a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Expert</a><a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Full-Service</a><a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Specialist</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#1e3a5f;font-weight:600;margin-bottom:1.5rem">Legal</div>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Privacy Policy</a>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:#8a8780;text-decoration:none;margin-bottom:0.75rem;font-weight:300">Terms of Service</a>
+        <div style="margin-top:2rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem 1.5rem;border:1px solid #1e3a5f;color:#1e3a5f;text-decoration:none;transition:background 0.3s,color 0.3s">Book a Consultation</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(240,237,230,0.08);display:flex;align-items:center;justify-content:space-between">
+      <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(240,237,230,0.25);font-weight:300">&copy; 2026 Vantage Advisory. All rights reserved.</div>
+      <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(240,237,230,0.25)">Excellence · Integrity · Results</div>
+    </div>
+  </footer>
+
+  <style>
+    @keyframes kenBurns { from { transform:scale(1); } to { transform:scale(1.06); } }
+    @keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+  </style>
+
+  <script>
+    // Custom cursor
+    var dot = document.getElementById('ms-cursor-dot');
+    var ring = document.getElementById('ms-cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; dot.style.left = mx+'px'; dot.style.top = my+'px'; });
+    (function loop(){ rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button').forEach(function(el){ el.addEventListener('mouseenter',function(){ ring.style.width='56px'; ring.style.height='56px'; ring.style.opacity='0.5'; }); el.addEventListener('mouseleave',function(){ ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='1'; }); });
+
+    // Scroll reveal
+    var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); } }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+    // Accordion: open first item by default + update label
+    var firstBody = document.querySelector('.pro-accordion-body');
+    if(firstBody) firstBody.classList.add('open');
+    var firstIcon = document.querySelector('.pro-svc-icon');
+    if(firstIcon) firstIcon.textContent = '×';
+  </script>
+
+</body>
+</html>

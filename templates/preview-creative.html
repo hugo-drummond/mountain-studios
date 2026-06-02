@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form & Function</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Space Grotesk', sans-serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #9b59b6;
+      --primary-on-dark: #9b59b6;
+      --primary-raw: #9b59b6;
+      --secondary: #888888;
+      --bg: #fafafa; --bg-alt: #f0f0f0; --card-bg: #ffffff;
+      --text: #1a1a1a; --text-muted: #555555; --border: rgba(0,0,0,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --bg-alt: #e8e4dd;
+      --card-bg: #ffffff;
+      --text: #0a0a08;
+      --text-muted: #9a9590;
+      --border: rgba(10,10,8,0.1);
+      --primary: #9b59b6;
+      --secondary: #888888;
+    }
+  </style>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Form & Function</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">See Our Work</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+
+  <section style="background:#0a0a08;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9a9590">Creative Studio</div>
+      <div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <div style="width:40px;height:1px;background:#9b59b6"></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6">CREATIVE STUDIO</span>
+        </div>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(4rem,7vw,7rem);font-weight:400;color:#f7f5f0;line-height:0.9;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">Form & Function</h1>
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:300;color:#9a9590;line-height:1.8;max-width:420px;margin-bottom:3rem">Brand identity, digital design, and creative direction.</p>
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:#9b59b6;color:#fff;text-decoration:none">See Our Work</a>
+          <a href="#about" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:#9a9590;text-decoration:none;border-bottom:1px solid #9a9590;padding-bottom:0.1rem">Learn More</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:3rem">
+        
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:#f7f5f0;font-style:italic">12+</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-top:0.25rem">Years Experience</div>
+        </div>
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:#f7f5f0;font-style:italic">500+</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-top:0.25rem">Happy Clients</div>
+        </div>
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:#f7f5f0;font-style:italic">98%</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-top:0.25rem">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:relative;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%)" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,#0a0a08 0%,transparent 30%)"></div>
+      <div style="position:absolute;bottom:3rem;right:3rem;background:#9b59b6;padding:1rem 1.5rem">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Rated #1 in Cape Town 2024</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#9b59b6;padding:1.25rem 0;overflow:hidden;white-space:nowrap">
+    <div style="display:inline-flex;gap:4rem;animation:marquee 20s linear infinite">
+      <span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Premium Service One &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Expert Service Two &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Complete Service Three &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Specialist Service Four &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Premium Service One &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Expert Service Two &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Complete Service Three &nbsp;&bull;</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">Specialist Service Four &nbsp;&bull;</span>
+    </div>
+    <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
+  </section>
+
+  <section id="work" style="padding:120px 0;background:#f7f5f0">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;flex-wrap:wrap;gap:1.5rem">
+        <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:400;color:#0a0a08;font-style:italic;line-height:0.9">Our Work</h2>
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;max-width:300px;line-height:1.7">Our mission is to exceed expectations, every single time.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:7fr 5fr;gap:1.5rem;margin-bottom:1.5rem" class="ms-grid">
+        <div style="position:relative;overflow:hidden;group">
+          <div style="height:580px;overflow:hidden">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;inset:0;background:rgba(10,10,8,0);transition:background 0.3s ease;display:flex;align-items:flex-end;padding:2rem" onmouseover="this.style.background='rgba(10,10,8,0.6)'" onmouseout="this.style.background='rgba(10,10,8,0)'">
+            <div style="opacity:0;transform:translateY(10px);transition:all 0.3s ease" onmouseover="this.parentElement.style.opacity='1';this.style.opacity='1';this.style.transform='translateY(0)'" >
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9b59b6;margin-bottom:0.4rem">Quality Guaranteed</p>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;color:#fff;font-style:italic">Premium Project</h3>
+            </div>
+          </div>
+          <div style="padding:1.25rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.35rem">Quality Guaranteed</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;font-weight:400;color:#0a0a08;font-style:italic">Premium Project</h3>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          
+          <div style="position:relative;overflow:hidden;flex:1">
+            <div style="height:100%;min-height:250px;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="padding:1rem 0">
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.25rem">Expert</p>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:#0a0a08;font-style:italic">Recent Work</h3>
+            </div>
+          </div>
+          <div style="position:relative;overflow:hidden;flex:1">
+            <div style="height:100%;min-height:250px;overflow:hidden">
+              <img src="https://images.unsplash.com/photo-1519671282429-b44ff759b7e0?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="padding:1rem 0">
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.25rem">Full-Service</p>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:#0a0a08;font-style:italic">Client Success</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem" class="ms-grid">
+        
+        <div>
+          <div style="overflow:hidden;height:340px">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="padding:1rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.25rem">Specialist</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.1rem;font-weight:400;color:#0a0a08;font-style:italic">Latest Delivery</h3>
+          </div>
+        </div>
+        <div>
+          <div style="overflow:hidden;height:340px">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="padding:1rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.25rem">Quality</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.1rem;font-weight:400;color:#0a0a08;font-style:italic">Featured Case</h3>
+          </div>
+        </div>
+        <div>
+          <div style="overflow:hidden;height:340px">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7ed8b49d80?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="padding:1rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#9a9590;margin-bottom:0.25rem">Expert</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.1rem;font-weight:400;color:#0a0a08;font-style:italic">Expert Service Two</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" style="padding:120px 0;background:#0a0a08">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#9b59b6"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6">Services</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:#f7f5f0;font-style:italic;line-height:1.1">What We Offer</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:#9a9590;line-height:1.9;margin-top:1.5rem">Our mission is to exceed expectations, every single time.</p>
+        </div>
+        <div>
+          
+          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">01</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:#f7f5f0">Premium Service One</h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Quality</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Bespoke</span>
+                </div>
+              </div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:#9a9590;line-height:1.8">Comprehensive solutions tailored to your specific needs.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">02</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:#f7f5f0">Expert Service Two</h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Expert</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Reliable</span>
+                </div>
+              </div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:#9a9590;line-height:1.8">Professional expertise delivered with precision.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">03</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:#f7f5f0">Complete Service Three</h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Full-Service</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Support</span>
+                </div>
+              </div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:#9a9590;line-height:1.8">End-to-end support that simplifies every project.</p>
+            </div>
+          </div>
+          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">04</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:#f7f5f0">Specialist Service Four</h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  <span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Specialist</span><span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:#9a9590">Trusted</span>
+                </div>
+              </div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:#9a9590;line-height:1.8">Specialist knowledge for the most demanding briefs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" style="padding:120px 0;background:#e8e4dd">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
+        <div style="position:relative">
+          <div style="overflow:hidden;height:650px">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="position:absolute;top:-2rem;right:-2rem;width:180px;height:180px;border:1px solid rgba(10,10,8,0.15);z-index:-1"></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#9b59b6"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6">About</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:#0a0a08;font-style:italic;line-height:1.1;margin-bottom:2rem">Our Story</h2>
+          <p style="font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;font-weight:400;color:#0a0a08;font-style:italic;line-height:1.5;margin-bottom:2rem">Our mission is to exceed expectations, every single time.</p>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#4a4a45;line-height:1.9;margin-bottom:1.25rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#4a4a45;line-height:1.9;margin-bottom:1.25rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:#0a0a08;text-decoration:none;margin-top:2rem;border-bottom:1px solid #0a0a08;padding-bottom:0.25rem">See Our Work &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:#9b59b6">
+    <div style="max-width:900px;margin:0 auto;padding:0 4rem;text-align:center">
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.2);line-height:0.6;margin-bottom:2.5rem">&ldquo;</div>
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:400;color:#fff;line-height:1.4;font-style:italic;margin-bottom:2.5rem">Outstanding service from start to finish. They exceeded every expectation and truly transformed our business.</p>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7)">— Sarah M., Director — Cape Town</div>
+      <div style="color:rgba(255,255,255,0.8);font-size:1rem;letter-spacing:0.15em;margin-top:0.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding:120px 0;background:#f7f5f0">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:#9b59b6"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6">Let's Talk</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:400;color:#0a0a08;font-style:italic;line-height:0.95;margin-bottom:2.5rem">Let's Work Together</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#9a9590;line-height:1.9;margin-bottom:3rem">Our mission is to exceed expectations, every single time.</p>
+          <div style="display:flex;flex-direction:column;gap:1.5rem">
+            <a href="mailto:hello@form&function.com" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:400;color:#0a0a08;text-decoration:none;border-bottom:1px solid rgba(10,10,8,0.15);padding-bottom:1rem">hello@form&function.com</a>
+            <a href="tel:021 000 0000" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:400;color:#0a0a08;text-decoration:none;border-bottom:1px solid rgba(10,10,8,0.15);padding-bottom:1rem">021 000 0000</a>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#9a9590">123 Main Road, Cape Town</span>
+          </div>
+        </div>
+        <form style="display:flex;flex-direction:column;gap:2rem" onsubmit="return false">
+          <div>
+            <input type="text" placeholder="Your Name" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:#0a0a08;outline:none" />
+          </div>
+          <div>
+            <input type="email" placeholder="Email Address" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:#0a0a08;outline:none" />
+          </div>
+          <div>
+            <input type="text" placeholder="Project Type" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:#0a0a08;outline:none" />
+          </div>
+          <div>
+            <textarea placeholder="Tell me about your project..." rows="5" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:#0a0a08;outline:none;resize:none"></textarea>
+          </div>
+          <button type="submit" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:#0a0a08;color:#f7f5f0;border:none;cursor:pointer;align-self:flex-start;transition:background 0.3s ease">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer style="padding:5rem 4rem 3rem;background:#0a0a08;border-top:1px solid rgba(247,245,240,0.06)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:4rem" class="ms-grid">
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:#f7f5f0;font-style:italic;margin-bottom:1rem">Form & Function</div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;line-height:1.9;max-width:340px">Brand identity, digital design, and creative direction.</p>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6;margin-bottom:1.5rem">Work</div>
+          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;text-decoration:none;display:block;margin-bottom:0.75rem">Portfolio</a>
+          <a href="#services" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
+          <a href="#about" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
+          <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:#9b59b6;margin-bottom:1.5rem">Contact</div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:#9a9590;line-height:1.9">123 Main Road<br/>Cape Town<br/>021 000 0000</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(247,245,240,0.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:#9a9590">&copy; 2026 Form & Function. All rights reserved.</p>
+        <div style="display:flex;gap:2rem">
+          <a href="#" style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:#9a9590;text-decoration:none">Privacy</a>
+          <a href="#" style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:#9a9590;text-decoration:none">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

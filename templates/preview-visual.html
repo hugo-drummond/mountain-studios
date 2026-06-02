@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harvest Kitchen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --heading-font: 'Cormorant Garamond', Georgia, serif;
+      --body-font: 'Inter', sans-serif;
+      --primary: #c9783a;
+      --primary-on-dark: #c9783a;
+      --primary-raw: #c9783a;
+      --secondary: #888888;
+      --bg: #0f0f0f; --bg-alt: #141414; --card-bg: #1a1a1a;
+      --text: #f5f5f0; --text-muted: #a3a3a0; --border: rgba(255,255,255,0.08);
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
+    img { display: block; max-width: 100%; }
+    a { cursor: pointer; }
+    em { font-style: italic; }
+    .ms-grid { display: grid; }
+    .ms-flex { display: flex; }
+    .ms-burger { display: none; }
+    .ms-nav-links { display: flex; align-items: center; gap: 2rem; }
+    #ms-menu-toggle { display: none; }
+    #ms-menu-toggle:checked ~ #ms-mob-menu { display: flex; }
+    #ms-mob-menu { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(16px); z-index: 150; cursor: pointer; align-items: center; justify-content: center; }
+    #ms-mob-menu a { color: #fff; text-decoration: none; font-family: var(--heading-font); font-size: 1.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.25rem 0; }
+    .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
+    @media (max-width: 768px) {
+      .ms-burger { display: flex; }
+      .ms-burger-inline { display: flex !important; }
+      .ms-nav-links { display: none !important; }
+      .ms-grid { grid-template-columns: 1fr !important; }
+      .ms-flex { flex-direction: column !important; }
+      .ms-img { height: 220px !important; }
+      .ms-sticky { position: static !important; }
+      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
+      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+    }
+  </style>
+</head>
+<body>
+<style>
+  @keyframes vs-kenburns { 0% { transform:scale(1) translate(0,0) } 100% { transform:scale(1.08) translate(-1%,-0.5%) } }
+  @keyframes vs-fadeup { from { opacity:0;transform:translateY(28px) } to { opacity:1;transform:translateY(0) } }
+  .vs-fade-1 { animation:vs-fadeup 0.9s ease 0.1s both }
+  .vs-fade-2 { animation:vs-fadeup 0.9s ease 0.3s both }
+  .vs-fade-3 { animation:vs-fadeup 0.9s ease 0.5s both }
+  .vs-fade-4 { animation:vs-fadeup 0.9s ease 0.7s both }
+  .vs-fade-5 { animation:vs-fadeup 0.9s ease 0.9s both }
+  .vs-hero-bg { animation:vs-kenburns 18s ease-out forwards }
+  body::before { content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4 }
+  .reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease }
+  .reveal.visible { opacity:1;transform:translateY(0) }
+  #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
+  #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(201,120,58,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
+</style>
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
+
+
+  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
+      <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">Harvest Kitchen</a>
+      <div style="display:flex;align-items:center;gap:2rem">
+        <div class="ms-nav-links">
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Services</a>
+          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Gallery</a>
+          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">About</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">Contact</a>
+        </div>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none">Reserve a Table</a>
+      </div>
+    </div>
+  </nav>
+  
+  <input type="checkbox" id="ms-menu-toggle" />
+  <label for="ms-menu-toggle" id="ms-mob-menu">
+    <label for="ms-menu-toggle" class="ms-close-label">&times;</label>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:2.5rem" onclick="event.stopPropagation()">
+      <label for="ms-menu-toggle"><a href="#services">Services</a></label>
+      <label for="ms-menu-toggle"><a href="#gallery">Gallery</a></label>
+      <label for="ms-menu-toggle"><a href="#about">About</a></label>
+      <label for="ms-menu-toggle"><a href="#contact">Contact</a></label>
+    </div>
+  </label>
+
+  <!-- Hero: full-bleed Ken Burns, eyebrow with flanking lines, massive serif h1 -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80&auto=format&fit=crop" alt="" class="vs-hero-bg" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(110deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.7) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 4rem;width:100%">
+      <div class="vs-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.72rem;letter-spacing:0.12em;padding:0.45rem 1.1rem;border-radius:2px;background:rgba(201,120,58,0.15);border:1px solid rgba(201,120,58,0.35);color:rgba(255,255,255,0.9);margin-bottom:2rem;text-transform:uppercase">Rated #1 in Cape Town 2024</div>
+      <div class="vs-fade-1" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem">
+        <div style="width:48px;height:1px;background:var(--primary)"></div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">CAPE TOWN DINING</p>
+        <div style="width:48px;height:1px;background:var(--primary)"></div>
+      </div>
+      <h1 class="vs-fade-2" style="font-family:var(--heading-font);font-size:clamp(3.2rem,7vw,6rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:780px;letter-spacing:-0.01em">Where every plate<br/><em>tells a story</em></h1>
+      <p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:rgba(245,245,240,0.72);max-width:500px;line-height:1.8;margin:0 0 1.25rem">Seasonal menus crafted from local ingredients.</p>
+      <p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:var(--primary);font-weight:600;margin:0 0 2.75rem;letter-spacing:0.01em">Award-Winning · Est. 2016</p>
+      <div class="vs-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">Reserve a Table</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">Learn More</a>
+      </div>
+      <p class="vs-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.42);margin-top:1.25rem">Free consultation · No commitment</p>
+    </div>
+    <!-- Hero bottom stat strip -->
+    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.07)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;gap:0">
+        
+        <div style="flex:1;padding:1.5rem 2rem;">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">12+</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">Years Experience</div>
+        </div>
+        <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08)">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">500+</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">Happy Clients</div>
+        </div>
+        <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08)">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">98%</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">Satisfaction</div>
+        </div>
+        <div style="flex:1;padding:1.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08)">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">24h</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">Response Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+    <style>
+      .vs-svc-item { border-top:1px solid var(--border);padding:2rem 0;cursor:default;transition:background 0.3s }
+      .vs-svc-item:last-child { border-bottom:1px solid var(--border) }
+      .vs-svc-item:hover { background:rgba(201,120,58,0.04) }
+      .vs-num { font-family:var(--heading-font);font-size:4rem;font-weight:400;line-height:1;color:rgba(201,120,58,0.18);float:left;margin-right:1.5rem;margin-top:-0.5rem }
+    </style>
+    <section id="services" style="padding:120px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:start">
+          <div>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+              <div style="width:40px;height:1px;background:var(--primary)"></div>
+              <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">CAPE TOWN DINING</p>
+            </div>
+            <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:var(--text);line-height:1.15;margin:0 0 2.5rem 0">What We Offer</h2>
+            <div class="ms-img" style="overflow:hidden;border-radius:4px;height:480px;position:relative">
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+              <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent)"></div>
+            </div>
+          </div>
+          <div style="padding-top:5rem">
+            
+              <div class="vs-svc-item" style="padding:2rem 0;border-top:1px solid var(--border)">
+                <div style="overflow:hidden">
+                  <span class="vs-num">01</span>
+                  <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">Premium Service One</h3>
+                  <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">Comprehensive solutions tailored to your specific needs.</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+                  <span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Quality</span><span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Bespoke</span>
+                </div>
+              </div>
+              <div class="vs-svc-item" style="padding:2rem 0">
+                <div style="overflow:hidden">
+                  <span class="vs-num">02</span>
+                  <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">Expert Service Two</h3>
+                  <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">Professional expertise delivered with precision.</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+                  <span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Expert</span><span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Reliable</span>
+                </div>
+              </div>
+              <div class="vs-svc-item" style="padding:2rem 0">
+                <div style="overflow:hidden">
+                  <span class="vs-num">03</span>
+                  <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">Complete Service Three</h3>
+                  <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">End-to-end support that simplifies every project.</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+                  <span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Full-Service</span><span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Support</span>
+                </div>
+              </div>
+              <div class="vs-svc-item" style="padding:2rem 0">
+                <div style="overflow:hidden">
+                  <span class="vs-num">04</span>
+                  <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">Specialist Service Four</h3>
+                  <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">Specialist knowledge for the most demanding briefs.</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+                  <span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Specialist</span><span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(201,120,58,0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">Trusted</span>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <style>
+      .vs-gal { position:relative;overflow:hidden;cursor:pointer }
+      .vs-gal img { width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) }
+      .vs-gal:hover img { transform:scale(1.06) }
+      .vs-gal-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);opacity:0;transition:opacity 0.4s }
+      .vs-gal:hover .vs-gal-overlay { opacity:1 }
+      .vs-gal-label { position:absolute;bottom:1.5rem;left:1.75rem;font-family:var(--body-font);font-size:0.85rem;color:#fff;font-weight:500;letter-spacing:0.05em;opacity:0;transition:opacity 0.4s,transform 0.4s;transform:translateY(8px) }
+      .vs-gal:hover .vs-gal-label { opacity:1;transform:translateY(0) }
+    </style>
+    <section id="gallery" style="padding:0;background:var(--bg)">
+      <div style="max-width:1200px;margin:0 auto;padding:80px 2rem 0">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem">
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:500px">Our Work</h2>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);text-decoration:none;font-weight:600;white-space:nowrap;padding-bottom:0.25rem;border-bottom:1px solid var(--primary)">Reserve a Table &rarr;</a>
+        </div>
+      </div>
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem 80px">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1.65fr 1fr;grid-template-rows:340px 260px;gap:8px">
+          <div class="vs-gal" style="grid-row:1/3;border-radius:4px 0 0 4px">
+            <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">CAPE TOWN DINING</div>
+          </div>
+          <div class="vs-gal" style="border-radius:0 4px 0 0">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">Harvest Kitchen</div>
+          </div>
+          <div class="vs-gal" style="border-radius:0 0 4px 0">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">What We Offer</div>
+          </div>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+          
+          <div class="vs-gal" style="height:200px;border-radius:4px">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+          </div>
+          <div class="vs-gal" style="height:200px;border-radius:4px">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+          </div>
+          <div class="vs-gal" style="height:200px;border-radius:4px">
+            <img src="https://images.unsplash.com/photo-1540555700478-4be290a303f0?w=800&q=80&auto=format&fit=crop" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <section style="padding:100px 0;background:var(--bg-alt);overflow:hidden">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <div style="width:40px;height:1px;background:var(--primary)"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">What Clients Say</p>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
+          
+          <div style="position:relative;padding:3rem;background:rgba(201,120,58,0.06);border-radius:4px;border-left:3px solid var(--primary)">
+            <div style="font-family:var(--heading-font);font-size:5rem;line-height:0.8;color:var(--primary);opacity:0.3;position:absolute;top:2rem;left:2.5rem">&ldquo;</div>
+            <p style="font-family:var(--heading-font);font-size:clamp(1.1rem,2vw,1.35rem);font-weight:400;color:var(--text);line-height:1.65;font-style:italic;margin:1.5rem 0 1.5rem;position:relative;z-index:1">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
+            <div style="display:flex;align-items:center;gap:1rem">
+              <div style="width:36px;height:1px;background:var(--border)"></div>
+              <p style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin:0">Sarah M., Director — Cape Town</p>
+            </div>
+            <div style="color:var(--primary);font-size:0.9rem;margin-top:1rem;letter-spacing:0.15em">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2rem">
+            
+            <div style="padding:2rem;background:var(--card-bg);border-radius:4px;border:1px solid var(--border)">
+              <div style="color:var(--primary);font-size:0.85rem;letter-spacing:0.15em;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.25rem">"Professional, responsive, and genuinely invested in our success."</p>
+              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin:0">Priya N., Business Owner</p>
+            </div>
+            <div style="padding:2rem;background:var(--card-bg);border-radius:4px;border:1px solid var(--border)">
+              <div style="color:var(--primary);font-size:0.85rem;letter-spacing:0.15em;margin-bottom:1rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.25rem">"Delivered exactly what they promised, on time and on budget."</p>
+              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin:0">Mark D., Manager</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- About -->
+  <section id="about" style="padding:120px 0;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start">
+        <div class="reveal">
+          <div style="position:relative;display:inline-block;width:100%">
+            <div class="ms-img" style="overflow:hidden;border-radius:4px;height:540px">
+              <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover" />
+            </div>
+            <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;width:120px;height:120px;border:2px solid var(--primary);border-radius:2px;z-index:-1"></div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+            <div style="width:40px;height:1px;background:var(--primary)"></div>
+            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">Our Story</p>
+          </div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 1.75rem">Our Story</h2>
+          <p style="font-family:var(--heading-font);font-size:1.1rem;color:var(--text);line-height:1.65;font-style:italic;margin:0 0 1.5rem;padding-left:1.25rem;border-left:2px solid var(--primary)">Our mission is to exceed expectations, every single time.</p>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.85;margin:0 0 1rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.85;margin:0 0 1rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+          <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)">
+            
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2.2rem;font-weight:400;color:var(--text);line-height:1">12+</div>
+              <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;letter-spacing:0.04em">Years Experience</div>
+              <div style="font-family:var(--body-font);font-size:0.72rem;color:var(--text-muted);opacity:0.6;margin-top:0.15rem">Industry leading</div>
+            </div>
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2.2rem;font-weight:400;color:var(--text);line-height:1">500+</div>
+              <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;letter-spacing:0.04em">Happy Clients</div>
+              <div style="font-family:var(--body-font);font-size:0.72rem;color:var(--text-muted);opacity:0.6;margin-top:0.15rem">And counting</div>
+            </div>
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2.2rem;font-weight:400;color:var(--text);line-height:1">98%</div>
+              <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;letter-spacing:0.04em">Satisfaction</div>
+              <div style="font-family:var(--body-font);font-size:0.72rem;color:var(--text-muted);opacity:0.6;margin-top:0.15rem">Verified reviews</div>
+            </div>
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2.2rem;font-weight:400;color:var(--text);line-height:1">24h</div>
+              <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;letter-spacing:0.04em">Response Time</div>
+              <div style="font-family:var(--body-font);font-size:0.72rem;color:var(--text-muted);opacity:0.6;margin-top:0.15rem">Always available</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+    <section id="contact" style="padding:100px 0;background:var(--bg)">
+      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">Let's Work Together</h2>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+          <div>
+            <div style="margin-bottom:1.5rem"><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Address</div>
+            <p style="color:var(--text-muted)">123 Main Road, Cape Town</p></div>
+            <div style="margin-bottom:1.5rem"><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Phone</div>
+            <p style="color:var(--text-muted)">021 000 0000</p></div>
+            <div><div style="font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);margin-bottom:0.5rem">Hours</div><p style="color:var(--text-muted)">Mon–Fri 8am–6pm · Sat 9am–2pm</p></div>
+          </div>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+              <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            </div>
+            <textarea placeholder="Message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+            <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:var(--primary);color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  <footer style="padding:4rem 2rem 2rem;background:#0a0a0a;border-top:1px solid var(--border)">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:0.75rem;letter-spacing:0.1em;text-transform:uppercase">Harvest Kitchen</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;max-width:280px">Seasonal menus crafted from local ingredients.</p>
+      </div>
+      <div><div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Services</div><a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Quality</a>
+<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Expert</a>
+<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Full-Service</a>
+<a href="#services" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Specialist</a></div>
+      <div><div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Company</div>
+        <a href="#about" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">About</a>
+        <a href="#contact" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div><div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:1rem;font-weight:600">Legal</div>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Privacy</a>
+        <a href="#" style="color:var(--text-muted);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.6rem">Terms</a>
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid var(--border);text-align:center">
+      <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted)">&copy; 2024 Harvest Kitchen. All rights reserved.</div>
+    </div>
+  </footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+  // Custom cursor
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  let rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+    rx += (e.clientX - rx) * 0.12; ry += (e.clientY - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  });
+  requestAnimationFrame(function loop() { rx += (parseFloat(dot.style.left||0) - rx) * 0.12; ry += (parseFloat(dot.style.top||0) - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); });
+</script>
+</body>
+</html>
