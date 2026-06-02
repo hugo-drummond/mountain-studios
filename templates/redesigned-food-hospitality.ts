@@ -47,7 +47,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, Ken Burns bg, massive serif headline centered
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;overflow:hidden">
     <div style="position:absolute;inset:0;animation:kenburns 18s ease-in-out infinite alternate">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transform-origin:center" />
     </div>
@@ -284,7 +284,7 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${bg}">
     <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
@@ -509,7 +509,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // HERO — full-bleed joyful image with rounded pill overlay card
   const heroSection = `
-  <section style="padding-top:80px;position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg}">
+  <section style="padding-top:80px;position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${bg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:petZoom 20s ease-in-out infinite alternate" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,46,28,0.7) 0%,rgba(28,46,28,0.35) 50%,rgba(28,46,28,0.15) 100%)"></div>

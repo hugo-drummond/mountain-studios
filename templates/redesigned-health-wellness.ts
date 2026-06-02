@@ -51,7 +51,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
-<section style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
+<section style="min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
   <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -315,7 +315,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Dark cinematic full-bleed, massive Bebas headline, split stats bar -->
-<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${fit.bg}">
+<section style="position:relative;min-height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${fit.bg}">
   <div style="position:absolute;inset:0">
     <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,1) 0%,rgba(10,10,10,0.65) 50%,rgba(10,10,10,0.15) 100%)"></div>
@@ -545,7 +545,7 @@ function buildEducationTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Warm off-white, large editorial serif left, stacked image collage right -->
-<section style="background:${edu.bgWarm};min-height:92vh;display:flex;align-items:center;overflow:hidden;position:relative">
+<section style="background:${edu.bgWarm};min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;position:relative">
   <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:${edu.accentLight};clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
   <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
     <div>

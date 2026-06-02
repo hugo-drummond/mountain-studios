@@ -1068,7 +1068,7 @@ function buildVisualTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero: full-bleed Ken Burns, eyebrow with flanking lines, massive serif h1 -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="vs-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(110deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.7) 100%)"></div>
@@ -1358,7 +1358,7 @@ function buildServiceTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero -->
-  <section style="position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
+  <section style="position:relative;min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
     <div style="position:absolute;inset:0">
       <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:${theme === 'dark' ? '0.25' : '0.35'}" />
       <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.85) 100%)"></div>
@@ -1611,7 +1611,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero — editorial, center-aligned, Ken Burns -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="pf2-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.72) 50%,rgba(0,0,0,0.88) 100%)"></div>
@@ -1746,7 +1746,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, Ken Burns bg, massive serif headline centered
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;overflow:hidden">
     <div style="position:absolute;inset:0;animation:kenburns 18s ease-in-out infinite alternate">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transform-origin:center" />
     </div>
@@ -1984,7 +1984,7 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${bg}">
     <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
@@ -2209,7 +2209,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // HERO — full-bleed joyful image with rounded pill overlay card
   const heroSection = `
-  <section style="padding-top:80px;position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg}">
+  <section style="padding-top:80px;position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${bg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:petZoom 20s ease-in-out infinite alternate" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,46,28,0.7) 0%,rgba(28,46,28,0.35) 50%,rgba(28,46,28,0.15) 100%)"></div>
@@ -2483,7 +2483,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
-<section style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
+<section style="min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
   <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -2748,7 +2748,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Dark cinematic full-bleed, massive Bebas headline, split stats bar -->
-<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${fit.bg}">
+<section style="position:relative;min-height:calc(100vh - 64px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${fit.bg}">
   <div style="position:absolute;inset:0">
     <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,1) 0%,rgba(10,10,10,0.65) 50%,rgba(10,10,10,0.15) 100%)"></div>
@@ -2978,7 +2978,7 @@ function buildEducationTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Warm off-white, large editorial serif left, stacked image collage right -->
-<section style="background:${edu.bgWarm};min-height:92vh;display:flex;align-items:center;overflow:hidden;position:relative">
+<section style="background:${edu.bgWarm};min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;position:relative">
   <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:${edu.accentLight};clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
   <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
     <div>
@@ -3309,7 +3309,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Full-bleed, Ken Burns bg, text anchored bottom-left ═══════════ -->
-  <section style="position:relative;min-height:95vh;display:flex;align-items:flex-end;overflow:hidden;background:${bg}">
+  <section style="position:relative;min-height:calc(95vh - 64px);display:flex;align-items:flex-end;overflow:hidden;background:${bg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:kenBurns 20s ease-in-out infinite alternate" />
       <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(13,13,11,0.82) 0%,rgba(13,13,11,0.45) 55%,rgba(13,13,11,0.15) 100%)"></div>
@@ -3692,7 +3692,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Centered, massive type, animated gradient orb ═══════════ -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
 
     <!-- Ambient orb -->
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
@@ -3990,7 +3990,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   // HERO — full-bleed with Ken Burns, diagonal cut at bottom, large Oswald heading
   const heroSection = `
-  <section style="position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${trDark}">
+  <section style="position:relative;min-height:calc(92vh - 64px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${trDark}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="tr-hero-img" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
       <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(28,26,23,0.3) 0%,rgba(28,26,23,0.85) 70%)"></div>
@@ -4718,7 +4718,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, angular overlays, bold condensed type
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;background:${autoBg}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:flex-end;overflow:hidden;background:${autoBg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="auto-bg" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(175deg,transparent 0%,rgba(0,0,0,0.5) 50%,rgba(10,10,10,0.95) 85%)"></div>
@@ -5031,7 +5031,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;background:${void_}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;background:${void_}">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35" />
       <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.3) 0%,rgba(8,8,8,0.7) 60%,${void_} 100%)"></div>
@@ -5337,7 +5337,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="background:${ink};min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
+  <section style="background:${ink};min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
     <div style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
@@ -5608,7 +5608,7 @@ function buildEventsTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${midnight}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${midnight}">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>

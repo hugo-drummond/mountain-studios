@@ -150,7 +150,7 @@ function buildVisualTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero: full-bleed Ken Burns, eyebrow with flanking lines, massive serif h1 -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="vs-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(110deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.7) 100%)"></div>
@@ -440,7 +440,7 @@ function buildServiceTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero -->
-  <section style="position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
+  <section style="position:relative;min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
     <div style="position:absolute;inset:0">
       <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:${theme === 'dark' ? '0.25' : '0.35'}" />
       <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.85) 100%)"></div>
@@ -693,7 +693,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero — editorial, center-aligned, Ken Burns -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="pf2-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.72) 50%,rgba(0,0,0,0.88) 100%)"></div>

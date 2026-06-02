@@ -70,7 +70,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   // HERO — full-bleed with Ken Burns, diagonal cut at bottom, large Oswald heading
   const heroSection = `
-  <section style="position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${trDark}">
+  <section style="position:relative;min-height:calc(92vh - 64px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${trDark}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="tr-hero-img" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
       <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(28,26,23,0.3) 0%,rgba(28,26,23,0.85) 70%)"></div>
@@ -798,7 +798,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, angular overlays, bold condensed type
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;background:${autoBg}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:flex-end;overflow:hidden;background:${autoBg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" class="auto-bg" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(175deg,transparent 0%,rgba(0,0,0,0.5) 50%,rgba(10,10,10,0.95) 85%)"></div>

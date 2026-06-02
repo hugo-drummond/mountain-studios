@@ -25,7 +25,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;background:${void_}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;background:${void_}">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35" />
       <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.3) 0%,rgba(8,8,8,0.7) 60%,${void_} 100%)"></div>
@@ -331,7 +331,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="background:${ink};min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
+  <section style="background:${ink};min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
     <div style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
@@ -602,7 +602,7 @@ function buildEventsTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${midnight}">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${midnight}">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>

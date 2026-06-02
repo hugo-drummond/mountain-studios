@@ -78,7 +78,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Full-bleed, Ken Burns bg, text anchored bottom-left ═══════════ -->
-  <section style="position:relative;min-height:95vh;display:flex;align-items:flex-end;overflow:hidden;background:${bg}">
+  <section style="position:relative;min-height:calc(95vh - 64px);display:flex;align-items:flex-end;overflow:hidden;background:${bg}">
     <div style="position:absolute;inset:0;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:kenBurns 20s ease-in-out infinite alternate" />
       <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(13,13,11,0.82) 0%,rgba(13,13,11,0.45) 55%,rgba(13,13,11,0.15) 100%)"></div>
@@ -461,7 +461,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Centered, massive type, animated gradient orb ═══════════ -->
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
 
     <!-- Ambient orb -->
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
