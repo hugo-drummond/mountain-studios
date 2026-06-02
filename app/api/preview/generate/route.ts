@@ -895,7 +895,27 @@ function buildHead(businessName: string, fonts: { heading: string; headingFamily
 <body>`
 }
 
-// ---------- Visual Template (photo-heavy) ----------
+// ---------- Icon helpers ----------
+const iconMap: Record<string, string> = {
+  'zap': '&#9889;', 'bolt': '&#9889;', 'cpu': '&#9881;', 'sun': '&#9728;', 'droplet': '&#128167;',
+  'flame': '&#128293;', 'tool': '&#128295;', 'wrench': '&#128295;', 'home': '&#127968;', 'shield': '&#128737;',
+  'layers': '&#9776;', 'grid': '&#9638;', 'box': '&#128230;', 'maximize': '&#11036;', 'star': '&#11088;',
+  'map': '&#128205;', 'edit': '&#9998;', 'edit-2': '&#9998;', 'square': '&#9632;', 'key': '&#128273;',
+  'lock': '&#128274;', 'align-left': '&#9776;', 'trash-2': '&#128465;', 'truck': '&#128666;',
+  'credit-card': '&#128179;', 'repeat': '&#128260;', 'settings': '&#9881;', 'check': '&#10003;',
+  'phone': '&#9742;', 'mail': '&#9993;', 'clock': '&#9200;', 'calendar': '&#128197;',
+  'user': '&#128100;', 'users': '&#128101;', 'heart': '&#10084;', 'briefcase': '&#128188;',
+  'camera': '&#128247;', 'music': '&#127925;', 'book': '&#128214;', 'scissors': '&#9986;',
+  'thermometer': '&#127777;', 'wind': '&#127744;', 'cloud': '&#9729;', 'umbrella': '&#9730;',
+}
+const fallbackIcons = ['&#9670;', '&#9733;', '&#9678;', '&#9632;', '&#9674;', '&#9656;', '&#10022;', '&#9830;']
+function mapIcon(icon?: string, index?: number): string {
+  if (icon && iconMap[icon]) return iconMap[icon]
+  return fallbackIcons[(index || 0) % fallbackIcons.length]
+}
+
+// ---------- Redesigned Templates ----------
+
 function buildVisualTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -903,38 +923,45 @@ function buildVisualTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-  ]
+  const aboutImg = stockImages.about || stockPool[4]
+
+  const pr = parseInt(primaryColor.slice(1, 3), 16)
+  const pg = parseInt(primaryColor.slice(3, 5), 16)
+  const pb = parseInt(primaryColor.slice(5, 7), 16)
+
+  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
   const servicesSection = `
-    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
-          <!-- Left: featured image -->
-          <div class="ms-img" style="overflow:hidden;border-radius:16px;height:520px">
-            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <!-- Right: stacked services list -->
+    <style>
+      .vs-svc-item { border-top:1px solid var(--border);padding:2rem 0;cursor:default;transition:background 0.3s }
+      .vs-svc-item:last-child { border-bottom:1px solid var(--border) }
+      .vs-svc-item:hover { background:rgba(${pr},${pg},${pb},0.04) }
+      .vs-num { font-family:var(--heading-font);font-size:4rem;font-weight:400;line-height:1;color:rgba(${pr},${pg},${pb},0.18);float:left;margin-right:1.5rem;margin-top:-0.5rem }
+    </style>
+    <section id="services" style="padding:120px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:start">
           <div>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+              <div style="width:40px;height:1px;background:var(--primary)"></div>
+              <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
+            </div>
+            <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:var(--text);line-height:1.15;margin:0 0 2.5rem 0">${content.servicesHeading}</h2>
+            <div class="ms-img" style="overflow:hidden;border-radius:4px;height:480px;position:relative">
+              <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+              <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent)"></div>
+            </div>
+          </div>
+          <div style="padding-top:5rem">
             ${content.services.map((s, i) => `
-              <div style="border-top:1px solid var(--border);padding:1.5rem 0${i === content.services.length - 1 ? ';border-bottom:1px solid var(--border)' : ''}">
-                <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:0.5rem">0${i + 1}</div>
-                <h3 style="font-family:var(--heading-font);font-size:1.4rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">${s.name}</h3>
-                <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0 0 1rem 0">${s.description}</p>
-                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-                  ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid var(--border)">${t}</span>`).join('')}
+              <div class="vs-svc-item" style="padding:2rem 0${i === 0 ? ';border-top:1px solid var(--border)' : ''}">
+                <div style="overflow:hidden">
+                  <span class="vs-num">${String(i + 1).padStart(2, '0')}</span>
+                  <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">${s.name}</h3>
+                  <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">${s.description}</p>
+                </div>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
+                  ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">${t}</span>`).join('')}
                 </div>
               </div>`).join('')}
           </div>
@@ -943,55 +970,194 @@ function buildVisualTemplate(data: TemplateData): string {
     </section>`
 
   const gallerySection = `
-    <section id="gallery" style="padding:100px 0;background:var(--bg)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
-        <div class="ms-grid" style="display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;grid-template-rows:auto auto">
-          <div class="ms-img" style="grid-row:1/3;border-radius:16px;overflow:hidden;min-height:400px">
-            <img src="${stockPool[8]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+    <style>
+      .vs-gal { position:relative;overflow:hidden;cursor:pointer }
+      .vs-gal img { width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94) }
+      .vs-gal:hover img { transform:scale(1.06) }
+      .vs-gal-overlay { position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,transparent 50%);opacity:0;transition:opacity 0.4s }
+      .vs-gal:hover .vs-gal-overlay { opacity:1 }
+      .vs-gal-label { position:absolute;bottom:1.5rem;left:1.75rem;font-family:var(--body-font);font-size:0.85rem;color:#fff;font-weight:500;letter-spacing:0.05em;opacity:0;transition:opacity 0.4s,transform 0.4s;transform:translateY(8px) }
+      .vs-gal:hover .vs-gal-label { opacity:1;transform:translateY(0) }
+    </style>
+    <section id="gallery" style="padding:0;background:var(--bg)">
+      <div style="max-width:1200px;margin:0 auto;padding:80px 2rem 0">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem">
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:500px">${content.galleryHeading}</h2>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);text-decoration:none;font-weight:600;white-space:nowrap;padding-bottom:0.25rem;border-bottom:1px solid var(--primary)">${content.ctaPrimary} &rarr;</a>
+        </div>
+      </div>
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem 80px">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1.65fr 1fr;grid-template-rows:340px 260px;gap:8px">
+          <div class="vs-gal" style="grid-row:1/3;border-radius:4px 0 0 4px">
+            <img src="${stockPool[8]}" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">${content.heroEyebrow}</div>
           </div>
-          <div style="border-radius:16px;overflow:hidden;min-height:190px">
-            <img src="${stockPool[9]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+          <div class="vs-gal" style="border-radius:0 4px 0 0">
+            <img src="${stockPool[9]}" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">${businessName}</div>
           </div>
-          <div style="border-radius:16px;overflow:hidden;min-height:190px">
-            <img src="${stockPool[10]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover" />
+          <div class="vs-gal" style="border-radius:0 0 4px 0">
+            <img src="${stockPool[10]}" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+            <div class="vs-gal-label">${content.servicesHeading}</div>
+          </div>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">
+          ${[stockPool[11], stockPool[12], stockPool[13]].map((img, i) => `
+          <div class="vs-gal" style="height:200px;border-radius:4px">
+            <img src="${img}" alt="Gallery" />
+            <div class="vs-gal-overlay"></div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const testimonialsSection = `
+    <section style="padding:100px 0;background:var(--bg-alt);overflow:hidden">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <div style="width:40px;height:1px;background:var(--primary)"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">What Clients Say</p>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
+          ${content.testimonial ? `
+          <div style="position:relative;padding:3rem;background:rgba(${pr},${pg},${pb},0.06);border-radius:4px;border-left:3px solid var(--primary)">
+            <div style="font-family:var(--heading-font);font-size:5rem;line-height:0.8;color:var(--primary);opacity:0.3;position:absolute;top:2rem;left:2.5rem">&ldquo;</div>
+            <p style="font-family:var(--heading-font);font-size:clamp(1.1rem,2vw,1.35rem);font-weight:400;color:var(--text);line-height:1.65;font-style:italic;margin:1.5rem 0 1.5rem;position:relative;z-index:1">"${content.testimonial.quote}"</p>
+            <div style="display:flex;align-items:center;gap:1rem">
+              <div style="width:36px;height:1px;background:var(--border)"></div>
+              <p style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin:0">${content.testimonial.author}</p>
+            </div>
+            ${content.testimonial.rating ? `<div style="color:var(--primary);font-size:0.9rem;margin-top:1rem;letter-spacing:0.15em">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+          </div>` : ''}
+          <div style="display:flex;flex-direction:column;gap:2rem">
+            ${fallbackTestimonials.slice(0, 2).map(t => `
+            <div style="padding:2rem;background:var(--card-bg);border-radius:4px;border:1px solid var(--border)">
+              <div style="color:var(--primary);font-size:0.85rem;letter-spacing:0.15em;margin-bottom:1rem">${'&#9733;'.repeat(t.rating)}</div>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.25rem">"${t.quote}"</p>
+              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;font-weight:500;margin:0">${t.author}</p>
+            </div>`).join('')}
           </div>
         </div>
       </div>
     </section>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor)
+
+  return `${headHtml}
+<style>
+  @keyframes vs-kenburns { 0% { transform:scale(1) translate(0,0) } 100% { transform:scale(1.08) translate(-1%,-0.5%) } }
+  @keyframes vs-fadeup { from { opacity:0;transform:translateY(28px) } to { opacity:1;transform:translateY(0) } }
+  .vs-fade-1 { animation:vs-fadeup 0.9s ease 0.1s both }
+  .vs-fade-2 { animation:vs-fadeup 0.9s ease 0.3s both }
+  .vs-fade-3 { animation:vs-fadeup 0.9s ease 0.5s both }
+  .vs-fade-4 { animation:vs-fadeup 0.9s ease 0.7s both }
+  .vs-fade-5 { animation:vs-fadeup 0.9s ease 0.9s both }
+  .vs-hero-bg { animation:vs-kenburns 18s ease-out forwards }
+  body::before { content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4 }
+  .reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease }
+  .reveal.visible { opacity:1;transform:translateY(0) }
+  #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
+  #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(${pr},${pg},${pb},0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
+</style>
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-  <!-- Hero -->
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.82) 0%,rgba(0,0,0,0.6) 50%,rgba(0,0,0,0.75) 100%)"></div>
+  <!-- Hero: full-bleed Ken Burns, eyebrow with flanking lines, massive serif h1 -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" class="vs-hero-bg" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(110deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.7) 100%)"></div>
     </div>
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:6rem 2rem 0;width:100%">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
-      <div style="display:flex;gap:1rem;align-items:center">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 4rem;width:100%">
+      ${content.badge ? `<div class="vs-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.72rem;letter-spacing:0.12em;padding:0.45rem 1.1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.15);border:1px solid rgba(${pr},${pg},${pb},0.35);color:rgba(255,255,255,0.9);margin-bottom:2rem;text-transform:uppercase">${content.badge}</div>` : ''}
+      <div class="vs-fade-1" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem">
+        <div style="width:48px;height:1px;background:var(--primary)"></div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
+        <div style="width:48px;height:1px;background:var(--primary)"></div>
       </div>
-      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:1rem">${content.ctaNote}</p>` : ''}
+      <h1 class="vs-fade-2" style="font-family:var(--heading-font);font-size:clamp(3.2rem,7vw,6rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:780px;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:rgba(245,245,240,0.72);max-width:500px;line-height:1.8;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:var(--primary);font-weight:600;margin:0 0 2.75rem;letter-spacing:0.01em">${content.heroAccent}</p>` : ''}
+      <div class="vs-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+      </div>
+      ${content.ctaNote ? `<p class="vs-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.42);margin-top:1.25rem">${content.ctaNote}</p>` : ''}
+    </div>
+    <!-- Hero bottom stat strip -->
+    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.07)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;gap:0">
+        ${content.stats.slice(0, 4).map((s, i) => `
+        <div style="flex:1;padding:1.5rem 2rem;${i > 0 ? 'border-left:1px solid rgba(255,255,255,0.08)' : ''}">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
+        </div>`).join('')}
+      </div>
     </div>
   </section>
 
   ${servicesSection}
   ${gallerySection}
-  ${buildAboutSection(content)}
-  ${buildTestimonialSection(content)}
+  ${testimonialsSection}
+
+  <!-- About -->
+  <section id="about" style="padding:120px 0;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start">
+        <div class="reveal">
+          <div style="position:relative;display:inline-block;width:100%">
+            <div class="ms-img" style="overflow:hidden;border-radius:4px;height:540px">
+              <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+            </div>
+            <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;width:120px;height:120px;border:2px solid var(--primary);border-radius:2px;z-index:-1"></div>
+          </div>
+        </div>
+        <div class="reveal">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+            <div style="width:40px;height:1px;background:var(--primary)"></div>
+            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">Our Story</p>
+          </div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 1.75rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:var(--heading-font);font-size:1.1rem;color:var(--text);line-height:1.65;font-style:italic;margin:0 0 1.5rem;padding-left:1.25rem;border-left:2px solid var(--primary)">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.85;margin:0 0 1rem">${p}</p>`).join('')}
+          <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid var(--border)">
+            ${content.stats.slice(0, 4).map(s => `
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2.2rem;font-weight:400;color:var(--text);line-height:1">${s.value}</div>
+              <div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
+              ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.72rem;color:var(--text-muted);opacity:0.6;margin-top:0.15rem">${s.sublabel}</div>` : ''}
+            </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content)}
 
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.12 });
+  revealEls.forEach(el => obs.observe(el));
+  // Custom cursor
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  let rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
+    rx += (e.clientX - rx) * 0.12; ry += (e.clientY - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  });
+  requestAnimationFrame(function loop() { rx += (parseFloat(dot.style.left||0) - rx) * 0.12; ry += (parseFloat(dot.style.top||0) - ry) * 0.12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); });
+</script>
 </body>
 </html>`
 }
@@ -1029,39 +1195,9 @@ function buildServiceTemplate(data: TemplateData): string {
   const pg = parseInt(primaryColor.slice(3, 5), 16)
   const pb = parseInt(primaryColor.slice(5, 7), 16)
 
-  // Light cards get a subtle shadow; dark cards get border
-  const cardStyle = theme === 'light'
-    ? 'border-radius:16px;background:var(--card-bg);box-shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);padding:2rem'
-    : 'border-radius:16px;background:var(--card-bg);border:1px solid var(--border);padding:2rem'
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
-  const serviceCardStyle = theme === 'light'
-    ? 'border-radius:16px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.06);padding:2.5rem 2rem;transition:box-shadow 0.2s,transform 0.2s'
-    : 'border-radius:16px;background:var(--card-bg);border:1px solid var(--border);padding:2.5rem 2rem;transition:box-shadow 0.2s,transform 0.2s'
-
-  const servicesSection = `
-    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <p style="font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--primary);margin-bottom:1rem;font-family:var(--body-font);font-weight:600">${content.heroEyebrow}</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div class="ms-flex" style="display:flex;align-items:stretch;gap:1.5rem">
-          ${content.services.map((s, i) => `${i > 0 ? `
-            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:block">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>` : ''}
-            <div style="flex:1;${serviceCardStyle}">
-              <div style="width:64px;height:64px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
-                <span style="font-size:1.6rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
-              </div>
-              <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin:0 0 0.75rem 0">${s.name}</h3>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
-            </div>`).join('')}
-        </div>
-      </div>
-    </section>`
-
-  // Professional categories get a Werksmans-inspired image grid + stats bar instead of "How It Works"
   const isProfessionalCategory = businessCategory === 'professional'
   const showProcessSection = !isProfessionalCategory
 
@@ -1071,7 +1207,6 @@ function buildServiceTemplate(data: TemplateData): string {
     { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
   ]
 
-  // Werksmans-style image grid + stats bar for professional types
   const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
   const tileImgs = [
     stockImages.cards[7] || stockImages.hero,
@@ -1079,84 +1214,176 @@ function buildServiceTemplate(data: TemplateData): string {
     stockImages.cards[9] || stockImages.cards[1],
     stockImages.cards[10] || stockImages.cards[2],
   ]
-  const statIcons = ['&#9878;', '&#9734;', '&#9823;'] // scales, star, person — generic professional
+  const statIcons = ['&#9878;', '&#9734;', '&#9823;']
+
+  const servicesSection = `
+    <style>
+      .svc-card { transition:transform 0.3s ease,box-shadow 0.3s ease }
+      .svc-card:hover { transform:translateY(-4px);box-shadow:0 12px 40px rgba(${pr},${pg},${pb},0.15) !important }
+    </style>
+    <section id="services" style="padding:110px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <div style="width:32px;height:2px;background:var(--primary);border-radius:1px"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:700;margin:0">${content.heroEyebrow}</p>
+        </div>
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;gap:2rem">
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:550px">${content.servicesHeading}</h2>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);text-decoration:none;white-space:nowrap;flex-shrink:0">${content.ctaPrimary} &rarr;</a>
+        </div>
+        <div class="ms-flex" style="display:flex;align-items:stretch;gap:1rem">
+          ${content.services.map((s, i) => `${i > 0 ? `
+            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0;padding:0 0.25rem;opacity:0.35">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>` : ''}
+            <div class="svc-card" style="flex:1;${theme === 'light' ? 'background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 2rem;position:relative;overflow:hidden">
+              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(${pr},${pg},${pb},${i === 0 ? '1' : '0.3'})"></div>
+              <div style="width:56px;height:56px;border-radius:3px;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.75rem">
+                <span style="font-size:1.5rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
+              </div>
+              <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.2em;color:var(--text-muted);font-weight:600;text-transform:uppercase;margin-bottom:0.75rem">0${i + 1}</div>
+              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.85rem;line-height:1.25">${s.name}</h3>
+              <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.8;margin:0">${s.description}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </section>`
 
   const professionalSection = !isProfessionalCategory ? '' : `
     <section style="padding:0;background:var(--bg)">
-      <!-- 2x2 greyscale image grid with accent label pills -->
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--border)">
         ${tileImgs.map((img, i) => `
-        <div class="ms-img" style="position:relative;height:280px;overflow:hidden;border-radius:12px">
-          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          <div style="position:absolute;bottom:1.25rem;left:1.25rem;font-family:var(--body-font);font-size:0.95rem;font-weight:700;color:#fff;padding:0.65rem 1.25rem;background:rgba(${pr},${pg},${pb},0.85);backdrop-filter:blur(4px)">${tileLabels[i]}</div>
+        <div class="ms-img" style="position:relative;height:300px;overflow:hidden">
+          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.75rem;font-family:var(--body-font);font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#fff;padding:0.5rem 1rem;background:rgba(${pr},${pg},${pb},0.9);border-radius:2px">${tileLabels[i]}</div>
         </div>`).join('')}
       </div>
-      <!-- Stats bar -->
-      <div style="background:var(--bg-alt);border-top:3px solid var(--primary);padding:60px 2rem">
-        <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:3rem;text-align:center">
+      <div style="background:var(--bg-alt);border-top:3px solid var(--primary);padding:70px 2rem">
+        <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:0">
           ${content.stats.slice(0, 3).map((s, i) => `
-          <div>
-            <div style="font-size:2rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
-            <div style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);margin-bottom:0.35rem">${s.value}</div>
-            <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${s.label}</div>
-            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem">${s.sublabel}</div>` : ''}
+          <div style="text-align:center;padding:2rem 3rem;${i > 0 ? 'border-left:1px solid var(--border)' : ''}">
+            <div style="font-size:1.75rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
+            <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);margin-bottom:0.4rem;line-height:1">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;color:var(--text);letter-spacing:0.05em">${s.label}</div>
+            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem">${s.sublabel}</div>` : ''}
           </div>`).join('')}
         </div>
       </div>
     </section>`
 
   const processSection = isProfessionalCategory ? professionalSection : !showProcessSection ? '' : `
-    <section id="gallery" style="padding:100px 0;background:var(--bg)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:1rem;text-align:center;line-height:1.2">How It Works</h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);text-align:center;margin-bottom:4rem;max-width:500px;margin-left:auto;margin-right:auto">A simple, straightforward process designed around you.</p>
-        <div class="ms-flex" style="display:flex;align-items:stretch;gap:0">
+    <section id="gallery" style="padding:110px 0;background:var(--bg)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="text-align:center;margin-bottom:4rem">
+          <div style="display:inline-flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+            <div style="width:32px;height:1px;background:var(--primary)"></div>
+            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.stepsHeading || 'How It Works'}</p>
+            <div style="width:32px;height:1px;background:var(--primary)"></div>
+          </div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.75rem);font-weight:400;color:var(--text);margin:0 0 1rem;line-height:1.2">A Simple, Proven Process</h2>
+          <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);max-width:460px;margin:0 auto;line-height:1.7">Straightforward from first contact to final delivery — no surprises.</p>
+        </div>
+        <div class="ms-flex" style="display:flex;align-items:stretch;gap:0;position:relative">
+          <div style="position:absolute;top:36px;left:0;right:0;height:1px;background:var(--border);z-index:0"></div>
           ${steps.map((s, i) => `${i > 0 ? `
-            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0;padding:0 0.75rem">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <div class="ms-arrow" style="display:flex;align-items:flex-start;flex-shrink:0;padding:0 0.5rem;margin-top:24px;z-index:1">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>` : ''}
-            <div style="flex:1;${cardStyle};text-align:center;display:flex;flex-direction:column;align-items:center">
-              <div style="width:72px;height:72px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-                <span style="font-family:var(--heading-font);font-size:1.75rem;font-weight:700;color:var(--primary)">${s.step}</span>
+            <div style="flex:1;${theme === 'light' ? 'background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.06)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 1.75rem;text-align:center;position:relative;z-index:1">
+              <div style="width:72px;height:72px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 4px 16px rgba(${pr},${pg},${pb},0.3)">
+                <span style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff">${s.step}</span>
               </div>
-              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:var(--text);margin:0 0 0.75rem 0">${s.title}</h3>
-              <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${s.description}</p>
+              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:var(--text);margin:0 0 0.75rem">${s.title}</h3>
+              <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.75;margin:0">${s.description}</p>
             </div>`).join('')}
         </div>
       </div>
     </section>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, theme)}
+  const testimonialsSection = `
+    <section style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:3rem">
+          <div style="width:32px;height:2px;background:var(--primary);border-radius:1px"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:700;margin:0">Client Feedback</p>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(fallbackTestimonials.length + (content.testimonial ? 1 : 0), 3)},1fr);gap:1.5rem">
+          ${content.testimonial ? `
+          <div style="${theme === 'light' ? 'background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--primary)"></div>
+            <div style="font-size:0.9rem;color:var(--primary);letter-spacing:0.15em;margin-bottom:1.25rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
+            <p style="font-family:var(--heading-font);font-size:1rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.5rem">"${content.testimonial.quote}"</p>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--primary)"></div>
+              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${content.testimonial.author}</p>
+            </div>
+          </div>` : ''}
+          ${fallbackTestimonials.slice(0, 2).map(t => `
+          <div style="${theme === 'light' ? 'background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem">
+            <div style="font-size:0.9rem;color:var(--primary);letter-spacing:0.15em;margin-bottom:1.25rem">${'&#9733;'.repeat(t.rating)}</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.8;font-style:italic;margin:0 0 1.5rem">"${t.quote}"</p>
+            <div style="display:flex;align-items:center;gap:0.75rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+              <div style="width:8px;height:8px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.4)"></div>
+              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${t.author}</p>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, theme)
+
+  return `${headHtml}
+<style>
+  @keyframes svc-fadeup { from { opacity:0;transform:translateY(24px) } to { opacity:1;transform:translateY(0) } }
+  .svc-fade-1 { animation:svc-fadeup 0.8s ease 0.1s both }
+  .svc-fade-2 { animation:svc-fadeup 0.8s ease 0.25s both }
+  .svc-fade-3 { animation:svc-fadeup 0.8s ease 0.4s both }
+  .svc-fade-4 { animation:svc-fadeup 0.8s ease 0.55s both }
+  .svc-fade-5 { animation:svc-fadeup 0.8s ease 0.7s both }
+  body::before { content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.35 }
+  .reveal { opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease }
+  .reveal.visible { opacity:1;transform:translateY(0) }
+  #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
+  #custom-cursor-ring { width:28px;height:28px;border:1.5px solid rgba(${pr},${pg},${pb},0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
+</style>
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- Hero -->
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
-    ${theme === 'dark' ? '' : `<div style="position:absolute;inset:0">
-      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,0.85) 0%,rgba(0,0,0,0.65) 50%,rgba(0,0,0,0.8) 100%)"></div>
-    </div>`}
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:6rem 2rem 0;width:100%">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:400;color:#f5f5f0;line-height:1.05;margin-bottom:1.5rem;max-width:700px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.15rem;color:#a3a3a0;max-width:520px;line-height:1.7;margin-bottom:${content.heroAccent ? '1rem' : '2.5rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary-on-dark);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
-      <div style="display:flex;gap:1rem;align-items:center;margin-bottom:${content.ctaNote ? '0.75rem' : '4rem'}">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary-on-dark);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+  <section style="position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
+    <div style="position:absolute;inset:0">
+      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:${theme === 'dark' ? '0.25' : '0.35'}" />
+      <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.85) 100%)"></div>
+    </div>
+    <!-- Left accent bar -->
+    <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
+    <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 5rem;width:100%">
+      ${content.badge ? `<div class="svc-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:rgba(255,255,255,0.85);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
+      <p class="svc-fade-1" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
+      <h1 class="svc-fade-2" style="font-family:var(--heading-font);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:750px">${content.tagline}</h1>
+      <p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:rgba(245,245,240,0.65);max-width:500px;line-height:1.82;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--primary-on-dark);font-weight:600;margin:0 0 2.75rem">${content.heroAccent}</p>` : ''}
+      <div class="svc-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:${content.ctaNote ? '0.75rem' : '0'}">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:var(--primary-on-dark);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
-      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:4rem">${content.ctaNote}</p>` : ''}
-      <!-- Stats row -->
-      <div style="display:flex;gap:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.12)">
-        ${content.stats.slice(0, 4).map(s => `
-          <div>
-            <div style="font-family:var(--heading-font);font-size:2.25rem;font-weight:700;color:#f5f5f0">${s.value}</div>
-            <div style="font-family:var(--body-font);font-size:0.85rem;color:#a3a3a0;margin-top:0.25rem">${s.label}</div>
-            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.35);margin-top:0.15rem">${s.sublabel}</div>` : ''}
-          </div>`).join('')}
+      ${content.ctaNote ? `<p class="svc-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">${content.ctaNote}</p>` : ''}
+      <!-- Stats strip -->
+      <div style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
+        ${content.stats.slice(0, 4).map((s, i) => `
+        <div style="flex:1;${i > 0 ? 'padding-left:2.5rem;border-left:1px solid rgba(255,255,255,0.08);margin-left:2.5rem' : ''}">
+          <div style="font-family:var(--heading-font);font-size:2.25rem;font-weight:400;color:#f5f5f0;line-height:1">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.5);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
+          ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(245,245,240,0.28);margin-top:0.15rem">${s.sublabel}</div>` : ''}
+        </div>`).join('')}
       </div>
     </div>
   </section>
@@ -1164,11 +1391,21 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${servicesSection}
   ${processSection}
   ${buildAboutSection(content)}
-  ${buildTestimonialSection(content)}
+  ${testimonialsSection}
   ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content, theme)}
 
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 });
+  revealEls.forEach(el => obs.observe(el));
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  let rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+  requestAnimationFrame(function loop() { rx += (parseFloat(dot.style.left||0) - rx) * 0.1; ry += (parseFloat(dot.style.top||0) - ry) * 0.1; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); });
+</script>
 </body>
 </html>`
 }
@@ -1181,56 +1418,67 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
+  const aboutImg = stockImages.about || stockPool[5]
+
+  const pr = parseInt(primaryColor.slice(1, 3), 16)
+  const pg = parseInt(primaryColor.slice(3, 5), 16)
+  const pb = parseInt(primaryColor.slice(5, 7), 16)
+
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
     images[4] || stockImages.cards[3],
-    images[5] || stockImages.cards[4],
-    images[6] || stockImages.cards[5],
-    images[7] || stockImages.cards[6],
-    images[8] || stockImages.cards[7],
   ]
 
-  const captions = content.projectCaptions || ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design']
+  const captions = content.projectCaptions || ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design', 'Creative Direction']
+  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
   const servicesSection = `
     <style>
-      .pf-acc-btn { cursor:pointer;width:100%;background:none;border:none;padding:0;text-align:left }
-      .pf-acc-body { overflow:hidden;max-height:0;transition:max-height 0.35s ease }
-      .pf-acc-body.pf-open { max-height:300px }
-      .pf-acc-icon { transition:transform 0.3s ease;font-size:1.5rem;color:var(--text-muted) }
-      .pf-acc-icon.pf-open { transform:rotate(45deg) }
+      .pf2-acc-body { overflow:hidden;max-height:0;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1),opacity 0.3s ease;opacity:0 }
+      .pf2-acc-body.pf2-open { max-height:320px;opacity:1 }
+      .pf2-acc-icon { display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);transition:transform 0.35s ease,background 0.3s,border-color 0.3s;flex-shrink:0;font-size:1.1rem;color:var(--text-muted);font-weight:300 }
+      .pf2-acc-icon.pf2-open { transform:rotate(45deg);background:var(--primary);border-color:var(--primary);color:#fff }
+      .pf2-svc-row { border-top:1px solid var(--border) }
+      .pf2-svc-row:last-child { border-bottom:1px solid var(--border) }
+      .pf2-svc-trigger { cursor:pointer;width:100%;background:none;border:none;padding:2rem 0;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:1rem }
+      .pf2-img-stage { position:relative;overflow:hidden;border-radius:2px }
+      .pf2-img-stage img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease,transform 0.7s ease }
+      .pf2-img-stage img.pf2-active { opacity:1;transform:scale(1) }
+      .pf2-img-stage img.pf2-inactive { opacity:0;transform:scale(1.03) }
     </style>
-    <section id="services" style="padding:100px 0;background:var(--bg-alt)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.servicesHeading}</h2>
-        <div class="ms-grid" style="display:grid;grid-template-columns:55% 45%;gap:3rem;align-items:start">
-          <!-- Left: service image -->
-          <div class="ms-sticky" style="position:sticky;top:2rem">
-            <div class="ms-img" style="overflow:hidden;height:560px">
-              ${serviceImgs.map((img, i) => `<img id="pf-svc-img-${i}" src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;display:${i === 0 ? 'block' : 'none'}" />`).join('')}
+    <section id="services" style="padding:120px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem">
+          <div style="width:1px;height:48px;background:var(--primary)"></div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;color:var(--text);line-height:1.12;margin:0">${content.servicesHeading}</h2>
+        </div>
+        <div class="ms-grid" style="display:grid;grid-template-columns:48% 52%;gap:4rem;align-items:start;margin-top:3.5rem">
+          <!-- Left: sticky image stage -->
+          <div class="ms-sticky" style="position:sticky;top:3rem">
+            <div class="pf2-img-stage" style="height:580px">
+              ${serviceImgs.map((img, i) => `<img id="pf2-img-${i}" src="${img}" alt="" class="${i === 0 ? 'pf2-active' : 'pf2-inactive'}" />`).join('')}
+            </div>
+            <div style="display:flex;gap:0.5rem;margin-top:1rem">
+              ${serviceImgs.slice(0, Math.min(serviceImgs.length, content.services.length)).map((_, i) => `<div id="pf2-dot-${i}" style="width:${i === 0 ? '24px' : '8px'};height:8px;border-radius:4px;background:${i === 0 ? 'var(--primary)' : 'var(--border)'};transition:width 0.3s,background 0.3s;cursor:pointer" onclick="(function(){document.querySelectorAll('[id^=pf2-img]').forEach(function(el,j){el.className=j===${i}?'pf2-active':'pf2-inactive'});document.querySelectorAll('[id^=pf2-dot]').forEach(function(el,j){el.style.width=j===${i}?'24px':'8px';el.style.background=j===${i}?'var(--primary)':'var(--border)'})})()"></div>`).join('')}
             </div>
           </div>
           <!-- Right: accordion -->
           <div>
             ${content.services.map((s, i) => `
-              <div style="border-top:1px solid var(--border)${i === content.services.length - 1 ? ';border-bottom:1px solid var(--border)' : ''}">
-                <button class="pf-acc-btn" onclick="(function(){var items=document.querySelectorAll('.pf-acc-body');var icons=document.querySelectorAll('.pf-acc-icon');var imgs=document.querySelectorAll('[id^=pf-svc-img]');items.forEach(function(el,j){if(j===${i}){el.classList.toggle('pf-open');icons[j].classList.toggle('pf-open')}else{el.classList.remove('pf-open');icons[j].classList.remove('pf-open')}});imgs.forEach(function(el,j){el.style.display=j===${i}?'block':'none'})})()" style="display:flex;align-items:center;justify-content:space-between;padding:1.75rem 0;width:100%;background:none;border:none;cursor:pointer">
+              <div class="pf2-svc-row">
+                <button class="pf2-svc-trigger" onclick="(function(){var bodies=document.querySelectorAll('.pf2-acc-body');var icons=document.querySelectorAll('.pf2-acc-icon');var imgs=document.querySelectorAll('[id^=pf2-img]');var dots=document.querySelectorAll('[id^=pf2-dot]');bodies.forEach(function(el,j){if(j===${i}){el.classList.toggle('pf2-open');icons[j].classList.toggle('pf2-open')}else{el.classList.remove('pf2-open');icons[j].classList.remove('pf2-open')}});imgs.forEach(function(el,j){el.className=j===${i}?'pf2-active':'pf2-inactive'});dots.forEach(function(el,j){el.style.width=j===${i}?'24px':'8px';el.style.background=j===${i}?'var(--primary)':'var(--border)'})})()">
                   <div>
-                    <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.15em;color:var(--text-muted);margin-bottom:0.5rem">0${i + 1}</div>
-                    <h3 style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,1.8rem);font-weight:400;color:var(--text);margin:0;line-height:1.2">${s.name}</h3>
+                    <div style="font-family:var(--body-font);font-size:0.68rem;letter-spacing:0.22em;color:var(--primary);font-weight:700;text-transform:uppercase;margin-bottom:0.6rem">0${i + 1}</div>
+                    <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);margin:0;line-height:1.15">${s.name}</h3>
                   </div>
-                  <span class="pf-acc-icon${i === 0 ? ' pf-open' : ''}">+</span>
+                  <span class="pf2-acc-icon${i === 0 ? ' pf2-open' : ''}">+</span>
                 </button>
-                <div class="pf-acc-body${i === 0 ? ' pf-open' : ''}" style="padding:0 0 1.5rem">
-                  <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0 0 1rem 0">${s.description}</p>
+                <div class="pf2-acc-body${i === 0 ? ' pf2-open' : ''}" style="padding:0 0 2rem">
+                  <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.82;margin:0 0 1.25rem">${s.description}</p>
                   <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-                    ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.75rem;padding:0.3rem 0.75rem;border-radius:999px;background:rgba(255,255,255,0.06);color:var(--text-muted);border:1px solid var(--border)">${t}</span>`).join('')}
+                    ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:1px;background:rgba(${pr},${pg},${pb},0.08);color:var(--primary);font-weight:600;letter-spacing:0.04em">${t}</span>`).join('')}
                   </div>
                 </div>
               </div>`).join('')}
@@ -1241,1569 +1489,214 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   const gallerySection = `
     <style>
-      .pf-cell { position:relative;overflow:hidden }
-      .pf-cell img { width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease }
-      .pf-cell:hover img { transform:scale(1.03) }
-      .pf-cap { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);opacity:0;transition:opacity 0.3s ease }
-      .pf-cell:hover .pf-cap { opacity:1 }
-      .pf-cap span { font-family:var(--body-font);font-size:0.95rem;color:#fff;font-weight:500;letter-spacing:0.03em }
+      .pf2-cell { position:relative;overflow:hidden;cursor:pointer }
+      .pf2-cell img { width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94) }
+      .pf2-cell:hover img { transform:scale(1.05) }
+      .pf2-cap { position:absolute;inset:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:1.75rem;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.2) 50%,transparent 100%);opacity:0;transition:opacity 0.4s ease }
+      .pf2-cell:hover .pf2-cap { opacity:1 }
+      .pf2-cap-title { font-family:var(--heading-font);font-size:1.1rem;font-weight:400;color:#fff;margin:0 0 0.35rem;transform:translateY(8px);transition:transform 0.4s ease }
+      .pf2-cell:hover .pf2-cap-title { transform:translateY(0) }
+      .pf2-cap-sub { font-family:var(--body-font);font-size:0.72rem;color:rgba(255,255,255,0.65);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;transform:translateY(8px);transition:transform 0.4s ease 0.05s }
+      .pf2-cell:hover .pf2-cap-sub { transform:translateY(0) }
     </style>
-    <section id="gallery" style="padding:80px 0 0;background:var(--bg)">
-      <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);margin-bottom:3rem;text-align:center;line-height:1.2">${content.galleryHeading}</h2>
+    <section id="gallery" style="padding:0;background:var(--bg)">
+      <div style="max-width:1200px;margin:0 auto;padding:80px 2rem 40px">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem">
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:480px">${content.galleryHeading}</h2>
+          <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin:0">${businessName} &mdash; Selected Works</p>
+        </div>
       </div>
-      <div style="max-width:1200px;margin:0 auto">
-        <div class="ms-grid" style="display:grid;grid-template-columns:65% 35%;height:400px;gap:2px">
-          <div class="pf-cell">
-            <img src="${stockPool[8]}" alt="${captions[0] || 'Project'}" />
-            <div class="pf-cap"><span>${captions[0] || 'Project'}</span></div>
+      <!-- Asymmetric gallery grid -->
+      <div style="max-width:1400px;margin:0 auto">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1.8fr 1fr 1fr;grid-template-rows:380px 280px;gap:3px">
+          <div class="pf2-cell" style="grid-row:1/3">
+            <img src="${stockPool[8]}" alt="${captions[0] || 'Featured Project'}" />
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[0] || 'Featured Project'}</div>
+              <div class="pf2-cap-sub">${businessName}</div>
+            </div>
           </div>
-          <div class="pf-cell">
+          <div class="pf2-cell">
             <img src="${stockPool[9]}" alt="${captions[1] || 'Project'}" />
-            <div class="pf-cap"><span>${captions[1] || 'Project'}</span></div>
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[1] || 'Project'}</div>
+              <div class="pf2-cap-sub">${content.heroEyebrow}</div>
+            </div>
           </div>
-        </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:40% 60%;height:340px;gap:2px;margin-top:2px">
-          <div class="pf-cell">
+          <div class="pf2-cell">
             <img src="${stockPool[10]}" alt="${captions[2] || 'Project'}" />
-            <div class="pf-cap"><span>${captions[2] || 'Project'}</span></div>
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[2] || 'Project'}</div>
+              <div class="pf2-cap-sub">${content.heroEyebrow}</div>
+            </div>
           </div>
-          <div class="pf-cell">
+          <div class="pf2-cell">
             <img src="${stockPool[11]}" alt="${captions[3] || 'Project'}" />
-            <div class="pf-cap"><span>${captions[3] || 'Project'}</span></div>
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[3] || 'Project'}</div>
+              <div class="pf2-cap-sub">${businessName}</div>
+            </div>
+          </div>
+          <div class="pf2-cell">
+            <img src="${stockPool[12]}" alt="${captions[4] || 'Project'}" />
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[4] || 'Project'}</div>
+              <div class="pf2-cap-sub">${businessName}</div>
+            </div>
           </div>
         </div>
-        ${stockPool[12] ? `<div style="display:grid;grid-template-columns:1fr;height:360px;gap:2px;margin-top:2px">
-          <div class="pf-cell">
-            <img src="${stockPool[12]}" alt="${captions[4] || 'Project'}" />
-            <div class="pf-cap"><span>${captions[4] || 'Project'}</span></div>
-          </div>
-        </div>` : ''}
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;height:220px;gap:3px;margin-top:3px">
+          ${[stockPool[13], stockPool[14], stockPool[15]].map((img, i) => `
+          <div class="pf2-cell">
+            <img src="${img}" alt="${captions[i] || 'Work'}" />
+            <div class="pf2-cap">
+              <div class="pf2-cap-title">${captions[i] || 'Work'}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div style="padding:40px 2rem 80px;text-align:center">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);text-decoration:none;border-bottom:1px solid var(--primary);padding-bottom:0.25rem">Work With Us &rarr;</a>
       </div>
     </section>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor)}
+  const testimonialsSection = `
+    <section style="padding:100px 0;background:var(--bg-alt)">
+      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+        ${content.testimonial ? `
+        <div style="max-width:820px;margin:0 auto;text-align:center">
+          <div style="font-family:var(--heading-font);font-size:6rem;line-height:0.7;color:var(--primary);opacity:0.2;margin-bottom:2rem">&ldquo;</div>
+          <p style="font-family:var(--heading-font);font-size:clamp(1.25rem,2.5vw,1.7rem);font-weight:400;font-style:italic;color:var(--text);line-height:1.6;margin:0 0 2.5rem">"${content.testimonial.quote}"</p>
+          <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem">
+            <div style="width:48px;height:1px;background:var(--border)"></div>
+            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;font-weight:500;margin:0">${content.testimonial.author}</p>
+            <div style="width:48px;height:1px;background:var(--border)"></div>
+          </div>
+          ${content.testimonial.rating ? `<div style="color:var(--primary);font-size:0.9rem;letter-spacing:0.15em;margin-top:1.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+        </div>
+        <div style="width:1px;height:60px;background:var(--border);margin:4rem auto"></div>` : ''}
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+          ${fallbackTestimonials.slice(0, 2).map(t => `
+          <div style="padding:2.5rem;border:1px solid var(--border);border-radius:2px;background:var(--card-bg);position:relative">
+            <div style="color:var(--primary);font-size:0.85rem;letter-spacing:0.15em;margin-bottom:1.5rem">${'&#9733;'.repeat(t.rating)}</div>
+            <p style="font-family:var(--heading-font);font-size:1rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 2rem">"${t.quote}"</p>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:600">${t.author}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </section>`
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor)
+
+  return `${headHtml}
+<style>
+  @keyframes pf2-kenburns { 0% { transform:scale(1.06) translate(0.5%,0) } 100% { transform:scale(1) translate(0,0) } }
+  @keyframes pf2-fadeup { from { opacity:0;transform:translateY(30px) } to { opacity:1;transform:translateY(0) } }
+  @keyframes pf2-fadein { from { opacity:0 } to { opacity:1 } }
+  .pf2-hero-bg { animation:pf2-kenburns 20s ease-out forwards }
+  .pf2-f1 { animation:pf2-fadeup 1s ease 0.2s both }
+  .pf2-f2 { animation:pf2-fadeup 1s ease 0.45s both }
+  .pf2-f3 { animation:pf2-fadeup 1s ease 0.65s both }
+  .pf2-f4 { animation:pf2-fadeup 1s ease 0.85s both }
+  .pf2-f5 { animation:pf2-fadeup 1s ease 1.0s both }
+  body::before { content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.45 }
+  .reveal { opacity:0;transform:translateY(22px);transition:opacity 0.75s ease,transform 0.75s ease }
+  .reveal.visible { opacity:1;transform:translateY(0) }
+  #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
+  #custom-cursor-ring { width:34px;height:34px;border:1px solid rgba(${pr},${pg},${pb},0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%) }
+</style>
+<div id="custom-cursor-dot"></div>
+<div id="custom-cursor-ring"></div>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-  <!-- Hero — dramatic full-bleed with heavier gradient -->
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.75) 60%,rgba(0,0,0,0.88) 100%)"></div>
+  <!-- Hero — editorial, center-aligned, Ken Burns -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" class="pf2-hero-bg" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.72) 50%,rgba(0,0,0,0.88) 100%)"></div>
     </div>
-    <div style="position:relative;max-width:800px;margin:0 auto;padding:6rem 2rem 0">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;padding:0.4rem 1rem;border-radius:999px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);margin-bottom:1.75rem">${content.badge}</div>` : ''}
-      <p style="font-family:var(--body-font);font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);margin-bottom:2rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5.5rem);font-weight:400;color:var(--text);line-height:1.05;margin-bottom:1.5rem">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);max-width:520px;margin:0 auto ${content.heroAccent ? '1rem' : '2.5rem'};line-height:1.7">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p style="font-family:var(--body-font);font-size:1.2rem;color:var(--primary);font-weight:600;margin-bottom:2.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroAccent}</p>` : ''}
-      <div style="display:flex;gap:1rem;justify-content:center">
-        <a href="#gallery" style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:999px;text-decoration:none;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.95rem;font-weight:500;padding:1rem 2rem;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.25);border-radius:999px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+    <!-- Decorative corner marks -->
+    <div style="position:absolute;top:6rem;left:2rem;width:30px;height:30px;border-top:1.5px solid rgba(255,255,255,0.25);border-left:1.5px solid rgba(255,255,255,0.25)"></div>
+    <div style="position:absolute;top:6rem;right:2rem;width:30px;height:30px;border-top:1.5px solid rgba(255,255,255,0.25);border-right:1.5px solid rgba(255,255,255,0.25)"></div>
+    <div style="position:absolute;bottom:8rem;left:2rem;width:30px;height:30px;border-bottom:1.5px solid rgba(255,255,255,0.25);border-left:1.5px solid rgba(255,255,255,0.25)"></div>
+    <div style="position:absolute;bottom:8rem;right:2rem;width:30px;height:30px;border-bottom:1.5px solid rgba(255,255,255,0.25);border-right:1.5px solid rgba(255,255,255,0.25)"></div>
+    <div style="position:relative;max-width:860px;margin:0 auto;padding:8rem 2rem 6rem">
+      ${content.badge ? `<div class="pf2-f1" style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.45rem 1.25rem;border-radius:999px;background:rgba(${pr},${pg},${pb},0.15);border:1px solid rgba(${pr},${pg},${pb},0.35);color:rgba(255,255,255,0.85);margin-bottom:2.25rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
+      <div class="pf2-f1" style="display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-bottom:2rem">
+        <div style="width:40px;height:1px;background:rgba(${pr},${pg},${pb},0.7)"></div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
+        <div style="width:40px;height:1px;background:rgba(${pr},${pg},${pb},0.7)"></div>
       </div>
-      ${content.ctaNote ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5);margin-top:1rem">${content.ctaNote}</p>` : ''}
+      <h1 class="pf2-f2" style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,6.5rem);font-weight:400;color:#f5f5f0;line-height:1.0;margin:0 0 2rem;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:rgba(245,245,240,0.65);max-width:480px;margin:0 auto ${content.heroAccent ? '1.25rem' : '2.75rem'};line-height:1.82">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--primary);font-weight:600;margin:0 auto 2.75rem;max-width:480px">${content.heroAccent}</p>` : ''}
+      <div class="pf2-f4" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.88rem;font-weight:600;padding:1.1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1.1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+      </div>
+      ${content.ctaNote ? `<p class="pf2-f5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-top:1.5rem">${content.ctaNote}</p>` : ''}
+    </div>
+    <!-- Bottom scroll indicator -->
+    <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem">
+      <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-weight:500">Scroll</div>
+      <div style="width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,0.35),transparent)"></div>
     </div>
   </section>
 
   ${servicesSection}
   ${gallerySection}
-  ${buildAboutSection(content)}
-  ${buildTestimonialSection(content)}
+
+  <!-- About -->
+  <section id="about" style="padding:120px 0;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center">
+        <div class="reveal">
+          <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem">
+            <div style="width:1px;height:48px;background:var(--primary)"></div>
+            <p style="font-family:var(--body-font);font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary);font-weight:700;margin:0">About the Studio</p>
+          </div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.8rem);font-weight:400;color:var(--text);line-height:1.2;margin:0 0 1.75rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:var(--heading-font);font-size:1.05rem;color:var(--text);line-height:1.65;font-style:italic;margin:0 0 1.75rem;padding-left:1.5rem;border-left:2px solid var(--primary)">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.92rem;color:var(--text-muted);line-height:1.9;margin:0 0 1rem">${p}</p>`).join('')}
+          <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)">
+            ${content.stats.slice(0, 4).map(s => `
+            <div>
+              <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:var(--text);line-height:1">${s.value}</div>
+              <div style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);margin-top:0.3rem;letter-spacing:0.04em">${s.label}</div>
+              ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.7rem;color:var(--text-muted);opacity:0.55;margin-top:0.12rem">${s.sublabel}</div>` : ''}
+            </div>`).join('')}
+          </div>
+        </div>
+        <div class="reveal" style="position:relative">
+          <div class="ms-img" style="overflow:hidden;border-radius:2px;height:580px">
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;top:-1.5rem;right:-1.5rem;width:100px;height:100px;border:1.5px solid var(--primary);border-radius:1px;z-index:-1;opacity:0.5"></div>
+          <div style="position:absolute;bottom:-1.5rem;left:-1.5rem;width:100px;height:100px;border:1.5px solid rgba(${pr},${pg},${pb},0.25);border-radius:1px;z-index:-1"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ${testimonialsSection}
   ${buildContactSection(content, locationInfo)}
 
 ${buildFooter(businessName, content)}
 
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 });
+  revealEls.forEach(el => obs.observe(el));
+  const dot = document.getElementById('custom-cursor-dot');
+  const ring = document.getElementById('custom-cursor-ring');
+  let rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
+  requestAnimationFrame(function loop() { rx += (parseFloat(dot.style.left||0) - rx) * 0.08; ry += (parseFloat(dot.style.top||0) - ry) * 0.08; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); });
+</script>
 </body>
 </html>`
 }
-
-// ---------- Property Template (v0 Real Estate–inspired) ----------
-function buildPropertyTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-    stockImages.cards[10],
-  ]
-
-  const prBg = '#ffffff'
-  const prAlt = '#faf7f4'
-  const prText = '#1a1a2e'
-  const prMuted = '#64748b'
-  const prCopper = primaryColor || '#b5651d'
-
-  // Section 1: Full-bleed hero — tracked eyebrow, huge serif business name, subtitle, 2 CTAs
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
-    </div>
-    <div style="position:relative;max-width:900px;padding:0 2rem">
-      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow || 'Premium Real Estate Services'}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,5.5rem);font-weight:700;color:#fff;line-height:1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.02em;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${businessName}</h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:600px;margin:0 auto 2rem;line-height:1.7">${content.heroSubtitle}</p>
-      <div style="display:flex;gap:0.75rem;justify-content:center">
-        <a href="#properties" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:0.85rem 2rem;border:1px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">View Properties &rarr;</a>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:${prCopper};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 2: About — photo left with floating stat badge, eyebrow + heading + paragraphs + stats right
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
-  const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:${prBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div style="position:relative">
-        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:${prCopper};border-radius:12px;padding:1.5rem 2rem;color:#fff">
-          <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;line-height:1">${content.stats[0]?.value || '15+'}</div>
-          <div style="font-family:var(--body-font);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem">${content.stats[0]?.label || 'Years of Excellence'}</div>
-        </div>
-      </div>
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${prMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:1.5rem;margin-top:2rem">
-          ${content.stats.slice(0, 4).map(s => `
-          <div>
-            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${prCopper}">${s.value}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${s.label}</div>
-          </div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </section>`
-
-  // Section 3: Featured Properties — eyebrow + heading + 3 property listing cards
-  const defaultPropertyListings = [
-    { name: 'Camps Bay Villa', suburb: 'Camps Bay', details: '4 bed · 3 bath · 380m² · Pool · Sea views', label: 'For Sale' },
-    { name: 'Sea Point Apartment', suburb: 'Sea Point', details: '2 bed · 2 bath · 110m² · Balcony · Secure parking', label: 'For Sale' },
-    { name: 'Constantia Estate', suburb: 'Constantia', details: '5 bed · 4 bath · 620m² · Wine cellar · Mountain views', label: 'Recently Sold' },
-  ]
-  const propertyListings = (content.projectCaptions && content.projectCaptions.length >= 3)
-    ? content.projectCaptions.slice(0, 3).map((caption: string, i: number) => ({
-        name: caption,
-        suburb: (content.features && content.features[i]) ? content.features[i].name : locationInfo.city,
-        details: (content.features && content.features[i]) ? content.features[i].description : defaultPropertyListings[i].details,
-        label: i === 2 ? 'Recently Sold' : 'For Sale',
-      }))
-    : defaultPropertyListings
-  const propertiesSection = `
-  <section id="properties" style="padding:80px 2rem;background:${prAlt}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Our Portfolio</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.galleryHeading || 'Featured Properties'}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        ${propertyListings.map((prop: { name: string; suburb: string; details: string; label: string }, i: number) => `
-        <div style="background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
-          <div class="ms-img" style="position:relative;height:250px;overflow:hidden">
-            <img src="${galleryImgs[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;top:1rem;left:1rem;background:${prCopper};color:#fff;font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.35rem 0.75rem;border-radius:4px">${prop.label}</div>
-          </div>
-          <div style="padding:1.5rem">
-            <div style="display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem">
-              <span style="color:${prMuted};font-size:0.85rem">&#9906;</span>
-              <span style="font-family:var(--body-font);font-size:0.8rem;color:${prMuted}">${prop.suburb}</span>
-            </div>
-            <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${prop.name}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted};line-height:1.6">${prop.details}</p>
-          </div>
-        </div>`).join('')}
-      </div>
-      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${prCopper};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:2.5rem">View All Properties &rarr;</a>
-    </div>
-  </section>`
-
-  // Section 4: Services — eyebrow + heading + 2x2 icon cards
-  const servicesSection = `
-  <section id="services" style="padding:80px 2rem;background:${prAlt}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prMuted};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.servicesHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${prMuted};margin-bottom:3rem">${content.heroSubtitle}</p>
-      ${(() => { const eg = evenGrid(content.services, 2); return `
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem;text-align:left">
-        ${(eg.items as typeof content.services).map((s, i) => `
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="font-size:2rem;color:${prCopper};margin-bottom:1rem">${mapIcon(s.icon, i)}</div>
-          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${prText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${prMuted};line-height:1.7">${s.description}</p>
-        </div>`).join('')}
-      </div>`; })()}
-    </div>
-  </section>`
-
-  // Section 5: Testimonials — copper bg, 3 quote cards with quote marks
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${prCopper}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Client Stories</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Clients Say</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
-          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
-          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${content.testimonial.author.split(',')[0]}</div>
-          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">${content.testimonial.author.split(',')[1]?.trim() || ''}</div>
-        </div>
-        ${[0,1].map(i => `
-        <div style="border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:2rem">
-          <div style="font-size:2.5rem;color:rgba(255,255,255,0.3);line-height:1;margin-bottom:1rem">&#10077;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.9);line-height:1.7;margin-bottom:1.5rem">"${i === 0 ? 'Sold our property above asking price. Expert marketing and negotiation.' : 'Patient guidance through every step. Now proud homeowners!'}"</p>
-          <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${i === 0 ? 'Robert W.' : 'Emily & David P.'}</div>
-          <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.6)">${i === 0 ? 'Seller' : 'First-time Buyers'}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>` : ''
-
-  // Section 6: Contact — 2-column: info left, form card right
-  const contactSection = `
-  <section id="contact" style="padding:80px 2rem;background:${prBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${prCopper};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${prText};margin-bottom:1rem">${content.contactHeading}</h2>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:${prMuted};line-height:1.7;margin-bottom:2.5rem">${content.aboutMission || content.heroSubtitle}</p>
-        <div style="display:flex;flex-direction:column;gap:1.5rem">
-          <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Office Location</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${locationInfo.address}, ${locationInfo.city}</div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${locationInfo.phone}</div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
-          </div>
-          ${content.contactHours ? `<div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(prCopper.slice(1,3),16)},${parseInt(prCopper.slice(3,5),16)},${parseInt(prCopper.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${prCopper};font-size:1.1rem">&#9200;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${prText}">Hours</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${prMuted}">${content.contactHours.replace(/ · /g, '<br />')}</div></div>
-          </div>` : ''}
-        </div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
-        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${prText};margin-bottom:1.5rem">Send Us a Message</h3>
-        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Full Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Email Address</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Phone Number</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${prText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your real estate needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
-          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${prCopper};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
-        </form>
-      </div>
-    </div>
-  </section>`
-
-  // Footer — 4-column: logo+desc | quick links | services | connect
-  const prFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${prText}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Quick Links</h4>
-        <a href="#properties" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Properties</a>
-        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
-        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
-        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Connect</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">${locationInfo.phone}</p>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-      <div style="display:flex;gap:1.5rem">
-        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Privacy Policy</a>
-        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3);text-decoration:none">Terms of Service</a>
-      </div>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${prBg};
-      --bg-alt: ${prAlt};
-      --card-bg: ${prBg};
-      --text: ${prText};
-      --text-muted: ${prMuted};
-      --border: rgba(0,0,0,0.06);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${aboutSection}
-  ${propertiesSection}
-  ${servicesSection}
-  ${testimonialSection}
-  ${contactSection}
-
-${prFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Events-Entertainment Template (Zola–inspired) ----------
-function buildEventsTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-
-  const evtBg = '#ffffff'
-  const evtText = '#1a1a1a'
-  const evtMuted = '#6b6b6b'
-  const evtTeal = primaryColor || '#2a6b6b'
-
-  // Section 1: Full-bleed hero — centered text on photo
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
-    </div>
-    <div style="position:relative;text-align:center;max-width:800px;padding:0 2rem">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1.25rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)"><em>${content.tagline}</em></h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:2rem;max-width:550px;margin-left:auto;margin-right:auto;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${evtText};border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:transparent;color:#fff;border:1px solid #fff;border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 2: Service grid — 3-column cards with arrow links + photos
-  const serviceGrid = `
-  <section id="services" style="padding:80px 2rem;background:${evtBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 3fr;gap:0;border:1px solid rgba(0,0,0,0.08);border-radius:16px;overflow:hidden">
-        <div style="padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid rgba(0,0,0,0.08)">
-          <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:${evtText};line-height:1.3;margin-bottom:0.75rem"><em>${content.servicesHeading}</em></h2>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${evtMuted};line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
-        </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr">
-          ${content.services.slice(0, 6).map((s, i) => `
-          <div style="border-left:${i % 3 > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none'};${i >= 3 ? 'border-top:1px solid rgba(0,0,0,0.08);' : ''}padding:1.5rem;display:flex;flex-direction:column">
-            <h3 style="font-family:var(--body-font);font-size:0.95rem;font-weight:600;color:${evtText};margin-bottom:0.35rem">${s.name} &rarr;</h3>
-            <p style="font-family:var(--body-font);font-size:0.8rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem;flex:1">${s.description}</p>
-            <div class="ms-img" style="border-radius:12px;overflow:hidden;height:180px;flex-shrink:0">
-              <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-            </div>
-          </div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </section>`
-
-  // Section 3: Alternating 50/50 feature sections — white bg with rounded-corner images
-  // Work style sections — use features (USPs), or generate short-heading fallbacks from about text
-  const aboutParts = content.aboutText.split('\n').filter(p => p.trim())
-  const workStyleData = content.features || [
-    { name: 'Crafted with precision', description: aboutParts[0] || content.heroSubtitle },
-    { name: 'No detail too small', description: aboutParts[1] || aboutParts[0] || content.heroSubtitle },
-  ]
-  const featureSections = workStyleData.slice(0, 2).map((f, i) => `
-  <section style="background:${evtBg};padding:80px 2rem">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};gap:4rem;align-items:center">
-      ${i % 2 === 0 ? `
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${f.name}</em></h2>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${f.description}</p>
-        <div style="display:flex;gap:0.75rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
-        </div>
-      </div>
-      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:450px">
-        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>` : `
-      <div class="ms-img" style="overflow:hidden;border-radius:16px;height:450px">
-        <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem"><em>${f.name}</em></h2>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:2rem">${f.description}</p>
-        <div style="display:flex;gap:0.75rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-          <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
-        </div>
-      </div>`}
-    </div>
-  </section>`).join('')
-
-  // Section 4: About / expert advisors — photo left, text right
-  const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:${evtBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:4rem;align-items:center">
-      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-        <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${evtMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:flex;gap:0.75rem;margin-top:1rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-          <a href="#gallery" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${evtText};color:${evtText};border-radius:999px;text-decoration:none">${content.ctaSecondary}</a>
-        </div>
-      </div>
-    </div>
-  </section>`
-
-  // Section 5: Category icon grid
-  const categoryGrid = content.services.length > 0 ? `
-  <section style="padding:60px 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText};margin-bottom:2.5rem">${content.galleryHeading || content.servicesHeading}</h2>
-      <div style="display:flex;flex-wrap:wrap;gap:2.5rem;justify-content:center">
-        ${content.services.map(s => `
-        <div style="text-align:center">
-          <div style="width:64px;height:64px;border-radius:50%;background:${evtTeal};display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem">
-            <span style="font-size:1.2rem;color:#fff">${s.icon || '&#9733;'}</span>
-          </div>
-          <span style="font-family:var(--body-font);font-size:0.8rem;color:${evtText}">${s.name}</span>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>` : ''
-
-  // Testimonial
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:60px 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:700px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${evtText};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
-      <p style="font-family:var(--body-font);font-size:0.85rem;color:${evtMuted};font-weight:500">— ${content.testimonial.author}</p>
-    </div>
-  </section>` : ''
-
-  // Footer
-  const evtFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${evtBg};border-top:1px solid rgba(0,0,0,0.08)">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr 1.5fr;gap:3rem">
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Services</h4>
-        ${content.services.map(s => `<a href="#services" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">About</h4>
-        <a href="#about" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Our Story</a>
-        <a href="#contact" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${evtText};margin-bottom:1rem">Support</h4>
-        <a href="#" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
-        <a href="#" style="color:${evtMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
-      </div>
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${evtText};margin-bottom:0.5rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${evtMuted};line-height:1.6;margin-bottom:1rem">${content.heroSubtitle}</p>
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.6rem 1.25rem;background:${evtText};color:#fff;border-radius:999px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.06);text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:${evtMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${evtBg};
-      --bg-alt: #f5f5f5;
-      --card-bg: ${evtBg};
-      --text: ${evtText};
-      --text-muted: ${evtMuted};
-      --border: rgba(0,0,0,0.06);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${serviceGrid}
-  <section style="padding:40px 2rem 20px;background:${evtBg};text-align:center">
-    <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${evtText}"><em>Our Work Style</em></h2>
-  </section>
-  ${aboutSection}
-  ${featureSections}
-  ${testimonialSection}
-  ${buildContactSection(content, locationInfo)}
-
-${evtFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Professional Template (Mishcon–inspired) ----------
-function buildProfessionalTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-
-  const proBg = '#2a2a2a'
-  const proText = '#f5f5f0'
-  const proMuted = '#a0a0a0'
-  const proRed = primaryColor || '#c0392b'
-
-  // Section 1: Full-bleed hero with heading overlay + subtitle + red CTA
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.65) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:#fff;line-height:1.15;margin-bottom:1rem;max-width:600px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.85);max-width:450px;line-height:1.7;margin-bottom:2rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
-      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.75rem;background:${proRed};color:#fff;border-radius:4px;text-decoration:none">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Section 2: 4-column (or 3) service cards — icon + title + description + red link
-  const serviceCards = `
-  <section id="services" style="padding:80px 2rem;background:${proBg}">
-    ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
-    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem">
-      ${(eg.items as typeof content.services).map((s, i) => `
-      <div>
-        <div style="width:56px;height:56px;border-radius:12px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-          <span style="font-size:1.3rem;color:var(--primary)">${mapIcon(s.icon, i)}</span>
-        </div>
-        <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:400;color:${proText};margin-bottom:0.75rem">${s.name}</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:var(--primary);text-decoration:none;font-weight:500">${content.ctaSecondary || 'Read more'}</a>
-      </div>`).join('')}
-    </div>`; })()}
-  </section>`
-
-  // Section 3: People / about — full-width photo bg with heading + text overlay
-  const peopleSection = `
-  <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.2) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem;width:100%">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:#fff;line-height:1.2;margin-bottom:1rem;font-style:italic">${content.aboutHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.5rem">${content.aboutText.split('\n')[0]}</p>
-      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.65rem 1.5rem;background:${proRed};color:#fff;border-radius:4px;text-decoration:none">${content.ctaSecondary || 'Learn More'}</a>
-    </div>
-  </section>`
-
-  // Werksmans-style 2x2 image grid with accent label pills
-  const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
-  const tileImgs = [
-    stockImages.cards[7] || `https://picsum.photos/seed/${businessName}-tile0/600/600`,
-    stockImages.cards[8] || `https://picsum.photos/seed/${businessName}-tile1/600/600`,
-    stockImages.cards[9] || `https://picsum.photos/seed/${businessName}-tile2/600/600`,
-    stockImages.cards[10] || `https://picsum.photos/seed/${businessName}-tile3/600/600`,
-  ]
-
-  const tileDescriptions = [
-    content.aboutText.split('\n')[0] || 'A dedicated team with decades of combined experience.',
-    content.aboutMission || 'We take a thorough, considered approach to every matter.',
-    'Our track record speaks for itself — results that protect your interests.',
-    'Qualified professionals who understand your industry and your goals.',
-  ]
-  const imageGridSection = `
-  <section style="padding:40px 2rem;background:${proBg}">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:${proText};margin-bottom:2rem">About Us</h2>
-    </div>
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-      ${tileImgs.map((img, i) => `
-      <div style="position:relative;aspect-ratio:1;overflow:hidden">
-        <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem">
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:600;color:#fff;margin-bottom:1rem">${tileLabels[i]}</h3>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.7;max-width:90%">${tileDescriptions[i]}</p>
-        </div>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Testimonial
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:60px 2rem;background:${proBg};border-top:1px solid rgba(255,255,255,0.08)">
-    <div style="max-width:800px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--heading-font);font-size:1.2rem;font-weight:400;color:${proText};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
-      <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};font-weight:500">— ${content.testimonial.author}</p>
-    </div>
-  </section>` : ''
-
-  // Full-width image
-  const fullImage = `
-  <section style="height:40vh;overflow:hidden">
-    <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-  </section>`
-
-  // Footer — dark, 4-column links + subscribe + social
-  const proFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:#1e1e1e">
-    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem">
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${proText};margin-bottom:0.35rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.75rem;color:${proMuted};font-style:italic;margin-bottom:1.5rem">${content.heroEyebrow || ''}</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${proMuted};line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Navigate</h4>
-        <a href="#about" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
-        <a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
-        <a href="#contact" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:${proText};margin-bottom:1rem">Legal</h4>
-        <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
-        <a href="#" style="color:${proMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Terms of Service</a>
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;border:1px solid var(--primary);color:var(--primary);text-decoration:none;margin-top:1rem">Subscribe</a>
-      </div>
-    </div>
-    <div style="max-width:1300px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);text-align:left">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
-  <style>
-    :root {
-      --bg: ${proBg};
-      --bg-alt: #333333;
-      --card-bg: #333333;
-      --text: ${proText};
-      --text-muted: ${proMuted};
-      --border: rgba(255,255,255,0.08);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${imageGridSection}
-  ${serviceCards}
-  ${peopleSection}
-  ${testimonialSection}
-  ${buildContactSection(content, locationInfo)}
-
-${proFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Education Template (Preply–inspired) ----------
-function buildEducationTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-
-  const eduBg = '#ffffff'
-  const eduText = '#1a1a1a'
-  const eduMuted = '#6b6b6b'
-  const eduPink = lightenColor(primaryColor, 0.85)
-
-  // Section 1: Split hero — pink bg, heading left, photo right
-  const heroSection = `
-  <section style="background:${eduPink};overflow:hidden">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;min-height:80vh;align-items:center;padding:0 2rem">
-      <div style="padding:3rem 0">
-        <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1.5rem">${content.tagline}</h1>
-        <p style="font-family:var(--body-font);font-size:1.05rem;color:${eduText};line-height:1.7;margin-bottom:2rem;max-width:420px;opacity:0.8">${content.heroSubtitle}</p>
-        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:1rem;font-weight:600;padding:1rem 2.5rem;background:${eduText};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary} &rarr;</a>
-      </div>
-      <div style="display:flex;justify-content:center;align-items:flex-end;height:100%">
-        <img src="${heroImg}" alt="" style="max-width:100%;max-height:85vh;object-fit:contain;border-radius:12px" />
-      </div>
-    </div>
-  </section>`
-
-  // Section 2: Stats row
-  const statsSection = `
-  <section style="padding:60px 2rem;background:${eduBg}">
-    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
-      ${content.stats.slice(0, 5).map((s, i) => `
-      <div style="text-align:center;${i < content.stats.length - 1 ? 'padding-right:3rem;border-right:1px solid rgba(0,0,0,0.1)' : ''}">
-        <div style="font-family:var(--heading-font);font-size:1.8rem;font-weight:700;color:${eduText}">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:${eduMuted}">${s.label}</div>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 3: 3-column service cards with icons + arrows
-  const serviceGrid = `
-  <section id="services" style="padding:60px 2rem;background:${eduBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:2rem;text-align:center;text-transform:capitalize">${content.servicesHeading}</h2>
-    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-      ${content.services.slice(0, 6).map(s => `
-      <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:1.5rem;display:flex;align-items:center;gap:1rem">
-        <div style="font-size:1.5rem;flex-shrink:0">${s.icon || '&#9998;'}</div>
-        <div style="flex:1">
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${eduText}">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.8rem;color:${eduMuted}">${s.description}</p>
-        </div>
-        <span style="font-size:1.2rem;color:${eduMuted}">&rsaquo;</span>
-      </div>`).join('')}
-    </div>
-    </div>
-  </section>`
-
-  // Section 4: TeachMe2-style 3-step process — circles + dashed connector + text
-  const processSteps = content.processSteps || [
-    { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
-    { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
-    { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
-  ]
-  const stepColors = [primaryColor, secondaryColor || '#f5a623', '#6c63ff']
-  const processSection = `
-  <section style="padding:80px 2rem;background:${eduBg}">
-    <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:${eduText};margin-bottom:4rem;text-align:center;text-transform:capitalize"><span style="color:var(--primary)">3 Simple Steps</span> ${content.stepsHeading || 'To Get Started'}</h2>
-      <!-- Steps: circle + connector + text in one grid -->
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
-        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="display:flex;align-items:center;margin-top:32px;align-self:start;width:100%;padding:0 0.5rem"><svg width="100%" height="12" viewBox="0 0 100 12" preserveAspectRatio="none" style="display:block"><line x1="0" y1="6" x2="85" y2="6" stroke="#cbd5e1" stroke-width="2.5"/><polygon points="85,0 100,6 85,12" fill="#cbd5e1"/></svg></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
-          <div style="width:64px;height:64px;border-radius:50%;background:${stepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
-          <div>
-            <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${eduText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
-            <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted};line-height:1.7">${step.description}</p>
-          </div>
-        </div>`).join('')}
-      </div>
-      <div style="margin-top:3rem">
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:1rem;font-weight:600;padding:1rem 2.5rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 6: 50/50 testimonial — photo left, bold quote right
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${eduBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <p style="font-family:var(--body-font);font-size:1rem;color:${eduMuted};text-align:center;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-          <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div>
-          <p style="font-family:var(--heading-font);font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:700;color:${eduText};line-height:1.4;margin-bottom:1.5rem">${content.testimonial.quote}</p>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${eduMuted}">— ${content.testimonial.author}</p>
-        </div>
-      </div>
-    </div>
-  </section>` : ''
-
-  // Section 7: About split — teal hero
-  const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:var(--primary)">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:#fff;margin-bottom:1rem">${content.aboutHeading}</h2>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:flex;gap:0.75rem;margin-top:1.5rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${eduText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid #fff;color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary}</a>
-        </div>
-      </div>
-      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:400px">
-        <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Section 8: Pink CTA banner with contact form inside
-  const eduContactSection = `
-  <section id="contact" style="padding:80px 2rem;background:${eduPink}">
-    <div style="max-width:700px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:${eduText};line-height:1.1;margin-bottom:1rem">${content.contactHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${eduText};opacity:0.7;margin-bottom:3rem">${content.heroSubtitle}</p>
-      <form style="display:flex;flex-direction:column;gap:1.25rem;text-align:left" onsubmit="return false">
-        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-          <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
-          <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none" />
-        </div>
-        <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;color:${eduText};font-size:0.95rem;outline:none;resize:none"></textarea>
-        <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:#fff;color:${eduText};border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer">Send Message</button>
-      </form>
-    </div>
-  </section>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${eduBg};
-      --bg-alt: #f5f5f5;
-      --card-bg: ${eduBg};
-      --text: ${eduText};
-      --text-muted: ${eduMuted};
-      --border: rgba(0,0,0,0.06);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${statsSection}
-  ${serviceGrid}
-  ${processSection}
-  ${testimonialSection}
-  ${aboutSection}
-  ${eduContactSection}
-
-${buildFooter(businessName, content, 'light')}
-
-</body>
-</html>`
-}
-
-// ---------- Creative Template (Lusion–inspired, dark portfolio) ----------
-function buildCreativeTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-    stockImages.cards[10],
-  ]
-
-  const crBg = '#f5f5f0'
-  const crText = '#0a0a0a'
-  const crMuted = '#6b6b6b'
-
-  // Section 1: Hero — full-bleed image, subtitle below, "SCROLL TO EXPLORE" label
-  const heroSection = `
-  <section style="background:${crBg};padding:0 2rem">
-    <div style="max-width:1400px;margin:0 auto">
-      <div style="border-radius:16px;overflow:hidden;height:70vh;margin-bottom:1.5rem">
-        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:${crText};max-width:500px;line-height:1.7;margin-left:auto;text-align:right;padding-bottom:1rem">${content.heroSubtitle}</p>
-      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:${crMuted};text-align:center;padding:1rem 0">+ &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; Scroll to explore &nbsp;&nbsp;&nbsp;&nbsp; + &nbsp;&nbsp;&nbsp;&nbsp; +</p>
-    </div>
-  </section>`
-
-  // Section 2: Meet the Artists / Team — upriseart-inspired
-  // Use service names and descriptions as the "team" — they represent the people/work
-  const meetSection = `
-  <section style="padding:100px 2rem;background:${crBg}">
-    <div style="max-width:1400px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};margin-bottom:1rem;font-style:italic">${content.servicesHeading}</h2>
-      <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;color:${crText};text-decoration:underline;text-underline-offset:4px;margin-bottom:3rem;display:inline-block">View All</a>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:left;margin-top:2rem">
-        ${content.services.slice(0, 3).map((s, i) => `
-        <div>
-          <div class="ms-img" style="height:450px;overflow:hidden;margin-bottom:1.25rem">
-            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:400;color:${crText};margin-bottom:0.25rem;font-style:italic">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted};font-weight:500;margin-bottom:0.75rem">${s.tags.join(' · ')}</p>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7;margin-bottom:1rem">${s.description}</p>
-          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:${crText};text-decoration:underline;text-underline-offset:4px">Learn More</a>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 3: About — photo left, text right
-  const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:${crBg}">
-    <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
-      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:500px">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <div>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:1.1rem;color:${crText};line-height:1.8;margin-bottom:1.5rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">&#9679; ${content.ctaSecondary || 'About Us'}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 4: Featured Work — 2-column portfolio grid with tag labels (even rows)
-  // Use gallery images (from galleryImageQueries) + service images as fallback
-  const allPortfolioImgs = [...galleryImgs, ...serviceImgs].filter(Boolean)
-  // Ensure exactly 4 items for 2x2 grid — pad from services if features < 4
-  const rawFeatures = content.features || content.services.slice(0, 4)
-  const featuresData = rawFeatures.length >= 4 ? rawFeatures : [...rawFeatures, ...content.services.filter(s => !rawFeatures.some(f => f.name === s.name)).slice(0, 4 - rawFeatures.length)]
-  const portfolioGrid = `
-  <section id="gallery" style="padding:80px 2rem;background:${crBg}">
-    <div style="max-width:1400px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:end;margin-bottom:3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};font-style:italic;line-height:1">${content.galleryHeading || 'Featured Work'}</h2>
-        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};max-width:300px;text-align:right">${content.aboutMission || content.heroSubtitle}</p>
-      </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
-        ${featuresData.slice(0, 4).map((s, i) => `
-        <div>
-          <div class="ms-img" style="border-radius:12px;overflow:hidden;height:400px;margin-bottom:1rem">
-            <img src="${allPortfolioImgs[i % allPortfolioImgs.length]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:${crMuted};margin-bottom:0.35rem">${('tags' in s && s.tags) ? s.tags.join(' &#8226; ') : s.name}</p>
-          <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:${crText};display:flex;align-items:center;gap:0.5rem">&rarr; ${s.name}</h3>
-        </div>`).join('')}
-      </div>
-      <div style="text-align:center;margin-top:3rem">
-        <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:rgba(0,0,0,0.06);color:${crText};border-radius:999px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">&#9679; See all projects</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 5: Services list
-  const servicesList = `
-  <section id="services" style="padding:80px 2rem;background:${crBg}">
-    <div style="max-width:1000px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${crText};font-style:italic;margin-bottom:3rem">${content.servicesHeading}</h2>
-      ${content.services.map(s => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08)">
-        <h3 style="font-family:var(--body-font);font-size:1rem;font-weight:600;color:${crText}">${s.name}</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${crMuted}">${s.description}</p>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Footer — Lusion style: address, socials, newsletter
-  const crFooter = `
-  <footer style="padding:5rem 2rem 2rem;background:${crBg};border-top:1px solid rgba(0,0,0,0.08)">
-    <div class="ms-grid" style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1.5fr;gap:4rem">
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};line-height:1.7">${locationInfo.address}<br />${locationInfo.city}, ${locationInfo.postcode}<br />${locationInfo.country}</p>
-      </div>
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">General enquiries</p>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted};margin-bottom:2rem">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crText};margin-bottom:0.5rem">New business</p>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:${crMuted}">work@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
-      </div>
-      <div>
-        <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:500;color:${crText};margin-bottom:1.5rem">Subscribe to our newsletter</h3>
-        <form style="display:flex;border-bottom:1px solid ${crText};padding-bottom:0.5rem;max-width:400px" onsubmit="return false">
-          <input type="email" placeholder="Your email" style="flex:1;font-family:var(--body-font);padding:0.5rem 0;background:transparent;border:none;color:${crText};font-size:0.9rem;outline:none" />
-          <button type="submit" style="background:transparent;border:none;color:${crText};cursor:pointer;font-size:1.1rem">&rarr;</button>
-        </form>
-      </div>
-    </div>
-    <div style="max-width:1400px;margin:3rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:left">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:${crMuted}">&copy; ${new Date().getFullYear()} ${businessName}.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${crBg};
-      --bg-alt: #eeeee8;
-      --card-bg: #ffffff;
-      --text: ${crText};
-      --text-muted: ${crMuted};
-      --border: rgba(0,0,0,0.08);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${aboutSection}
-  ${portfolioGrid}
-  ${buildContactSection(content, locationInfo)}
-
-${crFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Fitness-Sport Template (EverybodyFights–inspired) ----------
-function buildFitnessTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-    stockImages.cards[10],
-  ]
-
-  const fitBg = '#111111'
-  const fitText = '#ffffff'
-  const fitMuted = '#999999'
-  const fitOrange = primaryColor || '#e85d26'
-
-  // Promo bar
-  const promoBanner = `
-  <div style="background:${fitOrange};padding:0.6rem 2rem;text-align:center">
-    <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.04em">${content.badge || content.heroEyebrow}</p>
-  </div>`
-
-  // Section 1: Full-bleed dark hero
-  const heroSection = `
-  <section style="position:relative;min-height:85vh;display:flex;align-items:flex-end;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.6) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.08em;max-width:700px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
-      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Section 2: Class types — name only, no icons
-  const classTypes = `
-  <section id="services" style="padding:80px 2rem;background:${fitBg};text-align:center">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2.5rem">
-        ${(eg.items as typeof content.services).map(s => `
-        <div style="text-align:center">
-          <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.8rem;color:${fitMuted};line-height:1.6;margin-top:0.5rem">${s.description}</p>
-          <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap">
-            ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.65rem;padding:0.2rem 0.5rem;border:1px solid rgba(255,255,255,0.15);color:${fitMuted};text-transform:uppercase;letter-spacing:0.05em">${t}</span>`).join('')}
-          </div>
-        </div>`).join('')}
-      </div>`; })()}
-    </div>
-  </section>`
-
-  // Section 3: Awards / trust strip
-  const awardsStrip = `
-  <section style="padding:60px 2rem;background:${fitBg};text-align:center;border-top:1px solid rgba(255,255,255,0.08);border-bottom:1px solid rgba(255,255,255,0.08)">
-    <div style="max-width:1100px;margin:0 auto">
-      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap;margin-bottom:2rem">
-        ${content.stats.slice(0, 4).map(s => `
-        <div style="text-align:center">
-          <div style="font-family:var(--heading-font);font-size:clamp(2.5rem,4vw,3.5rem);font-weight:700;color:${fitText}">${s.value}</div>
-          <div style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.35rem">${s.label}</div>
-        </div>`).join('')}
-      </div>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase">${content.aboutMission || content.heroEyebrow}</h2>
-    </div>
-  </section>`
-
-  // Section 4: 4-column location/service cards with photo bg
-  const locationCards = `
-  <section style="padding:80px 2rem;background:${fitBg}">
-    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
-      ${content.services.slice(0, 4).map((s, i) => `
-      <div class="ms-img" style="position:relative;min-height:350px;border-radius:8px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid ${fitOrange}">
-        <div style="position:absolute;inset:0">
-          <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          <div style="position:absolute;inset:0;background:rgba(0,0,0,0.55)"></div>
-        </div>
-        <div style="position:relative;padding:2rem">
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.2rem,2vw,1.6rem);font-weight:700;color:${fitText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:1.25rem">${s.description}</p>
-          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;font-weight:600;padding:0.65rem 1.5rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'Discover'}</a>
-        </div>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 5: Gallery — 3-column photo grid
-  const gallerySection = `
-  <section style="padding:0;background:${fitBg}">
-    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0">
-      ${galleryImgs.slice(0, 3).map(img => `
-      <div class="ms-img" style="height:350px;overflow:hidden">
-        <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 6: About — text left, photo right
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
-  const packagesSection = `
-  <section id="about" style="padding:80px 2rem;background:${fitBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${fitText};letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem">${content.aboutHeading}</h2>
-        <div style="width:50px;height:3px;background:var(--primary);margin-bottom:2rem"></div>
-        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${fitMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.75rem 2rem;background:#fff;color:${fitBg};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem">${content.ctaPrimary}</a>
-      </div>
-      <div class="ms-img" style="border-radius:8px;overflow:hidden;height:500px">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Footer
-  const fitFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${fitBg};border-top:1px solid rgba(255,255,255,0.08)">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
-      <div>
-        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">About Us</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};line-height:1.7;max-width:350px">${content.aboutText.split('\n')[0]}</p>
-        <a href="#about" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;color:${fitText};text-decoration:underline;text-underline-offset:4px;margin-top:1rem">Learn More</a>
-      </div>
-      <div>
-        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Links</h3>
-        ${content.services.slice(0, 3).map(s => `<a href="#services" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-        <a href="#contact" style="color:${fitMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact Us</a>
-      </div>
-      <div>
-        <h3 style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${fitText};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem">Follow Us</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${fitMuted};margin-top:0.5rem">${locationInfo.phone}</p>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);text-align:left">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
-  <style>
-    :root {
-      --bg: ${fitBg};
-      --bg-alt: #1a1a1a;
-      --card-bg: #1a1a1a;
-      --text: ${fitText};
-      --text-muted: ${fitMuted};
-      --border: rgba(255,255,255,0.08);
-    }
-  </style>
-
-${promoBanner}
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${awardsStrip}
-  ${locationCards}
-  ${gallerySection}
-  ${packagesSection}
-  ${buildContactSection(content, locationInfo)}
-
-${fitFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Automotive Template (Polestar visual + Clutch structure) ----------
-function buildAutomotiveTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-  ]
-
-  // Section 1: Full-bleed cinematic hero — Polestar style
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:flex-end;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.15) 0%,rgba(0,0,0,0.6) 80%)"></div>
-    </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 5rem;width:100%">
-      <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-bottom:0.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.4)">${content.heroEyebrow}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.75rem;max-width:550px;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.5rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.heroSubtitle}</p>
-      <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaPrimary} &rarr;</a>
-    </div>
-  </section>`
-
-  // Section 2: 2-column service showcase — Polestar model cards style
-  const serviceShowcase = `
-  <section style="padding:0;background:var(--bg);border-bottom:1px solid var(--border)">
-    <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr">
-      ${content.services.slice(0, 2).map((s, i) => `
-      <div style="padding:3rem 2.5rem;border-${i === 0 ? 'right' : 'left'}:1px solid var(--border)">
-        <h3 style="font-family:var(--heading-font);font-size:1.3rem;font-weight:500;color:var(--text);margin-bottom:0.5rem">${s.name}</h3>
-        <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem">${s.description}</p>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;color:var(--text);text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;font-weight:500">${content.ctaSecondary || 'Learn more'} &rarr;</a>
-        <div class="ms-img" style="margin-top:2rem;height:280px;overflow:hidden">
-          <img src="${serviceImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 3: Large CTA links — Polestar "Book a test drive" style
-  const featuresData = content.features || content.services.slice(0, 3)
-  const ctaLinks = `
-  <section style="padding:80px 2rem;background:var(--bg)">
-    <div style="max-width:1300px;margin:0 auto">
-      ${featuresData.slice(0, 3).map(s => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:2rem 0;border-bottom:1px solid var(--border)">
-        <h3 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:500;color:var(--text)">${s.name}</h3>
-        <span style="font-size:2rem;color:var(--text-muted)">&rsaquo;</span>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 4: How it works — removed for automotive (process steps don't suit car dealerships)
-
-  // Section 5: Why choose us — Clutch 4-column with left border accent
-  const whySection = `
-  <section style="padding:80px 2rem;background:var(--bg)">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">Who We Are</h2>
-      <div class="ms-grid" style="border:1px solid var(--border);border-radius:12px;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
-        ${content.stats.slice(0, 4).map((s, i) => `
-        <div style="padding:2rem;${i < Math.min(content.stats.length, 4) - 1 ? 'border-right:1px solid var(--border)' : ''}">
-          <div style="border-left:3px solid var(--primary);padding-left:1rem">
-            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.5rem">${s.label}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.7">${s.sublabel || s.value}</p>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 6: Full-bleed feature image — Polestar sustainability style
-  const featureImage = `
-  <section id="about" style="position:relative;min-height:60vh;display:flex;align-items:flex-end;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${stockPool[8] || stockPool[2]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.6) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 4rem;width:100%">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:#fff;margin-bottom:0.5rem;text-shadow:0 2px 6px rgba(0,0,0,0.3)">${content.aboutHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.8);max-width:450px;line-height:1.7;margin-bottom:1.25rem;text-shadow:0 1px 3px rgba(0,0,0,0.3)">${content.aboutText.split('\n')[0]}</p>
-      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.85rem;font-weight:500;padding:0.7rem 1.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;text-decoration:none">${content.ctaSecondary || 'Read more'} &rarr;</a>
-    </div>
-  </section>`
-
-  // Section 7: 3-column product/service cards — uses unique images per card (service imgs + gallery imgs)
-  const allCardImgs = [...serviceImgs, ...galleryImgs].filter(Boolean)
-  const productCards = `
-  <section style="padding:80px 2rem;background:var(--bg)">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:500;color:var(--text);text-align:center;margin-bottom:3rem">${content.galleryHeading || content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 6).map((s, i) => `
-        <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
-          <div class="ms-img" style="height:220px;overflow:hidden">
-            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <div style="padding:1.5rem">
-            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:0.35rem">${s.name}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem">${s.description}</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;padding:0.25rem 0.6rem;border-radius:4px;background:var(--card-bg);border:1px solid var(--border);color:var(--text-muted)">${t}</span>`).join('')}
-            </div>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Testimonial
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border)">
-    <div style="max-width:800px;margin:0 auto;text-align:center">
-      <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text);line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
-      <p style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);font-weight:500">— ${content.testimonial.author}</p>
-    </div>
-  </section>` : ''
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${heroSection}
-  ${whySection}
-  ${featureImage}
-  ${productCards}
-  ${testimonialSection}
-  ${buildContactSection(content, locationInfo)}
-
-${buildFooter(businessName, content, 'dark')}
-
-</body>
-</html>`
-}
-
-// ---------- Pets Template (WOOOF–inspired) ----------
-function buildPetsTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-
-  const petBg = lightenColor(primaryColor, 0.85)
-  const petDark = '#3a5a3a'
-  const petText = '#2d4a2d'
-  const petMuted = '#5a7a5a'
-
-  // Section 1: Split hero — large heading left, rounded photo right
-  const heroSection = `
-  <section style="padding:40px 2rem;background:${petBg}">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;min-height:70vh">
-      <div>
-        <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1.5rem">${content.tagline}</h1>
-        <p style="font-family:var(--body-font);font-size:1.1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.heroSubtitle}</p>
-        <a href="#about" style="font-family:var(--body-font);font-size:1.1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Read about us.'}</a>
-      </div>
-      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:500px">
-        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Section 2: 50/50 — photo left, heading + underline CTA right
-  const featureSection = `
-  <section id="services" style="padding:40px 2rem;background:${petBg}">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">Why Choose Us</h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutMission || content.heroSubtitle}</p>
-        <a href="#services" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaSecondary || 'Check out our services.'}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 3: 50/50 reversed — heading left, photo right
-  const featureSection2 = `
-  <section style="padding:40px 2rem;background:${petBg}">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:400;color:${petText};line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:${petMuted};line-height:1.7;margin-bottom:1rem">${content.aboutText.split('\n')[0]}</p>
-        <a href="#contact" style="font-family:var(--body-font);font-size:1rem;color:${petText};text-decoration:underline;text-underline-offset:4px;font-weight:500">${content.ctaPrimary}</a>
-      </div>
-      <div class="ms-img" style="border-radius:24px;overflow:hidden;height:450px">
-        <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Section 4: Brand/centered section — large brand name + subtitle
-  const brandSection = `
-  <section style="padding:120px 2rem;background:${petBg};text-align:center">
-    <div style="max-width:800px;margin:0 auto">
-      <div style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:700;color:${petDark};letter-spacing:0.04em;margin-bottom:1rem">${businessName}</div>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:${petMuted};letter-spacing:0.08em;text-transform:uppercase">${content.heroEyebrow}</p>
-    </div>
-  </section>`
-
-  // Section 5: Service cards
-  const serviceCards = `
-  <section style="padding:80px 2rem;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 6).map((s, i) => `
-        <div style="background:rgba(255,255,255,0.4);border-radius:20px;padding:2rem;text-align:center">
-          <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
-            <span style="font-size:1.3rem">${s.icon || '&#128062;'}</span>
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:600;color:${petText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${petMuted};line-height:1.7">${s.description}</p>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 6: Testimonials — 3 review cards
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${petBg}">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${petText};text-align:center;margin-bottom:3rem">What ${businessName} clients are saying</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${(() => {
-          const fallbacks = getFallbackTestimonials(content, businessCategory)
-          const allTestimonials = [
-            content.testimonial,
-            ...(content.testimonials?.slice(1, 3) || fallbacks)
-          ]
-          const colors = ['#f59e0b', '#4a9e4a', '#6a7aba']
-          return allTestimonials.map((t, i) => {
-          const quote = t.quote
-          const author = t.author
-          const rating = t.rating || 5
-          return `
-        <div style="background:rgba(255,255,255,0.5);border-radius:20px;padding:2rem">
-          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:${colors[i % 3]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">${author.charAt(0)}</div>
-            <div>
-              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${petText}">${author.split(',')[0]}</div>
-            </div>
-          </div>
-          <div style="color:#f59e0b;font-size:0.85rem;margin-bottom:0.75rem">${'&#9733;'.repeat(rating)}</div>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${petMuted};line-height:1.7">${quote}</p>
-        </div>`
-        }).join('') })()}
-      </div>
-    </div>
-  </section>` : ''
-
-  // Footer — sage green bg, 4-column
-  const petFooter = `
-  <footer style="padding:60px 2rem 30px;background:${petBg}">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;align-items:start">
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${petDark};margin-bottom:0.5rem">${businessName}</div>
-      </div>
-      ${content.contactHours ? `<div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Hours</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${content.contactHours.replace(/ · /g, '<br />')}</p>
-      </div>` : `<div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Services</h4>
-        ${content.services.slice(0, 3).map(s => `<p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};margin-bottom:0.35rem">${s.name}</p>`).join('')}
-      </div>`}
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Contact</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${locationInfo.phone}</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.9rem;font-weight:700;color:${petText};margin-bottom:0.75rem">Location</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${petMuted};line-height:1.7">${locationInfo.address}<br />${locationInfo.city}, ${locationInfo.postcode}</p>
-      </div>
-    </div>
-    <div style="max-width:1100px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:${petMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${petBg};
-      --bg-alt: ${petBg};
-      --card-bg: rgba(255,255,255,0.4);
-      --text: ${petText};
-      --text-muted: ${petMuted};
-      --border: rgba(0,0,0,0.08);
-    }
-  </style>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  ${brandSection}
-  ${heroSection}
-  ${featureSection}
-  ${featureSection2}
-  ${serviceCards}
-  ${testimonialSection}
-  ${buildContactSection(content, locationInfo)}
-
-${petFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Food-Hospitality Template (Crafto Restaurant–inspired) ----------
 function buildFoodHospitalityTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -2812,220 +1705,731 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
   const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const galleryImgs = [
-    images[4] || stockImages.cards[7],
-    stockImages.cards[8],
-    stockImages.cards[9],
-    stockImages.cards[10],
-  ]
 
-  const foodBg = '#ffffff'
-  const foodText = '#232323'
-  const foodMuted = '#777777'
-  const foodOlive = '#7a8a2a'
-  const foodGold = '#c9a030'
+  // Candlelit dining palette — deep parchment, ink, warm gold
+  const bg = '#f9f5ef'
+  const bgAlt = '#f2ece2'
+  const inkDark = '#1c1408'
+  const inkMid = '#3d3120'
+  const muted = '#7a6a54'
+  const gold = '#b8862a'
+  const goldLight = '#d4a84b'
+  const cream = '#fdf8f0'
 
-  // Section 1: Hero — full-bleed food photo with gold circle overlay + heading
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.4)"></div>
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
+
+  const navLinks = navFlags.allLinks
+
+  // Custom candlelit nav — transparent over hero, dark text
+  const customNav = `
+  <nav id="food-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.5s ease;background:transparent">
+    <a href="#" style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${businessName}</a>
+    <div style="display:flex;align-items:center;gap:2.5rem">
+      ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s">${l.label}</a>`).join('')}
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.6rem 1.75rem;border:1.5px solid rgba(255,255,255,0.7);color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+      <label for="ms-menu-toggle" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
     </div>
-    <div style="position:relative;text-align:center;z-index:2">
-      <div style="width:clamp(350px,50vw,550px);height:clamp(350px,50vw,550px);border-radius:50%;background:${foodGold};display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto;padding:3rem">
-        <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:#fff;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem">${content.heroEyebrow}</p>
-        <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.5rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:0.04em">${content.tagline}</h1>
-        <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.85rem 2rem;background:${foodText};color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaSecondary || 'View Menu'} &rarr;</a>
+  </nav>
+  <style>
+    #food-nav.scrolled { background:${cream} !important; box-shadow:0 1px 20px rgba(0,0,0,0.08); }
+    #food-nav.scrolled a { color:${inkDark} !important; }
+    #food-nav.scrolled a[href="#contact"] { border-color:${inkDark} !important; }
+    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; } #food-nav > div > a:not([href="#contact"]) { display:none!important; } #food-nav label { display:block!important; } }
+  </style>
+  <script>
+    window.addEventListener('scroll',function(){
+      var n=document.getElementById('food-nav');
+      if(window.scrollY>80){n.classList.add('scrolled');}else{n.classList.remove('scrolled');}
+    });
+  </script>
+  ${buildMobileMenu(content, navLinks)}`
+
+  // HERO — full-bleed cinematic, Ken Burns bg, massive serif headline centered
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+    <div style="position:absolute;inset:0;animation:kenburns 18s ease-in-out infinite alternate">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transform-origin:center" />
+    </div>
+    <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(20,12,4,0.55) 0%,rgba(10,6,2,0.72) 60%,rgba(28,20,8,0.85) 100%)"></div>
+    <div style="position:relative;z-index:2;text-align:center;padding:0 2rem;max-width:900px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-bottom:2rem">
+        <span style="display:block;width:50px;height:1px;background:${goldLight};opacity:0.8"></span>
+        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:500;color:${goldLight};letter-spacing:0.25em;text-transform:uppercase">${content.heroEyebrow}</span>
+        <span style="display:block;width:50px;height:1px;background:${goldLight};opacity:0.8"></span>
+      </div>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,7rem);font-weight:400;color:#fff;line-height:1.0;margin-bottom:1.5rem;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.75);max-width:520px;margin:0 auto 2.5rem;line-height:1.7;font-weight:300">${content.heroSubtitle}</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:1rem 2.5rem;background:${gold};color:#fff;text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;padding:1rem 2.5rem;border:1px solid rgba(255,255,255,0.5);color:rgba(255,255,255,0.9);text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaSecondary || 'View Menu'}</a>
       </div>
     </div>
+    <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:scrollpulse 2.5s ease-in-out infinite">
+      <span style="font-family:var(--body-font);font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:0.18em;text-transform:uppercase">Scroll</span>
+      <span style="color:rgba(255,255,255,0.5);font-size:1.2rem">&#8595;</span>
+    </div>
+  </section>
+  <style>
+    @keyframes kenburns { 0%{transform:scale(1.0) translateX(0)} 100%{transform:scale(1.08) translateX(-2%)} }
+    @keyframes scrollpulse { 0%,100%{opacity:0.4;transform:translateX(-50%) translateY(0)} 50%{opacity:1;transform:translateX(-50%) translateY(6px)} }
+  </style>`
+
+  // ACCOLADES STRIP — gold stars + key stats
+  const accoladesStrip = `
+  <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap">
+    ${content.stats.slice(0, 3).map(s => `
+    <div style="text-align:center">
+      <div style="font-family:var(--heading-font);font-size:1.7rem;font-weight:600;color:${goldLight};margin-bottom:0.2rem">${s.value}</div>
+      <div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(255,255,255,0.55);letter-spacing:0.12em;text-transform:uppercase">${s.label}</div>
+    </div>`).join(`<span style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
   </section>`
 
-  // Section 2: About split — large plate photo left, heading + text right
-  const aboutSplit = `
-  <section id="about" style="padding:100px 2rem;background:${foodBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+  // ABOUT — editorial 2-col: tall moody photo left, story right with gold ornament
+  const aboutSection = `
+  <section id="about" style="padding:120px 0;background:${bg}">
+    <div class="ms-grid" style="max-width:1180px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.1fr;gap:6rem;align-items:center">
       <div style="position:relative">
-        <div style="border-radius:16px;overflow:hidden;width:100%;aspect-ratio:4/5;margin:0 auto">
+        <div style="aspect-ratio:3/4;border-radius:0;overflow:hidden">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
+        <div style="position:absolute;bottom:-2rem;right:-2rem;width:160px;height:160px;border:2px solid ${gold};opacity:0.4"></div>
+        <div style="position:absolute;top:-1.5rem;left:-1.5rem;width:120px;height:120px;border:1px solid ${gold};opacity:0.25"></div>
       </div>
       <div>
-        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
-          <span style="display:block;width:30px;height:2px;background:${foodGold}"></span>
-          <span style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodGold};letter-spacing:0.12em;text-transform:uppercase">${content.badge || content.heroEyebrow}</span>
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:600;color:${gold};letter-spacing:0.2em;text-transform:uppercase">${content.badge || content.heroEyebrow}</span>
+          <span style="flex:1;height:1px;background:${gold};opacity:0.3"></span>
         </div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};line-height:1.1;margin-bottom:1.5rem;text-transform:uppercase">${content.aboutHeading}</h2>
-        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${foodMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:flex;align-items:center;gap:1.5rem;margin-top:2rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.85rem 2rem;background:${foodText};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${content.ctaPrimary}</a>
-        </div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:${inkDark};line-height:1.15;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${inkMid};line-height:1.75;font-style:italic;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid ${gold}">${content.aboutMission}</p>` : ''}
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${muted};line-height:1.85;margin-bottom:1rem">${p}</p>`).join('')}
+        <a href="#contact" style="display:inline-block;margin-top:1.5rem;font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.9rem 2.25rem;background:${inkDark};color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.3s">${content.ctaPrimary}</a>
       </div>
     </div>
   </section>`
 
-  // Section 3: 3-column trust bar — icons + text
-  const trustBar = `
-  <section style="padding:60px 2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06)">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-      ${content.stats.slice(0, 3).map(s => `
-      <div style="display:flex;align-items:center;gap:1.25rem">
-        <div style="width:64px;height:64px;border-radius:50%;border:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <span style="font-size:1.3rem;color:${foodText}">${s.value.charAt(0) === '&' ? s.value : '&#9733;'}</span>
-        </div>
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${foodText};letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.25rem">${s.label}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${s.sublabel || s.value}</p>
-        </div>
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 4: Menu — olive label + heading + service items as menu rows
+  // MENU SECTION — ornate heading, stacked menu rows with thumbnail
   const menuSection = `
-  <section id="services" style="padding:80px 2rem;background:${foodBg}">
-    <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.heroEyebrow} -</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.servicesHeading}</h2>
-      ${(() => { const eg = evenGrid(content.services, 2); return `
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:2rem 3rem">
-        ${(eg.items as typeof content.services).map((s, i) => `
-        <div style="display:flex;align-items:center;gap:1rem;text-align:left">
-          <div style="width:80px;height:80px;border-radius:12px;overflow:hidden;flex-shrink:0">
-            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  <section id="services" style="padding:120px 0;background:${bgAlt}">
+    <div style="max-width:1000px;margin:0 auto;padding:0 3rem">
+      <div style="text-align:center;margin-bottom:4rem">
+        <div style="font-size:1.5rem;color:${gold};margin-bottom:0.75rem">&#10022;</div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${inkDark};margin-bottom:0.5rem">${content.servicesHeading}</h2>
+        <div style="font-size:1.5rem;color:${gold};margin-top:0.75rem">&#10022;</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0">
+        ${content.services.map((s, i) => `
+        <div style="display:flex;align-items:center;gap:2rem;padding:2rem 0;border-bottom:1px solid rgba(28,20,8,0.08);transition:background 0.3s">
+          <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
+            <img src="${stockPool[i] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
           <div style="flex:1">
-            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.25rem">
-              <h3 style="font-family:var(--heading-font);font-size:0.95rem;font-weight:600;color:${foodText}">${s.name}</h3>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.35rem">
+              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:${inkDark}">${s.name}</h3>
+              <span style="font-family:var(--heading-font);font-size:1rem;color:${gold};flex-shrink:0;margin-left:1rem">&#9135;&#9135;&#9135;</span>
             </div>
-            <p style="font-family:var(--body-font);font-size:0.8rem;color:${foodMuted};line-height:1.6">${s.description}</p>
-            <div style="display:flex;gap:0.5rem;margin-top:0.35rem">
-              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;color:${foodOlive}">${t}</span>`).join(' <span style="color:rgba(0,0,0,0.2)">&#8226;</span> ')}
+            <p style="font-family:var(--body-font);font-size:0.88rem;color:${muted};line-height:1.6">${s.description}</p>
+            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap">
+              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;color:${gold};letter-spacing:0.1em;text-transform:uppercase">${t}</span>`).join('<span style="color:rgba(28,20,8,0.2)"> · </span>')}
             </div>
           </div>
         </div>`).join('')}
-      </div>`; })()}
+      </div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.9rem 2.5rem;border:1.5px solid ${inkDark};color:${inkDark};text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+      </div>
     </div>
   </section>`
 
-  // Section 5: Gallery — olive label + heading + photo grid
+  // GALLERY — asymmetric editorial grid: 1 tall left + 2 stacked right, then 3 across
   const gallerySection = `
-  <section id="gallery" style="padding:80px 2rem;background:${foodBg}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${foodOlive};letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.75rem">- ${content.badge || 'Specials Choice'} -</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${foodText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${galleryImgs.slice(0, 3).map(img => `
-        <div class="ms-img" style="border-radius:12px;overflow:hidden;height:300px">
-          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover" />
+  <section id="gallery" style="padding:0;background:${bg}">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
+        <div style="overflow:hidden;height:600px">
+          <img src="${stockPool[6]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
+          <div style="overflow:hidden">
+            <img src="${stockPool[7]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="overflow:hidden">
+            <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
+        ${[9,10,11].map(i => `
+        <div style="overflow:hidden;height:300px">
+          <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>`).join('')}
       </div>
     </div>
   </section>`
 
-  // Section 6: Testimonial — large quote
+  // TESTIMONIAL — dark candlelit bg, centered oversized quote
   const testimonialSection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${foodBg}">
-    <div style="max-width:900px;margin:0 auto;text-align:center">
-      <div style="width:64px;height:64px;border-radius:50%;background:${foodGold};display:flex;align-items:center;justify-content:center;margin:0 auto 2rem">
-        <span style="font-size:1.5rem;color:#fff">&#10077;</span>
+  <section style="padding:120px 3rem;background:${inkDark};position:relative;overflow:hidden">
+    <div style="position:absolute;top:-2rem;left:3rem;font-family:var(--heading-font);font-size:18rem;color:rgba(184,134,42,0.07);line-height:1;pointer-events:none;user-select:none">&#8220;</div>
+    <div style="max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:2">
+      <div style="display:flex;justify-content:center;gap:0.2rem;margin-bottom:2rem">
+        ${[1,2,3,4,5].map(() => `<span style="color:${goldLight};font-size:1rem">&#9733;</span>`).join('')}
       </div>
-      <p style="font-family:var(--heading-font);font-size:clamp(1.1rem,2vw,1.4rem);font-weight:600;color:${foodText};line-height:1.7;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:1.5rem">${content.testimonial.quote}</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
-        <span style="font-family:var(--body-font);font-size:0.85rem;font-style:italic;color:${foodGold}">${content.testimonial.author}</span>
-        ${content.testimonial.rating ? `<span style="color:#f59e0b;font-size:0.85rem">${'&#9733;'.repeat(content.testimonial.rating)}</span>` : ''}
+      <p style="font-family:var(--heading-font);font-size:clamp(1.3rem,2.5vw,2rem);font-weight:400;color:#fff;line-height:1.6;font-style:italic;margin-bottom:2rem">"${content.testimonial.quote}"</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem">
+        <span style="display:block;width:40px;height:1px;background:${gold};opacity:0.6"></span>
+        <span style="font-family:var(--body-font);font-size:0.8rem;color:${goldLight};letter-spacing:0.15em;text-transform:uppercase">${content.testimonial.author}</span>
+        <span style="display:block;width:40px;height:1px;background:${gold};opacity:0.6"></span>
       </div>
     </div>
   </section>` : ''
 
-  // Section 7: Review strip
-  const reviewStrip = `
-  <section style="padding:1.5rem 2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.06)">
-    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:1rem">
-      <div style="display:flex;gap:0.15rem">
-        ${[1,2,3,4,5].map(() => `<span style="color:${foodGold};font-size:1.1rem">&#9733;</span>`).join('')}
-      </div>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:${foodText}"><strong>${content.stats[0]?.value || '500+'}</strong> ${content.stats[0]?.label || 'happy customers'}</p>
+  // CONTACT — warm parchment, 2-col info + form
+  const contactSection = buildContactSection(content, locationInfo)
+
+  // FOOTER — ink dark, minimal
+  const footerHtml = `
+  <footer style="padding:3rem;background:${inkDark};display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+    <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:600;color:${goldLight};letter-spacing:0.14em;text-transform:uppercase">${businessName}</div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.72rem;color:rgba(255,255,255,0.45);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s">${l.label}</a>`).join('')}
     </div>
-  </section>`
-
-  // Section 8: Full-width food image
-  const fullImage = `
-  <section style="padding:0;height:50vh;overflow:hidden">
-    <img src="${stockPool[11] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-  </section>`
-
-  // Section 9: 4-column contact footer
-  const contactRow = `
-  <section style="padding:60px 2rem;background:${foodBg}">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
-      <div>
-        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
-        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About ${businessName}</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${content.heroSubtitle}</p>
-      </div>
-      <div>
-        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9742;</div>
-        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Let's Talk</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${locationInfo.phone}</p>
-      </div>
-      <div>
-        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9993;</div>
-        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.ctaPrimary}</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">hello@${businessName.toLowerCase().replace(/\s/g, '')}.com</p>
-      </div>
-      <div>
-        <div style="font-size:1.5rem;color:${foodText};margin-bottom:0.75rem">&#9906;</div>
-        <h3 style="font-family:var(--heading-font);font-size:0.8rem;font-weight:700;color:${foodText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Visit Us</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${foodMuted}">${locationInfo.address}, ${locationInfo.city}</p>
-      </div>
-    </div>
-  </section>`
-
-  // Footer
-  const foodFooter = `
-  <footer style="padding:2rem;background:${foodBg};border-top:1px solid rgba(0,0,0,0.06);text-align:center">
-    <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${foodText};margin-bottom:0.5rem">${businessName}</div>
-    <p style="font-family:var(--body-font);font-size:0.75rem;color:${foodMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+    <p style="font-family:var(--body-font);font-size:0.72rem;color:rgba(255,255,255,0.3);letter-spacing:0.08em">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
   </footer>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
+  return `${headHtml}
   <style>
     :root {
-      --bg: ${foodBg};
-      --bg-alt: #f9f7f4;
-      --card-bg: ${foodBg};
-      --text: ${foodText};
-      --text-muted: ${foodMuted};
-      --border: rgba(0,0,0,0.06);
+      --bg: ${bg};
+      --bg-alt: ${bgAlt};
+      --card-bg: ${cream};
+      --text: ${inkDark};
+      --text-muted: ${muted};
+      --border: rgba(28,20,8,0.07);
     }
+    /* Film grain */
+    body::before {
+      content:'';
+      position:fixed;inset:0;pointer-events:none;z-index:999;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:160px 160px;
+    }
+    #contact { background:${bg} !important; }
+    #contact h2, #contact p, #contact div { color:${inkDark} !important; }
+    #contact .ms-grid input, #contact .ms-grid textarea { background:${cream} !important; border-color:rgba(28,20,8,0.12) !important; color:${inkDark} !important; }
+    #contact .ms-grid button { background:${inkDark} !important; }
   </style>
 
-${buildStandardNav(businessName, content, navFlags)}
+${customNav}
 
-  ${heroSection}
-  ${aboutSplit}
-  ${trustBar}
-  ${menuSection}
-  ${gallerySection}
-  ${testimonialSection}
-  ${reviewStrip}
-  ${buildContactSection(content, locationInfo)}
-  ${contactRow}
-
-${foodFooter}
+${heroSection}
+${accoladesStrip}
+${aboutSection}
+${menuSection}
+${gallerySection}
+${testimonialSection}
+${contactSection}
+${footerHtml}
 
 </body>
 </html>`
 }
 
-// ---------- Health-Wellness Template (v0 Dentistry–inspired) ----------
+
+function buildRetailTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+
+  // Bold trend-forward palette — near-black canvas, electric accent, warm white
+  const bg = '#0d0d0d'
+  const bgCard = '#161616'
+  const bgAlt = '#111111'
+  const textPrimary = '#f0ece6'
+  const textMuted = '#888480'
+  const accent = primaryColor
+  const accentLight = secondaryColor
+  const border = 'rgba(240,236,230,0.07)'
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+  const navLinks = navFlags.allLinks
+
+  // CUSTOM NAV — transparent over hero, slides to solid
+  const customNav = `
+  <nav id="retail-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;background:transparent">
+    <a href="#" style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
+    <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
+        ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">${l.label}</a>`).join('')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
+    </div>
+  </nav>
+  <style>
+    #retail-nav.scrolled { background:${bg} !important; border-bottom:1px solid ${border}; box-shadow:0 2px 30px rgba(0,0,0,0.4); }
+    @media(max-width:768px){ #retail-nav label { display:block!important; } }
+  </style>
+  <script>
+    window.addEventListener('scroll',function(){
+      var n=document.getElementById('retail-nav');
+      if(window.scrollY>60){n.classList.add('scrolled');}else{n.classList.remove('scrolled');}
+    });
+  </script>
+  ${buildMobileMenu(content, navLinks)}`
+
+  // HERO — split layout: dark left with massive headline, right = full-bleed product photo
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
+    <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+        <span style="display:block;width:24px;height:2px;background:${accent}"></span>
+        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase">${content.heroEyebrow}</span>
+      </div>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,5.5vw,5.5rem);font-weight:900;color:${textPrimary};line-height:0.95;margin-bottom:1.75rem;letter-spacing:-0.03em;text-transform:uppercase">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1rem;color:${textMuted};max-width:420px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:700;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border-radius:4px;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${textMuted};text-decoration:none;letter-spacing:0.06em;display:flex;align-items:center;gap:0.5rem;transition:color 0.3s">${content.ctaSecondary || 'Explore Collection'} <span style="font-size:1rem">&#8594;</span></a>
+      </div>
+      <div style="display:flex;gap:3rem;margin-top:4rem;padding-top:2.5rem;border-top:1px solid ${border}">
+        ${content.stats.slice(0, 3).map(s => `
+        <div>
+          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:${textPrimary}">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.7rem;color:${textMuted};letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div style="position:relative;overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 12s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,${bg} 0%,transparent 30%)"></div>
+      ${content.badge ? `<div style="position:absolute;top:2.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:${accent};font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
+    </div>
+  </section>
+  <style>@media(max-width:768px){section:first-of-type{grid-template-columns:1fr!important}section:first-of-type>div:last-child{display:none!important}}</style>`
+
+  // PRODUCTS GRID — 4-col with hover reveal overlay
+  const productsSection = `
+  <section id="services" style="padding:100px 0;background:${bg}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em">${content.servicesHeading}</h2>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;color:${textMuted};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem">View All <span>&#8594;</span></a>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:${border}">
+        ${content.services.slice(0, 4).map((s, i) => `
+        <div style="position:relative;background:${bgCard};overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+          <div style="height:360px;overflow:hidden">
+            <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div class="overlay" style="position:absolute;inset:0;background:rgba(13,13,13,0.75);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;opacity:0;transition:opacity 0.4s ease">
+            <p style="font-family:var(--body-font);font-size:0.88rem;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:1.25rem">${s.description}</p>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center">
+              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">${t}</span>`).join('')}
+            </div>
+          </div>
+          <div style="padding:1.25rem 1.5rem;background:${bgCard}">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${textPrimary};text-transform:uppercase;letter-spacing:0.04em">${s.name}</h3>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // MARQUEE BANNER — scrolling text
+  const marqueeBanner = `
+  <section style="padding:1.5rem 0;background:${accent};overflow:hidden;white-space:nowrap">
+    <div style="display:inline-flex;animation:marquee 25s linear infinite;gap:3rem">
+      ${[...Array(8)].map(() => `<span style="font-family:var(--heading-font);font-size:1.3rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.08em">${content.heroEyebrow} &nbsp;&#10022;&nbsp; ${businessName} &nbsp;&#10022;&nbsp; ${content.ctaPrimary}</span>`).join('')}
+    </div>
+  </section>
+  <style>@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>`
+
+  // EDITORIAL SPLIT — full-height image + story right
+  const editorialSplit = `
+  <section id="about" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh;background:${bg}">
+    <div style="overflow:hidden">
+      <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem">
+      <div style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">${content.badge || 'Our Story'}</div>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">${content.aboutHeading}</h2>
+      ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${textPrimary};font-weight:600;line-height:1.65;margin-bottom:1.25rem">${content.aboutMission}</p>` : ''}
+      ${content.aboutText.split('\n').filter(p => p.trim()).slice(0,2).map(p => `<p style="font-family:var(--body-font);font-size:0.92rem;color:${textMuted};line-height:1.8;margin-bottom:0.9rem">${p}</p>`).join('')}
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;margin-top:2rem;font-family:var(--body-font);font-size:0.8rem;font-weight:700;color:${textPrimary};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} <span style="display:block;width:36px;height:1px;background:${accent}"></span></a>
+    </div>
+  </section>
+  <style>@media(max-width:768px){#about{grid-template-columns:1fr!important}#about>div:first-child{height:300px!important}}</style>`
+
+  // GALLERY — asymmetric grid: 1 big + 4 smaller
+  const gallerySection = `
+  <section id="gallery" style="padding:100px 0;background:${bgAlt}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:3rem">${content.galleryHeading}</h2>
+      <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:280px 280px;gap:4px">
+        <div style="grid-row:span 2;overflow:hidden;border-radius:4px">
+          <img src="${stockPool[5]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        ${[6,7,8,9].map(i => `
+        <div style="overflow:hidden;border-radius:4px">
+          <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // TESTIMONIAL — bold dark card, accent quote mark
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:100px 2.5rem;background:${bg}">
+    <div style="max-width:900px;margin:0 auto;text-align:center">
+      <div style="font-family:var(--heading-font);font-size:6rem;color:${accent};line-height:0.8;margin-bottom:1.5rem;opacity:0.6">&#8220;</div>
+      <p style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:700;color:${textPrimary};line-height:1.35;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:2rem">"${content.testimonial.quote}"</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem">
+        <span style="display:block;width:50px;height:1px;background:${accent}"></span>
+        <span style="font-family:var(--body-font);font-size:0.78rem;color:${textMuted};letter-spacing:0.15em;text-transform:uppercase">${content.testimonial.author}</span>
+        <span style="display:block;width:50px;height:1px;background:${accent}"></span>
+      </div>
+      ${content.testimonial.rating ? `<div style="margin-top:1.25rem;display:flex;justify-content:center;gap:0.25rem">${[...Array(content.testimonial.rating)].map(() => `<span style="color:${accent};font-size:1rem">&#9733;</span>`).join('')}</div>` : ''}
+    </div>
+  </section>` : ''
+
+  // FEATURES STRIP — what sets apart, dark bg
+  const featuresData = content.features || content.services.slice(0, 3)
+  const featuresSection = `
+  <section style="padding:100px 0;background:${bgCard}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;text-align:center;margin-bottom:4rem">Why Shop With Us</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:${border}">
+        ${featuresData.slice(0, 3).map((f, i) => `
+        <div style="background:${bgCard};padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='${bg}'" onmouseout="this.style.background='${bgCard}'">
+          <div style="font-family:var(--heading-font);font-size:3rem;font-weight:900;color:${accent};opacity:0.3;line-height:1;margin-bottom:1.25rem">0${i+1}</div>
+          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${textPrimary};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">${f.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${textMuted};line-height:1.7">${f.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const contactSection = buildContactSection(content, locationInfo)
+
+  const footerHtml = `
+  <footer style="padding:3rem 2.5rem;background:${bgCard};display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;border-top:1px solid ${border}">
+    <div style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${textPrimary};letter-spacing:0.08em;text-transform:uppercase">${businessName}</div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.72rem;color:${textMuted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">${l.label}</a>`).join('')}
+    </div>
+    <p style="font-family:var(--body-font);font-size:0.72rem;color:${textMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+  </footer>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${bg};
+      --bg-alt: ${bgAlt};
+      --card-bg: ${bgCard};
+      --text: ${textPrimary};
+      --text-muted: ${textMuted};
+      --border: ${border};
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:0.02;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:160px 160px;
+    }
+    #contact { background:${bgAlt} !important; }
+  </style>
+
+${customNav}
+
+${heroSection}
+${marqueeBanner}
+${productsSection}
+${editorialSplit}
+${gallerySection}
+${testimonialSection}
+${featuresSection}
+${contactSection}
+${footerHtml}
+
+</body>
+</html>`
+}
+
+function buildPetsTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+
+  // Warm joyful palette — soft sage/warm cream with earthy accents
+  const bg = '#f7f3ed'
+  const bgWarm = '#fdf9f4'
+  const bgSage = '#e8f0e8'
+  const bgDark = '#2c3e2c'
+  const textDark = '#1e2e1e'
+  const textMid = '#3d5a3d'
+  const textMuted = '#6b8a6b'
+  const accentGreen = '#4a7c4e'
+  const accentWarm = '#c4793a'
+  const accentYellow = '#e8b84b'
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
+  const navLinks = navFlags.allLinks
+
+  // CUSTOM NAV — warm white, playful
+  const customNav = `
+  <nav id="pets-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:${bgWarm};border-bottom:2px solid ${bgSage};transition:box-shadow 0.3s">
+    <a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${textDark};text-decoration:none;letter-spacing:0.04em">${businessName}</a>
+    <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:1.75rem">
+        ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:${textMid};text-decoration:none;transition:color 0.3s" onmouseover="this.style.color='${accentGreen}'" onmouseout="this.style.color='${textMid}'">${l.label}</a>`).join('')}
+      </div>
+      <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:700;padding:0.7rem 1.75rem;background:${accentGreen};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.04em;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:${textDark};font-size:1.5rem">&#9776;</label>
+    </div>
+  </nav>
+  <style>
+    #pets-nav.scrolled { box-shadow: 0 4px 24px rgba(74,124,78,0.1); }
+    @media(max-width:768px){ #pets-nav label { display:block!important; } }
+  </style>
+  <script>
+    window.addEventListener('scroll',function(){
+      var n=document.getElementById('pets-nav');
+      if(window.scrollY>50){n.classList.add('scrolled');}else{n.classList.remove('scrolled');}
+    });
+  </script>
+  ${buildMobileMenu(content, navLinks)}`
+
+  // HERO — full-bleed joyful image with rounded pill overlay card
+  const heroSection = `
+  <section style="padding-top:80px;position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg}">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:petZoom 20s ease-in-out infinite alternate" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(28,46,28,0.7) 0%,rgba(28,46,28,0.35) 50%,rgba(28,46,28,0.15) 100%)"></div>
+    </div>
+    <div style="position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:4rem 3rem;width:100%">
+      <div style="max-width:600px">
+        <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);padding:0.45rem 1.1rem;border-radius:999px;margin-bottom:1.75rem;border:1px solid rgba(255,255,255,0.25)">
+          <span style="font-size:1rem">&#128062;</span>
+          <span style="font-family:var(--body-font);font-size:0.72rem;font-weight:600;color:#fff;letter-spacing:0.14em;text-transform:uppercase">${content.heroEyebrow}</span>
+        </div>
+        <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.25rem">${content.tagline}</h1>
+        <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.82);line-height:1.7;max-width:480px;margin-bottom:2.25rem">${content.heroSubtitle}</p>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.25rem;background:${accentWarm};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
+          <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);color:#fff;text-decoration:none;border-radius:999px;border:1.5px solid rgba(255,255,255,0.4);letter-spacing:0.06em">${content.ctaSecondary || 'Our Services'}</a>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:3rem;right:3rem;background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);border-radius:20px;padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem">
+      ${content.stats.slice(0, 2).map(s => `
+      <div style="text-align:center">
+        <div style="font-family:var(--heading-font);font-size:1.75rem;font-weight:700;color:${accentGreen}">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;color:${textMuted};letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">${s.label}</div>
+      </div>`).join(`<span style="display:block;width:1px;height:40px;background:${bgSage}"></span>`)}
+    </div>
+  </section>
+  <style>@keyframes petZoom{0%{transform:scale(1)}100%{transform:scale(1.06) translateX(-1%)}}</style>`
+
+  // ABOUT — warm split: rounded photo left with playful offset, story right
+  const aboutSection = `
+  <section id="about" style="padding:120px 0;background:${bgWarm}">
+    <div class="ms-grid" style="max-width:1180px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center">
+      <div style="position:relative">
+        <div style="border-radius:32px;overflow:hidden;aspect-ratio:4/5">
+          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;width:140px;height:140px;border-radius:24px;overflow:hidden;border:4px solid ${bgWarm};box-shadow:0 8px 32px rgba(74,124,78,0.2)">
+          <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <div style="position:absolute;top:2rem;left:-1.5rem;background:${accentYellow};border-radius:16px;padding:1rem 1.25rem;box-shadow:0 4px 20px rgba(232,184,75,0.3)">
+          <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${textDark}">${content.stats[2]?.value || '5★'}</div>
+          <div style="font-family:var(--body-font);font-size:0.68rem;color:${textMid};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.1rem">${content.stats[2]?.label || 'Rating'}</div>
+        </div>
+      </div>
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:0.6rem;background:${bgSage};padding:0.4rem 1.1rem;border-radius:999px;margin-bottom:1.5rem">
+          <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accentGreen};letter-spacing:0.14em;text-transform:uppercase">${content.badge || 'About Us'}</span>
+        </div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:${textDark};line-height:1.15;margin-bottom:1.25rem">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${textMid};font-weight:600;line-height:1.7;margin-bottom:1.25rem">${content.aboutMission}</p>` : ''}
+        ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${textMuted};line-height:1.85;margin-bottom:0.9rem">${p}</p>`).join('')}
+        <div style="display:flex;gap:2.5rem;margin-top:2.5rem;padding:1.75rem;background:${bgSage};border-radius:20px">
+          ${content.stats.slice(0, 2).map(s => `
+          <div>
+            <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:${accentGreen}">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.78rem;color:${textMuted};margin-top:0.2rem">${s.label}</div>
+          </div>`).join(`<span style="display:block;width:1px;background:rgba(74,124,78,0.2)"></span>`)}
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // SERVICES — playful cards with emoji icons, sage tinted bg
+  const servicesSection = `
+  <section id="services" style="padding:100px 0;background:${bgSage}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+      <div style="text-align:center;margin-bottom:3.5rem">
+        <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.8);padding:0.4rem 1.1rem;border-radius:999px;margin-bottom:1rem">
+          <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accentGreen};letter-spacing:0.14em;text-transform:uppercase">${content.heroEyebrow}</span>
+        </div>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.2">${content.servicesHeading}</h2>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem">
+        ${content.services.slice(0, 6).map((s, i) => `
+        <div style="background:${bgWarm};border-radius:24px;padding:2rem;transition:transform 0.3s,box-shadow 0.3s;cursor:default" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(74,124,78,0.12)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+          <div style="width:60px;height:60px;border-radius:18px;background:${[bgSage,'rgba(196,121,58,0.12)','rgba(74,124,78,0.12)'][i%3]};display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:1.5rem">
+            ${s.icon || ['&#128062;','&#128049;','&#9999;&#65039;','&#128137;','&#127968;','&#128144;'][i] || '&#128062;'}
+          </div>
+          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${textDark};margin-bottom:0.6rem">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.88rem;color:${textMuted};line-height:1.7">${s.description}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem">
+            ${s.tags.slice(0,3).map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;font-weight:600;padding:0.25rem 0.75rem;background:${bgSage};border-radius:999px;color:${textMid};letter-spacing:0.06em">${t}</span>`).join('')}
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // GALLERY — mosaic grid with rounded corners, warm hover
+  const gallerySection = `
+  <section id="gallery" style="padding:100px 0;background:${bg}">
+    <div style="max-width:1300px;margin:0 auto;padding:0 3rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.15">${content.galleryHeading}</h2>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;color:${accentGreen};text-decoration:none;display:flex;align-items:center;gap:0.5rem">Book Now <span>&#8594;</span></a>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:260px 260px;gap:12px">
+        <div style="grid-row:span 2;border-radius:24px;overflow:hidden">
+          <img src="${stockPool[4]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        ${[5,6,7,8].map(i => `
+        <div style="border-radius:18px;overflow:hidden">
+          <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // TESTIMONIALS — 3 warm cards with avatar initials
+  const fallbacks = getFallbackTestimonials(content, businessCategory)
+  const allTestimonials = [
+    ...(content.testimonials || []),
+    ...(content.testimonial ? [content.testimonial] : []),
+    ...fallbacks
+  ].slice(0, 3)
+
+  const testimonialsSection = allTestimonials.length > 0 ? `
+  <section style="padding:100px 0;background:${bgWarm}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+      <div style="text-align:center;margin-bottom:3.5rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.2">Happy Families, Happy Pets</h2>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${allTestimonials.map((t, i) => {
+          const avatarColors = [accentGreen, accentWarm, accentYellow]
+          const avatarColor = avatarColors[i % 3]
+          const initial = t.author ? t.author.charAt(0).toUpperCase() : 'C'
+          return `
+        <div style="background:${bgWarm};border:1.5px solid rgba(74,124,78,0.1);border-radius:24px;padding:2rem;transition:border-color 0.3s,transform 0.3s" onmouseover="this.style.borderColor='${accentGreen}';this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='rgba(74,124,78,0.1)';this.style.transform='translateY(0)'">
+          <div style="display:flex;gap:0.2rem;margin-bottom:1.25rem">
+            ${[...Array(t.rating || 5)].map(() => `<span style="color:${accentYellow};font-size:0.9rem">&#9733;</span>`).join('')}
+          </div>
+          <p style="font-family:var(--body-font);font-size:0.92rem;color:${textMuted};line-height:1.75;margin-bottom:1.5rem;font-style:italic">"${t.quote}"</p>
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:${avatarColor};display:flex;align-items:center;justify-content:center;font-family:var(--heading-font);font-size:0.95rem;font-weight:700;color:#fff;flex-shrink:0">${initial}</div>
+            <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${textDark}">${t.author}</div>
+          </div>
+        </div>`
+        }).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // CTA BANNER — dark green, playful
+  const ctaBanner = `
+  <section style="padding:80px 3rem;background:${bgDark};position:relative;overflow:hidden">
+    <div style="position:absolute;right:-4rem;top:-4rem;width:300px;height:300px;border-radius:50%;background:rgba(74,124,78,0.15)"></div>
+    <div style="position:absolute;left:10%;bottom:-3rem;width:200px;height:200px;border-radius:50%;background:rgba(232,184,75,0.1)"></div>
+    <div style="max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:2">
+      <div style="font-size:2.5rem;margin-bottom:1rem">&#128062;</div>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem">${content.contactHeading}</h2>
+      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.5rem;background:${accentWarm};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:opacity 0.3s">${content.ctaPrimary}</a>
+    </div>
+  </section>`
+
+  const contactSection = buildContactSection(content, locationInfo)
+
+  const petFooter = `
+  <footer style="padding:4rem 3rem 2.5rem;background:${bgDark}">
+    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;max-width:260px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1.25rem">Services</h4>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.55);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">${s.name}</a>`).join('')}
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1.25rem">Contact</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.55);line-height:1.75">${locationInfo.phone}<br/>hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+      </div>
+      <div>
+        <h4 style="font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:1.25rem">Location</h4>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.55);line-height:1.75">${locationInfo.address}<br/>${locationInfo.city}, ${locationInfo.postcode}</p>
+        ${content.contactHours ? `<p style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.4);margin-top:0.75rem;line-height:1.7">${content.contactHours.replace(/ · /g, '<br/>')}</p>` : ''}
+      </div>
+    </div>
+    <div style="max-width:1100px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <div style="display:flex;gap:2rem">
+        <a href="#" style="font-family:var(--body-font);font-size:0.72rem;color:rgba(255,255,255,0.3);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:var(--body-font);font-size:0.72rem;color:rgba(255,255,255,0.3);text-decoration:none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${bg};
+      --bg-alt: ${bgSage};
+      --card-bg: ${bgWarm};
+      --text: ${textDark};
+      --text-muted: ${textMuted};
+      --border: rgba(74,124,78,0.1);
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:0.015;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:160px 160px;
+    }
+    #contact { background:${bgSage} !important; }
+  </style>
+
+${customNav}
+
+${heroSection}
+${aboutSection}
+${servicesSection}
+${gallerySection}
+${testimonialsSection}
+${ctaBanner}
+${contactSection}
+${petFooter}
+
+</body>
+</html>`
+}
 function buildHealthWellnessTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -3033,457 +2437,1487 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
-  const hwBg = '#ffffff'
-  const hwAlt = '#f8faf8'
-  const hwText = '#1a1a2e'
-  const hwMuted = '#64748b'
-  const hwTeal = primaryColor || '#0d9488'
+  const aboutImg = stockImages.about || stockPool[0]
 
-  // Section 1: Full-bleed hero — eyebrow, serif business name, subtitle, 2 CTAs
-  const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;align-items:center;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.85) 0%,rgba(255,255,255,0.6) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 2rem;width:100%">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">${content.heroEyebrow || 'Welcome To'}</p>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,6vw,5rem);font-weight:700;color:${hwText};line-height:1.05;margin-bottom:1.5rem">${businessName}</h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:${hwMuted};max-width:550px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
-      <div style="display:flex;gap:0.75rem">
-        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:${hwTeal};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary} &rarr;</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;border:1px solid ${hwText};color:${hwText};border-radius:8px;text-decoration:none">${content.ctaSecondary || 'Our Services'}</a>
-      </div>
-    </div>
-  </section>`
+  const hw = {
+    bg: '#fdfcf9',
+    bgAlt: '#f2eeea',
+    bgDeep: '#e8e2da',
+    text: '#1c1c1c',
+    muted: '#6b6565',
+    accent: primaryColor || '#7c9e8f',
+    border: 'rgba(0,0,0,0.07)',
+  }
 
-  // Section 2: About — photo left, teal eyebrow + serif heading + paragraphs + stats right
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
-  const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:${hwBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">${content.badge || 'About Us'}</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${hwText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem">
-          ${content.stats.slice(0, 3).map(s => `
-          <div style="text-align:center">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 0.5rem;color:${hwTeal};font-size:1.1rem">&#9733;</div>
-            <div style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:${hwText}">${s.value}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${s.label}</div>
-          </div>`).join('')}
-        </div>
-      </div>
-    </div>
-  </section>`
+  const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 3)
 
-  // Section 3: Services — teal eyebrow, serif heading, subtitle, 4-column icon cards
-  const servicesSection = `
-  <section id="services" style="padding:80px 2rem;background:${hwBg};text-align:center">
-    <div style="max-width:1200px;margin:0 auto">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">What We Offer</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${hwText};margin-bottom:1rem">${content.servicesHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${hwMuted};margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      ${(() => { const eg = evenGrid(content.services, Math.min(content.services.length, 4)); return `
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${eg.cols},1fr);gap:1.5rem">
-        ${(eg.items as typeof content.services).map((s, i) => `
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem;text-align:left">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-            <span style="color:${hwTeal};font-size:1.2rem">${mapIcon(s.icon, i)}</span>
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${hwText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${hwMuted};line-height:1.7">${s.description}</p>
-        </div>`).join('')}
-      </div>`; })()}
-    </div>
-  </section>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
+    + `<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>`
 
-  // Section 4: Testimonials — dark bg, teal eyebrow, 3 quote cards with teal quote marks
-  const testimonialSection = content.testimonial ? `
-  <section id="testimonials" style="padding:80px 2rem;background:${hwText}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary-on-dark);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;margin-bottom:3rem">What Our Clients Say</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
-          <div style="position:absolute;top:1.5rem;right:1.5rem;font-size:3rem;color:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.3);line-height:1">&#10077;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
-          <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${content.testimonial.author.split(',')[0]}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">${content.testimonial.author.split(',')[1]?.trim() || 'Client'}</div>
-          </div>
-        </div>
-        ${getFallbackTestimonials(content, businessCategory).map(t => `
-        <div style="border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:2rem;position:relative">
-          <div style="position:absolute;top:1.5rem;right:1.5rem;font-size:3rem;color:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.3);line-height:1">&#10077;</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:1.5rem">"${t.quote}"</p>
-          <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:#fff">${t.author.split(',')[0]}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.5)">${t.author.split(',')[1]?.trim() || 'Client'}</div>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>` : ''
-
-  // Section 5: Contact — 2-column: info left, form card right
-  const contactSection = `
-  <section id="contact" style="padding:80px 2rem;background:${hwBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwTeal};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Get In Touch</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${hwText};margin-bottom:1rem">${content.contactHeading}</h2>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:${hwMuted};line-height:1.7;margin-bottom:2.5rem">${content.aboutMission || content.heroSubtitle}</p>
-        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
-          <div style="display:flex;align-items:center;gap:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Address</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${locationInfo.address}, ${locationInfo.city}</div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Phone</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${locationInfo.phone}</div></div>
-          </div>
-          <div style="display:flex;align-items:center;gap:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Email</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
-          </div>
-          ${content.contactHours ? `<div style="display:flex;align-items:center;gap:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:rgba(${parseInt(hwTeal.slice(1,3),16)},${parseInt(hwTeal.slice(3,5),16)},${parseInt(hwTeal.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${hwTeal};font-size:1rem;flex-shrink:0">&#9200;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${hwText}">Hours</div><div style="font-family:var(--body-font);font-size:0.8rem;color:${hwMuted}">${content.contactHours.replace(/ · /g, '<br />')}</div></div>
-          </div>` : ''}
-        </div>
-      </div>
-      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
-        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${hwText};margin-bottom:0.5rem">Send Us a Message</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${hwMuted};margin-bottom:1.5rem">We'll get back to you as soon as possible.</p>
-        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
-          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-            <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">First Name</label><input type="text" placeholder="John" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-            <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Last Name</label><input type="text" placeholder="Doe" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          </div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Email</label><input type="email" placeholder="john@example.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${hwText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your needs..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
-          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${hwTeal};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
-        </form>
-      </div>
-    </div>
-  </section>`
-
-  // Footer — 3-column: logo+desc | services | company, copyright bar
-  const hwFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${hwAlt};border-top:1px solid rgba(0,0,0,0.06)">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:${hwText};margin-bottom:1rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${hwMuted};line-height:1.7;max-width:320px">${content.heroSubtitle}</p>
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${hwText};margin-bottom:1rem">Services</h4>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-      </div>
-      <div>
-        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:${hwText};margin-bottom:1rem">Company</h4>
-        <a href="#about" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About Us</a>
-        <a href="#contact" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
-        <a href="#" style="color:${hwMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.08);display:flex;justify-content:space-between;align-items:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:${hwMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-      <div style="display:flex;gap:1.5rem">
-        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:${hwMuted};text-decoration:none">Privacy Policy</a>
-        <a href="#" style="font-family:var(--body-font);font-size:0.75rem;color:${hwMuted};text-decoration:none">Terms of Service</a>
-      </div>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${hwBg};
-      --bg-alt: ${hwAlt};
-      --card-bg: ${hwBg};
-      --text: ${hwText};
-      --text-muted: ${hwMuted};
-      --border: rgba(0,0,0,0.06);
-    }
-  </style>
+  return `${headHtml}
+<style>
+  :root {
+    --bg: ${hw.bg};
+    --bg-alt: ${hw.bgAlt};
+    --card-bg: #fff;
+    --text: ${hw.text};
+    --text-muted: ${hw.muted};
+    --border: ${hw.border};
+    --accent: ${hw.accent};
+  }
+  html { scroll-behavior: smooth; }
+  .hw-fade { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .hw-fade.visible { opacity: 1; transform: none; }
+  .hw-service-card { transition: box-shadow 0.35s ease, transform 0.35s ease; }
+  .hw-service-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.10); transform: translateY(-4px); }
+  .hw-btn-primary { transition: background 0.3s ease, transform 0.2s ease; }
+  .hw-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .hw-nav-link { position: relative; }
+  .hw-nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: ${hw.accent}; transition: width 0.3s ease; }
+  .hw-nav-link:hover::after { width: 100%; }
+  .hw-img-hover { overflow: hidden; }
+  .hw-img-hover img { transition: transform 0.7s ease; }
+  .hw-img-hover:hover img { transform: scale(1.04); }
+</style>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-  ${heroSection}
-  ${aboutSection}
-  ${servicesSection}
-  ${testimonialSection}
-  ${contactSection}
+<!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
+<section style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
+  <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
+    <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
+    <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
+    <div class="hw-fade" style="width:48px;height:1px;background:${hw.accent};margin-bottom:1.75rem"></div>
+    <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:1rem;color:${hw.muted};line-height:1.8;max-width:400px;margin-bottom:2.5rem;font-weight:300">${content.heroSubtitle}</p>
+    <div class="hw-fade" style="display:flex;gap:1rem;align-items:center">
+      <a href="#contact" class="hw-btn-primary" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.08em;padding:1rem 2.25rem;background:${hw.accent};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;letter-spacing:0.06em;color:${hw.muted};text-decoration:none;display:flex;align-items:center;gap:0.4rem">Explore &rarr;</a>
+    </div>
+    <div class="hw-fade" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid ${hw.border}">
+      ${content.stats.slice(0, 3).map(s => `
+      <div>
+        <div style="font-family:'Cormorant',Georgia,serif;font-size:2rem;font-weight:400;color:${hw.text}">${s.value}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:${hw.muted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+  <div class="hw-img-hover" style="position:relative">
+    <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,${hw.bg} 0%,transparent 8%)"></div>
+    ${content.badge ? `<div style="position:absolute;bottom:3rem;left:2rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:1rem 1.5rem;max-width:220px">
+      <p style="font-family:'Cormorant',Georgia,serif;font-size:1rem;font-style:italic;color:${hw.text};line-height:1.5">${content.badge}</p>
+    </div>` : ''}
+  </div>
+</section>
 
-${hwFooter}
+<!-- MARQUEE STRIP -->
+<div style="background:${hw.accent};padding:0.9rem 0;overflow:hidden;white-space:nowrap">
+  <div style="display:inline-block;animation:marquee 22s linear infinite">
+    ${[...Array(6)].map(() => content.services.map(s => `<span style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:0 2.5rem">${s.name}</span>`).join('')).join('')}
+  </div>
+</div>
+<style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
+
+<!-- SERVICES: Alternating large image + content rows -->
+<section id="services" style="padding:8rem 0;background:${hw.bg}">
+  <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+    <div class="hw-fade" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem">
+      <div style="width:32px;height:1px;background:${hw.accent}"></div>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent}">${content.servicesHeading}</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0">
+      ${content.services.slice(0, 4).map((s, i) => `
+      <div class="hw-fade ms-grid" style="display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};min-height:420px;border-top:1px solid ${hw.border}${i === Math.min(content.services.length,4)-1 ? `;border-bottom:1px solid ${hw.border}` : ''}">
+        ${i % 2 !== 0 ? `<div class="hw-img-hover" style="background:${hw.bgAlt}"><img src="${stockPool[i] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>` : ''}
+        <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem;${i % 2 === 0 ? 'order:-1' : ''}">
+          <div style="font-family:'Cormorant',Georgia,serif;font-size:4rem;font-weight:300;color:${hw.bgDeep};line-height:1;margin-bottom:1.5rem;user-select:none">0${i + 1}</div>
+          <h3 style="font-family:'Cormorant',Georgia,serif;font-size:2rem;font-weight:400;color:${hw.text};margin-bottom:1rem;line-height:1.2">${s.name}</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:${hw.muted};line-height:1.8;margin-bottom:1.5rem;max-width:360px">${s.description}</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+            ${s.tags.slice(0, 3).map(t => `<span style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:${hw.accent};border:1px solid ${hw.accent};padding:0.25rem 0.65rem">${t}</span>`).join('')}
+          </div>
+        </div>
+        ${i % 2 === 0 ? `<div class="hw-img-hover" style="background:${hw.bgAlt}"><img src="${stockPool[i] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>` : ''}
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT: Asymmetric 2-col — stacked images left, editorial content right -->
+<section id="about" style="padding:8rem 0;background:${hw.bgAlt}">
+  <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+    <div style="position:relative">
+      <div class="hw-img-hover" style="height:480px;margin-bottom:1.5rem">
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      </div>
+      <div class="hw-img-hover" style="height:220px;margin-left:3rem">
+        <img src="${stockPool[4] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      </div>
+      <div style="position:absolute;top:50%;left:-1.5rem;transform:translateY(-50%) rotate(-90deg);font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:${hw.muted};white-space:nowrap">${businessName}</div>
+    </div>
+    <div class="hw-fade">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Our Story</p>
+      <h2 style="font-family:'Cormorant',Georgia,serif;font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:300;color:${hw.text};line-height:1.2;margin-bottom:2rem">${content.aboutHeading}</h2>
+      ${content.aboutMission ? `<p style="font-family:'Cormorant',Georgia,serif;font-size:1.2rem;font-style:italic;color:${hw.text};line-height:1.7;margin-bottom:2rem;padding-left:1rem;border-left:2px solid ${hw.accent}">${content.aboutMission}</p>` : ''}
+      ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'DM Sans',sans-serif;font-size:0.92rem;color:${hw.muted};line-height:1.9;margin-bottom:1.25rem;font-weight:300">${p}</p>`).join('')}
+      <div style="margin-top:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:2.5rem;border-top:1px solid ${hw.border}">
+        ${content.stats.slice(0, 4).map(s => `
+        <div>
+          <div style="font-family:'Cormorant',Georgia,serif;font-size:2.5rem;font-weight:300;color:${hw.text}">${s.value}</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:${hw.muted};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS: Soft cream, large italic quote, portrait grid -->
+<section id="testimonials" style="padding:8rem 0;background:${hw.bg}">
+  <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+    <div class="hw-fade" style="text-align:center;margin-bottom:5rem">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1rem">Client Stories</p>
+      <h2 style="font-family:'Cormorant',Georgia,serif;font-size:clamp(2.5rem,4vw,3.8rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.2">Words of Trust</h2>
+    </div>
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
+      ${testimonials.map((t, i) => `
+      <div class="hw-fade hw-service-card" style="background:${i === 1 ? hw.accent : hw.bgAlt};padding:2.5rem;position:relative">
+        <div style="font-family:'Cormorant',Georgia,serif;font-size:5rem;line-height:1;color:${i === 1 ? 'rgba(255,255,255,0.25)' : hw.bgDeep};position:absolute;top:1rem;left:1.5rem;user-select:none">&ldquo;</div>
+        <div style="color:${i === 1 ? 'rgba(255,255,255,0.9)' : '#f59e0b'};font-size:0.8rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
+        <p style="font-family:'Cormorant',Georgia,serif;font-size:1.15rem;font-style:italic;color:${i === 1 ? '#fff' : hw.text};line-height:1.7;margin-bottom:2rem;position:relative;z-index:1">"${t!.quote}"</p>
+        <div style="display:flex;align-items:center;gap:0.75rem;border-top:1px solid ${i === 1 ? 'rgba(255,255,255,0.2)' : hw.border};padding-top:1.25rem">
+          <div style="width:36px;height:36px;border-radius:50%;background:${i === 1 ? 'rgba(255,255,255,0.2)' : hw.bgDeep};flex-shrink:0"></div>
+          <div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;color:${i === 1 ? '#fff' : hw.text}">${t!.author.split(',')[0]}</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:${i === 1 ? 'rgba(255,255,255,0.6)' : hw.muted}">${t!.author.split(',')[1]?.trim() || 'Client'}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT: Warm linen bg, 2-col, elegant form -->
+<section id="contact" style="padding:8rem 0;background:${hw.bgAlt}">
+  <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.1fr;gap:6rem;align-items:start">
+    <div class="hw-fade">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Get In Touch</p>
+      <h2 style="font-family:'Cormorant',Georgia,serif;font-size:clamp(2.2rem,3.5vw,3.2rem);font-weight:300;color:${hw.text};line-height:1.2;margin-bottom:2rem">${content.contactHeading}</h2>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:${hw.muted};line-height:1.8;margin-bottom:3rem;font-weight:300">${content.heroSubtitle}</p>
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        ${[
+          { icon: '⊙', label: 'Address', val: `${locationInfo.address}, ${locationInfo.city}` },
+          { icon: '◎', label: 'Phone', val: locationInfo.phone },
+          { icon: '✉', label: 'Email', val: `hello@${businessName.toLowerCase().replace(/\s/g,'')}.com` },
+          ...(content.contactHours ? [{ icon: '◷', label: 'Hours', val: content.contactHours.replace(/ · /g, ' · ') }] : []),
+        ].map(item => `
+        <div style="display:flex;gap:1.25rem;align-items:flex-start">
+          <div style="width:40px;height:40px;border:1px solid ${hw.border};display:flex;align-items:center;justify-content:center;color:${hw.accent};font-size:1rem;flex-shrink:0">${item.icon}</div>
+          <div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:${hw.muted};margin-bottom:0.25rem">${item.label}</div>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.88rem;color:${hw.text}">${item.val}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="hw-fade" style="background:#fff;padding:3rem">
+      <h3 style="font-family:'Cormorant',Georgia,serif;font-size:1.6rem;font-weight:300;color:${hw.text};margin-bottom:0.5rem">Send a Message</h3>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:${hw.muted};margin-bottom:2rem">We respond within 24 hours.</p>
+      <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div>
+            <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">First Name</label>
+            <input type="text" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none" />
+          </div>
+          <div>
+            <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">Last Name</label>
+            <input type="text" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none" />
+          </div>
+        </div>
+        <div>
+          <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">Email</label>
+          <input type="email" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none" />
+        </div>
+        <div>
+          <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">Service of Interest</label>
+          <select style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none;appearance:none">
+            <option value="">Select a service</option>
+            ${content.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">Message</label>
+          <textarea rows="4" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none;resize:none"></textarea>
+        </div>
+        <button type="submit" class="hw-btn-primary" style="margin-top:0.5rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${hw.accent};color:#fff;border:none;cursor:pointer;align-self:flex-start">${content.ctaPrimary}</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:4rem 3rem 2.5rem;background:${hw.text}">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:'Cormorant',Georgia,serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:1rem;letter-spacing:0.05em">${businessName}</div>
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.8;max-width:280px;font-weight:300">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.65rem;transition:color 0.2s">${s.tags?.[0] || s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Company</div>
+        <a href="#about" style="display:block;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.65rem">About</a>
+        <a href="#contact" style="display:block;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.65rem">Contact</a>
+        <a href="#" style="display:block;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.65rem">Privacy Policy</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.25)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.25)">Wellness &amp; Care</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const hwObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); hwObserver.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.hw-fade').forEach(el => hwObserver.observe(el));
+</script>
 
 </body>
 </html>`
 }
 
-// ---------- Home-Services Template (Helpling–inspired) ----------
-function buildHomeServicesTemplate(data: TemplateData): string {
+
+function buildFitnessTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  const serviceImgs = [
-    images[1] || stockImages.cards[0],
-    images[2] || stockImages.cards[1],
-    images[3] || stockImages.cards[2],
-  ]
+  const aboutImg = stockImages.about || stockPool[0]
 
-  const homeBg = '#ffffff'
-  const homeAlt = '#f7f9f7'
-  const homeText = '#1a1a2e'
-  const homeMuted = '#6b7280'
-  const homeGreenBg = '#5a7a5a'
+  const fit = {
+    bg: '#0a0a0a',
+    bgAlt: '#111111',
+    bgCard: '#161616',
+    text: '#ffffff',
+    muted: '#888888',
+    accent: primaryColor || '#e8ff00',
+    border: 'rgba(255,255,255,0.06)',
+  }
 
-  // Section 1: Split hero — green bg left with heading + CTA, photo right
-  const heroSection = `
-  <section class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
-    <div style="background:var(--primary);display:flex;flex-direction:column;justify-content:center;padding:4rem 3rem">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.5rem">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2rem;max-width:420px">${content.heroSubtitle}</p>
-      <div style="display:flex;gap:0.75rem;max-width:420px">
-        <a href="#contact" style="flex:1;text-align:center;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 1.5rem;background:#fff;color:var(--primary);border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-        <a href="#services" style="flex:1;text-align:center;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 1.5rem;border:2px solid rgba(255,255,255,0.5);color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary}</a>
-      </div>
-    </div>
-    <div style="overflow:hidden">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-    </div>
-  </section>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+    + `<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
-  // Section 2: 3-step process — centered heading + 3 icon columns
-  const processSteps = content.processSteps || [
-    { step: '1', title: content.services[0]?.name || 'Step 1', description: content.services[0]?.description || '' },
-    { step: '2', title: content.services[1]?.name || 'Step 2', description: content.services[1]?.description || '' },
-    { step: '3', title: content.services[2]?.name || 'Step 3', description: content.services[2]?.description || '' },
-  ]
-  const stepIcons = ['&#127968;', '&#128188;', '&#128666;']
-  const processSection = `
-  <section style="padding:80px 2rem;background:${homeAlt};text-align:center">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">How It Works</h2>
-      <div class="ms-flex" style="display:flex;align-items:stretch;gap:1.5rem;margin-bottom:2.5rem">
-        ${processSteps.slice(0, 3).map((step, i) => `${i > 0 ? `
-        <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>` : ''}
-        <div style="flex:1;padding:2.5rem 1.5rem;background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;text-align:center">
-          <div style="width:72px;height:72px;border-radius:50%;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem">
-            <span style="font-size:1.8rem">${stepIcons[i] || '&#9733;'}</span>
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${step.title}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7;margin-bottom:1rem">${step.description}</p>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;padding:0.5rem 1.25rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
+  const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 3)
 
-  // Section 3: Stats row — dark green bg
-  const statsSection = `
-  <section style="padding:60px 2rem;background:var(--primary)">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
-      ${content.stats.slice(0, 4).map(s => `
-      <div>
-        <div style="font-family:var(--body-font);font-size:0.8rem;color:rgba(255,255,255,0.7);margin-bottom:0.25rem">${s.sublabel || ''}</div>
-        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:#fff;line-height:1">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.75);margin-top:0.35rem">${s.label}</div>
-      </div>`).join('')}
-    </div>
-  </section>`
+  return `${headHtml}
+<style>
+  :root {
+    --bg: ${fit.bg};
+    --bg-alt: ${fit.bgAlt};
+    --card-bg: ${fit.bgCard};
+    --text: ${fit.text};
+    --text-muted: ${fit.muted};
+    --border: ${fit.border};
+  }
+  html { scroll-behavior: smooth; }
+  .fit-fade { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fit-fade.visible { opacity: 1; transform: none; }
+  .fit-card { transition: transform 0.3s ease; }
+  .fit-card:hover { transform: translateY(-6px); }
+  .fit-img-zoom { overflow: hidden; }
+  .fit-img-zoom img { transition: transform 0.6s ease; }
+  .fit-img-zoom:hover img { transform: scale(1.05); }
+  .fit-btn { transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease; }
+  .fit-btn:hover { transform: translateY(-2px); }
+  .fit-service-row { border-bottom: 1px solid ${fit.border}; transition: background 0.3s ease; cursor: pointer; }
+  .fit-service-row:hover { background: ${fit.bgCard}; }
+  .fit-counter { font-variant-numeric: tabular-nums; }
+</style>
 
-  // Section 4: 4-column benefits with green-tinted icons
-  const benefitsSection = `
-  <section id="services" style="padding:80px 2rem;background:${homeBg};text-align:center">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length, 4)},1fr);gap:2rem">
-        ${content.services.slice(0, 4).map((s, i) => `
-        <div style="text-align:left">
-          <div style="border-radius:12px;height:200px;overflow:hidden;margin-bottom:1rem">
-            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 5: 3-column testimonial cards with avatar + stars
-  const testimonialSection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${homeAlt}">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:0.75rem">What Our Customers Say</h2>
-      <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};margin-bottom:3rem">${content.aboutMission || 'Read reviews from happy customers.'}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${(() => {
-          const fallbacks = getFallbackTestimonials(content, businessCategory)
-          const allTestimonials = [
-            content.testimonial!,
-            ...(content.testimonials?.slice(1, 3) || fallbacks)
-          ]
-          return allTestimonials.map((t, i) => {
-          const quote = t.quote
-          const author = t.author
-          const rating = t.rating || 5
-          return `
-        <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2rem 1.5rem;text-align:center;position:relative;margin-top:2rem">
-          <div style="width:64px;height:64px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.2rem;font-weight:700;position:absolute;top:-32px;left:50%;transform:translateX(-50%)">${author.charAt(0)}</div>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${homeMuted};line-height:1.7;font-style:italic;margin-top:1.5rem;margin-bottom:1rem">"${quote}"</p>
-          <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${homeText};margin-bottom:0.5rem">${author.split(',')[0]}</p>
-          <div style="color:#f59e0b;font-size:0.9rem">${'&#9733;'.repeat(rating)}</div>
-        </div>`
-        }).join('') })()}
-      </div>
-    </div>
-  </section>` : ''
-
-  // Section 6: 50/50 feature — bullet list left, photo right
-  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
-  const featureSection = `
-  <section id="about" style="padding:80px 2rem;background:${homeBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
-      <div>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${aboutParagraphs.map(p => `<div style="display:flex;align-items:start;gap:0.75rem;margin-bottom:0.75rem">
-          <span style="color:var(--primary);font-size:1rem;flex-shrink:0;margin-top:2px">&#9632;</span>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:${homeMuted};line-height:1.7">${p}</p>
-        </div>`).join('')}
-        <div style="display:flex;gap:0.75rem;margin-top:2rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-        </div>
-      </div>
-      <div class="ms-img" style="border-radius:16px;overflow:hidden;height:450px">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      </div>
-    </div>
-  </section>`
-
-  // Section 7: 3-column support/FAQ cards
-  const featuresData = content.features || content.services.slice(0, 3)
-  const supportCards = `
-  <section style="padding:80px 2rem;background:${homeAlt}">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:700;color:${homeText};margin-bottom:3rem">${content.contactHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${featuresData.slice(0, 3).map(s => `
-        <div style="background:${homeBg};border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:2.5rem 1.5rem;text-align:center">
-          <div style="width:56px;height:56px;border-radius:12px;background:rgba(${parseInt(primaryColor.slice(1,3),16)},${parseInt(primaryColor.slice(3,5),16)},${parseInt(primaryColor.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
-            <span style="font-size:1.2rem;color:var(--primary)">${('icon' in s && s.icon) || '&#9881;'}</span>
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${homeText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.7">${s.description}</p>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // CTA banner — dark green bg
-  const ctaBanner = `
-  <section style="padding:60px 2rem;background:var(--primary)">
-    <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:#fff;max-width:600px">${content.aboutMission || content.heroSubtitle}</h2>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2.5rem;background:#fff;color:${homeText};border-radius:8px;text-decoration:none">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Footer
-  const homeFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${homeAlt};border-top:1px solid rgba(0,0,0,0.06)">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem">
-      <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:0.75rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${homeMuted};line-height:1.6;max-width:300px">${content.heroSubtitle}</p>
-      </div>
-      <div>
-        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">${s.tags?.[0] || s.name}</a>`).join('')}
-      </div>
-      <div>
-        <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:${homeText};margin-bottom:1rem;font-weight:600">Company</div>
-        <a href="#about" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About</a>
-        <a href="#contact" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
-        <a href="#" style="color:${homeMuted};text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Privacy Policy</a>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.08);text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;color:${homeMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-    </div>
-  </footer>`
-
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${homeBg};
-      --bg-alt: ${homeAlt};
-      --card-bg: ${homeBg};
-      --text: ${homeText};
-      --text-muted: ${homeMuted};
-      --border: rgba(0,0,0,0.06);
-    }
-  </style>
+<!-- PROMO BAR -->
+<div style="background:${fit.accent};padding:0.55rem 2rem;text-align:center">
+  <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#000">${content.badge || content.heroEyebrow || 'Limited spots available — join today'}</p>
+</div>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-  ${heroSection}
-  ${benefitsSection}
-  ${statsSection}
-  ${processSection}
-  ${featureSection}
-  ${testimonialSection}
-  ${ctaBanner}
-  ${buildContactSection(content, locationInfo)}
+<!-- HERO: Dark cinematic full-bleed, massive Bebas headline, split stats bar -->
+<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${fit.bg}">
+  <div style="position:absolute;inset:0">
+    <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,1) 0%,rgba(10,10,10,0.65) 50%,rgba(10,10,10,0.15) 100%)"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,0.5) 0%,transparent 60%)"></div>
+  </div>
+  <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 3rem 6rem;width:100%">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+      <div style="width:40px;height:2px;background:${fit.accent}"></div>
+      <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:${fit.accent}">${content.heroEyebrow || businessName}</p>
+    </div>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,11vw,11rem);font-weight:400;color:${fit.text};line-height:0.9;letter-spacing:0.02em;margin-bottom:2rem">${content.tagline.toUpperCase()}</h1>
+    <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      <a href="#services" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;border:1px solid rgba(255,255,255,0.3);color:${fit.text};text-decoration:none;display:inline-block">${content.ctaSecondary || 'View Classes'}</a>
+    </div>
+  </div>
+  <!-- Bottom stats bar -->
+  <div style="position:relative;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-top:1px solid ${fit.border}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap">
+      ${content.stats.slice(0, 4).map((s, i) => `
+      <div style="padding:1.5rem 0;${i < 3 ? `border-right:1px solid ${fit.border};padding-right:3rem;margin-right:3rem` : ''}">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:${fit.text};line-height:1">${s.value}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:${fit.muted};margin-top:0.2rem">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
 
-${homeFooter}
+<!-- SERVICES: Bold numbered list rows — editorial, high contrast -->
+<section id="services" style="padding:6rem 0;background:${fit.bg}">
+  <div style="max-width:1400px;margin:0 auto;padding:0 3rem">
+    <div class="fit-fade" style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5rem);color:${fit.text};line-height:1;letter-spacing:0.04em">${content.servicesHeading.toUpperCase()}</h2>
+      <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:${fit.muted};text-decoration:none;border-bottom:1px solid ${fit.muted};padding-bottom:0.2rem">${content.ctaPrimary} &rarr;</a>
+    </div>
+    <div>
+      ${content.services.map((s, i) => `
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:${fit.accent};line-height:1;opacity:0.7">0${i + 1}</div>
+        <div>
+          <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:${fit.text};letter-spacing:0.05em;margin-bottom:0.35rem">${s.name.toUpperCase()}</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${fit.muted};font-weight:300;line-height:1.6;max-width:520px">${s.description}</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
+            ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${fit.accent};background:rgba(${parseInt(fit.accent.slice(1,3)||'e8',16)},${parseInt(fit.accent.slice(3,5)||'ff',16)},${parseInt(fit.accent.slice(5,7)||'00',16)},0.1);padding:0.25rem 0.65rem">${t}</span>`).join('')}
+          </div>
+        </div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO GRID: Asymmetric 3+2 mosaic, full-bleed -->
+<section style="display:grid;grid-template-columns:3fr 2fr;background:${fit.bg};gap:3px">
+  <div class="fit-img-zoom" style="height:520px">
+    <img src="${stockPool[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+  </div>
+  <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
+    <div class="fit-img-zoom" style="height:258px">
+      <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+    <div class="fit-img-zoom" style="height:258px">
+      <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT: Dark, horizontal — bold quote + image side -->
+<section id="about" style="padding:7rem 0;background:${fit.bgAlt}">
+  <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center">
+    <div class="fit-fade">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+        <div style="width:32px;height:2px;background:${fit.accent}"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${fit.accent}">Our Philosophy</p>
+      </div>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">${content.aboutHeading.toUpperCase()}</h2>
+      ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${fit.accent};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
+      ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.muted};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
+      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none">${content.ctaPrimary}</a>
+    </div>
+    <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
+      <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      <div style="position:absolute;bottom:2rem;left:-2rem;background:${fit.accent};padding:1.5rem 2rem;max-width:200px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#000;line-height:1">${content.stats[0]?.value || '500+'}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;margin-top:0.25rem">${content.stats[0]?.label || 'Active Members'}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS: Dark cards, accent quote marks -->
+<section id="testimonials" style="padding:7rem 0;background:${fit.bg}">
+  <div style="max-width:1400px;margin:0 auto;padding:0 3rem">
+    <div class="fit-fade" style="margin-bottom:4rem">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5rem);color:${fit.text};line-height:1;letter-spacing:0.03em">RESULTS<span style="color:${fit.accent}">.</span> STORIES<span style="color:${fit.accent}">.</span></h2>
+    </div>
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:${fit.border}">
+      ${testimonials.map((t, i) => `
+      <div class="fit-card" style="background:${i === 0 ? fit.accent : fit.bgCard};padding:2.5rem;position:relative">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:${i === 0 ? 'rgba(0,0,0,0.12)' : fit.accent};position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
+        <div style="color:${i === 0 ? 'rgba(0,0,0,0.5)' : fit.accent};font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${i === 0 ? '#000' : fit.text};line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:${i === 0 ? '500' : '300'}">"${t!.quote}"</p>
+        <div style="border-top:1px solid ${i === 0 ? 'rgba(0,0,0,0.15)' : fit.border};padding-top:1rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:${i === 0 ? '#000' : fit.text}">${t!.author.split(',')[0]}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${i === 0 ? 'rgba(0,0,0,0.5)' : fit.muted};margin-top:0.15rem">${t!.author.split(',')[1]?.trim() || 'Member'}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT: Dark 2-col, accent CTA bar above -->
+<div style="background:${fit.accent};padding:2.5rem 3rem;text-align:center">
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#000;letter-spacing:0.05em">${content.ctaPrimary.toUpperCase()} — START TODAY</h3>
+</div>
+<section id="contact" style="padding:6rem 0;background:${fit.bgAlt}">
+  <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start">
+    <div class="fit-fade">
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,4vw,4rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:2rem">${content.contactHeading.toUpperCase()}</h2>
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        ${[
+          { label: 'Location', val: `${locationInfo.address}, ${locationInfo.city}` },
+          { label: 'Phone', val: locationInfo.phone },
+          { label: 'Email', val: `hello@${businessName.toLowerCase().replace(/\s/g,'')}.com` },
+          ...(content.contactHours ? [{ label: 'Hours', val: content.contactHours }] : []),
+        ].map(item => `
+        <div style="border-left:2px solid ${fit.accent};padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${fit.accent};margin-bottom:0.3rem">${item.label}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.muted};font-weight:300">${item.val}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="fit-fade">
+      <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input type="text" placeholder="Full Name" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;box-sizing:border-box" />
+          <input type="email" placeholder="Email" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;box-sizing:border-box" />
+        </div>
+        <input type="tel" placeholder="Phone Number" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none" />
+        <select style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.muted};font-size:0.88rem;outline:none;appearance:none">
+          <option value="">Select a program</option>
+          ${content.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
+        </select>
+        <textarea placeholder="Tell us about your fitness goals..." rows="4" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;resize:none"></textarea>
+        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:${fit.accent};color:#000;border:none;cursor:pointer">${content.ctaPrimary}</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:3rem;background:${fit.bg};border-top:1px solid ${fit.border}">
+  <div style="max-width:1400px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:${fit.text};letter-spacing:0.08em">${businessName.toUpperCase()}</div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${fit.muted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${s.tags?.[0] || s.name}</a>`).join('')}
+      <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${fit.muted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Contact</a>
+    </div>
+    <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; ${new Date().getFullYear()} ${businessName}</p>
+  </div>
+</footer>
+
+<script>
+  const fitObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fitObserver.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fit-fade').forEach(el => fitObserver.observe(el));
+</script>
 
 </body>
 </html>`
 }
 
-// ---------- Trades-Construction Template (Plumb London–inspired) ----------
-const iconMap: Record<string, string> = {
-  'zap': '&#9889;', 'bolt': '&#9889;', 'cpu': '&#9881;', 'sun': '&#9728;', 'droplet': '&#128167;',
-  'flame': '&#128293;', 'tool': '&#128295;', 'wrench': '&#128295;', 'home': '&#127968;', 'shield': '&#128737;',
-  'layers': '&#9776;', 'grid': '&#9638;', 'box': '&#128230;', 'maximize': '&#11036;', 'star': '&#11088;',
-  'map': '&#128205;', 'edit': '&#9998;', 'edit-2': '&#9998;', 'square': '&#9632;', 'key': '&#128273;',
-  'lock': '&#128274;', 'align-left': '&#9776;', 'trash-2': '&#128465;', 'truck': '&#128666;',
-  'credit-card': '&#128179;', 'repeat': '&#128260;', 'settings': '&#9881;', 'check': '&#10003;',
-  'phone': '&#9742;', 'mail': '&#9993;', 'clock': '&#9200;', 'calendar': '&#128197;',
-  'user': '&#128100;', 'users': '&#128101;', 'heart': '&#10084;', 'briefcase': '&#128188;',
-  'camera': '&#128247;', 'music': '&#127925;', 'book': '&#128214;', 'scissors': '&#9986;',
-  'thermometer': '&#127777;', 'wind': '&#127744;', 'cloud': '&#9729;', 'umbrella': '&#9730;',
+function buildEducationTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = stockImages.about || stockPool[0]
+
+  const edu = {
+    bg: '#ffffff',
+    bgAlt: '#f7f5f2',
+    bgWarm: '#fef9f0',
+    text: '#1a1714',
+    muted: '#6b6560',
+    accent: primaryColor || '#2d5be3',
+    accentLight: lightenColor(primaryColor || '#2d5be3', 0.88),
+    border: 'rgba(0,0,0,0.07)',
+  }
+
+  const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 2)
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
+    + `<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+
+  const processSteps = content.processSteps || [
+    { step: '01', title: content.services[0]?.name || 'Enroll', description: content.services[0]?.description || 'Begin your learning journey.' },
+    { step: '02', title: content.services[1]?.name || 'Learn', description: content.services[1]?.description || 'Engage with expert-led content.' },
+    { step: '03', title: content.services[2]?.name || 'Achieve', description: content.services[2]?.description || 'Reach your goals and grow.' },
+  ]
+
+  return `${headHtml}
+<style>
+  :root {
+    --bg: ${edu.bg};
+    --bg-alt: ${edu.bgAlt};
+    --card-bg: ${edu.bg};
+    --text: ${edu.text};
+    --text-muted: ${edu.muted};
+    --border: ${edu.border};
+  }
+  html { scroll-behavior: smooth; }
+  .edu-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
+  .edu-fade.visible { opacity: 1; transform: none; }
+  .edu-card { transition: box-shadow 0.35s ease, transform 0.35s ease; }
+  .edu-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.10); transform: translateY(-5px); }
+  .edu-img-zoom { overflow: hidden; }
+  .edu-img-zoom img { transition: transform 0.65s ease; }
+  .edu-img-zoom:hover img { transform: scale(1.04); }
+  .edu-link { position: relative; display: inline-block; }
+  .edu-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background: ${edu.accent}; transform: scaleX(0); transform-origin: right; transition: transform 0.35s ease; }
+  .edu-link:hover::after { transform: scaleX(1); transform-origin: left; }
+</style>
+
+${buildStandardNav(businessName, content, navFlags)}
+
+<!-- HERO: Warm off-white, large editorial serif left, stacked image collage right -->
+<section style="background:${edu.bgWarm};min-height:92vh;display:flex;align-items:center;overflow:hidden;position:relative">
+  <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:${edu.accentLight};clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
+  <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
+    <div>
+      <div class="edu-fade" style="display:inline-flex;align-items:center;gap:0.75rem;background:${edu.accent};padding:0.5rem 1.25rem;margin-bottom:2rem">
+        <div style="width:6px;height:6px;border-radius:50%;background:#fff"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#fff">${content.heroEyebrow || 'Education & Growth'}</p>
+      </div>
+      <h1 class="edu-fade" style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;color:${edu.text};line-height:1.2;margin-bottom:1.5rem">${content.tagline}</h1>
+      <p class="edu-fade" style="font-family:'Inter',sans-serif;font-size:1rem;color:${edu.muted};line-height:1.8;max-width:420px;margin-bottom:2.5rem;font-weight:300">${content.heroSubtitle}</p>
+      <div class="edu-fade" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.06em;padding:1rem 2.5rem;background:${edu.accent};color:#fff;text-decoration:none;display:inline-block;transition:filter 0.25s ease">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:400;color:${edu.text};text-decoration:none;display:flex;align-items:center;gap:0.4rem;border-bottom:1px solid ${edu.text};padding-bottom:0.15rem">${content.ctaSecondary || 'See Programs'}</a>
+      </div>
+      <div class="edu-fade" style="display:flex;gap:2rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid ${edu.border}">
+        ${content.stats.slice(0, 3).map(s => `
+        <div>
+          <div style="font-family:'Merriweather',Georgia,serif;font-size:1.8rem;font-weight:700;color:${edu.accent}">${s.value}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${edu.muted};letter-spacing:0.06em;margin-top:0.2rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="edu-fade" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;height:500px">
+      <div class="edu-img-zoom" style="grid-column:1/2;grid-row:1/3;border-radius:4px;overflow:hidden">
+        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      </div>
+      <div class="edu-img-zoom" style="border-radius:4px;overflow:hidden">
+        <img src="${stockPool[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      </div>
+      <div style="background:${edu.accent};border-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:1.5rem">
+        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.4rem;font-weight:700;color:#fff;line-height:1.2">${content.stats[3]?.value || content.stats[0]?.value || '98%'}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.75);margin-top:0.35rem;line-height:1.4">${content.stats[3]?.label || 'Student satisfaction'}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div style="background:${edu.text};padding:1.5rem 3rem">
+  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+    ${content.stats.slice(0, 4).map(s => `
+    <div style="text-align:center">
+      <span style="font-family:'Merriweather',Georgia,serif;font-size:1.3rem;font-weight:700;color:#fff">${s.value}</span>
+      <span style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.45);margin-left:0.5rem;letter-spacing:0.06em">${s.label}</span>
+    </div>`).join('')}
+  </div>
+</div>
+
+<!-- PROGRAMS: Clean card grid, category badge, hover lift -->
+<section id="services" style="padding:7rem 0;background:${edu.bg}">
+  <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+    <div class="edu-fade" style="display:flex;flex-direction:column;align-items:flex-start;gap:0.75rem;margin-bottom:4rem">
+      <div style="display:flex;align-items:center;gap:1rem">
+        <div style="width:24px;height:2px;background:${edu.accent}"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent}">Our Programs</p>
+      </div>
+      <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${edu.text};line-height:1.2">${content.servicesHeading}</h2>
+    </div>
+    <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+      ${content.services.slice(0, 6).map((s, i) => `
+      <div class="edu-fade edu-card" style="background:${i === 0 ? edu.accent : edu.bgAlt};border-radius:2px;padding:2.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:${i === 0 ? 'rgba(255,255,255,0.08)' : edu.accentLight};border-radius:0 0 0 80px"></div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:${i === 0 ? 'rgba(255,255,255,0.7)' : edu.accent};margin-bottom:1rem">${s.tags[0] || 'Program'}</div>
+        <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1.2rem;font-weight:700;color:${i === 0 ? '#fff' : edu.text};margin-bottom:0.75rem;line-height:1.3">${s.name}</h3>
+        <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${i === 0 ? 'rgba(255,255,255,0.75)' : edu.muted};line-height:1.7;font-weight:300;margin-bottom:1.5rem">${s.description}</p>
+        <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${i === 0 ? '#fff' : edu.accent};text-decoration:none;display:flex;align-items:center;gap:0.4rem">Learn More &rarr;</a>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS: Clean 3-step with connecting line, numbered circles -->
+<section style="padding:7rem 0;background:${edu.bgWarm}">
+  <div style="max-width:1000px;margin:0 auto;padding:0 3rem;text-align:center">
+    <div class="edu-fade" style="margin-bottom:5rem">
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent};margin-bottom:1rem">How It Works</p>
+      <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${edu.text};line-height:1.3">${content.stepsHeading || 'Your Path to Success'}</h2>
+    </div>
+    <div style="position:relative">
+      <div style="position:absolute;top:32px;left:calc(16% + 32px);right:calc(16% + 32px);height:1px;background:linear-gradient(to right,${edu.accent},${edu.accentLight},${edu.accent});z-index:0" class="ms-sticky"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;position:relative;z-index:1">
+        ${processSteps.slice(0, 3).map((step, i) => `
+        <div class="edu-fade" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
+          <div style="width:64px;height:64px;border-radius:50%;background:${i === 1 ? edu.accent : edu.bg};border:2px solid ${edu.accent};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="font-family:'Merriweather',Georgia,serif;font-size:1.2rem;font-weight:700;color:${i === 1 ? '#fff' : edu.accent}">${step.step}</span>
+          </div>
+          <div>
+            <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1rem;font-weight:700;color:${edu.text};margin-bottom:0.65rem">${step.title}</h3>
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${edu.muted};line-height:1.7;font-weight:300">${step.description}</p>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <a href="#contact" style="display:inline-block;margin-top:4rem;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.08em;padding:1.1rem 3rem;background:${edu.accent};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
+  </div>
+</section>
+
+<!-- ABOUT: Split — image left, warm editorial content right -->
+<section id="about" style="padding:7rem 0;background:${edu.bg}">
+  <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+    <div class="edu-fade" style="position:relative">
+      <div class="edu-img-zoom" style="height:520px;border-radius:2px;overflow:hidden">
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      </div>
+      <div style="position:absolute;bottom:-2rem;right:-2rem;background:${edu.bgWarm};border:1px solid ${edu.border};padding:1.5rem 2rem">
+        <p style="font-family:'Merriweather',Georgia,serif;font-size:0.9rem;font-style:italic;color:${edu.text};line-height:1.5;max-width:160px">${content.badge || 'Committed to your growth'}</p>
+      </div>
+    </div>
+    <div class="edu-fade">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <div style="width:24px;height:2px;background:${edu.accent}"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent}">About Us</p>
+      </div>
+      <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3vw,2.8rem);font-weight:700;color:${edu.text};line-height:1.25;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+      ${content.aboutMission ? `<p style="font-family:'Merriweather',Georgia,serif;font-size:1rem;font-style:italic;color:${edu.text};line-height:1.7;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid ${edu.accent}">${content.aboutMission}</p>` : ''}
+      ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${edu.muted};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid ${edu.border}">
+        ${content.stats.slice(0, 4).map(s => `
+        <div style="display:flex;gap:0.75rem;align-items:flex-start">
+          <div style="width:28px;height:28px;border-radius:50%;background:${edu.accentLight};display:flex;align-items:center;justify-content:center;color:${edu.accent};font-size:0.7rem;flex-shrink:0;margin-top:0.1rem">✓</div>
+          <div>
+            <div style="font-family:'Merriweather',Georgia,serif;font-size:1.2rem;font-weight:700;color:${edu.text}">${s.value}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${edu.muted};margin-top:0.1rem">${s.label}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS: Warm bg, large serif quote, 2-col -->
+<section id="testimonials" style="padding:7rem 0;background:${edu.bgAlt}">
+  <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
+    <div class="edu-fade" style="text-align:center;margin-bottom:4rem">
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent};margin-bottom:1rem">Student Stories</p>
+      <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3vw,2.8rem);font-weight:700;color:${edu.text};line-height:1.2">What Our Students Say</h2>
+    </div>
+    <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+      ${testimonials.map((t, i) => `
+      <div class="edu-fade edu-card" style="background:${i === 0 ? edu.accent : edu.bg};padding:3rem;border-radius:2px;position:relative">
+        <div style="font-family:'Merriweather',Georgia,serif;font-size:6rem;line-height:1;color:${i === 0 ? 'rgba(255,255,255,0.15)' : edu.accentLight};position:absolute;top:1rem;left:2rem;user-select:none;font-style:italic">"</div>
+        <div style="color:${i === 0 ? 'rgba(255,255,255,0.9)' : '#f59e0b'};font-size:0.85rem;letter-spacing:0.05em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
+        <p style="font-family:'Merriweather',Georgia,serif;font-size:1.05rem;font-style:italic;color:${i === 0 ? '#fff' : edu.text};line-height:1.75;margin-bottom:2rem;position:relative;z-index:1">"${t!.quote}"</p>
+        <div style="display:flex;align-items:center;gap:1rem;border-top:1px solid ${i === 0 ? 'rgba(255,255,255,0.2)' : edu.border};padding-top:1.25rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:${i === 0 ? 'rgba(255,255,255,0.2)' : edu.accentLight};display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:1rem;color:${i === 0 ? '#fff' : edu.accent};flex-shrink:0">${t!.author[0]}</div>
+          <div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:600;color:${i === 0 ? '#fff' : edu.text}">${t!.author.split(',')[0]}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${i === 0 ? 'rgba(255,255,255,0.6)' : edu.muted};margin-top:0.1rem">${t!.author.split(',')[1]?.trim() || 'Student'}</div>
+          </div>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT: Warm, 2-col, friendly form -->
+<section id="contact" style="padding:7rem 0;background:${edu.bgWarm}">
+  <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.2fr;gap:6rem;align-items:start">
+    <div class="edu-fade">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <div style="width:24px;height:2px;background:${edu.accent}"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent}">Enroll Today</p>
+      </div>
+      <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:${edu.text};line-height:1.2;margin-bottom:1.5rem">${content.contactHeading}</h2>
+      <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${edu.muted};line-height:1.8;margin-bottom:3rem;font-weight:300">${content.heroSubtitle}</p>
+      <div style="display:flex;flex-direction:column;gap:1.5rem">
+        ${[
+          { icon: '📍', label: 'Address', val: `${locationInfo.address}, ${locationInfo.city}` },
+          { icon: '📞', label: 'Phone', val: locationInfo.phone },
+          { icon: '✉️', label: 'Email', val: `hello@${businessName.toLowerCase().replace(/\s/g,'')}.com` },
+          ...(content.contactHours ? [{ icon: '🕐', label: 'Hours', val: content.contactHours }] : []),
+        ].map(item => `
+        <div style="display:flex;gap:1rem;align-items:flex-start">
+          <div style="width:42px;height:42px;border-radius:50%;background:${edu.accentLight};display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0">${item.icon}</div>
+          <div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${edu.muted};margin-bottom:0.2rem">${item.label}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${edu.text}">${item.val}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="edu-fade" style="background:#fff;padding:3rem;border-radius:2px;box-shadow:0 4px 32px rgba(0,0,0,0.07)">
+      <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1.5rem;font-weight:700;color:${edu.text};margin-bottom:0.5rem">Get in Touch</h3>
+      <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:${edu.muted};margin-bottom:2rem">We'll respond within one business day.</p>
+      <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">First Name</label>
+            <input type="text" style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.text};outline:none;transition:border-color 0.2s" />
+          </div>
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">Last Name</label>
+            <input type="text" style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.text};outline:none" />
+          </div>
+        </div>
+        <div>
+          <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">Email Address</label>
+          <input type="email" style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.text};outline:none" />
+        </div>
+        <div>
+          <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">Program of Interest</label>
+          <select style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.muted};outline:none;background:#fff;appearance:none">
+            <option value="">Select a program</option>
+            ${content.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">Message</label>
+          <textarea placeholder="Tell us about your goals..." rows="4" style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.text};outline:none;resize:none"></textarea>
+        </div>
+        <button type="submit" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${edu.accent};color:#fff;border:none;cursor:pointer;border-radius:2px;transition:filter 0.25s ease">${content.ctaPrimary}</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:4rem 3rem 2.5rem;background:${edu.text}">
+  <div style="max-width:1200px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.8;max-width:280px;font-weight:300">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${edu.accent};margin-bottom:1.5rem">Programs</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.6rem;font-weight:300">${s.tags?.[0] || s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${edu.accent};margin-bottom:1.5rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.6rem;font-weight:300">About Us</a>
+        <a href="#contact" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.6rem;font-weight:300">Contact</a>
+        <a href="#" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.6rem;font-weight:300">Privacy Policy</a>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center">
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.25);font-weight:300">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.25);font-weight:300">Education &amp; Growth</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const eduObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); eduObserver.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.edu-fade').forEach(el => eduObserver.observe(el));
+</script>
+
+</body>
+</html>`
 }
-const fallbackIcons = ['&#9670;', '&#9733;', '&#9678;', '&#9632;', '&#9674;', '&#9656;', '&#10022;', '&#9830;']
-function mapIcon(icon?: string, index?: number): string {
-  if (icon && iconMap[icon]) return iconMap[icon]
-  return fallbackIcons[(index || 0) % fallbackIcons.length]
+function buildProfessionalTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 0
+
+  // Authoritative dark palette with warm parchment accents
+  const bg = '#0d0d0b'
+  const bgAlt = '#141410'
+  const cardBg = '#1a1a16'
+  const textPrimary = '#f0ede6'
+  const textMuted = '#8a8780'
+  const borderCol = 'rgba(240,237,230,0.08)'
+  const accent = primaryColor || '#b8975a'
+
+  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${bg};
+      --bg-alt: ${bgAlt};
+      --card-bg: ${cardBg};
+      --text: ${textPrimary};
+      --text-muted: ${textMuted};
+      --border: ${borderCol};
+      --primary: ${accent};
+      --heading-font: 'Playfair Display', Georgia, serif;
+      --body-font: 'DM Sans', sans-serif;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Custom cursor */
+    body { cursor: none; }
+    #ms-cursor-dot { position:fixed;width:6px;height:6px;background:${accent};border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s; }
+    #ms-cursor-ring { position:fixed;width:36px;height:36px;border:1px solid ${accent};border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s; }
+
+    /* Reveal animations */
+    .reveal { opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:0.1s; }
+    .reveal-delay-2 { transition-delay:0.2s; }
+    .reveal-delay-3 { transition-delay:0.3s; }
+
+    /* Horizontal rule accent */
+    .pro-rule { display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem; }
+    .pro-rule::before, .pro-rule::after { content:'';flex:1;height:1px;background:${borderCol}; }
+    .pro-rule::before { max-width:40px; }
+
+    /* Service accordion */
+    .pro-accordion-item { border-bottom:1px solid ${borderCol};overflow:hidden; }
+    .pro-accordion-trigger { display:flex;align-items:center;justify-content:space-between;width:100%;padding:1.75rem 0;background:none;border:none;cursor:pointer;text-align:left; }
+    .pro-accordion-body { max-height:0;overflow:hidden;transition:max-height 0.4s ease; }
+    .pro-accordion-body.open { max-height:400px; }
+    .pro-accordion-icon { width:28px;height:28px;border:1px solid ${borderCol};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s,background 0.3s; }
+    .pro-accordion-trigger:hover .pro-accordion-icon { background:${accent};border-color:${accent}; }
+  </style>
+
+  <!-- Custom cursor -->
+  <div id="ms-cursor-dot"></div>
+  <div id="ms-cursor-ring"></div>
+
+${buildStandardNav(businessName, content, navFlags)}
+
+  <!-- ═══════════ HERO: Full-bleed, Ken Burns bg, text anchored bottom-left ═══════════ -->
+  <section style="position:relative;min-height:95vh;display:flex;align-items:flex-end;overflow:hidden;background:${bg}">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;animation:kenBurns 20s ease-in-out infinite alternate" />
+      <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(13,13,11,0.82) 0%,rgba(13,13,11,0.45) 55%,rgba(13,13,11,0.15) 100%)"></div>
+    </div>
+
+    <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 2.5rem 7rem;width:100%">
+      <!-- Eyebrow with flanking lines -->
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
+        <div style="width:32px;height:1px;background:${accent}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">${content.heroEyebrow}</span>
+        <div style="width:32px;height:1px;background:${accent}"></div>
+      </div>
+
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:${textPrimary};line-height:1.08;margin-bottom:1.75rem;max-width:700px;letter-spacing:-0.01em" class="reveal">${content.tagline}</h1>
+
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(240,237,230,0.72);max-width:480px;line-height:1.75;margin-bottom:3rem;font-weight:300" class="reveal reveal-delay-1">${content.heroSubtitle}</p>
+
+      <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap" class="reveal reveal-delay-2">
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:${bg};text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:${textPrimary};text-decoration:none;display:flex;align-items:center;gap:0.6rem;opacity:0.75;transition:opacity 0.3s">${content.ctaSecondary} <span style="font-size:1.1rem">&#8594;</span></a>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div style="position:absolute;bottom:2.5rem;right:2.5rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem">
+      <div style="width:1px;height:48px;background:linear-gradient(to bottom,${accent},transparent);animation:scrollPulse 2s ease-in-out infinite"></div>
+      <span style="font-family:var(--body-font);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:${accent};writing-mode:vertical-rl">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS RIBBON ═══════════ -->
+  <section style="padding:0;background:${accent};overflow:hidden">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
+      ${content.stats.slice(0, 4).map((s, i) => `
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center${i === Math.min(content.stats.length, 4) - 1 ? ';border-right:none' : ''}">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:${bg};line-height:1;margin-bottom:0.35rem">${s.value}</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>
+
+  <!-- ═══════════ SERVICES: Numbered accordion + sticky side image ═══════════ -->
+  <section id="services" style="padding:120px 0;background:${bg}">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <!-- Section label -->
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:${accent}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">Our Services</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:${textPrimary};margin-bottom:4rem;max-width:560px;line-height:1.2" class="reveal">${content.servicesHeading}</h2>
+
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start">
+        <!-- Accordion -->
+        <div id="pro-svc-accordion">
+          ${content.services.map((s, i) => `
+          <div class="pro-accordion-item">
+            <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=${i};document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:${accent};font-weight:400;opacity:0.7;min-width:20px">${String(i + 1).padStart(2, '0')}</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:${textPrimary}">${s.name}</span>
+              </div>
+              <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:${textPrimary}">+</div>
+            </button>
+            <div class="pro-accordion-body${i === 0 ? ' open' : ''}">
+              <div style="padding:0 0 1.75rem 2.8rem">
+                <p style="font-family:var(--body-font);font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.25rem">${s.description}</p>
+                ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem">${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid ${borderCol};color:${textMuted}">${t}</span>`).join('')}</div>` : ''}
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:${accent};text-decoration:none;font-weight:500">Enquire &#8594;</a>
+              </div>
+            </div>
+          </div>`).join('')}
+        </div>
+
+        <!-- Sticky image panel -->
+        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
+          ${content.services.map((s, i) => `
+          <img src="${stockImages.cards[i] || stockPool[i % stockPool.length]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
+          <!-- Overlay label -->
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem;background:linear-gradient(to top,rgba(13,13,11,0.85),transparent)">
+            <div id="pro-svc-label" style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:400;color:${textPrimary};font-style:italic">${content.services[0]?.name || ''}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ ABOUT: 2-col, image with offset border + stats grid ═══════════ -->
+  <section id="about" style="padding:120px 0;background:${bgAlt}">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center">
+
+      <!-- Left: Image with decorative offset border -->
+      <div style="position:relative" class="reveal">
+        <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:1px solid ${accent};opacity:0.3;pointer-events:none"></div>
+        <img src="${stockImages.about || stockPool[5]}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;position:relative;z-index:1" />
+        <!-- Accent badge -->
+        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;z-index:2;background:${accent};padding:1.25rem 1.75rem">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:${bg};line-height:1">${content.stats[0]?.value || '20+'}</div>
+          <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(13,13,11,0.65);margin-top:0.2rem">${content.stats[0]?.label || 'Years'}</div>
+        </div>
+      </div>
+
+      <!-- Right: Heading + text + stats grid -->
+      <div>
+        <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
+          <div style="width:32px;height:1px;background:${accent}"></div>
+          <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">About Us</span>
+        </div>
+        <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${textPrimary};line-height:1.2;margin-bottom:1.5rem" class="reveal">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:${textPrimary};line-height:1.65;font-style:italic;margin-bottom:1.5rem;opacity:0.85" class="reveal">${content.aboutMission}</p>` : ''}
+        ${content.aboutText.split('\n').filter(Boolean).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${textMuted};line-height:1.85;margin-bottom:1rem;font-weight:300" class="reveal">${p}</p>`).join('')}
+
+        <!-- Stats grid -->
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid ${borderCol}">
+          ${content.stats.slice(1, 5).map(s => `
+          <div class="reveal">
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:${accent};line-height:1;margin-bottom:0.3rem">${s.value}</div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:${textMuted};font-weight:400">${s.label}</div>
+            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.7rem;color:${textMuted};opacity:0.6;margin-top:0.15rem">${s.sublabel}</div>` : ''}
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ PROCESS ═══════════ -->
+  ${content.processSteps && content.processSteps.length > 0 ? `
+  <section style="padding:120px 0;background:${bg}">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:${accent}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">How We Work</span>
+      </div>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${textPrimary};margin-bottom:5rem;max-width:500px;line-height:1.2" class="reveal">${content.stepsHeading || 'Our Approach'}</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.processSteps.length, 4)},1fr);gap:3rem">
+        ${content.processSteps.slice(0, 4).map((step, i) => `
+        <div class="reveal reveal-delay-${i + 1}" style="position:relative">
+          ${i < content.processSteps!.length - 1 ? `<div style="position:absolute;top:1.25rem;left:calc(100% + 1.5rem);width:calc(3rem - 1px);height:1px;background:${borderCol}"></div>` : ''}
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:400;color:${accent};opacity:0.35;line-height:1;margin-bottom:1.25rem">${step.step.padStart ? step.step.padStart(2, '0') : step.step}</div>
+          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:${textPrimary};margin-bottom:0.75rem">${step.title}</h3>
+          <p style="font-family:var(--body-font);font-size:0.85rem;color:${textMuted};line-height:1.8;font-weight:300">${step.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''}
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section style="padding:120px 0;background:${bgAlt}">
+    <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
+      <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
+        <div style="width:32px;height:1px;background:${accent}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">Client Testimonials</span>
+      </div>
+
+      ${content.testimonial ? `
+      <!-- Large feature testimonial -->
+      <div class="reveal" style="margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid ${borderCol}">
+        <div style="position:relative;padding-left:4rem">
+          <div style="position:absolute;top:-1rem;left:0;font-family:'Playfair Display',Georgia,serif;font-size:6rem;line-height:1;color:${accent};opacity:0.3;font-style:italic">&ldquo;</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:400;color:${textPrimary};line-height:1.55;font-style:italic;margin-bottom:1.75rem">${content.testimonial.quote}</p>
+          <div style="display:flex;align-items:center;gap:1.25rem">
+            <div style="width:1px;height:36px;background:${accent}"></div>
+            <div>
+              <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${textPrimary};letter-spacing:0.04em">${content.testimonial.author}</div>
+              ${content.testimonial.rating ? `<div style="color:${accent};font-size:0.75rem;margin-top:0.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>` : ''}
+
+      <!-- Secondary testimonials grid -->
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+        ${fallbackTestimonials.map(t => `
+        <div class="reveal" style="background:${cardBg};border:1px solid ${borderCol};padding:2.5rem">
+          <div style="color:${accent};font-size:0.75rem;margin-bottom:1.25rem">${'&#9733;'.repeat(t.rating)}</div>
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:${textPrimary};line-height:1.7;font-style:italic;margin-bottom:1.5rem">"${t.quote}"</p>
+          <div style="font-family:var(--body-font);font-size:0.8rem;color:${textMuted};font-weight:500;letter-spacing:0.04em">— ${t.author}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FULL-BLEED IMAGE BREAK ═══════════ -->
+  <section style="height:45vh;overflow:hidden;position:relative">
+    <img src="${stockPool[6] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,13,11,0.6),rgba(13,13,11,0.1))"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 4rem">
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:400;color:#fff;line-height:1.2;font-style:italic;max-width:600px">${content.contactHeading}</h2>
+    </div>
+  </section>
+
+${buildContactSection(content, locationInfo)}
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer style="padding:5rem 2.5rem 2rem;background:#080806;border-top:1px solid ${borderCol}">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem">
+      <div>
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:400;color:${textPrimary};margin-bottom:0.5rem;letter-spacing:0.02em">${businessName}</div>
+        <div style="width:32px;height:1px;background:${accent};margin-bottom:1.25rem"></div>
+        <p style="font-family:var(--body-font);font-size:0.85rem;color:${textMuted};line-height:1.75;max-width:280px;font-weight:300">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Navigate</div>
+        <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Services</a>
+        <a href="#about" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">About Us</a>
+        <a href="#contact" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">${s.tags?.[0] || s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Legal</div>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">Privacy Policy</a>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">Terms of Service</a>
+        <div style="margin-top:2rem">
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${accent};color:${accent};text-decoration:none;transition:background 0.3s,color 0.3s">${content.ctaPrimary}</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid ${borderCol};display:flex;align-items:center;justify-content:space-between">
+      <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(240,237,230,0.25);font-weight:300">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
+      <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(240,237,230,0.25)">Excellence · Integrity · Results</div>
+    </div>
+  </footer>
+
+  <style>
+    @keyframes kenBurns { from { transform:scale(1); } to { transform:scale(1.06); } }
+    @keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+  </style>
+
+  <script>
+    // Custom cursor
+    var dot = document.getElementById('ms-cursor-dot');
+    var ring = document.getElementById('ms-cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; dot.style.left = mx+'px'; dot.style.top = my+'px'; });
+    (function loop(){ rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button').forEach(function(el){ el.addEventListener('mouseenter',function(){ ring.style.width='56px'; ring.style.height='56px'; ring.style.opacity='0.5'; }); el.addEventListener('mouseleave',function(){ ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='1'; }); });
+
+    // Scroll reveal
+    var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); } }); }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+    // Accordion: open first item by default + update label
+    var firstBody = document.querySelector('.pro-accordion-body');
+    if(firstBody) firstBody.classList.add('open');
+    var firstIcon = document.querySelector('.pro-svc-icon');
+    if(firstIcon) firstIcon.textContent = '×';
+  </script>
+
+</body>
+</html>`
 }
 
+function buildTechDigitalTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  let _pi = 0
+
+  // Futuristic dark palette
+  const bg = '#080810'
+  const bgAlt = '#0d0d1a'
+  const cardBg = '#111122'
+  const textPrimary = '#e8e8f0'
+  const textMuted = '#7070a0'
+  const borderCol = 'rgba(120,120,200,0.12)'
+  const accent = primaryColor || '#6c63ff'
+  const accentGlow = `${accent}40`
+
+  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${bg};
+      --bg-alt: ${bgAlt};
+      --card-bg: ${cardBg};
+      --text: ${textPrimary};
+      --text-muted: ${textMuted};
+      --border: ${borderCol};
+      --primary: ${accent};
+      --heading-font: 'Space Grotesk', sans-serif;
+      --body-font: 'Space Grotesk', sans-serif;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Animated grid background */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(120,120,200,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(120,120,200,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    body { position: relative; }
+
+    /* Custom cursor */
+    body { cursor: none; }
+    #ms-cursor-dot { position:fixed;width:5px;height:5px;background:${accent};border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);box-shadow:0 0 8px ${accent}; }
+    #ms-cursor-ring { position:fixed;width:32px;height:32px;border:1px solid ${accent};border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s;opacity:0.5; }
+
+    /* Reveal animations */
+    .reveal { opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease; }
+    .reveal.visible { opacity:1;transform:translateY(0); }
+    .reveal-delay-1 { transition-delay:0.1s; }
+    .reveal-delay-2 { transition-delay:0.2s; }
+    .reveal-delay-3 { transition-delay:0.3s; }
+    .reveal-delay-4 { transition-delay:0.4s; }
+
+    /* Glow card */
+    .tech-card {
+      background: ${cardBg};
+      border: 1px solid ${borderCol};
+      border-radius: 12px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease, transform 0.4s ease;
+    }
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 30% 30%, ${accentGlow} 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .tech-card:hover { border-color: ${accent}55; transform: translateY(-4px); }
+    .tech-card:hover::before { opacity: 1; }
+
+    /* Mono label style */
+    .mono-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: ${accent};
+    }
+
+    /* Typewriter cursor blink */
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .tw-cursor { display:inline-block;width:2px;height:1em;background:${accent};margin-left:2px;animation:blink 1s step-end infinite;vertical-align:text-bottom; }
+
+    /* Glowing line */
+    .glow-line { height:1px;background:linear-gradient(to right,transparent,${accent},transparent); }
+
+    /* Accordion */
+    .tech-accord-body { max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .tech-accord-body.open { max-height:300px; }
+  </style>
+
+  <!-- Custom cursor -->
+  <div id="ms-cursor-dot"></div>
+  <div id="ms-cursor-ring"></div>
+
+${buildStandardNav(businessName, content, navFlags)}
+
+  <!-- ═══════════ HERO: Centered, massive type, animated gradient orb ═══════════ -->
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
+
+    <!-- Ambient orb -->
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
+
+    <!-- Floating code fragments -->
+    <div style="position:absolute;top:15%;left:5%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(108,99,255,0.2);line-height:1.8;pointer-events:none">
+      const init = () =&gt; {<br />&nbsp;&nbsp;deploy();<br />};
+    </div>
+    <div style="position:absolute;bottom:20%;right:6%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(108,99,255,0.2);line-height:1.8;pointer-events:none;text-align:right">
+      &lt;Solution /&gt;<br />// v2.0.0
+    </div>
+
+    <div style="position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 2.5rem;text-align:center;width:100%">
+
+      ${content.badge ? `<div class="reveal" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1.25rem;border:1px solid ${borderCol};border-radius:999px;color:${accent};margin-bottom:2.5rem">
+        <span style="width:6px;height:6px;border-radius:50%;background:${accent};animation:blink 1.5s ease-in-out infinite"></span>
+        ${content.badge}
+      </div>` : ''}
+
+      <h1 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:1.75rem;color:${textPrimary}">
+        ${content.heroAccent ? `<span style="color:${accent}">${content.heroAccent}</span><br /><span style="color:${textPrimary}">${content.tagline}</span>` : content.tagline.replace(' ', `<br />`)}
+        <span class="tw-cursor"></span>
+      </h1>
+
+      <p class="reveal reveal-delay-1" style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;color:${textMuted};line-height:1.75;max-width:580px;margin:0 auto 3rem;font-weight:300">${content.heroSubtitle}</p>
+
+      <div class="reveal reveal-delay-2" style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+        <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:#fff;border-radius:6px;text-decoration:none;box-shadow:0 0 32px ${accentGlow};transition:box-shadow 0.3s,transform 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${borderCol};color:${textPrimary};border-radius:6px;text-decoration:none;transition:border-color 0.3s">${content.ctaSecondary}</a>
+      </div>
+
+      ${content.ctaNote ? `<p class="reveal reveal-delay-3" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};margin-top:1.25rem;letter-spacing:0.08em">${content.ctaNote}</p>` : ''}
+    </div>
+  </section>
+
+  <!-- ═══════════ STATS MARQUEE ═══════════ -->
+  <div style="position:relative;z-index:1;padding:1.5rem 0;border-top:1px solid ${borderCol};border-bottom:1px solid ${borderCol};background:${bgAlt};overflow:hidden">
+    <div style="display:flex;align-items:center;gap:5rem;animation:marquee 20s linear infinite;white-space:nowrap">
+      ${[...content.stats, ...content.stats, ...content.stats].map(s => `
+      <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:${accent}">${s.value}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:${textMuted}">${s.label}</span>
+        <span style="color:${borderCol};font-size:1.2rem">&#47;</span>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- ═══════════ SERVICES: Cards with glow effect ═══════════ -->
+  <section id="services" style="position:relative;padding:120px 0;background:${bg};z-index:1">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div class="mono-label reveal" style="margin-bottom:1rem">${'// '}${content.heroEyebrow}</div>
+          <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textPrimary};line-height:1.1;letter-spacing:-0.02em">${content.servicesHeading}</h2>
+        </div>
+        <a href="#contact" class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0">All Services <span style="font-size:1rem">&#8594;</span></a>
+      </div>
+
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
+        ${content.services.slice(0, Math.min(content.services.length, 6)).map((s, i) => `
+        <div class="tech-card reveal reveal-delay-${(i % 3) + 1}">
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};letter-spacing:0.1em;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
+          <div style="font-size:1.75rem;margin-bottom:1.25rem;line-height:1">${s.icon || ['⚡', '◈', '⊕', '◉', '⬡', '◇'][i % 6]}</div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:${textPrimary};margin-bottom:0.75rem;letter-spacing:-0.01em">${s.name}</h3>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;color:${textMuted};line-height:1.7;margin-bottom:1.5rem;font-weight:300">${s.description}</p>
+          ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap">${s.tags.map(t => `<span style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;padding:0.3rem 0.7rem;background:rgba(108,99,255,0.08);border:1px solid ${borderCol};border-radius:4px;color:${accent}">${t}</span>`).join('')}</div>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FEATURE SHOWCASES: Alternating ═══════════ -->
+  <section style="position:relative;padding:80px 0 120px;background:${bgAlt};z-index:1">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
+      <div class="mono-label reveal" style="text-align:center;margin-bottom:1rem">// How We Deliver</div>
+      <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textPrimary};text-align:center;letter-spacing:-0.02em;margin-bottom:5rem">Built for results</h2>
+
+      ${(content.features || content.services.slice(0, 3)).map((item, i) => `
+      <div class="ms-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;margin-bottom:${i < 2 ? '6rem' : '0'}">
+        ${i % 2 === 0 ? `
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${accent};letter-spacing:0.15em;margin-bottom:1rem">FEATURE ${String(i + 1).padStart(2, '0')}</div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${textPrimary};line-height:1.2;letter-spacing:-0.02em;margin-bottom:1rem">${item.name}</h3>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.75rem;font-weight:300">${item.description}</p>
+          <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span>&#8594;</span></a>
+        </div>
+        <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
+          <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,${accentGlow} 0%,transparent 60%)"></div>
+        </div>
+        ` : `
+        <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
+          <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
+          <div style="position:absolute;inset:0;background:linear-gradient(225deg,${accentGlow} 0%,transparent 60%)"></div>
+        </div>
+        <div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${accent};letter-spacing:0.15em;margin-bottom:1rem">FEATURE ${String(i + 1).padStart(2, '0')}</div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${textPrimary};line-height:1.2;letter-spacing:-0.02em;margin-bottom:1rem">${item.name}</h3>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.75rem;font-weight:300">${item.description}</p>
+          <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span>&#8594;</span></a>
+        </div>`}
+      </div>`).join('')}
+    </div>
+  </section>
+
+  <!-- ═══════════ ABOUT + PROCESS ═══════════ -->
+  <section id="about" style="position:relative;padding:120px 0;background:${bg};z-index:1">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
+      <div class="glow-line reveal" style="margin-bottom:5rem"></div>
+
+      <!-- About 2-col -->
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start;margin-bottom:7rem">
+        <div>
+          <div class="mono-label reveal" style="margin-bottom:1rem">// About Us</div>
+          <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${textPrimary};line-height:1.1;letter-spacing:-0.02em;margin-bottom:2rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;color:${accent};line-height:1.7;margin-bottom:1.5rem;font-weight:500">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(Boolean).map(p => `<p class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
+        </div>
+        <!-- Stats grid -->
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:3rem">
+          ${content.stats.slice(0, 4).map(s => `
+          <div class="tech-card reveal">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:${accent};letter-spacing:-0.03em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
+            <div class="mono-label" style="color:${textMuted};font-size:0.6rem">${s.label}</div>
+            ${s.sublabel ? `<div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:${textMuted};opacity:0.5;margin-top:0.25rem">${s.sublabel}</div>` : ''}
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Process steps -->
+      ${content.processSteps && content.processSteps.length > 0 ? `
+      <div class="glow-line reveal" style="margin-bottom:5rem"></div>
+      <div class="mono-label reveal" style="text-align:center;margin-bottom:1rem">// The Process</div>
+      <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${textPrimary};text-align:center;letter-spacing:-0.02em;margin-bottom:4rem">${content.stepsHeading || 'How We Work'}</h2>
+      <div class="ms-flex" style="display:flex;align-items:start;gap:0">
+        ${content.processSteps.slice(0, 4).map((step, i, arr) => `
+        <div class="reveal reveal-delay-${i + 1}" style="flex:1;text-align:center;padding:0 1.5rem;position:relative">
+          ${i < arr.length - 1 ? `<div style="position:absolute;top:2rem;left:calc(50% + 2.5rem);right:calc(-50% + 2.5rem);height:1px;background:linear-gradient(to right,${accent}60,${accent}20)"></div>` : ''}
+          <div style="width:64px;height:64px;border-radius:50%;border:1px solid ${accent};display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;position:relative;z-index:1;background:${bg}">
+            <span style="font-family:'Space Mono',monospace;font-size:0.8rem;color:${accent};font-weight:700">${String(i + 1).padStart(2, '0')}</span>
+          </div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;color:${textPrimary};margin-bottom:0.6rem;letter-spacing:-0.01em">${step.title}</h3>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.82rem;color:${textMuted};line-height:1.7;font-weight:300">${step.description}</p>
+        </div>`).join('')}
+      </div>` : ''}
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section style="position:relative;padding:120px 0;background:${bgAlt};z-index:1">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
+      <div class="mono-label reveal" style="text-align:center;margin-bottom:1rem">// Social Proof</div>
+      <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textPrimary};text-align:center;letter-spacing:-0.02em;margin-bottom:4rem">What clients say</h2>
+
+      ${content.testimonial ? `
+      <div class="reveal" style="background:linear-gradient(135deg,${cardBg},${bg});border:1px solid ${borderCol};border-radius:16px;padding:4rem;margin-bottom:2rem;position:relative;overflow:hidden">
+        <div style="position:absolute;top:2rem;right:3rem;font-family:'Space Grotesk',sans-serif;font-size:6rem;font-weight:700;color:${accentGlow};line-height:1;pointer-events:none">"</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+          <div>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:1.15rem;color:${textPrimary};line-height:1.65;margin-bottom:2rem;font-weight:300">"${content.testimonial.quote}"</p>
+            <div style="display:flex;align-items:center;gap:1rem">
+              <div style="width:40px;height:40px;border-radius:50%;background:${accent};display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:600;flex-shrink:0">${content.testimonial.author.charAt(0)}</div>
+              <div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;color:${textPrimary}">${content.testimonial.author}</div>
+                ${content.testimonial.rating ? `<div style="color:${accent};font-size:0.7rem;margin-top:0.2rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+              </div>
+            </div>
+          </div>
+          <div style="border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
+            <img src="${stockPool[4] || heroImg}" alt="" style="width:100%;height:260px;object-fit:cover;display:block" />
+          </div>
+        </div>
+      </div>` : ''}
+
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+        ${fallbackTestimonials.map(t => `
+        <div class="tech-card reveal">
+          <div style="color:${accent};font-size:0.75rem;margin-bottom:1.25rem">${'&#9733;'.repeat(t.rating)}</div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.7;margin-bottom:1.5rem;font-weight:300">"${t.quote}"</p>
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};letter-spacing:0.08em">— ${t.author}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FINAL CTA BAND ═══════════ -->
+  <section style="position:relative;padding:140px 0;background:${bg};overflow:hidden;z-index:1">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,${accentGlow} 0%,transparent 65%);pointer-events:none"></div>
+    <div style="position:relative;z-index:2;max-width:800px;margin:0 auto;padding:0 2.5rem;text-align:center">
+      <div class="mono-label reveal" style="margin-bottom:1.5rem">// Ready When You Are</div>
+      <h2 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:700;color:${textPrimary};line-height:1.05;letter-spacing:-0.03em;margin-bottom:2rem">Let's build something <span style="color:${accent}">remarkable</span></h2>
+      <p class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;color:${textMuted};line-height:1.75;margin-bottom:3rem;font-weight:300">${content.heroSubtitle}</p>
+      <div class="reveal" style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap">
+        <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:1.1rem 2.75rem;background:${accent};color:#fff;border-radius:6px;text-decoration:none;box-shadow:0 0 40px ${accentGlow}">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:1.1rem 2.75rem;border:1px solid ${borderCol};color:${textPrimary};border-radius:6px;text-decoration:none">${content.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+
+${buildContactSection(content, locationInfo)}
+
+${buildFooter(businessName, content, 'dark')}
+
+  <style>
+    @keyframes orbPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6} 50%{transform:translate(-50%,-50%) scale(1.1);opacity:1} }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  </style>
+
+  <script>
+    // Custom cursor
+    var dot = document.getElementById('ms-cursor-dot');
+    var ring = document.getElementById('ms-cursor-ring');
+    var mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', function(e){ mx = e.clientX; my = e.clientY; dot.style.left = mx+'px'; dot.style.top = my+'px'; });
+    (function loop(){ rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1; ring.style.left = rx+'px'; ring.style.top = ry+'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,button').forEach(function(el){ el.addEventListener('mouseenter',function(){ ring.style.width='52px'; ring.style.height='52px'; ring.style.opacity='0.8'; }); el.addEventListener('mouseleave',function(){ ring.style.width='32px'; ring.style.height='32px'; ring.style.opacity='0.5'; }); });
+
+    // Scroll reveal
+    var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); } }); }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+  </script>
+
+</body>
+</html>`
+}
 function buildTradesTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
@@ -3492,466 +3926,369 @@ function buildTradesTemplate(data: TemplateData): string {
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
   const aboutImg = images[5] || stockImages.about
-  let _pi = 3
+  let _pi = 0
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
   ]
 
-  const trBg = '#ffffff'
-  const trAlt = '#f8fafc'
-  const trText = '#0f172a'
-  const trMuted = '#64748b'
-  const trBlue = primaryColor || '#2563eb'
+  const trBg = '#f9f7f4'
+  const trAlt = '#f0ece5'
+  const trDark = '#1c1a17'
+  const trText = '#2a2620'
+  const trMuted = '#7a7068'
+  const trAccent = primaryColor || '#c8480a'
 
-  const trNav = buildStandardNav(businessName, content, navFlags)
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
-  // Section 1: Full-bleed hero with badge, heading, subtitle, 2 CTAs, trust strip
+  const extraFonts = `<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+
+  // Grain overlay + custom CSS
+  const extraStyles = `
+  <style>
+    :root {
+      --bg: ${trBg};
+      --bg-alt: ${trAlt};
+      --card-bg: #ffffff;
+      --text: ${trText};
+      --text-muted: ${trMuted};
+      --border: rgba(0,0,0,0.08);
+      --heading-font: 'Oswald', sans-serif;
+      --body-font: 'Inter', sans-serif;
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    .tr-reveal { opacity:0; transform:translateY(28px); transition:opacity 0.7s ease, transform 0.7s ease; }
+    .tr-reveal.visible { opacity:1; transform:translateY(0); }
+    .tr-service-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.12); }
+    .tr-service-card { transition:transform 0.35s ease, box-shadow 0.35s ease; }
+    .tr-step-num { font-family:'Oswald',sans-serif; font-size:5rem; font-weight:700; color:${trAccent}; line-height:1; opacity:0.15; position:absolute; top:-1.5rem; left:-0.5rem; pointer-events:none; }
+    @keyframes kbzoom { 0%{transform:scale(1)} 100%{transform:scale(1.06)} }
+    .tr-hero-img { animation: kbzoom 12s ease-in-out infinite alternate; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    .tr-fade1 { animation: fadeUp 0.9s ease forwards; }
+    .tr-fade2 { animation: fadeUp 0.9s 0.2s ease both; }
+    .tr-fade3 { animation: fadeUp 0.9s 0.4s ease both; }
+    .tr-tag { display:inline-block; font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.75rem; border:1px solid rgba(0,0,0,0.18); border-radius:2px; color:${trMuted}; }
+    .tr-cta-primary { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:${trAccent}; color:#fff; text-decoration:none; transition:opacity 0.25s; }
+    .tr-cta-primary:hover { opacity:0.88; }
+    .tr-cta-ghost { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.55); text-decoration:none; transition:border-color 0.25s; }
+    .tr-cta-ghost:hover { border-color:#fff; }
+    .tr-input { width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:0.9rem; padding:0.85rem 0 0.85rem; background:transparent; border:none; border-bottom:1.5px solid rgba(0,0,0,0.2); color:${trText}; outline:none; transition:border-color 0.25s; }
+    .tr-input:focus { border-bottom-color:${trAccent}; }
+    .tr-input::placeholder { color:${trMuted}; }
+  </style>`
+
+  // Nav
+  const nav = buildStandardNav(businessName, content, navFlags)
+
+  // HERO — full-bleed with Ken Burns, diagonal cut at bottom, large Oswald heading
   const heroSection = `
-  <section style="position:relative;min-height:90vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden">
-    <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.65) 100%)"></div>
+  <section style="position:relative;min-height:92vh;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:${trDark}">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" class="tr-hero-img" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
+      <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(28,26,23,0.3) 0%,rgba(28,26,23,0.85) 70%)"></div>
     </div>
-    <div style="position:relative;max-width:1200px;margin:0 auto;padding:0 2rem 3rem;width:100%">
-      <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);padding:0.5rem 1rem;border-radius:999px;margin-bottom:1.5rem">
-        <span style="width:8px;height:8px;border-radius:50%;background:#22c55e"></span>
-        <span style="font-family:var(--body-font);font-size:0.8rem;color:#fff;font-weight:500">${content.badge || content.heroEyebrow}</span>
+    <!-- diagonal bottom cut -->
+    <div style="position:absolute;bottom:-2px;left:0;right:0;height:80px;background:${trBg};clip-path:polygon(0 100%,100% 100%,100% 0)"></div>
+    <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 2rem 7rem;width:100%">
+      <div class="tr-fade1" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem">
+        <div style="width:36px;height:2px;background:${trAccent}"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">${content.heroEyebrow}</span>
       </div>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.25rem;max-width:700px">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:550px;line-height:1.7;margin-bottom:2rem">${content.heroSubtitle}</p>
-      <div style="display:flex;gap:0.75rem;margin-bottom:3rem">
-        <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:${trBlue};color:#fff;border-radius:8px;text-decoration:none">${content.ctaPrimary} &rarr;</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:0.85rem 2rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.25);color:#fff;border-radius:8px;text-decoration:none">${content.ctaSecondary || 'View Our Services'}</a>
-      </div>
-      <div style="display:flex;gap:3rem">
-        ${content.stats.slice(0, 3).map(s => `
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem">&#9733;</div>
-          <div>
-            <div style="font-family:var(--heading-font);font-size:0.95rem;font-weight:700;color:#fff">${s.label}</div>
-            <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.6)">${s.sublabel || s.value}</div>
-          </div>
-        </div>`).join('')}
+      <h1 class="tr-fade2" style="font-family:'Oswald',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:#fff;line-height:1.0;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:1.5rem;max-width:820px">${content.tagline}</h1>
+      <p class="tr-fade3" style="font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,0.72);max-width:540px;line-height:1.75;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <a href="#contact" class="tr-cta-primary">${content.ctaPrimary} &rarr;</a>
+        <a href="#services" class="tr-cta-ghost">${content.ctaSecondary || 'See Our Work'}</a>
       </div>
     </div>
   </section>`
 
-  // Section 2: Dark band — mission + stats row
-  const darkBand = `
-  <section style="background:${trText};padding:60px 2rem">
-    <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap">
-      ${content.stats.slice(0, 4).map(s => `
-      <div style="text-align:center">
-        <div style="font-family:var(--heading-font);font-size:2rem;font-weight:700;color:#fff">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6);margin-top:0.25rem">${s.label}</div>
+  // CREDENTIALS STRIP — dark band, 4 stats
+  const credStrip = `
+  <section style="background:${trDark};padding:0 2rem">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06)">
+      ${content.stats.slice(0, 4).map((s, i) => `
+      <div style="padding:2.5rem 1.5rem;${i < 3 ? 'border-right:1px solid rgba(255,255,255,0.06)' : ''}">
+        <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:${trAccent};line-height:1;margin-bottom:0.35rem">${s.value}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">${s.label}</div>
+        ${s.sublabel ? `<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">${s.sublabel}</div>` : ''}
       </div>`).join('')}
     </div>
   </section>`
 
-  // Section 3: Services — blue eyebrow, heading, subtitle, 3x2 icon cards
+  // SERVICES — editorial two-column grid, numbered, with image
   const servicesSection = `
-  <section id="services" style="padding:80px 2rem;background:${trBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Our Services</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.servicesHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};max-width:600px;line-height:1.7;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, 6).map((s, i) => `
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="width:48px;height:48px;border-radius:12px;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem">
-            <span style="color:${trBlue};font-size:1.2rem">${mapIcon(s.icon, i)}</span>
+  <section id="services" style="padding:100px 2rem;background:${trBg}">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1.5rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+            <div style="width:28px;height:2px;background:${trAccent}"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">What We Do</span>
           </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${trText};margin-bottom:0.5rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${trMuted};line-height:1.7;margin-bottom:1rem">${s.description}</p>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;color:${trBlue};text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:0.35rem">Learn More &rarr;</a>
+          <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:700;color:${trText};text-transform:uppercase;line-height:1.05">${content.servicesHeading}</h2>
+        </div>
+        <a href="#contact" class="tr-cta-primary" style="background:${trAccent};color:#fff">${content.ctaPrimary} &rarr;</a>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+        ${content.services.slice(0, 6).map((s, i) => `
+        <div class="tr-service-card tr-reveal" style="background:${trBg};padding:2.5rem 2rem;position:relative;overflow:hidden">
+          <span class="tr-step-num">${String(i + 1).padStart(2, '0')}</span>
+          <div style="margin-bottom:1.25rem">
+            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">${mapIcon(s.icon, i)}</span>
+          </div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:${trText};text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">${s.name}</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:${trMuted};line-height:1.75;margin-bottom:1.25rem">${s.description}</p>
+          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
+            ${s.tags.slice(0, 2).map(t => `<span class="tr-tag">${t}</span>`).join('')}
+          </div>
         </div>`).join('')}
       </div>
     </div>
   </section>`
 
-  // Section 4: About — photo left with floating stat badge, text + checkmarks right
+  // PROCESS — horizontal steps on dark background, angled connector lines
+  const processSteps = content.processSteps || content.services.slice(0, 4).map((s, i) => ({
+    step: String(i + 1),
+    title: s.name,
+    description: s.description,
+  }))
+  const processSection = `
+  <section style="padding:100px 2rem;background:${trDark}">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:${trAccent}"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">How It Works</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:4rem">${content.stepsHeading || 'Our Process'}</h2>
+      <div class="ms-flex" style="display:flex;gap:0;align-items:stretch">
+        ${processSteps.slice(0, 4).map((step, i) => `
+        <div style="flex:1;padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08);${i === 0 ? 'border-left:none' : ''}">
+          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:${trAccent};opacity:0.4;line-height:1;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
+          <h3 style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">${step.title}</h3>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.75">${step.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // ABOUT — asymmetric: image 60%, text 40% with offset border detail
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
-  <section id="about" style="padding:80px 2rem;background:${trAlt}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center">
+  <section id="about" style="padding:100px 2rem;background:${trBg}">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
-        <div class="ms-img" style="border-radius:16px;overflow:hidden;height:550px">
+        <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:2px solid ${trAccent};opacity:0.25;pointer-events:none"></div>
+        <div class="ms-img" style="height:580px;overflow:hidden">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
-        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;border-radius:12px;padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.75rem">
-          <div style="width:48px;height:48px;border-radius:50%;background:${trBlue};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1rem;font-weight:700">${content.stats[0]?.value || '15+'}</div>
-          <div>
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">${content.stats[0]?.label || 'Years Experience'}</div>
-            <div style="font-family:var(--body-font);font-size:0.75rem;color:${trMuted}">${content.stats[0]?.sublabel || 'Serving our community'}</div>
-          </div>
+        <div style="position:absolute;bottom:-2rem;right:-2rem;background:${trDark};padding:1.5rem 2rem">
+          <div style="font-family:'Oswald',sans-serif;font-size:2rem;font-weight:700;color:${trAccent}">${content.stats[0]?.value || '15+'}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem">${content.stats[0]?.label || 'Years Experience'}</div>
         </div>
       </div>
       <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">About Us</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1.5rem">${content.aboutHeading}</h2>
-        ${aboutParagraphs.map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${trMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
-        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.5rem">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+          <div style="width:28px;height:2px;background:${trAccent}"></div>
+          <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">About Us</span>
+        </div>
+        <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${trText};text-transform:uppercase;line-height:1.05;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;font-style:italic;color:${trText};line-height:1.65;margin-bottom:1.25rem;border-left:3px solid ${trAccent};padding-left:1.25rem">${content.aboutMission}</p>` : ''}
+        ${aboutParagraphs.map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${trMuted};line-height:1.8;margin-bottom:1rem">${p}</p>`).join('')}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:2rem">
           ${content.services.map(s => s.tags).flat().slice(0, 6).map(t => `
-          <div style="display:flex;align-items:center;gap:0.5rem">
-            <span style="color:${trBlue};font-size:1rem">&#10003;</span>
-            <span style="font-family:var(--body-font);font-size:0.85rem;color:${trText};font-weight:500">${t}</span>
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:6px;height:6px;background:${trAccent};flex-shrink:0"></div>
+            <span style="font-family:'Inter',sans-serif;font-size:0.82rem;color:${trText};font-weight:500">${t}</span>
           </div>`).join('')}
         </div>
       </div>
     </div>
   </section>`
 
-  // Section 5: Testimonials — blue eyebrow, heading, 3 cards with stars
-  const testimonialSection = content.testimonial ? `
-  <section id="testimonials" style="padding:80px 2rem;background:${trAlt}">
-    <div style="max-width:1200px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Testimonials</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:${trText};margin-bottom:1rem">What Our Customers Say</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:${trMuted};margin-bottom:3rem">Don't just take our word for it.</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:${trText};line-height:1.7;margin-bottom:1.5rem">"${content.testimonial.quote}"</p>
-          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">${content.testimonial.author.split(',')[0]}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:${trMuted}">${content.testimonial.author.split(',')[1]?.trim() || 'Customer'}</div>
+  // PROJECT SHOWCASE — full-width image grid, 3 columns with hover caption overlay
+  const projectSection = `
+  <section style="padding:100px 2rem;background:${trAlt}">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:${trAccent}"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">Recent Work</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${trText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading || 'Projects'}</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+        ${serviceImgs.slice(0, 6).map((img, i) => `
+        <div style="position:relative;overflow:hidden;background:${trDark}">
+          <div class="ms-img" style="height:300px;overflow:hidden">
+            <img src="${img || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
-        </div>
-        ${getFallbackTestimonials(content, businessCategory).map(t => `
-        <div style="border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:2rem">
-          <div style="color:#f59e0b;font-size:1rem;margin-bottom:1rem">${'&#9733;'.repeat(t.rating || 5)}</div>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:${trText};line-height:1.7;margin-bottom:1.5rem">"${t.quote}"</p>
-          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1rem">
-            <div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">${t.author.split(',')[0]}</div>
-            <div style="font-family:var(--body-font);font-size:0.8rem;color:${trMuted}">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">${content.projectCaptions?.[i] || content.services[i % content.services.length]?.name || 'Project'}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // TESTIMONIALS — dark bg, 3 cards, large italic quote
+  const testimonialSection = content.testimonial ? `
+  <section id="testimonials" style="padding:100px 2rem;background:${trDark}">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+        <div style="width:28px;height:2px;background:${trAccent}"></div>
+        <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Testimonials</span>
+      </div>
+      <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:3.5rem">What Clients Say</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06)">
+        ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
+        <div style="background:${trDark};padding:2.5rem 2rem">
+          <div style="font-size:3rem;line-height:1;color:${trAccent};opacity:0.5;margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.75rem">${t.quote}</p>
+          <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em">${t.author.split(',')[0]}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
+            <div style="color:${trAccent};font-size:0.8rem;margin-top:0.4rem">${'&#9733;'.repeat(t.rating || 5)}</div>
           </div>
         </div>`).join('')}
       </div>
     </div>
   </section>` : ''
 
-  // Section 6: Stats row removed — stats already shown in darkBand above
-
-  // Section 7: Contact — 2-column: info left, form right
+  // CONTACT — 2-col, underline inputs, dark panel left
   const contactSection = `
-  <section id="contact" style="padding:80px 2rem;background:${trAlt}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
-      <div>
-        <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trBlue};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem">Contact Us</p>
-        <h2 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:${trText};margin-bottom:1rem">${content.contactHeading}</h2>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:${trMuted};line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+  <section id="contact" style="padding:0;background:${trBg}">
+    <div class="ms-grid" style="max-width:100%;display:grid;grid-template-columns:1fr 1.4fr">
+      <div style="background:${trDark};padding:5rem 3rem;display:flex;flex-direction:column;justify-content:center">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
+          <div style="width:28px;height:2px;background:${trAccent}"></div>
+          <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.35)">Contact</span>
+        </div>
+        <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:#fff;text-transform:uppercase;line-height:1.05;margin-bottom:2rem">${content.contactHeading}</h2>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.45);line-height:1.75;margin-bottom:2.5rem;max-width:340px">${content.heroSubtitle}</p>
         <div style="display:flex;flex-direction:column;gap:1.5rem">
           <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9742;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Phone</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${locationInfo.phone}</div></div>
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:${trAccent};font-size:1rem;flex-shrink:0">&#9742;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Phone</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">${locationInfo.phone}</div>
+            </div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9993;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Email</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div></div>
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:${trAccent};font-size:1rem;flex-shrink:0">&#9993;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Email</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</div>
+            </div>
           </div>
           <div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9906;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Service Area</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${locationInfo.city} &amp; surrounds</div></div>
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:${trAccent};font-size:1rem;flex-shrink:0">&#9906;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Service Area</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75)">${locationInfo.city} &amp; surrounds</div>
+            </div>
           </div>
-          ${content.contactHours ? `<div style="display:flex;align-items:center;gap:1rem">
-            <div style="width:44px;height:44px;border-radius:50%;background:rgba(${parseInt(trBlue.slice(1,3),16)},${parseInt(trBlue.slice(3,5),16)},${parseInt(trBlue.slice(5,7),16)},0.1);display:flex;align-items:center;justify-content:center;color:${trBlue};font-size:1.1rem">&#9200;</div>
-            <div><div style="font-family:var(--heading-font);font-size:0.9rem;font-weight:700;color:${trText}">Hours</div><div style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted}">${content.contactHours.replace(/ · /g, '<br />')}</div></div>
+          ${content.contactHours ? `
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div style="width:40px;height:40px;border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:${trAccent};font-size:1rem;flex-shrink:0">&#9200;</div>
+            <div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-bottom:0.25rem">Hours</div>
+              <div style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.75)">${content.contactHours.replace(/ · /g, '<br />')}</div>
+            </div>
           </div>` : ''}
         </div>
       </div>
-      <div style="background:#fff;border-radius:16px;padding:2.5rem;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
-        <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${trText};margin-bottom:0.5rem">Send Us a Message</h3>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:${trMuted};margin-bottom:1.5rem">We'll get back to you as soon as possible.</p>
-        <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Name</label><input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Email</label><input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Phone</label><input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none" /></div>
-          <div><label style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:${trText};display:block;margin-bottom:0.35rem">Message</label><textarea placeholder="Tell us about your project..." rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);padding:0.75rem 1rem;border:1px solid rgba(0,0,0,0.12);border-radius:8px;font-size:0.9rem;outline:none;resize:none"></textarea></div>
-          <button type="submit" style="font-family:var(--body-font);padding:0.85rem 2rem;background:${trBlue};color:#fff;border:none;border-radius:8px;font-size:0.95rem;font-weight:600;cursor:pointer;width:100%">Send Message</button>
+      <div style="padding:5rem 4rem;background:${trBg}">
+        <h3 style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:600;color:${trText};text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.5rem">Get a Free Quote</h3>
+        <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${trMuted};margin-bottom:2.5rem">Tell us about your project — we'll get back to you within 24 hours.</p>
+        <form style="display:flex;flex-direction:column;gap:2rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+            <div>
+              <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${trMuted};display:block;margin-bottom:0.5rem">Name</label>
+              <input type="text" placeholder="Your name" class="tr-input" />
+            </div>
+            <div>
+              <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${trMuted};display:block;margin-bottom:0.5rem">Phone</label>
+              <input type="tel" placeholder="${locationInfo.phone}" class="tr-input" />
+            </div>
+          </div>
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${trMuted};display:block;margin-bottom:0.5rem">Email</label>
+            <input type="email" placeholder="your@email.com" class="tr-input" />
+          </div>
+          <div>
+            <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${trMuted};display:block;margin-bottom:0.5rem">Project Details</label>
+            <textarea placeholder="Describe your project..." rows="5" class="tr-input" style="resize:none"></textarea>
+          </div>
+          <button type="submit" class="tr-cta-primary" style="align-self:flex-start;background:${trAccent};color:#fff;border:none;cursor:pointer;font-size:0.875rem;letter-spacing:0.04em;padding:1rem 2.5rem">${content.ctaPrimary} &rarr;</button>
         </form>
       </div>
     </div>
   </section>`
 
-  // Footer — 3-column: logo+desc+phone | quick links | contact
+  // FOOTER
   const trFooter = `
-  <footer style="padding:4rem 2rem 2rem;background:${trText}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem">
+  <footer style="padding:3.5rem 2rem 2rem;background:${trDark};border-top:1px solid rgba(255,255,255,0.05)">
+    <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
       <div>
-        <div style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:1rem">${businessName}</div>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);line-height:1.7;max-width:320px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.6)">&#9742; ${locationInfo.phone}</p>
+        <div style="font-family:'Oswald',sans-serif;font-size:1.5rem;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.35);line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
       </div>
       <div>
-        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Quick Links</h4>
-        <a href="#services" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Services</a>
-        <a href="#about" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">About</a>
-        <a href="#testimonials" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Testimonials</a>
-        <a href="#contact" style="color:rgba(255,255,255,0.5);text-decoration:none;font-size:0.85rem;display:block;margin-bottom:0.5rem">Contact</a>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
-        <h4 style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:1rem">Contact</h4>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</p>
-        <p style="font-family:var(--body-font);font-size:0.85rem;color:rgba(255,255,255,0.5)">&#9906; ${locationInfo.city} &amp; surrounds</p>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">Testimonials</a>
+        <a href="#contact" style="display:block;font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.6rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45)">${locationInfo.city}</p>
       </div>
     </div>
-    <div style="max-width:1200px;margin:2rem auto 0;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;justify-content:space-between;align-items:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.3)">${content.badge || ''}</p>
+    <div style="max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Terms</a>
+      </div>
     </div>
-  </footer>`
+  </footer>
+  <script>
+    const revealEls = document.querySelectorAll('.tr-reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => obs.observe(el));
+  </script>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${trBg};
-      --bg-alt: ${trAlt};
-      --card-bg: ${trBg};
-      --text: ${trText};
-      --text-muted: ${trMuted};
-      --border: rgba(0,0,0,0.08);
-    }
-  </style>
-
-${trNav}
-
-  ${heroSection}
-  ${darkBand}
-  ${servicesSection}
-  ${aboutSection}
-  ${testimonialSection}
-  ${contactSection}
-
+  return `${headHtml}${extraFonts}${extraStyles}
+${nav}
+${heroSection}
+${credStrip}
+${servicesSection}
+${processSection}
+${aboutSection}
+${projectSection}
+${testimonialSection}
+${contactSection}
 ${trFooter}
-
 </body>
 </html>`
 }
 
-// ---------- Retail Template (Public Pool–inspired) ----------
-function buildRetailTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-
-  const heroImg = images[0] || stockImages.hero
-  // Build one unique image pool — pad with unique picsum fallbacks to avoid any repeats
-  const uniquePool = [...new Set([
-    ...images.slice(1),
-    ...stockImages.cards,
-  ].filter(Boolean))]
-  // Pad pool to at least 16 unique images using picsum with unique seeds
-  while (uniquePool.length < 16) {
-    uniquePool.push(`https://picsum.photos/seed/${businessName}-${uniquePool.length}/600/400`)
-  }
-  let imgIdx = 0
-  const nextImg = () => uniquePool[imgIdx++] || uniquePool[0]
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = images[5] || stockImages.about
-  let _pi = 3
-  // Retail uses a warm light theme
-  const retailBg = '#f5f0eb'
-  const retailCardBg = '#ffffff'
-  const retailText = '#1a1a1a'
-  const retailMuted = '#6b6560'
-
-  const retailNav = buildStandardNav(businessName, content, navFlags)
-
-  // Section 1: Full-bleed hero — huge heading overlay on lifestyle photo
-  const heroSection = `
-  <section style="position:relative;min-height:85vh;display:flex;align-items:center;overflow:hidden;background:${retailBg}">
-    <div style="position:absolute;inset:1rem;border-radius:20px;overflow:hidden">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.25) 0%,rgba(0,0,0,0.5) 100%)"></div>
-    </div>
-    <div style="position:relative;max-width:1100px;margin:0 auto;padding:0 3rem;width:100%;text-align:center">
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,7vw,6rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em;text-shadow:0 2px 8px rgba(0,0,0,0.4)">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.9);max-width:500px;margin:0 auto 2rem;line-height:1.6;text-shadow:0 1px 4px rgba(0,0,0,0.4)">${content.heroSubtitle}</p>
-      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:transform 0.2s">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Section 2: Collection — 4 proper product cards with photo, heading, description, tags
-  const collectionSection = `
-  <section style="padding:100px 2rem;background:${retailBg}">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${retailText};line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">${content.servicesHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
-        ${content.services.slice(0, 4).map((s, i) => `
-        <div style="background:${retailCardBg};border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06)">
-          <div style="border-radius:12px;height:280px;overflow:hidden">
-            <img src="${stockImages.cards[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <div style="padding:1.25rem">
-            <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${s.name}</h3>
-            <p style="font-family:var(--body-font);font-size:0.85rem;color:${retailMuted};line-height:1.6;margin-bottom:0.75rem">${s.description}</p>
-            ${s.tags && s.tags.length ? `<div style="display:flex;flex-wrap:wrap;gap:0.4rem">${s.tags.slice(0, 3).map((t: string) => `<span style="font-family:var(--body-font);font-size:0.7rem;font-weight:600;padding:0.2rem 0.6rem;background:rgba(0,0,0,0.05);border-radius:999px;color:${retailMuted};letter-spacing:0.04em;text-transform:uppercase">${t}</span>`).join('')}</div>` : ''}
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 3: 50/50 split — overlapping photos left, heading + CTA right
-  const splitSection = `
-  <section style="padding:80px 2rem;background:${retailBg}">
-    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:4rem;align-items:center">
-      <div style="position:relative;min-height:500px">
-        <div style="position:absolute;top:0;left:0;width:65%;height:75%;border-radius:16px;overflow:hidden;z-index:1">
-          <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="position:absolute;bottom:0;right:0;width:55%;height:65%;border-radius:16px;overflow:hidden;z-index:2;box-shadow:0 8px 30px rgba(0,0,0,0.1)">
-          <img src="${stockPool[9]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-      </div>
-      <div style="text-align:center;padding:2rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${retailText};line-height:0.95;margin-bottom:1rem;text-transform:uppercase">${content.aboutHeading}</h2>
-        <p style="font-family:var(--body-font);font-size:1rem;color:${retailMuted};line-height:1.7;margin-bottom:2rem">${content.aboutText.split('\n')[0]}</p>
-        <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary}</a>
-      </div>
-    </div>
-  </section>`
-
-  // Section 4: Full-width product image — rounded corners, soft bg
-  const fullWidthImage = `
-  <section style="padding:40px 2rem;background:${retailBg}">
-    <div style="max-width:1200px;margin:0 auto;border-radius:24px;overflow:hidden;height:60vh">
-      <img src="${stockPool[10] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-    </div>
-  </section>`
-
-  // Section 5: Colored feature section — bold bg, heading, product center, 4 numbered features
-  const featureSection = `
-  <section style="padding:80px 2rem;background:var(--primary);border-radius:24px;margin:40px 1rem;text-align:center">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase">Why Choose Us</h2>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);line-height:1.7;max-width:550px;margin:0 auto 3rem">${content.services[0]?.description || content.heroSubtitle}</p>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:2rem;align-items:center;max-width:900px;margin:0 auto">
-        <div>
-          ${content.stats.slice(0, 2).map((s, i) => `
-          <div style="margin-bottom:${i === 0 ? '3rem' : '0'};text-align:center">
-            <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:700;color:rgba(255,255,255,0.3);line-height:1">${i + 1}</div>
-            <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.25rem">${s.label}</p>
-          </div>`).join('')}
-        </div>
-        <div style="border-radius:16px;overflow:hidden">
-          <img src="${aboutImg}" alt="" style="width:100%;height:auto;display:block" />
-        </div>
-        <div>
-          ${content.stats.slice(2, 4).map((s, i) => `
-          <div style="margin-bottom:${i === 0 ? '3rem' : '0'};text-align:center">
-            <div style="font-family:var(--heading-font);font-size:2.5rem;font-weight:700;color:rgba(255,255,255,0.3);line-height:1">${i + 3}</div>
-            <p style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:#fff;letter-spacing:0.12em;text-transform:uppercase;margin-top:0.25rem">${s.label}</p>
-          </div>`).join('')}
-        </div>
-      </div>
-      <a href="#services" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.5rem;background:var(--secondary);color:#fff;border-radius:999px;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;margin-top:3rem">${content.ctaPrimary}</a>
-    </div>
-  </section>`
-
-  // Section 6: What Sets Us Apart — uses features (unique selling points), NOT services
-  const featuresData = content.features || content.services.slice(0, 3)
-  const productCards = `
-  <section style="padding:80px 2rem;background:${retailBg}">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:${retailText};line-height:0.95;margin-bottom:3rem;text-transform:uppercase;text-align:center">What Sets Us Apart</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
-        ${featuresData.slice(0, 3).map(f => `
-        <div style="text-align:center">
-          <div style="border-radius:12px;overflow:hidden;width:100%;aspect-ratio:4/3;margin-bottom:1.25rem">
-            <img src="${stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${retailText};margin-bottom:0.5rem">${f.name}</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailMuted};line-height:1.6">${f.description}</p>
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>`
-
-  // Section 7: Mailing list signup with background photo
-  const mailingImg = nextImg()
-  const aboutSection = `
-  <section id="about" style="position:relative;min-height:70vh;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 1rem;border-radius:24px">
-    <div style="position:absolute;inset:0">
-      <img src="${mailingImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,0.5)"></div>
-    </div>
-    <div style="position:relative;text-align:center;padding:3rem;max-width:600px">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:900;color:#fff;line-height:0.95;margin-bottom:0.75rem;text-transform:uppercase">Join Our Mailing List</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:2.5rem">Be the first to hear about new arrivals, exclusive offers, and upcoming events.</p>
-      <form onsubmit="return false" style="display:flex;gap:0.75rem;max-width:480px;margin:0 auto">
-        <input type="email" placeholder="Your email address" style="flex:1;font-family:var(--body-font);font-size:0.95rem;padding:0.85rem 1.25rem;border:2px solid rgba(255,255,255,0.3);border-radius:999px;background:rgba(0,0,0,0.2);backdrop-filter:blur(8px);color:#fff;outline:none" />
-        <button type="submit" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 1.75rem;background:#fff;color:#1a1a1a;border:none;border-radius:999px;cursor:pointer;letter-spacing:0.04em;white-space:nowrap">Subscribe</button>
-      </form>
-      <p style="font-family:var(--body-font);font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:1rem">No spam. Unsubscribe anytime.</p>
-    </div>
-  </section>`
-
-  // Section 8: Community / social strip
-  const communitySection = content.testimonial ? `
-  <section style="padding:80px 2rem;background:${retailBg}">
-    <div style="max-width:800px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:var(--primary);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem">#${businessName.replace(/\s/g, '').toUpperCase()}</p>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:${retailMuted};line-height:1.7;font-style:italic;margin-bottom:1rem">"${content.testimonial.quote}"</p>
-      <p style="font-family:var(--body-font);font-size:0.9rem;color:${retailText};font-weight:600">— ${content.testimonial.author}</p>
-    </div>
-  </section>` : ''
-
-  // Retail footer — centered logo, links, newsletter, socials
-  const retailFooter = `
-  <footer style="padding:60px 2rem 30px;background:${retailBg};border-top:1px solid rgba(0,0,0,0.08)">
-    <div style="max-width:600px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.75rem;font-weight:600;color:${retailText};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem">Join Our Newsletter</p>
-      <form style="display:flex;max-width:400px;margin:0 auto 2rem;border-radius:999px;overflow:hidden;border:1px solid rgba(0,0,0,0.1)" onsubmit="return false">
-        <input type="email" placeholder="Your email..." style="flex:1;font-family:var(--body-font);padding:0.75rem 1.25rem;border:none;background:${retailCardBg};color:${retailText};font-size:0.85rem;outline:none;letter-spacing:0.06em;text-transform:uppercase" />
-        <button type="submit" style="font-family:var(--body-font);padding:0.75rem 1.5rem;background:var(--secondary);color:#fff;border:none;font-size:0.75rem;font-weight:700;cursor:pointer;letter-spacing:0.1em;text-transform:uppercase">Sign Up</button>
-      </form>
-      <div style="padding-top:1.5rem;border-top:1px solid rgba(0,0,0,0.06)">
-        <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:0.75rem">
-          <a href="#" style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Privacy Policy</a>
-          <a href="#" style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Terms &amp; Conditions</a>
-        </div>
-        <p style="font-family:var(--body-font);font-size:0.7rem;color:${retailMuted};letter-spacing:0.06em;text-transform:uppercase">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>`
-
-  // Retail uses a custom light palette — override CSS vars
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')}
-  <style>
-    :root {
-      --bg: ${retailBg};
-      --bg-alt: #ebe6e0;
-      --card-bg: ${retailCardBg};
-      --text: ${retailText};
-      --text-muted: ${retailMuted};
-      --border: rgba(0,0,0,0.08);
-    }
-  </style>
-
-${retailNav}
-
-  ${heroSection}
-  ${collectionSection}
-  ${splitSection}
-  ${fullWidthImage}
-  ${featureSection}
-  ${productCards}
-  ${communitySection}
-  ${aboutSection}
-  ${buildContactSection(content, locationInfo)}
-
-${retailFooter}
-
-</body>
-</html>`
-}
-
-// ---------- Tech-Digital Template (Plain.com–inspired) ----------
-function buildTechDigitalTemplate(data: TemplateData): string {
+function buildHomeServicesTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
   const fonts = fontPairings[businessCategory] || fontPairings['other']
   const navFlags = resolveNavLinks(pages)
@@ -3959,203 +4296,1631 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
   const aboutImg = images[5] || stockImages.about
-  let _pi = 3
+  let _pi = 0
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
+    images[4] || stockImages.cards[3],
   ]
 
-  const techNav = buildStandardNav(businessName, content, navFlags)
+  const hmCream = '#faf8f5'
+  const hmSage = '#e8ede6'
+  const hmDeep = '#2d3a2e'
+  const hmText = '#1e2920'
+  const hmMuted = '#6b7d6c'
+  const hmAccent = primaryColor || '#3d6b42'
+  const hmWarm = '#f5f0e8'
 
-  // Section 1: Centered text hero — green accent heading, no image below
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
+
+  const extraFonts = `<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>`
+
+  const extraStyles = `
+  <style>
+    :root {
+      --bg: ${hmCream};
+      --bg-alt: ${hmSage};
+      --card-bg: #fff;
+      --text: ${hmText};
+      --text-muted: ${hmMuted};
+      --border: rgba(0,0,0,0.07);
+      --heading-font: 'DM Serif Display', Georgia, serif;
+      --body-font: 'Poppins', sans-serif;
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.018;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    @keyframes hmFadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes hmKenBurns { 0%{transform:scale(1)} 100%{transform:scale(1.05)} }
+    .hm-fade1 { animation: hmFadeUp 0.9s ease forwards; }
+    .hm-fade2 { animation: hmFadeUp 0.9s 0.18s ease both; }
+    .hm-fade3 { animation: hmFadeUp 0.9s 0.36s ease both; }
+    .hm-hero-bg { animation: hmKenBurns 14s ease-in-out infinite alternate; }
+    .hm-reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .hm-reveal.visible { opacity:1; transform:translateY(0); }
+    .hm-card { transition:transform 0.35s ease, box-shadow 0.35s ease; }
+    .hm-card:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,0.1); }
+    .hm-chip { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Poppins',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:0.35rem 0.9rem; border-radius:999px; background:rgba(61,107,66,0.1); color:${hmAccent}; }
+    .hm-pill-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; padding:0.9rem 2.25rem; border-radius:999px; background:${hmAccent}; color:#fff; text-decoration:none; transition:background 0.25s; }
+    .hm-pill-cta:hover { background:${hmDeep}; }
+    .hm-pill-ghost { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; padding:0.9rem 2.25rem; border-radius:999px; background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.5); text-decoration:none; transition:border-color 0.25s; }
+    .hm-pill-ghost:hover { border-color:#fff; }
+    .hm-step-connector { flex:0 0 1px; background:rgba(0,0,0,0.12); align-self:stretch; margin:0 -0.5px; }
+    .hm-input { width:100%; box-sizing:border-box; font-family:'Poppins',sans-serif; font-size:0.875rem; padding:1rem 1.25rem; background:#fff; border:1.5px solid rgba(0,0,0,0.1); border-radius:12px; color:${hmText}; outline:none; transition:border-color 0.25s; }
+    .hm-input:focus { border-color:${hmAccent}; }
+    .hm-input::placeholder { color:${hmMuted}; }
+  </style>`
+
+  const nav = buildStandardNav(businessName, content, navFlags)
+
+  // HERO — warm split: sage-green illustrated left panel, full-bleed photo right
   const heroSection = `
-  <section style="padding:160px 2rem 100px;text-align:center;background:var(--bg)">
-    <div style="max-width:800px;margin:0 auto">
-      ${content.badge ? `<div style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;padding:0.4rem 1rem;border:1px solid var(--border);border-radius:999px;color:var(--text-muted);margin-bottom:1.5rem;letter-spacing:0.04em">${content.badge}</div>` : ''}
-      <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem">
-        <span style="color:var(--primary)">${content.heroAccent || content.tagline.split(' ').slice(0, 2).join(' ')}</span><br />
-        <span style="color:var(--text)">${content.heroAccent ? content.tagline : content.tagline.split(' ').slice(2).join(' ')}</span>
-      </h1>
-      <p style="font-family:var(--body-font);font-size:1.15rem;color:var(--text-muted);line-height:1.7;max-width:600px;margin:0 auto 2.5rem">${content.heroSubtitle}</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.75rem 1.5rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase;transition:background 0.2s">${content.ctaSecondary}</a>
+  <section style="position:relative;min-height:88vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr">
+    <!-- Left: warm cream/sage content panel -->
+    <div style="background:linear-gradient(160deg,${hmCream} 0%,${hmSage} 100%);display:flex;flex-direction:column;justify-content:center;padding:5rem 3.5rem 5rem 4rem;position:relative;z-index:1">
+      <div class="hm-fade1" style="margin-bottom:1.5rem">
+        <span class="hm-chip">&#127968; ${content.heroEyebrow}</span>
+      </div>
+      <h1 class="hm-fade2" style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:400;font-style:italic;color:${hmText};line-height:1.15;margin-bottom:1.25rem;max-width:480px">${content.tagline}</h1>
+      <p class="hm-fade3" style="font-family:'Poppins',sans-serif;font-size:0.975rem;color:${hmMuted};line-height:1.8;max-width:420px;margin-bottom:2.25rem">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:3rem">
+        <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
+        <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:0.9rem 2.25rem;border-radius:999px;background:transparent;color:${hmText};border:2px solid rgba(0,0,0,0.15);text-decoration:none">${content.ctaSecondary || 'Our Services'}</a>
+      </div>
+      <!-- mini trust strip -->
+      <div style="display:flex;gap:2rem;flex-wrap:wrap">
+        ${content.stats.slice(0, 3).map(s => `
+        <div>
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.6rem;color:${hmAccent}">${s.value}</div>
+          <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:500;color:${hmMuted};text-transform:uppercase;letter-spacing:0.06em">${s.label}</div>
+        </div>`).join('')}
+      </div>
+      <!-- decorative circle -->
+      <div style="position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:60px solid rgba(61,107,66,0.07);pointer-events:none"></div>
+    </div>
+    <!-- Right: Ken Burns photo -->
+    <div style="position:relative;overflow:hidden">
+      <img src="${heroImg}" alt="" class="hm-hero-bg" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,${hmSage} 0%,transparent 25%)"></div>
+      <!-- floating badge -->
+      <div style="position:absolute;top:2.5rem;right:2.5rem;background:#fff;border-radius:16px;padding:1rem 1.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.12);display:flex;align-items:center;gap:0.75rem">
+        <div style="width:40px;height:40px;border-radius:50%;background:${hmAccent};display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff">&#10003;</div>
+        <div>
+          <div style="font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;color:${hmText}">${content.badge || 'Trusted & Insured'}</div>
+          <div style="font-family:'Poppins',sans-serif;font-size:0.7rem;color:${hmMuted}">${content.stats[3]?.value || '500+'} happy clients</div>
+        </div>
       </div>
     </div>
   </section>`
 
-  // Section 2: 3-column feature cards
-  const featureCards = `
-  <section style="padding:100px 2rem;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto;text-align:center;margin-bottom:3rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text)">${content.servicesHeading}</h2>
-    </div>
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-      ${content.services.slice(0, 3).map(s => `
-      <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:2.5rem 2rem">
-        <div style="font-size:2rem;margin-bottom:1.25rem">${s.icon || '&#9672;'}</div>
-        <h3 style="font-family:var(--heading-font);font-size:1.25rem;font-weight:600;color:var(--text);margin-bottom:0.75rem">${s.name}</h3>
-        <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${s.description}</p>
-      </div>`).join('')}
+  // SERVICES — card grid with photo tops, organic rounded corners
+  const servicesSection = `
+  <section id="services" style="padding:100px 2rem;background:${hmCream}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:4rem">
+        <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">${content.heroEyebrow}</span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin:0.5rem 0 1rem">${content.servicesHeading}</h2>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.95rem;color:${hmMuted};max-width:520px;margin:0 auto;line-height:1.75">${content.aboutMission || content.heroSubtitle}</p>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
+        ${content.services.slice(0, 4).map((s, i) => `
+        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;overflow:hidden;border:1px solid rgba(0,0,0,0.05)">
+          <div class="ms-img" style="height:195px;overflow:hidden;position:relative">
+            <img src="${serviceImgs[i] || stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
+            <div style="position:absolute;top:1rem;left:1rem">
+              <span class="hm-chip" style="background:rgba(255,255,255,0.9);color:${hmAccent};backdrop-filter:blur(8px)">${s.tags?.[0] || ''}</span>
+            </div>
+          </div>
+          <div style="padding:1.5rem">
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.15rem;color:${hmText};margin-bottom:0.6rem">${s.name}</h3>
+            <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmMuted};line-height:1.75;margin-bottom:1.25rem">${s.description}</p>
+            <a href="#contact" style="font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:600;color:${hmAccent};text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem">Get a Quote &rarr;</a>
+          </div>
+        </div>`).join('')}
+      </div>
+      ${content.services.length > 4 ? `
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.services.length - 4, 3)},1fr);gap:1.5rem;margin-top:1.5rem">
+        ${content.services.slice(4, 7).map((s, i) => `
+        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;padding:2rem;border:1px solid rgba(0,0,0,0.05);display:flex;gap:1.25rem;align-items:flex-start">
+          <div style="width:48px;height:48px;border-radius:14px;background:rgba(61,107,66,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.2rem;color:${hmAccent}">${mapIcon(s.icon, i + 4)}</div>
+          <div>
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;color:${hmText};margin-bottom:0.4rem">${s.name}</h3>
+            <p style="font-family:'Poppins',sans-serif;font-size:0.8rem;color:${hmMuted};line-height:1.7">${s.description}</p>
+          </div>
+        </div>`).join('')}
+      </div>` : ''}
     </div>
   </section>`
 
-  // Section 3: Logo / trust strip
-  const trustStrip = `
-  <section style="padding:60px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2rem;font-weight:600">${content.heroEyebrow}</p>
-      <div style="display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap">
-        ${content.stats.slice(0, 4).map(s => `
-        <div style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text-muted);letter-spacing:0.02em">${s.value} ${s.label}</div>`).join('')}
+  // HOW IT WORKS — horizontal steps, warm background, friendly icons
+  const processSteps = content.processSteps || content.services.slice(0, 3).map((s, i) => ({
+    step: String(i + 1),
+    title: s.name,
+    description: s.description,
+  }))
+  const stepEmoji = ['&#128222;', '&#128203;', '&#127968;', '&#10003;']
+  const processSection = `
+  <section style="padding:90px 2rem;background:${hmWarm}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Simple Process</span>
+      <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin-bottom:4rem">${content.stepsHeading || 'How It Works'}</h2>
+      <div class="ms-flex" style="display:flex;align-items:flex-start;gap:0">
+        ${processSteps.slice(0, 4).map((step, i) => `${i > 0 ? `
+        <div class="ms-arrow" style="flex:0 0 48px;display:flex;align-items:center;justify-content:center;padding-top:2rem">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="${hmMuted}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>` : ''}
+        <div style="flex:1;padding:2.5rem 1.5rem;background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,0.06);text-align:center">
+          <div style="width:64px;height:64px;border-radius:50%;background:${hmSage};display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.6rem">${stepEmoji[i]}</div>
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:0.85rem;color:${hmAccent};font-style:italic;margin-bottom:0.25rem">Step ${step.step}</div>
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.15rem;color:${hmText};margin-bottom:0.6rem">${step.title}</h3>
+          <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmMuted};line-height:1.75">${step.description}</p>
+        </div>`).join('')}
       </div>
     </div>
   </section>`
 
-  // Section 4: Problem statement — large centered text
-  const problemStatement = `
-  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
-    <div style="max-width:850px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1.5rem">${content.servicesHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:var(--text-muted);line-height:1.7;max-width:650px;margin:0 auto">${content.aboutMission || content.heroSubtitle}</p>
+  // ABOUT — photo right, warm left, bullet benefits, soft rounded image
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const aboutSection = `
+  <section id="about" style="padding:100px 2rem;background:${hmCream}">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
+      <div>
+        <span class="hm-chip" style="margin-bottom:1.25rem;display:inline-flex">Our Story</span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;font-style:italic;color:${hmText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:500;color:${hmText};line-height:1.7;margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:${hmSage};border-radius:12px;border-left:3px solid ${hmAccent}">${content.aboutMission}</p>` : ''}
+        ${aboutParagraphs.map(p => `<p style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:${hmMuted};line-height:1.85;margin-bottom:1rem">${p}</p>`).join('')}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:2rem">
+          ${content.services.map(s => s.tags).flat().slice(0, 6).map(t => `
+          <div style="display:flex;align-items:center;gap:0.6rem">
+            <div style="width:20px;height:20px;border-radius:50%;background:rgba(61,107,66,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="color:${hmAccent};font-size:0.7rem;font-weight:700">&#10003;</span>
+            </div>
+            <span style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmText};font-weight:500">${t}</span>
+          </div>`).join('')}
+        </div>
+        <div style="margin-top:2.5rem">
+          <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
+        </div>
+      </div>
+      <div style="position:relative">
+        <div style="border-radius:24px;overflow:hidden;height:520px">
+          <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        <!-- Stats grid overlay -->
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.25rem">
+          ${content.stats.slice(0, 4).map(s => `
+          <div style="background:#fff;border-radius:14px;padding:1.25rem 1.5rem;border:1px solid rgba(0,0,0,0.05)">
+            <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.8rem;color:${hmAccent}">${s.value}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:500;color:${hmMuted};margin-top:0.2rem">${s.label}</div>
+          </div>`).join('')}
+        </div>
+      </div>
     </div>
   </section>`
 
-  // Section 5: Alternating feature showcases
-  const featuresData = content.features || content.services.slice(0, 3)
-  const showcaseImgs = featuresData.map((_, i) => stockImages.cards[i] || stockPool[_pi++])
-  const featureShowcases = featuresData.length > 0 ? `
-  <section style="padding:60px 2rem 100px;background:var(--bg)">
-    <div style="max-width:1100px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:4rem">Our Style</h2>
-    </div>
-    <div style="max-width:1100px;margin:0 auto">
-      ${featuresData.map((s, i) => `
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-bottom:${i < featuresData.length - 1 ? '6rem' : '0'}">
-        ${i % 2 === 0 ? `
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
-        </div>
-        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-          <img src="${showcaseImgs[i]}" alt="" style="width:100%;height:350px;object-fit:cover" />
-        </div>` : `
-        <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-          <img src="${showcaseImgs[i]}" alt="" style="width:100%;height:350px;object-fit:cover" />
-        </div>
-        <div>
-          <h3 style="font-family:var(--heading-font);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:1rem">${s.name}</h3>
-          <p style="font-family:var(--body-font);font-size:1rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;color:var(--primary);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span style="font-size:1.1rem">&rarr;</span></a>
-        </div>`}
-      </div>`).join('')}
+  // TESTIMONIALS — soft cards with avatar initials, stars, italic quote
+  const testimonialSection = content.testimonial ? `
+  <section id="testimonials" style="padding:90px 2rem;background:${hmSage}">
+    <div style="max-width:1200px;margin:0 auto;text-align:center">
+      <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Reviews</span>
+      <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin-bottom:3.5rem">What Our Clients Say</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
+        ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
+        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;padding:2rem;border:1px solid rgba(0,0,0,0.05);position:relative">
+          <div style="font-size:2.5rem;line-height:1;font-family:'DM Serif Display',Georgia,serif;color:${hmAccent};opacity:0.3;position:absolute;top:1.5rem;right:1.75rem">&ldquo;</div>
+          <div style="color:#f59e0b;font-size:0.9rem;margin-bottom:1rem">${'&#9733;'.repeat(t.rating || 5)}</div>
+          <p style="font-family:'Poppins',sans-serif;font-size:0.9rem;font-style:italic;color:${hmMuted};line-height:1.8;margin-bottom:1.5rem">"${t.quote}"</p>
+          <div style="display:flex;align-items:center;gap:0.75rem;border-top:1px solid rgba(0,0,0,0.06);padding-top:1.25rem">
+            <div style="width:40px;height:40px;border-radius:50%;background:${hmSage};display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="font-family:'DM Serif Display',Georgia,serif;font-size:1rem;color:${hmAccent}">${t.author.charAt(0)}</span>
+            </div>
+            <div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:${hmText}">${t.author.split(',')[0]}</div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.75rem;color:${hmMuted}">${t.author.split(',')[1]?.trim() || 'Happy Client'}</div>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
     </div>
   </section>` : ''
 
-  // Section 6: Dark accent section — "Speed, meet power" style
-  const darkAccentSection = `
-  <section style="padding:120px 2rem;background:#0a0a0a;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--primary);line-height:1.15;margin-bottom:1rem">${content.aboutHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:650px;margin:0 auto">${content.aboutText.split('\n')[0]}</p>
+  // CTA BANNER — warm full-width, friendly tone
+  const ctaBanner = `
+  <section style="padding:80px 2rem;background:${hmAccent}">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem">
+      <div>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;font-style:italic;color:#fff;line-height:1.2;margin-bottom:0.5rem">${content.aboutMission || content.heroSubtitle}</h2>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.7)">${content.ctaNote || 'No obligation. Fast response.'}</p>
+      </div>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2.5rem;border-radius:999px;background:#fff;color:${hmAccent};text-decoration:none;white-space:nowrap">${content.ctaPrimary} &rarr;</a>
     </div>
   </section>`
 
-  // Section 7: "The Process" — education-style numbered circles + dashed connectors
-  const techProcessSteps = content.processSteps || [
-    { step: '1', title: 'Discovery & Strategy', description: 'We learn your business, goals, and target audience to map out the right approach.' },
-    { step: '2', title: 'Design, Build & Revise', description: 'We build your solution iteratively, incorporating your feedback at every stage.' },
-    { step: '3', title: 'Launch & Optimise', description: 'We go live, monitor performance, and continuously improve results.' },
+  // CONTACT — 2-col warm layout
+  const contactSection = `
+  <section id="contact" style="padding:100px 2rem;background:${hmCream}">
+    <div style="max-width:1200px;margin:0 auto">
+      <div style="text-align:center;margin-bottom:3.5rem">
+        <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Get In Touch</span>
+        <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText}">${content.contactHeading}</h2>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          ${[
+            { icon: '&#9742;', label: 'Phone', value: locationInfo.phone },
+            { icon: '&#9993;', label: 'Email', value: `hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com` },
+            { icon: '&#9906;', label: 'Service Area', value: `${locationInfo.city} & surrounds` },
+          ].map(item => `
+          <div style="display:flex;gap:1rem;align-items:flex-start;padding:1.5rem;background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06)">
+            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccent}">${item.icon}</div>
+            <div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:${hmMuted};margin-bottom:0.25rem">${item.label}</div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:${hmText};font-weight:500">${item.value}</div>
+            </div>
+          </div>`).join('')}
+          ${content.contactHours ? `
+          <div style="display:flex;gap:1rem;align-items:flex-start;padding:1.5rem;background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06)">
+            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccent}">&#9200;</div>
+            <div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:${hmMuted};margin-bottom:0.25rem">Hours</div>
+              <div style="font-family:'Poppins',sans-serif;font-size:0.875rem;color:${hmText}">${content.contactHours.replace(/ · /g, '<br />')}</div>
+            </div>
+          </div>` : ''}
+        </div>
+        <div style="background:#fff;border-radius:24px;padding:2.5rem;border:1px solid rgba(0,0,0,0.06)">
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.5rem;color:${hmText};margin-bottom:0.4rem">Send Us a Message</h3>
+          <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmMuted};margin-bottom:1.75rem">We'll respond within 2 hours during business hours.</p>
+          <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+            <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <input type="text" placeholder="Your name" class="hm-input" />
+              <input type="tel" placeholder="Phone number" class="hm-input" />
+            </div>
+            <input type="email" placeholder="Email address" class="hm-input" />
+            <textarea placeholder="Tell us about your needs..." rows="4" class="hm-input" style="resize:none"></textarea>
+            <button type="submit" style="font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2rem;border-radius:999px;background:${hmAccent};color:#fff;border:none;cursor:pointer;transition:background 0.25s;width:100%">${content.ctaPrimary} &rarr;</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // FOOTER
+  const hmFooter = `
+  <footer style="padding:4rem 2rem 2rem;background:${hmDeep};border-top:1px solid rgba(255,255,255,0.05)">
+    <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.5rem;color:#fff;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.7;max-width:280px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
+        <a href="#contact" class="hm-pill-cta" style="font-size:0.8rem;padding:0.7rem 1.75rem">${content.ctaPrimary}</a>
+      </div>
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.55rem">${s.tags?.[0] || s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.55rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.55rem">Reviews</a>
+        <a href="#contact" style="display:block;font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);text-decoration:none;margin-bottom:0.55rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+        <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.45)">${locationInfo.city}</p>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <p style="font-family:'Poppins',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:'Poppins',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Poppins',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2);text-decoration:none">Terms</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const hmEls = document.querySelectorAll('.hm-reveal');
+    const hmObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); hmObs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    hmEls.forEach(el => hmObs.observe(el));
+  </script>`
+
+  return `${headHtml}${extraFonts}${extraStyles}
+${nav}
+${heroSection}
+${servicesSection}
+${processSection}
+${aboutSection}
+${testimonialSection}
+${ctaBanner}
+${contactSection}
+${hmFooter}
+</body>
+</html>`
+}
+
+function buildAutomotiveTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+  let _pi = 0
+  const serviceImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+    images[4] || stockImages.cards[3],
+    stockImages.cards[4],
+    stockImages.cards[5],
   ]
-  const techStepColors = [primaryColor, secondaryColor || '#f5a623', '#6c63ff']
-  const valueProps = `
-  <section id="about" style="padding:100px 2rem;background:var(--bg)">
-    <div style="max-width:1000px;margin:0 auto;text-align:center">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);margin-bottom:4rem">The Process</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:start;gap:0;margin-bottom:3rem">
-        ${techProcessSteps.slice(0, 3).map((step, i) => `${i > 0 ? `<div style="display:flex;align-items:center;margin-top:32px;align-self:start;width:100%;padding:0 0.5rem"><svg width="100%" height="12" viewBox="0 0 100 12" preserveAspectRatio="none" style="display:block"><line x1="0" y1="6" x2="85" y2="6" stroke="rgba(255,255,255,0.25)" stroke-width="2.5"/><polygon points="85,0 100,6 85,12" fill="rgba(255,255,255,0.25)"/></svg></div>` : ''}<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem">
-          <div style="width:64px;height:64px;border-radius:50%;background:${techStepColors[i]};display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--heading-font);font-size:1.5rem;font-weight:700;flex-shrink:0">${step.step}</div>
-          <div>
-            <h3 style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;color:var(--text);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem">${step.title}</h3>
-            <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.7">${step.description}</p>
+
+  const autoBg = '#0a0a0a'
+  const autoAlt = '#111111'
+  const autoCard = '#141414'
+  const autoText = '#f0ede8'
+  const autoMuted = '#888580'
+  const autoBorder = 'rgba(255,255,255,0.07)'
+  const autoAccent = primaryColor || '#e63b1e'
+  const autoAccentDim = 'rgba(230,59,30,0.12)'
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+
+  const extraFonts = `<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+
+  const extraStyles = `
+  <style>
+    :root {
+      --bg: ${autoBg};
+      --bg-alt: ${autoAlt};
+      --card-bg: ${autoCard};
+      --text: ${autoText};
+      --text-muted: ${autoMuted};
+      --border: ${autoBorder};
+      --heading-font: 'Barlow Condensed', sans-serif;
+      --body-font: 'Barlow', sans-serif;
+    }
+    body::before {
+      content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.03;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+    @keyframes autoKB { 0%{transform:scale(1)} 100%{transform:scale(1.08)} }
+    @keyframes autoFadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes scanline { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+    .auto-bg { animation: autoKB 16s ease-in-out infinite alternate; }
+    .auto-f1 { animation: autoFadeUp 1s ease forwards; }
+    .auto-f2 { animation: autoFadeUp 1s 0.2s ease both; }
+    .auto-f3 { animation: autoFadeUp 1s 0.4s ease both; }
+    .auto-reveal { opacity:0; transform:translateY(24px); transition:opacity 0.65s ease, transform 0.65s ease; }
+    .auto-reveal.visible { opacity:1; transform:translateY(0); }
+    .auto-card { transition:border-color 0.3s ease, transform 0.3s ease; }
+    .auto-card:hover { border-color:${autoAccent} !important; transform:translateY(-3px); }
+    .auto-service-row { border-bottom:1px solid ${autoBorder}; transition:background 0.25s; cursor:default; }
+    .auto-service-row:hover { background:rgba(255,255,255,0.02); }
+    .auto-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:${autoAccent}; color:#fff; text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:opacity 0.25s; border:none; cursor:pointer; }
+    .auto-cta:hover { opacity:0.88; }
+    .auto-cta-outline { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.3); text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:border-color 0.25s; }
+    .auto-cta-outline:hover { border-color:#fff; }
+    .auto-badge { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:0.3rem 0.85rem; background:${autoAccentDim}; border:1px solid rgba(230,59,30,0.3); color:${autoAccent}; }
+    .auto-input { width:100%; box-sizing:border-box; font-family:'Barlow',sans-serif; font-size:0.9rem; padding:0.85rem 1rem; background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.15); color:${autoText}; outline:none; transition:border-color 0.25s; }
+    .auto-input:focus { border-bottom-color:${autoAccent}; }
+    .auto-input::placeholder { color:${autoMuted}; }
+    /* scanline accent on hero */
+    .auto-scanline { position:absolute; top:0; left:0; width:2px; height:100%; background:linear-gradient(180deg,transparent,${autoAccent},transparent); animation: scanline 4s ease-in-out infinite; opacity:0.35; pointer-events:none; }
+  </style>`
+
+  const nav = buildStandardNav(businessName, content, navFlags)
+
+  // HERO — full-bleed cinematic, angular overlays, bold condensed type
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:flex;align-items:flex-end;overflow:hidden;background:${autoBg}">
+    <div style="position:absolute;inset:0;overflow:hidden">
+      <img src="${heroImg}" alt="" class="auto-bg" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
+      <div style="position:absolute;inset:0;background:linear-gradient(175deg,transparent 0%,rgba(0,0,0,0.5) 50%,rgba(10,10,10,0.95) 85%)"></div>
+      <!-- angular accent line -->
+      <div style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;width:3px;height:40%;background:linear-gradient(180deg,${autoAccent},transparent)"></div>
+      </div>
+    </div>
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 6rem;width:100%">
+      <div class="auto-f1" style="margin-bottom:1.5rem">
+        <span class="auto-badge">&#9632; ${content.heroEyebrow}</span>
+      </div>
+      <h1 class="auto-f2" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:800;color:#fff;line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.75rem;max-width:900px">${content.tagline}</h1>
+      <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:rgba(255,255,255,0.6);max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem">
+        <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
+        <a href="#services" class="auto-cta-outline">${content.ctaSecondary || 'View Services'}</a>
+      </div>
+      <!-- stat row at bottom -->
+      <div style="display:flex;gap:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);flex-wrap:wrap">
+        ${content.stats.slice(0, 4).map(s => `
+        <div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.75rem;font-weight:700;color:${autoAccent};letter-spacing:0.02em">${s.value}</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // SERVICES — full-width list rows, left image swap on hover (sticky), performance feel
+  const servicesSection = `
+  <section id="services" style="padding:0;background:${autoBg}">
+    <div style="max-width:1300px;margin:0 auto;padding:80px 2rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1.5rem">
+        <div>
+          <span class="auto-badge" style="margin-bottom:0.75rem;display:inline-flex">Services</span>
+          <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:-0.01em;line-height:1">${content.servicesHeading}</h2>
+        </div>
+        <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
+      </div>
+      <!-- sticky left image + accordion-style rows -->
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+        <div class="ms-sticky" style="position:sticky;top:80px">
+          <div style="aspect-ratio:4/3;overflow:hidden">
+            <img src="${serviceImgs[0]}" alt="" id="auto-svc-img" style="width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease" />
+          </div>
+          <div style="border:1px solid ${autoBorder};border-top:none;padding:1.5rem">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted}">Currently viewing</div>
+            <div id="auto-svc-name" style="font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;color:${autoText};margin-top:0.25rem">${content.services[0]?.name || ''}</div>
+          </div>
+        </div>
+        <div>
+          ${content.services.slice(0, 6).map((s, i) => `
+          <div class="auto-service-row" style="padding:1.75rem 0;border-bottom:1px solid ${autoBorder}"
+               onmouseover="
+                 var img=document.getElementById('auto-svc-img');
+                 var nm=document.getElementById('auto-svc-name');
+                 img.style.opacity='0';
+                 setTimeout(function(){img.src='${serviceImgs[i] || stockPool[_pi++]}';img.style.opacity='1';},200);
+                 nm.textContent='${s.name.replace(/'/g, "\\'")}';
+               ">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+              <div style="display:flex;align-items:center;gap:1.5rem">
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;color:${autoAccent};min-width:2.5rem">${String(i + 1).padStart(2, '0')}</div>
+                <div>
+                  <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:${autoText};text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.3rem">${s.name}</h3>
+                  <p style="font-family:'Barlow',sans-serif;font-size:0.875rem;color:${autoMuted};line-height:1.65">${s.description}</p>
+                </div>
+              </div>
+              <div style="color:${autoMuted};font-size:1.25rem;flex-shrink:0">&rsaquo;</div>
+            </div>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;padding-left:4rem">
+              ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Barlow',sans-serif;font-size:0.72rem;padding:0.25rem 0.65rem;border:1px solid ${autoBorder};color:${autoMuted}">${t}</span>`).join('')}
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // PERFORMANCE STATS — dark panel, large numbers
+  const statsSection = `
+  <section style="padding:80px 2rem;background:${autoAlt};border-top:1px solid ${autoBorder};border-bottom:1px solid ${autoBorder}">
+    <div style="max-width:1300px;margin:0 auto">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid ${autoBorder}">
+        ${content.stats.slice(0, 4).map((s, i) => `
+        <div style="padding:3rem 2rem;text-align:center;${i < 3 ? `border-right:1px solid ${autoBorder}` : ''}">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:800;color:${autoAccent};letter-spacing:-0.02em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;font-weight:500;color:${autoMuted};text-transform:uppercase;letter-spacing:0.1em">${s.label}</div>
+          ${s.sublabel ? `<div style="font-family:'Barlow',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:0.25rem">${s.sublabel}</div>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // ABOUT — full-bleed split: photo left 60%, text right 40%, red accent border
+  const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
+  const aboutSection = `
+  <section id="about" style="padding:0;background:${autoBg}">
+    <div class="ms-grid" style="display:grid;grid-template-columns:1.4fr 1fr">
+      <div style="position:relative;min-height:600px;overflow:hidden">
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" />
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,${autoBg} 100%)"></div>
+        <!-- accent stripe -->
+        <div style="position:absolute;top:0;left:0;width:4px;height:100%;background:${autoAccent}"></div>
+      </div>
+      <div style="padding:5rem 3.5rem;display:flex;flex-direction:column;justify-content:center">
+        <span class="auto-badge" style="margin-bottom:1.25rem;display:inline-flex">About Us</span>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,4.5vw,3.8rem);font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:-0.01em;line-height:1;margin-bottom:1.5rem">${content.aboutHeading}</h2>
+        ${content.aboutMission ? `<p style="font-family:'Barlow',sans-serif;font-size:1rem;font-style:italic;color:${autoText};line-height:1.7;margin-bottom:1.25rem;padding-left:1.25rem;border-left:3px solid ${autoAccent}">${content.aboutMission}</p>` : ''}
+        ${aboutParagraphs.map(p => `<p style="font-family:'Barlow',sans-serif;font-size:0.9rem;color:${autoMuted};line-height:1.8;margin-bottom:0.85rem">${p}</p>`).join('')}
+        <div style="display:flex;flex-direction:column;gap:0.6rem;margin-top:1.5rem">
+          ${content.services.map(s => s.tags).flat().slice(0, 5).map(t => `
+          <div style="display:flex;align-items:center;gap:0.75rem">
+            <div style="width:4px;height:4px;background:${autoAccent};flex-shrink:0"></div>
+            <span style="font-family:'Barlow',sans-serif;font-size:0.875rem;color:${autoText}">${t}</span>
+          </div>`).join('')}
+        </div>
+        <div style="margin-top:2.5rem">
+          <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  // GALLERY / PRODUCT CARDS — tight dark grid
+  const gallerySection = `
+  <section style="padding:80px 2rem;background:${autoAlt}">
+    <div style="max-width:1300px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem;flex-wrap:wrap;gap:1rem">
+        <div>
+          <span class="auto-badge" style="margin-bottom:0.75rem;display:inline-flex">Gallery</span>
+          <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:-0.01em;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
+        </div>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px">
+        <div style="position:relative;overflow:hidden;grid-row:span 2" class="auto-reveal">
+          <div style="height:100%;min-height:460px;overflow:hidden">
+            <img src="${serviceImgs[3] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:#fff;text-transform:uppercase">${content.services[3]?.name || content.services[0]?.name || ''}</div>
+          </div>
+        </div>
+        ${serviceImgs.slice(4, 8).map((img, i) => `
+        <div style="position:relative;overflow:hidden;height:225px" class="auto-reveal">
+          <img src="${img || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
+          <div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s" onmouseover="this.style.background='rgba(230,59,30,0.15)'" onmouseout="this.style.background='rgba(0,0,0,0)'"></div>
+          <div style="position:absolute;bottom:0.75rem;left:0.75rem">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:700;color:#fff;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,0.7)">${content.services[(i + 4) % content.services.length]?.name || ''}</div>
           </div>
         </div>`).join('')}
       </div>
     </div>
   </section>`
 
-  // Section 8: Testimonial card
+  // TESTIMONIALS — dark, angled quote marks, minimal
   const testimonialSection = content.testimonial ? `
-  <section style="padding:100px 2rem;background:var(--bg-alt)">
-    <div style="max-width:1100px;margin:0 auto">
-      <p style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.5rem;font-weight:600;text-align:center">What our clients say</p>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:700;color:var(--text);text-align:center;margin-bottom:3rem">Take their word for it</h2>
-      <div class="ms-grid" style="max-width:800px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;border-radius:12px;overflow:hidden;border:1px solid var(--border)">
-        <div style="background:var(--card-bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between">
-          <div>
-            <div style="font-size:1.5rem;color:var(--primary);margin-bottom:1.5rem">&#10077;&#10077;</div>
-            <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--text-muted);line-height:1.7;font-style:italic">${content.testimonial.quote}</p>
-          </div>
-          <div style="margin-top:2rem;display:flex;align-items:center;gap:0.75rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--body-font);font-size:0.85rem;font-weight:600">${content.testimonial.author.charAt(0)}</div>
+  <section style="padding:80px 2rem;background:${autoBg};border-top:1px solid ${autoBorder}">
+    <div style="max-width:1300px;margin:0 auto">
+      <span class="auto-badge" style="margin-bottom:2rem;display:inline-flex">Customer Reviews</span>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:${autoBorder}">
+        ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
+        <div class="auto-reveal" style="background:${autoBg};padding:2.5rem 2rem">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:${autoAccent};opacity:0.2;line-height:0.8;margin-bottom:1.25rem">&ldquo;</div>
+          <p style="font-family:'Barlow',sans-serif;font-size:0.925rem;color:rgba(255,255,255,0.6);line-height:1.8;font-style:italic;margin-bottom:1.75rem">${t.quote}</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid ${autoBorder};padding-top:1.25rem">
             <div>
-              <div style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;color:var(--text)">${content.testimonial.author}</div>
-              ${content.testimonial.rating ? `<div style="color:#f59e0b;font-size:0.75rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:${autoText};text-transform:uppercase;letter-spacing:0.04em">${t.author.split(',')[0]}</div>
+              <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:${autoMuted};margin-top:0.15rem">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
+            </div>
+            <div style="color:${autoAccent};font-size:0.85rem">${'&#9733;'.repeat(t.rating || 5)}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  // CONTACT — dark split: red left panel, form right
+  const contactSection = `
+  <section id="contact" style="padding:0;background:${autoBg}">
+    <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.5fr">
+      <div style="background:${autoAccent};padding:5rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+        <div style="position:absolute;top:-4rem;right:-4rem;width:200px;height:200px;border-radius:50%;border:40px solid rgba(255,255,255,0.06);pointer-events:none"></div>
+        <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,4vw,3.5rem);font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;line-height:1;margin-bottom:1.5rem">${content.contactHeading}</h2>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75);line-height:1.75;margin-bottom:2.5rem;max-width:300px">${content.heroSubtitle}</p>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          ${[
+            { icon: '&#9742;', val: locationInfo.phone },
+            { icon: '&#9993;', val: `hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com` },
+            { icon: '&#9906;', val: `${locationInfo.city} & surrounds` },
+          ].map(item => `
+          <div style="display:flex;align-items:center;gap:0.85rem">
+            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;flex-shrink:0">${item.icon}</div>
+            <span style="font-family:'Barlow',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.85)">${item.val}</span>
+          </div>`).join('')}
+          ${content.contactHours ? `
+          <div style="display:flex;align-items:center;gap:0.85rem">
+            <div style="width:36px;height:36px;border:1px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;flex-shrink:0">&#9200;</div>
+            <span style="font-family:'Barlow',sans-serif;font-size:0.875rem;color:rgba(255,255,255,0.85)">${content.contactHours.replace(/ · /g, ' &middot; ')}</span>
+          </div>` : ''}
+        </div>
+      </div>
+      <div style="padding:5rem 4rem;background:${autoAlt}">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:0.02em;margin-bottom:0.4rem">Book a Service</h3>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.85rem;color:${autoMuted};margin-bottom:2.5rem">We'll confirm your booking within 2 hours.</p>
+        <form style="display:flex;flex-direction:column;gap:1.75rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
+            <div>
+              <label style="font-family:'Barlow',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};display:block;margin-bottom:0.5rem">Name</label>
+              <input type="text" placeholder="Full name" class="auto-input" />
+            </div>
+            <div>
+              <label style="font-family:'Barlow',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};display:block;margin-bottom:0.5rem">Phone</label>
+              <input type="tel" placeholder="${locationInfo.phone}" class="auto-input" />
             </div>
           </div>
+          <div>
+            <label style="font-family:'Barlow',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};display:block;margin-bottom:0.5rem">Email</label>
+            <input type="email" placeholder="your@email.com" class="auto-input" />
+          </div>
+          <div>
+            <label style="font-family:'Barlow',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};display:block;margin-bottom:0.5rem">Vehicle &amp; Issue</label>
+            <textarea placeholder="e.g. 2019 Toyota Hilux — strange noise from front left..." rows="4" class="auto-input" style="resize:none"></textarea>
+          </div>
+          <button type="submit" class="auto-cta" style="align-self:flex-start;font-size:0.9rem">${content.ctaPrimary} &#8594;</button>
+        </form>
+      </div>
+    </div>
+  </section>`
+
+  // FOOTER
+  const autoFooter = `
+  <footer style="padding:3.5rem 2rem 2rem;background:${autoBg};border-top:1px solid ${autoBorder}">
+    <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
+      <div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.3);line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
+      </div>
+      <div>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">${s.tags?.[0] || s.name}</a>`).join('')}
+      </div>
+      <div>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">Reviews</a>
+        <a href="#contact" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">Contact</a>
+      </div>
+      <div>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4)">${locationInfo.city}</p>
+      </div>
+    </div>
+    <div style="max-width:1300px;margin:0 auto;padding-top:2rem;border-top:1px solid ${autoBorder};display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+      <p style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <div style="display:flex;gap:1.5rem">
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18);text-decoration:none">Terms</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    const autoEls = document.querySelectorAll('.auto-reveal');
+    const autoObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); autoObs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    autoEls.forEach(el => autoObs.observe(el));
+  </script>`
+
+  return `${headHtml}${extraFonts}${extraStyles}
+${nav}
+${heroSection}
+${servicesSection}
+${statsSection}
+${aboutSection}
+${gallerySection}
+${testimonialSection}
+${contactSection}
+${autoFooter}
+</body>
+</html>`
+}
+function buildPropertyTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+  let _pi = 0
+  const galleryImgs = [
+    images[1] || stockImages.cards[0],
+    images[2] || stockImages.cards[1],
+    images[3] || stockImages.cards[2],
+    images[4] || stockImages.cards[3],
+    stockPool[4] || stockImages.cards[4],
+    stockPool[5] || stockImages.cards[5],
+  ]
+
+  const gold = primaryColor || '#c9a96e'
+  const void_ = '#080808'
+  const offwhite = '#f2ede8'
+  const muted = '#8a8580'
+  const border = 'rgba(201,169,110,0.2)'
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
+
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;background:${void_}">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.3) 0%,rgba(8,8,8,0.7) 60%,${void_} 100%)"></div>
+    </div>
+    <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;max-width:1400px;margin:0 auto;width:100%;padding:0 4rem 7rem">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem">
+        <div style="width:40px;height:1px;background:${gold}"></div>
+        <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
+      </div>
+      <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:${offwhite};line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem">
+        <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(242,237,232,0.65);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
+        <div style="display:flex;gap:1rem;flex-shrink:0">
+          <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${gold};color:${gold};text-decoration:none;transition:all 0.3s ease">View Properties</a>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:${void_};text-decoration:none">${content.ctaPrimary}</a>
         </div>
-        <div style="overflow:hidden">
-          <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+    </div>
+    <div style="position:relative;display:flex;justify-content:center;padding:2rem 4rem;border-top:1px solid ${border}">
+      <div style="display:flex;gap:6rem;flex-wrap:wrap;justify-content:center">
+        ${content.stats.slice(0, 3).map(s => `
+        <div style="text-align:center">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:${offwhite};line-height:1">${s.value}</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${muted};margin-top:0.4rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const propertiesSection = `
+  <section id="properties" style="padding:140px 0;background:${void_}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:5rem;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${gold}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Our Portfolio</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic">${content.galleryHeading || 'Featured Properties'}</h2>
+        </div>
+        <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;border-bottom:1px solid ${gold};padding-bottom:0.25rem">View All Listings &rarr;</a>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5px;background:${border}">
+        ${[0,1].map((i) => {
+          const propCaption = (content.projectCaptions && content.projectCaptions[i]) ? content.projectCaptions[i] : (i === 0 ? 'Clifton Penthouse' : 'Bishopscourt Manor')
+          const propSub = (content.features && content.features[i]) ? content.features[i].name : (i === 0 ? 'Clifton, Atlantic Seaboard' : 'Bishopscourt, Southern Suburbs')
+          return `
+        <div style="position:relative;overflow:hidden;background:${void_}">
+          <div style="height:${i === 0 ? '580px' : '580px'};overflow:hidden">
+            <img src="${galleryImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 50%)"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 2.5rem">
+            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">${propSub}</div>
+            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:${offwhite};font-style:italic">${propCaption}</h3>
+          </div>
+          <div style="position:absolute;top:1.5rem;right:1.5rem;background:${gold};padding:0.35rem 0.9rem">
+            <span style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${void_}">For Sale</span>
+          </div>
+        </div>`
+        }).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5px;background:${border};margin-top:1.5px">
+        ${[2,3,4].map((i) => {
+          const propCaption = (content.projectCaptions && content.projectCaptions[i]) ? content.projectCaptions[i] : (['Camps Bay Villa','Sea Point Apartment','Constantia Estate'][i-2] || 'Luxury Residence')
+          const propSub = (content.features && content.features[i]) ? content.features[i].name : (['Camps Bay','Sea Point','Constantia'][i-2] || locationInfo.city)
+          return `
+        <div style="position:relative;overflow:hidden;background:${void_}">
+          <div style="height:360px;overflow:hidden">
+            <img src="${galleryImgs[i] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 55%)"></div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem 2rem">
+            <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.35rem">${propSub}</div>
+            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:300;color:${offwhite};font-style:italic">${propCaption}</h3>
+          </div>
+        </div>`
+        }).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const aboutSection = `
+  <section id="about" style="padding:140px 0;background:#0d0d0d">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem">
+            <div style="width:30px;height:1px;background:${gold}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">About</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:300;color:${offwhite};line-height:1.1;font-style:italic;margin-bottom:2.5rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;font-weight:300;color:${offwhite};line-height:1.6;font-style:italic;margin-bottom:2rem;border-left:2px solid ${gold};padding-left:1.5rem">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${muted};line-height:2;margin-bottom:1.25rem">${p}</p>`).join('')}
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;margin-top:1rem">${content.ctaSecondary || 'Learn More'} <span style="width:40px;height:1px;background:${gold};display:inline-block"></span></a>
+        </div>
+        <div style="position:relative">
+          <div style="position:absolute;top:-1.5rem;left:-1.5rem;right:1.5rem;bottom:1.5rem;border:1px solid ${border}"></div>
+          <div style="overflow:hidden;height:600px;position:relative">
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="position:absolute;bottom:-2rem;right:-2rem;background:${gold};padding:2rem 2.5rem;min-width:180px">
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:${void_};line-height:1">${content.stats[0]?.value || '20+'}</div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${void_};opacity:0.7;margin-top:0.4rem">${content.stats[0]?.label || 'Years Experience'}</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid ${border};margin-top:7rem" class="ms-grid">
+        ${content.stats.slice(1, 5).map((s, i) => `
+        <div style="padding:2.5rem;${i > 0 ? 'border-left:1px solid ' + border : ''}">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:${gold};line-height:1">${s.value}</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${muted};margin-top:0.6rem">${s.label}</div>
+          ${s.sublabel ? `<div style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:200;color:${muted};margin-top:0.35rem;opacity:0.6">${s.sublabel}</div>` : ''}
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const servicesSection = `
+  <section id="services" style="padding:140px 0;background:${void_}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+        <div style="width:30px;height:1px;background:${gold}"></div>
+        <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">What We Do</span>
+      </div>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic;margin-bottom:5rem">${content.servicesHeading}</h2>
+      <div style="display:grid;grid-template-columns:1fr;gap:0">
+        ${content.services.map((s, i) => `
+        <div style="display:grid;grid-template-columns:80px 1fr 1.5fr auto;gap:2rem;align-items:start;padding:3rem 0;border-bottom:1px solid ${border}" class="ms-grid">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:4rem;font-weight:300;color:${border.replace('0.2','0.4')};line-height:1;padding-top:0.25rem">${String(i + 1).padStart(2, '0')}</div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:300;color:${offwhite};font-style:italic;padding-top:0.5rem">${s.name}</h3>
+          <p style="font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:200;color:${muted};line-height:1.9">${s.description}</p>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;border:1px solid ${border};padding:0.75rem 1.5rem;white-space:nowrap;transition:all 0.3s" onmouseover="this.style.borderColor='${gold}'" onmouseout="this.style.borderColor='${border}'">Enquire</a>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:140px 0;background:#0a0a0a;overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${gold}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Testimonials</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3rem);font-weight:300;color:${offwhite};font-style:italic;line-height:1.2">What Our Clients Say</h2>
+        </div>
+        <div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:8rem;font-weight:300;color:${border};line-height:0.6;margin-bottom:2rem">&ldquo;</div>
+          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:${offwhite};line-height:1.6;font-style:italic;margin-bottom:2.5rem">${content.testimonial.quote}</p>
+          <div style="display:flex;align-items:center;gap:1.5rem">
+            <div style="width:1px;height:50px;background:${gold}"></div>
+            <div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:400;color:${offwhite};letter-spacing:0.1em;text-transform:uppercase">${content.testimonial.author.split(',')[0]}</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:200;color:${muted};margin-top:0.25rem">${content.testimonial.author.split(',')[1]?.trim() || 'Valued Client'}</div>
+              ${content.testimonial.rating ? `<div style="color:${gold};font-size:0.75rem;letter-spacing:0.15em;margin-top:0.4rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+            </div>
+          </div>
+          ${(() => {
+            const fallbacks = getFallbackTestimonials(content, 'property')
+            return fallbacks.slice(0, 2).map(t => `
+          <div style="margin-top:3rem;padding-top:3rem;border-top:1px solid ${border}">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;font-weight:300;color:${muted};line-height:1.7;font-style:italic;margin-bottom:1.5rem">${t.quote}</p>
+            <div style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:300;color:${muted};letter-spacing:0.1em">— ${t.author}</div>
+          </div>`).join('')
+          })()}
         </div>
       </div>
     </div>
   </section>` : ''
 
-  // Section 9: Stats row
-  const statsSection = `
-  <section style="padding:80px 2rem;background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div class="ms-grid" style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr);gap:2rem;text-align:center">
-      ${content.stats.slice(0, 4).map(s => `
-      <div>
-        <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--primary);margin-bottom:0.5rem">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:500">${s.label}</div>
-        ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);opacity:0.7;margin-top:0.25rem">${s.sublabel}</div>` : ''}
-      </div>`).join('')}
-    </div>
-  </section>`
-
-  // Section 10: Final CTA
-  const finalCta = `
-  <section style="padding:120px 2rem;background:var(--bg);text-align:center">
-    <div style="max-width:700px;margin:0 auto">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);line-height:1.15;margin-bottom:2rem">Ready to get started?</h2>
-      <div style="display:flex;align-items:center;justify-content:center;gap:0.75rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;background:var(--primary);color:#fff;border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaPrimary}</a>
-        <a href="#about" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:0.85rem 2rem;border:1px solid var(--primary);color:var(--primary);border-radius:6px;text-decoration:none;letter-spacing:0.04em;text-transform:uppercase">${content.ctaSecondary}</a>
+  const contactSection = `
+  <section id="contact" style="padding:140px 0;background:${void_}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${gold}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Get in Touch</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:300;color:${offwhite};line-height:1.1;font-style:italic;margin-bottom:2.5rem">${content.contactHeading}</h2>
+          <p style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${muted};line-height:2;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
+          <div style="display:flex;flex-direction:column;gap:2rem;border-top:1px solid ${border};padding-top:3rem">
+            <div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Address</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${locationInfo.address}, ${locationInfo.city}</div>
+            </div>
+            <div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Contact</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${locationInfo.phone}<br/>hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div>
+            </div>
+            ${content.contactHours ? `<div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Office Hours</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${content.contactHours.replace(/ · /g, '<br/>')}</div>
+            </div>` : ''}
+          </div>
+        </div>
+        <div style="border:1px solid ${border};padding:3rem">
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:300;color:${offwhite};font-style:italic;margin-bottom:2rem">Send an Enquiry</h3>
+          <form style="display:flex;flex-direction:column;gap:1.5rem" onsubmit="return false">
+            <div>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Full Name</label>
+              <input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
+            </div>
+            <div>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Email</label>
+              <input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
+            </div>
+            <div>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Phone</label>
+              <input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
+            </div>
+            <div>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Message</label>
+              <textarea placeholder="Tell us about the property you are looking for..." rows="4" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none;resize:none"></textarea>
+            </div>
+            <button type="submit" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:${void_};border:none;cursor:pointer;align-self:flex-start;transition:opacity 0.3s">Submit Enquiry</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>`
 
-  return `${buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')}
+  const prFooter = `
+  <footer style="padding:6rem 4rem 3rem;background:#050505;border-top:1px solid ${border}">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:5rem" class="ms-grid">
+        <div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:${offwhite};font-style:italic;margin-bottom:1.5rem;letter-spacing:0.05em">${businessName}</div>
+          <p style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};line-height:1.9;max-width:320px">${content.heroSubtitle}</p>
+        </div>
+        <div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Navigate</div>
+          <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem;transition:color 0.2s">Properties</a>
+          <a href="#about" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
+          <a href="#services" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Services</div>
+          ${content.services.slice(0, 4).map(s => `<a href="#services" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">${s.tags?.[0] || s.name}</a>`).join('')}
+        </div>
+        <div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Contact</div>
+          <p style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};line-height:1.9">${locationInfo.address}<br/>${locationInfo.city}<br/>${locationInfo.phone}</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid ${border};padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <p style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:200;color:${muted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+        <div style="display:flex;gap:2rem">
+          <a href="#" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:200;color:${muted};text-decoration:none">Privacy Policy</a>
+          <a href="#" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:200;color:${muted};text-decoration:none">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>`
 
-${techNav}
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${void_};
+      --bg-alt: #0d0d0d;
+      --card-bg: #111111;
+      --text: ${offwhite};
+      --text-muted: ${muted};
+      --border: ${border};
+      --primary: ${gold};
+      --secondary: ${secondaryColor};
+    }
+  </style>
 
-  ${heroSection}
-  ${trustStrip}
-  ${featureCards}
-  ${featureShowcases}
-  ${valueProps}
-  ${testimonialSection}
-  ${buildContactSection(content, locationInfo)}
+${buildStandardNav(businessName, content, navFlags)}
 
-${buildFooter(businessName, content, 'dark')}
+${heroSection}
+${propertiesSection}
+${aboutSection}
+${servicesSection}
+${testimonialSection}
+${contactSection}
+${prFooter}
 
 </body>
 </html>`
 }
 
+function buildCreativeTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+  let _pi = 0
+
+  const ink = '#0a0a08'
+  const chalk = '#f7f5f0'
+  const stone = '#e8e4dd'
+  const dust = '#9a9590'
+  const accent = primaryColor || '#d4522a'
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
+
+  const heroSection = `
+  <section style="background:${ink};min-height:100vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
+      <div>
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <div style="width:40px;height:1px;background:${accent}"></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent}">${content.heroEyebrow || 'Portfolio'}</span>
+        </div>
+        <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(4rem,7vw,7rem);font-weight:400;color:${chalk};line-height:0.9;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:300;color:${dust};line-height:1.8;max-width:420px;margin-bottom:3rem">${content.heroSubtitle}</p>
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#about" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${dust};text-decoration:none;border-bottom:1px solid ${dust};padding-bottom:0.1rem">${content.ctaSecondary || 'About'}</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:3rem">
+        ${content.stats.slice(0, 3).map(s => `
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:${chalk};font-style:italic">${s.value}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-top:0.25rem">${s.label}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div style="position:relative;overflow:hidden">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%)" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to right,${ink} 0%,transparent 30%)"></div>
+      <div style="position:absolute;bottom:3rem;right:3rem;background:${accent};padding:1rem 1.5rem">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${content.badge || 'Available for Work'}</div>
+      </div>
+    </div>
+  </section>`
+
+  const marqueeSection = `
+  <section style="background:${accent};padding:1.25rem 0;overflow:hidden;white-space:nowrap">
+    <div style="display:inline-flex;gap:4rem;animation:marquee 20s linear infinite">
+      ${[...content.services.map(s => s.name), ...content.services.map(s => s.name)].map(name => `<span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${name} &nbsp;&bull;</span>`).join('')}
+    </div>
+    <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
+  </section>`
+
+  const workSection = `
+  <section id="work" style="padding:120px 0;background:${chalk}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;flex-wrap:wrap;gap:1.5rem">
+        <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:400;color:${ink};font-style:italic;line-height:0.9">${content.galleryHeading || 'Selected Work'}</h2>
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};max-width:300px;line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:7fr 5fr;gap:1.5rem;margin-bottom:1.5rem" class="ms-grid">
+        <div style="position:relative;overflow:hidden;group">
+          <div style="height:580px;overflow:hidden">
+            <img src="${stockPool[_pi++] || stockImages.cards[0]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="position:absolute;inset:0;background:rgba(10,10,8,0);transition:background 0.3s ease;display:flex;align-items:flex-end;padding:2rem" onmouseover="this.style.background='rgba(10,10,8,0.6)'" onmouseout="this.style.background='rgba(10,10,8,0)'">
+            <div style="opacity:0;transform:translateY(10px);transition:all 0.3s ease" onmouseover="this.parentElement.style.opacity='1';this.style.opacity='1';this.style.transform='translateY(0)'" >
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${accent};margin-bottom:0.4rem">${(content.features && content.features[0]) ? (content.features[0] as {name:string;description:string}).name : (content.services[0]?.tags?.[0] || 'Photography')}</p>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;color:#fff;font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
+            </div>
+          </div>
+          <div style="padding:1.25rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.35rem">${(content.features && content.features[0]) ? (content.features[0] as {name:string}).name : (content.services[0]?.tags?.[0] || 'Photography')}</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
+          ${[1,2].map((idx) => `
+          <div style="position:relative;overflow:hidden;flex:1">
+            <div style="height:100%;min-height:250px;overflow:hidden">
+              <img src="${stockPool[_pi++] || stockImages.cards[idx]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+            </div>
+            <div style="padding:1rem 0">
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx]?.tags?.[0] || 'Creative'}</p>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[idx]) || content.services[idx]?.name || 'Project'}</h3>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem" class="ms-grid">
+        ${[3,4,5].map((idx) => `
+        <div>
+          <div style="overflow:hidden;height:340px">
+            <img src="${stockPool[_pi++] || stockImages.cards[idx]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <div style="padding:1rem 0">
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx % content.services.length]?.tags?.[0] || 'Creative'}</p>
+            <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.1rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[idx]) || content.services[idx % content.services.length]?.name || 'Project'}</h3>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const servicesSection = `
+  <section id="services" style="padding:120px 0;background:${ink}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${accent}"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent}">Services</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:${chalk};font-style:italic;line-height:1.1">${content.servicesHeading}</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:${dust};line-height:1.9;margin-top:1.5rem">${content.aboutMission || content.heroSubtitle}</p>
+        </div>
+        <div>
+          ${content.services.map((s, i) => `
+          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+            <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">${String(i + 1).padStart(2, '0')}</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
+                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:${chalk}">${s.name}</h3>
+                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+                  ${s.tags.slice(0, 2).map(tag => `<span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:${dust}">${tag}</span>`).join('')}
+                </div>
+              </div>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:${dust};line-height:1.8">${s.description}</p>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  const aboutSection = `
+  <section id="about" style="padding:120px 0;background:${stone}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
+        <div style="position:relative">
+          <div style="overflow:hidden;height:650px">
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="position:absolute;top:-2rem;right:-2rem;width:180px;height:180px;border:1px solid rgba(10,10,8,0.15);z-index:-1"></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${accent}"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent}">About</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:${ink};font-style:italic;line-height:1.1;margin-bottom:2rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;font-weight:400;color:${ink};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#4a4a45;line-height:1.9;margin-bottom:1.25rem">${p}</p>`).join('')}
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${ink};text-decoration:none;margin-top:2rem;border-bottom:1px solid ${ink};padding-bottom:0.25rem">${content.ctaPrimary} &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:100px 0;background:${accent}">
+    <div style="max-width:900px;margin:0 auto;padding:0 4rem;text-align:center">
+      <div style="font-family:'Instrument Serif',Georgia,serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.2);line-height:0.6;margin-bottom:2.5rem">&ldquo;</div>
+      <p style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:400;color:#fff;line-height:1.4;font-style:italic;margin-bottom:2.5rem">${content.testimonial.quote}</p>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.7)">— ${content.testimonial.author}</div>
+      ${content.testimonial.rating ? `<div style="color:rgba(255,255,255,0.8);font-size:1rem;letter-spacing:0.15em;margin-top:0.75rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+    </div>
+  </section>` : ''
+
+  const contactSection = `
+  <section id="contact" style="padding:120px 0;background:${chalk}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${accent}"></div>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent}">Let's Talk</span>
+          </div>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:400;color:${ink};font-style:italic;line-height:0.95;margin-bottom:2.5rem">${content.contactHeading}</h2>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:${dust};line-height:1.9;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
+          <div style="display:flex;flex-direction:column;gap:1.5rem">
+            <a href="mailto:hello@${businessName.toLowerCase().replace(/\s/g,'')}.com" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:400;color:${ink};text-decoration:none;border-bottom:1px solid rgba(10,10,8,0.15);padding-bottom:1rem">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</a>
+            <a href="tel:${locationInfo.phone}" style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:400;color:${ink};text-decoration:none;border-bottom:1px solid rgba(10,10,8,0.15);padding-bottom:1rem">${locationInfo.phone}</a>
+            <span style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:${dust}">${locationInfo.address}, ${locationInfo.city}</span>
+          </div>
+        </div>
+        <form style="display:flex;flex-direction:column;gap:2rem" onsubmit="return false">
+          <div>
+            <input type="text" placeholder="Your Name" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:${ink};outline:none" />
+          </div>
+          <div>
+            <input type="email" placeholder="Email Address" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:${ink};outline:none" />
+          </div>
+          <div>
+            <input type="text" placeholder="Project Type" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:${ink};outline:none" />
+          </div>
+          <div>
+            <textarea placeholder="Tell me about your project..." rows="5" style="width:100%;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;font-weight:300;font-size:0.95rem;padding:1rem 0;background:transparent;border:none;border-bottom:1px solid rgba(10,10,8,0.15);color:${ink};outline:none;resize:none"></textarea>
+          </div>
+          <button type="submit" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${ink};color:${chalk};border:none;cursor:pointer;align-self:flex-start;transition:background 0.3s ease">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>`
+
+  const crFooter = `
+  <footer style="padding:5rem 4rem 3rem;background:${ink};border-top:1px solid rgba(247,245,240,0.06)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:4rem;margin-bottom:4rem" class="ms-grid">
+        <div>
+          <div style="font-family:'Instrument Serif',Georgia,serif;font-size:2rem;font-weight:400;color:${chalk};font-style:italic;margin-bottom:1rem">${businessName}</div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};line-height:1.9;max-width:340px">${content.heroSubtitle}</p>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent};margin-bottom:1.5rem">Work</div>
+          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};text-decoration:none;display:block;margin-bottom:0.75rem">Portfolio</a>
+          <a href="#services" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
+          <a href="#about" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
+          <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent};margin-bottom:1.5rem">Contact</div>
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};line-height:1.9">${locationInfo.address}<br/>${locationInfo.city}<br/>${locationInfo.phone}</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(247,245,240,0.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <p style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:${dust}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+        <div style="display:flex;gap:2rem">
+          <a href="#" style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:${dust};text-decoration:none">Privacy</a>
+          <a href="#" style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:300;color:${dust};text-decoration:none">Terms</a>
+        </div>
+      </div>
+    </div>
+  </footer>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${chalk};
+      --bg-alt: ${stone};
+      --card-bg: #ffffff;
+      --text: ${ink};
+      --text-muted: ${dust};
+      --border: rgba(10,10,8,0.1);
+      --primary: ${accent};
+      --secondary: ${secondaryColor};
+    }
+  </style>
+
+${buildStandardNav(businessName, content, navFlags)}
+
+${heroSection}
+${marqueeSection}
+${workSection}
+${servicesSection}
+${aboutSection}
+${testimonialSection}
+${contactSection}
+${crFooter}
+
+</body>
+</html>`
+}
+
+function buildEventsTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const fonts = fontPairings[businessCategory] || fontPairings['other']
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+  let _pi = 0
+
+  const midnight = '#0d0d12'
+  const parchment = '#faf8f4'
+  const warmgrey = '#f0ece6'
+  const muted = '#7a7570'
+  const vivid = primaryColor || '#e8410a'
+  const gold = secondaryColor || '#d4a853'
+
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+
+  const heroSection = `
+  <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${midnight}">
+    <div style="position:absolute;inset:0">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>
+    </div>
+    <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 4rem;width:100%;padding-top:100px;padding-bottom:100px">
+      <div style="max-width:800px">
+        <div style="display:inline-flex;align-items:center;gap:0.75rem;margin-bottom:2.5rem;background:rgba(232,65,10,0.12);border:1px solid rgba(232,65,10,0.3);padding:0.5rem 1.25rem">
+          <div style="width:6px;height:6px;border-radius:50%;background:${vivid}"></div>
+          <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">${content.heroEyebrow || 'Events & Entertainment'}</span>
+        </div>
+        <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.5rem,10vw,9rem);font-weight:300;color:${parchment};line-height:0.88;letter-spacing:-0.02em;margin-bottom:0.5rem">${businessName.split(' ').slice(0,2).join('<br/>')}</h1>
+        ${businessName.split(' ').length > 2 ? `<h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.5rem,10vw,9rem);font-weight:300;color:${parchment};line-height:0.88;font-style:italic;letter-spacing:-0.02em;margin-bottom:2.5rem">${businessName.split(' ').slice(2).join(' ')}</h1>` : '<div style="margin-bottom:2.5rem"></div>'}
+        <div style="display:flex;align-items:flex-start;gap:4rem;flex-wrap:wrap">
+          <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:rgba(250,248,244,0.65);line-height:1.8;max-width:420px">${content.heroSubtitle}</p>
+          <div style="display:flex;flex-direction:column;gap:1rem;flex-shrink:0">
+            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${vivid};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+            <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;border:1px solid rgba(250,248,244,0.2);color:${parchment};text-decoration:none;display:inline-block;text-align:center">${content.ctaSecondary || 'Our Services'}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:0;left:0;right:0;display:flex;background:rgba(13,13,18,0.8);backdrop-filter:blur(10px);border-top:1px solid rgba(250,248,244,0.06)">
+      ${content.stats.slice(0, 4).map((s, i) => `
+      <div style="flex:1;padding:1.5rem 2rem;${i > 0 ? 'border-left:1px solid rgba(250,248,244,0.06)' : ''}">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:${parchment};line-height:1">${s.value}</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${muted};margin-top:0.35rem">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>`
+
+  const servicesSection = `
+  <section id="services" style="padding:140px 0;background:${parchment}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:5rem;flex-wrap:wrap;gap:2rem">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${vivid}"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">What We Do</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${midnight};line-height:1;font-style:italic">${content.servicesHeading}</h2>
+        </div>
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:${muted};max-width:300px;line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(13,13,18,0.08)" class="ms-grid">
+        ${content.services.slice(0, 6).map((s, i) => `
+        <div style="padding:2.5rem;${i % 3 > 0 ? 'border-left:1px solid rgba(13,13,18,0.08);' : ''}${i >= 3 ? 'border-top:1px solid rgba(13,13,18,0.08);' : ''}position:relative;overflow:hidden;background:${parchment};transition:background 0.3s ease" onmouseover="this.style.background='${warmgrey}'" onmouseout="this.style.background='${parchment}'">
+          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
+            <span style="font-size:1.2rem">${s.icon || '&#9733;'}</span>
+          </div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:${midnight};margin-bottom:0.75rem;font-style:italic">${s.name}</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted};line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
+            ${s.tags.slice(0, 3).map(tag => `<span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:${muted}">${tag}</span>`).join('')}
+          </div>
+          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:${vivid};transition:width 0.4s ease" onmouseover="this.parentElement.style.background='${warmgrey}';this.style.width='100%'" onmouseout="this.parentElement.style.background='${parchment}';this.style.width='0'"></div>
+        </div>`).join('')}
+      </div>
+      <div style="text-align:center;margin-top:3rem">
+        <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${midnight};color:${parchment};text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      </div>
+    </div>
+  </section>`
+
+  const gallerySection = `
+  <section id="gallery" style="padding:140px 0;background:${midnight}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+        <div style="width:30px;height:1px;background:${vivid}"></div>
+        <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Past Events</span>
+      </div>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${parchment};font-style:italic;margin-bottom:4rem;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
+      <div style="display:grid;grid-template-columns:5fr 3fr 4fr;gap:1.5px;background:rgba(250,248,244,0.06);margin-bottom:1.5px" class="ms-grid">
+        ${[0,1,2].map((i) => `
+        <div style="overflow:hidden;height:480px;position:relative">
+          <img src="${stockPool[_pi++] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem">
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${vivid};margin-bottom:0.35rem">${(content.projectCaptions && content.projectCaptions[i]) ? 'Event' : content.services[i]?.tags?.[0] || 'Event'}</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:${parchment};font-style:italic">${(content.projectCaptions && content.projectCaptions[i]) || content.services[i]?.name || 'Special Event'}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:3fr 4fr 5fr;gap:1.5px;background:rgba(250,248,244,0.06)" class="ms-grid">
+        ${[3,4,5].map((i) => `
+        <div style="overflow:hidden;height:360px;position:relative">
+          <img src="${stockPool[_pi++] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  const aboutSection = `
+  <section id="about" style="padding:140px 0;background:${warmgrey}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${vivid}"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Our Story</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4.5rem);font-weight:300;color:${midnight};font-style:italic;line-height:1.05;margin-bottom:2.5rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.3rem;font-weight:300;color:${midnight};font-style:italic;line-height:1.5;margin-bottom:2rem;border-left:3px solid ${vivid};padding-left:1.5rem">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:${muted};line-height:1.9;margin-bottom:1.25rem">${p}</p>`).join('')}
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(13,13,18,0.1)" class="ms-grid">
+            ${content.stats.slice(0, 4).map(s => `
+            <div>
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:${vivid};line-height:1">${s.value}</div>
+              <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:${muted};margin-top:0.4rem">${s.label}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+        <div style="position:relative">
+          <div style="overflow:hidden;height:650px">
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <div style="position:absolute;top:-1rem;right:-1rem;bottom:1rem;left:1rem;border:1px solid rgba(232,65,10,0.2);z-index:-1;pointer-events:none"></div>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  const testimonialSection = content.testimonial ? `
+  <section style="padding:140px 0;background:${midnight};overflow:hidden">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${vivid}"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Testimonials</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3.5rem);font-weight:300;color:${parchment};font-style:italic;line-height:1.1">Client Stories</h2>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:3rem">
+          <div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:${vivid};line-height:0.6;opacity:0.3;margin-bottom:1.5rem">&ldquo;</div>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:${parchment};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.testimonial.quote}</p>
+            <div style="display:flex;align-items:center;gap:1.5rem">
+              <div style="width:1px;height:40px;background:${vivid}"></div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;color:${parchment};letter-spacing:0.08em;text-transform:uppercase">${content.testimonial.author}</div>
+                ${content.testimonial.rating ? `<div style="color:${gold};font-size:0.75rem;margin-top:0.3rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+              </div>
+            </div>
+          </div>
+          ${(() => {
+            const fallbacks = getFallbackTestimonials(content, 'events-entertainment')
+            return fallbacks.slice(0, 2).map(t => `
+          <div style="padding-top:3rem;border-top:1px solid rgba(250,248,244,0.06)">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:300;color:rgba(250,248,244,0.6);font-style:italic;line-height:1.6;margin-bottom:1.5rem">${t.quote}</p>
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;color:${muted};letter-spacing:0.08em">— ${t.author}</div>
+          </div>`).join('')
+          })()}
+        </div>
+      </div>
+    </div>
+  </section>` : ''
+
+  const processSection = content.processSteps && content.processSteps.length > 0 ? `
+  <section style="padding:120px 0;background:${vivid}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="text-align:center;margin-bottom:5rem">
+        <div style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:1rem">${content.stepsHeading || 'How It Works'}</div>
+        <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:#fff;font-style:italic;line-height:1">From Vision to Reality</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(content.processSteps.length, 4)},1fr);gap:0" class="ms-grid">
+        ${content.processSteps.slice(0, 4).map((step, i) => `
+        <div style="padding:2.5rem 2rem;${i > 0 ? 'border-left:1px solid rgba(255,255,255,0.15)' : ''}">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:rgba(255,255,255,0.15);line-height:1;margin-bottom:1.5rem">${step.step}</div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:#fff;font-style:italic;margin-bottom:0.75rem">${step.title}</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.8">${step.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>` : ''
+
+  const contactSection = `
+  <section id="contact" style="padding:140px 0;background:${parchment}">
+    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
+        <div>
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
+            <div style="width:30px;height:1px;background:${vivid}"></div>
+            <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Book Your Event</span>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${midnight};font-style:italic;line-height:0.95;margin-bottom:2.5rem">${content.contactHeading}</h2>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:${muted};line-height:1.9;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
+          <div style="display:flex;flex-direction:column;gap:2rem">
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:${vivid}">&#9906;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${midnight};margin-bottom:0.35rem">Location</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted}">${locationInfo.address}, ${locationInfo.city}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:${vivid}">&#9742;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${midnight};margin-bottom:0.35rem">Phone</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted}">${locationInfo.phone}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:${vivid}">&#9993;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${midnight};margin-bottom:0.35rem">Email</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted}">hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div>
+              </div>
+            </div>
+            ${content.contactHours ? `<div style="display:flex;gap:1.5rem;align-items:flex-start">
+              <div style="width:44px;height:44px;background:rgba(232,65,10,0.08);border:1px solid rgba(232,65,10,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1rem;color:${vivid}">&#9200;</div>
+              <div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${midnight};margin-bottom:0.35rem">Hours</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted}">${content.contactHours.replace(/ · /g,'<br/>')}</div>
+              </div>
+            </div>` : ''}
+          </div>
+        </div>
+        <div>
+          <form style="display:flex;flex-direction:column;gap:1.5rem" onsubmit="return false">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="ms-grid">
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Name</label>
+                <input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none" />
+              </div>
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Email</label>
+                <input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none" />
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="ms-grid">
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Event Type</label>
+                <input type="text" placeholder="Wedding, Corporate..." style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none" />
+              </div>
+              <div>
+                <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Event Date</label>
+                <input type="text" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none" />
+              </div>
+            </div>
+            <div>
+              <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Tell Us About Your Event</label>
+              <textarea placeholder="Guest count, venue, vision, budget..." rows="5" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none;resize:none"></textarea>
+            </div>
+            <button type="submit" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${vivid};color:#fff;border:none;cursor:pointer;align-self:flex-start">Send Enquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>`
+
+  const evtFooter = `
+  <footer style="padding:6rem 4rem 3rem;background:${midnight};border-top:1px solid rgba(250,248,244,0.04)">
+    <div style="max-width:1400px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:5rem" class="ms-grid">
+        <div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2rem;font-weight:300;color:${parchment};font-style:italic;margin-bottom:1.5rem;letter-spacing:0.05em">${businessName}</div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};line-height:1.9;max-width:320px">${content.heroSubtitle}</p>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid};margin-bottom:1.5rem">Navigate</div>
+          <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
+          <a href="#gallery" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Gallery</a>
+          <a href="#about" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
+          <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid};margin-bottom:1.5rem">Services</div>
+          ${content.services.slice(0, 4).map(s => `<a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">${s.tags?.[0] || s.name}</a>`).join('')}
+        </div>
+        <div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid};margin-bottom:1.5rem">Contact</div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:300;color:${muted};line-height:1.9">${locationInfo.address}<br/>${locationInfo.city}<br/>${locationInfo.phone}</p>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(250,248,244,0.06);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <p style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:${muted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+        <div style="display:flex;gap:2rem">
+          <a href="#" style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:${muted};text-decoration:none">Privacy Policy</a>
+          <a href="#" style="font-family:'DM Sans',sans-serif;font-size:0.7rem;font-weight:300;color:${muted};text-decoration:none">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>`
+
+  return `${headHtml}
+  <style>
+    :root {
+      --bg: ${midnight};
+      --bg-alt: ${parchment};
+      --card-bg: ${parchment};
+      --text: ${parchment};
+      --text-muted: ${muted};
+      --border: rgba(250,248,244,0.06);
+      --primary: ${vivid};
+      --secondary: ${gold};
+    }
+  </style>
+
+${buildStandardNav(businessName, content, navFlags)}
+
+${heroSection}
+${servicesSection}
+${gallerySection}
+${aboutSection}
+${testimonialSection}
+${processSection}
+${contactSection}
+${evtFooter}
+
+</body>
+</html>`
+}
 // ---------- POST handler ----------
 export async function POST(req: NextRequest) {
   try {
