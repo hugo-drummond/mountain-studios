@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import { pagePrices, type PageType, type Region, regionCurrencyMap, calculateQuote } from '../../constants/pricing'
+import { pagePrices, type PageType, type Region } from '../../constants/pricing'
 import NavBar from '../../components/site/NavBar'
 // Supabase import removed — images now use browser object URLs for preview
 
-const TOTAL_STEPS = 10
+const TOTAL_STEPS = 9
 
 const countries = [
   { name: 'South Africa', region: 'South Africa' as Region, flag: '🇿🇦' },
@@ -306,12 +306,6 @@ const styleOptions = [
   { label: 'Classic & Traditional', icon: '❖' },
 ]
 
-const timeSlots = [
-  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '14:00', '14:30', '15:00', '15:30', '16:00',
-]
-
-const referralOptions = ['Google Search', 'Social Media', 'Word of Mouth', 'Saw our work online', 'Other']
 
 // Shared styles
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
@@ -421,11 +415,7 @@ function getWeekdays(startDate: Date, weeks: number): Date[] {
   return days
 }
 
-function formatCurrency(amount: number, currency: string): string {
-  const symbols: Record<string, string> = { ZAR: 'R', USD: '$', GBP: '£', EUR: '€', AUD: 'A$' }
-  const sym = symbols[currency] || '$'
-  return `${sym}${Math.round(amount).toLocaleString()}`
-}
+
 
 const categoryColors: Record<BusinessCategory, { primary: string; secondary: string }> = {
   'food-hospitality':      { primary: '#8B4513', secondary: '#D4A574' },  // warm brown + tan — earthy, appetising
@@ -480,61 +470,9 @@ export default function StartYourProject() {
   const [secondaryColor, setSecondaryColor] = useState('#F59E0B')
   const [noColors, setNoColors] = useState(false)
 
-  // Website import
-  const [importUrl, setImportUrl] = useState('')
-  const [importing, setImporting] = useState(false)
-  const [importError, setImportError] = useState('')
-  const [scrapeId, setScrapeId] = useState<string | null>(null)
-  const [scrapeData, setScrapeData] = useState<Record<string, unknown> | null>(null)
-
   // Images
   const [uploadedImages, setUploadedImages] = useState<{ url: string; name: string }[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // Import website handler
-  const handleImport = async () => {
-    if (!importUrl.trim()) return
-    setImporting(true)
-    setImportError('')
-    try {
-      const r = await fetch('/api/preview/scrape', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: importUrl.trim() }),
-      })
-      const res = await r.json()
-      if (res.success && res.data) {
-        setScrapeId(res.id)
-        setScrapeData(res.data)
-        console.log('📋 Scraped data:', JSON.stringify(res.data, null, 2))
-        // Pre-fill form fields
-        if (res.data.businessName) setBusinessName(res.data.businessName)
-        if (res.data.businessType) {
-          // Map scrape slug (e.g. "bakery") to display name (e.g. "Bakery")
-          const slug = res.data.businessType.toLowerCase()
-          const match = businessTypeData.find(t =>
-            t.name.toLowerCase() === slug ||
-            t.name.toLowerCase().replace(/[^a-z]/g, '') === slug.replace(/[^a-z]/g, '') ||
-            t.keywords?.some(k => k.toLowerCase() === slug)
-          )
-          if (match) {
-            setBusinessType(match.name)
-            setBusinessCategory(match.category)
-          }
-        }
-        if (res.data.brandColors?.primary) setPrimaryColor(res.data.brandColors.primary)
-        if (res.data.brandColors?.secondary) setSecondaryColor(res.data.brandColors.secondary)
-        // Go to step 1 (business name) so they can review the pre-filled name
-        setStep(1)
-      } else {
-        setImportError(res.error || 'Failed to analyze website')
-      }
-    } catch {
-      setImportError('Could not connect to the import service')
-    } finally {
-      setImporting(false)
-    }
-  }
 
   // Preview
   const [previewHtml, setPreviewHtml] = useState<string | null>(null)
@@ -543,13 +481,9 @@ export default function StartYourProject() {
   const [previewError, setPreviewError] = useState(false)
   const previewRequested = useRef(false)
 
-  // Quote
-  const [quoteData, setQuoteData] = useState<ReturnType<typeof calculateQuote> | null>(null)
   const [selectedCountry, setSelectedCountry] = useState('')
-  const [selectedRegion, setSelectedRegion] = useState<Region>('South Africa')
   const [countrySearch, setCountrySearch] = useState('')
   const [geoDetected, setGeoDetected] = useState(false)
-  const [geoRegion, setGeoRegion] = useState<Region>('South Africa') // IP-based, locked for pricing
 
   // Auto-detect country from IP
   useEffect(() => {
@@ -572,30 +506,19 @@ export default function StartYourProject() {
           const match = countries.find(c => c.name === name)
           if (match) {
             setSelectedCountry(match.name)
-            setSelectedRegion(match.region)
             setCountrySearch(match.name)
             setGeoDetected(true)
-            setGeoRegion(match.region) // lock pricing to IP region
           }
         }
       })
       .catch(() => {})
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Pricing always uses IP-detected region; selectedRegion used for content only
-  const pricingRegion = geoDetected ? geoRegion : selectedRegion
-  const regionInfo = regionCurrencyMap[pricingRegion]
-  const currency = regionInfo.currency
-
-  // Booking
-  const [selectedDay, setSelectedDay] = useState<Date | null>(null)
-  const [selectedTime, setSelectedTime] = useState('')
+  // Contact
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
-  const [referral, setReferral] = useState('')
-  const [sendCopy, setSendCopy] = useState(true)
-  const [booked, setBooked] = useState(false)
+  const [contactSubmitted, setContactSubmitted] = useState(false)
 
   const weekdays = getWeekdays(new Date(), 2)
 
@@ -651,11 +574,7 @@ export default function StartYourProject() {
             secondaryColor,
             visualBalance,
             noColors,
-            images: uploadedImages.length > 0
-              ? uploadedImages.map(img => img.url)
-              : (scrapeData?.imageUrls as string[]) || [],
-            scrapeId,
-            scrapeData,
+            images: uploadedImages.map(img => img.url),
           }),
         })
         const res = await r.json()
@@ -735,29 +654,6 @@ export default function StartYourProject() {
     }
   }
 
-  function generateQuote() {
-    const allPages = [...selectedPages, ...customPages.map(() => 'other' as PageType)]
-    const quote = calculateQuote(allPages, regionInfo.multiplier, 1.0)
-    setQuoteData(quote)
-  }
-
-  const handleBook = useCallback(async () => {
-    if (!executeRecaptcha) return
-    try {
-      const token = await executeRecaptcha('booking_form')
-      const res = await fetch('/api/recaptcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
-      })
-      if (res.ok) {
-        setBooked(true)
-        setStep(9)
-      }
-    } catch {
-      // silently fail for now
-    }
-  }, [executeRecaptcha])
 
   const filteredTypes = (() => {
     const q = typeSearch.toLowerCase().trim()
@@ -843,47 +739,6 @@ export default function StartYourProject() {
               Let&apos;s Go &nbsp;→
             </button>
 
-            {/* Website Import */}
-            <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.15)' }}>
-              <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '1rem' }}>
-                Already have a website? Paste your URL and we&apos;ll pre-fill your details.
-              </p>
-              <div style={{ display: 'flex', gap: '0.5rem', maxWidth: '450px', margin: '0 auto' }}>
-                <input
-                  type="url"
-                  value={importUrl}
-                  onChange={e => setImportUrl(e.target.value)}
-                  placeholder="https://yourbusiness.com"
-                  disabled={importing}
-                  onKeyDown={e => e.key === 'Enter' && handleImport()}
-                  style={{
-                    flex: 1, fontFamily: font, fontSize: '0.9rem',
-                    background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
-                    borderRadius: '999px', color: '#fff', padding: '0.6rem 1.25rem',
-                    outline: 'none', backdropFilter: 'blur(8px)',
-                  }}
-                />
-                <button
-                  onClick={handleImport}
-                  disabled={importing || !importUrl.trim()}
-                  style={{
-                    ...btnPrimary, padding: '0.6rem 1.25rem', fontSize: '0.8rem',
-                    opacity: importing || !importUrl.trim() ? 0.5 : 1,
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {importing ? 'Analysing...' : 'Import'}
-                </button>
-              </div>
-              {importError && (
-                <p style={{ fontSize: '0.8rem', color: '#f87171', marginTop: '0.75rem' }}>{importError}</p>
-              )}
-              {importing && (
-                <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.5)', marginTop: '0.75rem' }}>
-                  Analyzing your website... this takes about 10 seconds.
-                </p>
-              )}
-            </div>
           </div>
         )}
 
@@ -1032,7 +887,7 @@ export default function StartYourProject() {
               {filtered.map(c => (
                 <button
                   key={c.name}
-                  onClick={() => { setSelectedCountry(c.name); setSelectedRegion(c.region); setCountrySearch(c.name) }}
+                  onClick={() => { setSelectedCountry(c.name); setCountrySearch(c.name) }}
                   style={pill(selectedCountry === c.name)}
                 >
                   {c.flag} {c.name}
@@ -1257,13 +1112,13 @@ export default function StartYourProject() {
             </div>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <button
-                onClick={() => { generateQuote(); setStep(8); }}
+                onClick={() => setStep(8)}
                 style={{ ...btnPrimary, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                I love it — show me the quote
+                I love it →
               </button>
               <button
-                onClick={() => setStep(3)}
+                onClick={() => setStep(8)}
                 style={{ ...btnPrimary, backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.3)' }}
               >
                 Not quite right
@@ -1274,155 +1129,41 @@ export default function StartYourProject() {
           </>
         )}
 
-        {/* Step 7: Quote / Estimate */}
-        {step === 8 && quoteData && (
+        {/* Step 8: Contact info */}
+        {step === 8 && !contactSubmitted && (
           <>
-            <h1 style={heading}>Here&apos;s your estimate.</h1>
-            <div style={{ marginBottom: '2rem' }}>
-              {/* Base website */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <span style={{ color: '#fff', fontSize: '1rem' }}>Base website</span>
-                <span style={{ color: '#fff', fontSize: '1rem' }}>{formatCurrency(quoteData.items[0]?.localPrice || 0, currency)}</span>
-              </div>
-              {quoteData.items.length > 1 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                  <span style={{ color: '#fff', fontSize: '1rem' }}>Additional pages ({quoteData.items.length - 1})</span>
-                  <span style={{ color: '#fff', fontSize: '1rem' }}>{formatCurrency(quoteData.items.slice(1).reduce((s, i) => s + i.localPrice, 0), currency)}</span>
-                </div>
-              )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 0', marginTop: '0.5rem' }}>
-                <span style={{ color: '#fff', fontSize: '1.25rem', fontWeight: 700 }}>Total</span>
-                <span style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 700 }}>{formatCurrency(quoteData.totalLocal, currency)}</span>
-              </div>
-            </div>
-            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.9rem', marginBottom: '2rem' }}>
-              This is an estimate. Final quote confirmed in your discovery call.
-            </p>
-            <Nav back={() => setStep(7)} next={() => setStep(9)} nextLabel="Book Your Free Discovery Call →" />
-          </>
-        )}
-
-        {/* Step 8: Booking OR Confirmation */}
-        {step === 9 && !booked && (
-          <>
-            <h1 style={heading}>Pick a time that works.</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
-              {/* Left: Day + Time */}
+            <h1 style={heading}>Last step — how do we reach you?</h1>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '1rem' }}>
               <div>
-                <p style={label}>Select a day</p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '0.4rem', marginBottom: '1.5rem' }}>
-                  {weekdays.map((d) => {
-                    const isSelected = selectedDay?.toDateString() === d.toDateString()
-                    return (
-                      <button
-                        key={d.toISOString()}
-                        onClick={() => setSelectedDay(d)}
-                        style={{
-                          fontFamily: font,
-                          padding: '0.5rem 0.25rem',
-                          borderRadius: '6px',
-                          border: `1px solid ${isSelected ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.15)'}`,
-                          backgroundColor: isSelected ? 'rgba(255,255,255,0.15)' : 'transparent',
-                          color: '#fff',
-                          cursor: 'pointer',
-                          fontSize: '0.75rem',
-                          textAlign: 'center',
-                          transition: 'all 0.15s ease',
-                        }}
-                      >
-                        <div style={{ fontWeight: 600 }}>{d.toLocaleDateString('en-GB', { weekday: 'short' })}</div>
-                        <div style={{ fontSize: '0.7rem', opacity: 0.7 }}>{d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}</div>
-                      </button>
-                    )
-                  })}
-                </div>
-
-                <p style={label}>Select a time</p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.4rem' }}>
-                  {timeSlots.map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => setSelectedTime(t)}
-                      style={{
-                        fontFamily: font,
-                        padding: '0.5rem',
-                        borderRadius: '6px',
-                        border: `1px solid ${selectedTime === t ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.15)'}`,
-                        backgroundColor: selectedTime === t ? 'rgba(255,255,255,0.15)' : 'transparent',
-                        color: '#fff',
-                        cursor: 'pointer',
-                        fontSize: '0.85rem',
-                        transition: 'all 0.15s ease',
-                      }}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
+                <p style={label}>Full Name *</p>
+                <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} autoFocus style={inputStyle} />
               </div>
-
-              {/* Right: Contact details */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                <div>
-                  <p style={label}>Full Name *</p>
-                  <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} style={fieldInput} />
-                </div>
-                <div>
-                  <p style={label}>Email *</p>
-                  <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={fieldInput} />
-                </div>
-                <div>
-                  <p style={label}>Phone (optional)</p>
-                  <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={fieldInput} />
-                </div>
-                <div>
-                  <p style={label}>How did you hear about us?</p>
-                  <select
-                    value={referral}
-                    onChange={(e) => setReferral(e.target.value)}
-                    style={{ ...fieldInput, backgroundColor: '#1a1a2e', borderBottom: '1px solid rgba(255,255,255,0.3)' }}
-                  >
-                    <option value="">Select...</option>
-                    {referralOptions.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                </div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input type="checkbox" checked={sendCopy} onChange={(e) => setSendCopy(e.target.checked)} style={{ accentColor: '#fff', width: '18px', height: '18px' }} />
-                  <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>Send me a copy of my quote</span>
-                </label>
+              <div>
+                <p style={label}>Email *</p>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+              </div>
+              <div>
+                <p style={label}>Phone (optional)</p>
+                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
               </div>
             </div>
             <Nav
-              back={() => setStep(8)}
-              next={handleBook}
-              nextLabel="Confirm & Book My Call →"
-              disabled={!selectedDay || !selectedTime || !fullName.trim() || !email.trim()}
+              back={() => setStep(7)}
+              next={() => setContactSubmitted(true)}
+              nextLabel="Send →"
+              disabled={!fullName.trim() || !email.trim()}
             />
           </>
         )}
 
-        {/* Step 8 (booked): Confirmation */}
-        {step === 9 && booked && (
+        {/* Step 8: Confirmation */}
+        {step === 8 && contactSubmitted && (
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
             <h1 style={{ ...heading, fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
-              You&apos;re booked!
+              We&apos;ll be in touch.
             </h1>
-            {selectedDay && (
-              <p style={{ color: '#fff', fontSize: '1.05rem', marginBottom: '0.25rem' }}>
-                Date: <strong>{selectedDay.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</strong>
-              </p>
-            )}
-            <p style={{ color: '#fff', fontSize: '1.05rem', marginBottom: '1.5rem' }}>
-              Time: <strong>{selectedTime}</strong>
-            </p>
-            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '0.95rem', lineHeight: 1.6, maxWidth: '450px', margin: '0 auto 1rem' }}>
-              We&apos;ll walk through your preview, refine the design direction, and lock in the final scope together.
-            </p>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem' }}>
-              We&apos;ll send a confirmation to {email}
+            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1rem', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto' }}>
+              Thanks {fullName.split(' ')[0]}. We&apos;ll review your preview and reach out to {email} shortly.
             </p>
           </div>
         )}

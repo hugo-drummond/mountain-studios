@@ -1,13 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import SiteNav from '../components/site/SiteNav'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const serif = 'Georgia, "Times New Roman", serif'
 
+const portfolioItems = [
+  { name: 'Harbour Lane Café', type: 'Café / Coffee Shop', img: 'https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Steinberg & Associates', type: 'Architecture Firm', img: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Studio Marlowe', type: 'Photography', img: 'https://images.pexels.com/photos/3062541/pexels-photo-3062541.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Peak Performance', type: 'Gym & Fitness', img: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Clarity Legal', type: 'Law Firm', img: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Lumière Beauty', type: 'Beauty Salon & Spa', img: 'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Grove & Garden', type: 'Landscaping', img: 'https://images.pexels.com/photos/1643409/pexels-photo-1643409.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Nomad Eats', type: 'Restaurant', img: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Atlas Consulting', type: 'Business Consulting', img: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800' },
+]
+
 export default function Home() {
   const [hasVisited, setHasVisited] = useState(true)
+  const [visibleCount, setVisibleCount] = useState(3)
+  const [contactName, setContactName] = useState('')
+  const [contactEmail, setContactEmail] = useState('')
+  const [contactMessage, setContactMessage] = useState('')
+  const [contactSent, setContactSent] = useState(false)
+  const portfolioRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const visited = sessionStorage.getItem('ms-visited')
@@ -20,110 +38,321 @@ export default function Home() {
   const anim = (animation: string) => hasVisited ? 'none' : animation
   const so = hasVisited ? 1 : 0
 
+  const visibleItems = portfolioItems.slice(0, visibleCount)
+  const hasMore = visibleCount < portfolioItems.length
+
   return (
-    <div style={{
-      background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
-      height: '100vh', position: 'relative', overflow: 'hidden',
-      display: 'flex', flexDirection: 'column',
-    }}>
+    <div style={{ background: '#f9f9fe', fontFamily: font }}>
 
-      {/* Nav */}
-      <div style={{ position: 'relative', zIndex: 10, flexShrink: 0, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
-        <SiteNav />
-      </div>
-
-      {/* Hero — fills remaining space */}
+      {/* ── HERO ── */}
       <div style={{
-        flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', padding: '0 2.5rem',
-        position: 'relative', zIndex: 2, textAlign: 'center',
+        background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
+        minHeight: '100vh', position: 'relative', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column',
       }}>
-        {/* Eyebrow */}
-        <p style={{
-          fontFamily: font, fontSize: '0.7rem', fontWeight: 600,
-          letterSpacing: '0.25em', textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.5)', marginBottom: '1rem',
-          animation: anim('fadeUp 0.8s 0.5s forwards'), opacity: so,
-        }}>The Ethereal Atelier</p>
+        <div style={{ position: 'relative', zIndex: 10, flexShrink: 0, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
+          <SiteNav />
+        </div>
 
-        {/* Heading */}
-        <h1 style={{
-          fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
-          fontWeight: 300, color: '#fff', lineHeight: 1.1,
-          margin: '0 0 1.25rem', maxWidth: '700px',
-          animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', padding: '0 2.5rem',
+          position: 'relative', zIndex: 2, textAlign: 'center',
         }}>
-          Web Design Done{' '}
-          <em style={{ fontStyle: 'italic' }}>Simply</em>
-        </h1>
+          <p style={{
+            fontFamily: font, fontSize: '0.7rem', fontWeight: 600,
+            letterSpacing: '0.25em', textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.5)', marginBottom: '1rem',
+            animation: anim('fadeUp 0.8s 0.5s forwards'), opacity: so,
+          }}>The Ethereal Atelier</p>
 
-        {/* Subtitle */}
-        <p style={{
-          fontFamily: font, fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
-          color: 'rgba(255,255,255,0.7)', maxWidth: '460px',
-          lineHeight: 1.7, marginBottom: '2rem',
-          animation: anim('fadeUp 1s 0.8s forwards'), opacity: so,
+          <h1 style={{
+            fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
+            fontWeight: 300, color: '#fff', lineHeight: 1.1,
+            margin: '0 0 1.25rem', maxWidth: '700px',
+            animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
+          }}>
+            Web Design Done{' '}
+            <em style={{ fontStyle: 'italic' }}>Simply</em>
+          </h1>
+
+          <p style={{
+            fontFamily: font, fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
+            color: 'rgba(255,255,255,0.7)', maxWidth: '460px',
+            lineHeight: 1.7, marginBottom: '2rem',
+            animation: anim('fadeUp 1s 0.8s forwards'), opacity: so,
+          }}>
+            Crafting intentional digital experiences that breathe space and sophistication into your brand&apos;s unique narrative.
+          </p>
+
+          <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: so }}>
+            <a href="/start-your-project" style={{
+              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+              color: '#1a1a2e', background: '#fff', padding: '0.75rem 2rem',
+              borderRadius: '999px', textDecoration: 'none',
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              display: 'inline-block', transition: 'opacity 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            >Start Your Project</a>
+          </div>
+        </div>
+
+        {/* Floating glass card — bottom left */}
+        <div className="ms-float-card" style={{
+          position: 'absolute', bottom: '3rem', left: '-1rem',
+          width: '220px', height: '280px', borderRadius: '16px',
+          background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+          transform: 'rotate(3deg)', overflow: 'hidden', zIndex: 3,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+          animation: anim('fadeIn 1.2s 1.2s forwards'), opacity: so,
         }}>
-          Crafting intentional digital experiences that breathe space and sophistication into your brand's unique narrative.
-        </p>
+          <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+        </div>
 
-        {/* CTA */}
-        <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: so }}>
-          <a href="/start-your-project" style={{
-            fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-            color: '#1a1a2e', background: '#fff', padding: '0.75rem 2rem',
-            borderRadius: '999px', textDecoration: 'none',
-            letterSpacing: '0.06em', textTransform: 'uppercase',
-            display: 'inline-block', transition: 'opacity 0.2s',
-          }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >Start Your Project</a>
+        {/* Floating glass card — top right */}
+        <div className="ms-float-card" style={{
+          position: 'absolute', top: '18%', right: '-1.5rem',
+          width: '260px', height: '320px', borderRadius: '16px',
+          background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+          transform: 'rotate(-2deg)', overflow: 'hidden', zIndex: 3,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+          animation: anim('fadeIn 1.2s 1.4s forwards'), opacity: so,
+        }}>
+          <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
+            alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+        </div>
+
+        {/* Mountain silhouette */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+            <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.025)" />
+            <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.045)" />
+            <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.07)" />
+          </svg>
         </div>
       </div>
 
-      {/* Floating glass card — bottom left */}
-      <div className="ms-float-card" style={{
-        position: 'absolute', bottom: '3rem', left: '-1rem',
-        width: '220px', height: '280px', borderRadius: '16px',
-        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
-        transform: 'rotate(3deg)', overflow: 'hidden', zIndex: 3,
-        boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
-        animation: anim('fadeIn 1.2s 1.2s forwards'), opacity: so,
-      }}>
-        <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600"
-          alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+      {/* ── ABOUT ── */}
+      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
+        <div className="ms-about-grid" style={{ maxWidth: '960px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+          <div>
+            <p style={{
+              fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+              letterSpacing: '0.2em', textTransform: 'uppercase',
+              color: '#745762', marginBottom: '1.25rem',
+            }}>About Us</p>
+            <h2 style={{
+              fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+              fontWeight: 300, color: '#2e333a', lineHeight: 1.2,
+              margin: '0 0 1.75rem',
+            }}>
+              Built on friendship,<br /><em style={{ fontStyle: 'italic' }}>grown by craft.</em>
+            </h2>
+            <p style={{
+              fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
+              margin: '0 0 1.25rem',
+            }}>
+              Mountain Studios was started by two friends — Hugo and Nathan. What started as building websites for friends quickly grew into a fully fledged business.
+            </p>
+            <p style={{
+              fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
+              margin: '0 0 2.5rem',
+            }}>
+              With more than 5 years and 50 websites developed between us, we&apos;re happy to help your business build its digital presence.
+            </p>
+            <a href="/start-your-project" style={{
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 700,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: '#fff', background: '#535f77',
+              padding: '0.75rem 1.75rem', borderRadius: '999px',
+              textDecoration: 'none', display: 'inline-block',
+              transition: 'background 0.2s',
+            }}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.background = '#745762'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.background = '#535f77'}
+            >Work With Us</a>
+          </div>
+
+          {/* Stats */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            {[
+              { n: '50+', label: 'Websites Built' },
+              { n: '5+', label: 'Years Experience' },
+              { n: '2', label: 'Founders' },
+              { n: '100%', label: 'Client Focused' },
+            ].map(({ n, label }) => (
+              <div key={label} style={{
+                background: '#fff',
+                borderRadius: '16px',
+                padding: '2rem 1.5rem',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              }}>
+                <p style={{
+                  fontFamily: serif, fontSize: '2.5rem', fontWeight: 300,
+                  color: '#745762', margin: '0 0 0.25rem', fontStyle: 'italic',
+                }}>{n}</p>
+                <p style={{ fontSize: '0.8rem', fontWeight: 600, color: '#535f77', margin: 0, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Floating glass card — top right */}
-      <div className="ms-float-card" style={{
-        position: 'absolute', top: '18%', right: '-1.5rem',
-        width: '260px', height: '320px', borderRadius: '16px',
-        background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
-        transform: 'rotate(-2deg)', overflow: 'hidden', zIndex: 3,
-        boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
-        animation: anim('fadeIn 1.2s 1.4s forwards'), opacity: so,
-      }}>
-        <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
-          alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+      {/* ── PORTFOLIO ── */}
+      <div ref={portfolioRef} style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <p style={{
+                fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+                letterSpacing: '0.2em', textTransform: 'uppercase',
+                color: '#745762', marginBottom: '0.75rem',
+              }}>Our Work</p>
+              <h2 style={{
+                fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+                fontWeight: 300, color: '#2e333a', lineHeight: 1.2, margin: 0,
+              }}>
+                Recent <em style={{ fontStyle: 'italic' }}>Projects</em>
+              </h2>
+            </div>
+            <a href="/portfolio" style={{
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 600,
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: '#535f77', textDecoration: 'none',
+              borderBottom: '1px solid #535f77', paddingBottom: '2px',
+            }}>View all →</a>
+          </div>
+
+          <div className="ms-portfolio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
+            {visibleItems.map((item, i) => (
+              <div key={item.name} style={{
+                borderRadius: '16px', overflow: 'hidden',
+                background: '#fff',
+                boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)',
+                transform: i % 3 === 1 ? 'translateY(1.5rem)' : 'none',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 25px 35px -5px rgba(0,0,0,0.15)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.08)' }}
+              >
+                <div style={{ height: '240px', overflow: 'hidden' }}>
+                  <img src={item.img} alt={item.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                    onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.05)'}
+                    onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
+                  />
+                </div>
+                <div style={{ padding: '1.25rem 1.5rem' }}>
+                  <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.35rem' }}>{item.type}</p>
+                  <p style={{ fontFamily: serif, fontSize: '1.15rem', fontWeight: 300, color: '#2e333a', margin: 0 }}>{item.name}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {hasMore && (
+            <div style={{ textAlign: 'center', paddingTop: '1.5rem' }}>
+              <button
+                onClick={() => setVisibleCount(c => c + 3)}
+                style={{
+                  fontFamily: font, fontSize: '0.8rem', fontWeight: 700,
+                  letterSpacing: '0.08em', textTransform: 'uppercase',
+                  background: 'transparent', border: '1.5px solid #535f77',
+                  color: '#535f77', padding: '0.75rem 2rem', borderRadius: '999px',
+                  cursor: 'pointer', transition: 'all 0.2s',
+                }}
+                onMouseEnter={e => { const b = e.currentTarget; b.style.background = '#535f77'; b.style.color = '#fff' }}
+                onMouseLeave={e => { const b = e.currentTarget; b.style.background = 'transparent'; b.style.color = '#535f77' }}
+              >
+                Load More
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Mountain silhouette */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-        <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
-          <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.025)" />
-          <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.045)" />
-          <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.07)" />
-        </svg>
+      {/* ── CONTACT ── */}
+      <div style={{ background: '#1e2333', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{
+            fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: '#d4b8c8', marginBottom: '1rem',
+          }}>Get In Touch</p>
+          <h2 style={{
+            fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+            fontWeight: 300, color: '#fff', lineHeight: 1.2,
+            margin: '0 0 0.75rem',
+          }}>
+            Let&apos;s build something <em style={{ fontStyle: 'italic' }}>great.</em>
+          </h2>
+          <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: '3rem' }}>
+            Have a project in mind? Drop us a message and we&apos;ll get back to you within a day.
+          </p>
+
+          {contactSent ? (
+            <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.06)', borderRadius: '16px' }}>
+              <p style={{ fontFamily: serif, fontSize: '1.5rem', color: '#fff', fontWeight: 300, marginBottom: '0.5rem' }}>
+                <em>Message received.</em>
+              </p>
+              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>We&apos;ll be in touch shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={e => { e.preventDefault(); setContactSent(true) }}
+              style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
+              <input
+                type="text" placeholder="Your name" value={contactName}
+                onChange={e => setContactName(e.target.value)} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                }}
+              />
+              <input
+                type="email" placeholder="Email address" value={contactEmail}
+                onChange={e => setContactEmail(e.target.value)} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                }}
+              />
+              <textarea
+                placeholder="Tell us about your project" value={contactMessage}
+                onChange={e => setContactMessage(e.target.value)} rows={5} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                  resize: 'vertical',
+                }}
+              />
+              <button type="submit" style={{
+                fontFamily: font, fontSize: '0.85rem', fontWeight: 700,
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                background: '#fff', color: '#1e2333',
+                border: 'none', borderRadius: '999px',
+                padding: '0.85rem 2rem', cursor: 'pointer',
+                transition: 'opacity 0.2s', alignSelf: 'center',
+              }}
+                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
+                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
+              >Send Message</button>
+            </form>
+          )}
+        </div>
       </div>
 
-      {/* Footer — pinned to bottom */}
+      {/* ── FOOTER ── */}
       <div style={{
-        position: 'relative', zIndex: 10, flexShrink: 0,
-        padding: '1.25rem 2rem',
-        borderTop: '1px solid rgba(255,255,255,0.1)',
+        background: '#16192a',
+        padding: '1.5rem 2rem',
       }}>
         <div style={{
           maxWidth: '1100px', margin: '0 auto',
@@ -134,12 +363,12 @@ export default function Home() {
             fontFamily: font, fontSize: '0.95rem', fontWeight: 700,
             color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
           }}>mountain studios</a>
-          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.35)', margin: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
             © {new Date().getFullYear()} Mountain Studios. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: '1.25rem' }}>
             {['Privacy Policy', 'Terms of Service'].map(t => (
-              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
             ))}
           </div>
         </div>
@@ -157,6 +386,11 @@ export default function Home() {
         @media (max-width: 768px) {
           .ms-float-card { display: none !important; }
         }
+        @media (max-width: 900px) {
+          .ms-about-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          .ms-portfolio-grid { grid-template-columns: 1fr !important; }
+        }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
       `}</style>
     </div>
   )
