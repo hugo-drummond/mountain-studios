@@ -1147,6 +1147,7 @@ ${buildFooter(businessName, content)}
   const revealEls = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.12 });
   revealEls.forEach(el => obs.observe(el));
+  setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
   // Custom cursor
   const dot = document.getElementById('custom-cursor-dot');
   const ring = document.getElementById('custom-cursor-ring');
@@ -1401,6 +1402,7 @@ ${buildFooter(businessName, content, theme)}
   const revealEls = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 });
   revealEls.forEach(el => obs.observe(el));
+  setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
   const dot = document.getElementById('custom-cursor-dot');
   const ring = document.getElementById('custom-cursor-ring');
   let rx = 0, ry = 0;
@@ -1690,6 +1692,7 @@ ${buildFooter(businessName, content)}
   const revealEls = document.querySelectorAll('.reveal');
   const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 });
   revealEls.forEach(el => obs.observe(el));
+  setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
   const dot = document.getElementById('custom-cursor-dot');
   const ring = document.getElementById('custom-cursor-ring');
   let rx = 0, ry = 0;
@@ -3561,6 +3564,7 @@ ${buildContactSection(content, locationInfo)}
     // Scroll reveal
     var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); } }); }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+    setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
 
     // Accordion: open first item by default + update label
     var firstBody = document.querySelector('.pro-accordion-body');
@@ -3923,6 +3927,7 @@ ${buildFooter(businessName, content, 'dark')}
     // Scroll reveal
     var obs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); } }); }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+    setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
   </script>
 
 </body>
@@ -4282,6 +4287,7 @@ function buildTradesTemplate(data: TemplateData): string {
       entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.12 });
     revealEls.forEach(el => obs.observe(el));
+  setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
   </script>`
 
   return `${headHtml}${extraFonts}${extraStyles}
