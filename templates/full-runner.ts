@@ -112,6 +112,13 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       .ms-sticky { position: static !important; }
       h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
       h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+      /* Photo grids in gallery → 2 col */
+      #gallery .ms-grid { grid-template-columns: repeat(2, 1fr) !important; grid-template-rows: auto !important; }
+      #gallery .ms-grid > * { grid-row: auto !important; grid-column: auto !important; height: 160px !important; overflow: hidden; }
+      #gallery .ms-grid > *:nth-child(odd):last-child { grid-column: 1 / -1 !important; }
+      /* About — hide CTA, reduce padding */
+      #about a[href="#contact"] { display: none !important; }
+      #about { padding: 50px 0 40px !important; }
     }`
 }
 
@@ -1161,15 +1168,15 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <a href="#" style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${businessName}</a>
     <div style="display:flex;align-items:center;gap:2.5rem">
       ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s">${l.label}</a>`).join('')}
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.6rem 1.75rem;border:1.5px solid rgba(255,255,255,0.7);color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+      <a class="food-nav-cta" href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.6rem 1.75rem;border:1.5px solid rgba(255,255,255,0.7);color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
       <label for="ms-menu-toggle" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
   <style>
     #food-nav.scrolled { background:${cream} !important; box-shadow:0 1px 20px rgba(0,0,0,0.08); }
     #food-nav.scrolled a { color:${inkDark} !important; }
-    #food-nav.scrolled a[href="#contact"] { border-color:${inkDark} !important; }
-    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; } #food-nav > div > a:not([href="#contact"]) { display:none!important; } #food-nav label { display:block!important; } }
+    #food-nav.scrolled a.food-nav-cta { border-color:${inkDark} !important; }
+    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; background:${inkDark} !important; } #food-nav > div > a:not(.food-nav-cta) { display:none!important; } #food-nav label { display:block!important; } }
   </style>
   <script>
     window.addEventListener('scroll',function(){
@@ -1211,13 +1218,14 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // ACCOLADES STRIP — gold stars + key stats
   const accoladesStrip = `
-  <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap">
+  <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap;text-align:center">
     ${content.stats.slice(0, 3).map(s => `
-    <div style="text-align:center">
+    <div class="food-stat" style="text-align:center;flex:0 0 auto">
       <div style="font-family:var(--heading-font);font-size:1.7rem;font-weight:600;color:${goldLight};margin-bottom:0.2rem">${s.value}</div>
       <div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(255,255,255,0.55);letter-spacing:0.12em;text-transform:uppercase">${s.label}</div>
-    </div>`).join(`<span style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
-  </section>`
+    </div>`).join(`<span class="food-sep" style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
+  </section>
+  <style>@media(max-width:640px){ .food-sep { display:none !important; } .food-stat { flex:1 1 100% !important; text-align:center !important; padding:0.5rem 0 !important; } }</style>`
 
   // ABOUT — editorial 2-col: tall moody photo left, story right with gold ornament
   const aboutSection = `
@@ -1238,7 +1246,6 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:${inkDark};line-height:1.15;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${inkMid};line-height:1.75;font-style:italic;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid ${gold}">${content.aboutMission}</p>` : ''}
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${muted};line-height:1.85;margin-bottom:1rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-block;margin-top:1.5rem;font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.9rem 2.25rem;background:${inkDark};color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.3s">${content.ctaPrimary}</a>
       </div>
     </div>
   </section>`
