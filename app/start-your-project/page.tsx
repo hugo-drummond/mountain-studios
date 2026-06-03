@@ -698,17 +698,19 @@ export default function StartYourProject() {
             color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
             marginRight: '1.5rem',
           }}>mountain studios</a>
-          {[['About', '/#about'], ['Portfolio', '/#portfolio'], ['Contact', '/#contact']].map(([label, href]) => (
-            <a key={label} href={href} style={{
-              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
-              color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              padding: '0.4rem 0.85rem', transition: 'color 0.2s',
-            }}
-              onMouseEnter={e => e.currentTarget.style.color = '#fff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
-            >{label}</a>
-          ))}
+          <div className="syt-nav-links" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {[['About', '/#about'], ['Portfolio', '/#portfolio'], ['Contact', '/#contact']].map(([label, href]) => (
+              <a key={label} href={href} style={{
+                fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+                color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                padding: '0.4rem 0.85rem', transition: 'color 0.2s',
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = '#fff'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
+              >{label}</a>
+            ))}
+          </div>
 
           <a href="/start-your-project" style={{
             fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
@@ -1019,7 +1021,12 @@ export default function StartYourProject() {
             </p>
 
             <Nav back={() => setStep(5)} next={() => setStep(7)} />
-            <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+            <style>{`
+              @keyframes spin { to { transform: rotate(360deg) } }
+              @media (max-width: 640px) {
+                .syt-nav-links { display: none !important; }
+              }
+            `}</style>
           </>
           )
         })()}

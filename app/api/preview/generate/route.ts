@@ -550,8 +550,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       /* Fixed heights → sensible mobile height */
       .ms-img { height: 220px !important; }
 
-      /* Sticky → static on mobile */
-      .ms-sticky { position: static !important; }
+      /* Sticky image panels → hide on mobile (avoid empty blocks) */
+      .ms-sticky { display: none !important; }
 
       /* Footer */
       footer div { grid-template-columns: 1fr !important; }
@@ -570,6 +570,7 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
 
     @media (max-width: 480px) {
       section { padding: 30px 0 !important; }
+      .ms-nav-links { display: none !important; }
       nav > div > a:not(:first-child):not(:last-child) { display: none !important; }
     }`
 }
