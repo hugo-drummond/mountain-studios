@@ -5938,3 +5938,268 @@ ${evtFooter}
 </html>`
 }
 
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json()
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country, scrapeId, scrapeData: bodyScrapedData } = body
+    const locationInfo = getLocationInfo(country || '')
+
+    // Use scrape data from body (direct pass-through) or pull from Supabase via scrapeId
+    let scrapeData: Record<string, unknown> | null = bodyScrapedData || null
+    if (!scrapeData && scrapeId) {
+      try {
+        const { supabaseAdmin } = await import('@/lib/supabase-admin')
+        const { data } = await supabaseAdmin
+          .from('prospect_scrapes')
+          .select('extracted_data')
+          .eq('id', scrapeId)
+          .single()
+        if (data?.extracted_data) {
+          scrapeData = data.extracted_data as Record<string, unknown>
+          // Update status
+          await supabaseAdmin.from('prospect_scrapes').update({ status: 'preview_generated' }).eq('id', scrapeId)
+        }
+      } catch {
+        // Failed to load scrape — fall through to normal flow
+      }
+    }
+
+    const effectiveBusinessName = (scrapeData?.businessName as string) || businessName
+    const effectiveBusinessType = (scrapeData?.businessType as string) || businessType
+
+    if (!effectiveBusinessName || !effectiveBusinessType) {
+      return NextResponse.json(
+        { success: false, error: 'businessName and businessType are required' },
+        { status: 400 },
+      )
+    }
+
+    // Ensure primary color has enough contrast for buttons on dark backgrounds
+    const scrapedPrimary = (scrapeData?.brandColors as Record<string, string>)?.primary
+    const rawPrimary = noColors ? '#2563EB' : (scrapedPrimary || primaryColor || '#6C5CE7')
+    const pR = parseInt(rawPrimary.slice(1, 3), 16) || 0
+    const pG = parseInt(rawPrimary.slice(3, 5), 16) || 0
+    const pB = parseInt(rawPrimary.slice(5, 7), 16) || 0
+    const luminance = (0.299 * pR + 0.587 * pG + 0.114 * pB) / 255
+    // If color is too light (near white), fall back to a visible accent
+    const primary = luminance > 0.85 ? '#6C5CE7' : rawPrimary
+    const scrapedSecondary = (scrapeData?.brandColors as Record<string, string>)?.secondary
+    const secondary = noColors ? '#10B981' : (scrapedSecondary || secondaryColor || '#00CEC9')
+    const category: BusinessCategory = businessCategory || 'other'
+    const variant = categoryVariant[category] || 'service'
+
+    // Check for pre-written content first
+    const preset: PresetContent | undefined = presetContent[effectiveBusinessType]
+
+    // Build image queries from preset content if available
+    const imageQueries: ImageQueries | undefined = preset ? {
+      heroImageQuery: preset.heroImageQuery,
+      heroBgImageQuery: preset.heroBgImageQuery,
+      serviceImageQueries: preset.services.map(s => s.serviceImageQuery),
+      galleryImageQueries: preset.galleryImageQueries,
+      aboutImageQuery: preset.aboutImageQuery,
+    } : undefined
+
+    // Fetch stock images (with specific queries if preset content exists)
+    const stockImgs = await fetchStockImages(category, businessType, imageQueries)
+
+    let content: GeneratedContent
+
+    if (preset) {
+      // Use pre-written content — no Claude API call needed
+      content = {
+        heroEyebrow: preset.heroEyebrow,
+        tagline: preset.tagline,
+        heroSubtitle: preset.heroSubtitle,
+        ctaPrimary: preset.ctaPrimary,
+        ctaSecondary: preset.ctaSecondary,
+        servicesHeading: preset.servicesHeading,
+        services: preset.services,
+        galleryHeading: preset.galleryHeading,
+        aboutHeading: preset.aboutHeading,
+        aboutText: preset.aboutText,
+        stats: preset.stats,
+        contactHeading: preset.contactHeading,
+        contactHours: preset.contactHours,
+        processSteps: preset.processSteps,
+        heroAccent: preset.heroAccent,
+        ctaNote: preset.ctaNote,
+        badge: preset.badge,
+        aboutMission: preset.aboutMission,
+        testimonial: preset.testimonial,
+        imageMood: preset.imageMood,
+        heroImageQuery: preset.heroImageQuery,
+        aboutImageQuery: preset.aboutImageQuery,
+        galleryImageQueries: preset.galleryImageQueries,
+        features: preset.features,
+      }
+    } else if (scrapeData) {
+      // Use scraped content from prospect's website
+      const sd = scrapeData
+      const sdServices = (sd.services as { name: string; description: string; tags: string[] }[]) || []
+      content = {
+        heroEyebrow: (sd.heroEyebrow as string) || `${effectiveBusinessType.toUpperCase()}`,
+        tagline: (sd.tagline as string) || `Welcome to <em>${effectiveBusinessName}</em>`,
+        heroSubtitle: (sd.heroSubtitle as string) || '',
+        ctaPrimary: (sd.ctaPrimary as string) || 'Get in Touch',
+        ctaSecondary: (sd.ctaSecondary as string) || 'Learn More',
+        servicesHeading: (sd.servicesHeading as string) || 'Our Services',
+        services: sdServices.length > 0 ? sdServices : [
+          { name: 'Service 1', description: 'Professional service tailored to your needs.', tags: ['Featured'] },
+          { name: 'Service 2', description: 'Quality solutions delivered with care.', tags: ['Popular'] },
+          { name: 'Service 3', description: 'Ongoing support and excellence.', tags: ['Trusted'] },
+        ],
+        galleryHeading: 'Our Work',
+        aboutHeading: (sd.aboutHeading as string) || `About <em>${effectiveBusinessName}</em>`,
+        aboutText: (sd.aboutText as string) || `${effectiveBusinessName} delivers professional ${effectiveBusinessType} services.\n\nWe are committed to quality and client satisfaction.`,
+        stats: (sd.stats as { value: string; label: string }[]) || [
+          { value: '10+', label: 'Years Experience' },
+          { value: '500+', label: 'Happy Clients' },
+          { value: '50+', label: 'Projects' },
+          { value: '100%', label: 'Satisfaction' },
+        ],
+        contactHeading: (sd.contactHeading as string) || 'Ready to get started?',
+        contactHours: (sd.contactHours as string) || undefined,
+        aboutMission: (sd.aboutMission as string) || undefined,
+        processSteps: [
+          { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+          { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+          { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+        ],
+        projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
+        logoUrl: (sd.logoUrl as string) || undefined,
+      }
+    } else {
+      // Generic fallback content — no external API calls
+      const catPreset = categoryPresets[category] || categoryPresets['other']
+      content = {
+        heroEyebrow: `Premium ${businessType}`,
+        tagline: `Welcome to <em>${businessName}</em>`,
+        heroSubtitle: `Experience the finest ${businessType.toLowerCase()} services in your area.`,
+        ctaPrimary: catPreset.ctaText,
+        ctaSecondary: 'Learn More',
+        servicesHeading: 'What We Offer',
+        services: [
+          { name: 'Consultation', description: `Get expert ${businessType.toLowerCase()} advice tailored to your specific needs and goals.`, tags: ['Featured'] },
+          { name: 'Full Service', description: `Comprehensive ${businessType.toLowerCase()} solutions from start to finish, handled with care.`, tags: ['Popular'] },
+          { name: 'Ongoing Support', description: `Continued partnership to ensure lasting results and your complete satisfaction.`, tags: ['Trusted'] },
+        ],
+        galleryHeading: 'Our Work',
+        aboutHeading: `Where quality meets <em>excellence</em>`,
+        aboutText: `At ${businessName}, we bring years of dedicated experience to every project.\n\nOur commitment to quality and client satisfaction drives everything we do.`,
+        stats: [
+          { value: '10+', label: 'Years Experience' },
+          { value: '500+', label: 'Happy Clients' },
+          { value: '50+', label: 'Projects Completed' },
+          { value: '100%', label: 'Satisfaction' },
+        ],
+        contactHeading: 'Ready to get started?',
+        processSteps: [
+          { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
+          { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
+          { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
+        ],
+        projectCaptions: ['Featured Project', 'Recent Work', 'Client Project', 'Latest Design'],
+      }
+    }
+
+    // Replace Cape Town with prospect's city in all content strings
+    const city = locationInfo.city
+    if (city !== 'Cape Town') {
+      const replaceInObj = (obj: Record<string, unknown>) => {
+        for (const key of Object.keys(obj)) {
+          const val = obj[key]
+          if (typeof val === 'string') {
+            obj[key] = val.replace(/Cape Town/g, city).replace(/CAPE TOWN/g, city.toUpperCase())
+          } else if (Array.isArray(val)) {
+            val.forEach((item, i) => {
+              if (typeof item === 'string') val[i] = item.replace(/Cape Town/g, city).replace(/CAPE TOWN/g, city.toUpperCase())
+              else if (typeof item === 'object' && item) replaceInObj(item as Record<string, unknown>)
+            })
+          } else if (typeof val === 'object' && val) {
+            replaceInObj(val as Record<string, unknown>)
+          }
+        }
+      }
+      replaceInObj(content as unknown as Record<string, unknown>)
+    }
+
+    const templateData: TemplateData = {
+      content,
+      businessName: effectiveBusinessName,
+      businessCategory: category,
+      primaryColor: primary,
+      secondaryColor: secondary,
+      pages: pages || ['Home', 'About', 'Services', 'Contact'],
+      images: (() => {
+        const raw = Array.isArray(images) ? images.filter((u: string) => u && typeof u === 'string') : []
+        if (raw.length === 0) return []
+        // Pad scraped images to fill all template slots (hero + 4 service + 4 gallery + about = ~10)
+        const padded = [...raw]
+        while (padded.length < 10) {
+          padded.push(raw[padded.length % raw.length])
+        }
+        return padded
+      })(),
+      stockImages: stockImgs,
+      variant,
+      locationInfo,
+    }
+
+    let htmlString: string
+    // Category-specific templates
+    if (category === 'property') {
+      htmlString = buildPropertyTemplate(templateData)
+    } else if (category === 'tech-digital') {
+      htmlString = buildTechDigitalTemplate(templateData)
+    } else if (category === 'retail') {
+      htmlString = buildRetailTemplate(templateData)
+    } else if (category === 'trades-construction') {
+      htmlString = buildTradesTemplate(templateData)
+    } else if (category === 'home-services') {
+      htmlString = buildHomeServicesTemplate(templateData)
+    } else if (category === 'health-wellness') {
+      htmlString = buildHealthWellnessTemplate(templateData)
+    } else if (category === 'food-hospitality') {
+      htmlString = buildFoodHospitalityTemplate(templateData)
+    } else if (category === 'pets') {
+      htmlString = buildPetsTemplate(templateData)
+    } else if (category === 'automotive') {
+      htmlString = buildAutomotiveTemplate(templateData)
+    } else if (category === 'fitness-sport') {
+      htmlString = buildFitnessTemplate(templateData)
+    } else if (category === 'events-entertainment') {
+      htmlString = buildEventsTemplate(templateData)
+    } else if (category === 'creative') {
+      htmlString = buildCreativeTemplate(templateData)
+    } else if (category === 'education') {
+      htmlString = buildEducationTemplate(templateData)
+    } else if (category === 'professional') {
+      htmlString = buildProfessionalTemplate(templateData)
+    } else {
+      switch (variant) {
+        case 'visual':
+          htmlString = buildVisualTemplate(templateData)
+          break
+        case 'portfolio':
+          htmlString = buildPortfolioTemplate(templateData)
+          break
+        case 'service':
+        default:
+          htmlString = buildServiceTemplate(templateData)
+          break
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: { html: htmlString },
+    })
+  } catch (err) {
+    console.error('[preview/generate] error:', err)
+    return NextResponse.json(
+      { success: false, error: 'Failed to generate preview' },
+      { status: 500 },
+    )
+  }
+}

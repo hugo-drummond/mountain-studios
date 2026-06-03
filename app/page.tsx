@@ -3,16 +3,8 @@
 import { useState, useEffect, useRef } from 'react'
 import SiteNav from '../components/site/SiteNav'
 
-const serif = '"Noto Serif", Georgia, serif'
-const sans = '"Plus Jakarta Sans", var(--font-source-sans), "Source Sans 3", sans-serif'
-
-// Alpine Mist palette
-const slate = '#535f77'
-const rose = '#745762'
-const surface = '#f9f9fe'
-const surfaceAlt = '#f0edf8'
-const onSurface = '#2e333a'
-const dark = '#1a1e2e'
+const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
+const serif = 'Georgia, "Times New Roman", serif'
 
 const portfolioItems = [
   { name: 'Alistair Drummond Architect', type: 'Architecture', img: '/images/portfolio/alistair-drummond.jpg', url: 'https://alistairdrummondarchitect.co.za/' },
@@ -41,515 +33,372 @@ export default function Home() {
     }
   }, [])
 
-  const anim = (a: string) => hasVisited ? 'none' : a
+  const anim = (animation: string) => hasVisited ? 'none' : animation
   const so = hasVisited ? 1 : 0
 
   const visibleItems = portfolioItems.slice(0, visibleCount)
   const hasMore = visibleCount < portfolioItems.length
 
   return (
-    <div style={{ background: surface, fontFamily: sans, overflowX: 'hidden' }}>
+    <div style={{ background: '#f9f9fe', fontFamily: font }}>
 
       {/* ── HERO ── */}
       <div style={{
-        background: 'linear-gradient(160deg, #c8d8f0 0%, #d6e3ff 25%, #e8d4e8 55%, #f6d0dd 80%, #f9d8d0 100%)',
+        background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
         minHeight: '100vh', position: 'relative', overflow: 'hidden',
         display: 'flex', flexDirection: 'column',
       }}>
-        {/* Grain overlay */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 0, opacity: 0.035, pointerEvents: 'none',
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")',
-          backgroundRepeat: 'repeat', backgroundSize: '256px',
-        }} />
-
-        {/* Large decorative serif numeral */}
-        <div style={{
-          position: 'absolute', right: '5%', top: '50%', transform: 'translateY(-55%)',
-          fontFamily: serif, fontSize: 'clamp(18rem, 28vw, 36rem)', fontWeight: 300,
-          color: 'rgba(83,95,119,0.06)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none',
-          zIndex: 1, letterSpacing: '-0.04em', fontStyle: 'italic',
-        }}>M</div>
-
-        <div style={{ position: 'relative', zIndex: 10, flexShrink: 0, animation: anim('fadeIn 0.8s 0.2s forwards'), opacity: so }}>
+        <div style={{ position: 'relative', zIndex: 10, flexShrink: 0, animation: anim('fadeIn 0.8s 0.3s forwards'), opacity: so }}>
           <SiteNav />
         </div>
 
-        {/* Hero content — left-aligned editorial */}
         <div style={{
-          flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          padding: '0 clamp(2rem, 8vw, 8rem)', position: 'relative', zIndex: 2,
-          maxWidth: '1200px', width: '100%',
+          flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', padding: '0 2.5rem',
+          position: 'relative', zIndex: 2, textAlign: 'center',
         }}>
-          <p className="ms-hero-label" style={{
-            fontFamily: sans, fontSize: '0.68rem', fontWeight: 700,
-            letterSpacing: '0.3em', textTransform: 'uppercase',
-            color: slate, marginBottom: '2rem', opacity: 0.75,
-            animation: anim('fadeUp 0.7s 0.4s forwards'), opacity: so,
-          }}>Cape Town · Web Design Studio</p>
+          <p style={{
+            fontFamily: font, fontSize: '0.7rem', fontWeight: 600,
+            letterSpacing: '0.25em', textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.5)', marginBottom: '1rem',
+            animation: anim('fadeUp 0.8s 0.5s forwards'), opacity: so,
+          }}>The Ethereal Atelier</p>
 
-          <h1 className="ms-hero-h1" style={{
-            fontFamily: serif, fontSize: 'clamp(3rem, 7vw, 6rem)',
-            fontWeight: 300, color: onSurface, lineHeight: 1.05,
-            margin: '0 0 2rem', maxWidth: '780px',
-            animation: anim('fadeUp 1s 0.55s forwards'), opacity: so,
+          <h1 style={{
+            fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
+            fontWeight: 300, color: '#fff', lineHeight: 1.1,
+            margin: '0 0 1.25rem', maxWidth: '700px',
+            animation: anim('fadeUp 1s 0.6s forwards'), opacity: so,
           }}>
-            Websites built<br />
-            for businesses<br />
-            <em style={{ fontStyle: 'italic', color: rose }}>worth finding.</em>
+            Web Design Done{' '}
+            <em style={{ fontStyle: 'italic' }}>Simply</em>
           </h1>
 
-          <p className="ms-hero-body" style={{
-            fontFamily: sans, fontSize: 'clamp(0.9rem, 1.2vw, 1.05rem)',
-            color: slate, maxWidth: '420px', lineHeight: 1.8,
-            marginBottom: '3rem',
-            animation: anim('fadeUp 1s 0.7s forwards'), opacity: so,
+          <p style={{
+            fontFamily: font, fontSize: 'clamp(0.85rem, 1.3vw, 1rem)',
+            color: 'rgba(255,255,255,0.7)', maxWidth: '460px',
+            lineHeight: 1.7, marginBottom: '2rem',
+            animation: anim('fadeUp 1s 0.8s forwards'), opacity: so,
           }}>
-            We design and build intentional digital presences for Cape Town&apos;s independent businesses — from first brief to live site.
+            Crafting intentional digital experiences that breathe space and sophistication into your brand&apos;s unique narrative.
           </p>
 
-          <div className="ms-hero-cta" style={{ display: 'flex', gap: '1rem', alignItems: 'center', animation: anim('fadeUp 1s 0.85s forwards'), opacity: so }}>
+          <div style={{ animation: anim('fadeUp 1s 1s forwards'), opacity: so }}>
             <a href="/start-your-project" style={{
-              fontFamily: sans, fontSize: '0.8rem', fontWeight: 700,
-              color: '#fff', background: onSurface, padding: '0.9rem 2.25rem',
+              fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
+              color: '#1a1a2e', background: '#fff', padding: '0.75rem 2rem',
               borderRadius: '999px', textDecoration: 'none',
-              letterSpacing: '0.08em', textTransform: 'uppercase',
-              display: 'inline-block', transition: 'background 0.25s',
-            }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.background = rose}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.background = onSurface}
-            >Start Your Project</a>
-            <a href="#portfolio" style={{
-              fontFamily: sans, fontSize: '0.8rem', fontWeight: 600,
-              color: slate, textDecoration: 'none',
               letterSpacing: '0.06em', textTransform: 'uppercase',
-              borderBottom: `1px solid ${slate}`, paddingBottom: '1px',
-              transition: 'color 0.2s, border-color 0.2s',
+              display: 'inline-block', transition: 'opacity 0.2s',
             }}
-              onMouseEnter={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.color = rose; a.style.borderColor = rose }}
-              onMouseLeave={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.color = slate; a.style.borderColor = slate }}
-            >View Our Work</a>
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            >Start Your Project</a>
           </div>
         </div>
 
-        {/* Float card — bottom right */}
+        {/* Floating glass card — bottom left */}
         <div className="ms-float-card" style={{
-          position: 'absolute', bottom: '4rem', right: '6%',
-          width: '200px', height: '260px', borderRadius: '18px',
-          background: 'rgba(255,255,255,0.35)', backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.5)',
-          transform: 'rotate(-2.5deg)', overflow: 'hidden', zIndex: 3,
-          boxShadow: '0 24px 64px rgba(83,95,119,0.15)',
-          animation: anim('fadeIn 1.2s 1.1s forwards'), opacity: so,
+          position: 'absolute', bottom: '3rem', left: '-1rem',
+          width: '220px', height: '280px', borderRadius: '16px',
+          background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+          transform: 'rotate(3deg)', overflow: 'hidden', zIndex: 3,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+          animation: anim('fadeIn 1.2s 1.2s forwards'), opacity: so,
         }}>
           <img src="https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=600"
-            alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }} />
+            alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
         </div>
 
-        {/* Float card — upper left offset */}
+        {/* Floating glass card — top right */}
         <div className="ms-float-card" style={{
-          position: 'absolute', top: '22%', right: '18%',
-          width: '155px', height: '195px', borderRadius: '14px',
-          background: 'rgba(255,255,255,0.25)', backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.4)',
-          transform: 'rotate(1.5deg)', overflow: 'hidden', zIndex: 3,
-          boxShadow: '0 16px 48px rgba(83,95,119,0.12)',
-          animation: anim('fadeIn 1.2s 1.3s forwards'), opacity: so,
+          position: 'absolute', top: '18%', right: '-1.5rem',
+          width: '260px', height: '320px', borderRadius: '16px',
+          background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.2)',
+          transform: 'rotate(-2deg)', overflow: 'hidden', zIndex: 3,
+          boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+          animation: anim('fadeIn 1.2s 1.4s forwards'), opacity: so,
         }}>
           <img src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600"
             alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
         </div>
 
-        {/* Stat badge */}
-        <div className="ms-float-card" style={{
-          position: 'absolute', bottom: '6rem', left: 'clamp(2rem, 6vw, 6rem)',
-          background: 'rgba(255,255,255,0.45)', backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.5)',
-          borderRadius: '14px', padding: '1.25rem 1.75rem',
-          zIndex: 3, boxShadow: '0 8px 32px rgba(83,95,119,0.1)',
-          animation: anim('fadeIn 1.2s 1.5s forwards'), opacity: so,
-        }}>
-          <p style={{ fontFamily: serif, fontSize: '2rem', fontWeight: 300, color: onSurface, margin: 0, fontStyle: 'italic', lineHeight: 1 }}>50+</p>
-          <p style={{ fontFamily: sans, fontSize: '0.65rem', fontWeight: 700, color: rose, margin: '0.35rem 0 0', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Sites Built</p>
+        {/* Mountain silhouette */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+            <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.025)" />
+            <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.045)" />
+            <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.07)" />
+          </svg>
         </div>
-
-        {/* Bottom fade */}
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '120px', zIndex: 2,
-          background: `linear-gradient(to bottom, transparent, ${surface})`,
-        }} />
       </div>
 
       {/* ── ABOUT ── */}
-      <div id="about" style={{ background: surface, padding: 'clamp(5rem, 8vw, 8rem) clamp(2rem, 6vw, 6rem)' }}>
-        <div className="ms-about-grid" style={{
-          maxWidth: '1100px', margin: '0 auto',
-          display: 'grid', gridTemplateColumns: '1fr 1fr',
-          gap: 'clamp(3rem, 6vw, 7rem)', alignItems: 'start',
-        }}>
-
-          {/* Text col */}
-          <div style={{ paddingTop: '1rem' }}>
+      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
+        <div className="ms-about-grid" style={{ maxWidth: '960px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
+          <div>
             <p style={{
-              fontFamily: sans, fontSize: '0.68rem', fontWeight: 700,
-              letterSpacing: '0.28em', textTransform: 'uppercase',
-              color: rose, marginBottom: '2rem',
+              fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+              letterSpacing: '0.2em', textTransform: 'uppercase',
+              color: '#745762', marginBottom: '1.25rem',
             }}>About Us</p>
-
             <p style={{
-              fontFamily: serif, fontSize: 'clamp(1.5rem, 2.5vw, 2.25rem)',
-              fontWeight: 300, color: onSurface, lineHeight: 1.35,
-              margin: '0 0 2rem',
+              fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
+              margin: '0 0 1.25rem',
             }}>
-              Two friends who turned a side project into a studio.
+              Mountain Studios was started by two friends — Hugo and Nathan. What started as building websites for friends quickly grew into a fully fledged business.
             </p>
-
-            <p style={{ fontFamily: sans, fontSize: '1rem', color: slate, lineHeight: 1.85, margin: '0 0 1.1rem' }}>
-              Mountain Studios was started by Hugo and Nathan. What began as building websites for friends quickly grew into a fully-fledged business.
+            <p style={{
+              fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
+              margin: '0 0 2.5rem',
+            }}>
+              With more than 5 years and 50 websites developed between us, we&apos;re happy to help your business build its digital presence.
             </p>
-            <p style={{ fontFamily: sans, fontSize: '1rem', color: slate, lineHeight: 1.85, margin: '0 0 2.75rem' }}>
-              With more than 5 years and 50 websites developed between us, we&apos;re proud to help Cape Town&apos;s independent businesses build their digital presence.
-            </p>
-
-            {/* Stats row */}
-            <div style={{ display: 'flex', gap: '2.5rem', marginBottom: '2.75rem' }}>
-              {[['50+', 'Websites'], ['5+', 'Years'], ['2', 'Founders']].map(([n, l]) => (
-                <div key={l}>
-                  <p style={{ fontFamily: serif, fontSize: '2rem', fontWeight: 300, color: rose, margin: 0, fontStyle: 'italic', lineHeight: 1 }}>{n}</p>
-                  <p style={{ fontFamily: sans, fontSize: '0.65rem', fontWeight: 700, color: slate, margin: '0.3rem 0 0', letterSpacing: '0.12em', textTransform: 'uppercase' }}>{l}</p>
-                </div>
-              ))}
-            </div>
-
             <a href="/start-your-project" style={{
-              fontFamily: sans, fontSize: '0.78rem', fontWeight: 700,
-              letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: '#fff', background: slate,
-              padding: '0.8rem 2rem', borderRadius: '999px',
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 700,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+              color: '#fff', background: '#535f77',
+              padding: '0.75rem 1.75rem', borderRadius: '999px',
               textDecoration: 'none', display: 'inline-block',
               transition: 'background 0.2s',
             }}
-              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.background = rose}
-              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.background = slate}
+              onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.background = '#745762'}
+              onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.background = '#535f77'}
             >Work With Us</a>
           </div>
 
-          {/* Founder portraits — offset stagger */}
-          <div style={{ position: 'relative', paddingTop: '2rem' }}>
-            <div className="ms-founders-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-              {[
-                { name: 'Hugo', role: 'Co-founder', offset: '0', rotate: '-1.5deg' },
-                { name: 'Nathan', role: 'Co-founder', offset: '2.5rem', rotate: '1.5deg' },
-              ].map(({ name, role, offset, rotate }) => (
-                <div key={name} style={{
-                  marginTop: offset,
-                  borderRadius: '18px', overflow: 'hidden',
-                  background: '#fff',
-                  boxShadow: '0 20px 48px rgba(83,95,119,0.1)',
-                  transform: `rotate(${rotate})`,
-                  transition: 'transform 0.4s ease, box-shadow 0.4s ease',
-                }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = 'rotate(0deg) scale(1.01)'; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 28px 60px rgba(83,95,119,0.18)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = `rotate(${rotate})`; (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 48px rgba(83,95,119,0.1)' }}
-                >
-                  <div style={{
-                    height: '260px', background: `linear-gradient(145deg, ${surfaceAlt} 0%, #e4dff4 100%)`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <span style={{
-                      fontFamily: serif, fontSize: '5rem', fontWeight: 300,
-                      color: slate, opacity: 0.12, fontStyle: 'italic', userSelect: 'none',
-                    }}>{name[0]}</span>
-                  </div>
-                  <div style={{ padding: '1rem 1.25rem 1.25rem' }}>
-                    <p style={{ fontFamily: serif, fontSize: '1.1rem', fontWeight: 300, color: onSurface, margin: '0 0 0.2rem', fontStyle: 'italic' }}>{name}</p>
-                    <p style={{ fontFamily: sans, fontSize: '0.65rem', fontWeight: 700, color: rose, margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase' }}>{role}</p>
-                  </div>
+          {/* Founders */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+            {[
+              { name: 'Hugo', role: 'Co-founder' },
+              { name: 'Nathan', role: 'Co-founder' },
+            ].map(({ name, role }) => (
+              <div key={name} style={{
+                background: '#fff',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              }}>
+                <div style={{
+                  height: '280px',
+                  background: '#e8e4f0',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '4rem', opacity: 0.2 }}>▲</span>
                 </div>
-              ))}
-            </div>
+                <div style={{ padding: '1.25rem 1.5rem' }}>
+                  <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.2rem' }}>{name}</p>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#745762', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{role}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* ── PORTFOLIO ── */}
-      <div id="portfolio" ref={portfolioRef} style={{ background: surfaceAlt, padding: 'clamp(5rem, 8vw, 8rem) clamp(2rem, 6vw, 6rem)' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-
-          {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+      <div ref={portfolioRef} style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '3.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
               <p style={{
-                fontFamily: sans, fontSize: '0.68rem', fontWeight: 700,
-                letterSpacing: '0.28em', textTransform: 'uppercase',
-                color: rose, marginBottom: '0.75rem',
+                fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+                letterSpacing: '0.2em', textTransform: 'uppercase',
+                color: '#745762', marginBottom: '0.75rem',
               }}>Our Work</p>
               <h2 style={{
-                fontFamily: serif, fontSize: 'clamp(2rem, 3.5vw, 3rem)',
-                fontWeight: 300, color: onSurface, margin: 0, lineHeight: 1.15,
+                fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+                fontWeight: 300, color: '#2e333a', lineHeight: 1.2, margin: 0,
               }}>
-                Selected <em style={{ fontStyle: 'italic' }}>Projects</em>
+                Recent <em style={{ fontStyle: 'italic' }}>Projects</em>
               </h2>
             </div>
             <a href="/portfolio" style={{
-              fontFamily: sans, fontSize: '0.75rem', fontWeight: 700,
-              letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: slate, textDecoration: 'none',
-              borderBottom: `1px solid ${slate}`, paddingBottom: '2px',
-              transition: 'color 0.2s, border-color 0.2s',
-            }}
-              onMouseEnter={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.color = rose; a.style.borderColor = rose }}
-              onMouseLeave={e => { const a = e.currentTarget as HTMLAnchorElement; a.style.color = slate; a.style.borderColor = slate }}
-            >View All →</a>
+              fontFamily: font, fontSize: '0.8rem', fontWeight: 600,
+              letterSpacing: '0.06em', textTransform: 'uppercase',
+              color: '#535f77', textDecoration: 'none',
+              borderBottom: '1px solid #535f77', paddingBottom: '2px',
+            }}>View all →</a>
           </div>
 
-          {/* Magazine grid */}
-          {visibleItems.length > 0 && (
-            <div className="ms-portfolio-mag" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.25rem', marginBottom: '1.25rem' }}>
-              {/* Feature card */}
-              {visibleItems[0] && (
-                <a href={visibleItems[0].url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
-                  <div style={{
-                    borderRadius: '20px', overflow: 'hidden', background: '#fff',
-                    boxShadow: '0 24px 48px rgba(83,95,119,0.1)',
-                    transition: 'box-shadow 0.35s ease, transform 0.35s ease',
-                  }}
-                    onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 32px 64px rgba(83,95,119,0.18)'; d.style.transform = 'translateY(-3px)' }}
-                    onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 24px 48px rgba(83,95,119,0.1)'; d.style.transform = 'translateY(0)' }}
-                  >
-                    <div style={{ height: '380px', overflow: 'hidden', position: 'relative' }}>
-                      <img src={visibleItems[0].img} alt={visibleItems[0].name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }}
-                        onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.04)'}
-                        onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
-                      />
-                    </div>
-                    <div style={{ padding: '1.5rem 1.75rem' }}>
-                      <p style={{ fontFamily: sans, fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: rose, margin: '0 0 0.4rem' }}>{visibleItems[0].type}</p>
-                      <p style={{ fontFamily: serif, fontSize: '1.35rem', fontWeight: 300, color: onSurface, margin: 0 }}>{visibleItems[0].name}</p>
-                    </div>
+          <div className="ms-portfolio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
+            {visibleItems.map((item, i) => (
+              <a key={item.name} href={(item as typeof item & { url?: string }).url || '#'} target="_blank" rel="noopener noreferrer"
+                style={{ textDecoration: 'none', display: 'block' }}
+              >
+                <div style={{
+                  borderRadius: '16px', overflow: 'hidden',
+                  background: '#fff',
+                  boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)',
+                  transform: i % 3 === 1 ? 'translateY(1.5rem)' : 'none',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 25px 35px -5px rgba(0,0,0,0.15)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.08)' }}
+                >
+                  <div style={{ height: '240px', overflow: 'hidden' }}>
+                    <img src={item.img} alt={item.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                      onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.05)'}
+                      onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
+                    />
                   </div>
-                </a>
-              )}
-
-              {/* Second card stacked */}
-              {visibleItems[1] && (
-                <a href={visibleItems[1].url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block', alignSelf: 'start', marginTop: '2rem' }}>
-                  <div style={{
-                    borderRadius: '20px', overflow: 'hidden', background: '#fff',
-                    boxShadow: '0 20px 40px rgba(83,95,119,0.09)',
-                    transition: 'box-shadow 0.35s ease, transform 0.35s ease',
-                  }}
-                    onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 28px 56px rgba(83,95,119,0.16)'; d.style.transform = 'translateY(-3px)' }}
-                    onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 20px 40px rgba(83,95,119,0.09)'; d.style.transform = 'translateY(0)' }}
-                  >
-                    <div style={{ height: '280px', overflow: 'hidden' }}>
-                      <img src={visibleItems[1].img} alt={visibleItems[1].name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }}
-                        onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.04)'}
-                        onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
-                      />
-                    </div>
-                    <div style={{ padding: '1.25rem 1.5rem' }}>
-                      <p style={{ fontFamily: sans, fontSize: '0.65rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: rose, margin: '0 0 0.35rem' }}>{visibleItems[1].type}</p>
-                      <p style={{ fontFamily: serif, fontSize: '1.1rem', fontWeight: 300, color: onSurface, margin: 0 }}>{visibleItems[1].name}</p>
-                    </div>
+                  <div style={{ padding: '1.25rem 1.5rem' }}>
+                    <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.35rem' }}>{item.type}</p>
+                    <p style={{ fontFamily: serif, fontSize: '1.15rem', fontWeight: 300, color: '#2e333a', margin: 0 }}>{item.name}</p>
                   </div>
-                </a>
-              )}
-            </div>
-          )}
-
-          {/* Remaining 3-col grid */}
-          {visibleItems.length > 2 && (
-            <div className="ms-portfolio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
-              {visibleItems.slice(2).map((item) => (
-                <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
-                  <div style={{
-                    borderRadius: '18px', overflow: 'hidden', background: '#fff',
-                    boxShadow: '0 16px 36px rgba(83,95,119,0.08)',
-                    transition: 'box-shadow 0.35s ease, transform 0.35s ease',
-                  }}
-                    onMouseEnter={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 24px 52px rgba(83,95,119,0.15)'; d.style.transform = 'translateY(-3px)' }}
-                    onMouseLeave={e => { const d = e.currentTarget as HTMLDivElement; d.style.boxShadow = '0 16px 36px rgba(83,95,119,0.08)'; d.style.transform = 'translateY(0)' }}
-                  >
-                    <div style={{ height: '220px', overflow: 'hidden' }}>
-                      <img src={item.img} alt={item.name}
-                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }}
-                        onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.04)'}
-                        onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
-                      />
-                    </div>
-                    <div style={{ padding: '1.1rem 1.35rem' }}>
-                      <p style={{ fontFamily: sans, fontSize: '0.63rem', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: rose, margin: '0 0 0.3rem' }}>{item.type}</p>
-                      <p style={{ fontFamily: serif, fontSize: '1rem', fontWeight: 300, color: onSurface, margin: 0 }}>{item.name}</p>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
+                </div>
+              </a>
+            ))}
+          </div>
 
           {hasMore && (
-            <div style={{ textAlign: 'center', paddingTop: '2.5rem' }}>
+            <div style={{ textAlign: 'center', paddingTop: '1.5rem' }}>
               <button
                 onClick={() => setVisibleCount(c => c + 3)}
                 style={{
-                  fontFamily: sans, fontSize: '0.75rem', fontWeight: 700,
-                  letterSpacing: '0.1em', textTransform: 'uppercase',
-                  background: 'transparent', border: `1.5px solid ${slate}`,
-                  color: slate, width: '52px', height: '52px', borderRadius: '999px',
+                  background: 'transparent', border: '1.5px solid #535f77',
+                  color: '#535f77', width: '48px', height: '48px', borderRadius: '999px',
                   cursor: 'pointer', transition: 'all 0.2s',
-                  fontSize: '1.2rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '1.25rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 }}
-                onMouseEnter={e => { const b = e.currentTarget; b.style.background = slate; b.style.color = '#fff' }}
-                onMouseLeave={e => { const b = e.currentTarget; b.style.background = 'transparent'; b.style.color = slate }}
+                onMouseEnter={e => { const b = e.currentTarget; b.style.background = '#535f77'; b.style.color = '#fff' }}
+                onMouseLeave={e => { const b = e.currentTarget; b.style.background = 'transparent'; b.style.color = '#535f77' }}
                 aria-label="Load more"
-              >↓</button>
+              >
+                ↓
+              </button>
             </div>
           )}
         </div>
       </div>
 
       {/* ── CONTACT ── */}
-      <div id="contact" style={{ background: dark, padding: 'clamp(5rem, 8vw, 8rem) clamp(2rem, 6vw, 6rem)', position: 'relative', overflow: 'hidden' }}>
-
-        {/* Background serif watermark */}
-        <div style={{
-          position: 'absolute', right: '-2%', bottom: '-10%',
-          fontFamily: serif, fontSize: 'clamp(14rem, 22vw, 28rem)', fontWeight: 300,
-          color: 'rgba(255,255,255,0.025)', lineHeight: 1, userSelect: 'none', pointerEvents: 'none',
-          fontStyle: 'italic', letterSpacing: '-0.03em',
-        }}>ms</div>
-
-        <div style={{ maxWidth: '680px', margin: '0 auto', position: 'relative', zIndex: 2 }}>
+      <div style={{ background: '#1e2333', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
           <p style={{
-            fontFamily: sans, fontSize: '0.68rem', fontWeight: 700,
-            letterSpacing: '0.28em', textTransform: 'uppercase',
-            color: '#d4b8c8', marginBottom: '1.5rem',
+            fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.2em', textTransform: 'uppercase',
+            color: '#d4b8c8', marginBottom: '1rem',
           }}>Get In Touch</p>
-
           <h2 style={{
-            fontFamily: serif, fontSize: 'clamp(2.25rem, 4vw, 3.5rem)',
-            fontWeight: 300, color: '#fff', lineHeight: 1.15,
-            margin: '0 0 1rem',
+            fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+            fontWeight: 300, color: '#fff', lineHeight: 1.2,
+            margin: '0 0 0.75rem',
           }}>
-            Let&apos;s build something<br />
-            <em style={{ fontStyle: 'italic', color: '#d4b8c8' }}>worth visiting.</em>
+            Let&apos;s build something <em style={{ fontStyle: 'italic' }}>great.</em>
           </h2>
-
-          <p style={{ fontFamily: sans, fontSize: '0.95rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.75, marginBottom: '3.5rem' }}>
-            Tell us about your business and we&apos;ll get back to you within 24 hours.
+          <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: '3rem' }}>
+            Have a project in mind? Drop us a message and we&apos;ll get back to you within a day.
           </p>
 
           {contactSent ? (
-            <div style={{ padding: '3rem', background: 'rgba(255,255,255,0.04)', borderRadius: '20px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p style={{ fontFamily: serif, fontSize: '1.75rem', color: '#fff', fontWeight: 300, margin: '0 0 0.5rem', fontStyle: 'italic' }}>Message received.</p>
-              <p style={{ fontFamily: sans, fontSize: '0.9rem', color: 'rgba(255,255,255,0.4)', margin: 0 }}>We&apos;ll be in touch shortly.</p>
+            <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.06)', borderRadius: '16px' }}>
+              <p style={{ fontFamily: serif, fontSize: '1.5rem', color: '#fff', fontWeight: 300, marginBottom: '0.5rem' }}>
+                <em>Message received.</em>
+              </p>
+              <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>We&apos;ll be in touch shortly.</p>
             </div>
           ) : (
             <form onSubmit={e => { e.preventDefault(); setContactSent(true) }}
-              style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-              {[
-                { type: 'text', placeholder: 'Your name', value: contactName, setter: setContactName, required: true },
-                { type: 'email', placeholder: 'Email address', value: contactEmail, setter: setContactEmail, required: true },
-                { type: 'tel', placeholder: 'Phone number', value: contactPhone, setter: setContactPhone, required: false },
-              ].map(({ type, placeholder, value, setter, required }) => (
-                <div key={placeholder} style={{ borderBottom: '1px solid rgba(255,255,255,0.12)', marginBottom: '0' }}>
-                  <input
-                    type={type} placeholder={placeholder} value={value}
-                    onChange={e => setter(e.target.value)} required={required}
-                    style={{
-                      fontFamily: sans, fontSize: '1rem', fontWeight: 300,
-                      background: 'transparent', border: 'none', outline: 'none',
-                      color: '#fff', padding: '1.25rem 0', width: '100%',
-                      caretColor: '#d4b8c8',
-                    }}
-                  />
-                </div>
-              ))}
-              <div style={{ borderBottom: '1px solid rgba(255,255,255,0.12)', marginBottom: '2.5rem' }}>
-                <textarea
-                  placeholder="A bit about your website" value={contactMessage}
-                  onChange={e => setContactMessage(e.target.value)} rows={3} required
-                  style={{
-                    fontFamily: sans, fontSize: '1rem', fontWeight: 300,
-                    background: 'transparent', border: 'none', outline: 'none',
-                    color: '#fff', padding: '1.25rem 0', width: '100%',
-                    resize: 'none', caretColor: '#d4b8c8',
-                  }}
-                />
-              </div>
-              <div>
-                <button type="submit" style={{
-                  fontFamily: sans, fontSize: '0.78rem', fontWeight: 700,
-                  letterSpacing: '0.1em', textTransform: 'uppercase',
-                  background: '#fff', color: dark,
-                  border: 'none', borderRadius: '999px',
-                  padding: '0.9rem 2.5rem', cursor: 'pointer',
-                  transition: 'background 0.25s, color 0.25s',
+              style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
+              <input
+                type="text" placeholder="Your name" value={contactName}
+                onChange={e => setContactName(e.target.value)} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
                 }}
-                  onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#d4b8c8'; b.style.color = dark }}
-                  onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = '#fff'; b.style.color = dark }}
-                >Send Message</button>
-              </div>
+              />
+              <input
+                type="email" placeholder="Email address" value={contactEmail}
+                onChange={e => setContactEmail(e.target.value)} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                }}
+              />
+              <input
+                type="tel" placeholder="Phone number" value={contactPhone}
+                onChange={e => setContactPhone(e.target.value)}
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                }}
+              />
+              <textarea
+                placeholder="A bit about your website" value={contactMessage}
+                onChange={e => setContactMessage(e.target.value)} rows={5} required
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                  resize: 'vertical',
+                }}
+              />
+              <button type="submit" style={{
+                fontFamily: font, fontSize: '0.85rem', fontWeight: 700,
+                letterSpacing: '0.08em', textTransform: 'uppercase',
+                background: '#fff', color: '#1e2333',
+                border: 'none', borderRadius: '999px',
+                padding: '0.85rem 2rem', cursor: 'pointer',
+                transition: 'opacity 0.2s', alignSelf: 'center',
+              }}
+                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
+                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
+              >Send Message</button>
             </form>
           )}
         </div>
       </div>
 
       {/* ── FOOTER ── */}
-      <div style={{ background: '#0f111a', padding: '1.75rem clamp(2rem, 6vw, 6rem)' }}>
+      <div style={{
+        background: '#16192a',
+        padding: '1.5rem 2rem',
+      }}>
         <div style={{
-          maxWidth: '1200px', margin: '0 auto',
+          maxWidth: '1100px', margin: '0 auto',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           flexWrap: 'wrap', gap: '0.75rem',
         }}>
           <a href="/" style={{
-            fontFamily: serif, fontSize: '1rem', fontWeight: 300,
-            color: 'rgba(255,255,255,0.7)', textDecoration: 'none',
-            letterSpacing: '0.04em', fontStyle: 'italic',
+            fontFamily: font, fontSize: '0.95rem', fontWeight: 700,
+            color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
           }}>mountain studios</a>
-          <p style={{ fontFamily: sans, fontSize: '0.72rem', color: 'rgba(255,255,255,0.2)', margin: 0, letterSpacing: '0.04em' }}>
-            © {new Date().getFullYear()} Mountain Studios · Cape Town
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
+            © {new Date().getFullYear()} Mountain Studios. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
             {['Privacy Policy', 'Terms of Service'].map(t => (
-              <a key={t} href="#" style={{ fontFamily: sans, color: 'rgba(255,255,255,0.2)', fontSize: '0.72rem', textDecoration: 'none', letterSpacing: '0.04em', transition: 'color 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.2)'}
-              >{t}</a>
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
             ))}
           </div>
         </div>
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-
         @keyframes fadeIn {
           from { opacity: 0 }
           to { opacity: 1 }
         }
         @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(28px) }
+          from { opacity: 0; transform: translateY(30px) }
           to { opacity: 1; transform: translateY(0) }
         }
-
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.25); }
-        input:focus, textarea:focus { border-color: rgba(212,184,200,0.5) !important; }
-
         @media (max-width: 768px) {
           .ms-float-card { display: none !important; }
-          .ms-hero-h1 { font-size: clamp(2.5rem, 8vw, 4rem) !important; }
-          .ms-portfolio-mag { grid-template-columns: 1fr !important; }
-          .ms-portfolio-grid { grid-template-columns: 1fr 1fr !important; }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
           .ms-about-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
-          .ms-founders-grid { grid-template-columns: 1fr 1fr !important; }
           .ms-portfolio-grid { grid-template-columns: 1fr !important; }
         }
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
       `}</style>
     </div>
   )
