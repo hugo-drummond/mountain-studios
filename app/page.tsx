@@ -7,15 +7,12 @@ const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const serif = 'Georgia, "Times New Roman", serif'
 
 const portfolioItems = [
-  { name: 'Harbour Lane Café', type: 'Café / Coffee Shop', img: 'https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Steinberg & Associates', type: 'Architecture Firm', img: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Studio Marlowe', type: 'Photography', img: 'https://images.pexels.com/photos/3062541/pexels-photo-3062541.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Peak Performance', type: 'Gym & Fitness', img: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Clarity Legal', type: 'Law Firm', img: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Lumière Beauty', type: 'Beauty Salon & Spa', img: 'https://images.pexels.com/photos/3993449/pexels-photo-3993449.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Grove & Garden', type: 'Landscaping', img: 'https://images.pexels.com/photos/1643409/pexels-photo-1643409.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Nomad Eats', type: 'Restaurant', img: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800' },
-  { name: 'Atlas Consulting', type: 'Business Consulting', img: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=800' },
+  { name: 'Alistair Drummond Architect', type: 'Architecture', img: '/images/portfolio/alistair-drummond.jpg', url: 'https://alistairdrummondarchitect.co.za/' },
+  { name: 'Coimbra Bakery', type: 'Food & Bakery', img: '/images/portfolio/coimbra-bakery.jpg', url: 'https://coimbrabakery.co.za/' },
+  { name: 'Pie in the Sky', type: 'Food & Bakery', img: '/images/portfolio/pie-in-the-sky.jpg', url: 'https://pie-in-the-sky.co.za/' },
+  { name: 'Hout Bay Curtain Call', type: 'Interiors & Home', img: '/images/portfolio/houtbay-curtain-call.jpg', url: 'https://houtbaycurtaincall.co.za/' },
+  { name: 'Bali Blinds', type: 'Interiors & Home', img: '/images/portfolio/bali-blinds.jpg', url: 'https://baliblinds.co.za/' },
+  { name: "Ant's Awnings", type: 'Metal & Glass Awnings', img: '/images/portfolio/ants-awnings.jpg', url: 'https://antsawnings.co.za/' },
 ]
 
 export default function Home() {
@@ -235,28 +232,32 @@ export default function Home() {
 
           <div className="ms-portfolio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
             {visibleItems.map((item, i) => (
-              <div key={item.name} style={{
-                borderRadius: '16px', overflow: 'hidden',
-                background: '#fff',
-                boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)',
-                transform: i % 3 === 1 ? 'translateY(1.5rem)' : 'none',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 25px 35px -5px rgba(0,0,0,0.15)' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.08)' }}
+              <a key={item.name} href={(item as typeof item & { url?: string }).url || '#'} target="_blank" rel="noopener noreferrer"
+                style={{ textDecoration: 'none', display: 'block' }}
               >
-                <div style={{ height: '240px', overflow: 'hidden' }}>
-                  <img src={item.img} alt={item.name}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-                    onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.05)'}
-                    onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
-                  />
+                <div style={{
+                  borderRadius: '16px', overflow: 'hidden',
+                  background: '#fff',
+                  boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)',
+                  transform: i % 3 === 1 ? 'translateY(1.5rem)' : 'none',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 25px 35px -5px rgba(0,0,0,0.15)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.boxShadow = '0 20px 25px -5px rgba(0,0,0,0.08)' }}
+                >
+                  <div style={{ height: '240px', overflow: 'hidden' }}>
+                    <img src={item.img} alt={item.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                      onMouseEnter={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.05)'}
+                      onMouseLeave={e => (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'}
+                    />
+                  </div>
+                  <div style={{ padding: '1.25rem 1.5rem' }}>
+                    <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.35rem' }}>{item.type}</p>
+                    <p style={{ fontFamily: serif, fontSize: '1.15rem', fontWeight: 300, color: '#2e333a', margin: 0 }}>{item.name}</p>
+                  </div>
                 </div>
-                <div style={{ padding: '1.25rem 1.5rem' }}>
-                  <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.35rem' }}>{item.type}</p>
-                  <p style={{ fontFamily: serif, fontSize: '1.15rem', fontWeight: 300, color: '#2e333a', margin: 0 }}>{item.name}</p>
-                </div>
-              </div>
+              </a>
             ))}
           </div>
 
