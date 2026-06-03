@@ -1354,6 +1354,7 @@ function buildServiceTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
   #custom-cursor-ring { width:28px;height:28px;border:1.5px solid rgba(${pr},${pg},${pb},0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
+  @media(max-width:768px){.hero-ab{display:none}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -1367,7 +1368,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.85) 100%)"></div>
     </div>
     <!-- Left accent bar -->
-    <div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
+    <div class="hero-ab" style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
     <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 5rem;width:100%">
       ${content.badge ? `<div class="svc-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:rgba(255,255,255,0.85);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
       <p class="svc-fade-1" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
@@ -1741,7 +1742,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     #food-nav.scrolled { background:${cream} !important; box-shadow:0 1px 20px rgba(0,0,0,0.08); }
     #food-nav.scrolled a { color:${inkDark} !important; }
     #food-nav.scrolled a[href="#contact"] { border-color:${inkDark} !important; }
-    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; } #food-nav > div > a:not([href="#contact"]) { display:none!important; } #food-nav label { display:block!important; } }
+    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; background:${inkDark} !important; box-shadow:none !important; } #food-nav > div > a:not([href="#contact"]) { display:none!important; } #food-nav label { display:block!important; } }
   </style>
   <script>
     window.addEventListener('scroll',function(){
@@ -1753,7 +1754,8 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, Ken Burns bg, massive serif headline centered
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+  <style>@media(max-width:768px){.food-hero{min-height:100svh!important;padding:0!important}.food-hero>div{padding:0!important}}</style>
+  <section class="food-hero" style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
     <div style="position:absolute;inset:0;animation:kenburns 18s ease-in-out infinite alternate">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transform-origin:center" />
     </div>
@@ -1783,13 +1785,14 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // ACCOLADES STRIP — gold stars + key stats
   const accoladesStrip = `
-  <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap">
+  <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap;text-align:center">
     ${content.stats.slice(0, 3).map(s => `
-    <div style="text-align:center">
+    <div style="text-align:center;flex:0 0 auto">
       <div style="font-family:var(--heading-font);font-size:1.7rem;font-weight:600;color:${goldLight};margin-bottom:0.2rem">${s.value}</div>
       <div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(255,255,255,0.55);letter-spacing:0.12em;text-transform:uppercase">${s.label}</div>
-    </div>`).join(`<span style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
-  </section>`
+    </div>`).join(`<span class="food-sep" style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
+  </section>
+  <style>@media(max-width:640px){ .food-sep { display:none !important; } section[style*="${inkDark}"] { gap:2rem !important; padding:1.5rem !important; } }</style>`
 
   // ABOUT — editorial 2-col: tall moody photo left, story right with gold ornament
   const aboutSection = `
@@ -1810,10 +1813,13 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:${inkDark};line-height:1.15;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${inkMid};line-height:1.75;font-style:italic;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid ${gold}">${content.aboutMission}</p>` : ''}
         ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${muted};line-height:1.85;margin-bottom:1rem">${p}</p>`).join('')}
-        <a href="#contact" style="display:inline-block;margin-top:1.5rem;font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.9rem 2.25rem;background:${inkDark};color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.3s">${content.ctaPrimary}</a>
+        <div class="food-cta-wrap" style="margin-top:1.5rem">
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.9rem 2.25rem;background:${inkDark};color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase;transition:background 0.3s">${content.ctaPrimary}</a>
+        </div>
       </div>
     </div>
-  </section>`
+  </section>
+  <style>@media(max-width:768px){ .food-cta-wrap { text-align:center; } }</style>`
 
   // MENU SECTION — ornate heading, stacked menu rows with thumbnail
   const menuSection = `
@@ -1852,11 +1858,11 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const gallerySection = `
   <section id="gallery" style="padding:0;background:${bg}">
     <div style="max-width:1400px;margin:0 auto">
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
+      <div class="food-gal-main" style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
         <div style="overflow:hidden;height:600px">
           <img src="${stockPool[6]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
+        <div class="food-gal-stack" style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
           <div style="overflow:hidden">
             <img src="${stockPool[7]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -1865,14 +1871,22 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
           </div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
+      <div class="food-gal-row2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
         ${[9,10,11].map(i => `
         <div style="overflow:hidden;height:300px">
           <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>`).join('')}
       </div>
     </div>
-  </section>`
+  </section>
+  <style>
+    @media(max-width:640px){
+      .food-gal-main { grid-template-columns:1fr !important; }
+      .food-gal-main > div:first-child { height:260px !important; }
+      .food-gal-stack { display:none !important; }
+      .food-gal-row2 { display:none !important; }
+    }
+  </style>`
 
   // TESTIMONIAL — dark candlelit bg, centered oversized quote
   const testimonialSection = content.testimonial ? `

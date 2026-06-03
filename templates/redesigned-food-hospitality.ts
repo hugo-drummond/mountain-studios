@@ -47,7 +47,8 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // HERO — full-bleed cinematic, Ken Burns bg, massive serif headline centered
   const heroSection = `
-  <section style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
+  <style>@media(max-width:768px){.food-hero{min-height:100svh!important;padding:0!important}.food-hero>div{padding:0!important}}</style>
+  <section class="food-hero" style="position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden">
     <div style="position:absolute;inset:0;animation:kenburns 18s ease-in-out infinite alternate">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transform-origin:center" />
     </div>
