@@ -23,6 +23,7 @@ export default function Home() {
   const [visibleCount, setVisibleCount] = useState(3)
   const [contactName, setContactName] = useState('')
   const [contactEmail, setContactEmail] = useState('')
+  const [contactPhone, setContactPhone] = useState('')
   const [contactMessage, setContactMessage] = useState('')
   const [contactSent, setContactSent] = useState(false)
   const portfolioRef = useRef<HTMLDivElement>(null)
@@ -178,25 +179,29 @@ export default function Home() {
             >Work With Us</a>
           </div>
 
-          {/* Stats */}
+          {/* Founders */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
             {[
-              { n: '50+', label: 'Websites Built' },
-              { n: '5+', label: 'Years Experience' },
-              { n: '2', label: 'Founders' },
-              { n: '100%', label: 'Client Focused' },
-            ].map(({ n, label }) => (
-              <div key={label} style={{
+              { name: 'Hugo', role: 'Co-founder' },
+              { name: 'Nathan', role: 'Co-founder' },
+            ].map(({ name, role }) => (
+              <div key={name} style={{
                 background: '#fff',
                 borderRadius: '16px',
-                padding: '2rem 1.5rem',
+                overflow: 'hidden',
                 boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
               }}>
-                <p style={{
-                  fontFamily: serif, fontSize: '2.5rem', fontWeight: 300,
-                  color: '#745762', margin: '0 0 0.25rem', fontStyle: 'italic',
-                }}>{n}</p>
-                <p style={{ fontSize: '0.8rem', fontWeight: 600, color: '#535f77', margin: 0, letterSpacing: '0.05em', textTransform: 'uppercase' }}>{label}</p>
+                <div style={{
+                  height: '280px',
+                  background: '#e8e4f0',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <span style={{ fontSize: '4rem', opacity: 0.2 }}>▲</span>
+                </div>
+                <div style={{ padding: '1.25rem 1.5rem' }}>
+                  <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.2rem' }}>{name}</p>
+                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#745762', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{role}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -260,16 +265,16 @@ export default function Home() {
               <button
                 onClick={() => setVisibleCount(c => c + 3)}
                 style={{
-                  fontFamily: font, fontSize: '0.8rem', fontWeight: 700,
-                  letterSpacing: '0.08em', textTransform: 'uppercase',
                   background: 'transparent', border: '1.5px solid #535f77',
-                  color: '#535f77', padding: '0.75rem 2rem', borderRadius: '999px',
+                  color: '#535f77', width: '48px', height: '48px', borderRadius: '999px',
                   cursor: 'pointer', transition: 'all 0.2s',
+                  fontSize: '1.25rem', display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                 }}
                 onMouseEnter={e => { const b = e.currentTarget; b.style.background = '#535f77'; b.style.color = '#fff' }}
                 onMouseLeave={e => { const b = e.currentTarget; b.style.background = 'transparent'; b.style.color = '#535f77' }}
+                aria-label="Load more"
               >
-                Load More
+                ↓
               </button>
             </div>
           )}
@@ -323,8 +328,17 @@ export default function Home() {
                   color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
                 }}
               />
+              <input
+                type="tel" placeholder="Phone number" value={contactPhone}
+                onChange={e => setContactPhone(e.target.value)}
+                style={{
+                  fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.12)', borderRadius: '10px',
+                  color: '#fff', padding: '0.85rem 1.25rem', outline: 'none',
+                }}
+              />
               <textarea
-                placeholder="Tell us about your project" value={contactMessage}
+                placeholder="A bit about your website" value={contactMessage}
                 onChange={e => setContactMessage(e.target.value)} rows={5} required
                 style={{
                   fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',

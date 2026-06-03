@@ -518,6 +518,7 @@ export default function StartYourProject() {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [projectInfo, setProjectInfo] = useState('')
   const [contactSubmitted, setContactSubmitted] = useState(false)
 
   const weekdays = getWeekdays(new Date(), 2)
@@ -738,7 +739,6 @@ export default function StartYourProject() {
             <button onClick={() => setStep(1)} style={{ ...btnPrimary, padding: '0.75rem 2rem' }}>
               Let&apos;s Go &nbsp;→
             </button>
-
           </div>
         )}
 
@@ -1115,7 +1115,7 @@ export default function StartYourProject() {
                 onClick={() => setStep(8)}
                 style={{ ...btnPrimary, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
-                I love it →
+                I love it
               </button>
               <button
                 onClick={() => setStep(8)}
@@ -1145,6 +1145,15 @@ export default function StartYourProject() {
               <div>
                 <p style={label}>Phone (optional)</p>
                 <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
+              </div>
+              <div>
+                <p style={label}>A bit about your website (optional)</p>
+                <textarea
+                  value={projectInfo}
+                  onChange={(e) => setProjectInfo(e.target.value)}
+                  rows={3}
+                  style={{ ...inputStyle, fontSize: '1rem', resize: 'vertical', borderBottom: '1.5px solid rgba(255,255,255,0.5)' }}
+                />
               </div>
             </div>
             <Nav
