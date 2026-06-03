@@ -540,10 +540,10 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       /* All multi-col grids → 1 col */
       .ms-grid { grid-template-columns: 1fr !important; }
 
-      /* Photo grids inside gallery → keep 2 col, reset row spans */
-      #gallery .ms-grid { grid-template-columns: repeat(2, 1fr) !important; grid-template-rows: auto !important; }
-      #gallery .ms-grid > * { grid-row: auto !important; grid-column: auto !important; height: 160px !important; overflow: hidden; }
-      #gallery .ms-grid > *:nth-child(odd):last-child { grid-column: 1 / -1 !important; }
+      /* Gallery → 2 stacked full-width photos */
+      #gallery .ms-grid { display: flex !important; flex-direction: column !important; }
+      #gallery .ms-grid > * { width: 100% !important; height: 260px !important; overflow: hidden !important; grid-row: auto !important; grid-column: auto !important; }
+      #gallery .ms-grid > *:nth-child(n+3) { display: none !important; }
 
       /* Flex process rows → vertical */
       .ms-flex { flex-direction: column !important; }

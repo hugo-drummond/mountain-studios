@@ -42,10 +42,10 @@
       .ms-sticky { position: static !important; }
       h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
       h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
-      /* Photo grids in gallery → 2 col */
-      #gallery .ms-grid { grid-template-columns: repeat(2, 1fr) !important; grid-template-rows: auto !important; }
-      #gallery .ms-grid > * { grid-row: auto !important; grid-column: auto !important; height: 160px !important; overflow: hidden; }
-      #gallery .ms-grid > *:nth-child(odd):last-child { grid-column: 1 / -1 !important; }
+      /* Gallery → 2 stacked full-width photos */
+      #gallery .ms-grid { display: flex !important; flex-direction: column !important; }
+      #gallery .ms-grid > * { width: 100% !important; height: 260px !important; overflow: hidden !important; grid-row: auto !important; grid-column: auto !important; }
+      #gallery .ms-grid > *:nth-child(n+3) { display: none !important; }
       /* About — hide CTA, reduce padding */
       #about a[href="#contact"] { display: none !important; }
       #about { padding: 50px 0 40px !important; }
