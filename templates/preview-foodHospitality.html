@@ -251,13 +251,23 @@
     </div>
   </section>
 
+  <style>
+    @media(max-width:768px){
+      .food-gal-top { grid-template-columns:1fr 1fr !important; }
+      .food-gal-top > div:first-child { height:220px !important; }
+      .food-gal-stack > div { height:107px !important; }
+      .food-gal-bot { grid-template-columns:1fr 1fr !important; }
+      .food-gal-bot > div { height:160px !important; }
+      .food-gal-bot > div:last-child { display:none !important; }
+    }
+  </style>
   <section id="gallery" style="padding:0;background:#f9f5ef">
     <div style="max-width:1400px;margin:0 auto">
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
+      <div class="food-gal-top" style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
         <div style="overflow:hidden;height:600px">
           <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
+        <div class="food-gal-stack" style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
           <div style="overflow:hidden">
             <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -266,7 +276,7 @@
           </div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
+      <div class="food-gal-bot" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
         
         <div style="overflow:hidden;height:300px">
           <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
