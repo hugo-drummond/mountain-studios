@@ -418,21 +418,21 @@ function getWeekdays(startDate: Date, weeks: number): Date[] {
 
 
 const categoryColors: Record<BusinessCategory, { primary: string; secondary: string }> = {
-  'food-hospitality':      { primary: '#8B4513', secondary: '#D4A574' },  // warm brown + tan — earthy, appetising
-  'retail':                { primary: '#1a1a2e', secondary: '#c9a96e' },  // dark navy + muted gold — upmarket retail
-  'trades-construction':   { primary: '#2C5F7C', secondary: '#E8913A' },  // steel blue + safety orange — trade industry standard
-  'health-wellness':       { primary: '#3A7D6E', secondary: '#B8D8CF' },  // sage green + soft mint — calming, clinical trust
-  'professional':          { primary: '#1E3A5F', secondary: '#C4A265' },  // navy + brass — law/finance authority
-  'creative':              { primary: '#2D2D2D', secondary: '#D4886C' },  // charcoal + terracotta — gallery/studio feel
-  'fitness-sport':         { primary: '#1A1A1A', secondary: '#E63946' },  // black + red accent — energy, power
-  'home-services':         { primary: '#2B7A78', secondary: '#DEF2F1' },  // teal + light mint — clean, trustworthy
-  'education':             { primary: '#1D3557', secondary: '#E9C46A' },  // deep blue + warm yellow — academic, approachable
-  'automotive':            { primary: '#2D2D2D', secondary: '#C0392B' },  // dark grey + red — automotive standard
-  'property':              { primary: '#1B2A4A', secondary: '#B5916C' },  // dark navy + warm copper — luxury property
-  'events-entertainment':  { primary: '#2D1B4E', secondary: '#E8B4B4' },  // deep plum + blush — evening/event feel
-  'tech-digital':          { primary: '#0D1B2A', secondary: '#00BFA6' },  // dark blue + teal green — modern tech
-  'pets':                  { primary: '#5B7553', secondary: '#E8B960' },  // forest green + warm gold — natural, friendly
-  'other':                 { primary: '#334155', secondary: '#94A3B8' },  // slate — neutral, professional
+  'food-hospitality':      { primary: '#9C4221', secondary: '#F0C896' },  // rich burnt sienna + warm peach — appetite, warmth, artisan
+  'retail':                { primary: '#1B3A6B', secondary: '#D4A843' },  // rich navy + warm gold — trust, purchase intent, upmarket
+  'trades-construction':   { primary: '#1D5C8A', secondary: '#E07B3C' },  // rich steel blue + amber — reliability, energy, industry
+  'health-wellness':       { primary: '#2E7D6E', secondary: '#B8DFCF' },  // deep sage-teal + soft mint — calm, healing, clinical trust
+  'professional':          { primary: '#0F2B52', secondary: '#C49A3C' },  // Oxford navy + antique gold — authority, prestige, trust
+  'creative':              { primary: '#1A1A2E', secondary: '#E8956D' },  // deep charcoal-navy + warm coral — sophistication, creativity
+  'fitness-sport':         { primary: '#111111', secondary: '#D42020' },  // near-black + crisp crimson — power, energy, performance
+  'home-services':         { primary: '#1A6464', secondary: '#7DCFCA' },  // deep teal + light teal — clean, trustworthy, refreshing
+  'education':             { primary: '#1A4B8A', secondary: '#F0B429' },  // warm royal blue + golden amber — focus, optimism, learning
+  'automotive':            { primary: '#1A2030', secondary: '#C42828' },  // gunmetal navy + deep crimson — sophisticated, powerful
+  'property':              { primary: '#162030', secondary: '#C49060' },  // midnight navy + warm copper — prestige, stability, luxury
+  'events-entertainment':  { primary: '#3A1A58', secondary: '#D4AF5A' },  // deep plum + champagne gold — celebration, elegance
+  'tech-digital':          { primary: '#0C1A2E', secondary: '#00B4A6' },  // deep tech navy + electric teal — innovation, precision
+  'pets':                  { primary: '#3A6232', secondary: '#E8B040' },  // forest green + warm amber — nature, warmth, care
+  'other':                 { primary: '#3A4F6B', secondary: '#B87878' },  // slate blue + dusty rose — refined, neutral, welcoming
 }
 
 const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: number }> = {
@@ -698,8 +698,8 @@ export default function StartYourProject() {
             color: '#fff', textDecoration: 'none', letterSpacing: '0.04em',
             marginRight: '1.5rem',
           }}>mountain studios</a>
-          {['About', 'Portfolio', 'Contact'].map(label => (
-            <a key={label} href={`/${label.toLowerCase()}`} style={{
+          {[['About', '/#about'], ['Portfolio', '/#portfolio'], ['Contact', '/#contact']].map(([label, href]) => (
+            <a key={label} href={href} style={{
               fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
               color: 'rgba(255,255,255,0.8)', textDecoration: 'none',
               letterSpacing: '0.06em', textTransform: 'uppercase',
@@ -709,6 +709,7 @@ export default function StartYourProject() {
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.8)'}
             >{label}</a>
           ))}
+
           <a href="/start-your-project" style={{
             fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
             color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',

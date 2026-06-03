@@ -136,7 +136,7 @@ export default function Home() {
       </div>
 
       {/* ── ABOUT ── */}
-      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
+      <div id="about" style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
         <div className="ms-about-grid" style={{ maxWidth: '960px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'center' }}>
           <div>
             <p style={{
@@ -199,7 +199,7 @@ export default function Home() {
       </div>
 
       {/* ── PORTFOLIO ── */}
-      <div ref={portfolioRef} style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+      <div id="portfolio" ref={portfolioRef} style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '3.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem' }}>
             <div>
@@ -215,12 +215,6 @@ export default function Home() {
                 Recent <em style={{ fontStyle: 'italic' }}>Projects</em>
               </h2>
             </div>
-            <a href="/portfolio" style={{
-              fontFamily: font, fontSize: '0.8rem', fontWeight: 600,
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-              color: '#535f77', textDecoration: 'none',
-              borderBottom: '1px solid #535f77', paddingBottom: '2px',
-            }}>View all →</a>
           </div>
 
           <div className="ms-portfolio-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', marginBottom: '3rem' }}>
@@ -276,7 +270,7 @@ export default function Home() {
       </div>
 
       {/* ── CONTACT ── */}
-      <div style={{ background: '#1e2333', padding: '7rem 2rem' }}>
+      <div id="contact" style={{ background: '#1e2333', padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
           <p style={{
             fontFamily: font, fontSize: '0.7rem', fontWeight: 700,
