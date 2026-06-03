@@ -1287,12 +1287,12 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const gallerySection = `
   <style>
     @media(max-width:768px){
-      .food-gal-top { grid-template-columns:1fr 1fr !important; }
-      .food-gal-top > div:first-child { height:220px !important; }
-      .food-gal-stack > div { height:107px !important; }
-      .food-gal-bot { grid-template-columns:1fr 1fr !important; }
-      .food-gal-bot > div { height:160px !important; }
-      .food-gal-bot > div:last-child { display:none !important; }
+      .food-gal-top { grid-template-columns:1fr !important; }
+      .food-gal-top > div:first-child { height:260px !important; }
+      .food-gal-stack { grid-template-rows:auto !important; }
+      .food-gal-stack > div:first-child { height:260px !important; }
+      .food-gal-stack > div:last-child { display:none !important; }
+      .food-gal-bot { display:none !important; }
     }
   </style>
   <section id="gallery" style="padding:0;background:${bg}">
