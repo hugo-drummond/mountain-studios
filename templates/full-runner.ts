@@ -1511,7 +1511,6 @@ function buildRetailTemplate(data: TemplateData): string {
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">${content.aboutHeading}</h2>
       ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${textPrimary};font-weight:600;line-height:1.65;margin-bottom:1.25rem">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).slice(0,2).map(p => `<p style="font-family:var(--body-font);font-size:0.92rem;color:${textMuted};line-height:1.8;margin-bottom:0.9rem">${p}</p>`).join('')}
-      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;margin-top:2rem;font-family:var(--body-font);font-size:0.8rem;font-weight:700;color:${textPrimary};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} <span style="display:block;width:36px;height:1px;background:${accent}"></span></a>
     </div>
   </section>
   <style>@media(max-width:768px){#about{grid-template-columns:1fr!important}#about>div:first-child{height:300px!important}}</style>`
@@ -1521,7 +1520,7 @@ function buildRetailTemplate(data: TemplateData): string {
   <section id="gallery" style="padding:100px 0;background:${bgAlt}">
     <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:3rem">${content.galleryHeading}</h2>
-      <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:280px 280px;gap:4px">
+      <div class="ret-gal" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:280px 280px;gap:4px">
         <div style="grid-row:span 2;overflow:hidden;border-radius:4px">
           <img src="${stockPool[5]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
@@ -1530,6 +1529,7 @@ function buildRetailTemplate(data: TemplateData): string {
           <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
         </div>`).join('')}
       </div>
+      <style>@media(max-width:768px){.ret-gal{display:flex!important;flex-direction:column!important}.ret-gal>div{height:260px!important;grid-row:auto!important}.ret-gal>div:nth-child(n+3){display:none!important}}</style>
     </div>
   </section>`
 
@@ -1757,7 +1757,7 @@ function buildPetsTemplate(data: TemplateData): string {
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.15">${content.galleryHeading}</h2>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;color:${accentGreen};text-decoration:none;display:flex;align-items:center;gap:0.5rem">Book Now <span>&#8594;</span></a>
       </div>
-      <div style="display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:260px 260px;gap:12px">
+      <div class="pts-gal" style="display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:260px 260px;gap:12px">
         <div style="grid-row:span 2;border-radius:24px;overflow:hidden">
           <img src="${stockPool[4]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
@@ -1766,6 +1766,7 @@ function buildPetsTemplate(data: TemplateData): string {
           <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>`).join('')}
       </div>
+      <style>@media(max-width:768px){.pts-gal{display:flex!important;flex-direction:column!important}.pts-gal>div{height:260px!important;grid-row:auto!important;border-radius:12px!important}.pts-gal>div:nth-child(n+3){display:none!important}}</style>
     </div>
   </section>`
 
@@ -2278,7 +2279,6 @@ ${buildStandardNav(businessName, content, navFlags)}
       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">${content.aboutHeading.toUpperCase()}</h2>
       ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${fit.accent};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.muted};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
-      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none">${content.ctaPrimary}</a>
     </div>
     <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
       <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
@@ -3933,9 +3933,6 @@ function buildHomeServicesTemplate(data: TemplateData): string {
             <span style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmText};font-weight:500">${t}</span>
           </div>`).join('')}
         </div>
-        <div style="margin-top:2.5rem">
-          <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
-        </div>
       </div>
       <div style="position:relative">
         <div style="border-radius:24px;overflow:hidden;height:520px">
@@ -4289,9 +4286,6 @@ function buildAutomotiveTemplate(data: TemplateData): string {
             <div style="width:4px;height:4px;background:${autoAccent};flex-shrink:0"></div>
             <span style="font-family:'Barlow',sans-serif;font-size:0.875rem;color:${autoText}">${t}</span>
           </div>`).join('')}
-        </div>
-        <div style="margin-top:2.5rem">
-          <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
@@ -4931,7 +4925,6 @@ function buildCreativeTemplate(data: TemplateData): string {
           <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:${ink};font-style:italic;line-height:1.1;margin-bottom:2rem">${content.aboutHeading}</h2>
           ${content.aboutMission ? `<p style="font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;font-weight:400;color:${ink};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.aboutMission}</p>` : ''}
           ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#4a4a45;line-height:1.9;margin-bottom:1.25rem">${p}</p>`).join('')}
-          <a href="#contact" style="display:inline-flex;align-items:center;gap:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${ink};text-decoration:none;margin-top:2rem;border-bottom:1px solid ${ink};padding-bottom:0.25rem">${content.ctaPrimary} &rarr;</a>
         </div>
       </div>
     </div>
