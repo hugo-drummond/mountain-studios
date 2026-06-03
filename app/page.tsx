@@ -144,13 +144,6 @@ export default function Home() {
               letterSpacing: '0.2em', textTransform: 'uppercase',
               color: '#745762', marginBottom: '1.25rem',
             }}>About Us</p>
-            <h2 style={{
-              fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
-              fontWeight: 300, color: '#2e333a', lineHeight: 1.2,
-              margin: '0 0 1.75rem',
-            }}>
-              Built on friendship,<br /><em style={{ fontStyle: 'italic' }}>grown by craft.</em>
-            </h2>
             <p style={{
               fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
               margin: '0 0 1.25rem',
