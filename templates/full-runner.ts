@@ -800,7 +800,7 @@ function buildServiceTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
   #custom-cursor-ring { width:28px;height:28px;border:1.5px solid rgba(${pr},${pg},${pb},0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.hero-ab{display:none}}
+  @media(max-width:768px){.hero-ab{display:none}.svc-badge,.svc-eyebrow{display:none!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -816,8 +816,8 @@ ${buildStandardNav(businessName, content, navFlags)}
     <!-- Left accent bar -->
     <div class="hero-ab" style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
     <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 5rem;width:100%">
-      ${content.badge ? `<div class="svc-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:rgba(255,255,255,0.85);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
-      <p class="svc-fade-1" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
+      ${content.badge ? `<div class="svc-fade-1 svc-badge" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:rgba(255,255,255,0.85);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
+      <p class="svc-fade-1 svc-eyebrow" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
       <h1 class="svc-fade-2" style="font-family:var(--heading-font);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:750px">${content.tagline}</h1>
       <p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:rgba(245,245,240,0.65);max-width:500px;line-height:1.82;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
       ${content.heroAccent ? `<p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--primary-on-dark);font-weight:600;margin:0 0 2.75rem">${content.heroAccent}</p>` : ''}
