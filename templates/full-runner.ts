@@ -898,6 +898,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
       .pf2-img-stage img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease,transform 0.7s ease }
       .pf2-img-stage img.pf2-active { opacity:1;transform:scale(1) }
       .pf2-img-stage img.pf2-inactive { opacity:0;transform:scale(1.03) }
+      @media(max-width:768px){.pf2-slideshow{display:none!important}}
     </style>
     <section id="services" style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
@@ -907,7 +908,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
         </div>
         <div class="ms-grid" style="display:grid;grid-template-columns:48% 52%;gap:4rem;align-items:start;margin-top:3.5rem">
           <!-- Left: sticky image stage -->
-          <div class="ms-sticky" style="position:sticky;top:3rem">
+          <div class="ms-sticky pf2-slideshow" style="position:sticky;top:3rem">
             <div class="pf2-img-stage" style="height:580px">
               ${serviceImgs.map((img, i) => `<img id="pf2-img-${i}" src="${img}" alt="" class="${i === 0 ? 'pf2-active' : 'pf2-inactive'}" />`).join('')}
             </div>
