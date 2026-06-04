@@ -559,8 +559,6 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       .ms-nav > div { padding-left: 1rem !important; padding-right: 1rem !important; }
       /* Hide ctaNote on mobile */
       .ms-cta-note { display: none !important; }
-      /* Kill excess hero height on mobile */
-      section { min-height: auto !important; }
       /* Section padding — reduce to ~1/3 on mobile */
       section { padding-top: 40px !important; padding-bottom: 40px !important; }
       #gallery > div { padding-top: 25px !important; padding-bottom: 25px !important; }
@@ -3368,7 +3366,6 @@ function buildProfessionalTemplate(data: TemplateData): string {
     .pro-accordion-body.open { max-height:400px; }
     .pro-accordion-icon { width:28px;height:28px;border:1px solid ${borderCol};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s,background 0.3s; }
     .pro-accordion-trigger:hover .pro-accordion-icon { background:${accent};border-color:${accent}; }
-    @media(max-width:768px){.pro-svc-panel{display:none!important}}
   </style>
 
   <!-- Custom cursor -->
@@ -3453,7 +3450,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         </div>
 
         <!-- Sticky image panel -->
-        <div class="ms-sticky pro-svc-panel" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
+        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
           ${content.services.map((s, i) => `
           <img src="${stockImages.cards[i] || stockPool[i % stockPool.length]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
           <!-- Overlay label -->
