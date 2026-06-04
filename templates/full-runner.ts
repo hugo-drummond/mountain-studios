@@ -506,7 +506,7 @@ function buildVisualTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
   #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(${pr},${pg},${pb},0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}.vs-svc-right{padding-top:0.5rem!important}.vs-hero-inner{padding:clamp(4rem,10svh,7rem) 1.25rem clamp(5rem,12svh,8rem)!important}.vs-hero-stats>div{text-align:center!important}}
+  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}.vs-svc-right{padding-top:0.5rem!important}.vs-hero-inner{padding:clamp(4rem,10svh,7rem) 1.25rem clamp(5rem,12svh,8rem)!important}.vs-hero-stats{justify-content:center!important}.vs-hero-stats>div{flex:0 0 auto!important;text-align:center!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
