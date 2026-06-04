@@ -570,8 +570,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       .ms-stats { flex-wrap: wrap !important; justify-content: center !important; }
       .ms-stat-item { flex: 1 1 100% !important; text-align: center !important; }
 
-      /* Sticky image panels → hide on mobile (avoid empty blocks) */
-      .ms-sticky { display: none !important; }
+      .ms-sticky { position: static !important; }
+      .ms-nav { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 100 !important; }
 
       /* Footer */
       footer div { grid-template-columns: 1fr !important; }
@@ -726,7 +726,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
   if (inline) {
     // Inline nav: logo | links | CTA button (no burger on desktop, burger on mobile)
     return `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky ms-nav" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       ${logoHtml}
       <div style="display:flex;align-items:center;gap:2rem">
@@ -747,7 +747,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
 
   // Burger nav: logo | CTA + burger (5+ pages)
   return `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky ms-nav" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       ${logoHtml}
       <div style="display:flex;align-items:center;gap:1.25rem">

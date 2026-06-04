@@ -110,6 +110,7 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       .ms-flex { flex-direction: column !important; }
       .ms-img { height: 220px !important; }
       .ms-sticky { position: static !important; }
+      .ms-nav { position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; z-index: 100 !important; }
       h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
       h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
       /* Gallery → 2 stacked full-width photos */
@@ -188,7 +189,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
   const allLinks = navFlags.allLinks
   const logoHtml = `<a href="#" style="font-family:var(--heading-font);font-size:1.3rem;font-weight:700;color:#fff;text-decoration:none">${businessName}</a>`
   return `
-  <nav class="ms-sticky" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
+  <nav class="ms-sticky ms-nav" style="background:var(--primary-raw);position:sticky;top:0;z-index:100">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       ${logoHtml}
       <div style="display:flex;align-items:center;gap:2rem">
