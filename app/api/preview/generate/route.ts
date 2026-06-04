@@ -2800,6 +2800,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   .fit-service-row { border-bottom: 1px solid ${fit.border}; transition: background 0.3s ease; cursor: pointer; }
   .fit-service-row:hover { background: ${fit.bgCard}; }
   .fit-counter { font-variant-numeric: tabular-nums; }
+  @media(max-width:768px){.fit-hero-stats{padding:0!important}.fit-hero-stats>div{flex:1!important;padding-right:0!important;margin-right:0!important;border-right:none!important;text-align:center!important;padding:1rem 0!important}.fit-hero-stats>div:nth-child(n+4){display:none!important}}
 </style>
 
 <!-- PROMO BAR -->
@@ -2829,7 +2830,7 @@ ${buildStandardNav(businessName, content, navFlags)}
   </div>
   <!-- Bottom stats bar -->
   <div style="position:relative;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-top:1px solid ${fit.border}">
-    <div style="max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap">
+    <div class="fit-hero-stats" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap">
       ${content.stats.slice(0, 4).map((s, i) => `
       <div style="padding:1.5rem 0;${i < 3 ? `border-right:1px solid ${fit.border};padding-right:3rem;margin-right:3rem` : ''}">
         <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:${fit.text};line-height:1">${s.value}</div>
