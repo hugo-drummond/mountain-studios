@@ -3029,6 +3029,7 @@ function buildEducationTemplate(data: TemplateData): string {
   html { scroll-behavior: smooth; }
   .edu-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
   .edu-fade.visible { opacity: 1; transform: none; }
+  @media(max-width:768px){.edu-trust-strip{display:none!important}}
   .edu-card { transition: box-shadow 0.35s ease, transform 0.35s ease; }
   .edu-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.10); transform: translateY(-5px); }
   .edu-img-zoom { overflow: hidden; }
@@ -3080,7 +3081,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- TRUST STRIP -->
-<div style="background:${edu.text};padding:1.5rem 3rem">
+<div class="edu-trust-strip" style="background:${edu.text};padding:1.5rem 3rem">
   <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
     ${content.stats.slice(0, 4).map(s => `
     <div style="text-align:center">
