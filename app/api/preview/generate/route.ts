@@ -2537,6 +2537,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
     .hw-stats>div{text-align:center!important}
     #services .hw-img-hover{display:none!important}
     #about .hw-img-hover{display:none!important}
+    .hw-about-label{display:none!important}
   }
 </style>
 
@@ -2613,7 +2614,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <div class="hw-img-hover" style="height:220px;margin-left:3rem">
         <img src="${stockPool[4] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
       </div>
-      <div style="position:absolute;top:50%;left:-1.5rem;transform:translateY(-50%) rotate(-90deg);font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:${hw.muted};white-space:nowrap">${businessName}</div>
+      <div class="hw-about-label" style="position:absolute;top:50%;left:-1.5rem;transform:translateY(-50%) rotate(-90deg);font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:${hw.muted};white-space:nowrap">${businessName}</div>
     </div>
     <div class="hw-fade">
       <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Our Story</p>
