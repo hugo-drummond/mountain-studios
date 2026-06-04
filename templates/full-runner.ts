@@ -1428,13 +1428,13 @@ function buildRetailTemplate(data: TemplateData): string {
       <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">${l.label}</a>`).join('')}
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <a href="#contact" class="ret-nav-cta" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
       <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
   <style>
     #retail-nav.scrolled { background:${bg} !important; border-bottom:1px solid ${border}; box-shadow:0 2px 30px rgba(0,0,0,0.4); }
-    @media(max-width:768px){ #retail-nav label { display:block!important; } }
+    @media(max-width:768px){ #retail-nav label { display:block!important; } .ret-nav-cta { display:none!important; } .ret-hero-inner { padding:clamp(4rem,10svh,8rem) 1.5rem clamp(3rem,8svh,4rem)!important; } }
   </style>
   <script>
     window.addEventListener('scroll',function(){
@@ -1447,7 +1447,7 @@ function buildRetailTemplate(data: TemplateData): string {
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
   <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
-    <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
+    <div class="ret-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
         <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase">${content.heroEyebrow}</span>
