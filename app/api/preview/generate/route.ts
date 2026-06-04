@@ -1377,7 +1377,7 @@ function buildServiceTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
   #custom-cursor-ring { width:28px;height:28px;border:1.5px solid rgba(${pr},${pg},${pb},0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.hero-ab{display:none}.svc-badge,.svc-eyebrow{display:none!important}}
+  @media(max-width:768px){.hero-ab{display:none}.svc-badge,.svc-eyebrow{display:none!important}.svc-hero-stats>div{flex:1!important;padding-left:0!important;margin-left:0!important;text-align:center!important;border-left:none!important}.svc-hero-stats>div+div{border-left:1px solid rgba(255,255,255,0.08)!important}.svc-hero-stats>div:nth-child(n+4){display:none!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -1404,7 +1404,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       </div>
       ${content.ctaNote ? `<p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">${content.ctaNote}</p>` : ''}
       <!-- Stats strip -->
-      <div style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
+      <div class="svc-hero-stats" style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
         ${content.stats.slice(0, 4).map((s, i) => `
         <div style="flex:1;${i > 0 ? 'padding-left:2.5rem;border-left:1px solid rgba(255,255,255,0.08);margin-left:2.5rem' : ''}">
           <div style="font-family:var(--heading-font);font-size:2.25rem;font-weight:400;color:#f5f5f0;line-height:1">${s.value}</div>
