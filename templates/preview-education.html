@@ -74,7 +74,7 @@
   html { scroll-behavior: smooth; }
   .edu-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
   .edu-fade.visible { opacity: 1; transform: none; }
-  @media(max-width:768px){.edu-trust-strip{display:none!important}.edu-mob-stats{display:block!important}.edu-about-stats{display:none!important}}
+  @media(max-width:768px){.edu-trust-strip{display:none!important}.edu-hero{min-height:auto!important;padding:clamp(4rem,10svh,6rem) 0 2rem!important}}
   .edu-card { transition: box-shadow 0.35s ease, transform 0.35s ease; }
   .edu-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.10); transform: translateY(-5px); }
   .edu-img-zoom { overflow: hidden; }
@@ -113,7 +113,7 @@
   </label>
 
 <!-- HERO: Warm off-white, large editorial serif left, stacked image collage right -->
-<section style="background:#fef9f0;min-height:92vh;display:flex;align-items:center;overflow:hidden;position:relative">
+<section class="edu-hero" style="background:#fef9f0;min-height:92vh;display:flex;align-items:center;overflow:hidden;position:relative">
   <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:#e5ecfd;clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
   <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
     <div>
@@ -158,40 +158,6 @@
   </div>
 </section>
 
-<!-- Mobile stats grid (replaces trust strip on mobile) -->
-<div class="edu-mob-stats" style="display:none;padding:1.5rem;background:#ffffff;border-top:1px solid rgba(0,0,0,0.07);border-bottom:1px solid rgba(0,0,0,0.07)">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-    
-    <div style="display:flex;gap:0.6rem;align-items:flex-start">
-      <div style="width:24px;height:24px;border-radius:50%;background:#e5ecfd;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:0.65rem;flex-shrink:0">✓</div>
-      <div>
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:#1a1714">12+</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:#6b6560;margin-top:0.1rem">Years Experience</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:0.6rem;align-items:flex-start">
-      <div style="width:24px;height:24px;border-radius:50%;background:#e5ecfd;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:0.65rem;flex-shrink:0">✓</div>
-      <div>
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:#1a1714">500+</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:#6b6560;margin-top:0.1rem">Happy Clients</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:0.6rem;align-items:flex-start">
-      <div style="width:24px;height:24px;border-radius:50%;background:#e5ecfd;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:0.65rem;flex-shrink:0">✓</div>
-      <div>
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:#1a1714">98%</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:#6b6560;margin-top:0.1rem">Satisfaction</div>
-      </div>
-    </div>
-    <div style="display:flex;gap:0.6rem;align-items:flex-start">
-      <div style="width:24px;height:24px;border-radius:50%;background:#e5ecfd;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:0.65rem;flex-shrink:0">✓</div>
-      <div>
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:#1a1714">24h</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:#6b6560;margin-top:0.1rem">Response Time</div>
-      </div>
-    </div>
-  </div>
-</div>
 <!-- TRUST STRIP -->
 <div class="edu-trust-strip" style="background:#1a1714;padding:1.5rem 3rem">
   <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
@@ -322,7 +288,7 @@
       <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3vw,2.8rem);font-weight:700;color:#1a1714;line-height:1.25;margin-bottom:1.5rem">Our Story</h2>
       <p style="font-family:'Merriweather',Georgia,serif;font-size:1rem;font-style:italic;color:#1a1714;line-height:1.7;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid #2563eb">Our mission is to exceed expectations, every single time.</p>
       <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#6b6560;line-height:1.9;margin-bottom:1rem;font-weight:300">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#6b6560;line-height:1.9;margin-bottom:1rem;font-weight:300">Our team brings decades of combined experience and a passion for excellence to every project.</p>
-      <div class="edu-about-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.07)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid rgba(0,0,0,0.07)">
         
         <div style="display:flex;gap:0.75rem;align-items:flex-start">
           <div style="width:28px;height:28px;border-radius:50%;background:#e5ecfd;display:flex;align-items:center;justify-content:center;color:#2563eb;font-size:0.7rem;flex-shrink:0;margin-top:0.1rem">✓</div>
