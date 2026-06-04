@@ -1943,13 +1943,22 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   .hw-img-hover { overflow: hidden; }
   .hw-img-hover img { transition: transform 0.7s ease; }
   .hw-img-hover:hover img { transform: scale(1.04); }
-  @media(max-width:768px){.hw-hero-inner{padding:clamp(4rem,10svh,8rem) 1.5rem clamp(2rem,5svh,4rem)!important}.hw-stats{margin-top:2rem!important;padding-top:1.5rem!important;justify-content:space-between!important}.hw-stats>div{text-align:center!important}}
+  @media(max-width:768px){
+    .hw-hero-img{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;z-index:0!important}
+    .hw-hero-img img{width:100%!important;height:100%!important;object-fit:cover!important}
+    .hw-hero-section::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:0;pointer-events:none}
+    .hw-hero-inner{position:relative!important;z-index:1!important;padding:clamp(4rem,10svh,8rem) 1.5rem clamp(2rem,5svh,4rem)!important;text-align:center!important;align-items:center!important}
+    .hw-hero-inner *{color:#fff!important}
+    .hw-hero-inner .hw-fade{border-color:rgba(255,255,255,0.2)!important}
+    .hw-stats{margin-top:2rem!important;padding-top:1.5rem!important;justify-content:space-between!important;border-top-color:rgba(255,255,255,0.2)!important}
+    .hw-stats>div{text-align:center!important}
+  }
 </style>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
-<section style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
+<section class="hw-hero-section" style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
   <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -1967,7 +1976,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       </div>`).join('')}
     </div>
   </div>
-  <div class="hw-img-hover" style="position:relative">
+  <div class="hw-img-hover hw-hero-img" style="position:relative">
     <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
     <div style="position:absolute;inset:0;background:linear-gradient(to right,${hw.bg} 0%,transparent 8%)"></div>
     ${content.badge ? `<div style="position:absolute;bottom:3rem;left:2rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:1rem 1.5rem;max-width:220px">
