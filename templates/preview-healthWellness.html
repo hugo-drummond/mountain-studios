@@ -85,6 +85,7 @@
   .hw-img-hover { overflow: hidden; }
   .hw-img-hover img { transition: transform 0.7s ease; }
   .hw-img-hover:hover img { transform: scale(1.04); }
+  @media(max-width:768px){.hw-hero-inner{padding:clamp(4rem,10svh,8rem) 1.5rem clamp(2rem,5svh,4rem)!important}.hw-stats{margin-top:2rem!important;padding-top:1.5rem!important;justify-content:space-between!important}.hw-stats>div{text-align:center!important}}
 </style>
 
 
@@ -116,7 +117,7 @@
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
 <section style="min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#fdfcf9;position:relative">
-  <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
+  <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:#4a9b8e;margin-bottom:2rem">HOLISTIC WELLNESS</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:#1c1c1c;line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">Your path to<br/><em>lasting wellness</em></h1>
     <div class="hw-fade" style="width:48px;height:1px;background:#4a9b8e;margin-bottom:1.75rem"></div>
@@ -125,7 +126,7 @@
       <a href="#contact" class="hw-btn-primary" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.08em;padding:1rem 2.25rem;background:#4a9b8e;color:#fff;text-decoration:none;display:inline-block">Book a Consultation</a>
       <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;letter-spacing:0.06em;color:#6b6565;text-decoration:none;display:flex;align-items:center;gap:0.4rem">Explore &rarr;</a>
     </div>
-    <div class="hw-fade" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid rgba(0,0,0,0.07)">
+    <div class="hw-fade hw-stats" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid rgba(0,0,0,0.07)">
       
       <div>
         <div style="font-family:'Cormorant',Georgia,serif;font-size:2rem;font-weight:400;color:#1c1c1c">12+</div>

@@ -2526,13 +2526,14 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
   .hw-img-hover { overflow: hidden; }
   .hw-img-hover img { transition: transform 0.7s ease; }
   .hw-img-hover:hover img { transform: scale(1.04); }
+  @media(max-width:768px){.hw-hero-inner{padding:clamp(4rem,10svh,8rem) 1.5rem clamp(2rem,5svh,4rem)!important}.hw-stats{margin-top:2rem!important;padding-top:1.5rem!important;justify-content:space-between!important}.hw-stats>div{text-align:center!important}}
 </style>
 
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
 <section style="min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
-  <div style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
+  <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
     <div class="hw-fade" style="width:48px;height:1px;background:${hw.accent};margin-bottom:1.75rem"></div>
@@ -2541,7 +2542,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <a href="#contact" class="hw-btn-primary" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.08em;padding:1rem 2.25rem;background:${hw.accent};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
       <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;letter-spacing:0.06em;color:${hw.muted};text-decoration:none;display:flex;align-items:center;gap:0.4rem">Explore &rarr;</a>
     </div>
-    <div class="hw-fade" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid ${hw.border}">
+    <div class="hw-fade hw-stats" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid ${hw.border}">
       ${content.stats.slice(0, 3).map(s => `
       <div>
         <div style="font-family:'Cormorant',Georgia,serif;font-size:2rem;font-weight:400;color:${hw.text}">${s.value}</div>
