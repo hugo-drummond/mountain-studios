@@ -2274,7 +2274,7 @@ function buildPetsTemplate(data: TemplateData): string {
         </div>
       </div>
     </div>
-    <div style="position:absolute;bottom:3rem;right:3rem;background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);border-radius:20px;padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem">
+    <div class="pts-hero-stats" style="position:absolute;bottom:3rem;right:3rem;background:rgba(255,255,255,0.9);backdrop-filter:blur(12px);border-radius:20px;padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem">
       ${content.stats.slice(0, 2).map(s => `
       <div style="text-align:center">
         <div style="font-family:var(--heading-font);font-size:1.75rem;font-weight:700;color:${accentGreen}">${s.value}</div>
@@ -2282,7 +2282,8 @@ function buildPetsTemplate(data: TemplateData): string {
       </div>`).join(`<span style="display:block;width:1px;height:40px;background:${bgSage}"></span>`)}
     </div>
   </section>
-  <style>@keyframes petZoom{0%{transform:scale(1)}100%{transform:scale(1.06) translateX(-1%)}}</style>`
+  <style>@keyframes petZoom{0%{transform:scale(1)}100%{transform:scale(1.06) translateX(-1%)}}
+  @media(max-width:768px){.pts-hero-stats{left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:max-content!important;justify-content:center!important}}</style>`
 
   // ABOUT — warm split: rounded photo left with playful offset, story right
   const aboutSection = `
