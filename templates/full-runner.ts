@@ -2442,7 +2442,7 @@ function buildEducationTemplate(data: TemplateData): string {
   html { scroll-behavior: smooth; }
   .edu-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.75s ease, transform 0.75s ease; }
   .edu-fade.visible { opacity: 1; transform: none; }
-  @media(max-width:768px){.edu-trust-strip{display:none!important}}
+  @media(max-width:768px){.edu-trust-strip{display:none!important}.edu-mob-stats{display:block!important}.edu-about-stats{display:none!important}}
   .edu-card { transition: box-shadow 0.35s ease, transform 0.35s ease; }
   .edu-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.10); transform: translateY(-5px); }
   .edu-img-zoom { overflow: hidden; }
@@ -2493,6 +2493,19 @@ ${buildStandardNav(businessName, content, navFlags)}
   </div>
 </section>
 
+<!-- Mobile stats grid (replaces trust strip on mobile) -->
+<div class="edu-mob-stats" style="display:none;padding:1.5rem;background:${edu.bg};border-top:1px solid ${edu.border};border-bottom:1px solid ${edu.border}">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+    ${content.stats.slice(0, 4).map(s => `
+    <div style="display:flex;gap:0.6rem;align-items:flex-start">
+      <div style="width:24px;height:24px;border-radius:50%;background:${edu.accentLight};display:flex;align-items:center;justify-content:center;color:${edu.accent};font-size:0.65rem;flex-shrink:0">✓</div>
+      <div>
+        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:${edu.text}">${s.value}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.68rem;color:${edu.muted};margin-top:0.1rem">${s.label}</div>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>
 <!-- TRUST STRIP -->
 <div class="edu-trust-strip" style="background:${edu.text};padding:1.5rem 3rem">
   <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
@@ -2572,7 +2585,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <h2 style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2rem,3vw,2.8rem);font-weight:700;color:${edu.text};line-height:1.25;margin-bottom:1.5rem">${content.aboutHeading}</h2>
       ${content.aboutMission ? `<p style="font-family:'Merriweather',Georgia,serif;font-size:1rem;font-style:italic;color:${edu.text};line-height:1.7;margin-bottom:1.5rem;padding-left:1.25rem;border-left:3px solid ${edu.accent}">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${edu.muted};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid ${edu.border}">
+      <div class="edu-about-stats" style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid ${edu.border}">
         ${content.stats.slice(0, 4).map(s => `
         <div style="display:flex;gap:0.75rem;align-items:flex-start">
           <div style="width:28px;height:28px;border-radius:50%;background:${edu.accentLight};display:flex;align-items:center;justify-content:center;color:${edu.accent};font-size:0.7rem;flex-shrink:0;margin-top:0.1rem">✓</div>
