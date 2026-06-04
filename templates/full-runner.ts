@@ -117,6 +117,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       #gallery .ms-grid { display: flex !important; flex-direction: column !important; }
       #gallery .ms-grid > * { width: 100% !important; height: 260px !important; overflow: hidden !important; grid-row: auto !important; grid-column: auto !important; }
       #gallery .ms-grid > *:nth-child(n+3) { display: none !important; }
+      /* Nav padding tighter on mobile */
+      .ms-nav > div { padding-left: 1rem !important; padding-right: 1rem !important; }
       /* Hide ctaNote on mobile */
       .ms-cta-note { display: none !important; }
       /* Section padding — reduce to ~1/3 on mobile */

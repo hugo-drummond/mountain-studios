@@ -555,6 +555,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       /* Fixed heights → sensible mobile height */
       .ms-img { height: 220px !important; }
 
+      /* Nav padding tighter on mobile */
+      .ms-nav > div { padding-left: 1rem !important; padding-right: 1rem !important; }
       /* Hide ctaNote on mobile */
       .ms-cta-note { display: none !important; }
       /* Section padding — reduce to ~1/3 on mobile */
