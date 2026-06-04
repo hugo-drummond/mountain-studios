@@ -559,6 +559,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       .ms-nav > div { padding-left: 1rem !important; padding-right: 1rem !important; }
       /* Hide ctaNote on mobile */
       .ms-cta-note { display: none !important; }
+      /* Kill excess hero height on mobile */
+      section { min-height: auto !important; }
       /* Section padding — reduce to ~1/3 on mobile */
       section { padding-top: 40px !important; padding-bottom: 40px !important; }
       #gallery > div { padding-top: 25px !important; padding-bottom: 25px !important; }
