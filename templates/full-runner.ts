@@ -2215,7 +2215,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   .fit-service-row { border-bottom: 1px solid ${fit.border}; transition: background 0.3s ease; cursor: pointer; }
   .fit-service-row:hover { background: ${fit.bgCard}; }
   .fit-counter { font-variant-numeric: tabular-nums; }
-  @media(max-width:768px){.fit-hero-stats{padding:0!important}.fit-hero-stats>div{flex:1!important;padding-right:0!important;margin-right:0!important;border-right:none!important;text-align:center!important;padding:1rem 0!important}.fit-hero-stats>div:nth-child(n+4){display:none!important}}
+  @media(max-width:768px){.fit-hero-inner{padding:clamp(4rem,10svh,6rem) 1.25rem 1rem!important}.fit-hero-stats{padding:0!important}.fit-hero-stats>div{flex:1!important;padding-right:0!important;margin-right:0!important;border-right:none!important;text-align:center!important;padding:1rem 0!important}.fit-hero-stats>div:nth-child(n+4){display:none!important}}
 </style>
 
 <!-- PROMO BAR -->
@@ -2232,7 +2232,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,1) 0%,rgba(10,10,10,0.65) 50%,rgba(10,10,10,0.15) 100%)"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(10,10,10,0.5) 0%,transparent 60%)"></div>
   </div>
-  <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 3rem 6rem;width:100%">
+  <div class="fit-hero-inner" style="position:relative;max-width:1400px;margin:0 auto;padding:0 3rem 6rem;width:100%">
     <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
       <div style="width:40px;height:2px;background:${fit.accent}"></div>
       <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:${fit.accent}">${content.heroEyebrow || businessName}</p>
