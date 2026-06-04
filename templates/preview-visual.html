@@ -74,7 +74,7 @@
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
   #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(201,120,58,0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}.vs-svc-right{padding-top:0.5rem!important}}
+  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}.vs-svc-right{padding-top:0.5rem!important}.vs-hero-inner{padding:clamp(4rem,10svh,7rem) 1.25rem clamp(5rem,12svh,8rem)!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -112,7 +112,7 @@
       <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1400&q=80&auto=format&fit=crop" alt="" class="vs-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(110deg,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.55) 55%,rgba(0,0,0,0.7) 100%)"></div>
     </div>
-    <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 4rem;width:100%">
+    <div class="vs-hero-inner" style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 4rem;width:100%">
       <div class="vs-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.72rem;letter-spacing:0.12em;padding:0.45rem 1.1rem;border-radius:2px;background:rgba(201,120,58,0.15);border:1px solid rgba(201,120,58,0.35);color:rgba(255,255,255,0.9);margin-bottom:2rem;text-transform:uppercase">Rated #1 in Cape Town 2024</div>
       <div class="vs-fade-1 vs-hero-eyebrow" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem">
         <div style="width:48px;height:1px;background:var(--primary)"></div>
