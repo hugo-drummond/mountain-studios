@@ -2684,7 +2684,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <h3 style="font-family:'Cormorant',Georgia,serif;font-size:1.6rem;font-weight:300;color:${hw.text};margin-bottom:0.5rem">Send a Message</h3>
       <p style="font-family:'DM Sans',sans-serif;font-size:0.8rem;color:${hw.muted};margin-bottom:2rem">We respond within 24 hours.</p>
       <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <div>
             <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">First Name</label>
             <input type="text" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none" />
@@ -2946,7 +2946,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div class="fit-fade">
       <form style="display:flex;flex-direction:column;gap:1rem" onsubmit="return false">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <input type="text" placeholder="Full Name" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;box-sizing:border-box" />
           <input type="email" placeholder="Email" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;box-sizing:border-box" />
         </div>
@@ -3227,7 +3227,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1.5rem;font-weight:700;color:${edu.text};margin-bottom:0.5rem">Get in Touch</h3>
       <p style="font-family:'Inter',sans-serif;font-size:0.82rem;color:${edu.muted};margin-bottom:2rem">We'll respond within one business day.</p>
       <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
           <div>
             <label style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.muted};display:block;margin-bottom:0.5rem">First Name</label>
             <input type="text" style="width:100%;box-sizing:border-box;font-family:'Inter',sans-serif;padding:0.85rem 1rem;border:1px solid ${edu.border};border-radius:2px;font-size:0.9rem;color:${edu.text};outline:none;transition:border-color 0.2s" />
@@ -4542,7 +4542,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;font-style:italic;color:${hmText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutMission ? `<p style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:500;color:${hmText};line-height:1.7;margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:${hmSage};border-radius:12px;border-left:3px solid ${hmAccent}">${content.aboutMission}</p>` : ''}
         ${aboutParagraphs.map(p => `<p style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:${hmMuted};line-height:1.85;margin-bottom:1rem">${p}</p>`).join('')}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:2rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:2rem">
           ${content.services.map(s => s.tags).flat().slice(0, 6).map(t => `
           <div style="display:flex;align-items:center;gap:0.6rem">
             <div style="width:20px;height:20px;border-radius:50%;background:rgba(61,107,66,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0">
