@@ -555,6 +555,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       /* Fixed heights → sensible mobile height */
       .ms-img { height: 220px !important; }
 
+      /* Hide ctaNote on mobile */
+      .ms-cta-note { display: none !important; }
       /* Section padding — reduce to ~1/3 on mobile */
       section { padding-top: 40px !important; padding-bottom: 40px !important; }
       #gallery > div { padding-top: 25px !important; padding-bottom: 25px !important; }
@@ -971,7 +973,7 @@ function buildVisualTemplate(data: TemplateData): string {
               <div style="position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent)"></div>
             </div>
           </div>
-          <div style="padding-top:5rem">
+          <div class="vs-svc-right" style="padding-top:5rem">
             ${content.services.map((s, i) => `
               <div class="vs-svc-item" style="padding:2rem 0${i === 0 ? ';border-top:1px solid var(--border)' : ''}">
                 <div style="overflow:hidden">
@@ -1080,7 +1082,7 @@ function buildVisualTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
   #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(${pr},${pg},${pb},0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}}
+  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}.vs-svc-right{padding-top:2rem!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -1107,7 +1109,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
-      ${content.ctaNote ? `<p class="vs-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.42);margin-top:1.25rem">${content.ctaNote}</p>` : ''}
+      ${content.ctaNote ? `<p class="vs-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.42);margin-top:1.25rem">${content.ctaNote}</p>` : ''}
     </div>
     <!-- Hero bottom stat strip -->
     <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.07)">
@@ -1398,7 +1400,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:var(--primary-on-dark);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
-      ${content.ctaNote ? `<p class="svc-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">${content.ctaNote}</p>` : ''}
+      ${content.ctaNote ? `<p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">${content.ctaNote}</p>` : ''}
       <!-- Stats strip -->
       <div style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
         ${content.stats.slice(0, 4).map((s, i) => `
@@ -1660,7 +1662,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <a href="#gallery" style="font-family:var(--body-font);font-size:0.88rem;font-weight:600;padding:1.1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;transition:opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1.1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
-      ${content.ctaNote ? `<p class="pf2-f5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-top:1.5rem">${content.ctaNote}</p>` : ''}
+      ${content.ctaNote ? `<p class="pf2-f5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-top:1.5rem">${content.ctaNote}</p>` : ''}
     </div>
     <!-- Bottom scroll indicator -->
     <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem">
@@ -3771,7 +3773,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <a href="#services" style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${borderCol};color:${textPrimary};border-radius:6px;text-decoration:none;transition:border-color 0.3s">${content.ctaSecondary}</a>
       </div>
 
-      ${content.ctaNote ? `<p class="reveal reveal-delay-3" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};margin-top:1.25rem;letter-spacing:0.08em">${content.ctaNote}</p>` : ''}
+      ${content.ctaNote ? `<p class="reveal reveal-delay-3 ms-cta-note" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};margin-top:1.25rem;letter-spacing:0.08em">${content.ctaNote}</p>` : ''}
     </div>
   </section>
 
@@ -4583,7 +4585,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem">
       <div>
         <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;font-style:italic;color:#fff;line-height:1.2;margin-bottom:0.5rem">${content.aboutMission || content.heroSubtitle}</h2>
-        <p style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.7)">${content.ctaNote || 'No obligation. Fast response.'}</p>
+        <p class="ms-cta-note" style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.7)">${content.ctaNote || 'No obligation. Fast response.'}</p>
       </div>
       <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2.5rem;border-radius:999px;background:#fff;color:${hmAccent};text-decoration:none;white-space:nowrap">${content.ctaPrimary} &rarr;</a>
     </div>

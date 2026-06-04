@@ -46,6 +46,8 @@
       #gallery .ms-grid { display: flex !important; flex-direction: column !important; }
       #gallery .ms-grid > * { width: 100% !important; height: 260px !important; overflow: hidden !important; grid-row: auto !important; grid-column: auto !important; }
       #gallery .ms-grid > *:nth-child(n+3) { display: none !important; }
+      /* Hide ctaNote on mobile */
+      .ms-cta-note { display: none !important; }
       /* Section padding — reduce to ~1/3 on mobile */
       section { padding-top: 40px !important; padding-bottom: 40px !important; }
       #gallery > div { padding-top: 25px !important; padding-bottom: 25px !important; }
@@ -119,7 +121,7 @@
         <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:var(--primary-on-dark);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">Book a Consultation</a>
         <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:2px;text-decoration:none;transition:all 0.2s">Learn More</a>
       </div>
-      <p class="svc-fade-5" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">Free consultation · No commitment</p>
+      <p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">Free consultation · No commitment</p>
       <!-- Stats strip -->
       <div style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
         
