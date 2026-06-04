@@ -1952,6 +1952,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
     .hw-hero-inner .hw-fade{border-color:rgba(255,255,255,0.2)!important}
     .hw-stats{margin-top:2rem!important;padding-top:1.5rem!important;justify-content:space-between!important;border-top-color:rgba(255,255,255,0.2)!important}
     .hw-stats>div{text-align:center!important}
+    #services .hw-img-hover{display:none!important}
   }
 </style>
 
