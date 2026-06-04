@@ -1187,7 +1187,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     #food-nav.scrolled { background:${cream} !important; box-shadow:0 1px 20px rgba(0,0,0,0.08); }
     #food-nav.scrolled a { color:${inkDark} !important; }
     #food-nav.scrolled a.food-nav-cta { border-color:${inkDark} !important; }
-    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; background:${inkDark} !important; } #food-nav > div > a:not(.food-nav-cta) { display:none!important; } #food-nav label { display:block!important; } }
+    @media(max-width:768px){ #food-nav { padding:1rem 1.25rem; background:${inkDark} !important; } #food-nav > div > a:not(.food-nav-cta) { display:none!important; } #food-nav label { display:block!important; } .food-nav-cta { display:none!important; } }
   </style>
   <script>
     window.addEventListener('scroll',function(){
