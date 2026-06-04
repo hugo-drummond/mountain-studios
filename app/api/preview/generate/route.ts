@@ -555,6 +555,10 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       /* Fixed heights → sensible mobile height */
       .ms-img { height: 220px !important; }
 
+      /* Section padding — reduce to ~1/3 on mobile */
+      section { padding-top: 40px !important; padding-bottom: 40px !important; }
+      #gallery > div { padding-top: 25px !important; padding-bottom: 25px !important; }
+      footer { padding: 2rem 1.25rem 1rem !important; }
       /* About section — hide CTA button, reduce padding */
       #about a[href="#contact"] { display: none !important; }
       #about div:last-child > a[href="#contact"] { display: none !important; }
@@ -1076,6 +1080,7 @@ function buildVisualTemplate(data: TemplateData): string {
   .reveal.visible { opacity:1;transform:translateY(0) }
   #custom-cursor-dot { width:6px;height:6px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s }
   #custom-cursor-ring { width:32px;height:32px;border:1.5px solid rgba(${pr},${pg},${pb},0.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
+  @media(max-width:768px){.vs-hero-eyebrow{display:none!important}}
 </style>
 <div id="custom-cursor-dot"></div>
 <div id="custom-cursor-ring"></div>
@@ -1090,7 +1095,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 4rem;width:100%">
       ${content.badge ? `<div class="vs-fade-1" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.72rem;letter-spacing:0.12em;padding:0.45rem 1.1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.15);border:1px solid rgba(${pr},${pg},${pb},0.35);color:rgba(255,255,255,0.9);margin-bottom:2rem;text-transform:uppercase">${content.badge}</div>` : ''}
-      <div class="vs-fade-1" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem">
+      <div class="vs-fade-1 vs-hero-eyebrow" style="display:flex;align-items:center;gap:1.25rem;margin-bottom:2rem">
         <div style="width:48px;height:1px;background:var(--primary)"></div>
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
         <div style="width:48px;height:1px;background:var(--primary)"></div>
