@@ -112,6 +112,7 @@
     .pro-accordion-body.open { max-height:400px; }
     .pro-accordion-icon { width:28px;height:28px;border:1px solid rgba(240,237,230,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s,background 0.3s; }
     .pro-accordion-trigger:hover .pro-accordion-icon { background:#1e3a5f;border-color:#1e3a5f; }
+    @media(max-width:768px){.pro-svc-img{display:none!important}}
   </style>
 
   <!-- Custom cursor -->
@@ -281,7 +282,7 @@
         </div>
 
         <!-- Sticky image panel -->
-        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(240,237,230,0.08)">
+        <div class="ms-sticky pro-svc-img" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(240,237,230,0.08)">
           
           <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="Strategic Advisory" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:1;transform:scale(1)" />
           <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&q=80&auto=format&fit=crop" alt="Legal Services" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:0;transform:scale(1.04)" />
