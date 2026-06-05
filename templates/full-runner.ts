@@ -3470,6 +3470,7 @@ function buildTradesTemplate(data: TemplateData): string {
     .tr-input { width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:0.9rem; padding:0.85rem 0 0.85rem; background:transparent; border:none; border-bottom:1.5px solid rgba(0,0,0,0.2); color:${trText}; outline:none; transition:border-color 0.25s; }
     .tr-input:focus { border-bottom-color:${trAccent}; }
     .tr-input::placeholder { color:${trMuted}; }
+    @media(max-width:768px){.tr-cred-strip{grid-template-columns:1fr 1fr!important}}
   </style>`
 
   // Nav
@@ -3501,7 +3502,7 @@ function buildTradesTemplate(data: TemplateData): string {
   // CREDENTIALS STRIP — dark band, 4 stats
   const credStrip = `
   <section style="background:${trDark};padding:0 2rem">
-    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06)">
+    <div class="tr-cred-strip" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.06)">
       ${content.stats.slice(0, 4).map((s, i) => `
       <div style="padding:2.5rem 1.5rem;${i < 3 ? 'border-right:1px solid rgba(255,255,255,0.06)' : ''}">
         <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:${trAccent};line-height:1;margin-bottom:0.35rem">${s.value}</div>
