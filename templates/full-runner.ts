@@ -2863,7 +2863,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         </div>
 
         <!-- Sticky image panel -->
-        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
+        <div class="ms-sticky pro-svc-panel" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
           ${content.services.map((s, i) => `
           <img src="${stockImages.cards[i] || stockPool[i % stockPool.length]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
           <!-- Overlay label -->
@@ -3017,6 +3017,7 @@ ${buildContactSection(content, locationInfo)}
   <style>
     @keyframes kenBurns { from { transform:scale(1); } to { transform:scale(1.06); } }
     @keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+    @media(max-width:768px){.pro-svc-panel{display:none!important}}
   </style>
 
   <script>

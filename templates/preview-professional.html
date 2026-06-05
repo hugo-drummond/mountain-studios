@@ -279,7 +279,7 @@
         </div>
 
         <!-- Sticky image panel -->
-        <div class="ms-sticky" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(240,237,230,0.08)">
+        <div class="ms-sticky pro-svc-panel" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(240,237,230,0.08)">
           
           <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80&auto=format&fit=crop" alt="Strategic Advisory" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:1;transform:scale(1)" />
           <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&q=80&auto=format&fit=crop" alt="Legal Services" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:0;transform:scale(1.04)" />
@@ -485,6 +485,7 @@
   <style>
     @keyframes kenBurns { from { transform:scale(1); } to { transform:scale(1.06); } }
     @keyframes scrollPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+    @media(max-width:768px){.pro-svc-panel{display:none!important}}
   </style>
 
   <script>
