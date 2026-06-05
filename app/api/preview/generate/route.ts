@@ -3752,6 +3752,12 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     /* Accordion */
     .tech-accord-body { max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
     .tech-accord-body.open { max-height:300px; }
+
+    @media(max-width:768px){
+      .td-feat-text{order:1!important}
+      .td-feat-img{order:2!important}
+      .td-stats-grid{padding-top:0.75rem!important}
+    }
   </style>
 
   <!-- Custom cursor -->
@@ -3842,22 +3848,22 @@ ${buildStandardNav(businessName, content, navFlags)}
       ${(content.features || content.services.slice(0, 3)).map((item, i) => `
       <div class="ms-grid reveal" style="display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;margin-bottom:${i < 2 ? '6rem' : '0'}">
         ${i % 2 === 0 ? `
-        <div>
+        <div class="td-feat-text">
           <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${accent};letter-spacing:0.15em;margin-bottom:1rem">FEATURE ${String(i + 1).padStart(2, '0')}</div>
           <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${textPrimary};line-height:1.2;letter-spacing:-0.02em;margin-bottom:1rem">${item.name}</h3>
           <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.75rem;font-weight:300">${item.description}</p>
           <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span>&#8594;</span></a>
         </div>
-        <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
+        <div class="td-feat-img" style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
           <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
           <div style="position:absolute;inset:0;background:linear-gradient(135deg,${accentGlow} 0%,transparent 60%)"></div>
         </div>
         ` : `
-        <div style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
+        <div class="td-feat-img" style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
           <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
           <div style="position:absolute;inset:0;background:linear-gradient(225deg,${accentGlow} 0%,transparent 60%)"></div>
         </div>
-        <div>
+        <div class="td-feat-text">
           <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${accent};letter-spacing:0.15em;margin-bottom:1rem">FEATURE ${String(i + 1).padStart(2, '0')}</div>
           <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:700;color:${textPrimary};line-height:1.2;letter-spacing:-0.02em;margin-bottom:1rem">${item.name}</h3>
           <p style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.75rem;font-weight:300">${item.description}</p>
@@ -3881,7 +3887,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           ${content.aboutText.split('\n').filter(Boolean).map(p => `<p class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
         </div>
         <!-- Stats grid -->
-        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:3rem">
+        <div class="ms-grid td-stats-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:3rem">
           ${content.stats.slice(0, 4).map(s => `
           <div class="tech-card reveal">
             <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:${accent};letter-spacing:-0.03em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
