@@ -4060,7 +4060,12 @@ function buildTradesTemplate(data: TemplateData): string {
     .tr-input { width:100%; box-sizing:border-box; font-family:'Inter',sans-serif; font-size:0.9rem; padding:0.85rem 0 0.85rem; background:transparent; border:none; border-bottom:1.5px solid rgba(0,0,0,0.2); color:${trText}; outline:none; transition:border-color 0.25s; }
     .tr-input:focus { border-bottom-color:${trAccent}; }
     .tr-input::placeholder { color:${trMuted}; }
-    @media(max-width:768px){.tr-cred-strip{grid-template-columns:1fr 1fr!important}}
+    @media(max-width:768px){
+      .tr-cred-strip{grid-template-columns:1fr 1fr!important}
+      .tr-step-num-el{left:0.5rem!important;top:0!important}
+      .tr-about-text{padding:0 1.25rem!important}
+      .tr-gallery>*:nth-child(n+3){display:none!important}
+    }
   </style>`
 
   // Nav
@@ -4119,7 +4124,7 @@ function buildTradesTemplate(data: TemplateData): string {
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
         ${content.services.slice(0, 6).map((s, i) => `
         <div class="tr-service-card tr-reveal" style="background:${trBg};padding:2.5rem 2rem;position:relative;overflow:hidden">
-          <span class="tr-step-num">${String(i + 1).padStart(2, '0')}</span>
+          <span class="tr-step-num tr-step-num-el">${String(i + 1).padStart(2, '0')}</span>
           <div style="margin-bottom:1.25rem">
             <span style="font-family:'Inter',sans-serif;font-size:1.5rem">${mapIcon(s.icon, i)}</span>
           </div>
@@ -4173,7 +4178,7 @@ function buildTradesTemplate(data: TemplateData): string {
           <div style="font-family:'Inter',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.2rem">${content.stats[0]?.label || 'Years Experience'}</div>
         </div>
       </div>
-      <div>
+      <div class="tr-about-text">
         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
           <div style="width:28px;height:2px;background:${trAccent}"></div>
           <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">About Us</span>
@@ -4201,7 +4206,7 @@ function buildTradesTemplate(data: TemplateData): string {
         <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">Recent Work</span>
       </div>
       <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${trText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading || 'Projects'}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+      <div class="ms-grid tr-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
         ${serviceImgs.slice(0, 6).map((img, i) => `
         <div style="position:relative;overflow:hidden;background:${trDark}">
           <div class="ms-img" style="height:300px;overflow:hidden">
