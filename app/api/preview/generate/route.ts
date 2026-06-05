@@ -4436,13 +4436,19 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     .hm-input { width:100%; box-sizing:border-box; font-family:'Poppins',sans-serif; font-size:0.875rem; padding:1rem 1.25rem; background:#fff; border:1.5px solid rgba(0,0,0,0.1); border-radius:12px; color:${hmText}; outline:none; transition:border-color 0.25s; }
     .hm-input:focus { border-color:${hmAccent}; }
     .hm-input::placeholder { color:${hmMuted}; }
+    @media(max-width:768px){
+      .hm-hero-section{grid-template-columns:1fr!important}
+      .hm-hero-img-col{display:none!important}
+      .hm-about-img-col{display:none!important}
+      .hm-about-text{padding:0 1.25rem!important}
+    }
   </style>`
 
   const nav = buildStandardNav(businessName, content, navFlags)
 
   // HERO — warm split: sage-green illustrated left panel, full-bleed photo right
   const heroSection = `
-  <section style="position:relative;min-height:88vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr">
+  <section class="hm-hero-section" style="position:relative;min-height:88vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr">
     <!-- Left: warm cream/sage content panel -->
     <div style="background:linear-gradient(160deg,${hmCream} 0%,${hmSage} 100%);display:flex;flex-direction:column;justify-content:center;padding:5rem 3.5rem 5rem 4rem;position:relative;z-index:1">
       <div class="hm-fade1" style="margin-bottom:1.5rem">
@@ -4466,7 +4472,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <div style="position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:60px solid rgba(61,107,66,0.07);pointer-events:none"></div>
     </div>
     <!-- Right: Ken Burns photo -->
-    <div style="position:relative;overflow:hidden">
+    <div class="hm-hero-img-col" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" class="hm-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${hmSage} 0%,transparent 25%)"></div>
       <!-- floating badge -->
@@ -4551,7 +4557,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const aboutSection = `
   <section id="about" style="padding:100px 2rem;background:${hmCream}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
-      <div>
+      <div class="hm-about-text">
         <span class="hm-chip" style="margin-bottom:1.25rem;display:inline-flex">Our Story</span>
         <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;font-style:italic;color:${hmText};line-height:1.2;margin-bottom:1.5rem">${content.aboutHeading}</h2>
         ${content.aboutMission ? `<p style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:500;color:${hmText};line-height:1.7;margin-bottom:1.5rem;padding:1.25rem 1.5rem;background:${hmSage};border-radius:12px;border-left:3px solid ${hmAccent}">${content.aboutMission}</p>` : ''}
@@ -4569,7 +4575,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
           <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
         </div>
       </div>
-      <div style="position:relative">
+      <div class="hm-about-img-col" style="position:relative">
         <div style="border-radius:24px;overflow:hidden;height:520px">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
