@@ -5135,9 +5135,9 @@ function buildPropertyTemplate(data: TemplateData): string {
         <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
       </div>
       <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:${offwhite};line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem">
+      <div class="pr-hero-bottom" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem">
         <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(242,237,232,0.65);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
-        <div style="display:flex;gap:1rem;flex-shrink:0">
+        <div class="pr-hero-btns" style="display:flex;gap:1rem;flex-shrink:0">
           <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${gold};color:${gold};text-decoration:none;transition:all 0.3s ease">View Properties</a>
           <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:${void_};text-decoration:none">${content.ctaPrimary}</a>
         </div>
@@ -5187,7 +5187,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         </div>`
         }).join('')}
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5px;background:${border};margin-top:1.5px">
+      <div class="pr-gallery-row2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5px;background:${border};margin-top:1.5px">
         ${[2,3,4].map((i) => {
           const propCaption = (content.projectCaptions && content.projectCaptions[i]) ? content.projectCaptions[i] : (['Camps Bay Villa','Sea Point Apartment','Constantia Estate'][i-2] || 'Luxury Residence')
           const propSub = (content.features && content.features[i]) ? content.features[i].name : (['Camps Bay','Sea Point','Constantia'][i-2] || locationInfo.city)
@@ -5250,7 +5250,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         <div style="width:30px;height:1px;background:${gold}"></div>
         <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">What We Do</span>
       </div>
-      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic;margin-bottom:5rem">${content.servicesHeading}</h2>
+      <h2 class="pr-svc-heading" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic;margin-bottom:5rem">${content.servicesHeading}</h2>
       <div style="display:grid;grid-template-columns:1fr;gap:0">
         ${content.services.map((s, i) => `
         <div style="display:grid;grid-template-columns:80px 1fr 1.5fr auto;gap:2rem;align-items:start;padding:3rem 0;border-bottom:1px solid ${border}" class="ms-grid">
@@ -5264,7 +5264,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   </section>`
 
   const testimonialSection = content.testimonial ? `
-  <section style="padding:140px 0;background:#0a0a0a;overflow:hidden">
+  <section class="pr-testimonial-section" style="padding:140px 0;background:#0a0a0a;overflow:hidden">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
@@ -5300,7 +5300,7 @@ function buildPropertyTemplate(data: TemplateData): string {
 
   const contactSection = `
   <section id="contact" style="padding:140px 0;background:${void_}">
-    <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
+    <div class="pr-contact-inner" style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
@@ -5395,6 +5395,15 @@ function buildPropertyTemplate(data: TemplateData): string {
       --border: ${border};
       --primary: ${gold};
       --secondary: ${secondaryColor};
+    }
+    @media(max-width:768px){
+      .pr-hero-btns{flex-direction:column!important;width:100%}
+      .pr-hero-btns a{text-align:center}
+      .pr-hero-bottom{padding-top:clamp(4rem,10svh,7rem)!important}
+      .pr-gallery-row2{display:none!important}
+      .pr-svc-heading{margin-bottom:2.5rem!important}
+      .pr-testimonial-section{padding:70px 0!important}
+      .pr-contact-inner{padding:0 1.25rem!important}
     }
   </style>
 
