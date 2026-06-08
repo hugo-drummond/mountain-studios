@@ -1403,15 +1403,15 @@ function buildRetailTemplate(data: TemplateData): string {
   const stockPool = buildImagePool(images, stockImages, businessName)
   const aboutImg = images[5] || stockImages.about
 
-  // Bold trend-forward palette — near-black canvas, electric accent, warm white
-  const bg = '#0d0d0d'
-  const bgCard = '#161616'
-  const bgAlt = '#111111'
-  const textPrimary = '#f0ece6'
-  const textMuted = '#888480'
+  // Bold trend-forward palette — white canvas, electric accent, dark text
+  const bg = '#ffffff'
+  const bgCard = '#f5f5f5'
+  const bgAlt = '#f0f0f0'
+  const textPrimary = '#0d0d0d'
+  const textMuted = '#555555'
   const accent = primaryColor
   const accentLight = secondaryColor
-  const border = 'rgba(240,236,230,0.07)'
+  const border = 'rgba(0,0,0,0.08)'
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
   const navLinks = navFlags.allLinks
@@ -1419,17 +1419,17 @@ function buildRetailTemplate(data: TemplateData): string {
   // CUSTOM NAV — transparent over hero, slides to solid
   const customNav = `
   <nav id="retail-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;background:transparent">
-    <a href="#" style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
+    <a href="#" style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:${textPrimary};text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
     <div style="display:flex;align-items:center;gap:2rem">
       <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-        ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">${l.label}</a>`).join('')}
+        ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:${textMuted};text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='${textPrimary}'" onmouseout="this.style.color='${textMuted}'">${l.label}</a>`).join('')}
       </div>
       <a href="#contact" class="ret-nav-cta" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
-      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
+      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:${textPrimary};font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
   <style>
-    #retail-nav.scrolled { background:${bg} !important; border-bottom:1px solid ${border}; box-shadow:0 2px 30px rgba(0,0,0,0.4); }
+    #retail-nav.scrolled { background:${bg} !important; border-bottom:1px solid ${border}; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
     @media(max-width:768px){ #retail-nav label { display:block!important; } .ret-nav-cta { display:none!important; } .ret-hero-inner { padding:clamp(4rem,10svh,8rem) 1.5rem clamp(3rem,8svh,4rem)!important; } }
   </style>
   <script>

@@ -64,34 +64,34 @@
 <body>
   <style>
     :root {
-      --bg: #0d0d0d;
-      --bg-alt: #111111;
-      --card-bg: #161616;
-      --text: #f0ece6;
-      --text-muted: #888480;
-      --border: rgba(240,236,230,0.07);
+      --bg: #ffffff;
+      --bg-alt: #f0f0f0;
+      --card-bg: #f5f5f5;
+      --text: #0d0d0d;
+      --text-muted: #555555;
+      --border: rgba(0,0,0,0.08);
     }
     body::before {
       content:'';position:fixed;inset:0;pointer-events:none;z-index:999;opacity:0.02;
       background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size:160px 160px;
     }
-    #contact { background:#111111 !important; }
+    #contact { background:#f0f0f0 !important; }
   </style>
 
 
   <nav id="retail-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s ease;background:transparent">
-    <a href="#" style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:#fff;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">Maison Veld</a>
+    <a href="#" style="font-family:var(--heading-font);font-size:1.05rem;font-weight:700;color:#0d0d0d;text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">Maison Veld</a>
     <div style="display:flex;align-items:center;gap:2rem">
       <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
-        <a href="#services" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Services</a><a href="#gallery" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Gallery</a><a href="#about" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">About</a><a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Contact</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:#555555;text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#0d0d0d'" onmouseout="this.style.color='#555555'">Services</a><a href="#gallery" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:#555555;text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#0d0d0d'" onmouseout="this.style.color='#555555'">Gallery</a><a href="#about" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:#555555;text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#0d0d0d'" onmouseout="this.style.color='#555555'">About</a><a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:#555555;text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='#0d0d0d'" onmouseout="this.style.color='#555555'">Contact</a>
       </div>
       <a href="#contact" class="ret-nav-cta" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:#2d1a4a;color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">Shop Now</a>
-      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
+      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:#0d0d0d;font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
   <style>
-    #retail-nav.scrolled { background:#0d0d0d !important; border-bottom:1px solid rgba(240,236,230,0.07); box-shadow:0 2px 30px rgba(0,0,0,0.4); }
+    #retail-nav.scrolled { background:#ffffff !important; border-bottom:1px solid rgba(0,0,0,0.08); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
     @media(max-width:768px){ #retail-nav label { display:block!important; } .ret-nav-cta { display:none!important; } .ret-hero-inner { padding:clamp(4rem,10svh,8rem) 1.5rem clamp(3rem,8svh,4rem)!important; } }
   </style>
   <script>
@@ -113,37 +113,37 @@
   </label>
 
 
-  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#0d0d0d">
+  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:#ffffff">
     <div class="ret-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:#2d1a4a"></span>
         <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:#2d1a4a;letter-spacing:0.2em;text-transform:uppercase">CAPE TOWN BOUTIQUE</span>
       </div>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,5.5vw,5.5rem);font-weight:900;color:#f0ece6;line-height:0.95;margin-bottom:1.75rem;letter-spacing:-0.03em;text-transform:uppercase">Curated style,<br/><em>every season</em></h1>
-      <p style="font-family:var(--body-font);font-size:1rem;color:#888480;max-width:420px;line-height:1.7;margin-bottom:2.5rem">Handpicked fashion and lifestyle pieces for quality-lovers.</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,5.5vw,5.5rem);font-weight:900;color:#0d0d0d;line-height:0.95;margin-bottom:1.75rem;letter-spacing:-0.03em;text-transform:uppercase">Curated style,<br/><em>every season</em></h1>
+      <p style="font-family:var(--body-font);font-size:1rem;color:#555555;max-width:420px;line-height:1.7;margin-bottom:2.5rem">Handpicked fashion and lifestyle pieces for quality-lovers.</p>
       <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
         <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:700;padding:1rem 2.5rem;background:#2d1a4a;color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border-radius:4px;transition:transform 0.2s,opacity 0.2s">Shop Now</a>
-        <a href="#gallery" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#888480;text-decoration:none;letter-spacing:0.06em;display:flex;align-items:center;gap:0.5rem;transition:color 0.3s">Learn More <span style="font-size:1rem">&#8594;</span></a>
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:#555555;text-decoration:none;letter-spacing:0.06em;display:flex;align-items:center;gap:0.5rem;transition:color 0.3s">Learn More <span style="font-size:1rem">&#8594;</span></a>
       </div>
-      <div style="display:flex;gap:3rem;margin-top:4rem;padding-top:2.5rem;border-top:1px solid rgba(240,236,230,0.07)">
+      <div style="display:flex;gap:3rem;margin-top:4rem;padding-top:2.5rem;border-top:1px solid rgba(0,0,0,0.08)">
         
         <div>
-          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#f0ece6">12+</div>
-          <div style="font-family:var(--body-font);font-size:0.7rem;color:#888480;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Years Experience</div>
+          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#0d0d0d">12+</div>
+          <div style="font-family:var(--body-font);font-size:0.7rem;color:#555555;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Years Experience</div>
         </div>
         <div>
-          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#f0ece6">500+</div>
-          <div style="font-family:var(--body-font);font-size:0.7rem;color:#888480;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Happy Clients</div>
+          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#0d0d0d">500+</div>
+          <div style="font-family:var(--body-font);font-size:0.7rem;color:#555555;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Happy Clients</div>
         </div>
         <div>
-          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#f0ece6">98%</div>
-          <div style="font-family:var(--body-font);font-size:0.7rem;color:#888480;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Satisfaction</div>
+          <div style="font-family:var(--heading-font);font-size:1.6rem;font-weight:700;color:#0d0d0d">98%</div>
+          <div style="font-family:var(--body-font);font-size:0.7rem;color:#555555;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem">Satisfaction</div>
         </div>
       </div>
     </div>
     <div style="position:relative;overflow:hidden">
       <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 12s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg,#0d0d0d 0%,transparent 30%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,#ffffff 0%,transparent 30%)"></div>
       <div style="position:absolute;top:2.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:#2d1a4a;font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">Rated #1 in Cape Town 2024</div>
     </div>
   </section>
@@ -156,15 +156,15 @@
   </section>
   <style>@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>
 
-  <section id="services" style="padding:100px 0;background:#0d0d0d">
+  <section id="services" style="padding:100px 0;background:#ffffff">
     <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#f0ece6;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em">What We Offer</h2>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;color:#888480;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem">View All <span>&#8594;</span></a>
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#0d0d0d;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em">What We Offer</h2>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;color:#555555;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:0.5rem">View All <span>&#8594;</span></a>
       </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:rgba(240,236,230,0.07)">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:rgba(0,0,0,0.08)">
         
-        <div style="position:relative;background:#161616;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+        <div style="position:relative;background:#f5f5f5;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
           <div style="height:360px;overflow:hidden">
             <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -174,11 +174,11 @@
               <span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Curated</span><span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">In-Season</span>
             </div>
           </div>
-          <div style="padding:1.25rem 1.5rem;background:#161616">
-            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em">In-Store Shopping</h3>
+          <div style="padding:1.25rem 1.5rem;background:#f5f5f5">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em">In-Store Shopping</h3>
           </div>
         </div>
-        <div style="position:relative;background:#161616;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+        <div style="position:relative;background:#f5f5f5;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
           <div style="height:360px;overflow:hidden">
             <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -188,11 +188,11 @@
               <span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">By Appointment</span><span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Bespoke</span>
             </div>
           </div>
-          <div style="padding:1.25rem 1.5rem;background:#161616">
-            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em">Personal Styling</h3>
+          <div style="padding:1.25rem 1.5rem;background:#f5f5f5">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em">Personal Styling</h3>
           </div>
         </div>
-        <div style="position:relative;background:#161616;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+        <div style="position:relative;background:#f5f5f5;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
           <div style="height:360px;overflow:hidden">
             <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -202,11 +202,11 @@
               <span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Complimentary</span><span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Same Day</span>
             </div>
           </div>
-          <div style="padding:1.25rem 1.5rem;background:#161616">
-            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em">Gift Wrapping</h3>
+          <div style="padding:1.25rem 1.5rem;background:#f5f5f5">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em">Gift Wrapping</h3>
           </div>
         </div>
-        <div style="position:relative;background:#161616;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
+        <div style="position:relative;background:#f5f5f5;overflow:hidden;group" onmouseover="this.querySelector('.overlay').style.opacity='1'" onmouseout="this.querySelector('.overlay').style.opacity='0'">
           <div style="height:360px;overflow:hidden">
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
@@ -216,30 +216,30 @@
               <span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Delivery</span><span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">Easy Returns</span>
             </div>
           </div>
-          <div style="padding:1.25rem 1.5rem;background:#161616">
-            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em">Online Ordering</h3>
+          <div style="padding:1.25rem 1.5rem;background:#f5f5f5">
+            <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em">Online Ordering</h3>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="about" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh;background:#0d0d0d">
+  <section id="about" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh;background:#ffffff">
     <div style="overflow:hidden">
       <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1000&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
     </div>
     <div style="display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem">
       <div style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:#2d1a4a;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">Rated #1 in Cape Town 2024</div>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:#f0ece6;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">Our Story</h2>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:#f0ece6;font-weight:600;line-height:1.65;margin-bottom:1.25rem">Our mission is to exceed expectations, every single time.</p>
-      <p style="font-family:var(--body-font);font-size:0.92rem;color:#888480;line-height:1.8;margin-bottom:0.9rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:var(--body-font);font-size:0.92rem;color:#888480;line-height:1.8;margin-bottom:0.9rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:#0d0d0d;line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">Our Story</h2>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:#0d0d0d;font-weight:600;line-height:1.65;margin-bottom:1.25rem">Our mission is to exceed expectations, every single time.</p>
+      <p style="font-family:var(--body-font);font-size:0.92rem;color:#555555;line-height:1.8;margin-bottom:0.9rem">We started with a simple belief: that great service should be the norm, not the exception. Over the years, we have built a reputation for quality, reliability, and genuine care.</p><p style="font-family:var(--body-font);font-size:0.92rem;color:#555555;line-height:1.8;margin-bottom:0.9rem">Our team brings decades of combined experience and a passion for excellence to every project.</p>
     </div>
   </section>
   <style>@media(max-width:768px){#about{grid-template-columns:1fr!important}#about>div:first-child{height:300px!important}}</style>
 
-  <section id="gallery" style="padding:100px 0;background:#111111">
+  <section id="gallery" style="padding:100px 0;background:#f0f0f0">
     <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#f0ece6;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:3rem">Our Work</h2>
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#0d0d0d;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:3rem">Our Work</h2>
       <div class="ret-gal" style="display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:280px 280px;gap:4px">
         <div style="grid-row:span 2;overflow:hidden;border-radius:4px">
           <img src="https://images.unsplash.com/photo-1464863979621-258859e62245?w=800&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" />
@@ -262,38 +262,38 @@
     </div>
   </section>
 
-  <section style="padding:100px 2.5rem;background:#0d0d0d">
+  <section style="padding:100px 2.5rem;background:#ffffff">
     <div style="max-width:900px;margin:0 auto;text-align:center">
       <div style="font-family:var(--heading-font);font-size:6rem;color:#2d1a4a;line-height:0.8;margin-bottom:1.5rem;opacity:0.6">&#8220;</div>
-      <p style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:700;color:#f0ece6;line-height:1.35;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:2rem">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
+      <p style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:700;color:#0d0d0d;line-height:1.35;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:2rem">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem">
         <span style="display:block;width:50px;height:1px;background:#2d1a4a"></span>
-        <span style="font-family:var(--body-font);font-size:0.78rem;color:#888480;letter-spacing:0.15em;text-transform:uppercase">Sarah M., Director — Cape Town</span>
+        <span style="font-family:var(--body-font);font-size:0.78rem;color:#555555;letter-spacing:0.15em;text-transform:uppercase">Sarah M., Director — Cape Town</span>
         <span style="display:block;width:50px;height:1px;background:#2d1a4a"></span>
       </div>
       <div style="margin-top:1.25rem;display:flex;justify-content:center;gap:0.25rem"><span style="color:#2d1a4a;font-size:1rem">&#9733;</span><span style="color:#2d1a4a;font-size:1rem">&#9733;</span><span style="color:#2d1a4a;font-size:1rem">&#9733;</span><span style="color:#2d1a4a;font-size:1rem">&#9733;</span><span style="color:#2d1a4a;font-size:1rem">&#9733;</span></div>
     </div>
   </section>
 
-  <section style="padding:100px 0;background:#161616">
+  <section style="padding:100px 0;background:#f5f5f5">
     <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#f0ece6;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;text-align:center;margin-bottom:4rem">Why Shop With Us</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(240,236,230,0.07)">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:#0d0d0d;line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;text-align:center;margin-bottom:4rem">Why Shop With Us</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(0,0,0,0.08)">
         
-        <div style="background:#161616;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#0d0d0d'" onmouseout="this.style.background='#161616'">
+        <div style="background:#f5f5f5;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#ffffff'" onmouseout="this.style.background='#f5f5f5'">
           <div style="font-family:var(--heading-font);font-size:3rem;font-weight:900;color:#2d1a4a;opacity:0.3;line-height:1;margin-bottom:1.25rem">01</div>
-          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Quality Guaranteed</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:#888480;line-height:1.7">We stand behind every project.</p>
+          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Quality Guaranteed</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#555555;line-height:1.7">We stand behind every project.</p>
         </div>
-        <div style="background:#161616;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#0d0d0d'" onmouseout="this.style.background='#161616'">
+        <div style="background:#f5f5f5;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#ffffff'" onmouseout="this.style.background='#f5f5f5'">
           <div style="font-family:var(--heading-font);font-size:3rem;font-weight:900;color:#2d1a4a;opacity:0.3;line-height:1;margin-bottom:1.25rem">02</div>
-          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Expert Team</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:#888480;line-height:1.7">Decades of combined experience.</p>
+          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Expert Team</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#555555;line-height:1.7">Decades of combined experience.</p>
         </div>
-        <div style="background:#161616;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#0d0d0d'" onmouseout="this.style.background='#161616'">
+        <div style="background:#f5f5f5;padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='#ffffff'" onmouseout="this.style.background='#f5f5f5'">
           <div style="font-family:var(--heading-font);font-size:3rem;font-weight:900;color:#2d1a4a;opacity:0.3;line-height:1;margin-bottom:1.25rem">03</div>
-          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#f0ece6;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Always Available</h3>
-          <p style="font-family:var(--body-font);font-size:0.9rem;color:#888480;line-height:1.7">24-hour support.</p>
+          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:#0d0d0d;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">Always Available</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:#555555;line-height:1.7">24-hour support.</p>
         </div>
       </div>
     </div>
@@ -322,12 +322,12 @@
       </div>
     </section>
 
-  <footer style="padding:3rem 2.5rem;background:#161616;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;border-top:1px solid rgba(240,236,230,0.07)">
-    <div style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#f0ece6;letter-spacing:0.08em;text-transform:uppercase">Maison Veld</div>
+  <footer style="padding:3rem 2.5rem;background:#f5f5f5;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;border-top:1px solid rgba(0,0,0,0.08)">
+    <div style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:#0d0d0d;letter-spacing:0.08em;text-transform:uppercase">Maison Veld</div>
     <div style="display:flex;gap:2rem;flex-wrap:wrap">
-      <a href="#services" style="font-family:var(--body-font);font-size:0.72rem;color:#888480;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Services</a><a href="#gallery" style="font-family:var(--body-font);font-size:0.72rem;color:#888480;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Gallery</a><a href="#about" style="font-family:var(--body-font);font-size:0.72rem;color:#888480;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">About</a><a href="#contact" style="font-family:var(--body-font);font-size:0.72rem;color:#888480;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Contact</a>
+      <a href="#services" style="font-family:var(--body-font);font-size:0.72rem;color:#555555;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Services</a><a href="#gallery" style="font-family:var(--body-font);font-size:0.72rem;color:#555555;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Gallery</a><a href="#about" style="font-family:var(--body-font);font-size:0.72rem;color:#555555;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">About</a><a href="#contact" style="font-family:var(--body-font);font-size:0.72rem;color:#555555;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;transition:color 0.3s">Contact</a>
     </div>
-    <p style="font-family:var(--body-font);font-size:0.72rem;color:#888480">&copy; 2026 Maison Veld. All rights reserved.</p>
+    <p style="font-family:var(--body-font);font-size:0.72rem;color:#555555">&copy; 2026 Maison Veld. All rights reserved.</p>
   </footer>
 
 </body>
