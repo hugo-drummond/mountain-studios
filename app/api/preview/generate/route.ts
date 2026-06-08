@@ -2025,8 +2025,7 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
-  <section style="position:relative;height:calc(100vh - 64px);display:flex;flex-direction:column;background:${bg}">
-  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0">
+  <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
     <div class="ret-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
@@ -2051,12 +2050,6 @@ function buildRetailTemplate(data: TemplateData): string {
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${bg} 0%,transparent 30%)"></div>
       ${content.badge ? `<div style="position:absolute;top:2.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:${accent};font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
     </div>
-  </div>
-  <div style="flex-shrink:0;background:${accent};padding:1.5rem 0;overflow:hidden;white-space:nowrap">
-    <div style="display:inline-flex;animation:marquee 25s linear infinite;gap:3rem">
-      ${[...Array(8)].map(() => `<span style="font-family:var(--heading-font);font-size:1.3rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.08em">${content.heroEyebrow} &nbsp;&#10022;&nbsp; ${businessName} &nbsp;&#10022;&nbsp; ${content.ctaPrimary}</span>`).join('')}
-    </div>
-  </div>
   </section>
   <style>@media(max-width:768px){section:first-of-type{grid-template-columns:1fr!important}section:first-of-type>div:last-child{display:none!important}}</style>`
 
@@ -2194,6 +2187,7 @@ function buildRetailTemplate(data: TemplateData): string {
 ${customNav}
 
 ${heroSection}
+${marqueeBanner}
 ${productsSection}
 ${editorialSplit}
 ${gallerySection}
@@ -2546,8 +2540,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
-<section class="hw-hero-section" style="height:calc(100vh - 64px);display:flex;flex-direction:column;background:${hw.bg};position:relative">
-<div style="flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:0">
+<section class="hw-hero-section" style="min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
   <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -2572,13 +2565,14 @@ ${buildStandardNav(businessName, content, navFlags)}
       <p style="font-family:'Cormorant',Georgia,serif;font-size:1rem;font-style:italic;color:${hw.text};line-height:1.5">${content.badge}</p>
     </div>` : ''}
   </div>
-</div>
-<div style="flex-shrink:0;background:${hw.accent};padding:0.9rem 0;overflow:hidden;white-space:nowrap">
+</section>
+
+<!-- MARQUEE STRIP -->
+<div style="background:${hw.accent};padding:0.9rem 0;overflow:hidden;white-space:nowrap">
   <div style="display:inline-block;animation:marquee 22s linear infinite">
     ${[...Array(6)].map(() => content.services.map(s => `<span style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:0 2.5rem">${s.name}</span>`).join('')).join('')}
   </div>
 </div>
-</section>
 <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
 
 <!-- SERVICES: Alternating large image + content rows -->
@@ -3769,8 +3763,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Centered, massive type, animated gradient orb ═══════════ -->
-  <section style="position:relative;height:calc(100vh - 64px);display:flex;flex-direction:column;background:${bg};z-index:1">
-  <div style="flex:1;display:flex;align-items:center;overflow:hidden;position:relative;min-height:0">
+  <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
 
     <!-- Ambient orb -->
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
@@ -3804,9 +3797,10 @@ ${buildStandardNav(businessName, content, navFlags)}
 
       ${content.ctaNote ? `<p class="reveal reveal-delay-3 ms-cta-note" style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};margin-top:1.25rem;letter-spacing:0.08em">${content.ctaNote}</p>` : ''}
     </div>
-  </div>
+  </section>
+
   <!-- ═══════════ STATS MARQUEE ═══════════ -->
-  <div style="flex-shrink:0;padding:1.5rem 0;border-top:1px solid ${borderCol};background:${bgAlt};overflow:hidden">
+  <div style="position:relative;z-index:1;padding:1.5rem 0;border-top:1px solid ${borderCol};border-bottom:1px solid ${borderCol};background:${bgAlt};overflow:hidden">
     <div style="display:flex;align-items:center;gap:5rem;animation:marquee 20s linear infinite;white-space:nowrap">
       ${[...content.stats, ...content.stats, ...content.stats].map(s => `
       <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
@@ -3816,7 +3810,6 @@ ${buildStandardNav(businessName, content, navFlags)}
       </div>`).join('')}
     </div>
   </div>
-  </section>
 
   <!-- ═══════════ SERVICES: Cards with glow effect ═══════════ -->
   <section id="services" style="position:relative;padding:120px 0;background:${bg};z-index:1">
@@ -5444,8 +5437,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="background:${ink};height:calc(100vh - 64px);display:flex;flex-direction:column;position:relative">
-  <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;min-height:0" class="ms-grid">
+  <section style="background:${ink};min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
     <div class="cr-hero-content" style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
@@ -5475,16 +5467,15 @@ function buildCreativeTemplate(data: TemplateData): string {
         <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${content.badge || 'Available for Work'}</div>
       </div>
     </div>
-  </div>
-  <div style="flex-shrink:0;background:${accent};padding:1.25rem 0;overflow:hidden;white-space:nowrap">
+  </section>`
+
+  const marqueeSection = `
+  <section style="background:${accent};padding:1.25rem 0;overflow:hidden;white-space:nowrap">
     <div style="display:inline-flex;gap:4rem;animation:marquee 20s linear infinite">
       ${[...content.services.map(s => s.name), ...content.services.map(s => s.name)].map(name => `<span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${name} &nbsp;&bull;</span>`).join('')}
     </div>
     <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
-  </div>
   </section>`
-
-  const marqueeSection = ``
 
   const workSection = `
   <section id="work" style="padding:120px 0;background:${chalk}">
