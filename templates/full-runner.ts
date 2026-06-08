@@ -2866,7 +2866,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           <img src="${stockImages.cards[i] || stockPool[i % stockPool.length]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
           <!-- Overlay label -->
           <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem;background:linear-gradient(to top,rgba(13,13,11,0.85),transparent)">
-            <div id="pro-svc-label" style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:400;color:${textPrimary};font-style:italic">${content.services[0]?.name || ''}</div>
+            <div id="pro-svc-label" style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:400;color:#ffffff;font-style:italic">${content.services[0]?.name || ''}</div>
           </div>
         </div>
       </div>
