@@ -4523,7 +4523,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="position:relative;height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;background:${void_}">
+  <section style="position:relative;height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;background:#080808">
     <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
       <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.2) 0%,rgba(8,8,8,0.65) 60%,rgba(8,8,8,0.85) 100%)"></div>
