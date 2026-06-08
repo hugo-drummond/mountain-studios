@@ -4515,7 +4515,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   ]
 
   const gold = primaryColor || '#c9a96e'
-  const void_ = '#ffffff'
+  const void_ = '#f7f5f0'
   const offwhite = '#0d0d0b'
   const muted = '#666660'
   const border = 'rgba(0,0,0,0.1)'
