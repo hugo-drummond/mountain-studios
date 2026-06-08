@@ -680,6 +680,7 @@ export default function StartYourProject() {
 
   return (
     <div style={{ minHeight: '100vh', fontFamily: font, background: gradient }}>
+      <style>{`@media(max-width:640px){.syt-nav-links{display:none!important}}`}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       {/* Nav */}
@@ -911,19 +912,19 @@ export default function StartYourProject() {
         {step === 5 && (
           <>
             <h1 style={heading}>Do you have brand colours?</h1>
-            <div style={{ display: 'flex', gap: '3rem', marginBottom: '2rem', opacity: noColors ? 0.3 : 1, pointerEvents: noColors ? 'none' : 'auto' }}>
+            <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2rem', opacity: noColors ? 0.3 : 1, pointerEvents: noColors ? 'none' : 'auto' }}>
               <div>
                 <p style={label}>Primary</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <input type="color" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} style={{ width: '48px', height: '48px', border: 'none', borderRadius: '6px', cursor: 'pointer', background: 'none' }} />
-                  <input type="text" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} style={{ ...fieldInput, width: '120px', fontSize: '0.95rem' }} />
+                  <input type="text" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
                 </div>
               </div>
               <div>
                 <p style={label}>Secondary</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <input type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} style={{ width: '48px', height: '48px', border: 'none', borderRadius: '6px', cursor: 'pointer', background: 'none' }} />
-                  <input type="text" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} style={{ ...fieldInput, width: '120px', fontSize: '0.95rem' }} />
+                  <input type="text" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
                 </div>
               </div>
             </div>
@@ -1053,15 +1054,13 @@ export default function StartYourProject() {
               style={{
                 width: '90vw',
                 maxWidth: '1100px',
-                marginLeft: '50%',
-                transform: 'translateX(-50%)',
+                margin: '0 auto 2rem',
                 height: '500px',
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginBottom: '2rem',
                 overflow: 'hidden',
                 border: '1px solid rgba(255,255,255,0.1)',
                 backdropFilter: 'blur(20px)',
