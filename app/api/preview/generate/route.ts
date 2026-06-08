@@ -3302,18 +3302,18 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const stockPool = buildImagePool(images, stockImages, businessName)
   let _pi = 0
 
-  // Authoritative dark palette with warm parchment accents
-  const bg = '#0d0d0b'
-  const bgAlt = '#141410'
-  const cardBg = '#1a1a16'
-  const textPrimary = '#f0ede6'
-  const textMuted = '#8a8780'
-  const borderCol = 'rgba(240,237,230,0.08)'
+  // Light palette
+  const bg = '#ffffff'
+  const bgAlt = '#f5f4f0'
+  const cardBg = '#eeece8'
+  const textPrimary = '#0d0d0b'
+  const textMuted = '#555550'
+  const borderCol = 'rgba(0,0,0,0.08)'
   const accent = primaryColor || '#b8975a'
 
   const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
   return `${headHtml}
   <style>
