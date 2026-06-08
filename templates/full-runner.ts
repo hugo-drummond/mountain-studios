@@ -3529,7 +3529,7 @@ function buildTradesTemplate(data: TemplateData): string {
         </div>
         <a href="#contact" class="tr-cta-primary" style="background:${trAccent};color:#fff">${content.ctaPrimary} &rarr;</a>
       </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:${trBg}">
         ${content.services.slice(0, 6).map((s, i) => `
         <div class="tr-service-card tr-reveal" style="background:${trBg};padding:2.5rem 2rem;position:relative;overflow:hidden">
           <span class="tr-step-num tr-step-num-el">${String(i + 1).padStart(2, '0')}</span>
