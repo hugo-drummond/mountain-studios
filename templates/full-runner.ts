@@ -2980,7 +2980,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 ${buildContactSection(content, locationInfo)}
 
   <!-- ═══════════ FOOTER ═══════════ -->
-  <footer style="padding:5rem 2.5rem 2rem;background:#080806;border-top:1px solid ${borderCol}">
+  <footer style="padding:5rem 2.5rem 2rem;background:${bgAlt};border-top:1px solid ${borderCol}">
     <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem">
       <div>
         <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:400;color:${textPrimary};margin-bottom:0.5rem;letter-spacing:0.02em">${businessName}</div>
@@ -2989,26 +2989,26 @@ ${buildContactSection(content, locationInfo)}
       </div>
       <div>
         <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Navigate</div>
-        <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Services</a>
-        <a href="#about" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">About Us</a>
-        <a href="#contact" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:300">Contact</a>
+        <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">Services</a>
+        <a href="#about" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">About Us</a>
+        <a href="#contact" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">Contact</a>
       </div>
       <div>
         <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">${s.tags?.[0] || s.name}</a>`).join('')}
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
         <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Legal</div>
-        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">Privacy Policy</a>
-        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textMuted};text-decoration:none;margin-bottom:0.75rem;font-weight:300">Terms of Service</a>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Privacy Policy</a>
+        <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Terms of Service</a>
         <div style="margin-top:2rem">
           <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${accent};color:${accent};text-decoration:none;transition:background 0.3s,color 0.3s">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
     <div style="max-width:1240px;margin:0 auto;padding-top:2rem;border-top:1px solid ${borderCol};display:flex;align-items:center;justify-content:space-between">
-      <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(240,237,230,0.25);font-weight:300">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
-      <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(240,237,230,0.25)">Excellence · Integrity · Results</div>
+      <div style="font-family:var(--body-font);font-size:0.75rem;color:${textMuted};font-weight:400">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</div>
+      <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:${textMuted}">Excellence · Integrity · Results</div>
     </div>
   </footer>
 
