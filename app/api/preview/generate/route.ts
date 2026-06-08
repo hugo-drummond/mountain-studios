@@ -2025,7 +2025,7 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
-  <section style="position:relative;flex:1;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
+  <section style="position:relative;min-height:calc(100vh - 132px);display:grid;grid-template-columns:1fr 1fr;background:${bg}">
     <div class="ret-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
@@ -2186,10 +2186,8 @@ function buildRetailTemplate(data: TemplateData): string {
 
 ${customNav}
 
-<div style="min-height:100vh;display:flex;flex-direction:column">
 ${heroSection}
 ${marqueeBanner}
-</div>
 ${productsSection}
 ${editorialSplit}
 ${gallerySection}
@@ -2542,8 +2540,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
-<div style="min-height:calc(100vh - 64px);display:flex;flex-direction:column">
-<section class="hw-hero-section" style="flex:1;display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
+<section class="hw-hero-section" style="min-height:calc(100vh - 112px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
   <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
@@ -2577,7 +2574,6 @@ ${buildStandardNav(businessName, content, navFlags)}
   </div>
 </div>
 <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
-</div>
 
 <!-- SERVICES: Alternating large image + content rows -->
 <section id="services" style="padding:8rem 0;background:${hw.bg}">
@@ -3767,8 +3763,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
 ${buildStandardNav(businessName, content, navFlags)}
 
   <!-- ═══════════ HERO: Centered, massive type, animated gradient orb ═══════════ -->
-  <div style="min-height:calc(100vh - 64px);display:flex;flex-direction:column">
-  <section style="position:relative;flex:1;display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
+  <section style="position:relative;min-height:calc(100vh - 134px);display:flex;align-items:center;overflow:hidden;background:${bg};z-index:1">
 
     <!-- Ambient orb -->
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
@@ -3814,7 +3809,6 @@ ${buildStandardNav(businessName, content, navFlags)}
         <span style="color:${borderCol};font-size:1.2rem">&#47;</span>
       </div>`).join('')}
     </div>
-  </div>
   </div>
 
   <!-- ═══════════ SERVICES: Cards with glow effect ═══════════ -->
@@ -5443,7 +5437,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
-  <section style="background:${ink};flex:1;display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
+  <section style="background:${ink};min-height:calc(100vh - 122px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
     <div class="cr-hero-content" style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
@@ -5688,10 +5682,8 @@ function buildCreativeTemplate(data: TemplateData): string {
 
 ${buildStandardNav(businessName, content, navFlags)}
 
-<div style="min-height:calc(100vh - 64px);display:flex;flex-direction:column">
 ${heroSection}
 ${marqueeSection}
-</div>
 ${workSection}
 ${servicesSection}
 ${aboutSection}
