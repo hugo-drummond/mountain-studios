@@ -4515,39 +4515,39 @@ function buildPropertyTemplate(data: TemplateData): string {
   ]
 
   const gold = primaryColor || '#c9a96e'
-  const void_ = '#080808'
-  const offwhite = '#f2ede8'
-  const muted = '#8a8580'
-  const border = 'rgba(201,169,110,0.2)'
+  const void_ = '#ffffff'
+  const offwhite = '#0d0d0b'
+  const muted = '#666660'
+  const border = 'rgba(0,0,0,0.1)'
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
   <section style="position:relative;height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden;background:${void_}">
     <div style="position:absolute;inset:0">
-      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.35" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.3) 0%,rgba(8,8,8,0.7) 60%,${void_} 100%)"></div>
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.55" />
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.2) 0%,rgba(8,8,8,0.65) 60%,rgba(8,8,8,0.85) 100%)"></div>
     </div>
     <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;max-width:1400px;margin:0 auto;width:100%;padding:0 4rem 4rem">
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem">
         <div style="width:40px;height:1px;background:${gold}"></div>
         <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
       </div>
-      <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:${offwhite};line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
+      <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:#ffffff;line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
       <div class="pr-hero-bottom" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem">
-        <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(242,237,232,0.65);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
+        <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(255,255,255,0.75);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
         <div class="pr-hero-btns" style="display:flex;gap:1rem;flex-shrink:0">
           <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${gold};color:${gold};text-decoration:none;transition:all 0.3s ease">View Properties</a>
-          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:${void_};text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:#ffffff;text-decoration:none">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
-    <div style="position:relative;display:flex;justify-content:center;padding:2rem 4rem;border-top:1px solid ${border}">
+    <div style="position:relative;display:flex;justify-content:center;padding:2rem 4rem;border-top:1px solid rgba(255,255,255,0.15);background:rgba(8,8,8,0.85)">
       <div style="display:flex;gap:6rem;flex-wrap:wrap;justify-content:center">
         ${content.stats.slice(0, 3).map(s => `
         <div style="text-align:center">
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:${offwhite};line-height:1">${s.value}</div>
-          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${muted};margin-top:0.4rem">${s.label}</div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#ffffff;line-height:1">${s.value}</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:0.4rem">${s.label}</div>
         </div>`).join('')}
       </div>
     </div>
