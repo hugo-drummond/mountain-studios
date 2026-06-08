@@ -455,6 +455,7 @@ const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: n
 
 export default function StartYourProject() {
   const [step, setStep] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // Form data
   const [businessName, setBusinessName] = useState('')
@@ -680,7 +681,14 @@ export default function StartYourProject() {
 
   return (
     <div style={{ minHeight: '100vh', fontFamily: font, background: gradient }}>
-      <style>{`@media(max-width:640px){.syt-nav-links{display:none!important}}`}</style>
+      <style>{`
+        @media(max-width:640px){
+          .syt-nav-links{display:none!important}
+          .syt-cta-btn{display:none!important}
+          .syt-burger-btn{display:flex!important}
+        }
+        .syt-burger-btn{display:none}
+      `}</style>
 
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
       {/* Nav */}
@@ -713,13 +721,37 @@ export default function StartYourProject() {
             ))}
           </div>
 
-          <a href="/start-your-project" style={{
+          <a href="/start-your-project" className="syt-cta-btn" style={{
             fontFamily: font, fontSize: '0.85rem', fontWeight: 600,
             color: '#1a1a2e', textDecoration: 'none', letterSpacing: '0.04em',
             background: '#fff', padding: '0.6rem 1.5rem', borderRadius: '999px',
           }}>Get Started</a>
+          <button className="syt-burger-btn" onClick={() => setMenuOpen(o => !o)} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: '4px 8px', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontSize: '1.4rem', lineHeight: 1,
+          }}>☰</button>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      <div onClick={() => setMenuOpen(false)} style={{
+        position: 'fixed', inset: 0, zIndex: 30,
+        background: 'rgba(0,0,0,0.92)',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1.5rem',
+        opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? 'auto' : 'none',
+        transition: 'opacity 0.3s ease',
+      }}>
+        {[['About', '/#about'], ['Portfolio', '/#portfolio'], ['Contact', '/#contact'], ['Start a Project', '/start-your-project']].map(([label, href]) => (
+          <a key={href} href={href} onClick={e => e.stopPropagation()} style={{
+            color: 'rgba(255,255,255,0.85)', textDecoration: 'none',
+            fontFamily: font, fontSize: '1.3rem', fontWeight: 300,
+            letterSpacing: '0.2em', textTransform: 'uppercase' as const,
+            padding: '0.5rem 1.5rem', borderRadius: '999px',
+            border: '1px solid rgba(255,255,255,0.3)',
+          }}>{label}</a>
+        ))}
+      </div>
 
       {/* Progress bar */}
       {step > 0 && step < 9 && (
