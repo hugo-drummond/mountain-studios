@@ -5480,7 +5480,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>`
 
   const workSection = `
-  <section id="work" style="padding:120px 0;background:${chalk}">
+  <section id="work" style="padding:120px 0;background:${ink}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:5rem;flex-wrap:wrap;gap:1.5rem">
         <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(3rem,5vw,5.5rem);font-weight:400;color:${ink};font-style:italic;line-height:0.9">${content.galleryHeading || 'Selected Work'}</h2>
@@ -5596,7 +5596,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>` : ''
 
   const contactSection = `
-  <section id="contact" style="padding:120px 0;background:${chalk}">
+  <section id="contact" style="padding:120px 0;background:${ink}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
