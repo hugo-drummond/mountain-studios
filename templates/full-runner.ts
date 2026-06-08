@@ -3056,7 +3056,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const bgAlt = '#0d0d1a'
   const cardBg = '#111122'
   const textPrimary = '#e8e8f0'
-  const textMuted = '#7070a0'
+  const textMuted = '#bbbbbb'
   const borderCol = 'rgba(120,120,200,0.12)'
   const accent = primaryColor || '#6c63ff'
   const accentGlow = `${accent}40`
