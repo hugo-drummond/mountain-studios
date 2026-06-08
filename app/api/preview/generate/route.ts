@@ -5442,7 +5442,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   const heroSection = `
   <section style="background:${ink};min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
-    <div style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
+    <div class="cr-hero-content" style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
@@ -5464,7 +5464,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         </div>`).join('')}
       </div>
     </div>
-    <div style="position:relative;overflow:hidden">
+    <div class="cr-hero-img" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%)" />
       <div style="position:absolute;inset:0;background:linear-gradient(to right,${ink} 0%,transparent 30%)"></div>
       <div style="position:absolute;bottom:3rem;right:3rem;background:${accent};padding:1rem 1.5rem">
@@ -5489,8 +5489,8 @@ function buildCreativeTemplate(data: TemplateData): string {
         <p style="font-family:'Space Grotesk',sans-serif;font-size:0.8rem;font-weight:300;color:${dust};max-width:300px;line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
       </div>
       <div style="display:grid;grid-template-columns:7fr 5fr;gap:1.5rem;margin-bottom:1.5rem" class="ms-grid">
-        <div style="position:relative;overflow:hidden;group">
-          <div style="height:580px;overflow:hidden">
+        <div class="cr-work-left-cell" style="position:relative;overflow:hidden;group">
+          <div class="cr-work-main-img" style="height:580px;overflow:hidden">
             <img src="${stockPool[_pi++] || stockImages.cards[0]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
           <div style="position:absolute;inset:0;background:rgba(10,10,8,0);transition:background 0.3s ease;display:flex;align-items:flex-end;padding:2rem" onmouseover="this.style.background='rgba(10,10,8,0.6)'" onmouseout="this.style.background='rgba(10,10,8,0)'">
@@ -5504,7 +5504,7 @@ function buildCreativeTemplate(data: TemplateData): string {
             <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:1.5rem">
+        <div class="cr-work-right-cell" style="display:flex;flex-direction:column;gap:1.5rem">
           ${[1,2].map((idx) => `
           <div style="position:relative;overflow:hidden;flex:1">
             <div style="height:100%;min-height:250px;overflow:hidden">
@@ -5567,7 +5567,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   <section id="about" style="padding:120px 0;background:${stone}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
-        <div style="position:relative">
+        <div class="cr-about-img" style="position:relative">
           <div style="overflow:hidden;height:650px">
             <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
@@ -5674,6 +5674,14 @@ function buildCreativeTemplate(data: TemplateData): string {
       --border: rgba(10,10,8,0.1);
       --primary: ${accent};
       --secondary: ${secondaryColor};
+    }
+    @media(max-width:768px){
+      .cr-hero-content{min-height:100svh!important;padding:clamp(5rem,12svh,8rem) 1.25rem 3rem!important}
+      .cr-hero-img{display:none!important}
+      .cr-work-main-img{display:none!important}
+      .cr-work-left-cell{order:2!important}
+      .cr-work-right-cell{order:1!important}
+      .cr-about-img{display:none!important}
     }
   </style>
 
