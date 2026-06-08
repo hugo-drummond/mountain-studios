@@ -1656,6 +1656,7 @@ function buildPetsTemplate(data: TemplateData): string {
   <style>
     #pets-nav.scrolled { box-shadow: 0 4px 24px rgba(74,124,78,0.1); }
     @media(max-width:768px){ #pets-nav label { display:block!important; } }
+    @media(min-width:769px){ .pet-cta-heading{display:none!important} .pet-cta-sub{font-size:clamp(2rem,4vw,3rem)!important;font-weight:700!important;color:#fff!important;font-family:var(--heading-font)!important;line-height:1.2!important} }
   </style>
   <script>
     window.addEventListener('scroll',function(){
@@ -1820,8 +1821,8 @@ function buildPetsTemplate(data: TemplateData): string {
     <div style="position:absolute;left:10%;bottom:-3rem;width:200px;height:200px;border-radius:50%;background:rgba(232,184,75,0.1)"></div>
     <div style="max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:2">
       <div style="font-size:2.5rem;margin-bottom:1rem">&#128062;</div>
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem">${content.contactHeading}</h2>
-      <p style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
+      <h2 class="pet-cta-heading" style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem">${content.contactHeading}</h2>
+      <p class="pet-cta-sub" style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
       <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.5rem;background:${accentWarm};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:opacity 0.3s">${content.ctaPrimary}</a>
     </div>
   </section>`
