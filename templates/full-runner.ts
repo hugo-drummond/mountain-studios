@@ -2823,7 +2823,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       ${content.stats.slice(0, 4).map((s, i) => `
       <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center${i === Math.min(content.stats.length, 4) - 1 ? ';border-right:none' : ''}">
         <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:${bg};line-height:1;margin-bottom:0.35rem">${s.value}</div>
-        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(13,13,11,0.65);font-weight:500">${s.label}</div>
+        <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:500">${s.label}</div>
       </div>`).join('')}
     </div>
   </section>
