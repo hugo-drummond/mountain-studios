@@ -5167,7 +5167,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         </div>
         <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;border-bottom:1px solid ${gold};padding-bottom:0.25rem">View All Listings &rarr;</a>
       </div>
-      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5px;background:${border}">
+      <div class="pr-gallery-row1" style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5px;background:${border}">
         ${[0,1].map((i) => {
           const propCaption = (content.projectCaptions && content.projectCaptions[i]) ? content.projectCaptions[i] : (i === 0 ? 'Clifton Penthouse' : 'Bishopscourt Manor')
           const propSub = (content.features && content.features[i]) ? content.features[i].name : (i === 0 ? 'Clifton, Atlantic Seaboard' : 'Bishopscourt, Southern Suburbs')
@@ -5400,6 +5400,7 @@ function buildPropertyTemplate(data: TemplateData): string {
       .pr-hero-btns{flex-direction:column!important;width:100%}
       .pr-hero-btns a{text-align:center}
       .pr-hero-bottom{padding-top:clamp(4rem,10svh,7rem)!important}
+      .pr-gallery-row1{grid-template-columns:1fr!important}
       .pr-gallery-row2{display:none!important}
       .pr-svc-heading{margin-bottom:2.5rem!important}
       .pr-testimonial-section{padding:70px 0!important}
