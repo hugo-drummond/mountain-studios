@@ -4946,17 +4946,15 @@ function buildAutomotiveTemplate(data: TemplateData): string {
           <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:-0.01em;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
         </div>
       </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px">
+      <div class="ms-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:230px 230px;gap:3px">
         <div style="position:relative;overflow:hidden;grid-row:span 2" class="auto-reveal">
-          <div style="height:100%;min-height:460px;overflow:hidden">
-            <img src="${serviceImgs[3] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-          </div>
+          <img src="${serviceImgs[3] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))">
             <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:#fff;text-transform:uppercase">${content.services[3]?.name || content.services[0]?.name || ''}</div>
           </div>
         </div>
         ${serviceImgs.slice(4, 8).map((img, i) => `
-        <div style="position:relative;overflow:hidden;height:225px" class="auto-reveal">
+        <div style="position:relative;overflow:hidden" class="auto-reveal">
           <img src="${img || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'" />
           <div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s" onmouseover="this.style.background='rgba(230,59,30,0.15)'" onmouseout="this.style.background='rgba(0,0,0,0)'"></div>
           <div style="position:absolute;bottom:0.75rem;left:0.75rem">
