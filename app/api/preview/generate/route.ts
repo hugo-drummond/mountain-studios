@@ -4754,7 +4754,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const autoAlt = '#111111'
   const autoCard = '#141414'
   const autoText = '#f0ede8'
-  const autoMuted = '#888580'
+  const autoMuted = '#ffffff'
   const autoBorder = 'rgba(255,255,255,0.07)'
   const autoAccent = primaryColor || '#e63b1e'
   const autoAccentDim = 'rgba(230,59,30,0.12)'
@@ -4822,7 +4822,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         <span class="auto-badge">&#9632; ${content.heroEyebrow}</span>
       </div>
       <h1 class="auto-f2" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:800;color:#fff;line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.75rem;max-width:900px">${content.tagline}</h1>
-      <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:rgba(255,255,255,0.6);max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:#ffffff;max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem">
         <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
         <a href="#services" class="auto-cta-outline">${content.ctaSecondary || 'View Services'}</a>
@@ -4832,7 +4832,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${content.stats.slice(0, 4).map(s => `
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.75rem;font-weight:700;color:${autoAccent};letter-spacing:0.02em">${s.value}</div>
-          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem">${s.label}</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:#ffffff;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem">${s.label}</div>
         </div>`).join('')}
       </div>
     </div>
@@ -4898,7 +4898,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         <div style="padding:3rem 2rem;text-align:center;${i < 3 ? `border-right:1px solid ${autoBorder}` : ''}">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:800;color:${autoAccent};letter-spacing:-0.02em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
           <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;font-weight:500;color:${autoMuted};text-transform:uppercase;letter-spacing:0.1em">${s.label}</div>
-          ${s.sublabel ? `<div style="font-family:'Barlow',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.2);margin-top:0.25rem">${s.sublabel}</div>` : ''}
+          ${s.sublabel ? `<div style="font-family:'Barlow',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:0.25rem">${s.sublabel}</div>` : ''}
         </div>`).join('')}
       </div>
     </div>
@@ -4974,7 +4974,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
         <div class="auto-reveal" style="background:${autoBg};padding:2.5rem 2rem">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:${autoAccent};opacity:0.2;line-height:0.8;margin-bottom:1.25rem">&ldquo;</div>
-          <p style="font-family:'Barlow',sans-serif;font-size:0.925rem;color:rgba(255,255,255,0.6);line-height:1.8;font-style:italic;margin-bottom:1.75rem">${t.quote}</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:0.925rem;color:#ffffff;line-height:1.8;font-style:italic;margin-bottom:1.75rem">${t.quote}</p>
           <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid ${autoBorder};padding-top:1.25rem">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:${autoText};text-transform:uppercase;letter-spacing:0.04em">${t.author.split(',')[0]}</div>
@@ -5046,30 +5046,30 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
       <div>
         <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem">${businessName}</div>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.3);line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.75);line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem;transition:color 0.2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">${s.tags?.[0] || s.name}</a>`).join('')}
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem;transition:color 0.2s" onmouseover="this.style.color='${autoAccent}'" onmouseout="this.style.color='#ffffff'">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Company</div>
-        <a href="#about" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">About</a>
-        <a href="#testimonials" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">Reviews</a>
-        <a href="#contact" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);text-decoration:none;margin-bottom:0.55rem">Contact</a>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">Reviews</a>
+        <a href="#contact" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">Contact</a>
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1.25rem">Contact</div>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4)">${locationInfo.city}</p>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff">${locationInfo.city}</p>
       </div>
     </div>
     <div style="max-width:1300px;margin:0 auto;padding-top:2rem;border-top:1px solid ${autoBorder};display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-      <p style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <p style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
       <div style="display:flex;gap:1.5rem">
-        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18);text-decoration:none">Privacy Policy</a>
-        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.18);text-decoration:none">Terms</a>
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5);text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5);text-decoration:none">Terms</a>
       </div>
     </div>
   </footer>
