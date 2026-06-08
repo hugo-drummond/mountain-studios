@@ -4578,7 +4578,7 @@ function buildPropertyTemplate(data: TemplateData): string {
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 50%)"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 2.5rem">
             <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">${propSub}</div>
-            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:${offwhite};font-style:italic">${propCaption}</h3>
+            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:#ffffff;font-style:italic">${propCaption}</h3>
           </div>
           <div style="position:absolute;top:1.5rem;right:1.5rem;background:${gold};padding:0.35rem 0.9rem">
             <span style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${void_}">For Sale</span>
@@ -4598,7 +4598,7 @@ function buildPropertyTemplate(data: TemplateData): string {
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 55%)"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem 2rem">
             <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.35rem">${propSub}</div>
-            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:300;color:${offwhite};font-style:italic">${propCaption}</h3>
+            <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:300;color:#ffffff;font-style:italic">${propCaption}</h3>
           </div>
         </div>`
         }).join('')}
