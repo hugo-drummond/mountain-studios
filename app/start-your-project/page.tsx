@@ -1055,7 +1055,7 @@ export default function StartYourProject() {
                 width: '90vw',
                 maxWidth: '1100px',
                 margin: '0 auto 2rem',
-                height: '500px',
+                height: '360px',
                 backgroundColor: 'rgba(255,255,255,0.05)',
                 borderRadius: '12px',
                 display: 'flex',
