@@ -4150,8 +4150,10 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     images[2] || stockImages.cards[1],
     images[3] || stockImages.cards[2],
     images[4] || stockImages.cards[3],
-    stockImages.cards[4],
-    stockImages.cards[5],
+    stockImages.cards[4] || stockImages.cards[0],
+    stockImages.cards[5] || stockImages.cards[1],
+    stockImages.cards[0],
+    stockImages.cards[2],
   ]
 
   const autoBg = '#0a0a0a'
