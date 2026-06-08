@@ -5832,7 +5832,7 @@ function buildEventsTemplate(data: TemplateData): string {
             </div>`).join('')}
           </div>
         </div>
-        <div style="position:relative">
+        <div class="ev-about-img" style="position:relative">
           <div style="overflow:hidden;height:650px">
             <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
@@ -6019,6 +6019,7 @@ function buildEventsTemplate(data: TemplateData): string {
     }
     @media(max-width:768px){
       .ev-gal-img1{display:none!important}
+      .ev-about-img{display:none!important}
     }
   </style>
 
