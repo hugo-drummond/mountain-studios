@@ -1875,39 +1875,35 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // GALLERY — asymmetric editorial grid: 1 tall left + 2 stacked right, then 3 across
+  // GALLERY — unified mosaic grid: big image spans 2 rows left, 4 images fill right
   const gallerySection = `
   <section id="gallery" style="padding:0;background:${bg}">
     <div style="max-width:1400px;margin:0 auto">
-      <div class="food-gal-main" style="display:grid;grid-template-columns:1.4fr 1fr;gap:3px">
-        <div style="overflow:hidden;height:600px">
+      <div class="food-gal-top" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3px">
+        <div style="grid-row:1/3;overflow:hidden;height:603px">
           <img src="${stockPool[6]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div class="food-gal-stack" style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
-          <div style="overflow:hidden">
-            <img src="${stockPool[7]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-          </div>
-          <div style="overflow:hidden">
-            <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-          </div>
-        </div>
-      </div>
-      <div class="food-gal-row2" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:3px">
-        ${[9,10,11].map(i => `
         <div style="overflow:hidden;height:300px">
-          <img src="${stockPool[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-        </div>`).join('')}
+          <img src="${stockPool[7]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="overflow:hidden;height:300px">
+          <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="overflow:hidden;height:300px">
+          <img src="${stockPool[9]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
+        <div style="overflow:hidden;height:300px">
+          <img src="${stockPool[10]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
+        </div>
       </div>
     </div>
   </section>
   <style>
     @media(max-width:768px){
-      .food-gal-main { grid-template-columns:1fr 1fr !important; }
-      .food-gal-main > div:first-child { height:220px !important; }
-      .food-gal-stack > div { height:107px !important; }
-      .food-gal-row2 { grid-template-columns:1fr 1fr !important; }
-      .food-gal-row2 > div:last-child { display:none !important; }
-      .food-gal-row2 > div { height:160px !important; }
+      .food-gal-top { grid-template-columns:1fr !important; }
+      .food-gal-top > div { height:260px !important; }
+      .food-gal-top > div:first-child { grid-row:auto !important; height:260px !important; }
+      .food-gal-top > div:nth-child(n+4) { display:none !important; }
     }
   </style>`
 
