@@ -2266,7 +2266,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:${fit.accent};line-height:1;opacity:0.7">0${i + 1}</div>
         <div>
           <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:${fit.text};letter-spacing:0.05em;margin-bottom:0.35rem">${s.name.toUpperCase()}</h3>
-          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${fit.muted};font-weight:300;line-height:1.6;max-width:520px">${s.description}</p>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${fit.text};font-weight:300;line-height:1.6;max-width:520px">${s.description}</p>
           <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
             ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${fit.accent};background:rgba(${parseInt(fit.accent.slice(1,3)||'e8',16)},${parseInt(fit.accent.slice(3,5)||'ff',16)},${parseInt(fit.accent.slice(5,7)||'00',16)},0.1);padding:0.25rem 0.65rem">${t}</span>`).join('')}
           </div>
