@@ -5431,10 +5431,10 @@ function buildCreativeTemplate(data: TemplateData): string {
   const aboutImg = images[5] || stockImages.about
   let _pi = 0
 
-  const ink = '#0a0a08'
-  const chalk = '#f7f5f0'
+  const ink = '#f7f5f0'
+  const chalk = '#0a0a08'
   const stone = '#e8e4dd'
-  const dust = '#9a9590'
+  const dust = '#6a6560'
   const accent = primaryColor || '#d4522a'
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
