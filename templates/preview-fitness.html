@@ -74,8 +74,9 @@
   html { scroll-behavior: smooth; }
   .fit-fade { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fit-fade.visible { opacity: 1; transform: none; }
-  .fit-card { transition: transform 0.3s ease; }
-  .fit-card:hover { transform: translateY(-6px); }
+  .fit-card { transition: transform 0.3s ease, background 0.3s ease; }
+  .fit-card:hover { transform: translateY(-6px); background: #e63946 !important; }
+  .fit-card:hover * { color: #000 !important; border-color: rgba(0,0,0,0.15) !important; }
   .fit-img-zoom { overflow: hidden; }
   .fit-img-zoom img { transition: transform 0.6s ease; }
   .fit-img-zoom:hover img { transform: scale(1.05); }
@@ -263,28 +264,28 @@
     </div>
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(255,255,255,0.06)">
       
-      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative;transition:box-shadow 0.3s" onmouseover="this.style.boxShadow='0 0 0 2px #e63946,0 8px 32px #e6394640'" onmouseout="this.style.boxShadow='none'">
+      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:#e63946;position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
         <div style="color:#e63946;font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
-        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:500">"Outstanding service from start to finish. They exceeded every expectation and truly transformed our business."</p>
         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">
           <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#ffffff">Sarah M.</div>
           <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#bbbbbb;margin-top:0.15rem">Director — Cape Town</div>
         </div>
       </div>
-      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative;transition:box-shadow 0.3s" onmouseover="this.style.boxShadow='0 0 0 2px #e63946,0 8px 32px #e6394640'" onmouseout="this.style.boxShadow='none'">
+      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:#e63946;position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
         <div style="color:#e63946;font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
-        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"Professional, responsive, and genuinely invested in our success."</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:500">"Professional, responsive, and genuinely invested in our success."</p>
         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">
           <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#ffffff">Priya N.</div>
           <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#bbbbbb;margin-top:0.15rem">Business Owner</div>
         </div>
       </div>
-      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative;transition:box-shadow 0.3s" onmouseover="this.style.boxShadow='0 0 0 2px #e63946,0 8px 32px #e6394640'" onmouseout="this.style.boxShadow='none'">
+      <div class="fit-card" style="background:#161616;padding:2.5rem;position:relative">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:#e63946;position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
         <div style="color:#e63946;font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">★★★★★</div>
-        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"Delivered exactly what they promised, on time and on budget."</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:#ffffff;line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:500">"Delivered exactly what they promised, on time and on budget."</p>
         <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem">
           <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:#ffffff">Mark D.</div>
           <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:#bbbbbb;margin-top:0.15rem">Manager</div>

@@ -2202,8 +2202,9 @@ function buildFitnessTemplate(data: TemplateData): string {
   html { scroll-behavior: smooth; }
   .fit-fade { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fit-fade.visible { opacity: 1; transform: none; }
-  .fit-card { transition: transform 0.3s ease; }
-  .fit-card:hover { transform: translateY(-6px); }
+  .fit-card { transition: transform 0.3s ease, background 0.3s ease; }
+  .fit-card:hover { transform: translateY(-6px); background: ${fit.accent} !important; }
+  .fit-card:hover * { color: #000 !important; border-color: rgba(0,0,0,0.15) !important; }
   .fit-img-zoom { overflow: hidden; }
   .fit-img-zoom img { transition: transform 0.6s ease; }
   .fit-img-zoom:hover img { transform: scale(1.05); }
@@ -2321,10 +2322,10 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:${fit.border}">
       ${testimonials.map((t, i) => `
-      <div class="fit-card" style="background:${fit.bgCard};padding:2.5rem;position:relative;transition:box-shadow 0.3s" onmouseover="this.style.boxShadow='0 0 0 2px ${fit.accent},0 8px 32px ${fit.accent}40'" onmouseout="this.style.boxShadow='none'">
+      <div class="fit-card" style="background:${fit.bgCard};padding:2.5rem;position:relative">
         <div style="font-family:'Bebas Neue',sans-serif;font-size:6rem;line-height:1;color:${fit.accent};position:absolute;top:0.5rem;left:1.5rem;user-select:none">"</div>
         <div style="color:${fit.accent};font-size:0.75rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
-        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.text};line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:300">"${t!.quote}"</p>
+        <p style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.text};line-height:1.8;margin-bottom:2rem;position:relative;z-index:1;font-weight:500">"${t!.quote}"</p>
         <div style="border-top:1px solid ${fit.border};padding-top:1rem">
           <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;color:${fit.text}">${t!.author.split(',')[0]}</div>
           <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${fit.muted};margin-top:0.15rem">${t!.author.split(',')[1]?.trim() || 'Member'}</div>
