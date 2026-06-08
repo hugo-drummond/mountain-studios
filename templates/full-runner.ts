@@ -4607,7 +4607,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   </section>`
 
   const aboutSection = `
-  <section id="about" style="padding:140px 0;background:#0d0d0d">
+  <section id="about" style="padding:140px 0;background:${void_}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
         <div>
@@ -4663,7 +4663,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   </section>`
 
   const testimonialSection = content.testimonial ? `
-  <section class="pr-testimonial-section" style="padding:140px 0;background:#0a0a0a;overflow:hidden">
+  <section class="pr-testimonial-section" style="padding:140px 0;background:${void_};overflow:hidden">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
@@ -4750,7 +4750,7 @@ function buildPropertyTemplate(data: TemplateData): string {
   </section>`
 
   const prFooter = `
-  <footer style="padding:6rem 4rem 3rem;background:#050505;border-top:1px solid ${border}">
+  <footer style="padding:6rem 4rem 3rem;background:${void_};border-top:1px solid ${border}">
     <div style="max-width:1400px;margin:0 auto">
       <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:5rem" class="ms-grid">
         <div>
