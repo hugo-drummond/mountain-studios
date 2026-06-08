@@ -5721,7 +5721,7 @@ function buildEventsTemplate(data: TemplateData): string {
 
   const heroSection = `
   <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${midnight}">
-    <div class="ev-hero-bg" style="position:absolute;inset:0">
+    <div style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>
     </div>
@@ -5794,7 +5794,7 @@ function buildEventsTemplate(data: TemplateData): string {
       <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${parchment};font-style:italic;margin-bottom:4rem;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
       <div style="display:grid;grid-template-columns:5fr 3fr 4fr;gap:1.5px;background:rgba(250,248,244,0.06);margin-bottom:1.5px" class="ms-grid">
         ${[0,1,2].map((i) => `
-        <div style="overflow:hidden;height:480px;position:relative">
+        <div ${i===0?'class="ev-gal-img1"':''} style="overflow:hidden;height:480px;position:relative">
           <img src="${stockPool[_pi++] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
           <div style="position:absolute;bottom:1.5rem;left:1.5rem">
@@ -6018,7 +6018,7 @@ function buildEventsTemplate(data: TemplateData): string {
       --secondary: ${gold};
     }
     @media(max-width:768px){
-      .ev-hero-bg{display:none!important}
+      .ev-gal-img1{display:none!important}
     }
   </style>
 
