@@ -3387,13 +3387,13 @@ ${buildStandardNav(businessName, content, navFlags)}
         <div style="width:32px;height:1px;background:${accent}"></div>
       </div>
 
-      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:${textPrimary};line-height:1.08;margin-bottom:1.75rem;max-width:700px;letter-spacing:-0.01em" class="reveal">${content.tagline}</h1>
+      <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:#ffffff;line-height:1.08;margin-bottom:1.75rem;max-width:700px;letter-spacing:-0.01em" class="reveal">${content.tagline}</h1>
 
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(240,237,230,0.72);max-width:480px;line-height:1.75;margin-bottom:3rem;font-weight:300" class="reveal reveal-delay-1">${content.heroSubtitle}</p>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:480px;line-height:1.75;margin-bottom:3rem;font-weight:300" class="reveal reveal-delay-1">${content.heroSubtitle}</p>
 
       <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap" class="reveal reveal-delay-2">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:${bg};text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:${textPrimary};text-decoration:none;display:flex;align-items:center;gap:0.6rem;opacity:0.75;transition:opacity 0.3s">${content.ctaSecondary} <span style="font-size:1.1rem">&#8594;</span></a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.8);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:opacity 0.3s">${content.ctaSecondary} <span style="font-size:1.1rem">&#8594;</span></a>
       </div>
     </div>
 
