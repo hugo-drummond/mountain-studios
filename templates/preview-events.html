@@ -73,6 +73,9 @@
       --primary: #d4a017;
       --secondary: #888888;
     }
+    @media(max-width:768px){
+      .ev-hero-bg{display:none!important}
+    }
   </style>
 
 
@@ -104,7 +107,7 @@
 
 
   <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:#0d0d12">
-    <div style="position:absolute;inset:0">
+    <div class="ev-hero-bg" style="position:absolute;inset:0">
       <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1400&q=80&auto=format&fit=crop" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>
     </div>

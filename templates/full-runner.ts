@@ -5119,7 +5119,7 @@ function buildEventsTemplate(data: TemplateData): string {
 
   const heroSection = `
   <section style="position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:${midnight}">
-    <div style="position:absolute;inset:0">
+    <div class="ev-hero-bg" style="position:absolute;inset:0">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:0.45" />
       <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,13,18,0.95) 0%,rgba(13,13,18,0.5) 50%,rgba(13,13,18,0.7) 100%)"></div>
     </div>
@@ -5414,6 +5414,9 @@ function buildEventsTemplate(data: TemplateData): string {
       --border: rgba(250,248,244,0.06);
       --primary: ${vivid};
       --secondary: ${gold};
+    }
+    @media(max-width:768px){
+      .ev-hero-bg{display:none!important}
     }
   </style>
 
