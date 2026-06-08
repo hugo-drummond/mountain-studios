@@ -3589,7 +3589,7 @@ ${buildContactSection(content, locationInfo)}
         <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Privacy Policy</a>
         <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Terms of Service</a>
         <div style="margin-top:2rem">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem 1.5rem;border:1px solid ${accent};color:${accent};text-decoration:none;transition:background 0.3s,color 0.3s">${content.ctaPrimary}</a>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem 1.5rem;background:${accent};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
