@@ -1877,7 +1877,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
 
   // GALLERY — unified mosaic grid: big image spans 2 rows left, 4 images fill right
   const gallerySection = `
-  <section id="gallery" style="padding:0;background:${bg}">
+  <section id="gallery" style="padding:0 0 80px;background:${bg}">
     <div style="max-width:1400px;margin:0 auto">
       <div class="food-gal-top" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3px">
         <div style="grid-row:1/3;overflow:hidden;height:603px">
