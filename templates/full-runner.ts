@@ -2884,7 +2884,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <!-- Accent badge -->
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;z-index:2;background:${accent};padding:1.25rem 1.75rem">
           <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:${bg};line-height:1">${content.stats[0]?.value || '20+'}</div>
-          <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(13,13,11,0.65);margin-top:0.2rem">${content.stats[0]?.label || 'Years'}</div>
+          <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-top:0.2rem">${content.stats[0]?.label || 'Years'}</div>
         </div>
       </div>
 
