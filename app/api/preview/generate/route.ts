@@ -2887,7 +2887,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       </div>
       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">${content.aboutHeading.toUpperCase()}</h2>
       ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${fit.accent};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
-      ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.muted};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
+      ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.text};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
       <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none">${content.ctaPrimary}</a>
     </div>
     <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
@@ -2938,7 +2938,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         ].map(item => `
         <div style="border-left:2px solid ${fit.accent};padding-left:1.25rem">
           <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${fit.accent};margin-bottom:0.3rem">${item.label}</div>
-          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.muted};font-weight:300">${item.val}</div>
+          <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.text};font-weight:300">${item.val}</div>
         </div>`).join('')}
       </div>
     </div>
