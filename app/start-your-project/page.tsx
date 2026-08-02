@@ -761,7 +761,7 @@ export default function StartYourProject() {
       )}
 
       {/* Content area */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '6rem 2rem 4rem', minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '6rem 2rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
         {/* Step 0: Intro */}
         {step === 0 && (
@@ -1084,8 +1084,7 @@ export default function StartYourProject() {
                 }
               }}
               style={{
-                width: '90vw',
-                maxWidth: '1100px',
+                width: '100%',
                 margin: '0 auto 2rem',
                 height: '360px',
                 backgroundColor: 'rgba(255,255,255,0.05)',
