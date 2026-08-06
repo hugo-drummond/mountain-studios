@@ -2,7 +2,7 @@
 const config = {
   agency: {
     name: "Mountain Studios",
-    email: "hello@mountainstudios.com",
+    email: "hello@mountainstudios.co.za",
     phone: "",
     timezone: "Africa/Johannesburg",
   },
