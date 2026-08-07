@@ -6,13 +6,13 @@ const config = {
     phone: "",
     timezone: "Africa/Johannesburg",
   },
+  // Pricing is quoted per job, not computed. The old GBP price list
+  // (base + per-page + per-section) has been removed along with the FX engine —
+  // Mountain Studios sells in South Africa only, and every project is priced on
+  // its own merits. depositPercentage is the one rule that survives: it splits
+  // whatever rand amount an admin enters when sending a brief.
   pricing: {
-    basePriceGBP: 499,
-    pricePerPageGBP: 99,
-    pricePerExtraSectionGBP: 29,
-    customPagePriceGBP: 79,
     depositPercentage: 50,
-    baseSectionsIncluded: 3,
   },
   meetings: {
     discoveryDurationMins: 30,
@@ -22,7 +22,8 @@ const config = {
   },
   ads: {
     autoPauseCTRThreshold: 0.008,
-    autoScaleCostPerLeadGBP: 12,
+    // Converted from £12 at ~R23/£. Confirm the real rand target.
+    autoScaleCostPerLeadZAR: 276,
     autoScaleBudgetIncrement: 0.20,
     minImpressionsBeforeJudge: 1000,
   },

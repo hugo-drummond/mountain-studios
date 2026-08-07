@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { createNotification } from '@/lib/notifications'
 import { sendBriefReceipt } from '@/lib/email'
-import { getLatestFxRates, calculateQuote } from '@/lib/fx'
 import type { Brief, PageSelection } from '@/types'
 
 // ---------------------------------------------------------------------------
@@ -92,28 +91,10 @@ export async function POST(
       updatePayload.logo_url = body.logo_url
     }
 
-    // ── 5. If not rate_locked: calculate final price and lock it now ───────────
-    const currency_code = brief.currency_code ?? lead.currency_code ?? 'GBP'
+    // No price is calculated on submit. The rand amount and its deposit are set
+    // by an admin when the brief is sent (see admin/leads/[id]/send-brief).
 
-    if (!brief.rate_locked) {
-      const fxRates = await getLatestFxRates()
-      if (!fxRates) {
-        return NextResponse.json(
-          { success: false, error: 'Failed to retrieve FX rates' },
-          { status: 500 },
-        )
-      }
-
-      const quote = calculateQuote({ pages, currency_code }, fxRates)
-
-      updatePayload.rate_locked = true
-      updatePayload.exchange_rate = quote.rate
-      updatePayload.base_price_gbp = quote.total_gbp
-      updatePayload.final_price_local = quote.total_local
-      updatePayload.deposit_amount = quote.breakdown.deposit_local
-    }
-
-    // ── 6. Update brief ───────────────────────────────────────────────────────
+    // ── 5. Update brief ───────────────────────────────────────────────────────
     const { data: updatedBrief, error: updateError } = await supabaseAdmin
       .from('briefs')
       .update(updatePayload)
@@ -164,7 +145,7 @@ export async function POST(
         brief: finalBrief,
         payment_info: {
           deposit_amount: finalBrief.deposit_amount,
-          currency_code,
+          currency_code: 'ZAR',
           checkout_url: '/api/payments/create-checkout',
         },
       },

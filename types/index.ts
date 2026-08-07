@@ -40,8 +40,11 @@ export interface Lead {
   primary_colour?: string
   secondary_colour?: string
   content_visual_ratio?: number
+  /** @deprecated GBP quoting is gone. Column retained; no longer written. */
   quote_amount_gbp?: number
+  /** @deprecated Pricing is per job now, set on the brief, not the lead. */
   quote_amount_local?: number
+  /** @deprecated FX engine removed — ZAR only. */
   exchange_rate_used?: number
   heard_from?: string
   wants_quote_copy: boolean
@@ -112,8 +115,11 @@ export interface Brief {
   contact_address?: string
   business_hours?: string
   content_visual_ratio?: number
+  /** @deprecated GBP quoting is gone. Column retained; no longer written. */
   base_price_gbp?: number
+  /** @deprecated FX engine removed — ZAR only. */
   exchange_rate?: number
+  /** The agreed project price in rands, entered by an admin on send-brief. */
   final_price_local?: number
   deposit_amount?: number
   deposit_paid: boolean
@@ -180,11 +186,14 @@ export interface AdCampaign {
   headline?: string
   body_copy?: string
   offer_type?: string
+  /** @deprecated Ad spend is in rands. Columns kept; rename is a DB migration. */
   daily_budget_gbp?: number
+  /** @deprecated Ad spend is in rands. Columns kept; rename is a DB migration. */
   spend_gbp: number
   impressions: number
   clicks: number
   leads_generated: number
+  /** @deprecated Ad spend is in rands. Columns kept; rename is a DB migration. */
   cost_per_lead_gbp?: number
   ctr?: number
   status: 'active' | 'paused' | 'archived'

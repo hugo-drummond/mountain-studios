@@ -205,9 +205,24 @@ export default function ActionButtons({ lead, brief, onAction }: Props) {
   }
 
   async function handleSendBrief() {
+    // Price is agreed per job, so it is entered here rather than computed. This
+    // is the only place a brief's amount is set, and checkout needs it.
+    const entered = window.prompt(
+      `Agreed project price for ${lead.business_name ?? 'this lead'}, in rands (excl. VAT).\nThe deposit is calculated from this.`
+    )
+    if (entered === null) return
+
+    const amountZar = Number(entered.replace(/[R,\s]/g, ''))
+    if (!Number.isFinite(amountZar) || amountZar <= 0) {
+      showError('Enter a positive rand amount, e.g. 8500')
+      return
+    }
+
     setLoading('send_brief')
     try {
-      await callApi(`/api/admin/leads/${lead.id}/send-brief`)
+      await callApi(`/api/admin/leads/${lead.id}/send-brief`, 'POST', {
+        amount_zar: amountZar,
+      })
       onAction()
     } catch (err: unknown) {
       showError(err instanceof Error ? err.message : 'Failed to send brief')

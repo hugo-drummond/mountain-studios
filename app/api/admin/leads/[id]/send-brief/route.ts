@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import { createNotification } from '@/lib/notifications'
 import { sendBriefInvitation } from '@/lib/email'
-import { getLatestFxRates } from '@/lib/fx'
 import { requireAdmin } from '@/lib/auth'
 const config = require('@/config/config')
 
@@ -20,6 +19,12 @@ export async function POST(
 
   try {
     const { id } = params
+
+    // Pricing is per job now, not computed from a page list. The admin agrees a
+    // rand amount with the client and passes it here; the deposit is the only
+    // thing still derived, via config.pricing.depositPercentage.
+    const body = await req.json().catch(() => ({}))
+    const amountZar = Number(body?.amount_zar)
 
     // ── 1. Fetch lead ─────────────────────────────────────────────────────────
     const { data: lead, error: leadError } = await supabaseAdmin
@@ -58,24 +63,23 @@ export async function POST(
 
     if (!brief) {
       // ── 3. Create brief ─────────────────────────────────────────────────────
-      const fxRates = await getLatestFxRates()
-      if (!fxRates) {
+      // The amount is required here because it is the only place a brief's price
+      // is ever set, and /api/payments/create-checkout refuses to run without
+      // final_price_local and deposit_amount.
+      if (!Number.isFinite(amountZar) || amountZar <= 0) {
         return NextResponse.json(
-          { success: false, error: 'Failed to retrieve FX rates' },
-          { status: 500 },
+          {
+            success: false,
+            error:
+              'amount_zar is required and must be a positive number — the agreed project price in rands',
+          },
+          { status: 400 },
         )
       }
 
-      const basePriceGBP: number = config.pricing.basePriceGBP
       const depositPercentage: number = config.pricing.depositPercentage
 
-      const currencyCode: string = lead.currency_code ?? 'GBP'
-      const exchangeRate: number =
-        currencyCode === 'GBP'
-          ? 1
-          : ((fxRates.rates as Record<string, number>)[currencyCode.toUpperCase()] ?? 1)
-
-      const finalPriceLocal = Math.round(basePriceGBP * exchangeRate * 100) / 100
+      const finalPriceLocal = Math.round(amountZar * 100) / 100
       const depositAmount = Math.round((finalPriceLocal * depositPercentage) / 100 * 100) / 100
 
       const { data: newBrief, error: briefInsertError } = await supabaseAdmin
@@ -89,13 +93,10 @@ export async function POST(
           primary_colour: lead.primary_colour ?? null,
           secondary_colour: lead.secondary_colour ?? null,
           region: lead.region ?? null,
-          currency_code: currencyCode,
+          currency_code: 'ZAR',
           pages: lead.pages_selected ?? null,
-          base_price_gbp: basePriceGBP,
-          exchange_rate: exchangeRate,
           final_price_local: finalPriceLocal,
           deposit_amount: depositAmount,
-          rate_locked: false,
           deposit_paid: false,
           meeting_booked: false,
           prefill_source: { from: 'lead', lead_id: id },

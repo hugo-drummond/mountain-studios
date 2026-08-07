@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
-import { getLatestFxRates } from '@/lib/fx'
 
 // ---------------------------------------------------------------------------
 // GET /api/briefs/[id]
@@ -42,16 +41,6 @@ export async function GET(
       )
     }
 
-    // ── 3. Get current FX rate for the brief's currency ───────────────────────
-    const fxRates = await getLatestFxRates()
-    const currency = (brief.currency_code ?? lead.currency_code ?? 'GBP').toUpperCase()
-    const currentRate =
-      currency === 'GBP'
-        ? 1
-        : fxRates
-          ? ((fxRates.rates as Record<string, number>)[currency] ?? null)
-          : null
-
     return NextResponse.json({
       success: true,
       data: {
@@ -71,8 +60,6 @@ export async function GET(
           content_visual_ratio: lead.content_visual_ratio,
           pages_selected: lead.pages_selected,
         },
-        current_rate: currentRate,
-        is_rate_locked: brief.rate_locked,
       },
     })
   } catch (err) {

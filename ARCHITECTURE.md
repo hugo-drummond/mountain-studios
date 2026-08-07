@@ -32,7 +32,6 @@ flowchart TB
     end
 
     subgraph worker[Python · FastAPI]
-        FX[FX refresh<br/>every 6h]
         Trans[Transcription]
         Ads[Meta Ads sync]
     end
@@ -55,7 +54,6 @@ flowchart TB
     API --> worker
     worker --> DB
     Trans --> Groq
-    FX --> DB
 ```
 
 The split is deliberate. Anything scheduled, long-running, or Python-native lives in the worker; anything request-scoped lives in Next.js. The two communicate over HTTP with a shared secret rather than a message queue — at this scale a queue would be infrastructure without a payoff.
@@ -159,7 +157,6 @@ erDiagram
     leads ||--o{ meetings : "schedules"
     leads ||--o{ prospect_scrapes : "sourced from"
     briefs ||--o| generated_sites : "produces"
-    fx_rates }o--|| leads : "prices"
 
     leads {
         uuid id PK
@@ -169,9 +166,6 @@ erDiagram
         text region
         text currency_code
         jsonb pages_selected
-        numeric quote_amount_gbp
-        numeric quote_amount_local
-        numeric exchange_rate_used
         bool final_payment_paid
         text status
     }
@@ -209,7 +203,7 @@ erDiagram
     }
 ```
 
-Alongside these: `nurture` (email list with unsubscribe tracking), `ad_campaigns` (Meta Ads performance), `notifications` (admin alerts), `fx_rates` (6-hourly snapshots), `prospect_scrapes` (competitor site extraction — the only checked-in migration, at `supabase/migrations/prospect_scrapes.sql`).
+Alongside these: `nurture` (email list with unsubscribe tracking), `ad_campaigns` (Meta Ads performance), `notifications` (admin alerts), `prospect_scrapes` (competitor site extraction — the only checked-in migration, at `supabase/migrations/prospect_scrapes.sql`).
 
 ### Lead status machine
 
@@ -231,24 +225,21 @@ Encoding the pipeline as an enum rather than a set of booleans means an invalid 
 
 ### 1 — Intake and quoting
 
-`app/start-your-project/page.tsx` → `app/api/leads/create/route.ts` → `lib/fx.ts`
+`app/start-your-project/page.tsx` → `app/api/leads/create/route.ts`
 
-The visitor picks business type, region, currency, and which pages they want. The quote is computed server-side from `config/config.js`:
+The visitor picks business type, style, colours and which pages they want, and gets a generated preview. **No quote is computed.** South Africa is the only market, so there is no region or currency step, and pricing is agreed per job rather than derived from a page count.
+
+The old model — a GBP price list in `config/config.js` (£499 base + £99/page + £29/section), converted through `lib/fx.ts` against six-hourly Frankfurter rates — has been removed entirely, along with `app/api/fx/*` and the Python FX worker. It priced a South African product in pounds and disagreed with the separate ZAR price list that lived in `constants/pricing.ts`.
+
+What survives in config is the deposit split:
 
 ```js
 pricing: {
-  basePriceGBP: 499,
-  pricePerPageGBP: 99,
-  pricePerExtraSectionGBP: 29,
-  customPagePriceGBP: 79,
   depositPercentage: 50,
-  baseSectionsIncluded: 3,
 }
 ```
 
-The GBP total is converted at the current stored rate, and **both** the GBP amount and the local amount are persisted along with `exchange_rate_used`. Storing the rate means a quote issued in March still reconciles correctly in June — the historical number is reproducible rather than recomputed against today's rate.
-
-Pricing lives in config, not in code, because it changes more often than the logic that applies it.
+The rand amount is entered by an admin on `POST /api/admin/leads/[id]/send-brief` as `amount_zar`, written to `briefs.final_price_local`, and the deposit derived from it. That endpoint is the only writer of a brief's price, and `app/api/payments/create-checkout` refuses to run without it.
 
 ### 2 — Brief collection
 
@@ -277,8 +268,6 @@ Recordings are transcribed by the Python worker via Groq. Groq over OpenAI Whisp
 ---
 
 ## Supporting subsystems
-
-**FX** — `worker/fx_worker.py` refreshes rates on an APScheduler 6-hour interval into `fx_rates`. Quote-time lookups read the table, never the upstream API, so a third-party outage cannot block a quote.
 
 **Email** — `lib/email.ts` over SMTP via nodemailer, with EmailJS on the client for the contact path. `api/nurture/unsubscribe` handles list removal.
 
@@ -314,9 +303,9 @@ Single-operator tool, single shared secret. A full identity system would be more
 
 **Self-contained HTML output.** No JS, no build, no hosting dependency. The artefact outlives the system that made it.
 
-**Config over code.** Pricing, meeting durations, and ad thresholds live in `config/config.js` because they change on business rhythm, not engineering rhythm.
+**Config over code.** The deposit split, meeting durations, and ad thresholds live in `config/config.js` because they change on business rhythm, not engineering rhythm.
 
-**Historical FX stored per lead.** Quotes must reconcile months later against the rate actually used.
+**Pricing per job, not per page.** A page-count formula priced the artefact rather than the work, and forced a currency engine on a single-currency business. An admin enters the agreed rand amount instead.
 
 **Webhooks as payment truth.** Client-side redirects are advisory.
 

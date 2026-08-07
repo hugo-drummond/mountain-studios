@@ -257,22 +257,7 @@ export default function LeadSidebar({ leadId, onClose }: Props) {
                   </h3>
                   <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
                     <DetailRow label="Business type" value={lead.business_type_custom ?? lead.business_type} />
-                    <DetailRow label="Region" value={lead.region} />
-                    <DetailRow label="Currency" value={lead.currency_code} />
                     <DetailRow label="Phone" value={lead.phone} />
-                    {(lead.quote_amount_local || lead.quote_amount_gbp) && (
-                      <div className="col-span-2">
-                        <dt className="text-xs text-slate-500 mb-0.5">Quote</dt>
-                        <dd className="text-sm text-slate-300">
-                          {lead.currency_code} {lead.quote_amount_local?.toLocaleString()}
-                          {lead.quote_amount_gbp && (
-                            <span className="text-slate-500 ml-1.5">
-                              (£{lead.quote_amount_gbp?.toLocaleString()} GBP)
-                            </span>
-                          )}
-                        </dd>
-                      </div>
-                    )}
                     <DetailRow label="Source" value={lead.source} />
                     <DetailRow label="Heard from" value={lead.heard_from} />
                     {lead.style && <DetailRow label="Style" value={lead.style} />}

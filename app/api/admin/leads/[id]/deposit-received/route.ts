@@ -94,7 +94,7 @@ export async function POST(
 
     // ── 5. Send deposit confirmation email ────────────────────────────────────
     const depositAmount: number = brief.deposit_amount ?? 0
-    const currencyCode: string = lead.currency_code ?? 'GBP'
+    const currencyCode: string = lead.currency_code ?? 'ZAR'
 
     await sendDepositConfirmation(lead.email, {
       client_name: lead.full_name ?? lead.business_name,

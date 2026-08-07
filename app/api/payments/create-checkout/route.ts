@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
 
     // ── 6 & 7. Create checkout ────────────────────────────────────────────────
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
-    const currency = lead.currency_code ?? 'GBP'
+    const currency = lead.currency_code ?? 'ZAR'
     const customerName = lead.full_name ?? lead.business_name ?? ''
 
     const checkoutOpts = {

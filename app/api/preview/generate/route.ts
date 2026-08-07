@@ -398,22 +398,11 @@ interface GeneratedContent {
 
 // ---------- Shared template helpers ----------
 
-function getLocationInfo(country: string): { address: string; city: string; postcode: string; country: string; phone: string } {
-  const locations: Record<string, { address: string; city: string; postcode: string; country: string; phone: string }> = {
-    'South Africa': { address: '123 Main Road', city: 'Cape Town', postcode: '8001', country: 'South Africa', phone: '021 000 0000' },
-    'United Kingdom': { address: '42 High Street', city: 'London', postcode: 'EC2A 4BQ', country: 'United Kingdom', phone: '+44 20 7946 0958' },
-    'United States': { address: '350 Fifth Avenue', city: 'New York, NY', postcode: '10118', country: 'United States', phone: '+1 (212) 555-0147' },
-    'Australia': { address: '275 George Street', city: 'Sydney, NSW', postcode: '2000', country: 'Australia', phone: '+61 2 9374 4000' },
-    'Germany': { address: 'Friedrichstraße 43', city: 'Berlin', postcode: '10117', country: 'Germany', phone: '+49 30 123456' },
-    'France': { address: '8 Rue de Rivoli', city: 'Paris', postcode: '75001', country: 'France', phone: '+33 1 42 60 00 00' },
-    'Netherlands': { address: 'Keizersgracht 125', city: 'Amsterdam', postcode: '1015 CJ', country: 'Netherlands', phone: '+31 20 555 0123' },
-    'Ireland': { address: '45 Grafton Street', city: 'Dublin', postcode: 'D02 H638', country: 'Ireland', phone: '+353 1 555 0123' },
-    'Canada': { address: '100 King Street West', city: 'Toronto, ON', postcode: 'M5X 1A9', country: 'Canada', phone: '+1 (416) 555-0147' },
-    'New Zealand': { address: '15 Queen Street', city: 'Auckland', postcode: '1010', country: 'New Zealand', phone: '+64 9 555 0123' },
-    'United Arab Emirates': { address: 'Sheikh Zayed Road', city: 'Dubai', postcode: '', country: 'UAE', phone: '+971 4 555 0123' },
-    'Singapore': { address: '1 Raffles Place', city: 'Singapore', postcode: '048616', country: 'Singapore', phone: '+65 6555 0123' },
-  }
-  return locations[country] || locations['South Africa']
+function getLocationInfo(): { address: string; city: string; postcode: string; country: string; phone: string } {
+  // South Africa only. The UK/US/AU/EU/CA/NZ/AE/SG presets are gone with the
+  // region picker — a ZA-only product should never render a London address in a
+  // preview.
+  return { address: '123 Main Road', city: 'Cape Town', postcode: '8001', country: 'South Africa', phone: '021 000 0000' }
 }
 
 interface TemplateData {
@@ -6039,8 +6028,8 @@ ${evtFooter}
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, country, scrapeId, scrapeData: bodyScrapedData } = body
-    const locationInfo = getLocationInfo(country || '')
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, scrapeId, scrapeData: bodyScrapedData } = body
+    const locationInfo = getLocationInfo()
 
     // Use scrape data from body (direct pass-through) or pull from Supabase via scrapeId
     let scrapeData: Record<string, unknown> | null = bodyScrapedData || null

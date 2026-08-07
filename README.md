@@ -2,9 +2,9 @@
 
 **A web design agency run as software.** Client fills in a brief, the platform generates a complete, self-contained website preview in seconds — before a designer has touched anything.
 
-![Generated site preview](public/images/plumber-preview.jpg)
+![Generated site preview](public/images/art-gallery-preview.jpg)
 
-*Above: a preview generated for the business type "Plumber" — no human input beyond the business name and category.*
+*Above: a preview generated for the business type "Art Gallery / Art Shop" — no human input beyond the business name and category.*
 
 ---
 
@@ -12,7 +12,9 @@
 
 Selling web design work means spending unpaid hours producing speculative mockups for leads who may never convert. The pitch is abstract until the client sees *their* site, and most drop out before that point.
 
-Mountain Studios closes that gap. A lead enters their business type and picks their pages; the platform returns a finished, styled, single-page website populated with copy and photography appropriate to their trade. The sales conversation starts with something real on screen.
+Mountain Studios closes that gap. A lead enters their business type and picks their pages; the platform returns a finished, styled, single-page website populated with copy and photography appropriate to their industry. The sales conversation starts with something real on screen.
+
+We sell to any South African business — salons, accountants, opticians, restaurants, retailers, law firms, guest houses, gyms, vets, trades. South Africa only, priced in rands.
 
 The whole client journey — intake, quoting, scheduling, briefing, deposit collection, transcription — runs through the same system.
 
@@ -46,8 +48,8 @@ Output is a single HTML file with inline CSS, live Pexels image URLs, and no ext
 
 | Capability | Notes |
 |---|---|
-| **Lead intake & quoting** | Multi-step form; price computed as £499 base + £99/page + £29/extra section, converted live into the client's local currency |
-| **Multi-currency FX** | A Python worker refreshes rates every 6 hours so quotes render in ZAR, AUD, EUR etc. rather than GBP |
+| **Lead intake** | Multi-step form capturing business type, pages, style and colours, ending in a generated preview. No quote is computed — pricing is per job |
+| **Pricing** | Agreed per project and entered in rands by an admin when the brief is sent; the 50% deposit is derived from it |
 | **Brief collection** | Long-form client brief with 30-second debounced autosave, so nobody loses an hour of typing |
 | **Meeting scheduling** | Pluggable across Microsoft Teams, Zoom, and Google Meet via a single `MEETING_PLATFORM` switch |
 | **Transcription** | Meeting recordings transcribed through Groq — chosen over Whisper on cost and latency |

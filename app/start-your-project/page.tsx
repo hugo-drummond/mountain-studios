@@ -2,47 +2,30 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import { pagePrices, type PageType, type Region } from '../../constants/pricing'
+import { type PageType } from '../../constants/pricing'
+import {
+  businessTypeData,
+  sortedBusinessTypes,
+  popularTypes,
+  type BusinessCategory,
+  type BusinessTypeEntry,
+} from '../../constants/business-types'
 import NavBar from '../../components/site/NavBar'
 // Supabase import removed — images now use browser object URLs for preview
 
-const TOTAL_STEPS = 9
+const TOTAL_STEPS = 8
 
-const countries = [
-  { name: 'South Africa', region: 'South Africa' as Region, flag: '🇿🇦' },
-  { name: 'United Kingdom', region: 'United Kingdom' as Region, flag: '🇬🇧' },
-  { name: 'United States', region: 'United States' as Region, flag: '🇺🇸' },
-  { name: 'Australia', region: 'Australia' as Region, flag: '🇦🇺' },
-  { name: 'Germany', region: 'Europe' as Region, flag: '🇩🇪' },
-  { name: 'France', region: 'Europe' as Region, flag: '🇫🇷' },
-  { name: 'Netherlands', region: 'Europe' as Region, flag: '🇳🇱' },
-  { name: 'Ireland', region: 'Europe' as Region, flag: '🇮🇪' },
-  { name: 'Canada', region: 'Other' as Region, flag: '🇨🇦' },
-  { name: 'New Zealand', region: 'Other' as Region, flag: '🇳🇿' },
-  { name: 'Portugal', region: 'Europe' as Region, flag: '🇵🇹' },
-  { name: 'Spain', region: 'Europe' as Region, flag: '🇪🇸' },
-  { name: 'Italy', region: 'Europe' as Region, flag: '🇮🇹' },
-  { name: 'Switzerland', region: 'Europe' as Region, flag: '🇨🇭' },
-  { name: 'Sweden', region: 'Europe' as Region, flag: '🇸🇪' },
-  { name: 'Norway', region: 'Europe' as Region, flag: '🇳🇴' },
-  { name: 'Denmark', region: 'Europe' as Region, flag: '🇩🇰' },
-  { name: 'Belgium', region: 'Europe' as Region, flag: '🇧🇪' },
-  { name: 'Austria', region: 'Europe' as Region, flag: '🇦🇹' },
-  { name: 'United Arab Emirates', region: 'Other' as Region, flag: '🇦🇪' },
-  { name: 'Singapore', region: 'Other' as Region, flag: '🇸🇬' },
-  { name: 'Hong Kong', region: 'Other' as Region, flag: '🇭🇰' },
-  { name: 'Japan', region: 'Other' as Region, flag: '🇯🇵' },
-  { name: 'India', region: 'Other' as Region, flag: '🇮🇳' },
-  { name: 'Brazil', region: 'Other' as Region, flag: '🇧🇷' },
-  { name: 'Mexico', region: 'Other' as Region, flag: '🇲🇽' },
-  { name: 'Nigeria', region: 'Other' as Region, flag: '🇳🇬' },
-  { name: 'Kenya', region: 'Other' as Region, flag: '🇰🇪' },
-  { name: 'Ghana', region: 'Other' as Region, flag: '🇬🇭' },
-  { name: 'Namibia', region: 'South Africa' as Region, flag: '🇳🇦' },
-  { name: 'Botswana', region: 'South Africa' as Region, flag: '🇧🇼' },
-  { name: 'Mozambique', region: 'South Africa' as Region, flag: '🇲🇿' },
-  { name: 'Zimbabwe', region: 'South Africa' as Region, flag: '🇿🇼' },
-  { name: 'Mauritius', region: 'Other' as Region, flag: '🇲🇺' },
+// Spread across segments on purpose. This placeholder is the first concrete
+// example a visitor reads, so a single fixed one ("Cape Town Plumbing") quietly
+// tells every salon, accountant and vet that the product isn't for them.
+const NAME_EXAMPLES = [
+  'Sea Point Hair Studio',
+  'Rosebank Accounting',
+  'Table View Veterinary',
+  'Claremont Coffee Roasters',
+  'Umhlanga Guest House',
+  'Menlyn Eyecare',
+  'Sandton Leak Fix',
 ]
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
@@ -65,221 +48,6 @@ const categoryImageLimits: Record<BusinessCategory, number> = {
   'creative': 9,             // portfolio: hero + 3 service + 5 gallery
   'property': 4,             // property: hero + 3 service
 }
-
-type BusinessCategory =
-  | 'food-hospitality' | 'retail' | 'trades-construction' | 'health-wellness'
-  | 'professional' | 'creative' | 'fitness-sport' | 'home-services'
-  | 'education' | 'automotive' | 'property' | 'events-entertainment'
-  | 'tech-digital' | 'pets' | 'other'
-
-interface BusinessTypeEntry {
-  name: string
-  category: BusinessCategory
-  keywords: string[]
-}
-
-const businessTypeData: BusinessTypeEntry[] = [
-  // Food & Hospitality
-  { name: 'Restaurant', category: 'food-hospitality', keywords: ['eatery', 'diner', 'bistro', 'dining'] },
-  { name: 'Café / Coffee Shop', category: 'food-hospitality', keywords: ['coffee', 'espresso', 'barista', 'tea room'] },
-  { name: 'Bakery', category: 'food-hospitality', keywords: ['bread', 'pastry', 'cakes', 'patisserie'] },
-  { name: 'Bar / Pub', category: 'food-hospitality', keywords: ['tavern', 'lounge', 'cocktail', 'nightclub', 'club'] },
-  { name: 'Butcher / Deli', category: 'food-hospitality', keywords: ['meat', 'deli', 'charcuterie', 'butchery'] },
-  { name: 'Catering', category: 'food-hospitality', keywords: ['caterer', 'event food', 'banquet', 'functions'] },
-  { name: 'Fast Food / Takeaway', category: 'food-hospitality', keywords: ['takeout', 'quick service', 'drive-through', 'food truck'] },
-  { name: 'Food Truck', category: 'food-hospitality', keywords: ['mobile food', 'street food', 'vendor'] },
-  { name: 'Juice / Smoothie Bar', category: 'food-hospitality', keywords: ['juice bar', 'smoothies', 'health drinks', 'açai'] },
-  { name: 'Pizza Shop', category: 'food-hospitality', keywords: ['pizzeria', 'pizza delivery'] },
-  { name: 'Sushi / Asian Restaurant', category: 'food-hospitality', keywords: ['sushi bar', 'japanese', 'chinese', 'thai', 'asian cuisine'] },
-  { name: 'Ice Cream / Gelato Shop', category: 'food-hospitality', keywords: ['ice cream parlour', 'frozen yogurt', 'dessert'] },
-  { name: 'Wine Shop / Liquor Store', category: 'food-hospitality', keywords: ['bottle store', 'off-licence', 'wine merchant'] },
-  { name: 'Guest House / B&B', category: 'food-hospitality', keywords: ['bed and breakfast', 'lodge', 'inn', 'accommodation', 'airbnb'] },
-  { name: 'Hotel', category: 'food-hospitality', keywords: ['hospitality', 'resort', 'motel'] },
-
-  // Retail
-  { name: 'Clothing / Fashion Retail', category: 'retail', keywords: ['clothing', 'fashion', 'garments', 'boutique', 'apparel'] },
-  { name: 'Food & Grocery Retail', category: 'retail', keywords: ['grocery', 'fresh produce', 'food store', 'market', 'superette'] },
-  { name: 'General Retail Store', category: 'retail', keywords: ['shop', 'store', 'retailer', 'merchandise'] },
-  { name: 'Boutique / Fashion Store', category: 'retail', keywords: ['clothing', 'fashion', 'apparel', 'dress shop', 'menswear', 'womenswear'] },
-  { name: 'Florist', category: 'retail', keywords: ['flowers', 'flower shop', 'floral', 'bouquets'] },
-  { name: 'Gift Shop', category: 'retail', keywords: ['gifts', 'souvenirs', 'novelties', 'presents'] },
-  { name: 'Jeweller', category: 'retail', keywords: ['jewelry', 'jewellery', 'goldsmith', 'watches', 'accessories'] },
-  { name: 'Furniture Store', category: 'retail', keywords: ['home furnishings', 'décor', 'upholstery'] },
-  { name: 'Hardware Store', category: 'retail', keywords: ['tools', 'diy', 'building supplies'] },
-  { name: 'Bookshop', category: 'retail', keywords: ['books', 'bookstore', 'stationery'] },
-  { name: 'Pharmacy', category: 'retail', keywords: ['chemist', 'drugstore', 'dispensary', 'medicine'] },
-  { name: 'Toy Store', category: 'retail', keywords: ['toys', 'games', 'kids', 'children'] },
-  { name: 'Electronics Store', category: 'retail', keywords: ['tech store', 'gadgets', 'computers', 'phones'] },
-  { name: 'Sports Store', category: 'retail', keywords: ['sporting goods', 'outdoor gear', 'athletics'] },
-  { name: 'Art Gallery / Art Shop', category: 'retail', keywords: ['gallery', 'art dealer', 'paintings', 'prints'] },
-  { name: 'Grocery / Supermarket', category: 'retail', keywords: ['grocer', 'supermarket', 'convenience store', 'mini mart'] },
-  { name: 'Thrift / Second-hand Store', category: 'retail', keywords: ['thrift shop', 'consignment', 'vintage', 'pre-owned'] },
-  { name: 'Garden Centre / Nursery', category: 'retail', keywords: ['plants', 'garden shop', 'seedlings', 'landscaping supplies'] },
-
-  // Trades & Construction
-  { name: 'Plumber', category: 'trades-construction', keywords: ['plumbing', 'pipes', 'drains', 'water', 'geyser'] },
-  { name: 'Electrician', category: 'trades-construction', keywords: ['electrical', 'wiring', 'sparky', 'power'] },
-  { name: 'Builder / General Contractor', category: 'trades-construction', keywords: ['construction', 'building', 'contractor', 'renovations'] },
-  { name: 'Joiner / Carpenter', category: 'trades-construction', keywords: ['carpentry', 'woodwork', 'cabinetmaker', 'carpenter', 'wood'] },
-  { name: 'Welder / Metalworker', category: 'trades-construction', keywords: ['welding', 'fabrication', 'steel', 'metal', 'ironwork'] },
-  { name: 'Paving / Tiling', category: 'trades-construction', keywords: ['paver', 'tiler', 'tiles', 'flooring', 'brick'] },
-  { name: 'Roofer', category: 'trades-construction', keywords: ['roofing', 'gutters', 'waterproofing', 'thatch'] },
-  { name: 'Painter / Decorator', category: 'trades-construction', keywords: ['painting', 'decorating', 'wallpaper', 'house painter'] },
-  { name: 'Glazier', category: 'trades-construction', keywords: ['glass', 'windows', 'windscreen', 'shopfront'] },
-  { name: 'Locksmith', category: 'trades-construction', keywords: ['locks', 'keys', 'security', 'safes'] },
-  { name: 'Plasterer', category: 'trades-construction', keywords: ['plastering', 'dry wall', 'skimming', 'ceilings'] },
-  { name: 'Fencing Contractor', category: 'trades-construction', keywords: ['fences', 'gates', 'palisade', 'boundary'] },
-  { name: 'Scaffolding', category: 'trades-construction', keywords: ['scaffolder', 'access equipment'] },
-  { name: 'Demolition', category: 'trades-construction', keywords: ['demolishing', 'wrecking', 'clearing'] },
-  { name: 'Solar / Renewable Energy', category: 'trades-construction', keywords: ['solar panels', 'solar installer', 'renewable', 'energy', 'inverter'] },
-  { name: 'HVAC / Air Conditioning', category: 'trades-construction', keywords: ['aircon', 'heating', 'ventilation', 'cooling', 'refrigeration'] },
-  { name: 'Borehole / Irrigation', category: 'trades-construction', keywords: ['drilling', 'water supply', 'sprinkler'] },
-
-  // Health & Wellness
-  { name: 'Dentist', category: 'health-wellness', keywords: ['dental', 'orthodontist', 'teeth', 'oral care'] },
-  { name: 'Doctor / GP', category: 'health-wellness', keywords: ['physician', 'medical practice', 'clinic', 'general practitioner'] },
-  { name: 'Physiotherapist', category: 'health-wellness', keywords: ['physio', 'physical therapy', 'rehabilitation'] },
-  { name: 'Chiropractor', category: 'health-wellness', keywords: ['chiropractic', 'spine', 'back pain', 'adjustment'] },
-  { name: 'Optometrist', category: 'health-wellness', keywords: ['eye care', 'glasses', 'optician', 'vision', 'contact lenses'] },
-  { name: 'Hair Salon / Barber', category: 'health-wellness', keywords: ['hairdresser', 'barber shop', 'hair stylist', 'haircut', 'salon'] },
-  { name: 'Beauty Salon / Spa', category: 'health-wellness', keywords: ['beauty', 'spa', 'facial', 'nails', 'waxing', 'skincare', 'aesthetics'] },
-  { name: 'Massage Therapist', category: 'health-wellness', keywords: ['massage', 'therapeutic massage', 'deep tissue', 'relaxation'] },
-  { name: 'Dietitian / Nutritionist', category: 'health-wellness', keywords: ['nutrition', 'diet', 'meal plan', 'healthy eating'] },
-  { name: 'Psychologist / Therapist', category: 'health-wellness', keywords: ['counsellor', 'therapy', 'mental health', 'counseling'] },
-  { name: 'Speech Therapist', category: 'health-wellness', keywords: ['speech pathologist', 'language therapy'] },
-  { name: 'Occupational Therapist', category: 'health-wellness', keywords: ['OT', 'occupational therapy', 'rehab'] },
-  { name: 'Audiologist', category: 'health-wellness', keywords: ['hearing', 'hearing aids', 'ear care'] },
-  { name: 'Podiatrist', category: 'health-wellness', keywords: ['foot care', 'chiropodist', 'feet'] },
-  { name: 'Alternative / Holistic Health', category: 'health-wellness', keywords: ['homeopathy', 'acupuncture', 'naturopath', 'reiki', 'herbalist'] },
-  { name: 'Tattoo / Piercing Studio', category: 'health-wellness', keywords: ['tattoo artist', 'body art', 'piercing', 'ink'] },
-
-  // Professional Services
-  { name: 'Lawyer / Attorney', category: 'professional', keywords: ['legal', 'law firm', 'solicitor', 'advocate', 'legal services'] },
-  { name: 'Accountant', category: 'professional', keywords: ['accounting', 'bookkeeper', 'tax', 'audit', 'bookkeeping'] },
-  { name: 'Consultant', category: 'professional', keywords: ['consulting', 'advisory', 'management consultant', 'strategy'] },
-  { name: 'Financial Advisor', category: 'professional', keywords: ['financial planner', 'wealth management', 'investment', 'broker'] },
-  { name: 'Insurance Agent / Broker', category: 'professional', keywords: ['insurance', 'underwriter', 'cover', 'policy'] },
-  { name: 'Recruitment / Staffing', category: 'professional', keywords: ['recruiter', 'HR', 'headhunter', 'employment agency'] },
-  { name: 'Marketing Agency', category: 'professional', keywords: ['advertising', 'PR', 'public relations', 'branding', 'digital marketing'] },
-  { name: 'Business Coach', category: 'professional', keywords: ['coaching', 'mentoring', 'executive coach', 'life coach'] },
-  { name: 'Translation / Interpreting', category: 'professional', keywords: ['translator', 'interpreter', 'language services', 'localisation'] },
-  { name: 'Notary / Commissioner of Oaths', category: 'professional', keywords: ['notary public', 'legal documents'] },
-  { name: 'Debt Counsellor', category: 'professional', keywords: ['debt review', 'credit counselling', 'financial recovery'] },
-  { name: 'Customs / Freight Broker', category: 'professional', keywords: ['logistics', 'shipping', 'import export', 'freight forwarding'] },
-
-  // Creative
-  { name: 'Photographer', category: 'creative', keywords: ['photography', 'photo studio', 'portrait', 'wedding photographer'] },
-  { name: 'Videographer', category: 'creative', keywords: ['video production', 'filmmaker', 'cinematographer', 'drone'] },
-  { name: 'Graphic Designer', category: 'creative', keywords: ['design', 'branding', 'logo', 'visual design', 'illustrator'] },
-  { name: 'Interior Designer', category: 'creative', keywords: ['interior décor', 'home styling', 'space planning'] },
-  { name: 'Copywriter / Content Creator', category: 'creative', keywords: ['writing', 'content', 'blogger', 'freelance writer'] },
-  { name: 'Print Shop / Signage', category: 'creative', keywords: ['printing', 'signs', 'banners', 'branding materials', 'vinyl'] },
-  { name: 'Music Producer / Studio', category: 'creative', keywords: ['recording studio', 'audio production', 'sound engineer'] },
-  { name: 'Craft / Handmade Goods', category: 'creative', keywords: ['artisan', 'handmade', 'crafts', 'etsy', 'maker'] },
-  { name: 'Fashion Designer', category: 'creative', keywords: ['clothing designer', 'seamstress', 'tailor', 'dressmaker', 'bespoke'] },
-  { name: 'Animator / Motion Design', category: 'creative', keywords: ['animation', '3D', 'motion graphics', 'VFX'] },
-
-  // Fitness & Sport
-  { name: 'Personal Trainer', category: 'fitness-sport', keywords: ['PT', 'fitness coach', 'training', 'exercise'] },
-  { name: 'Yoga Studio', category: 'fitness-sport', keywords: ['yoga', 'pilates', 'meditation', 'mindfulness'] },
-  { name: 'Gym / Fitness Centre', category: 'fitness-sport', keywords: ['gymnasium', 'health club', 'fitness', 'crossfit'] },
-  { name: 'Martial Arts', category: 'fitness-sport', keywords: ['karate', 'judo', 'MMA', 'boxing', 'taekwondo', 'self-defence'] },
-  { name: 'Dance Studio', category: 'fitness-sport', keywords: ['dance school', 'ballet', 'contemporary', 'hip hop'] },
-  { name: 'Swimming / Aquatics', category: 'fitness-sport', keywords: ['swim school', 'pool', 'aqua aerobics'] },
-  { name: 'Golf Coach / Pro Shop', category: 'fitness-sport', keywords: ['golf', 'golf lessons', 'driving range'] },
-  { name: 'Sports Coaching', category: 'fitness-sport', keywords: ['coach', 'athletics', 'sports academy', 'training camp'] },
-
-  // Home Services
-  { name: 'Cleaning Service', category: 'home-services', keywords: ['cleaner', 'maid', 'domestic', 'janitorial', 'house cleaning'] },
-  { name: 'Landscaper / Gardener', category: 'home-services', keywords: ['landscaping', 'lawn care', 'garden maintenance', 'grass cutting', 'tree felling'] },
-  { name: 'Pest Control', category: 'home-services', keywords: ['exterminator', 'fumigation', 'bugs', 'termites', 'rodent control'] },
-  { name: 'Security Company', category: 'home-services', keywords: ['alarm', 'armed response', 'CCTV', 'surveillance', 'guarding'] },
-  { name: 'Moving / Removals', category: 'home-services', keywords: ['movers', 'moving company', 'relocation', 'transport', 'removals'] },
-  { name: 'Pool Service', category: 'home-services', keywords: ['pool cleaning', 'pool maintenance', 'pool repair'] },
-  { name: 'Laundry / Dry Cleaning', category: 'home-services', keywords: ['laundromat', 'dry cleaner', 'ironing', 'wash and fold'] },
-  { name: 'Appliance Repair', category: 'home-services', keywords: ['washing machine repair', 'fridge repair', 'appliance service', 'technician'] },
-  { name: 'Handyman', category: 'home-services', keywords: ['odd jobs', 'maintenance', 'repairs', 'fix-it'] },
-  { name: 'Upholstery / Curtains', category: 'home-services', keywords: ['reupholster', 'blinds', 'soft furnishings', 'curtain maker'] },
-  { name: 'Waste Removal / Skip Hire', category: 'home-services', keywords: ['rubble removal', 'junk removal', 'waste disposal', 'skip'] },
-
-  // Education
-  { name: 'Music Teacher / School', category: 'education', keywords: ['music lessons', 'piano', 'guitar', 'singing', 'instrument'] },
-  { name: 'Tutor', category: 'education', keywords: ['tutoring', 'maths tutor', 'private lessons', 'academic'] },
-  { name: 'Driving School', category: 'education', keywords: ['driving lessons', 'driving instructor', 'learner'] },
-  { name: 'Language School', category: 'education', keywords: ['language classes', 'english school', 'foreign language'] },
-  { name: 'Preschool / Crèche', category: 'education', keywords: ['daycare', 'nursery school', 'childcare', 'early learning'] },
-  { name: 'After-school / Enrichment', category: 'education', keywords: ['after-care', 'kids activities', 'holiday programme'] },
-  { name: 'Training / Skills Academy', category: 'education', keywords: ['skills training', 'short course', 'certification', 'workshop'] },
-  { name: 'Art / Craft Classes', category: 'education', keywords: ['art school', 'painting classes', 'pottery', 'ceramics'] },
-  { name: 'Computer / Coding Classes', category: 'education', keywords: ['coding bootcamp', 'programming', 'IT training'] },
-  { name: 'First Aid / Safety Training', category: 'education', keywords: ['CPR', 'health and safety', 'fire training'] },
-
-  // Automotive
-  { name: 'Auto Mechanic / Workshop', category: 'automotive', keywords: ['car repair', 'mechanic', 'auto repair', 'garage', 'service centre'] },
-  { name: 'Panel Beater / Auto Body', category: 'automotive', keywords: ['body shop', 'spray painting', 'dent repair', 'accident repair'] },
-  { name: 'Car Wash / Detailing', category: 'automotive', keywords: ['valet', 'car detailing', 'car cleaning', 'auto detailing'] },
-  { name: 'Tyre Shop', category: 'automotive', keywords: ['tyres', 'tires', 'wheel alignment', 'balancing', 'puncture'] },
-  { name: 'Car Dealership', category: 'automotive', keywords: ['car sales', 'used cars', 'vehicle dealer', 'auto dealer'] },
-  { name: 'Auto Electrician', category: 'automotive', keywords: ['car electrics', 'vehicle wiring', 'starter motor'] },
-  { name: 'Tow Truck / Roadside Assist', category: 'automotive', keywords: ['towing', 'breakdown', 'roadside assistance', 'recovery'] },
-  { name: 'Motorcycle Shop', category: 'automotive', keywords: ['motorbike', 'scooter', 'motorcycle repair', 'bike shop'] },
-
-  // Property
-  { name: 'Real Estate Agent', category: 'property', keywords: ['estate agent', 'property sales', 'realtor', 'property management'] },
-  { name: 'Architect', category: 'creative', keywords: ['architecture', 'building design', 'architectural plans'] },
-  { name: 'Surveyor', category: 'property', keywords: ['land surveyor', 'quantity surveyor', 'property valuation'] },
-  { name: 'Property Management', category: 'property', keywords: ['landlord', 'rental management', 'letting agent', 'body corporate'] },
-  { name: 'Home Staging', category: 'property', keywords: ['property styling', 'show house', 'staging'] },
-  { name: 'Town Planner', category: 'property', keywords: ['urban planning', 'zoning', 'land use'] },
-
-  // Events & Entertainment
-  { name: 'Event Planner', category: 'events-entertainment', keywords: ['event management', 'party planner', 'conference organiser', 'functions'] },
-  { name: 'DJ / MC', category: 'events-entertainment', keywords: ['disc jockey', 'master of ceremonies', 'music entertainment'] },
-  { name: 'Wedding Venue / Services', category: 'events-entertainment', keywords: ['wedding planner', 'bridal', 'ceremony', 'reception'] },
-  { name: 'Photo Booth', category: 'events-entertainment', keywords: ['photo booth rental', 'selfie booth', 'event photos'] },
-  { name: 'Party Supplies / Décor', category: 'events-entertainment', keywords: ['balloons', 'party hire', 'event décor', 'tables and chairs'] },
-  { name: 'Entertainment / Performer', category: 'events-entertainment', keywords: ['magician', 'comedian', 'band', 'musician', 'entertainer'] },
-  { name: 'Venue Hire', category: 'events-entertainment', keywords: ['function venue', 'conference centre', 'hall hire', 'event space'] },
-
-  // Tech & Digital
-  { name: 'Web Developer / Designer', category: 'tech-digital', keywords: ['web development', 'website', 'frontend', 'fullstack', 'web design'] },
-  { name: 'IT Support / Services', category: 'tech-digital', keywords: ['tech support', 'computer repair', 'IT consulting', 'helpdesk', 'managed IT'] },
-  { name: 'App Developer', category: 'tech-digital', keywords: ['mobile app', 'software developer', 'iOS', 'android', 'software'] },
-  { name: 'Digital Marketing', category: 'tech-digital', keywords: ['SEO', 'SEM', 'social media marketing', 'PPC', 'online marketing'] },
-  { name: 'E-commerce', category: 'tech-digital', keywords: ['online store', 'shopify', 'web shop', 'dropshipping'] },
-  { name: 'Cybersecurity', category: 'tech-digital', keywords: ['security consulting', 'penetration testing', 'data protection'] },
-  { name: 'Data Analytics / BI', category: 'tech-digital', keywords: ['data science', 'business intelligence', 'dashboards', 'reporting'] },
-
-  // Pets
-  { name: 'Dog Groomer', category: 'pets', keywords: ['pet grooming', 'dog wash', 'grooming salon', 'dog parlour'] },
-  { name: 'Pet Shop', category: 'pets', keywords: ['pet store', 'pet supplies', 'aquarium', 'pet food'] },
-  { name: 'Kennels / Cattery', category: 'pets', keywords: ['boarding', 'pet boarding', 'dog kennel', 'cat hotel', 'pet hotel'] },
-  { name: 'Dog Walker / Pet Sitter', category: 'pets', keywords: ['dog walking', 'pet sitting', 'pet care', 'house sitting'] },
-  { name: 'Dog Trainer', category: 'pets', keywords: ['obedience', 'puppy training', 'dog behaviour', 'pet training'] },
-  { name: 'Pet Services', category: 'pets', keywords: ['animal care', 'pet transport', 'pet photography'] },
-  { name: 'Veterinarian', category: 'pets', keywords: ['vet', 'animal doctor', 'pet health', 'animal hospital'] },
-
-  // Other
-  { name: 'Other', category: 'other', keywords: [] },
-]
-
-// Sort alphabetically, "Other" always last
-const sortedBusinessTypes = [
-  ...businessTypeData.filter((t) => t.name !== 'Other').sort((a, b) => a.name.localeCompare(b.name)),
-  businessTypeData.find((t) => t.name === 'Other')!,
-]
-
-// Popular types shown by default (alphabetical), before user searches
-const popularTypeNames = new Set([
-  'Accountant', 'Architect', 'Auto Mechanic / Workshop', 'Bakery',
-  'Beauty Salon / Spa', 'Builder / General Contractor', 'Café / Coffee Shop',
-  'Cleaning Service', 'Consultant', 'Dentist', 'Electrician', 'Event Planner',
-  'Hair Salon / Barber', 'Landscaper / Gardener', 'Lawyer / Attorney',
-  'Personal Trainer', 'Photographer', 'Plumber', 'Real Estate Agent',
-  'Restaurant', 'Retail Store', 'Yoga Studio', 'Other',
-])
-
-const popularTypes = sortedBusinessTypes.filter((t) => popularTypeNames.has(t.name))
 
 const MAX_VISIBLE = 15
 
@@ -482,38 +250,12 @@ export default function StartYourProject() {
   const [previewError, setPreviewError] = useState(false)
   const previewRequested = useRef(false)
 
-  const [selectedCountry, setSelectedCountry] = useState('')
-  const [countrySearch, setCountrySearch] = useState('')
-  const [geoDetected, setGeoDetected] = useState(false)
-
-  // Auto-detect country from IP
+  // Index 0 on the server, randomised after hydration — picking at render time
+  // would mismatch between server and client HTML.
+  const [namePlaceholder, setNamePlaceholder] = useState(NAME_EXAMPLES[0])
   useEffect(() => {
-    if (selectedCountry) return
-    const codeToName: Record<string, string> = {
-      ZA: 'South Africa', GB: 'United Kingdom', US: 'United States', AU: 'Australia',
-      DE: 'Germany', FR: 'France', NL: 'Netherlands', IE: 'Ireland', CA: 'Canada',
-      NZ: 'New Zealand', PT: 'Portugal', ES: 'Spain', IT: 'Italy', CH: 'Switzerland',
-      SE: 'Sweden', NO: 'Norway', DK: 'Denmark', BE: 'Belgium', AT: 'Austria',
-      AE: 'United Arab Emirates', SG: 'Singapore', HK: 'Hong Kong', JP: 'Japan',
-      IN: 'India', BR: 'Brazil', MX: 'Mexico', NG: 'Nigeria', KE: 'Kenya',
-      GH: 'Ghana', NA: 'Namibia', BW: 'Botswana', MZ: 'Mozambique', ZW: 'Zimbabwe',
-      MU: 'Mauritius',
-    }
-    fetch('https://api.country.is', { signal: AbortSignal.timeout(8000) })
-      .then(r => r.json())
-      .then(data => {
-        const name = codeToName[data.country]
-        if (name) {
-          const match = countries.find(c => c.name === name)
-          if (match) {
-            setSelectedCountry(match.name)
-            setCountrySearch(match.name)
-            setGeoDetected(true)
-          }
-        }
-      })
-      .catch(() => {})
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    setNamePlaceholder(NAME_EXAMPLES[Math.floor(Math.random() * NAME_EXAMPLES.length)])
+  }, [])
 
   // Contact
   const [fullName, setFullName] = useState('')
@@ -530,7 +272,7 @@ export default function StartYourProject() {
 
   // Generate preview when entering Step 6
   useEffect(() => {
-    if (step !== 7) {
+    if (step !== 6) {
       previewRequested.current = false
       return
     }
@@ -569,7 +311,7 @@ export default function StartYourProject() {
             businessName,
             businessType,
             businessCategory,
-            country: selectedCountry,
+            country: 'South Africa',
             pages: [...selectedPages.map(p => pageOptions.find(o => o.key === p)?.label || p), ...customPages],
             style: selectedStyle,
             primaryColor,
@@ -754,7 +496,7 @@ export default function StartYourProject() {
       </div>
 
       {/* Progress bar */}
-      {step > 0 && step < 9 && (
+      {step > 0 && step < TOTAL_STEPS && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '3px', backgroundColor: 'rgba(255,255,255,0.1)', zIndex: 10 }}>
           <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'rgba(255,255,255,0.7)', transition: 'width 0.4s ease' }} />
         </div>
@@ -770,7 +512,7 @@ export default function StartYourProject() {
               Let&apos;s build your website.
             </h1>
             <p style={{ fontFamily: font, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', marginBottom: '2.5rem', lineHeight: 1.6 }}>
-              Fill out this short form for a free preview of your site<br />and an instant quote. Takes 2 minutes.
+              Fill out this short form for a free preview of your site.<br />Takes 2 minutes.
             </p>
             <button onClick={() => setStep(1)} style={{ ...btnPrimary, padding: '0.75rem 2rem' }}>
               Let&apos;s Go &nbsp;→
@@ -786,16 +528,7 @@ export default function StartYourProject() {
               type="text"
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
-              placeholder={`e.g. ${(() => {
-                const cityMap: Record<string, string> = {
-                  'South Africa': 'Cape Town', 'United Kingdom': 'London', 'United States': 'New York',
-                  'Australia': 'Sydney', 'Germany': 'Berlin', 'France': 'Paris', 'Netherlands': 'Amsterdam',
-                  'Ireland': 'Dublin', 'Canada': 'Toronto', 'New Zealand': 'Auckland',
-                  'United Arab Emirates': 'Dubai', 'Singapore': 'Singapore',
-                }
-                const city = cityMap[selectedCountry] || 'Cape Town'
-                return `${city} Plumbing`
-              })()}`}
+              placeholder={`e.g. ${namePlaceholder}`}
               autoFocus
               style={inputStyle}
             />
@@ -896,52 +629,12 @@ export default function StartYourProject() {
             <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', marginTop: '1rem' }}>
               Total pages selected: {selectedPages.length + customPages.length}
             </p>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
-              Base price increases with each additional page
-            </p>
             <Nav back={() => setStep(2)} next={() => setStep(4)} disabled={selectedPages.length === 0} />
           </>
         )}
 
-        {/* Step 4: Where are you based? */}
-        {step === 4 && (() => {
-          const filtered = countrySearch.trim()
-            ? countries.filter(c => c.name.toLowerCase().includes(countrySearch.toLowerCase())).slice(0, 8)
-            : countries.slice(0, 12)
-          return (
-          <>
-            <h1 style={heading}>Where are you based?</h1>
-            <input
-              type="text"
-              value={countrySearch}
-              onChange={(e) => setCountrySearch(e.target.value)}
-              placeholder="Start typing your country..."
-              autoFocus
-              style={inputStyle}
-            />
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
-              {filtered.map(c => (
-                <button
-                  key={c.name}
-                  onClick={() => { setSelectedCountry(c.name); setCountrySearch(c.name) }}
-                  style={pill(selectedCountry === c.name)}
-                >
-                  {c.flag} {c.name}
-                </button>
-              ))}
-            </div>
-            {selectedCountry && geoDetected && (
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.85rem', marginTop: '1rem' }}>
-                We detected you&apos;re in {selectedCountry}
-              </p>
-            )}
-            <Nav back={() => setStep(3)} next={() => setStep(5)} disabled={!selectedCountry} />
-          </>
-          )
-        })()}
-
-        {/* Step 5: Brand colours */}
-        {step === 5 && (
+        {/* Step 4: Brand colours */}
+        {step === 4 && (
           <>
             <h1 style={heading}>Do you have brand colours?</h1>
             <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', marginBottom: '2rem', opacity: noColors ? 0.3 : 1, pointerEvents: noColors ? 'none' : 'auto' }}>
@@ -964,12 +657,12 @@ export default function StartYourProject() {
               <input type="checkbox" checked={noColors} onChange={(e) => setNoColors(e.target.checked)} style={{ accentColor: '#fff', width: '18px', height: '18px' }} />
               <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>I don&apos;t have colours yet — surprise me</span>
             </label>
-            <Nav back={() => setStep(4)} next={() => setStep(6)} />
+            <Nav back={() => setStep(3)} next={() => setStep(5)} />
           </>
         )}
 
-        {/* Step 6: Your Images */}
-        {step === 6 && (() => {
+        {/* Step 5: Your Images */}
+        {step === 5 && (() => {
           const maxImages = businessCategory ? categoryImageLimits[businessCategory] : 5
           return (
           <>
@@ -1053,7 +746,7 @@ export default function StartYourProject() {
               {uploadedImages.length}/{maxImages} images uploaded
             </p>
 
-            <Nav back={() => setStep(5)} next={() => setStep(7)} />
+            <Nav back={() => setStep(4)} next={() => setStep(6)} />
             <style>{`
               @keyframes spin { to { transform: rotate(360deg) } }
               @media (max-width: 640px) {
@@ -1064,8 +757,8 @@ export default function StartYourProject() {
           )
         })()}
 
-        {/* Step 7: Site preview */}
-        {step === 7 && (
+        {/* Step 6: Site preview */}
+        {step === 6 && (
           <>
             <h1 style={{ ...heading, fontSize: 'clamp(1.5rem, 3vw, 2rem)', textAlign: 'center', marginBottom: '1rem' }}>
               Here&apos;s a preview of your site&apos;s Homepage.
@@ -1150,13 +843,13 @@ export default function StartYourProject() {
             </div>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <button
-                onClick={() => setStep(8)}
+                onClick={() => setStep(7)}
                 style={{ ...btnPrimary, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
                 I love it
               </button>
               <button
-                onClick={() => setStep(8)}
+                onClick={() => setStep(7)}
                 style={{ ...btnPrimary, backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.3)' }}
               >
                 Not quite right
@@ -1167,8 +860,8 @@ export default function StartYourProject() {
           </>
         )}
 
-        {/* Step 8: Contact info */}
-        {step === 8 && !contactSubmitted && (
+        {/* Step 7: Contact info */}
+        {step === 7 && !contactSubmitted && (
           <>
             <h1 style={heading}>Last step — how do we reach you?</h1>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '1rem' }}>
@@ -1195,7 +888,7 @@ export default function StartYourProject() {
               </div>
             </div>
             <Nav
-              back={() => setStep(7)}
+              back={() => setStep(6)}
               next={() => setContactSubmitted(true)}
               nextLabel="Send →"
               disabled={!fullName.trim() || !email.trim()}
@@ -1203,8 +896,8 @@ export default function StartYourProject() {
           </>
         )}
 
-        {/* Step 8: Confirmation */}
-        {step === 8 && contactSubmitted && (
+        {/* Step 7: Confirmation */}
+        {step === 7 && contactSubmitted && (
           <div style={{ textAlign: 'center' }}>
             <h1 style={{ ...heading, fontSize: 'clamp(2rem, 4vw, 3rem)' }}>
               We&apos;ll be in touch.

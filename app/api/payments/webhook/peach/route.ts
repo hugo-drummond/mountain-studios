@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
         await sendDepositConfirmation(lead.email, {
           client_name: lead.full_name ?? lead.business_name,
           amount,
-          currency: currency || lead.currency_code || 'GBP',
+          currency: currency || lead.currency_code || 'ZAR',
           reference: paymentId,
         })
       }

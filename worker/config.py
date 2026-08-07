@@ -16,7 +16,9 @@ class Settings(BaseSettings):
 
     # Ad thresholds (matching JS config)
     auto_pause_ctr_threshold: float = 0.008
-    auto_scale_cost_per_lead_gbp: float = 12.0
+    # Converted from the old GBP threshold (£12) at ~R23/£. Confirm the real
+    # target cost per lead in rands — this is a business number, not a rate.
+    auto_scale_cost_per_lead_zar: float = 276.0
     auto_scale_budget_increment: float = 0.20
     min_impressions_before_judge: int = 1000
 

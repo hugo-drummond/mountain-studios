@@ -164,7 +164,7 @@ export default function TempPage() {
             <div style={{ marginBottom: '1.5rem' }}>
               <label style={fieldLabel}>Business Name</label>
               <input type="text" value={businessName} onChange={e => setBusinessName(e.target.value)}
-                placeholder="e.g. Cape Town Plumbing" style={fieldInput} />
+                placeholder="e.g. Sea Point Hair Studio" style={fieldInput} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
               <div>

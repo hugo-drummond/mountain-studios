@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import NavBar from '../../../components/site/NavBar'
 import PageEditorModal, { type PageSection } from '../../../components/site/PageEditorModal'
-import { calculateBriefPrice, type PriceBreakdown } from '../../../lib/brief-pricing'
+import { sortedBusinessTypes } from '../../../constants/business-types'
 import type { Brief, PageSelection, SocialHandles } from '../../../types'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
@@ -100,14 +100,16 @@ const STYLE_OPTIONS = [
 const TONE_OPTIONS = [
   'Professional', 'Friendly & Warm', 'Playful', 'Luxurious', 'Technical', 'Bold & Direct',
 ]
-const BUSINESS_TYPE_OPTIONS = [
-  'Restaurant / Café', 'Retail / E-commerce', 'Professional Services',
-  'Health & Wellness', 'Creative / Agency', 'Construction / Trade',
-  'Education / Training', 'Non-Profit', 'Technology', 'Other',
-]
+// Was a 10-item list of its own that bottomed out at "Other" for anything not a
+// restaurant, retailer, agency or trade. Uses the same 153 types as the intake
+// form now, so a vet or an optician can actually name themselves.
+const BUSINESS_TYPE_OPTIONS = sortedBusinessTypes.map((t) => t.name)
+
+// South Africa only.
 const REGION_OPTIONS = [
-  'Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Port Elizabeth',
-  'United Kingdom', 'Europe', 'North America', 'Other',
+  'Cape Town', 'Johannesburg', 'Durban', 'Pretoria', 'Gqeberha',
+  'Bloemfontein', 'East London', 'Mbombela', 'Polokwane', 'Kimberley',
+  'Stellenbosch', 'George', 'Pietermaritzburg', 'Rustenburg', 'Other',
 ]
 const CTA_OPTIONS = [
   'Book a Call', 'Buy Online', 'Get a Quote', 'Sign Up', 'Visit in Person', 'Learn More',
@@ -379,7 +381,6 @@ export default function BriefPage() {
 
   // ── Pricing ─────────────────────────────────────────────────────────────
 
-  const pricing: PriceBreakdown = calculateBriefPrice(selectedPages)
 
   // ── Summary stats ───────────────────────────────────────────────────────
 
@@ -907,7 +908,7 @@ export default function BriefPage() {
         <section style={{ maxWidth: '800px', margin: '0 auto', padding: '4rem 2rem 8rem' }}>
           <p style={sectionLabel}>SECTION 06</p>
           <h2 style={sectionHeading}>Review & Next Steps</h2>
-          <p style={subDesc}>Summary of your brief and estimated pricing.</p>
+          <p style={subDesc}>Summary of your brief. We&apos;ll quote on it directly.</p>
 
           {/* Summary card */}
           <div style={{ ...glassCard, marginBottom: '1.5rem' }}>
@@ -932,38 +933,6 @@ export default function BriefPage() {
                   <p style={{ fontSize: '1rem', color: '#fff', margin: 0, fontWeight: 300, fontFamily: font }}>{value}</p>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Price estimate card */}
-          <div style={{ ...glassCard, marginBottom: '2.5rem' }}>
-            <h3 style={{ fontWeight: 300, fontSize: '1.1rem', color: '#fff', margin: '0 0 1.5rem', fontFamily: font }}>Price Estimate</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', fontFamily: font }}>
-                <span>Base price</span><span>£{pricing.base}</span>
-              </div>
-              {pricing.pages.count > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', fontFamily: font }}>
-                  <span>{pricing.pages.count} page{pricing.pages.count !== 1 ? 's' : ''} × £99</span><span>£{pricing.pages.subtotal}</span>
-                </div>
-              )}
-              {pricing.customPages.count > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', fontFamily: font }}>
-                  <span>{pricing.customPages.count} custom page{pricing.customPages.count !== 1 ? 's' : ''} × £79</span><span>£{pricing.customPages.subtotal}</span>
-                </div>
-              )}
-              {pricing.extraSections.count > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', fontFamily: font }}>
-                  <span>{pricing.extraSections.count} extra section{pricing.extraSections.count !== 1 ? 's' : ''} × £29</span><span>£{pricing.extraSections.subtotal}</span>
-                </div>
-              )}
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '0.75rem', marginTop: '0.25rem', display: 'flex', justifyContent: 'space-between', fontFamily: font }}>
-                <span style={{ fontWeight: 600, color: '#fff', fontSize: '1rem' }}>Total</span>
-                <span style={{ fontWeight: 600, color: 'rgba(100,140,255,0.9)', fontSize: '1.1rem' }}>£{pricing.totalGBP}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontFamily: font }}>
-                <span>Deposit (50%)</span><span>£{pricing.depositGBP}</span>
-              </div>
             </div>
           </div>
 
