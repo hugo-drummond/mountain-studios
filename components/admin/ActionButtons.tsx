@@ -4,6 +4,12 @@ import { useState, useEffect } from 'react'
 import type { Lead, Brief, BookingSlot } from '@/types'
 import { useAdminAuth } from './AdminAuthContext'
 
+// Mirrors config.pricing.floorPriceZAR. Duplicated rather than imported because
+// config/config.js is server config and should not reach the client bundle. This
+// copy only drives the prompt text and an early warning — send-brief enforces the
+// real floor, so a stale value here cannot let an underpriced brief through.
+const FLOOR_PRICE_ZAR = 800
+
 interface Props {
   lead: Lead
   brief?: Brief | null
@@ -208,13 +214,18 @@ export default function ActionButtons({ lead, brief, onAction }: Props) {
     // Price is agreed per job, so it is entered here rather than computed. This
     // is the only place a brief's amount is set, and checkout needs it.
     const entered = window.prompt(
-      `Agreed project price for ${lead.business_name ?? 'this lead'}, in rands (excl. VAT).\nThe deposit is calculated from this.`
+      `Agreed project price for ${lead.business_name ?? 'this lead'}, in rands (excl. VAT).\nMinimum R${FLOOR_PRICE_ZAR}. The deposit is calculated from this.`
     )
     if (entered === null) return
 
     const amountZar = Number(entered.replace(/[R,\s]/g, ''))
     if (!Number.isFinite(amountZar) || amountZar <= 0) {
       showError('Enter a positive rand amount, e.g. 8500')
+      return
+    }
+    // Mirrors the server check in send-brief; the server is authoritative.
+    if (amountZar < FLOOR_PRICE_ZAR) {
+      showError(`Price is below the R${FLOOR_PRICE_ZAR} floor.`)
       return
     }
 

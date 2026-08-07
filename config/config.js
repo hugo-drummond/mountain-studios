@@ -13,6 +13,10 @@ const config = {
   // whatever rand amount an admin enters when sending a brief.
   pricing: {
     depositPercentage: 50,
+    // Reps negotiate the price with the client and earn 20% of it, so the floor
+    // is what stops a deal being discounted below the point where it is worth
+    // building. Enforced server-side in admin/leads/[id]/send-brief.
+    floorPriceZAR: 800,
   },
   meetings: {
     discoveryDurationMins: 30,

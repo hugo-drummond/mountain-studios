@@ -77,6 +77,19 @@ export async function POST(
         )
       }
 
+      // Reps negotiate their own prices, so the floor is enforced here rather
+      // than trusted from the client — this is the only writer of a brief's price.
+      const floorPriceZAR: number = config.pricing.floorPriceZAR
+      if (amountZar < floorPriceZAR) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: `Price is below the R${floorPriceZAR} floor. Entered R${amountZar}.`,
+          },
+          { status: 400 },
+        )
+      }
+
       const depositPercentage: number = config.pricing.depositPercentage
 
       const finalPriceLocal = Math.round(amountZar * 100) / 100
