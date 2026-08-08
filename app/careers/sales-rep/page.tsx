@@ -307,47 +307,8 @@ export default function SalesRepCareers() {
         </div>
       </div>
 
-      {/* ── WHAT WE GIVE YOU ── */}
-      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
-        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
-          <p style={{
-            fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
-            textTransform: 'uppercase', color: '#745762', marginBottom: '0.75rem',
-          }}>What we hand you</p>
-          <h2 style={{
-            fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
-            fontWeight: 300, color: '#2e333a', lineHeight: 1.2, margin: '0 0 3rem',
-          }}>
-            You bring the conversations. <em style={{ fontStyle: 'italic' }}>We bring the rest.</em>
-          </h2>
-
-          <div className="cr-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
-            {[
-              ['A territory of your own', 'You are not racing another rep to the same businesses. Your area is yours.'],
-              ['Leads already loaded', 'Business name, contact number, address, and whether they already have a site — waiting in the CRM when you log in.'],
-              ['The preview tool', 'Generate a client’s real website on the spot, in front of them.'],
-              ['More leads on tap', 'Worked through your list? Request another batch. No queue, no permission.'],
-            ].map(([title, body]) => (
-              <div key={title} style={{
-                background: '#fff', borderRadius: '16px', padding: '2rem',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
-              }}>
-                <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.6rem' }}>{title}</p>
-                <p style={{ fontSize: '0.95rem', color: '#535f77', lineHeight: 1.75, margin: 0 }}>{body}</p>
-              </div>
-            ))}
-          </div>
-
-          <p style={{ fontSize: '0.95rem', color: '#8a93a8', lineHeight: 1.8, margin: '2rem 0 0', maxWidth: '640px' }}>
-            How you reach them is entirely your call — phone, WhatsApp, email, walk into their shop, work
-            your own network. We don&apos;t script you and we don&apos;t clock you. And it is every kind of South
-            African business: salons, accountants, opticians, restaurants, guest houses, law firms, retailers, trades.
-          </p>
-        </div>
-      </div>
-
       {/* ── WHO THIS SUITS ── */}
-      <div style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
         <div className="cr-split" style={{
           maxWidth: '960px', margin: '0 auto', display: 'grid',
           gridTemplateColumns: '1fr 1fr', gap: '4.5rem',
@@ -608,7 +569,7 @@ export default function SalesRepCareers() {
         }
 
         @media (max-width: 900px) {
-          .cr-split, .cr-calc, .cr-cards { grid-template-columns: 1fr !important; }
+          .cr-split, .cr-calc { grid-template-columns: 1fr !important; }
           .cr-split { gap: 3rem !important; }
           .cr-calc { gap: 2.5rem !important; }
         }
