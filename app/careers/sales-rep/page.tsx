@@ -1,0 +1,672 @@
+'use client'
+
+import { useState, useMemo } from 'react'
+import SiteNav from '../../../components/site/SiteNav'
+
+const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
+const serif = 'Georgia, "Times New Roman", serif'
+
+// Rates from the signed-off job spec. They appear in the copy and drive the
+// calculator, so they live in one place.
+const SALE_RATE = 0.2
+const RETAINER_RATE = 0.15
+const PRICE_FLOOR = 800
+
+// CONFIRM BEFORE PUSH. Nothing in the repo records what a retainer costs — the
+// old price list was deleted and every job is priced by hand — so this is the
+// one number on the page that is not sourced from the spec or the code.
+const RETAINER_MIN = 350
+const RETAINER_MAX = 900
+
+const PROVINCES = [
+  'Eastern Cape',
+  'Free State',
+  'Gauteng',
+  'KwaZulu-Natal',
+  'Limpopo',
+  'Mpumalanga',
+  'Northern Cape',
+  'North West',
+  'Western Cape',
+]
+
+const rand = (value: number) =>
+  'R' + Math.round(value).toLocaleString('en-ZA')
+
+type Status = 'idle' | 'sending' | 'sent' | 'ineligible' | 'error'
+
+export default function SalesRepCareers() {
+  // ── calculator ──
+  const [dealPrice, setDealPrice] = useState(6000)
+  const [retained, setRetained] = useState(8)
+
+  const saleCut = dealPrice * SALE_RATE
+  const monthlyLow = retained * RETAINER_MIN * RETAINER_RATE
+  const monthlyHigh = retained * RETAINER_MAX * RETAINER_RATE
+
+  // ── form ──
+  const [status, setStatus] = useState<Status>('idle')
+  const [error, setError] = useState('')
+  const [cvName, setCvName] = useState('')
+
+  const provinceOptions = useMemo(
+    () => PROVINCES.map(p => <option key={p} value={p}>{p}</option>),
+    [],
+  )
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setStatus('sending')
+    setError('')
+
+    try {
+      const res = await fetch('/api/careers/apply', {
+        method: 'POST',
+        body: new FormData(e.currentTarget),
+      })
+      const data = await res.json()
+
+      if (!res.ok || !data.success) {
+        setError(data.error || 'Something went wrong. Please try again.')
+        setStatus('error')
+        return
+      }
+      setStatus(data.eligible === false ? 'ineligible' : 'sent')
+    } catch {
+      setError('Could not reach us. Check your connection and try again.')
+      setStatus('error')
+    }
+  }
+
+  return (
+    <div style={{ background: '#f9f9fe', fontFamily: font }}>
+
+      {/* ── HERO ── */}
+      <div style={{
+        background: 'linear-gradient(180deg, #7b8fad 0%, #9aa4bc 35%, #b5a8c4 60%, #d4b8c8 80%, #e8c8cf 100%)',
+        minHeight: '92vh', position: 'relative', overflow: 'hidden',
+        display: 'flex', flexDirection: 'column',
+      }}>
+        <div style={{ position: 'relative', zIndex: 10, flexShrink: 0 }}>
+          <SiteNav />
+        </div>
+
+        <div style={{
+          flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center',
+          justifyContent: 'center', padding: '3rem 2.5rem 6rem',
+          position: 'relative', zIndex: 2, textAlign: 'center',
+        }}>
+          <p style={{
+            fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.25em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)',
+            marginBottom: '1rem',
+          }}>30 seats · nationwide</p>
+
+          <h1 style={{
+            fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
+            fontWeight: 300, color: '#fff', lineHeight: 1.1,
+            margin: '0 0 1.25rem', maxWidth: '740px',
+          }}>
+            Sell websites. Keep <em style={{ fontStyle: 'italic' }}>a fifth</em> of every one.
+          </h1>
+
+          <p style={{
+            fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)',
+            color: 'rgba(255,255,255,0.75)', maxWidth: '520px',
+            lineHeight: 1.75, marginBottom: '2.25rem',
+          }}>
+            Freelance sales representative · Remote, anywhere in South Africa · Commission only.
+            No experience needed, and no one is going to clock you.
+          </p>
+
+          <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <a href="#apply" style={{
+              fontSize: '0.85rem', fontWeight: 600, color: '#1a1a2e', background: '#fff',
+              padding: '0.75rem 2rem', borderRadius: '999px', textDecoration: 'none',
+              letterSpacing: '0.06em', textTransform: 'uppercase', display: 'inline-block',
+              transition: 'opacity 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            >Apply now</a>
+            <a href="#earn" style={{
+              fontSize: '0.85rem', fontWeight: 600, color: '#fff', background: 'transparent',
+              padding: '0.75rem 2rem', borderRadius: '999px', textDecoration: 'none',
+              letterSpacing: '0.06em', textTransform: 'uppercase', display: 'inline-block',
+              border: '1.5px solid rgba(255,255,255,0.5)', transition: 'border-color 0.2s',
+            }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'}
+            >See what you earn</a>
+          </div>
+        </div>
+
+        {/* Mountain silhouette — same three ridges as the homepage */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+            <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.025)" />
+            <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.045)" />
+            <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.07)" />
+          </svg>
+        </div>
+      </div>
+
+      {/* ── THE HOOK ── */}
+      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
+        <div className="cr-split" style={{
+          maxWidth: '960px', margin: '0 auto', display: 'grid',
+          gridTemplateColumns: '1fr 1fr', gap: '4.5rem', alignItems: 'center',
+        }}>
+          <div>
+            <p style={{
+              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+              textTransform: 'uppercase', color: '#745762', marginBottom: '1.25rem',
+            }}>Why this sells</p>
+            <h2 style={{
+              fontFamily: serif, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+              fontWeight: 300, color: '#2e333a', lineHeight: 1.25, margin: '0 0 1.5rem',
+            }}>
+              You don&apos;t pitch a portfolio. You show them <em style={{ fontStyle: 'italic' }}>their own website.</em>
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85, margin: '0 0 1.25rem' }}>
+              Before a client commits to anything, we generate a live preview of their actual site —
+              their business name, their trade, their photos, their contact details. You put it on the
+              screen in front of them, on a phone in their shop if you like.
+            </p>
+            <p style={{ fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85, margin: 0 }}>
+              That turns the hardest conversation in sales into the easiest one. They are not buying a
+              promise. They are looking at the thing and deciding whether they want to keep it.
+            </p>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              width: '100%', maxWidth: '340px', background: '#fff', borderRadius: '16px',
+              boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)', overflow: 'hidden',
+              transform: 'rotate(-1.5deg)',
+            }}>
+              <div style={{ background: '#f0eef6', padding: '0.6rem 1rem', display: 'flex', gap: '0.35rem' }}>
+                {['#d4b8c8', '#b5a8c4', '#9aa4bc'].map(c => (
+                  <span key={c} style={{ width: '9px', height: '9px', borderRadius: '999px', background: c }} />
+                ))}
+              </div>
+              <div style={{ padding: '1.75rem 1.5rem 2rem' }}>
+                <p style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.5rem' }}>Preview ready</p>
+                <p style={{ fontFamily: serif, fontSize: '1.4rem', fontWeight: 300, color: '#2e333a', margin: '0 0 1.25rem' }}>Naledi&apos;s Hair Studio</p>
+                {[70, 100, 88, 46].map((w, i) => (
+                  <div key={i} style={{ height: '9px', width: `${w}%`, background: '#f0eef6', borderRadius: '999px', marginBottom: '0.6rem' }} />
+                ))}
+                <div style={{ marginTop: '1.5rem', height: '90px', borderRadius: '10px', background: 'linear-gradient(135deg, #d6e3ff, #f6d0dd)' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── EARNINGS ── */}
+      <div id="earn" style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <p style={{
+            fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: '#745762', marginBottom: '0.75rem',
+          }}>What you earn</p>
+          <h2 style={{
+            fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+            fontWeight: 300, color: '#2e333a', lineHeight: 1.2, margin: '0 0 0.9rem',
+          }}>
+            Move the sliders. That&apos;s <em style={{ fontStyle: 'italic' }}>your money.</em>
+          </h2>
+          <p style={{ fontSize: '1.05rem', color: '#535f77', lineHeight: 1.8, margin: '0 0 3rem', maxWidth: '560px' }}>
+            You negotiate the price with the client yourself. There is a floor of {rand(PRICE_FLOOR)} and
+            no ceiling — if you can justify the value, you keep a fifth of whatever you agree.
+          </p>
+
+          <div style={{
+            background: '#fff', borderRadius: '20px', padding: '2.5rem',
+            boxShadow: '0 20px 25px -5px rgba(0,0,0,0.08)',
+          }}>
+            <div className="cr-calc" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+
+              {/* Once-off */}
+              <div>
+                <label htmlFor="deal" style={{
+                  display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.16em',
+                  textTransform: 'uppercase', color: '#745762', marginBottom: '1rem',
+                }}>A website you sell for</label>
+                <p style={{ fontFamily: serif, fontSize: '2rem', fontWeight: 300, color: '#2e333a', margin: '0 0 1rem' }}>
+                  {rand(dealPrice)}
+                </p>
+                <input
+                  id="deal" type="range" min={PRICE_FLOOR} max={25000} step={100}
+                  value={dealPrice} onChange={e => setDealPrice(Number(e.target.value))}
+                  className="cr-range"
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#8a93a8', marginTop: '0.4rem' }}>
+                  <span>{rand(PRICE_FLOOR)} floor</span><span>R25 000</span>
+                </div>
+
+                <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#f9f9fe', borderRadius: '14px' }}>
+                  <p style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.4rem' }}>
+                    Your 20%, once off
+                  </p>
+                  <p style={{ fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 300, color: '#535f77', margin: 0, lineHeight: 1 }}>
+                    {rand(saleCut)}
+                  </p>
+                </div>
+              </div>
+
+              {/* Recurring */}
+              <div>
+                <label htmlFor="retained" style={{
+                  display: 'block', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.16em',
+                  textTransform: 'uppercase', color: '#745762', marginBottom: '1rem',
+                }}>Clients still on a retainer</label>
+                <p style={{ fontFamily: serif, fontSize: '2rem', fontWeight: 300, color: '#2e333a', margin: '0 0 1rem' }}>
+                  {retained} {retained === 1 ? 'client' : 'clients'}
+                </p>
+                <input
+                  id="retained" type="range" min={0} max={30} step={1}
+                  value={retained} onChange={e => setRetained(Number(e.target.value))}
+                  className="cr-range"
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem', color: '#8a93a8', marginTop: '0.4rem' }}>
+                  <span>0</span><span>30</span>
+                </div>
+
+                <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#f9f9fe', borderRadius: '14px' }}>
+                  <p style={{ fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#745762', margin: '0 0 0.4rem' }}>
+                    Your 15%, every month
+                  </p>
+                  <p style={{ fontFamily: serif, fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 300, color: '#535f77', margin: 0, lineHeight: 1 }}>
+                    {retained === 0 ? 'R0' : `${rand(monthlyLow)}–${rand(monthlyHigh)}`}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p style={{ fontSize: '0.85rem', color: '#8a93a8', lineHeight: 1.7, margin: '2rem 0 0' }}>
+              Clients who stay on for hosting, maintenance and updates pay a monthly retainer, typically
+              between {rand(RETAINER_MIN)} and {rand(RETAINER_MAX)} depending on the plan. You earn 15% of
+              it for as long as that client stays with us. Build a book of them and it compounds month over month.
+            </p>
+          </div>
+
+          {/* The honest card — deliberately not buried */}
+          <div style={{
+            marginTop: '1.5rem', background: '#1e2333', borderRadius: '20px', padding: '2rem 2.5rem',
+          }}>
+            <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#d4b8c8', margin: '0 0 0.75rem' }}>
+              Straight with you
+            </p>
+            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.8)', lineHeight: 1.8, margin: 0 }}>
+              The monthly cut runs for as long as the client stays <em style={{ fontStyle: 'italic' }}>and</em> you
+              are still selling for us. It stops when you stop. There is no base salary, slow weeks are real,
+              and the first sale takes the longest. If you need guaranteed income this month, this is not the right fit.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── WHAT WE GIVE YOU ── */}
+      <div style={{ background: '#f9f9fe', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+          <p style={{
+            fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: '#745762', marginBottom: '0.75rem',
+          }}>What we hand you</p>
+          <h2 style={{
+            fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+            fontWeight: 300, color: '#2e333a', lineHeight: 1.2, margin: '0 0 3rem',
+          }}>
+            You bring the conversations. <em style={{ fontStyle: 'italic' }}>We bring the rest.</em>
+          </h2>
+
+          <div className="cr-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.25rem' }}>
+            {[
+              ['A territory of your own', 'You are not racing another rep to the same businesses. Your area is yours.'],
+              ['Leads already loaded', 'Business name, contact number, address, and whether they already have a site — waiting in the CRM when you log in.'],
+              ['The preview tool', 'Generate a client’s real website on the spot, in front of them.'],
+              ['More leads on tap', 'Worked through your list? Request another batch. No queue, no permission.'],
+            ].map(([title, body]) => (
+              <div key={title} style={{
+                background: '#fff', borderRadius: '16px', padding: '2rem',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+              }}>
+                <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.6rem' }}>{title}</p>
+                <p style={{ fontSize: '0.95rem', color: '#535f77', lineHeight: 1.75, margin: 0 }}>{body}</p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontSize: '0.95rem', color: '#8a93a8', lineHeight: 1.8, margin: '2rem 0 0', maxWidth: '640px' }}>
+            How you reach them is entirely your call — phone, WhatsApp, email, walk into their shop, work
+            your own network. We don&apos;t script you and we don&apos;t clock you. And it is every kind of South
+            African business: salons, accountants, opticians, restaurants, guest houses, law firms, retailers, trades.
+          </p>
+        </div>
+      </div>
+
+      {/* ── WHO THIS SUITS ── */}
+      <div style={{ background: '#f0eef6', padding: '7rem 2rem' }}>
+        <div className="cr-split" style={{
+          maxWidth: '960px', margin: '0 auto', display: 'grid',
+          gridTemplateColumns: '1fr 1fr', gap: '4.5rem',
+        }}>
+          <div>
+            <p style={{
+              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+              textTransform: 'uppercase', color: '#745762', marginBottom: '0.75rem',
+            }}>Who this suits</p>
+            <h2 style={{
+              fontFamily: serif, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+              fontWeight: 300, color: '#2e333a', lineHeight: 1.25, margin: '0 0 2rem',
+            }}>
+              People who want to be paid for <em style={{ fontStyle: 'italic' }}>output, not attendance.</em>
+            </h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {[
+                ['No sales experience required', 'If you can hold a conversation with a business owner and you’re willing to hear no a lot, you can do this. We’ll show you the rest.'],
+                ['Side hustle friendly', 'Work it around a job, studies or another business. No minimum hours, no shift.'],
+                ['Already dealing with business owners?', 'Insurance brokers, merchant services reps, signage and print sales, suppliers — you have the relationships already. This is an extra income stream on top of them.'],
+              ].map(([title, body]) => (
+                <div key={title}>
+                  <p style={{ fontSize: '1rem', fontWeight: 700, color: '#2e333a', margin: '0 0 0.35rem' }}>{title}</p>
+                  <p style={{ fontSize: '0.95rem', color: '#535f77', lineHeight: 1.75, margin: 0 }}>{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p style={{
+              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+              textTransform: 'uppercase', color: '#745762', marginBottom: '1.5rem',
+            }}>What you need</p>
+            <div style={{ background: '#fff', borderRadius: '16px', padding: '2rem', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
+              {[
+                'Based in South Africa',
+                'Your own smartphone or laptop, and data',
+                'Conversational English — a second South African language is a real advantage',
+                'Willing to work as an independent contractor: no salary, no benefits, your own tax',
+                '18 or older',
+              ].map((item, i, arr) => (
+                <p key={item} style={{
+                  fontSize: '0.95rem', color: '#535f77', lineHeight: 1.7,
+                  margin: 0, padding: i === arr.length - 1 ? '0.9rem 0 0' : '0.9rem 0',
+                  paddingTop: i === 0 ? 0 : '0.9rem',
+                  background: 'none',
+                }}>
+                  <span style={{ color: '#745762', marginRight: '0.6rem' }}>▲</span>{item}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── APPLY ── */}
+      <div id="apply" style={{ background: '#1e2333', padding: '7rem 2rem' }}>
+        <div style={{ maxWidth: '620px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <p style={{
+              fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em',
+              textTransform: 'uppercase', color: '#d4b8c8', marginBottom: '1rem',
+            }}>Apply</p>
+            <h2 style={{
+              fontFamily: serif, fontSize: 'clamp(1.8rem, 3vw, 2.75rem)',
+              fontWeight: 300, color: '#fff', lineHeight: 1.2, margin: '0 0 0.75rem',
+            }}>
+              Tell us who you <em style={{ fontStyle: 'italic' }}>are.</em>
+            </h2>
+            <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, margin: 0 }}>
+              No CV required — attach one if you have it. We&apos;d rather read two honest answers.
+            </p>
+          </div>
+
+          {status === 'sent' && (
+            <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.06)', borderRadius: '16px', textAlign: 'center' }}>
+              <p style={{ fontFamily: serif, fontSize: '1.5rem', color: '#fff', fontWeight: 300, margin: '0 0 0.5rem' }}>
+                <em>We&apos;ve got it.</em>
+              </p>
+              <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+                If it&apos;s a fit, we&apos;ll be in touch.
+              </p>
+            </div>
+          )}
+
+          {status === 'ineligible' && (
+            <div style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.06)', borderRadius: '16px', textAlign: 'center' }}>
+              <p style={{ fontFamily: serif, fontSize: '1.5rem', color: '#fff', fontWeight: 300, margin: '0 0 0.5rem' }}>
+                <em>Application received.</em>
+              </p>
+              <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, margin: 0 }}>
+                This role needs the legal right to work in South Africa, so we can&apos;t take it further right
+                now. Your details are on file — if that changes, email hello@mountainstudios.co.za.
+              </p>
+            </div>
+          )}
+
+          {status !== 'sent' && status !== 'ineligible' && (
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+
+              {/* Honeypot — off-screen, never seen, must stay empty */}
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }} />
+
+              <Field label="Full name" name="full_name" required autoComplete="name" />
+              <Field label="Email" name="email" type="email" required autoComplete="email" />
+              <Field label="Phone / WhatsApp" name="phone" type="tel" required autoComplete="tel" />
+
+              <div className="cr-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                <div>
+                  <Label htmlFor="province">Province</Label>
+                  <select id="province" name="province" required defaultValue="" className="cr-input">
+                    <option value="" disabled>Choose one</option>
+                    {provinceOptions}
+                  </select>
+                </div>
+                <Field label="City or town" name="city" required />
+              </div>
+
+              <div>
+                <Label htmlFor="why_sales">Why do you want to work in sales, and what about this position appeals to you?</Label>
+                <textarea id="why_sales" name="why_sales" rows={5} required className="cr-input" />
+              </div>
+
+              <div>
+                <Label htmlFor="persuasion">Tell us about a time you sold something, or convinced someone to do something they didn&apos;t want to do.</Label>
+                <textarea id="persuasion" name="persuasion" rows={5} required className="cr-input" />
+              </div>
+
+              <YesNo name="work_rights" legend="Are you a South African citizen, or do you have the legal right to work in South Africa?" />
+              <YesNo name="has_laptop" legend="Do you have a laptop and a working internet connection?" />
+
+              <div>
+                <Label htmlFor="cv">CV — optional, PDF or Word, up to 5MB</Label>
+                <label htmlFor="cv" style={{
+                  display: 'block', cursor: 'pointer', fontSize: '0.95rem',
+                  color: cvName ? '#fff' : 'rgba(255,255,255,0.4)',
+                  background: 'rgba(255,255,255,0.07)', border: '1px dashed rgba(255,255,255,0.2)',
+                  borderRadius: '10px', padding: '0.85rem 1.25rem',
+                }}>
+                  {cvName || 'Choose a file'}
+                </label>
+                <input
+                  id="cv" name="cv" type="file" accept=".pdf,.doc,.docx"
+                  onChange={e => {
+                    const file = e.target.files?.[0]
+                    if (file && file.size > 5 * 1024 * 1024) {
+                      setError('That CV is over 5MB. Attach a smaller one, or leave it out.')
+                      e.target.value = ''
+                      setCvName('')
+                      return
+                    }
+                    setError('')
+                    setCvName(file?.name ?? '')
+                  }}
+                  style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+                />
+              </div>
+
+              {error && (
+                <p style={{ fontSize: '0.9rem', color: '#f2b8bd', margin: 0, lineHeight: 1.6 }}>{error}</p>
+              )}
+
+              <button type="submit" disabled={status === 'sending'} style={{
+                fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                background: '#fff', color: '#1e2333', border: 'none', borderRadius: '999px',
+                padding: '0.9rem 2.25rem', cursor: status === 'sending' ? 'wait' : 'pointer',
+                alignSelf: 'center', marginTop: '0.5rem',
+                opacity: status === 'sending' ? 0.6 : 1, transition: 'opacity 0.2s',
+              }}>
+                {status === 'sending' ? 'Sending…' : 'Send application'}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+
+      {/* ── FOOTER ── */}
+      <div style={{ background: '#16192a', padding: '1.5rem 2rem' }}>
+        <div style={{
+          maxWidth: '1100px', margin: '0 auto', display: 'flex',
+          justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem',
+        }}>
+          <a href="/" style={{
+            fontSize: '0.95rem', fontWeight: 700, color: '#fff',
+            textDecoration: 'none', letterSpacing: '0.04em',
+          }}>mountain studios</a>
+          <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
+            © {new Date().getFullYear()} Mountain Studios. All rights reserved.
+          </p>
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
+            {['Privacy Policy', 'Terms of Service'].map(t => (
+              <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <style>{`
+        .cr-input {
+          font-family: ${font};
+          font-size: 1rem;
+          width: 100%;
+          box-sizing: border-box;
+          background: rgba(255,255,255,0.07);
+          border: 1px solid rgba(255,255,255,0.12);
+          border-radius: 10px;
+          color: #fff;
+          padding: 0.85rem 1.25rem;
+          outline: none;
+          resize: vertical;
+        }
+        .cr-input:focus-visible {
+          border-color: rgba(255,255,255,0.5);
+          box-shadow: 0 0 0 3px rgba(212,184,200,0.25);
+        }
+        select.cr-input { appearance: none; cursor: pointer; }
+        select.cr-input option { color: #2e333a; }
+        .cr-input::placeholder { color: rgba(255,255,255,0.3); }
+
+        a:focus-visible, button:focus-visible, input:focus-visible, label:focus-visible {
+          outline: 2px solid #d4b8c8;
+          outline-offset: 3px;
+        }
+
+        .cr-range {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 100%;
+          height: 4px;
+          border-radius: 999px;
+          background: #e4e0ee;
+          outline: none;
+          cursor: pointer;
+        }
+        .cr-range::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 22px;
+          height: 22px;
+          border-radius: 999px;
+          background: #535f77;
+          border: 3px solid #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          cursor: grab;
+        }
+        .cr-range::-moz-range-thumb {
+          width: 22px;
+          height: 22px;
+          border-radius: 999px;
+          background: #535f77;
+          border: 3px solid #fff;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          cursor: grab;
+          border-color: #fff;
+        }
+
+        @media (max-width: 900px) {
+          .cr-split, .cr-calc, .cr-cards { grid-template-columns: 1fr !important; }
+          .cr-split { gap: 3rem !important; }
+          .cr-calc { gap: 2.5rem !important; }
+        }
+        @media (max-width: 560px) {
+          .cr-form-row { grid-template-columns: 1fr !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation: none !important; transition: none !important; }
+        }
+      `}</style>
+    </div>
+  )
+}
+
+// ── form primitives ──
+
+function Label({ htmlFor, children }: { htmlFor: string; children: React.ReactNode }) {
+  return (
+    <label htmlFor={htmlFor} style={{
+      display: 'block', fontSize: '0.8rem', fontWeight: 600,
+      color: 'rgba(255,255,255,0.7)', marginBottom: '0.5rem', lineHeight: 1.5,
+    }}>{children}</label>
+  )
+}
+
+function Field({
+  label, name, type = 'text', required, autoComplete,
+}: {
+  label: string; name: string; type?: string; required?: boolean; autoComplete?: string
+}) {
+  return (
+    <div>
+      <Label htmlFor={name}>{label}</Label>
+      <input id={name} name={name} type={type} required={required} autoComplete={autoComplete} className="cr-input" />
+    </div>
+  )
+}
+
+function YesNo({ name, legend }: { name: string; legend: string }) {
+  return (
+    <fieldset style={{ border: 'none', padding: 0, margin: 0 }}>
+      <legend style={{
+        fontSize: '0.8rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)',
+        marginBottom: '0.6rem', lineHeight: 1.5, padding: 0,
+      }}>{legend}</legend>
+      <div style={{ display: 'flex', gap: '0.75rem' }}>
+        {[['yes', 'Yes'], ['no', 'No']].map(([value, text]) => (
+          <label key={value} style={{
+            flex: 1, display: 'flex', alignItems: 'center', gap: '0.6rem',
+            fontSize: '0.95rem', color: '#fff', cursor: 'pointer',
+            background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: '10px', padding: '0.75rem 1.25rem',
+          }}>
+            <input type="radio" name={name} value={value} required style={{ accentColor: '#d4b8c8' }} />
+            {text}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}

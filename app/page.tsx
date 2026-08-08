@@ -366,6 +366,7 @@ export default function Home() {
             © {new Date().getFullYear()} Mountain Studios. All rights reserved.
           </p>
           <div style={{ display: 'flex', gap: '1.25rem' }}>
+            <a href="/careers/sales-rep" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textDecoration: 'none' }}>Careers</a>
             {['Privacy Policy', 'Terms of Service'].map(t => (
               <a key={t} href="#" style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.75rem', textDecoration: 'none' }}>{t}</a>
             ))}
