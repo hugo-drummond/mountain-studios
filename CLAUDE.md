@@ -85,7 +85,11 @@ All templates use CSS grid with fixed columns; needs media queries or responsive
 ## Notes
 
 ### Architecture
-- `content.ts` (14k lines) — static preset content keyed by exact business type name (e.g. `"Plumber"`, `"Lawyer / Attorney"`)
+- `constants/business-types.ts` — the 153 business types, single source of truth. Both the intake
+  form and the brief page import it. Every name here must have a matching preset in `content.ts`,
+  keyed on the exact string; adding one without the other silently downgrades that business to
+  LLM-generated copy.
+- `content.ts` (17k lines) — static preset content keyed by exact business type name (e.g. `"Plumber"`, `"Lawyer / Attorney"`)
 - `route.ts` POST handler checks `presetContent[businessType]` first; only calls Claude API if no preset exists
 - 3 template builders: `buildVisualTemplate()`, `buildServiceTemplate()`, `buildPortfolioTemplate()` — all share `buildAboutSection()`, `buildContactSection()`, `buildNav()`, `buildFooter()`, `buildHead()`
 - Category-to-variant mapping: `categoryVariant` record maps 15 `BusinessCategory` values to `'visual' | 'service' | 'portfolio'`
@@ -93,6 +97,9 @@ All templates use CSS grid with fixed columns; needs media queries or responsive
 - `fetchStockImages()` accepts `ImageQueries` with per-section Pexels search queries; falls back to generic business type search
 
 ### Key Decisions
+- **South Africa only.** No country picker, no geo-detection, no multi-currency. The UK region was formally dropped; `getLocationInfo()` returns a Cape Town address and nothing else.
+- **No computed pricing.** The GBP price list, the FX engine (`lib/fx.ts`, `app/api/fx/*`, `worker/fx_worker.py`) and the parallel ZAR list in `constants/pricing.ts` are all deleted. Price is agreed per job and entered in rands by an admin on `send-brief`, which is the only writer of `briefs.final_price_local`; the 50% deposit derives from it. Floor R800, enforced server-side. `create-checkout` refuses to run without an amount, so do not remove that field.
+- **Any SA business, not trades.** Trades are 1 of 15 categories and 17 of 153 types. Do not let trades lead in copy, placeholders or default lists.
 - Pre-written content over AI generation: avoids latency, cost, and quality inconsistency. Claude fallback only for "Other" or custom types.
 - South African copywriting voice: all 151 presets written with Cape Town context (SARS, CoC, NHBRC, SAPVIA, etc.)
 - Unicode symbols for service icons instead of SVG icon library: keeps HTML self-contained with zero external dependencies
