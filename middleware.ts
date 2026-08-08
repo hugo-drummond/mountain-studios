@@ -2,15 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 
 const COOKIE_NAME = 'agency_admin'
+// Must match app/api/admin/auth/login/route.ts and app/admin/layout.tsx. This
+// middleware previously hashed the password without the salt, so the value it
+// expected could never equal the one login sets — every /admin request bounced
+// back to the login page it had just come from.
+const SALT = 'agency-salt'
 
 /**
- * Derive the expected cookie value as sha256(ADMIN_PASSWORD).
+ * Derive the expected cookie value as sha256(ADMIN_PASSWORD + SALT).
  * Returns an empty string if ADMIN_PASSWORD is not set (will always fail auth).
  */
 function expectedCookieValue(): string {
   const password = process.env.ADMIN_PASSWORD
   if (!password) return ''
-  return createHash('sha256').update(password).digest('hex')
+  return createHash('sha256').update(password + SALT).digest('hex')
 }
 
 /**
@@ -85,7 +90,7 @@ export const config = {
  * @param redirectTo  Where to redirect after setting the cookie (default: /admin).
  */
 export function buildLoginResponse(password: string, redirectTo = '/admin'): NextResponse {
-  const hash = createHash('sha256').update(password).digest('hex')
+  const hash = createHash('sha256').update(password + SALT).digest('hex')
 
   const response = NextResponse.redirect(
     new URL(redirectTo, process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000')

@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { screenApplication } from '@/lib/screen-application'
 
 // ---------------------------------------------------------------------------
 // POST /api/careers/apply
 //
-// The application form on /careers/sales-rep. Three destinations, in order of
+// The application form on /careers/sales-rep. Two destinations, in order of
 // how much it would hurt to lose them:
 //   1. the row in mountainstudios.rep_applications
 //   2. the CV in the private rep-cvs bucket
-//   3. an email to Ant so he knows without watching the table
+//
+// Deliberately no notification email. A public job ad produces hundreds of
+// applications and most are junk; burying a real person in someone's inbox is
+// worse than not sending anything. Applications are read in the review table
+// at /admin/applications, ranked by a screening model.
 //
 // The row goes in first and on its own. A CV that fails to upload costs us an
 // attachment; a row that fails to insert costs us the person. Each leg is
@@ -18,13 +22,9 @@ import { sendMail } from '@/lib/ses'
 // Multipart rather than JSON, because the CV rides along with the answers.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'ant88835@gmail.com'
 const CV_BUCKET = 'rep-cvs'
 const MAX_CV_BYTES = 5 * 1024 * 1024
 const ALLOWED_CV_EXT = ['pdf', 'doc', 'docx']
-// A week is long enough to read an application at the weekend and short enough
-// that a forwarded email does not become a permanent public link.
-const CV_LINK_TTL_SECONDS = 60 * 60 * 24 * 7
 
 const PROVINCES = [
   'Eastern Cape',
@@ -41,29 +41,6 @@ const PROVINCES = [
 // Long enough to rule out "asdf" and a bot's empty-ish filler, short enough that
 // someone typing on a phone in a taxi still gets through.
 const MIN_ANSWER_LENGTH = 20
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-}
-
-function row(label: string, value?: string | null): string {
-  if (!value) return ''
-  return `<tr>
-    <td style="padding:6px 16px 6px 0;color:#64748b;font-size:13px;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
-    <td style="padding:6px 0;color:#0f172a;font-size:14px;">${escapeHtml(value)}</td>
-  </tr>`
-}
-
-function block(label: string, value: string): string {
-  return `<div style="margin-top:20px;padding:16px;background:#f6f5fb;border-radius:10px;">
-    <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 8px;">${escapeHtml(label)}</p>
-    <p style="font-size:14px;color:#0f172a;margin:0;white-space:pre-wrap;">${escapeHtml(value)}</p>
-  </div>`
-}
 
 function str(form: FormData, key: string): string {
   const value = form.get(key)
@@ -102,7 +79,7 @@ export async function POST(req: NextRequest) {
 
   // Bots fill every field they find. A real applicant never sees this one.
   if (str(form, 'website')) {
-    return NextResponse.json({ success: true, applicationId: null, emailed: false, eligible: true })
+    return NextResponse.json({ success: true, applicationId: null, eligible: true })
   }
 
   const fullName = str(form, 'full_name')
@@ -172,7 +149,6 @@ export async function POST(req: NextRequest) {
   }
 
   let cvPath: string | null = null
-  let cvLink: string | null = null
   if (cv && applicationId) {
     try {
       const path = `${applicationId}/${safeFilename(cv.name)}`
@@ -183,63 +159,28 @@ export async function POST(req: NextRequest) {
 
       cvPath = path
       await crmAdmin().from('rep_applications').update({ cv_path: path }).eq('id', applicationId)
-
-      const { data } = await crmAdmin().storage.from(CV_BUCKET).createSignedUrl(path, CV_LINK_TTL_SECONDS)
-      cvLink = data?.signedUrl ?? null
     } catch (err) {
       console.error('[careers/apply] CV upload failed:', err instanceof Error ? err.message : err)
     }
   }
 
-  let emailed = false
-  try {
-    const cvLine = !cv
-      ? 'No CV attached.'
-      : cvLink
-        ? `<a href="${cvLink}" style="color:#535f77;">Open CV</a> — link expires in 7 days.`
-        : cvPath
-          ? 'CV stored, but the link could not be generated. Find it in the rep-cvs bucket.'
-          : '<strong style="color:#b91c1c;">CV upload failed — ask them to resend it.</strong>'
-
-    const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;">
-      <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 4px;">New rep application</p>
-      <h1 style="font-size:22px;color:#0f172a;margin:0 0 4px;">${escapeHtml(fullName)}</h1>
-      <p style="font-size:14px;color:#64748b;margin:0 0 20px;">${escapeHtml(`${city}, ${province}`)}</p>
-      ${workRights ? '' : `<p style="font-size:14px;color:#b91c1c;font-weight:600;margin:0 0 20px;padding:12px 16px;background:#fef2f2;border-radius:10px;">Says they do not have the legal right to work in South Africa. They were told the role requires it.</p>`}
-      <table style="border-collapse:collapse;width:100%;">
-        ${row('Email', email)}
-        ${row('Phone', phone)}
-        ${row('Work rights', workRights ? 'Yes' : 'No')}
-        ${row('Laptop + internet', hasLaptop ? 'Yes' : 'No')}
-      </table>
-      ${block('Why sales, and why this role', whySales)}
-      ${block('A time they sold or convinced someone', persuasion)}
-      <p style="font-size:13px;color:#64748b;margin:24px 0 0;">${cvLine}</p>
-      ${applicationId ? '' : '<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;"><strong>Not saved to the database — this email is the only copy.</strong></p>'}
-      <p style="font-size:13px;color:#94a3b8;margin:8px 0 0;">Reply to this email to answer ${escapeHtml(fullName.split(' ')[0])} directly.</p>
-    </div>`
-
-    await sendMail({
-      to: NOTIFY_TO,
-      subject: `${workRights ? '' : '[NO WORK RIGHTS] '}New rep application — ${fullName} (${city}, ${province})`,
-      html,
-      replyTo: email,
-    })
-    emailed = true
-  } catch (err) {
-    console.error('[careers/apply] notification email failed:', err instanceof Error ? err.message : err)
-  }
-
-  if (!applicationId && !emailed) {
-    // Nothing reached us. Say so, so the page keeps the form filled in rather
-    // than thanking someone for an application we never received.
+  if (!applicationId) {
+    // The row is the only copy now that nothing is emailed. If it did not save,
+    // say so, so the page keeps the form filled in rather than thanking someone
+    // for an application we never received.
     return NextResponse.json(
       { success: false, error: 'Could not send your application. Please try again.' },
       { status: 502 },
     )
   }
 
+  // Screening runs after the applicant has their answer, not before it. It is
+  // deliberately not awaited: DeepSeek being slow or down must never hold up a
+  // form submission. If this never finishes, screened_at stays null and the
+  // rescan in /api/careers/screen picks the application up later.
+  screenApplication(applicationId).catch(() => {})
+
   // eligible: false is not a failure. The application is recorded either way —
   // the flag only decides which message the page shows.
-  return NextResponse.json({ success: true, applicationId, emailed, eligible: workRights })
+  return NextResponse.json({ success: true, applicationId, eligible: workRights })
 }
