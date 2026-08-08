@@ -79,6 +79,38 @@ Reps have no button yet: the CRM has no preview UI, though its `leads` table alr
 - **Missing table grants.** New tables in the `mountainstudios` schema do not inherit
   `service_role` privileges; the first application submit failed on this.
 
+## Preview template redesign — in progress, paused
+
+Carried over from the sessions before this one. Replacing the three generic variants
+(`visual`, `service`, `portfolio`) with fifteen category-specific templates, each modelled
+on a real reference site so a restaurant does not get the same layout as a law firm.
+
+Method: collect a reference site per category, extract its homepage structure, then build
+that category as its own template function. All share `buildNav()`, `buildFooter()`,
+`buildHead()`, `buildAboutSection()` and `buildContactSection()`; the POST handler picks
+the builder by category.
+
+**Reference sites collected**
+
+- `food-hospitality` — crafto.themezaa.com/restaurant: full-screen hero, stats row, split
+  about, tabbed menu, card carousel, testimonials
+- `retail` — taiping.co.nz: red accent nav, stats row, 50/50 about, 50/50 locations,
+  2×2 department cards, brand logos
+- `health-wellness` — iveeapp.com: pastel blue, 50/50 hero, navy stats row, services
+  accordion, membership cards, team carousel, testimonial colour cards
+- `property` — 505statestreet.com: minimal pill nav, full-bleed hero, centred statement,
+  tabbed amenity galleries, floor plan tabs, day/night toggle
+
+**Built:** `buildPropertyTemplate()` only.
+
+**Still needs a reference site and a template:** fitness-sport, pets,
+events-entertainment, creative, trades-construction, professional, home-services,
+education, automotive, tech-digital (plain.com — screenshots incomplete), other.
+
+**Also outstanding on previews:** templates use fixed-column CSS grid with no breakpoints,
+so they need mobile work. Portfolio `projectCaptions` rendering is unverified, `ogImageQuery`
+exists on presets but is unused, and PDF generation quality is untested across variants.
+
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
 - `rep_applications` — applications plus the model's score, verdict, summary and flags
