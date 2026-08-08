@@ -17,6 +17,12 @@ values live in `.env.local` locally, never in this file.
 - [ ] `ADMIN_PASSWORD` — without it `/admin/applications` cannot be logged into at all.
       Applications still save; you just can't read them anywhere but the database.
 
+**Blocking for shared previews, once the CRM calls the share endpoint**
+
+- [ ] `PREVIEW_SHARE_KEY` — any long random string, the same value in both this project
+      and the CRM. Without it only an admin-cookie session can create share links. A
+      local dev value is already in `.env.local`; production needs its own.
+
 **Not blocking, but nothing gets scored until it's done**
 
 - [ ] `DEEPSEEK_API_KEY` — the key currently in `.env.local` is dead (401 from DeepSeek's
@@ -42,6 +48,21 @@ values live in `.env.local` locally, never in this file.
       It sets what reps expect to earn and what they quote clients.
 - [ ] **Delete the three test applications** in `mountainstudios.rep_applications`
       (asdf asdf, Thandeka Mokoena, Peter Nel) once the review table has been eyeballed.
+
+## Shared previews — deferred
+
+- [ ] **Generate + share button in the CRM.** The link infrastructure is built
+      (`/api/preview/share` → `/p/{token}`), but reps have no button. The CRM's `leads`
+      table already has `mockup_ready` and `mockup_url` waiting to be filled.
+- [ ] **Prefilled WhatsApp / email draft.** A button that opens the rep's own WhatsApp or
+      mail client with the message and link written. Reps send from their own address on
+      purpose — thirty people cold-mailing through the company SES identity would put the
+      domain's reputation behind their prospecting, and POPIA consent for direct marketing
+      is the sender's problem, not ours.
+- [ ] **Purge expired previews from storage.** Expiry hides the page but leaves the HTML
+      in the `previews` bucket forever. Needs a sweep that deletes files for rows expired
+      more than ~90 days. Note storage rows cannot be deleted with SQL — the Storage API
+      is the only way.
 
 ## Known bugs
 

@@ -21,6 +21,13 @@ function build() {
   return createClient(url, serviceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
     db: { schema: CRM_SCHEMA },
+    global: {
+      // Next's App Router caches fetch() by default, and supabase-js talks over
+      // fetch. Without this, a row read once is served from cache forever: a
+      // revoked preview kept opening, and the admin tables would have frozen at
+      // whatever they showed first. Database reads are never cacheable here.
+      fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+    },
   })
 }
 
