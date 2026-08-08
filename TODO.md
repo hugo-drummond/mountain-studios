@@ -1,5 +1,40 @@
 # TODO
 
+## Test it yourself
+
+Everything below has been tested by script and against the database. None of it has
+been used by a person yet. Work through it once before any of this goes near a real
+applicant or prospect.
+
+**Careers page** — `/careers/sales-rep`
+
+- [ ] Read it on your phone, not just a laptop. It is going on LinkedIn and most
+      applicants will only ever see it at 375px wide.
+- [ ] Drag both calculator sliders. Check the numbers read the way you'd say them out
+      loud, and that dragging clients to zero showing R0 feels honest rather than bleak.
+- [ ] Submit a real application as if you were a candidate, CV attached. Then check the
+      row landed and the CV opens from the review table.
+- [ ] Answer "no" to the work-rights question and confirm the rejection wording is one
+      you're happy to put in front of a real person.
+- [ ] Decide whether the retainer range (R350–R900) stays. It is invented — see below.
+
+**Review table** — `/admin/applications`
+
+- [ ] Log in at all. This needs `ADMIN_PASSWORD` set, and it has never been done.
+- [ ] With a live DeepSeek key, submit one obviously junk application and one good one,
+      and check the scores separate them the way you would have.
+- [ ] Shortlist / reject / hire buttons write through and survive a refresh.
+
+**Shared previews**
+
+- [ ] Generate a preview, share it, and open the link on your own phone.
+- [ ] Paste the link into a WhatsApp chat with yourself. The card should show the business
+      name, and the view count must stay at zero until you actually tap it. This is the
+      part most worth checking by hand — it is the thing reps will trust.
+- [ ] Tap "I want this website" and confirm the lead appears in the CRM and the email
+      arrives at hello@.
+- [ ] Revoke a link and confirm it dies for the client.
+
 ## Vercel environment variables
 
 Set these in the Vercel project settings for mountain-studios. Names only —

@@ -1,0 +1,92 @@
+# Status
+
+Last updated: 8 August 2026
+
+## Where things stand
+
+Two things were built this session, both complete in code and unused by a person:
+a hiring page for the 30 freelance sales rep seats, and shareable client previews.
+
+Neither has been exercised by a real user. Nothing is blocked on code — what remains
+is environment variables, a working DeepSeek key, and a pass of manual testing. All of
+it is listed in [TODO.md](TODO.md), which was created this session as the single place
+for outstanding work; it also carries the Vercel variables and a hand-testing checklist.
+
+## Careers page — `/careers/sales-rep`
+
+Live in the repo, pushed, deploying. The landing target for a LinkedIn job post.
+
+- States the commission terms in full: 20% of each sale, 15% of the monthly retainer,
+  and does not hide that the residual stops when a rep stops selling
+- An earnings calculator lets a candidate work their own numbers rather than being shown
+  a flattering example
+- Application form writes to `mountainstudios.rep_applications` with an optional CV in
+  the private `rep-cvs` bucket
+- Linked from the homepage footer only. Not in the main nav
+
+**Deliberately sends no notification email.** A public ad produces hundreds of
+applications and most are junk; burying a real person in an inbox is worse than sending
+nothing. Every application is instead read by DeepSeek — junk detection, sales instinct,
+effort, red flags — and reviewed at `/admin/applications` ranked by score. Nothing is
+deleted on the model's say-so; low scores sort to the bottom and stay readable.
+
+Screening runs after the applicant gets their answer and is not awaited, so a slow or
+failed model call can never cost someone their application. Anything left unscored is
+swept up by `/api/careers/screen` when the review table loads.
+
+**Not working yet:** the DeepSeek key in `.env.local` is dead — 401 from DeepSeek's own
+balance endpoint, so it is the key and not the integration. Applications save fine and
+sit unscored until a valid key is in place. Three test applications are in the table
+waiting for exactly that.
+
+**Unresolved:** the page publicly states retainers run R350–R900 a month. That number was
+invented — nothing in the repo records the real one, and it sets what reps expect to earn
+and what they quote clients.
+
+## Shared client previews
+
+Built and tested end to end, committed. A rep saves a generated preview and gets a link
+to paste into WhatsApp or their own email; the client opens their real site on their own
+phone.
+
+- Finished HTML stored as-is, so what the rep pitched is what the client sees later
+- Unguessable token instead of a login, served `noindex`, expires after 30 days into a
+  page that explains itself
+- View counts ignore link-preview bots. WhatsApp fetches every URL the moment it is
+  pasted, so counting those would tell a rep their client had opened the preview the
+  instant they hit send
+- "I want this website" stamps the preview, creates or qualifies the CRM lead, and emails
+  `hello@`. Unlike applications this one notifies: a claim is rare and goes stale in hours
+- Reviewed at `/admin/previews` with copy-link and revoke
+
+**Reps send links themselves, from their own addresses.** Nothing mails on their behalf —
+thirty people prospecting through the company's SES identity would put the domain's
+sending reputation, and every invoice depending on it, behind their cold outreach. POPIA
+consent for direct electronic marketing also sits with whoever sends.
+
+Reps have no button yet: the CRM has no preview UI, though its `leads` table already has
+`mockup_ready` and `mockup_url` waiting.
+
+## Fixed along the way
+
+- **Admin was completely unreachable.** `middleware.ts` hashed the password without the
+  salt the login route adds, so every `/admin` request bounced back to the login page it
+  had just come from. An unused helper in the same file had the identical bug.
+- **Stale database reads.** Next's App Router caches `fetch` by default and supabase-js
+  talks over `fetch`, so a row read once was served from cache indefinitely — revoked
+  previews kept opening, and the admin tables would have frozen at whatever they first
+  displayed. Fixed at the client in `lib/crm.ts`, so every CRM reader is covered.
+- **Missing table grants.** New tables in the `mountainstudios` schema do not inherit
+  `service_role` privileges; the first application submit failed on this.
+
+## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
+
+- `rep_applications` — applications plus the model's score, verdict, summary and flags
+- `shared_previews` — token, expiry, view counts, claim details
+- Buckets `rep-cvs` and `previews`, both private, service-role access only
+
+## Known and untouched
+
+The homepage contact form at `app/page.tsx` sends nothing. Submitting sets a flag and
+renders a thank-you; the name, email, phone and message are discarded. Every enquiry ever
+typed into it is gone.
