@@ -7,7 +7,7 @@ const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const serif = 'Georgia, "Times New Roman", serif'
 
 const portfolioItems = [
-  { name: 'Alistair Drummond Architect', type: 'Architecture', img: '/images/portfolio/alistair-drummond.jpg', url: 'https://alistairdrummondarchitect.co.za/' },
+  { name: 'Alistair Drummond Architect', type: 'Architecture', img: '/images/portfolio/ada.jpg', url: 'https://alistairdrummondarchitect.co.za/' },
   { name: 'Coimbra Bakery', type: 'Food & Bakery', img: '/images/portfolio/coimbra-bakery.jpg', url: 'https://coimbrabakery.co.za/' },
   { name: 'Pie in the Sky', type: 'Food & Bakery', img: '/images/portfolio/pie-in-the-sky.jpg', url: 'https://pie-in-the-sky.co.za/' },
   { name: 'Hout Bay Curtain Call', type: 'Interiors & Home', img: '/images/portfolio/houtbay-curtain-call.jpg', url: 'https://houtbaycurtaincall.co.za/' },
@@ -148,13 +148,13 @@ export default function Home() {
               fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
               margin: '0 0 1.25rem',
             }}>
-              Mountain Studios was started by two friends — Hugo and Nathan. What started as building websites for friends quickly grew into a fully fledged business.
+              Mountain Studios was started by Hugo. What started as building websites for friends quickly grew into a fully fledged business.
             </p>
             <p style={{
               fontSize: '1.05rem', color: '#535f77', lineHeight: 1.85,
               margin: '0 0 2.5rem',
             }}>
-              With more than 5 years and 50 websites developed between us, we&apos;re happy to help your business build its digital presence.
+              With more than 5 years and 50 websites developed, we&apos;re happy to help your business build its digital presence.
             </p>
             <a href="/start-your-project" style={{
               fontFamily: font, fontSize: '0.8rem', fontWeight: 700,
@@ -169,31 +169,28 @@ export default function Home() {
             >Work With Us</a>
           </div>
 
-          {/* Founders */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-            {[
-              { name: 'Hugo', role: 'Co-founder' },
-              { name: 'Nathan', role: 'Co-founder' },
-            ].map(({ name, role }) => (
-              <div key={name} style={{
-                background: '#fff',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+          {/* Founder — single card, centred in the space the pair used to fill */}
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{
+              width: '100%',
+              maxWidth: '330px',
+              background: '#fff',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
+            }}>
+              <div style={{
+                height: '320px',
+                background: '#e8e4f0',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <div style={{
-                  height: '280px',
-                  background: '#e8e4f0',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <span style={{ fontSize: '4rem', opacity: 0.2 }}>▲</span>
-                </div>
-                <div style={{ padding: '1.25rem 1.5rem' }}>
-                  <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.2rem' }}>{name}</p>
-                  <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#745762', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{role}</p>
-                </div>
+                <span style={{ fontSize: '4rem', opacity: 0.2 }}>▲</span>
               </div>
-            ))}
+              <div style={{ padding: '1.25rem 1.5rem' }}>
+                <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.2rem' }}>Hugo</p>
+                <p style={{ fontSize: '0.75rem', fontWeight: 700, color: '#745762', margin: 0, letterSpacing: '0.1em', textTransform: 'uppercase' }}>Founder</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

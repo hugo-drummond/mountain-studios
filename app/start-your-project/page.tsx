@@ -13,7 +13,9 @@ import {
 import NavBar from '../../components/site/NavBar'
 // Supabase import removed — images now use browser object URLs for preview
 
-const TOTAL_STEPS = 8
+// Steps run 1–7. There is no step 0 — the intro screen was removed, so the
+// progress bar is step/TOTAL rather than (step+1)/TOTAL.
+const TOTAL_STEPS = 7
 
 // Spread across segments on purpose. This placeholder is the first concrete
 // example a visitor reads, so a single fixed one ("Cape Town Plumbing") quietly
@@ -222,7 +224,7 @@ const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: n
 }
 
 export default function StartYourProject() {
-  const [step, setStep] = useState(0)
+  const [step, setStep] = useState(1)
   const [menuOpen, setMenuOpen] = useState(false)
 
   // Form data
@@ -263,10 +265,16 @@ export default function StartYourProject() {
   const [phone, setPhone] = useState('')
   const [projectInfo, setProjectInfo] = useState('')
   const [contactSubmitted, setContactSubmitted] = useState(false)
+  // Which button they pressed on the preview. Both go to the contact step, but
+  // someone who said the preview was wrong is being asked a different question,
+  // and the answer is worth more to us than their notes on a preview they liked.
+  const [previewVerdict, setPreviewVerdict] = useState<'loved' | 'not_quite'>('loved')
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const weekdays = getWeekdays(new Date(), 2)
 
-  const progress = ((step + 1) / TOTAL_STEPS) * 100
+  const progress = (step / TOTAL_STEPS) * 100
 
   const { executeRecaptcha } = useGoogleReCaptcha()
 
@@ -334,6 +342,44 @@ export default function StartYourProject() {
       }
     })()
   }, [step, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, executeRecaptcha])
+
+  // Sends the finished brief to the CRM and to Hugo. The endpoint only fails
+  // the request if BOTH destinations are unreachable, so anything short of that
+  // still shows the thank-you screen rather than blocking someone who has
+  // already done the work of filling the form in.
+  async function handleSubmitContact() {
+    setSubmitting(true)
+    setSubmitError('')
+    try {
+      const r = await fetch('/api/brief/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          email,
+          phone,
+          projectInfo,
+          businessName,
+          businessType,
+          previewVerdict,
+          pages: [...selectedPages, ...customPages],
+          style: selectedStyle,
+          primaryColor: noColors ? null : primaryColor,
+          secondaryColor: noColors ? null : secondaryColor,
+        }),
+      })
+      const res = await r.json()
+      if (!res.success) {
+        setSubmitError(res.error || 'Something went wrong. Please try again.')
+        return
+      }
+      setContactSubmitted(true)
+    } catch {
+      setSubmitError('Could not send that. Check your connection and try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   // Simulated progress bar animation
   useEffect(() => {
@@ -496,7 +542,7 @@ export default function StartYourProject() {
       </div>
 
       {/* Progress bar */}
-      {step > 0 && step < TOTAL_STEPS && (
+      {!contactSubmitted && (
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '3px', backgroundColor: 'rgba(255,255,255,0.1)', zIndex: 10 }}>
           <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'rgba(255,255,255,0.7)', transition: 'width 0.4s ease' }} />
         </div>
@@ -505,22 +551,8 @@ export default function StartYourProject() {
       {/* Content area */}
       <div style={{ maxWidth: '700px', margin: '0 auto', padding: '6rem 2rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
-        {/* Step 0: Intro */}
-        {step === 0 && (
-          <div style={{ textAlign: 'center' }}>
-            <h1 style={{ ...heading, fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
-              Let&apos;s build your website.
-            </h1>
-            <p style={{ fontFamily: font, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', marginBottom: '2.5rem', lineHeight: 1.6 }}>
-              Fill out this short form for a free preview of your site.<br />Takes 2 minutes.
-            </p>
-            <button onClick={() => setStep(1)} style={{ ...btnPrimary, padding: '0.75rem 2rem' }}>
-              Let&apos;s Go &nbsp;→
-            </button>
-          </div>
-        )}
-
-        {/* Step 1: Business name */}
+        {/* Step 1: Business name — the wizard opens here. There is no intro
+            screen: it cost a click and said nothing the first question doesn't. */}
         {step === 1 && (
           <>
             <h1 style={heading}>What&apos;s your business called?</h1>
@@ -532,7 +564,7 @@ export default function StartYourProject() {
               autoFocus
               style={inputStyle}
             />
-            <Nav back={() => setStep(0)} next={() => setStep(2)} disabled={!businessName.trim()} />
+            <Nav next={() => setStep(2)} disabled={!businessName.trim()} />
           </>
         )}
 
@@ -843,13 +875,13 @@ export default function StartYourProject() {
             </div>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
               <button
-                onClick={() => setStep(7)}
+                onClick={() => { setPreviewVerdict('loved'); setStep(7) }}
                 style={{ ...btnPrimary, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
               >
                 I love it
               </button>
               <button
-                onClick={() => setStep(7)}
+                onClick={() => { setPreviewVerdict('not_quite'); setStep(7) }}
                 style={{ ...btnPrimary, backgroundColor: 'transparent', border: '1px solid rgba(255,255,255,0.3)' }}
               >
                 Not quite right
@@ -863,7 +895,9 @@ export default function StartYourProject() {
         {/* Step 7: Contact info */}
         {step === 7 && !contactSubmitted && (
           <>
-            <h1 style={heading}>Last step — how do we reach you?</h1>
+            <h1 style={heading}>
+              {previewVerdict === 'not_quite' ? 'How can we improve?' : 'Last step — how do we reach you?'}
+            </h1>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '1rem' }}>
               <div>
                 <p style={label}>Full Name *</p>
@@ -878,7 +912,9 @@ export default function StartYourProject() {
                 <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
               </div>
               <div>
-                <p style={label}>A bit about your website (optional)</p>
+                <p style={label}>
+                  {previewVerdict === 'not_quite' ? 'Let us know' : 'A bit about your website (optional)'}
+                </p>
                 <textarea
                   value={projectInfo}
                   onChange={(e) => setProjectInfo(e.target.value)}
@@ -887,11 +923,16 @@ export default function StartYourProject() {
                 />
               </div>
             </div>
+            {submitError && (
+              <p style={{ color: '#fca5a5', fontSize: '0.9rem', fontFamily: font, marginTop: '1rem' }}>
+                {submitError}
+              </p>
+            )}
             <Nav
               back={() => setStep(6)}
-              next={() => setContactSubmitted(true)}
-              nextLabel="Send →"
-              disabled={!fullName.trim() || !email.trim()}
+              next={handleSubmitContact}
+              nextLabel={submitting ? 'Sending…' : 'Send →'}
+              disabled={submitting || !fullName.trim() || !email.trim()}
             />
           </>
         )}
