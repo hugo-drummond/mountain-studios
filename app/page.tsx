@@ -22,7 +22,10 @@ export default function Home() {
   const [contactEmail, setContactEmail] = useState('')
   const [contactPhone, setContactPhone] = useState('')
   const [contactMessage, setContactMessage] = useState('')
+  const [contactWebsite, setContactWebsite] = useState('')
   const [contactSent, setContactSent] = useState(false)
+  const [contactStatus, setContactStatus] = useState<'idle' | 'sending' | 'error'>('idle')
+  const [contactError, setContactError] = useState('')
   const portfolioRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -290,10 +293,41 @@ export default function Home() {
               <p style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.5)' }}>We&apos;ll be in touch shortly.</p>
             </div>
           ) : (
-            <form onSubmit={e => { e.preventDefault(); setContactSent(true) }}
+            <form onSubmit={async (e) => {
+              e.preventDefault()
+              setContactStatus('sending')
+              setContactError('')
+
+              try {
+                const res = await fetch('/api/contact/submit', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    full_name: contactName,
+                    email: contactEmail,
+                    phone: contactPhone,
+                    message: contactMessage,
+                    website: contactWebsite,
+                  }),
+                })
+
+                const data = await res.json()
+
+                if (res.ok && data.success) {
+                  setContactSent(true)
+                  setContactStatus('idle')
+                } else {
+                  setContactStatus('error')
+                  setContactError(data.error || 'Something went wrong. Please try again.')
+                }
+              } catch {
+                setContactStatus('error')
+                setContactError('Could not reach us. Check your connection and try again.')
+              }
+            }}
               style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', textAlign: 'left' }}>
               <input
-                type="text" placeholder="Your name" value={contactName}
+                type="text" placeholder="Your name" name="full_name" value={contactName}
                 onChange={e => setContactName(e.target.value)} required
                 style={{
                   fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
@@ -302,7 +336,7 @@ export default function Home() {
                 }}
               />
               <input
-                type="email" placeholder="Email address" value={contactEmail}
+                type="email" placeholder="Email address" name="email" value={contactEmail}
                 onChange={e => setContactEmail(e.target.value)} required
                 style={{
                   fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
@@ -311,7 +345,7 @@ export default function Home() {
                 }}
               />
               <input
-                type="tel" placeholder="Phone number" value={contactPhone}
+                type="tel" placeholder="Phone number" name="phone" value={contactPhone}
                 onChange={e => setContactPhone(e.target.value)}
                 style={{
                   fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
@@ -320,7 +354,7 @@ export default function Home() {
                 }}
               />
               <textarea
-                placeholder="A bit about your website" value={contactMessage}
+                placeholder="A bit about your website" name="message" value={contactMessage}
                 onChange={e => setContactMessage(e.target.value)} rows={5} required
                 style={{
                   fontFamily: font, fontSize: '1rem', background: 'rgba(255,255,255,0.07)',
@@ -329,17 +363,31 @@ export default function Home() {
                   resize: 'vertical',
                 }}
               />
-              <button type="submit" style={{
+              <input
+                type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                value={contactWebsite} onChange={e => setContactWebsite(e.target.value)}
+                style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', opacity: 0 }}
+              />
+              {contactStatus === 'error' && (
+                <p style={{ fontSize: '0.9rem', color: '#f2b8bd', margin: '0' }}>
+                  {contactError}
+                </p>
+              )}
+              <button type="submit" disabled={contactStatus === 'sending'} style={{
                 fontFamily: font, fontSize: '0.85rem', fontWeight: 700,
                 letterSpacing: '0.08em', textTransform: 'uppercase',
                 background: '#fff', color: '#1e2333',
                 border: 'none', borderRadius: '999px',
-                padding: '0.85rem 2rem', cursor: 'pointer',
-                transition: 'opacity 0.2s', alignSelf: 'center',
+                padding: '0.85rem 2rem', cursor: contactStatus === 'sending' ? 'not-allowed' : 'pointer',
+                transition: 'opacity 0.2s', alignSelf: 'center', opacity: contactStatus === 'sending' ? 0.6 : 1,
               }}
-                onMouseEnter={e => (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'}
-                onMouseLeave={e => (e.currentTarget as HTMLButtonElement).style.opacity = '1'}
-              >Send Message</button>
+                onMouseEnter={e => {
+                  if (contactStatus !== 'sending') (e.currentTarget as HTMLButtonElement).style.opacity = '0.85'
+                }}
+                onMouseLeave={e => {
+                  if (contactStatus !== 'sending') (e.currentTarget as HTMLButtonElement).style.opacity = '1'
+                }}
+              >{contactStatus === 'sending' ? 'Sending…' : 'Send Message'}</button>
             </form>
           )}
         </div>
