@@ -179,12 +179,9 @@ export default function Home() {
               overflow: 'hidden',
               boxShadow: '0 1px 2px rgba(0,0,0,0.05)',
             }}>
-              <div style={{
-                height: '320px',
-                background: '#e8e4f0',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <span style={{ fontSize: '4rem', opacity: 0.2 }}>▲</span>
+              <div style={{ height: '320px', background: '#e8e4f0', overflow: 'hidden' }}>
+                <img src="/images/team/hugo-drummond.jpg" alt="Hugo, founder of Mountain Studios"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
               </div>
               <div style={{ padding: '1.25rem 1.5rem' }}>
                 <p style={{ fontFamily: serif, fontSize: '1.25rem', fontWeight: 300, color: '#2e333a', margin: '0 0 0.2rem' }}>Hugo</p>
