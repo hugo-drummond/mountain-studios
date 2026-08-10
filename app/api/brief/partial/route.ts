@@ -26,6 +26,17 @@ import { crmAdmin } from '@/lib/crm'
 // not need, and the cost of being strict is doubting every genuine lead.
 const RECAPTCHA_MIN_SCORE = 0.3
 
+// Distinguishes configuration/infrastructure failures from visitor verdicts.
+// Principle: A misconfiguration on our side is a fact about us, not about the lead.
+// Configuration failures belong in the server log, not in the sales note.
+function isOurFault(verdict: string): boolean {
+  return (
+    verdict.startsWith('no secret configured') ||
+    verdict.startsWith('no score returned') ||
+    verdict.startsWith('could not reach Google')
+  )
+}
+
 // Returns a human-readable verdict, not a boolean. What went wrong matters:
 // "we could not check" and "Google says this is a bot" are different facts
 // about a lead, and collapsing them makes the note useless for triage.
@@ -107,7 +118,7 @@ export async function POST(req: NextRequest) {
   // business_name is NOT NULL on leads. If none given, use email + status.
   const leadName = storedBusinessName || `${storedEmail} (wizard, no business name yet)`
 
-  // Check reCAPTCHA outcome and append to notes if not passed
+  // Check reCAPTCHA outcome
   const recaptchaOutcome = await verifyRecaptcha(body.recaptchaToken)
 
   // Build notes
@@ -118,10 +129,20 @@ export async function POST(req: NextRequest) {
   ]
     .filter(Boolean)
 
-  // Says what actually happened rather than just "unverified". A lead Google
-  // scored 0.2 and a lead we could not check at all deserve different reactions.
+  // Split reCAPTCHA outcomes: configuration failures go to the server log,
+  // visitor verdicts go to the sales note.
   if (recaptchaOutcome !== 'passed') {
-    noteLines.push(`Unverified — reCAPTCHA ${recaptchaOutcome}.`)
+    if (isOurFault(recaptchaOutcome)) {
+      // Our setup failed. This is a fact about our infrastructure, not the lead.
+      console.warn(
+        `[brief/partial] reCAPTCHA is misconfigured, leads are being saved unverified: ${recaptchaOutcome}`
+      )
+    } else {
+      // Visitor-related verdict. Says what actually happened rather than just
+      // "unverified". A lead Google scored 0.2 and a lead we could not check at
+      // all deserve different reactions.
+      noteLines.push(`Unverified — reCAPTCHA ${recaptchaOutcome}.`)
+    }
   }
 
   const notes = noteLines.join('\n')
