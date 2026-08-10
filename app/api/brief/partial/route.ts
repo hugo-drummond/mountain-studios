@@ -5,37 +5,31 @@ import { crmAdmin } from '@/lib/crm'
 // POST /api/brief/partial
 //
 // The Get Started wizard collects business name, type, pages, style, and
-// colours, then generates a preview. Until now if someone watched their
-// preview build and then left, we lost them completely — no email, no row in
-// the CRM, no trace.
+// colours, then generates a preview. This endpoint captures an email at step 6,
+// before the preview builds, and writes a partial lead with what we know so far.
+// The final /brief/submit at step 7 will UPDATE that same row rather than
+// duplicate it. One person, one row, even if they abandon and come back.
 //
-// This endpoint captures an email at step 6, before the preview builds, and
-// writes a partial lead with what we know so far. The final /brief/submit
-// at step 7 will UPDATE that same row rather than duplicate it. One person,
-// one row, even if they abandon and come back.
+// Security model:
+// - Honeypot field is the actual bot defence — it is a hard block (returns no lead).
+// - Email validation is a hard block (400 response).
+// - reCAPTCHA is deliberately advisory, not a gate. A customer whose browser
+//   cannot reach Google is exactly the customer we are trying not to lose.
+//   reCAPTCHA result is used to label the row, not block the save. A junk row
+//   that is flagged is cheaper than a real lead that is silently discarded.
 // ---------------------------------------------------------------------------
 
-async function verifyRecaptcha(token?: string): Promise<boolean> {
+async function verifyRecaptcha(token?: string): Promise<'passed' | 'failed' | 'unavailable'> {
   // The site key is bound to the live domain, so reCAPTCHA never returns a
-  // usable token in local development. The preview flow already waves localhost
-  // through for exactly this reason; without the same escape hatch here, the
-  // capture path could not be exercised outside production.
+  // usable token in local development. Treat as passed to allow local testing.
   if (process.env.NODE_ENV !== 'production') {
-    return true
+    return 'passed'
   }
 
   const secret = process.env.RECAPTCHA_SECRET_KEY
-  if (!secret) {
-    // reCAPTCHA must not block a real person. If the secret is unset, allow
-    // the write through — same posture the wizard takes for preview generation.
-    return true
-  }
-
-  // A missing token in production is a script, not a person: the wizard always
-  // attempts one. A real visitor whose reCAPTCHA is blocked still gets their
-  // preview, we just do not capture them — losing a lead beats blocking one.
-  if (!token) {
-    return false
+  if (!secret || !token) {
+    // No secret configured, or no token supplied: cannot verify, mark unavailable.
+    return 'unavailable'
   }
 
   try {
@@ -47,12 +41,19 @@ async function verifyRecaptcha(token?: string): Promise<boolean> {
 
     const data = await res.json()
 
-    // Only an actual low-score verdict from Google blocks. If the request itself
-    // throws (network failure on our side), allow through.
-    return data.success && data.score >= 0.5
+    // Google affirmatively returned success with passing score
+    if (data.success && data.score >= 0.5) {
+      return 'passed'
+    }
+    // Google affirmatively rejected it
+    if (data.success === false) {
+      return 'failed'
+    }
+    // Unexpected response structure
+    return 'unavailable'
   } catch {
-    // Network failure on our side. Allow through, don't block the person.
-    return true
+    // Network failure or parse error: cannot verify
+    return 'unavailable'
   }
 }
 
@@ -89,16 +90,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Invalid email format' }, { status: 400 })
   }
 
-  // reCAPTCHA verification. This endpoint writes into leads, which holds
-  // every lead, and it is callable by anyone. Must verify the request.
-  const recaptchaValid = await verifyRecaptcha(body.recaptchaToken)
-  if (!recaptchaValid) {
-    return NextResponse.json(
-      { success: false, error: 'Could not verify that request.' },
-      { status: 403 },
-    )
-  }
-
   // Cap stored lengths to prevent bot abuse
   const storedEmail = email.slice(0, 200)
   const storedBusinessName = body.businessName?.trim()?.slice(0, 200) || null
@@ -111,14 +102,23 @@ export async function POST(req: NextRequest) {
   // business_name is NOT NULL on leads. If none given, use email + status.
   const leadName = storedBusinessName || `${storedEmail} (wizard, no business name yet)`
 
+  // Check reCAPTCHA outcome and append to notes if not passed
+  const recaptchaOutcome = await verifyRecaptcha(body.recaptchaToken)
+
   // Build notes
-  const notes = [
+  const noteLines = [
     'INCOMPLETE — got as far as the preview, has not sent the brief.',
     storedPages.length ? `Pages wanted: ${storedPages.join(', ')}` : null,
     storedStyle ? `Style: ${storedStyle}` : null,
   ]
     .filter(Boolean)
-    .join('\n')
+
+  // Append reCAPTCHA status if not passed
+  if (recaptchaOutcome !== 'passed') {
+    noteLines.push(`Unverified — reCAPTCHA did not pass (${recaptchaOutcome}).`)
+  }
+
+  const notes = noteLines.join('\n')
 
   let leadId: string | null = null
   let crmError: string | null = null

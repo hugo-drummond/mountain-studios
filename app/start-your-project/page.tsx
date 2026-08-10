@@ -308,23 +308,31 @@ export default function StartYourProject() {
     setPreviewError(false)
     setPreviewHtml(null)
 
-    // reCAPTCHA v3 check then generate
+    // Attempt reCAPTCHA check if available, but the preview must never be gated
+    // on its result. A customer on a network that cannot reach Google, or with
+    // a privacy extension blocking it, is exactly the person we must not block
+    // from the one thing this wizard does. The reCAPTCHA score is still useful
+    // in logs for fraud detection, but must never stop the flow.
     ;(async () => {
       if (executeRecaptcha) {
         try {
-          const token = await executeRecaptcha('preview_generate')
-          const check = await fetch('/api/recaptcha', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token }),
-          })
-          if (!check.ok && window.location.hostname !== 'localhost') {
-            setPreviewError(true)
-            setPreviewLoading(false)
-            return
+          // Raced against a timeout because executeRecaptcha does not always
+          // reject when Google is unreachable — it can simply never settle, and
+          // an await that never returns is the same as a broken preview.
+          const token = await Promise.race([
+            executeRecaptcha('preview_generate'),
+            new Promise<undefined>(resolve => setTimeout(() => resolve(undefined), 5000)),
+          ])
+          if (token) {
+            // Verified for the score in the logs. The result is not acted on.
+            await fetch('/api/recaptcha', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token }),
+            })
           }
         } catch {
-          // allow on recaptcha failure so real users aren't blocked
+          // reCAPTCHA failure must not block the preview
         }
       }
 
@@ -376,14 +384,15 @@ export default function StartYourProject() {
     }
 
     try {
-      let recaptchaToken = ''
+      let recaptchaToken: string | undefined
       if (executeRecaptcha) {
         try {
-          recaptchaToken = await executeRecaptcha('brief_partial')
+          recaptchaToken = await Promise.race([
+            executeRecaptcha('brief_partial'),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+          ])
         } catch {
-          // reCAPTCHA failure must not block the person. We would rather build
-          // the preview and lose the lead than block a real person because
-          // Google's script was blocked.
+          // Unreachable reCAPTCHA must not cost us the lead, or the person their preview.
         }
       }
 
