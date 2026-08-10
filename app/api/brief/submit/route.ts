@@ -32,6 +32,7 @@ interface Payload {
   style?: string
   primaryColor?: string
   secondaryColor?: string
+  leadId?: string
 }
 
 function escapeHtml(value: string): string {
@@ -48,6 +49,116 @@ function row(label: string, value?: string | null): string {
     <td style="padding:6px 16px 6px 0;color:#64748b;font-size:13px;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
     <td style="padding:6px 0;color:#0f172a;font-size:14px;">${escapeHtml(value)}</td>
   </tr>`
+}
+
+async function updateLead(
+  id: string,
+  fields: {
+    business_name: string
+    category: string | null
+    email: string
+    phone: string | null
+    notes: string
+  },
+): Promise<string | null> {
+  const { data: updated, error: updateError } = await crmAdmin()
+    .from('leads')
+    .update(fields)
+    .eq('id', id)
+    .select('id')
+    .single()
+
+  if (updateError) throw updateError
+  return updated?.id ?? null
+}
+
+async function saveLead(
+  leadId: string | undefined,
+  leadName: string,
+  businessType: string | null,
+  email: string,
+  phone: string | null,
+  notes: string,
+): Promise<string | null> {
+  try {
+    // The row may already exist because the email gate at step 6 created it.
+    // The whole point is one person, one row.
+
+    const fields = {
+      business_name: leadName,
+      category: businessType,
+      email,
+      phone,
+      notes,
+    }
+
+    if (leadId) {
+      // If we have a leadId from step 6, try to update that specific row.
+      // But a stale id (sessionStorage from a deleted row, different environment,
+      // etc.) must not cost us the lead. Use maybeSingle() and fall through to
+      // the email lookup if the row is gone.
+      const { data: updated, error: updateError } = await crmAdmin()
+        .from('leads')
+        .update(fields)
+        .eq('id', leadId)
+        .select('id')
+        .maybeSingle()
+
+      if (updateError) throw updateError
+
+      // Row was found and updated. Done.
+      if (updated) {
+        return updated.id
+      }
+      // Row was not found. Fall through to email lookup.
+    }
+
+    // Look for a source='website' lead with the same email created in the
+    // last 30 days, newest first, and update that one.
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+
+    const { data: existing, error: queryError } = await crmAdmin()
+      .from('leads')
+      .select('id')
+      .eq('source', 'website')
+      .eq('email', email)
+      .gt('created_at', thirtyDaysAgo)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    if (queryError) throw queryError
+
+    if (existing) {
+      return await updateLead(existing.id, fields)
+    }
+
+    // Else insert as a new row
+    const { data, error } = await crmAdmin()
+      .from('leads')
+      .insert({
+        ...fields,
+        // Distinguishes an inbound enquiry from the ~1,800 scraped rows. The CRM
+        // board keys its "Warm lead" badge off this value.
+        source: 'website',
+        has_website: false,
+        crm_status: 'new',
+        // Left null on purpose: search_area drives request_leads(), and an
+        // inbound lead should be assigned by hand rather than dropped into a
+        // rep's territory batch.
+        search_area: null,
+        assigned_to: null,
+      })
+      .select('id')
+      .single()
+
+    if (error) throw error
+    return data?.id ?? null
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[brief/submit] CRM save failed:', message)
+    return null
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -90,38 +201,7 @@ export async function POST(req: NextRequest) {
     .filter(Boolean)
     .join('\n')
 
-  let leadId: string | null = null
-  let crmError: string | null = null
-
-  try {
-    const { data, error } = await crmAdmin()
-      .from('leads')
-      .insert({
-        business_name: leadName,
-        category: businessType,
-        email,
-        phone,
-        notes,
-        // Distinguishes an inbound enquiry from the ~1,800 scraped rows. The CRM
-        // board keys its "Warm lead" badge off this value.
-        source: 'website',
-        has_website: false,
-        crm_status: 'new',
-        // Left null on purpose: search_area drives request_leads(), and an
-        // inbound lead should be assigned by hand rather than dropped into a
-        // rep's territory batch.
-        search_area: null,
-        assigned_to: null,
-      })
-      .select('id')
-      .single()
-
-    if (error) throw error
-    leadId = data?.id ?? null
-  } catch (err) {
-    crmError = err instanceof Error ? err.message : String(err)
-    console.error('[brief/submit] CRM insert failed:', crmError)
-  }
+  let leadId = await saveLead(body.leadId, leadName, businessType, email, phone, notes)
 
   let emailed = false
   try {

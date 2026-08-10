@@ -259,6 +259,23 @@ export default function StartYourProject() {
     setNamePlaceholder(NAME_EXAMPLES[Math.floor(Math.random() * NAME_EXAMPLES.length)])
   }, [])
 
+  // Step 6 email gate — capture before preview generates
+  const [gateEmail, setGateEmail] = useState('')
+  const [gateSubmitting, setGateSubmitting] = useState(false)
+  const [gateError, setGateError] = useState('')
+  const [leadId, setLeadId] = useState<string | null>(null)
+  const [gateHoneypot, setGateHoneypot] = useState('')
+
+  // Hydrate from sessionStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedEmail = sessionStorage.getItem('ms-lead-email')
+      const storedLeadId = sessionStorage.getItem('ms-lead-id')
+      if (storedEmail) setGateEmail(storedEmail)
+      if (storedLeadId) setLeadId(storedLeadId)
+    }
+  }, [])
+
   // Contact
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -278,9 +295,9 @@ export default function StartYourProject() {
 
   const { executeRecaptcha } = useGoogleReCaptcha()
 
-  // Generate preview when entering Step 6
+  // Generate preview when entering Step 6 and email is captured
   useEffect(() => {
-    if (step !== 6) {
+    if (step !== 6 || !gateEmail) {
       previewRequested.current = false
       return
     }
@@ -341,7 +358,71 @@ export default function StartYourProject() {
         setPreviewLoading(false)
       }
     })()
-  }, [step, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, executeRecaptcha])
+  }, [step, gateEmail, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, executeRecaptcha])
+
+  // Capture email at step 6 before the preview generates
+  async function handleSubmitGateEmail(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setGateSubmitting(true)
+    setGateError('')
+
+    const emailToSubmit = gateHoneypot.trim() ? '' : (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement)?.value?.trim() || ''
+
+    // Client-side email validation
+    if (!emailToSubmit || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToSubmit)) {
+      setGateError('That email address does not look right.')
+      setGateSubmitting(false)
+      return
+    }
+
+    try {
+      let recaptchaToken = ''
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await executeRecaptcha('brief_partial')
+        } catch {
+          // reCAPTCHA failure must not block the person. We would rather build
+          // the preview and lose the lead than block a real person because
+          // Google's script was blocked.
+        }
+      }
+
+      const res = await fetch('/api/brief/partial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailToSubmit,
+          businessName,
+          businessType,
+          pages: [...selectedPages.map(p => pageOptions.find(o => o.key === p)?.label || p), ...customPages],
+          style: selectedStyle,
+          recaptchaToken,
+          website: gateHoneypot,
+        }),
+      })
+
+      const data = await res.json()
+
+      // Store leadId if returned, but never block on failure
+      if (data.leadId) {
+        setLeadId(data.leadId)
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('ms-lead-id', data.leadId)
+        }
+      }
+    } catch {
+      // Network failure must not block the person. We would rather build the
+      // preview and lose the lead than block a real person because the server
+      // was unreachable.
+    } finally {
+      // CRITICAL: Always persist email and proceed, regardless of API outcome
+      setGateEmail(emailToSubmit)
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('ms-lead-email', emailToSubmit)
+      }
+      setGateSubmitting(false)
+    }
+  }
 
   // Sends the finished brief to the CRM and to Hugo. The endpoint only fails
   // the request if BOTH destinations are unreachable, so anything short of that
@@ -356,7 +437,7 @@ export default function StartYourProject() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           fullName,
-          email,
+          email: gateEmail,
           phone,
           projectInfo,
           businessName,
@@ -366,6 +447,7 @@ export default function StartYourProject() {
           style: selectedStyle,
           primaryColor: noColors ? null : primaryColor,
           secondaryColor: noColors ? null : secondaryColor,
+          leadId,
         }),
       })
       const res = await r.json()
@@ -374,6 +456,11 @@ export default function StartYourProject() {
         return
       }
       setContactSubmitted(true)
+      // Clear sessionStorage on successful submit
+      if (typeof window !== 'undefined') {
+        sessionStorage.removeItem('ms-lead-email')
+        sessionStorage.removeItem('ms-lead-id')
+      }
     } catch {
       setSubmitError('Could not send that. Check your connection and try again.')
     } finally {
@@ -789,8 +876,55 @@ export default function StartYourProject() {
           )
         })()}
 
-        {/* Step 6: Site preview */}
-        {step === 6 && (
+        {/* Step 6: Email gate, then site preview */}
+        {step === 6 && !gateEmail && (
+          <>
+            <h1 style={heading}>Where should we send your preview?</h1>
+            <p style={{ fontFamily: font, fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)', marginBottom: '2rem', lineHeight: 1.5 }}>
+              We are building it now. Leave your email and it is yours whether or not you go any further.
+            </p>
+            <form onSubmit={handleSubmitGateEmail} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+              <div>
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  autoFocus
+                  placeholder="your@email.com"
+                  style={inputStyle}
+                />
+              </div>
+
+              {/* Honeypot field — hidden from real users */}
+              <input
+                type="text"
+                value={gateHoneypot}
+                onChange={(e) => setGateHoneypot(e.target.value)}
+                style={{ display: 'none' }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
+              {gateError && (
+                <p style={{ color: '#fca5a5', fontSize: '0.9rem', fontFamily: font, margin: '0' }}>
+                  {gateError}
+                </p>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  type="submit"
+                  disabled={gateSubmitting}
+                  style={{ ...btnPrimary, opacity: gateSubmitting ? 0.4 : 1, cursor: gateSubmitting ? 'not-allowed' : 'pointer' }}
+                >
+                  {gateSubmitting ? 'Saving…' : 'Build my preview'}
+                </button>
+              </div>
+            </form>
+          </>
+        )}
+
+        {step === 6 && gateEmail && (
           <>
             <h1 style={{ ...heading, fontSize: 'clamp(1.5rem, 3vw, 2rem)', textAlign: 'center', marginBottom: '1rem' }}>
               Here&apos;s a preview of your site&apos;s Homepage.
@@ -904,8 +1038,36 @@ export default function StartYourProject() {
                 <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} autoFocus style={inputStyle} />
               </div>
               <div>
-                <p style={label}>Email *</p>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
+                <p style={label}>Email</p>
+                <p style={{ fontFamily: font, fontSize: '1rem', color: '#fff', margin: '0.5rem 0 0 0', paddingBottom: '0.5rem', borderBottom: '1.5px solid rgba(255,255,255,0.3)' }}>
+                  {gateEmail}
+                </p>
+                <button
+                  onClick={() => {
+                    setGateEmail('')
+                    setLeadId(null)
+                    if (typeof window !== 'undefined') {
+                      sessionStorage.removeItem('ms-lead-email')
+                      sessionStorage.removeItem('ms-lead-id')
+                    }
+                    setStep(6)
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'rgba(255,255,255,0.5)',
+                    cursor: 'pointer',
+                    fontSize: '0.8rem',
+                    fontFamily: font,
+                    padding: '0.25rem 0',
+                    marginTop: '0.5rem',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}
+                  onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+                >
+                  Not you?
+                </button>
               </div>
               <div>
                 <p style={label}>Phone (optional)</p>
@@ -932,7 +1094,7 @@ export default function StartYourProject() {
               back={() => setStep(6)}
               next={handleSubmitContact}
               nextLabel={submitting ? 'Sending…' : 'Send →'}
-              disabled={submitting || !fullName.trim() || !email.trim()}
+              disabled={submitting || !fullName.trim() || !gateEmail.trim()}
             />
           </>
         )}
@@ -944,7 +1106,7 @@ export default function StartYourProject() {
               We&apos;ll be in touch.
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1rem', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto' }}>
-              Thanks {fullName.split(' ')[0]}. We&apos;ll review your preview and reach out to {email} shortly.
+              Thanks {fullName.split(' ')[0]}. We&apos;ll review your preview and reach out to {gateEmail} shortly.
             </p>
           </div>
         )}
