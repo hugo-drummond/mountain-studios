@@ -1,44 +1,42 @@
 # TODO
 
-## Test it yourself
+## Outstanding
 
-Everything below has been tested by script and against the database. None of it has
-been used by a person yet. Work through it once before any of this goes near a real
-applicant or prospect.
+Most of the infrastructure is built and live. The following work remains before
+handing this over to the reps.
 
 **Careers page** — `/careers/sales-rep`
 
-- [ ] Read it on your phone, not just a laptop. It is going on LinkedIn and most
-      applicants will only ever see it at 375px wide.
-- [ ] Drag both calculator sliders. Check the numbers read the way you'd say them out
-      loud, and that dragging clients to zero showing R0 feels honest rather than bleak.
-- [ ] Submit a real application as if you were a candidate, PDF CV attached. Then check the
-      row landed in the database.
-- [ ] Answer "no" to the work-rights question and confirm the rejection wording is one
-      you're happy to put in front of a real person.
-- [ ] Decide whether the retainer range (R350–R900) stays. It is invented — see below.
+- [ ] Read it on your phone, not just a laptop. It is going on LinkedIn.
+- [ ] Drag both calculator sliders. Check the numbers read honestly.
+- [ ] Answer "no" to the work-rights question and confirm the rejection wording is OK.
+- [ ] Decide whether the retainer range (R350–R900) stays. It is invented.
 
 **Shared previews**
 
 - [ ] Generate a preview, share it, and open the link on your own phone.
-- [ ] Paste the link into a WhatsApp chat with yourself. The card should show the business
-      name, and the view count must stay at zero until you actually tap it. This is the
-      part most worth checking by hand — it is the thing reps will trust.
-- [ ] Tap "I want this website" and confirm the lead appears in the CRM and the email
-      arrives at hello@.
-- [ ] Revoke a link and confirm it dies for the client.
+- [ ] Paste the link into WhatsApp. View count must stay zero until you tap it. This is
+      most worth checking by hand — it is what reps will trust.
+- [ ] Tap "I want this website" and confirm the lead appears in the CRM and email at hello@.
+- [ ] Revoke a link and confirm it dies.
 
 ## Vercel environment variables
 
 Set these in the Vercel project settings for mountain-studios. Names only —
 values live in `.env.local` locally, never in this file.
 
-**Blocking — the careers form fails in production without them**
+**Blocking — reCAPTCHA is silently broken without this**
 
-- [ ] `CRM_SUPABASE_URL` — the CRM database (Frankies project). Missing means every
-      application returns a 502 and the applicant is told to try again. Lost candidates.
-- [ ] `CRM_SUPABASE_SERVICE_KEY` — same. Service role, bypasses RLS, must never be
-      exposed to the browser or given a `NEXT_PUBLIC_` prefix.
+- [ ] Register a **v3** key pair at google.com/recaptcha/admin for `mountainstudios.co.za`.
+      The current keys are v2 and do not return a score. Replace both `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`
+      and `RECAPTCHA_SECRET_KEY` in Vercel. Until then, the honeypot is the only bot defence.
+
+**Blocking — the careers and contact forms fail in production without them**
+
+- [ ] `CRM_SUPABASE_URL` — the CRM database. Missing means every application/contact
+      returns a 502. Lost applicants and enquiries.
+- [ ] `CRM_SUPABASE_SERVICE_KEY` — service role, bypasses RLS, must never be exposed
+      to the browser or given a `NEXT_PUBLIC_` prefix.
 
 **Blocking for shared previews, once the CRM calls the share endpoint**
 
@@ -48,24 +46,29 @@ values live in `.env.local` locally, never in this file.
 
 **Blocking for the admin area**
 
-- [ ] `ADMIN_PASSWORD` — without it `/admin` cannot be logged into at all. This now
-      gates previews and notifications; the applications review table has moved to the
-      CRM and has its own Supabase login.
+- [ ] `ADMIN_PASSWORD` — without it `/admin` cannot be logged into. This now gates
+      previews and the contact message inbox; applications review has its own Supabase
+      login in the CRM.
 
 **Already set, listed so nothing gets removed by accident**
 
 - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` — SES, used by the Get Started
-  brief notification. The careers form deliberately sends no email.
+  brief notification and contact form email. The careers form deliberately sends no email.
 - `ANTHROPIC_API_KEY`, `PEXELS_API_KEY` — preview generation.
-- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `NEXT_PUBLIC_APP_URL`.
+- `NEXT_PUBLIC_APP_URL`, `DEEPSEEK_API_KEY` — the latter is used by `/api/preview/scrape`
+  (stock photo proxy), not the deleted screening endpoint.
 
-## Careers pipeline — deferred
+## Data cleanup
 
+- [ ] **Clear test leads.** Delete from `mountainstudios.leads` where `source='website'`:
+      21 rows with business names containing PROBE/TEST/Bot Co and emails with probe/test.
+      Keep: `Halo Hair / karen@gmail.com` and `Berts / bert@gmail.com` (genuine).
+- [ ] **Clear test contact messages.** Delete from `mountainstudios.contact_messages`:
+      2 rows (`Grant check`, `TEST - Claude, ignore`).
+- [ ] **Clear test rep applications.** Delete from `mountainstudios.rep_applications`:
+      3 older test rows (asdf asdf, Thandeka Mokoena, Peter Nel) plus 3 `TEST - delete me` rows.
 - [ ] **Confirm the retainer range.** `app/careers/sales-rep/page.tsx` states R350–R900 a
       month publicly. That number was invented — nothing in the repo records the real one.
-      It sets what reps expect to earn and what they quote clients.
-- [ ] **Delete the three test applications** in `mountainstudios.rep_applications`
-      (asdf asdf, Thandeka Mokoena, Peter Nel) if they still exist.
 
 ## Shared previews — deferred
 
@@ -82,8 +85,3 @@ values live in `.env.local` locally, never in this file.
       more than ~90 days. Note storage rows cannot be deleted with SQL — the Storage API
       is the only way.
 
-## Known bugs
-
-- [ ] **The homepage contact form sends nothing.** `app/page.tsx` — submitting sets a flag
-      and renders a thank-you; the name, email, phone and message are discarded. Every
-      enquiry ever typed into it is gone. Same bug `/api/brief/submit` was built to fix.

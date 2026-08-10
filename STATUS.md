@@ -1,16 +1,14 @@
 # Status
 
-Last updated: 8 August 2026
+Last updated: 10 August 2026
 
 ## Where things stand
 
-Two things were built this session, both complete in code and unused by a person:
-a hiring page for the 30 freelance sales rep seats, and shareable client previews.
-
-Neither has been exercised by a real user. Nothing is blocked on code — what remains
-is environment variables and a pass of manual testing. All of it is listed in 
-[TODO.md](TODO.md), which was created this session as the single place for outstanding work;
-it also carries the Vercel variables and a hand-testing checklist.
+The rep hiring page, client previews, and contact capture are built and live. The Get Started
+wizard and homepage now write leads to the database. All core infrastructure has been tested
+end to end in production, and test data is being cleared. Most work is done; what remains is
+a single Vercel configuration (reCAPTCHA v3 key pair registration) and manual cleanup.
+Refer to [TODO.md](TODO.md) for the list.
 
 ## Careers page — `/careers/sales-rep`
 
@@ -20,13 +18,22 @@ Live in the repo, pushed, deploying. The landing target for a LinkedIn job post.
   and does not hide that the residual stops when a rep stops selling
 - An earnings calculator lets a candidate work their own numbers rather than being shown
   a flattering example
-- Application form writes to `mountainstudios.rep_applications` with a required PDF CV in
-  the private `rep-cvs` bucket
+- Application form writes to `mountainstudios.rep_applications` with a required PDF CV
+  in the private `rep-cvs` bucket
+- CV is now mandatory, and must be PDF. The requirement is verified by reading the first
+  five bytes for the PDF magic number (`%PDF-`) rather than MIME type, because Android
+  file pickers report `application/octet-stream` for genuine PDFs — falling back to
+  extension checking would mean turning away real applicants. When uploaded, the file is
+  stored as `application/pdf` so browsers open it instead of downloading it when a reviewer
+  clicks to preview. The required-field check lives in the submit handler rather than the
+  input itself: the input is positioned off-screen, and Chrome refuses to submit a form
+  containing a required control it cannot focus.
 - Linked from the homepage footer only. Not in the main nav
 
 **Deliberately sends no notification email.** A public ad produces hundreds of
 applications and most are junk; burying a real person in an inbox is worse than sending
-nothing. Applications are reviewed in the CRM at crm.mountainstudios.co.za/applications.
+nothing. Applications are reviewed in the CRM at crm.mountainstudios.co.za/applications
+behind Supabase auth, not a shared admin password.
 
 **Unresolved:** the page publicly states retainers run R350–R900 a month. That number was
 invented — nothing in the repo records the real one, and it sets what reps expect to earn
@@ -56,6 +63,64 @@ consent for direct electronic marketing also sits with whoever sends.
 Reps have no button yet: the CRM has no preview UI, though its `leads` table already has
 `mockup_ready` and `mockup_url` waiting.
 
+## Get Started wizard — lead capture timing
+
+The wizard now writes a lead to the database at step 6, before the preview is built. Until
+10 August, nothing was saved until the final step, so anyone who watched their site being
+generated and then closed the tab left no trace — no lead, no record that they had been
+interested.
+
+When the user enters their business name, category, page selections, and style, `POST
+/api/brief/partial` writes to `mountainstudios.leads` with status INCOMPLETE. Later, if
+they finish and submit the email, `POST /api/brief/submit` updates that same row instead
+of inserting a second one, identified by the id returned to the client on create. The
+fallback — if the client-side id is lost — is a 30-day email match. This way, one person
+maps to one lead whether or not they finish the wizard, and the CRM sees the moment they
+started paying attention, not just the moment they finished.
+
+## Homepage contact form
+
+The form at `app/page.tsx` had a `name`, `email`, `phone` and `message` for ~2 months with
+no backing store. Submitting rendered a thank-you but discarded everything typed. Every
+enquiry since launch was lost. It now sends `POST /api/contact/submit`, which writes to
+a new `mountainstudios.contact_messages` table and emails Ant. The message is independent
+of `leads` — an enquiry carries no business name, category or area, and there is no way to
+automatically assign it to a rep's territory. Each leg is caught separately; only losing
+both legs at once is an error (partial writes still land).
+
+## Founder photo
+
+Added `public/images/team/hugo-drummond.jpg` to the About card on the homepage, replacing
+the placeholder triangle.
+
+## reCAPTCHA — v2 registered, v3 calls made, verification broken
+
+`NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY` were set up for reCAPTCHA
+v2, but every `executeRecaptcha()` call in the codebase uses v3 endpoints and reads
+`data.score` (which v2 never returns). So `data.score >= 0.5` is always `undefined >=
+0.5`, which is always false. Any token, valid or not, triggers a 403. Rather than fail
+the whole flow, reCAPTCHA is now advisory: the preview never checks it, the brief-submit
+calls never return 403, and both `executeRecaptcha()` calls race a 5-second timeout
+(because Google can simply never settle when unreachable, leaving the UI stuck). When it
+times out or fails our side, the error goes to the server log. When a visitor's token is
+rejected or scores too low, the verdict goes into the lead's notes. **The honeypot is the
+only real bot defence until a v3 key pair is registered and deployed.** This is
+unresolved, not a workaround — it is reCAPTCHA silently broken and neutralised.
+
+## DeepSeek screening removed
+
+`lib/screen-application.ts` and `/api/careers/screen` have been deleted. The columns
+`ai_score`, `ai_verdict`, `ai_summary`, `ai_flags` and `screened_at` remain on
+`rep_applications`, dormant. `DEEPSEEK_API_KEY` is still used by `/api/preview/scrape`
+(the image-generation proxy that sources stock photos), so do not remove it from Vercel.
+
+## Applications review table moved to the CRM
+
+`/admin/applications` here, plus `components/admin/ApplicationsTable.tsx` and all of
+`/api/admin/applications/**`, are deleted. Applications are now reviewed at
+`crm.mountainstudios.co.za/applications` behind Supabase auth (the CRM's own login),
+not the shared `ADMIN_PASSWORD`.
+
 ## Fixed along the way
 
 - **Admin was completely unreachable.** `middleware.ts` hashed the password without the
@@ -66,7 +131,9 @@ Reps have no button yet: the CRM has no preview UI, though its `leads` table alr
   previews kept opening, and the admin tables would have frozen at whatever they first
   displayed. Fixed at the client in `lib/crm.ts`, so every CRM reader is covered.
 - **Missing table grants.** New tables in the `mountainstudios` schema do not inherit
-  `service_role` privileges; the first application submit failed on this.
+  `service_role` privileges; the first application submit failed on this. The fix is
+  explicit: `grant select, insert, update on mountainstudios.contact_messages to
+  service_role;` in the migration. `contact_messages` hit this on 10 August.
 
 ## Preview template redesign — in progress, paused
 
@@ -106,8 +173,3 @@ exists on presets but is unused, and PDF generation quality is untested across v
 - `shared_previews` — token, expiry, view counts, claim details
 - Buckets `rep-cvs` and `previews`, both private, service-role access only
 
-## Known and untouched
-
-The homepage contact form at `app/page.tsx` sends nothing. Submitting sets a flag and
-renders a thank-you; the name, email, phone and message are discarded. Every enquiry ever
-typed into it is gone.
