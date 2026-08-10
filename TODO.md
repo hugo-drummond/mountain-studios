@@ -12,18 +12,11 @@ applicant or prospect.
       applicants will only ever see it at 375px wide.
 - [ ] Drag both calculator sliders. Check the numbers read the way you'd say them out
       loud, and that dragging clients to zero showing R0 feels honest rather than bleak.
-- [ ] Submit a real application as if you were a candidate, CV attached. Then check the
-      row landed and the CV opens from the review table.
+- [ ] Submit a real application as if you were a candidate, PDF CV attached. Then check the
+      row landed in the database.
 - [ ] Answer "no" to the work-rights question and confirm the rejection wording is one
       you're happy to put in front of a real person.
 - [ ] Decide whether the retainer range (R350–R900) stays. It is invented — see below.
-
-**Review table** — `/admin/applications`
-
-- [ ] Log in at all. This needs `ADMIN_PASSWORD` set, and it has never been done.
-- [ ] With a live DeepSeek key, submit one obviously junk application and one good one,
-      and check the scores separate them the way you would have.
-- [ ] Shortlist / reject / hire buttons write through and survive a refresh.
 
 **Shared previews**
 
@@ -47,22 +40,17 @@ values live in `.env.local` locally, never in this file.
 - [ ] `CRM_SUPABASE_SERVICE_KEY` — same. Service role, bypasses RLS, must never be
       exposed to the browser or given a `NEXT_PUBLIC_` prefix.
 
-**Blocking for the review table**
-
-- [ ] `ADMIN_PASSWORD` — without it `/admin/applications` cannot be logged into at all.
-      Applications still save; you just can't read them anywhere but the database.
-
 **Blocking for shared previews, once the CRM calls the share endpoint**
 
 - [ ] `PREVIEW_SHARE_KEY` — any long random string, the same value in both this project
       and the CRM. Without it only an admin-cookie session can create share links. A
       local dev value is already in `.env.local`; production needs its own.
 
-**Not blocking, but nothing gets scored until it's done**
+**Blocking for the admin area**
 
-- [ ] `DEEPSEEK_API_KEY` — the key currently in `.env.local` is dead (401 from DeepSeek's
-      own balance endpoint, confirmed 8 Aug 2026). Applications save fine and sit with
-      `screened_at` null; opening the review table sweeps them up once a valid key exists.
+- [ ] `ADMIN_PASSWORD` — without it `/admin` cannot be logged into at all. This now
+      gates previews and notifications; the applications review table has moved to the
+      CRM and has its own Supabase login.
 
 **Already set, listed so nothing gets removed by accident**
 
@@ -73,16 +61,11 @@ values live in `.env.local` locally, never in this file.
 
 ## Careers pipeline — deferred
 
-- [ ] **Discord webhook for strong candidates.** `lib/screen-application.ts` scores every
-      application and marks the good ones `strong`; `notified_at` exists on the table and is
-      unused. Create the webhook in Discord server settings, add `DISCORD_WEBHOOK_URL`, and
-      post an embed (name, city, score, one-line summary, link to the review table) when a
-      strong verdict lands. Stamp `notified_at` so it can never double-post.
 - [ ] **Confirm the retainer range.** `app/careers/sales-rep/page.tsx` states R350–R900 a
       month publicly. That number was invented — nothing in the repo records the real one.
       It sets what reps expect to earn and what they quote clients.
 - [ ] **Delete the three test applications** in `mountainstudios.rep_applications`
-      (asdf asdf, Thandeka Mokoena, Peter Nel) once the review table has been eyeballed.
+      (asdf asdf, Thandeka Mokoena, Peter Nel) if they still exist.
 
 ## Shared previews — deferred
 

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { screenApplication } from '@/lib/screen-application'
 
 // ---------------------------------------------------------------------------
 // POST /api/careers/apply
@@ -12,19 +11,20 @@ import { screenApplication } from '@/lib/screen-application'
 //
 // Deliberately no notification email. A public job ad produces hundreds of
 // applications and most are junk; burying a real person in someone's inbox is
-// worse than not sending anything. Applications are read in the review table
-// at /admin/applications, ranked by a screening model.
+// worse than not sending anything. Applications are reviewed in the CRM at
+// crm.mountainstudios.co.za/applications.
 //
 // The row goes in first and on its own. A CV that fails to upload costs us an
 // attachment; a row that fails to insert costs us the person. Each leg is
 // caught separately, and only a total loss is reported back as a failure.
+// The CV is required: applicants cannot submit without one.
 //
 // Multipart rather than JSON, because the CV rides along with the answers.
 // ---------------------------------------------------------------------------
 
 const CV_BUCKET = 'rep-cvs'
 const MAX_CV_BYTES = 5 * 1024 * 1024
-const ALLOWED_CV_EXT = ['pdf', 'doc', 'docx']
+const ALLOWED_CV_EXT = ['pdf']
 
 const PROVINCES = [
   'Eastern Cape',
@@ -113,13 +113,19 @@ export async function POST(req: NextRequest) {
   // applicant a retry rather than leaving a half-finished row behind.
   const cvEntry = form.get('cv')
   const cv = cvEntry instanceof File && cvEntry.size > 0 ? cvEntry : null
-  if (cv) {
-    if (cv.size > MAX_CV_BYTES) {
-      return NextResponse.json({ success: false, error: 'Your CV must be under 5MB.' }, { status: 400 })
-    }
-    if (!ALLOWED_CV_EXT.includes(extensionOf(cv.name))) {
-      return NextResponse.json({ success: false, error: 'Your CV must be a PDF, DOC or DOCX.' }, { status: 400 })
-    }
+  if (!cv) {
+    return NextResponse.json({ success: false, error: 'Attach your CV as a PDF.' }, { status: 400 })
+  }
+  if (cv.size > MAX_CV_BYTES) {
+    return NextResponse.json({ success: false, error: 'Your CV must be under 5MB.' }, { status: 400 })
+  }
+  // The browser's MIME type is not evidence — Android pickers report
+  // application/octet-stream for a real PDF, and an extension is one rename away
+  // from a lie. Every PDF opens with %PDF-, so read the file itself.
+  const cvBytes = new Uint8Array(await cv.arrayBuffer())
+  const isPdf = String.fromCharCode(...cvBytes.subarray(0, 5)) === '%PDF-'
+  if (!ALLOWED_CV_EXT.includes(extensionOf(cv.name)) || !isPdf) {
+    return NextResponse.json({ success: false, error: 'Your CV must be a PDF.' }, { status: 400 })
   }
 
   let applicationId: string | null = null
@@ -149,12 +155,21 @@ export async function POST(req: NextRequest) {
   }
 
   let cvPath: string | null = null
-  if (cv && applicationId) {
+  if (applicationId) {
     try {
       const path = `${applicationId}/${safeFilename(cv.name)}`
       const { error } = await crmAdmin()
         .storage.from(CV_BUCKET)
-        .upload(path, cv, { contentType: cv.type || 'application/octet-stream', upsert: true })
+        // Uploaded as a fresh Blob rather than the File itself. Storage takes the
+        // content type from the blob it is handed and ignores the option, so a CV
+        // arriving as application/octet-stream — which is what Android's picker
+        // sends — would be stored that way and download instead of opening when a
+        // reviewer clicks it. The magic-byte check above already proved this is a
+        // PDF, so say so.
+        .upload(path, new Blob([cvBytes], { type: 'application/pdf' }), {
+          contentType: 'application/pdf',
+          upsert: true,
+        })
       if (error) throw error
 
       cvPath = path
@@ -173,12 +188,6 @@ export async function POST(req: NextRequest) {
       { status: 502 },
     )
   }
-
-  // Screening runs after the applicant has their answer, not before it. It is
-  // deliberately not awaited: DeepSeek being slow or down must never hold up a
-  // form submission. If this never finishes, screened_at stays null and the
-  // rescan in /api/careers/screen picks the application up later.
-  screenApplication(applicationId).catch(() => {})
 
   // eligible: false is not a failure. The application is recorded either way —
   // the flag only decides which message the page shows.

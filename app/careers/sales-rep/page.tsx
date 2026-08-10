@@ -56,6 +56,11 @@ export default function SalesRepCareers() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    if (!cvName) {
+      setError('Attach your CV as a PDF.')
+      setStatus('error')
+      return
+    }
     setStatus('sending')
     setError('')
 
@@ -381,7 +386,7 @@ export default function SalesRepCareers() {
               Tell us who you <em style={{ fontStyle: 'italic' }}>are.</em>
             </h2>
             <p style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, margin: 0 }}>
-              No CV required — attach one if you have it. We&apos;d rather read two honest answers.
+              Two honest answers and your CV. That is the whole application.
             </p>
           </div>
 
@@ -444,24 +449,32 @@ export default function SalesRepCareers() {
               <YesNo name="has_laptop" legend="Do you have a laptop and a working internet connection?" />
 
               <div>
-                <Label htmlFor="cv">CV — optional, PDF or Word, up to 5MB</Label>
+                <Label htmlFor="cv">CV — PDF, up to 5MB</Label>
                 <label htmlFor="cv" style={{
                   display: 'block', cursor: 'pointer', fontSize: '0.95rem',
                   color: cvName ? '#fff' : 'rgba(255,255,255,0.4)',
                   background: 'rgba(255,255,255,0.07)', border: '1px dashed rgba(255,255,255,0.2)',
                   borderRadius: '10px', padding: '0.85rem 1.25rem',
                 }}>
-                  {cvName || 'Choose a file'}
+                  {cvName || 'Choose a PDF'}
                 </label>
                 <input
-                  id="cv" name="cv" type="file" accept=".pdf,.doc,.docx"
+                  id="cv" name="cv" type="file" accept="application/pdf,.pdf"
                   onChange={e => {
                     const file = e.target.files?.[0]
-                    if (file && file.size > 5 * 1024 * 1024) {
-                      setError('That CV is over 5MB. Attach a smaller one, or leave it out.')
-                      e.target.value = ''
-                      setCvName('')
-                      return
+                    if (file) {
+                      if (!file.name.toLowerCase().endsWith('.pdf')) {
+                        setError('Your CV must be a PDF.')
+                        e.target.value = ''
+                        setCvName('')
+                        return
+                      }
+                      if (file.size > 5 * 1024 * 1024) {
+                        setError('That CV is over 5MB. Attach a smaller one.')
+                        e.target.value = ''
+                        setCvName('')
+                        return
+                      }
                     }
                     setError('')
                     setCvName(file?.name ?? '')

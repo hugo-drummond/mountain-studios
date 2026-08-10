@@ -48,13 +48,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             Notifications
           </Link>
           <Link
-            href="/admin/applications"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-300 hover:text-slate-100 hover:bg-white/5 transition-colors"
-          >
-            <span className="text-base">📄</span>
-            Applications
-          </Link>
-          <Link
             href="/admin/previews"
             className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-slate-300 hover:text-slate-100 hover:bg-white/5 transition-colors"
           >
