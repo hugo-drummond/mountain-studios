@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Script from 'next/script'
 import { Source_Sans_3 } from 'next/font/google'
 import './globals.css'
 import RecaptchaProvider from '../components/site/RecaptchaProvider'
@@ -57,6 +58,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-ZA">
+      <head>
+        {/* Google tag (gtag.js) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-RCLN88JPLC"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RCLN88JPLC');
+          `}
+        </Script>
+      </head>
       <body className={sourceSans.variable} style={{ fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
         <script
           type="application/ld+json"
