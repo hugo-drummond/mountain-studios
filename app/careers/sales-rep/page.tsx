@@ -101,12 +101,6 @@ export default function SalesRepCareers() {
           justifyContent: 'center', padding: '3rem 2.5rem 6rem',
           position: 'relative', zIndex: 2, textAlign: 'center',
         }}>
-          <p style={{
-            fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.25em',
-            textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)',
-            marginBottom: '1rem',
-          }}>30 seats · nationwide</p>
-
           <h1 style={{
             fontFamily: serif, fontSize: 'clamp(2.2rem, 5.5vw, 4rem)',
             fontWeight: 300, color: '#fff', lineHeight: 1.1,
@@ -436,7 +430,7 @@ export default function SalesRepCareers() {
               </div>
 
               <div>
-                <Label htmlFor="why_sales">Why do you want to work in sales, and what about this position appeals to you?</Label>
+                <Label htmlFor="why_sales">You understand this position is commission only, with unlimited earning potential. Tell us why that appeals to you and what draws you to sales.</Label>
                 <textarea id="why_sales" name="why_sales" rows={5} required className="cr-input" />
               </div>
 
