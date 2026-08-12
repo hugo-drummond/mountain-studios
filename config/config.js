@@ -26,8 +26,6 @@ const config = {
   },
   ads: {
     autoPauseCTRThreshold: 0.008,
-    // Converted from £12 at ~R23/£. Confirm the real rand target.
-    autoScaleCostPerLeadZAR: 276,
     autoScaleBudgetIncrement: 0.20,
     minImpressionsBeforeJudge: 1000,
   },
