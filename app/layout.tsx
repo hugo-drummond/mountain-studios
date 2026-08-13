@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Script from 'next/script'
-import { Source_Sans_3 } from 'next/font/google'
+import { Source_Sans_3, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import RecaptchaProvider from '../components/site/RecaptchaProvider'
 
@@ -8,6 +8,14 @@ const sourceSans = Source_Sans_3({
   subsets: ['latin'],
   weight: ['200', '300', '400', '600', '700', '900'],
   variable: '--font-source-sans',
+  display: 'swap',
+})
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
   display: 'swap',
 })
 
@@ -74,7 +82,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={sourceSans.variable} style={{ fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
+      <body className={`${sourceSans.variable} ${playfair.variable}`} style={{ fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

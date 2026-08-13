@@ -241,6 +241,12 @@ export default function StartYourProject() {
   const [secondaryColor, setSecondaryColor] = useState('#F59E0B')
   const [noColors, setNoColors] = useState(false)
 
+  // Populate business name from URL query parameter
+  useEffect(() => {
+    const n = new URLSearchParams(window.location.search).get('name')
+    if (n) setBusinessName(n.slice(0, 80))
+  }, [])
+
   // Images
   const [uploadedImages, setUploadedImages] = useState<{ url: string; name: string }[]>([])
   const fileInputRef = useRef<HTMLInputElement>(null)
