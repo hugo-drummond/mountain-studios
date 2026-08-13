@@ -54,8 +54,8 @@ export default function Contact() {
         }} className="page-shell-grid contact-card-grid">
           {/* LEFT COLUMN - CONTACT INFO */}
           <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
-            {/* INFO ROWS — spread to fill the card so the last row lines up with the form's textarea */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            {/* INFO ROWS — kept together and pushed to the bottom, level with the form's textarea */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: '2rem', paddingBottom: '0.5rem' }}>
             {/* WhatsApp */}
             <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
               <CircleIcon>

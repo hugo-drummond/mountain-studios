@@ -318,12 +318,7 @@ export default function Home() {
                   {[18, 14, 16].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
                 </span>
               </div>
-              <img src="/images/portfolio/alistair-drummond.jpg" alt="" style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
-              <div style={{ padding: '10px 12px 12px', textAlign: 'center' }}>
-                <p style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.62rem', color: '#2e333a', margin: '0 0 6px' }}>Bespoke residential architecture</p>
-                <span style={{ display: 'block', height: 3, borderRadius: 2, background: '#eceaf2', margin: '0 auto 4px', width: '84%' }} />
-                <span style={{ display: 'block', height: 3, borderRadius: 2, background: '#eceaf2', margin: '0 auto', width: '68%' }} />
-              </div>
+              <img src="/images/portfolio/alistair-drummond.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -343,8 +338,7 @@ export default function Home() {
                   {[16, 20, 14].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
                 </span>
               </div>
-              <p style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.72rem', color: '#2e333a', margin: '6px 0', textAlign: 'center' }}>Artisan bakery in Cape Town</p>
-              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '200px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -670,7 +664,7 @@ export default function Home() {
 
       {/* WORK SECTION */}
       <div id="work" style={{ background: '#f4f2fa', padding: '3rem 2rem 8rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
           <h2 style={{
             fontFamily: 'var(--font-playfair), Georgia, serif',
             fontSize: '2.6rem',
@@ -694,13 +688,14 @@ export default function Home() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3,1fr)',
             gap: '2.25rem',
-            maxWidth: '1240px',
+            maxWidth: '1440px',
             margin: 'auto',
+            alignItems: 'stretch',
           }}>
             {portfolioItems.filter((item) => FEATURED_ON_HOME.includes(item.name)).map((item) => (
               <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" style={{
                 textDecoration: 'none',
-                display: 'block',
+                display: 'flex',
                 transition: 'transform 0.3s ease',
               }}
                 onMouseEnter={(e) => (e.currentTarget as HTMLAnchorElement).style.transform = 'translateY(-4px)'}
@@ -711,6 +706,9 @@ export default function Home() {
                   borderRadius: '14px',
                   overflow: 'hidden',
                   boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
                 }}>
                   <div style={{ background: '#f2f0f6', padding: '10px 10px 0' }}>
                     <div style={{ background: '#fff', borderRadius: '8px 8px 0 0', overflow: 'hidden', border: '1px solid #eceaf2', borderBottom: 'none' }}>
@@ -720,10 +718,10 @@ export default function Home() {
                           {[14, 18, 12].map((w, j) => <span key={j} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
                         </span>
                       </div>
-                      <img src={item.img} alt={item.name} style={{ width: '100%', height: '275px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+                      <img src={item.img} alt={item.name} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
                     </div>
                   </div>
-                  <div style={{ padding: '1.7rem 1.8rem' }}>
+                  <div style={{ padding: '1.7rem 1.8rem', marginTop: 'auto' }}>
                     <p style={{
                       fontFamily: 'var(--font-playfair), Georgia, serif',
                       fontSize: '1.4rem',
