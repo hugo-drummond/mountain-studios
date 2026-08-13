@@ -20,6 +20,31 @@ handing this over to the reps.
 - [ ] Tap "I want this website" and confirm the lead appears in the CRM and email at hello@.
 - [ ] Revoke a link and confirm it dies.
 
+**Homepage** — rebuilt 13 August 2026, see [STATUS.md](STATUS.md)
+
+Content Hugo owes before this page is honest:
+
+- [ ] **WhatsApp number.** `WHATSAPP_NUMBER` at the top of `app/page.tsx` is `27000000000`.
+      The top bar and the floating chat pill both point at it, so both are dead links.
+- [ ] **Real Google reviews.** Three cards say "Placeholder review". The score card says
+      "XX Google reviews" and its "Read on Google" button goes to `#`.
+- [ ] **Footer social links.** Instagram, Facebook, LinkedIn and Google are all `#`.
+- [ ] **Work grid images.** Three of the six are photographs, not site screenshots
+      (`ada.jpg`, `coimbra-bakery.jpg`, `pie-in-the-sky.jpg`), and the two tilted hero
+      cards reuse the first two. The mockups show screenshots throughout.
+
+Still to build:
+
+- [ ] **Audit form has no backend.** Submitting shows a thank-you and drops the URL.
+      Needs somewhere to write, or the section should come down.
+- [ ] **Referral form has no backend.** Same — name, email and mobile go nowhere, and no
+      referral link is generated.
+- [ ] **`/work`, `/pricing`, `/refer`, `/about` do not exist.** Nav and footer point at
+      homepage anchors for now, and the nav's fourth link reads REVIEWS because there is
+      no About section left to anchor to.
+- [ ] **The chat pill is a WhatsApp link, not a chat widget.** Deliberate for now.
+- [ ] The reCAPTCHA badge sits under the chat pill in the bottom-right corner.
+
 ## Vercel environment variables
 
 Set these in the Vercel project settings for mountain-studios. Names only —

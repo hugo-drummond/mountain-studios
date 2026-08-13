@@ -14,7 +14,9 @@ The palette is a sophisticated blend of cool slates (`#535f77`), mist whites (`#
 *   **The Glass & Gradient Rule:** Utilize the "Editorial Gradient" (a linear blend from `#d6e3ff` to `#f6d0dd`) for hero backgrounds. Floating elements should use `glass-card` styling: `rgba(255, 255, 255, 0.4)` with a 20px backdrop blur.
 
 ### 3. Typography
-The system uses a high-contrast pairing of **Noto Serif** for an editorial, prestigious feel and **Plus Jakarta Sans** for modern, legible utility.
+The system uses a high-contrast pairing of an editorial serif for headings and a modern, legible sans for utility.
+
+**As shipped (13 August 2026):** the site pages use **Playfair Display** for every heading and **Source Sans 3** for body and labels, both loaded in `app/layout.tsx` as `--font-playfair` and `--font-source-sans`. Use those two on any new site page. The scale below still applies; Noto Serif and Plus Jakarta Sans were the original spec and are not loaded anywhere.
 
 **Typography Scale:**
 *   **Display/Hero:** 3.75rem (60px) to 4.5rem (72px). Noto Serif, Bold. Used for high-impact headers.

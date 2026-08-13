@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 10 August 2026
+Last updated: 13 August 2026
 
 ## Where things stand
 
@@ -78,20 +78,39 @@ fallback — if the client-side id is lost — is a 30-day email match. This way
 maps to one lead whether or not they finish the wizard, and the CRM sees the moment they
 started paying attention, not just the moment they finished.
 
-## Homepage contact form
+## Homepage — rebuilt 13 August 2026
 
-The form at `app/page.tsx` had a `name`, `email`, `phone` and `message` for ~2 months with
-no backing store. Submitting rendered a thank-you but discarded everything typed. Every
-enquiry since launch was lost. It now sends `POST /api/contact/submit`, which writes to
-a new `mountainstudios.contact_messages` table and emails Ant. The message is independent
-of `leads` — an enquiry carries no business name, category or area, and there is no way to
-automatically assign it to a rep's territory. Each leg is caught separately; only losing
-both legs at once is an error (partial writes still land).
+`app/page.tsx` was rewritten end to end against Hugo's mockups. The page now leads with
+the thing that actually sells — the free preview — instead of the old "Web Design Done
+Simply" hero. Order: top bar, hero with a business-name input, stats, reviews, packages,
+work grid, free audit, R1,000 referral block, FAQ, final CTA, footer, and a floating
+WhatsApp chat pill.
 
-## Founder photo
+- **The hero input is the funnel.** Typing a business name goes to
+  `/start-your-project?name=<typed>`, and the wizard prefills step 1 from the query
+  string. It reads `window.location.search` in an effect rather than `useSearchParams`,
+  which would need a Suspense boundary and fails the Next 14 build without one.
+- **The audit and referral forms are UI only.** No API, no network call — submitting sets
+  a local flag and swaps in a line of text. They exist so the page reads complete; nothing
+  is captured yet, so anyone who fills them in is lost.
+- **Typography changed.** Playfair Display now sets every heading, alongside Source Sans 3
+  for body. Registered in `app/layout.tsx` as `--font-playfair`.
+- **`globals.css` placeholder trap.** A global `::placeholder { color: rgba(255,255,255,
+  0.75) !important }` dated from when every input sat on a dark section. The new page is
+  mostly white pills, so that rule made four placeholders invisible. It is now scoped to
+  `.ms-dark`; anything dark that relies on white placeholder text must carry that class.
+- Styling is inline, matching the rest of the file, with one `<style>` block at the bottom
+  for keyframes and the `.ms-*` media queries.
 
-Added `public/images/team/hugo-drummond.jpg` to the About card on the homepage, replacing
-the placeholder triangle.
+**Deleted:** the About block (and with it the only use of `public/images/team/
+hugo-drummond.jpg`) and the dark contact form. `POST /api/contact/submit`,
+`mountainstudios.contact_messages` and the admin inbox are all still live — the homepage
+just no longer writes to them. The homepage now captures nothing directly; every route to
+a lead goes through the wizard.
+
+**Placeholder content in the page, all marked TODO:** `WHATSAPP_NUMBER` is a dummy
+(`27000000000`) and both the top bar and the chat pill link to it; the three reviews are
+placeholder text with a placeholder count and Google link; footer social links are `#`.
 
 ## reCAPTCHA — v2 registered, v3 calls made, verification broken
 
