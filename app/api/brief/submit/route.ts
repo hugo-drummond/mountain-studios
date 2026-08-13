@@ -33,6 +33,7 @@ interface Payload {
   primaryColor?: string
   secondaryColor?: string
   leadId?: string
+  variant?: string
 }
 
 function escapeHtml(value: string): string {
@@ -191,11 +192,13 @@ export async function POST(req: NextRequest) {
   const leadName = businessName || `${fullName} (no business name given)`
 
   const verdictLine = notQuite ? 'Said the preview was not quite right' : 'Said they loved the preview'
+  const variantLabel = body.variant === 'site' ? 'SEE YOUR NEW SITE pill' : body.variant === 'chat' ? 'Chat button' : null
   const notes = [
     `Website enquiry — ${verdictLine.toLowerCase()}.`,
     `Contact: ${fullName}${phone ? ` · ${phone}` : ''}`,
     pages.length ? `Pages wanted: ${pages.join(', ')}` : null,
     body.style ? `Style: ${body.style}` : null,
+    variantLabel ? `Homepage variant: ${variantLabel}` : null,
     projectInfo ? `\n${notQuite ? 'How we can improve' : 'About their site'}:\n${projectInfo}` : null,
   ]
     .filter(Boolean)

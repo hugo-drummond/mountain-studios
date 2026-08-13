@@ -81,6 +81,7 @@ interface Payload {
   style?: string
   recaptchaToken?: string
   website?: string
+  variant?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -121,11 +122,15 @@ export async function POST(req: NextRequest) {
   // Check reCAPTCHA outcome
   const recaptchaOutcome = await verifyRecaptcha(body.recaptchaToken)
 
+  // Whitelist variant
+  const variantLabel = body.variant === 'site' ? 'SEE YOUR NEW SITE pill' : body.variant === 'chat' ? 'Chat button' : null
+
   // Build notes
   const noteLines = [
     'INCOMPLETE — got as far as the preview, has not sent the brief.',
     storedPages.length ? `Pages wanted: ${storedPages.join(', ')}` : null,
     storedStyle ? `Style: ${storedStyle}` : null,
+    variantLabel ? `Homepage variant: ${variantLabel}` : null,
   ]
     .filter(Boolean)
 

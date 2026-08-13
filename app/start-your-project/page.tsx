@@ -240,11 +240,14 @@ export default function StartYourProject() {
   const [primaryColor, setPrimaryColor] = useState('#2563EB')
   const [secondaryColor, setSecondaryColor] = useState('#F59E0B')
   const [noColors, setNoColors] = useState(false)
+  const [msVariant, setMsVariant] = useState<string | null>(null)
 
   // Populate business name from URL query parameter
   useEffect(() => {
     const n = new URLSearchParams(window.location.search).get('name')
     if (n) setBusinessName(n.slice(0, 80))
+    const v = localStorage.getItem('ms_variant')
+    if (v === 'site' || v === 'chat') setMsVariant(v)
   }, [])
 
   // Images
@@ -413,6 +416,7 @@ export default function StartYourProject() {
           style: selectedStyle,
           recaptchaToken,
           website: gateHoneypot,
+          variant: msVariant,
         }),
       })
 
@@ -463,6 +467,7 @@ export default function StartYourProject() {
           primaryColor: noColors ? null : primaryColor,
           secondaryColor: noColors ? null : secondaryColor,
           leadId,
+          variant: msVariant,
         }),
       })
       const res = await r.json()

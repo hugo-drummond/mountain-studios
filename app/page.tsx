@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const WHATSAPP_NUMBER = '27000000000' // TODO: real number
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -62,6 +62,7 @@ export default function Home() {
   const [referDone, setReferDone] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [variant, setVariant] = useState<'site' | 'chat' | null>(null)
 
   const WhatsAppIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -84,6 +85,19 @@ export default function Home() {
     e.preventDefault()
     setReferDone(true)
   }
+
+  useEffect(() => {
+    const v = new URLSearchParams(window.location.search).get('v')
+    let chosen: 'site' | 'chat'
+    if (v === '1') chosen = 'site'
+    else if (v === '2') chosen = 'chat'
+    else {
+      const stored = localStorage.getItem('ms_variant')
+      chosen = stored === 'site' || stored === 'chat' ? stored : (Math.random() < 0.5 ? 'site' : 'chat')
+    }
+    localStorage.setItem('ms_variant', chosen)
+    setVariant(chosen)
+  }, [])
 
   const StarRating = ({ count }: { count: number }) => (
     <div style={{ display: 'flex', gap: '0.2rem' }}>
@@ -134,7 +148,7 @@ export default function Home() {
         } as React.CSSProperties}>
           <a href="/" style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.15rem', color: '#fff', textDecoration: 'none', marginRight: '1rem', fontWeight: 400, whiteSpace: 'nowrap' }}>mountain studios</a>
           <div className="ms-nav-links" style={{ display: 'flex', gap: '0.4rem' }}>
-            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'REVIEWS', href: '#reviews' }].map(link => (
+            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '#reviews' }].map(link => (
               <a key={link.href} href={link.href} style={{
                 fontSize: '0.78rem',
                 fontWeight: 600,
@@ -182,7 +196,7 @@ export default function Home() {
               background: 'none', border: 'none', color: '#fff',
               fontSize: '2rem', cursor: 'pointer', lineHeight: 1,
             }}>&times;</button>
-            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'REVIEWS', href: '#reviews' }].map(link => (
+            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '#reviews' }].map(link => (
               <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{
                 fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.12em',
                 textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
@@ -230,7 +244,7 @@ export default function Home() {
           <p style={{
             fontSize: '1.02rem',
             color: '#3d4358',
-            maxWidth: '520px',
+            maxWidth: '640px',
             margin: '0 auto 2rem',
           }}>
             Type your business name. We'll build you a real preview, free, in about a minute.
@@ -244,6 +258,7 @@ export default function Home() {
             flexWrap: 'wrap',
           }} onSubmit={(e) => { e.preventDefault(); handleBusinessNameSubmit(name) }}>
             <input
+              id="hero-name-input"
               type="text"
               placeholder="What's your business called?"
               value={name}
@@ -271,12 +286,8 @@ export default function Home() {
             }}>SHOW ME →</button>
           </form>
 
-          <div style={{ display: 'flex', gap: '0.15rem', justifyContent: 'center', marginBottom: '0.5rem' }}>
-            {Array(5).fill(0).map((_, i) => (
-              <span key={i} style={{ color: '#b98ca0', fontSize: '0.9rem' }}>★</span>
-            ))}
-          </div>
-          <p style={{ fontSize: '0.85rem', color: '#3d4358', margin: 0 }}>
+          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#3d4358', margin: 0 }}>
+            <span style={{ color: '#c9a445', fontSize: '0.8rem', letterSpacing: '0.1em' }}>★★★★★</span>
             4.9 on Google · 50+ sites built · Live in 14 days
           </p>
         </div>
@@ -284,26 +295,53 @@ export default function Home() {
         {/* FLOATING DEVICE CARDS */}
         <div className="ms-float" style={{
           position: 'absolute',
-          top: '20%',
-          left: '1.5rem',
-          width: '260px',
-          transform: 'rotate(-6deg)',
+          top: '21%',
+          left: '2rem',
+          width: '280px',
+          transform: 'rotate(-7deg)',
           zIndex: 1,
         }}>
-          <div style={{ background: '#fff', borderRadius: '14px', padding: '8px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
-            <img src="/images/portfolio/ada.jpg" alt="" style={{ borderRadius: '8px', width: '100%', display: 'block' }} />
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '10px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
+            <div style={{ borderRadius: '10px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px' }}>
+                <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.55rem', color: '#2e333a', whiteSpace: 'nowrap' }}>Alistair Drummond</span>
+                <span style={{ display: 'flex', gap: '5px' }}>
+                  {[18, 14, 16].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
+                </span>
+              </div>
+              <img src="/images/portfolio/alistair-drummond.jpg" alt="" style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block' }} />
+              <div style={{ padding: '10px 12px 12px', textAlign: 'center' }}>
+                <p style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.62rem', color: '#2e333a', margin: '0 0 6px' }}>Bespoke residential architecture</p>
+                <span style={{ display: 'block', height: 3, borderRadius: 2, background: '#eceaf2', margin: '0 auto 4px', width: '84%' }} />
+                <span style={{ display: 'block', height: 3, borderRadius: 2, background: '#eceaf2', margin: '0 auto', width: '68%' }} />
+              </div>
+            </div>
           </div>
         </div>
         <div className="ms-float" style={{
           position: 'absolute',
-          top: '34%',
-          right: '1.5rem',
-          width: '280px',
-          transform: 'rotate(5deg)',
+          top: '36%',
+          right: '2rem',
+          width: '300px',
+          transform: 'rotate(6deg)',
           zIndex: 1,
         }}>
-          <div style={{ background: '#fff', borderRadius: '14px', padding: '8px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
-            <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ borderRadius: '8px', width: '100%', display: 'block' }} />
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '10px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
+            <div style={{ borderRadius: '10px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px' }}>
+                <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.55rem', color: '#2e333a', whiteSpace: 'nowrap' }}>Coimbra Bakery</span>
+                <span style={{ display: 'flex', gap: '5px' }}>
+                  {[16, 20, 14].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
+                </span>
+              </div>
+              <p style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.72rem', color: '#2e333a', margin: '6px 0', textAlign: 'center' }}>Artisan bakery in Cape Town</p>
+              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '150px', objectFit: 'cover', display: 'block' }} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '4px', padding: '4px' }}>
+                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'left center', display: 'block', borderRadius: '3px' }} />
+                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'center 80%', display: 'block', borderRadius: '3px' }} />
+                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'right center', display: 'block', borderRadius: '3px' }} />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -358,8 +396,8 @@ export default function Home() {
       </div>
 
       {/* REVIEWS SECTION */}
-      <div id="reviews" style={{ background: '#efedf7', padding: '7rem 2rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+      <div id="reviews" style={{ background: '#f7f6fb', padding: '8rem 2rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p style={{
             fontSize: '0.7rem',
             fontWeight: 700,
@@ -381,16 +419,16 @@ export default function Home() {
         <div className="ms-cards-4" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
-          gap: '1.5rem',
-          maxWidth: '1100px',
+          gap: '2rem',
+          maxWidth: '1240px',
           margin: 'auto',
         }}>
           {/* Google Reviews Card */}
           <div style={{
             background: '#fff',
             borderRadius: '14px',
-            padding: '2rem',
-            minHeight: '240px',
+            padding: '2.5rem',
+            minHeight: '280px',
             boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
             display: 'flex',
             flexDirection: 'column',
@@ -420,8 +458,8 @@ export default function Home() {
             <div key={i} style={{
               background: '#fff',
               borderRadius: '14px',
-              padding: '2rem',
-              minHeight: '240px',
+              padding: '2.5rem',
+              minHeight: '280px',
               boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
               display: 'flex',
               flexDirection: 'column',
@@ -460,8 +498,8 @@ export default function Home() {
       </div>
 
       {/* PACKAGES SECTION */}
-      <div id="pricing" style={{ background: '#f4f2fa', padding: '7rem 2rem 4rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+      <div id="pricing" style={{ background: '#f4f2fa', padding: '8rem 2rem 5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p style={{
             fontSize: '0.7rem',
             fontWeight: 700,
@@ -482,8 +520,8 @@ export default function Home() {
         <div className="ms-cards-3" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3,1fr)',
-          gap: '1.75rem',
-          maxWidth: '1000px',
+          gap: '2.25rem',
+          maxWidth: '1080px',
           margin: 'auto',
           alignItems: 'stretch',
         }}>
@@ -495,7 +533,7 @@ export default function Home() {
             <div key={i} style={{
               background: '#fff',
               borderRadius: '14px',
-              padding: '2.25rem 2rem',
+              padding: '2.75rem 2.5rem',
               boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
               display: 'flex',
               flexDirection: 'column',
@@ -633,12 +671,22 @@ export default function Home() {
                   overflow: 'hidden',
                   boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
                 }}>
-                  <img src={item.img} alt={item.name} style={{
-                    width: '100%',
-                    height: '200px',
-                    objectFit: 'cover',
-                    display: 'block',
-                  }} />
+                  <div style={{ background: '#f2f0f6', padding: '10px 10px 0' }}>
+                    <div style={{ background: '#fff', borderRadius: '8px 8px 0 0', overflow: 'hidden', border: '1px solid #eceaf2', borderBottom: 'none' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 9px' }}>
+                        <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.52rem', color: '#2e333a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
+                        <span style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                          {[14, 18, 12].map((w, j) => <span key={j} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
+                        </span>
+                      </div>
+                      <img src={item.img} alt={item.name} style={{ width: '100%', height: '150px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '3px', padding: '4px 4px 0' }}>
+                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'left bottom', display: 'block', borderRadius: '2px' }} />
+                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'center 70%', display: 'block', borderRadius: '2px' }} />
+                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'right bottom', display: 'block', borderRadius: '2px' }} />
+                      </div>
+                    </div>
+                  </div>
                   <div style={{ padding: '1.4rem 1.5rem' }}>
                     <p style={{
                       fontFamily: 'var(--font-playfair), Georgia, serif',
@@ -754,10 +802,10 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
-        padding: '5rem 2rem 0',
+        padding: '3rem 2rem 0',
       }}>
         <div style={{
-          maxWidth: '720px',
+          maxWidth: '880px',
           margin: 'auto',
           textAlign: 'center',
           position: 'relative',
@@ -957,7 +1005,7 @@ export default function Home() {
 
       {/* FINAL CTA SECTION */}
       <div style={{ background: '#f4f2fa', padding: '7rem 2rem' }}>
-        <div style={{ maxWidth: '640px', margin: 'auto', textAlign: 'center' }}>
+        <div style={{ maxWidth: '760px', margin: 'auto', textAlign: 'center' }}>
           <p style={{ fontSize: '0.9rem', color: '#5d6478', marginBottom: '0.5rem' }}>Still just looking?</p>
           <h2 style={{
             fontFamily: 'var(--font-playfair), Georgia, serif',
@@ -1081,29 +1129,62 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FLOATING CHAT BUTTON */}
-      <a href={WHATSAPP_URL} style={{
-        position: 'fixed',
-        bottom: '1.5rem',
-        right: '1.5rem',
-        zIndex: 100,
-        background: '#7d3d4f',
-        color: '#fff',
-        padding: '0.85rem 1.5rem',
-        borderRadius: '999px',
-        textDecoration: 'none',
-        display: 'inline-flex',
-        gap: '0.5rem',
-        alignItems: 'center',
-        fontSize: '0.85rem',
-        fontWeight: 600,
-        boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
-      }}>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" />
-        </svg>
-        Chat with us
-      </a>
+      {/* FLOATING CTA — A/B test: 'site' pill vs 'chat' bubble */}
+      {variant === 'site' && (
+        <button
+          onClick={() => {
+            try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'site' }) } catch { }
+            const input = document.getElementById('hero-name-input')
+            if (input) { input.scrollIntoView({ behavior: 'smooth', block: 'center' }); (input as HTMLInputElement).focus({ preventScroll: true }) }
+          }}
+          style={{
+            position: 'fixed',
+            bottom: '1.5rem',
+            right: '1.5rem',
+            zIndex: 100,
+            background: '#7d3d4f',
+            color: '#fff',
+            padding: '0.95rem 1.7rem',
+            borderRadius: '999px',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '0.82rem',
+            fontWeight: 700,
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
+          }}
+        >SEE YOUR NEW SITE →</button>
+      )}
+      {variant === 'chat' && (
+        <a
+          href={WHATSAPP_URL}
+          onClick={() => { try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'chat' }) } catch { } }}
+          style={{
+            position: 'fixed',
+            bottom: '1.5rem',
+            right: '1.5rem',
+            zIndex: 100,
+            background: '#7d3d4f',
+            color: '#fff',
+            padding: '0.85rem 1.5rem',
+            borderRadius: '999px',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+            fontSize: '0.85rem',
+            fontWeight: 600,
+            boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.4L4 21.6V5a2 2 0 0 1 0-2zm0 2v12.4L8.6 15H20V5H4z" />
+            <circle cx="8.5" cy="10" r="1.1" /><circle cx="12" cy="10" r="1.1" /><circle cx="15.5" cy="10" r="1.1" />
+          </svg>
+          Chat with us
+        </a>
+      )}
 
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
