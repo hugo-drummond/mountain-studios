@@ -22,6 +22,9 @@ const portfolioItems: PortfolioItem[] = [
   { name: "Ant's Awnings", type: 'Metal & Glass Awnings', img: '/images/portfolio/ants-awnings.jpg', url: 'https://antsawnings.co.za/', desc: 'Durable aluminium and glass solutions.' },
 ]
 
+// Homepage shows a shortlist; the full set lives on /work
+const FEATURED_ON_HOME = ['Alistair Drummond Architect', 'Coimbra Bakery', "Ant's Awnings"]
+
 interface ReviewItem {
   stars: number
   text?: string
@@ -341,12 +344,7 @@ export default function Home() {
                 </span>
               </div>
               <p style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.72rem', color: '#2e333a', margin: '6px 0', textAlign: 'center' }}>Artisan bakery in Cape Town</p>
-              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '150px', objectFit: 'cover', display: 'block' }} />
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '4px', padding: '4px' }}>
-                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'left center', display: 'block', borderRadius: '3px' }} />
-                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'center 80%', display: 'block', borderRadius: '3px' }} />
-                <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '44px', objectFit: 'cover', objectPosition: 'right center', display: 'block', borderRadius: '3px' }} />
-              </div>
+              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', height: '200px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -695,11 +693,11 @@ export default function Home() {
           <div className="ms-cards-3" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3,1fr)',
-            gap: '1.75rem',
-            maxWidth: '1100px',
+            gap: '2.25rem',
+            maxWidth: '1240px',
             margin: 'auto',
           }}>
-            {portfolioItems.map((item) => (
+            {portfolioItems.filter((item) => FEATURED_ON_HOME.includes(item.name)).map((item) => (
               <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" style={{
                 textDecoration: 'none',
                 display: 'block',
@@ -717,23 +715,18 @@ export default function Home() {
                   <div style={{ background: '#f2f0f6', padding: '10px 10px 0' }}>
                     <div style={{ background: '#fff', borderRadius: '8px 8px 0 0', overflow: 'hidden', border: '1px solid #eceaf2', borderBottom: 'none' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 9px' }}>
-                        <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.52rem', color: '#2e333a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
+                        <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.65rem', color: '#2e333a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
                         <span style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
                           {[14, 18, 12].map((w, j) => <span key={j} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
                         </span>
                       </div>
-                      <img src={item.img} alt={item.name} style={{ width: '100%', height: '150px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '3px', padding: '4px 4px 0' }}>
-                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'left bottom', display: 'block', borderRadius: '2px' }} />
-                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'center 70%', display: 'block', borderRadius: '2px' }} />
-                        <img src={item.img} alt="" style={{ width: '100%', height: '38px', objectFit: 'cover', objectPosition: 'right bottom', display: 'block', borderRadius: '2px' }} />
-                      </div>
+                      <img src={item.img} alt={item.name} style={{ width: '100%', height: '275px', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
                     </div>
                   </div>
-                  <div style={{ padding: '1.4rem 1.5rem' }}>
+                  <div style={{ padding: '1.7rem 1.8rem' }}>
                     <p style={{
                       fontFamily: 'var(--font-playfair), Georgia, serif',
-                      fontSize: '1.15rem',
+                      fontSize: '1.4rem',
                       color: '#2e333a',
                       margin: 0,
                       fontWeight: 400,
@@ -741,18 +734,18 @@ export default function Home() {
                       {item.name}
                     </p>
                     <p style={{
-                      fontSize: '0.68rem',
+                      fontSize: '0.72rem',
                       fontWeight: 700,
                       textTransform: 'uppercase',
                       letterSpacing: '0.14em',
                       color: '#7d6470',
                       marginTop: '0.35rem',
-                      margin: '0.35rem 0 0',
+                      margin: '0.4rem 0 0',
                     }}>
                       {item.type}
                     </p>
                     <p style={{
-                      fontSize: '0.9rem',
+                      fontSize: '0.98rem',
                       color: '#5d6478',
                       lineHeight: 1.55,
                       marginTop: '0.6rem',

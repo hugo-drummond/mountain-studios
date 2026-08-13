@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
+import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
 
 // ---------------------------------------------------------------------------
 // POST /api/chat
@@ -171,6 +172,27 @@ async function callDeepSeek(messages: Message[]): Promise<string | null> {
   }
 }
 
+const INTERROGATIVES =
+  /^(what|how|do|does|did|can|could|is|are|was|will|would|why|when|where|who|which|any|tell me|i need|i want)\b/i
+
+// What earns a row in chat_questions. The point of that table is a ranked list
+// of what people want to know, and it stops being that the moment it fills up
+// with "yes please", "ok thanks" and half a phone number.
+//
+// The opening message always counts — it is what brought them to the chat.
+// After that a message has to look like an actual question, and anything
+// carrying contact details is dropped outright: those belong in the lead's
+// notes and nowhere else.
+function worthLogging(text: string, firstMessage: boolean): boolean {
+  if (findEmail(text) || findPhone(text)) return false
+
+  const trimmed = text.trim()
+  if (trimmed.length < 8) return false
+  if (firstMessage) return true
+
+  return trimmed.endsWith('?') || (INTERROGATIVES.test(trimmed) && trimmed.split(/\s+/).length >= 3)
+}
+
 function buildNotes(email: string | null, phone: string | null, messages: Message[]): string {
   const transcript = messages
     .map((m) => `${m.role === 'user' ? 'Them' : 'Bot'}: ${m.content}`)
@@ -317,8 +339,27 @@ export async function POST(req: NextRequest) {
   const email = findEmail(fromVisitor)
   const phone = findPhone(fromVisitor)
 
-  const outbound = messages.map((m) => ({ ...m, content: redact(m.content) }))
-  const reply = await callDeepSeek(outbound)
+  const question = messages[messages.length - 1].content
+
+  // The cache is only consulted on the opening message. From the second message
+  // on, the question depends on what was said before it — "what about for a
+  // bakery?" means nothing on its own — and a fuzzy match would cheerfully
+  // answer a different question. See lib/chatbot/questions.ts.
+  const firstMessage = messages.length === 1
+  const cached = firstMessage ? await findApprovedAnswer(question) : null
+
+  let reply: string | null
+  if (cached) {
+    reply = cached.answer
+    await bumpAskedCount(cached.id)
+  } else {
+    const outbound = messages.map((m) => ({ ...m, content: redact(m.content) }))
+    reply = await callDeepSeek(outbound)
+
+    // Logged whether or not the model answered. A question that made the model
+    // fall over is one of the more useful rows in the table.
+    if (worthLogging(question, firstMessage)) await logQuestion(question, reply)
+  }
 
   let leadId = incomingLeadId
   if (email || phone) {
