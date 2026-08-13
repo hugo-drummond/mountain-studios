@@ -103,7 +103,7 @@ export default function Home() {
   const StarRating = ({ count }: { count: number }) => (
     <div style={{ display: 'flex', gap: '0.2rem' }}>
       {Array(count).fill(0).map((_, i) => (
-        <span key={i} style={{ color: '#c9a227', fontSize: '1rem' }}>★</span>
+        <span key={i} style={{ color: '#F5B301', fontSize: '1rem' }}>★</span>
       ))}
     </div>
   )
@@ -117,7 +117,7 @@ export default function Home() {
           <WhatsAppIcon />
           WhatsApp us<span className="ms-hours"> · Mon–Fri 8:00–17:00</span>
         </a>
-        <a href="#refer" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1,000 →</a>
+        <a href="#refer" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
       </div>
 
       {/* HERO SECTION */}
@@ -452,19 +452,7 @@ export default function Home() {
               <div style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '2.5rem', color: '#2e333a' }}>4.9</div>
               <StarRating count={5} />
             </div>
-            {/* Reviews link */}
-            <a href="#" style={{
-              color: '#4285F4',
-              textDecoration: 'none',
-              fontSize: '0.95rem',
-              marginBottom: '1rem',
-              flex: 1,
-              display: 'flex',
-              alignItems: 'flex-end',
-            }}>
-              Read our XX Reviews
-            </a>
-            {/* Write review button */}
+            {/* All reviews button */}
             <button style={{
               background: '#000',
               color: '#fff',
@@ -477,7 +465,7 @@ export default function Home() {
               marginTop: 'auto',
               width: 'fit-content',
             }}>
-              Write a review
+              All reviews
             </button>
           </div>
 
@@ -869,7 +857,7 @@ export default function Home() {
             margin: '0 0 1rem',
             lineHeight: 1.2,
           }}>
-            Know a business that needs a website?<br />We'll pay you <em style={{ fontStyle: 'italic' }}>R1,000</em>.
+            Know a business that needs a website?<br />We'll pay you <em style={{ fontStyle: 'italic' }}>R1000</em>.
           </h2>
 
           <div className="ms-cards-3" style={{
@@ -879,7 +867,7 @@ export default function Home() {
             marginTop: '2.5rem',
             textAlign: 'center',
           }}>
-            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They sign and pay a deposit — you get R1,000.'].map((text, i) => (
+            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They sign and pay a deposit — you get R1000.'].map((text, i) => (
               <div key={i}>
                 <div style={{
                   fontFamily: 'var(--font-playfair), Georgia, serif',
@@ -887,7 +875,7 @@ export default function Home() {
                   color: '#7d3d4f',
                   opacity: 0.75,
                   margin: '0 0 0.5rem',
-                  fontWeight: 400,
+                  fontWeight: 700,
                 }}>
                   {String(i + 1).padStart(2, '0')}
                 </div>
@@ -896,6 +884,7 @@ export default function Home() {
                   color: '#3d4358',
                   lineHeight: 1.5,
                   margin: 0,
+                  fontWeight: 600,
                 }}>
                   {text}
                 </p>

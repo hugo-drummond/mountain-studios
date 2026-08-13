@@ -45,12 +45,15 @@ export default function Contact() {
         <div style={{
           maxWidth: '1000px',
           margin: '0 auto 4rem',
+          background: '#fff',
+          borderRadius: '14px',
+          boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
           display: 'grid',
           gridTemplateColumns: '1fr 1.1fr',
-          gap: '3rem',
+          gap: 0,
         }} className="page-shell-grid">
           {/* LEFT COLUMN - CONTACT INFO */}
-          <div>
+          <div style={{ padding: '2rem' }}>
             {/* WhatsApp */}
             <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start', marginBottom: '2rem' }}>
               <CircleIcon>
@@ -115,13 +118,13 @@ export default function Contact() {
           </div>
 
           {/* RIGHT COLUMN - FORM */}
-          <div>
-            <div style={{
-              background: '#fff',
-              borderRadius: '14px',
-              padding: '2rem',
-              boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
-            }}>
+          <div style={{
+            borderLeft: '1px solid #e3e0ea',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
+            paddingTop: '2rem',
+            paddingBottom: '2rem',
+          }}>
               {submitted ? (
                 <div style={{ textAlign: 'center', padding: '2rem 0' }}>
                   <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Thanks — we'll reply within one business day.</p>
@@ -203,96 +206,24 @@ export default function Contact() {
                 </form>
               )}
             </div>
-          </div>
         </div>
 
-        {/* STATS BAND */}
-        <div style={{
-          background: '#fff',
-          borderRadius: '14px',
-          padding: '2.5rem',
-          textAlign: 'center',
-          boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
-        }}>
-          <p style={{
-            fontSize: '0.95rem',
-            color: '#1a1a2e',
-            fontWeight: 600,
-            margin: '0 0 2rem',
-          }}>
-            Real replies from the people who build your site.
-          </p>
-
-          <div style={{
-            display: 'flex',
-            gap: '4rem',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-          }}>
-            <div>
-              <div style={{
-                fontFamily: 'var(--font-playfair), Georgia, serif',
-                fontSize: '2rem',
-                fontWeight: 400,
-                color: '#1a1a2e',
-              }}>
-                50+
-              </div>
-              <div style={{
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: '#5d6478',
-                marginTop: '0.4rem',
-              }}>
-                WEBSITES BUILT
-              </div>
-            </div>
-
-            <div>
-              <div style={{
-                fontFamily: 'var(--font-playfair), Georgia, serif',
-                fontSize: '2rem',
-                fontWeight: 400,
-                color: '#1a1a2e',
-              }}>
-                4.9
-              </div>
-              <div style={{
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: '#5d6478',
-                marginTop: '0.4rem',
-              }}>
-                GOOGLE RATING
-              </div>
-            </div>
-
-            <div>
-              <div style={{
-                fontFamily: 'var(--font-playfair), Georgia, serif',
-                fontSize: '2rem',
-                fontWeight: 400,
-                color: '#1a1a2e',
-              }}>
-                14
-              </div>
-              <div style={{
-                fontSize: '0.75rem',
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: '#5d6478',
-                marginTop: '0.4rem',
-              }}>
-                DAYS TO LAUNCH
-              </div>
-            </div>
-          </div>
-        </div>
+        <style>{`
+          @media (max-width: 767px) {
+            .page-shell-grid {
+              grid-template-columns: 1fr !important;
+              gap: 0 !important;
+            }
+            .page-shell-grid > div:last-child {
+              border-left: none !important;
+              border-top: 1px solid #e3e0ea;
+              padding-left: 2rem !important;
+              padding-right: 2rem !important;
+              padding-top: 2rem !important;
+              padding-bottom: 2rem !important;
+            }
+          }
+        `}</style>
       </div>
     </PageShell>
   )

@@ -47,7 +47,7 @@ export default function PageShell({
           <WhatsAppIcon />
           WhatsApp us<span style={{ display: 'none' }}> · Mon–Fri 8:00–17:00</span>
         </a>
-        <a href="/#refer" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1,000 →</a>
+        <a href="/#refer" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
       </div>
 
       {/* HERO SECTION */}

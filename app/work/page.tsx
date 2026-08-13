@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import PageShell from '@/components/site/PageShell'
 
 const portfolioItems = [
@@ -12,6 +13,9 @@ const portfolioItems = [
 ]
 
 export default function Work() {
+  const [showAll, setShowAll] = useState(false)
+  const displayedItems = showAll ? portfolioItems : portfolioItems.slice(0, 3)
+
   return (
     <PageShell
       eyebrow="CASE STUDIES"
@@ -29,7 +33,7 @@ export default function Work() {
           gridTemplateColumns: '1fr',
           gap: '2rem',
         }}>
-          {portfolioItems.map((item) => (
+          {displayedItems.map((item) => (
             <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" style={{
               textDecoration: 'none',
               display: 'block',
@@ -41,15 +45,15 @@ export default function Work() {
                 overflow: 'hidden',
                 boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
                 display: 'grid',
-                gridTemplateColumns: '1fr 1.1fr',
-                gap: '2rem',
-                padding: '1.5rem',
+                gridTemplateColumns: '1.2fr 1fr',
+                gap: '1.5rem',
+                padding: '1.1rem',
               }} className="page-shell-grid">
                 {/* IMAGE AREA */}
                 <div style={{
                   background: '#d8d5e0',
                   borderRadius: '8px',
-                  aspectRatio: '4/3',
+                  aspectRatio: '16/9',
                 }} />
 
                 {/* CONTENT AREA */}
@@ -107,6 +111,32 @@ export default function Work() {
               </div>
             </a>
           ))}
+
+          {!showAll && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '1rem',
+            }}>
+              <button
+                onClick={() => setShowAll(true)}
+                style={{
+                  background: '#7d3d4f',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '999px',
+                  padding: '0.85rem 2rem',
+                  fontSize: '0.8rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  cursor: 'pointer',
+                }}
+              >
+                See More
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </PageShell>
