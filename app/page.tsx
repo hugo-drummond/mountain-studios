@@ -310,14 +310,8 @@ export default function Home() {
           transform: 'rotate(-7deg)',
           zIndex: 1,
         }}>
-          <div style={{ background: '#fff', borderRadius: '18px', padding: '10px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
-            <div style={{ borderRadius: '10px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px' }}>
-                <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.55rem', color: '#2e333a', whiteSpace: 'nowrap' }}>Alistair Drummond</span>
-                <span style={{ display: 'flex', gap: '5px' }}>
-                  {[18, 14, 16].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
-                </span>
-              </div>
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '5px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
+            <div style={{ borderRadius: '13px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
               <img src="/images/portfolio/alistair-drummond.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
@@ -330,14 +324,8 @@ export default function Home() {
           transform: 'rotate(6deg)',
           zIndex: 1,
         }}>
-          <div style={{ background: '#fff', borderRadius: '18px', padding: '10px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
-            <div style={{ borderRadius: '10px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '7px 10px' }}>
-                <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.55rem', color: '#2e333a', whiteSpace: 'nowrap' }}>Coimbra Bakery</span>
-                <span style={{ display: 'flex', gap: '5px' }}>
-                  {[16, 20, 14].map((w, i) => <span key={i} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
-                </span>
-              </div>
+          <div style={{ background: '#fff', borderRadius: '18px', padding: '5px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
+            <div style={{ borderRadius: '13px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
               <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
@@ -710,17 +698,7 @@ export default function Home() {
                   flexDirection: 'column',
                   width: '100%',
                 }}>
-                  <div style={{ background: '#f2f0f6', padding: '10px 10px 0' }}>
-                    <div style={{ background: '#fff', borderRadius: '8px 8px 0 0', overflow: 'hidden', border: '1px solid #eceaf2', borderBottom: 'none' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '6px 9px' }}>
-                        <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '0.65rem', color: '#2e333a', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
-                        <span style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
-                          {[14, 18, 12].map((w, j) => <span key={j} style={{ width: w, height: 3, borderRadius: 2, background: '#d8d3e2', display: 'inline-block' }} />)}
-                        </span>
-                      </div>
-                      <img src={item.img} alt={item.name} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
-                    </div>
-                  </div>
+                  <img src={item.img} alt={item.name} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
                   <div style={{ padding: '1.7rem 1.8rem', marginTop: 'auto' }}>
                     <p style={{
                       fontFamily: 'var(--font-playfair), Georgia, serif',
