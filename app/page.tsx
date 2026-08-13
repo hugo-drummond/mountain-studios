@@ -98,6 +98,11 @@ export default function Home() {
     }
     localStorage.setItem('ms_variant', chosen)
     setVariant(chosen)
+    // Tells ChatWidget to re-check whether this page is drawing the launcher.
+    // It reads the localStorage value above on its own too; this is the catch-up
+    // for a variant picked after the widget had already settled, e.g. arriving
+    // here by client-side navigation from another page.
+    window.dispatchEvent(new Event('ms-chat:variant'))
   }, [])
 
   const StarRating = ({ count }: { count: number }) => (
@@ -1191,9 +1196,16 @@ export default function Home() {
         >SEE YOUR NEW SITE →</button>
       )}
       {variant === 'chat' && (
-        <a
-          href={WHATSAPP_URL}
-          onClick={() => { try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'chat' }) } catch { } }}
+        // Opens the on-site chatbot (components/site/ChatWidget). This used to
+        // be a wa.me link on WHATSAPP_NUMBER, which is still the placeholder
+        // 27000000000 — half of the homepage's visitors were being sent to a
+        // number that does not exist. The widget hides its own launcher while
+        // this pill is on screen, so there is only ever one.
+        <button
+          onClick={() => {
+            try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'chat' }) } catch { }
+            window.dispatchEvent(new Event('ms-chat:open'))
+          }}
           style={{
             position: 'fixed',
             bottom: '1.5rem',
@@ -1203,10 +1215,12 @@ export default function Home() {
             color: '#fff',
             padding: '0.85rem 1.5rem',
             borderRadius: '999px',
-            textDecoration: 'none',
+            border: 'none',
+            cursor: 'pointer',
             display: 'inline-flex',
             gap: '0.5rem',
             alignItems: 'center',
+            fontFamily: 'inherit',
             fontSize: '0.85rem',
             fontWeight: 600,
             boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
@@ -1217,7 +1231,7 @@ export default function Home() {
             <circle cx="8.5" cy="10" r="1.1" /><circle cx="12" cy="10" r="1.1" /><circle cx="15.5" cy="10" r="1.1" />
           </svg>
           Chat with us
-        </a>
+        </button>
       )}
 
       <style>{`

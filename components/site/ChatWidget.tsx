@@ -37,6 +37,30 @@ const MAX_INPUT = 1000
 // floating over someone else's mock site is the wrong thing entirely.
 const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp']
 
+// The homepage runs an A/B test (app/page.tsx). On the 'chat' arm it renders its
+// own pill bottom-right, which used to be a WhatsApp link and now opens this
+// widget instead. When that pill is on screen it owns the job, and this
+// component must not draw a second launcher next to it.
+//
+// The handshake is localStorage rather than a React context because the pill
+// lives in the page and this lives in the layout, so there is no shared tree to
+// hang a provider on. It cannot be an event alone either: child effects run
+// before parent effects, so the page would dispatch before this component was
+// listening. localStorage is already written by then, so it is read on mount and
+// on every navigation, with the event as the catch-up for a variant chosen after
+// this component had already settled.
+const OPEN_EVENT = 'ms-chat:open'
+const VARIANT_EVENT = 'ms-chat:variant'
+
+function pageOwnsLauncher(pathname: string | null): boolean {
+  if (pathname !== '/') return false
+  try {
+    return localStorage.getItem('ms_variant') === 'chat'
+  } catch {
+    return false
+  }
+}
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
@@ -50,6 +74,7 @@ interface Stored {
 export default function ChatWidget() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [externalLauncher, setExternalLauncher] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [leadId, setLeadId] = useState<string | null>(null)
   const [input, setInput] = useState('')
@@ -91,6 +116,21 @@ export default function ChatWidget() {
   useEffect(() => {
     if (open) inputRef.current?.focus()
   }, [open])
+
+  // Whoever owns the launcher on this route, and anything else that wants to
+  // open the chat, goes through the same event.
+  useEffect(() => {
+    const recheck = () => setExternalLauncher(pageOwnsLauncher(pathname))
+    recheck()
+
+    const onOpen = () => setOpen(true)
+    window.addEventListener(OPEN_EVENT, onOpen)
+    window.addEventListener(VARIANT_EVENT, recheck)
+    return () => {
+      window.removeEventListener(OPEN_EVENT, onOpen)
+      window.removeEventListener(VARIANT_EVENT, recheck)
+    }
+  }, [pathname])
 
   const close = useCallback(() => {
     setOpen(false)
@@ -158,17 +198,19 @@ export default function ChatWidget() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <button
-        ref={launcherRef}
-        type="button"
-        className="ms-chat-launcher"
-        aria-expanded={open}
-        aria-haspopup="dialog"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="ms-chat-dot" aria-hidden="true" />
-        <span className="ms-chat-launcher-label">{open ? 'Close' : 'Ask us'}</span>
-      </button>
+      {!externalLauncher && (
+        <button
+          ref={launcherRef}
+          type="button"
+          className="ms-chat-launcher"
+          aria-expanded={open}
+          aria-haspopup="dialog"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="ms-chat-dot" aria-hidden="true" />
+          <span className="ms-chat-launcher-label">{open ? 'Close' : 'Ask us'}</span>
+        </button>
+      )}
 
       {open && (
         <div className="ms-chat-panel" role="dialog" aria-modal="false" aria-label="Chat with Mountain Studios">
