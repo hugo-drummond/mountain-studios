@@ -27,12 +27,13 @@ interface ReviewItem {
   text?: string
   name?: string
   business?: string
+  timeAgo?: string
 }
 
 const reviews: ReviewItem[] = [
-  { stars: 4.9, text: 'Placeholder review — real Google review to be pasted here.', name: 'Sarah', business: 'CUSTOMER BUSINESS' },
-  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Mark', business: 'CUSTOMER BUSINESS' },
-  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Jessica', business: 'CUSTOMER BUSINESS' },
+  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Sarah', business: 'CUSTOMER BUSINESS', timeAgo: '2 weeks ago' },
+  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Mark', business: 'CUSTOMER BUSINESS', timeAgo: '1 month ago' },
+  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Jessica', business: 'CUSTOMER BUSINESS', timeAgo: '3 weeks ago' },
 ]
 
 interface FaqItem {
@@ -138,7 +139,7 @@ export default function Home() {
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
-          background: 'rgba(255,255,255,0.18)',
+          background: 'rgba(255,255,255,0.92)',
           backdropFilter: 'blur(14px)',
           WebkitBackdropFilter: 'blur(14px)',
           border: '1px solid rgba(255,255,255,0.35)',
@@ -146,15 +147,15 @@ export default function Home() {
           padding: '0.55rem 0.55rem 0.55rem 1.75rem',
           gap: '0.4rem',
         } as React.CSSProperties}>
-          <a href="/" style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.15rem', color: '#fff', textDecoration: 'none', marginRight: '1rem', fontWeight: 400, whiteSpace: 'nowrap' }}>mountain studios</a>
+          <a href="/" style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.15rem', color: '#1a1a2e', textDecoration: 'none', marginRight: '1rem', fontWeight: 400, whiteSpace: 'nowrap' }}>mountain studios</a>
           <div className="ms-nav-links" style={{ display: 'flex', gap: '0.4rem' }}>
-            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '#reviews' }].map(link => (
+            {[{ label: 'WORK', href: '/work' }, { label: 'SERVICES', href: '/services' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '/about' }, { label: 'CONTACT', href: '/contact' }].map(link => (
               <a key={link.href} href={link.href} style={{
                 fontSize: '0.78rem',
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
-                color: 'rgba(255,255,255,0.85)',
+                color: '#1a1a2e',
                 textDecoration: 'none',
               }}>
                 {link.label}
@@ -162,8 +163,8 @@ export default function Home() {
             ))}
           </div>
           <a href="/start-your-project" className="ms-nav-cta" style={{
-            background: '#fff',
-            color: '#1a1a2e',
+            background: '#1a1a2e',
+            color: '#fff',
             padding: '0.6rem 1.4rem',
             borderRadius: '999px',
             textDecoration: 'none',
@@ -196,7 +197,7 @@ export default function Home() {
               background: 'none', border: 'none', color: '#fff',
               fontSize: '2rem', cursor: 'pointer', lineHeight: 1,
             }}>&times;</button>
-            {[{ label: 'WORK', href: '#work' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '#reviews' }].map(link => (
+            {[{ label: 'WORK', href: '/work' }, { label: 'SERVICES', href: '/services' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '/about' }, { label: 'CONTACT', href: '/contact' }].map(link => (
               <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{
                 fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.12em',
                 textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
@@ -222,11 +223,11 @@ export default function Home() {
           zIndex: 2,
         }}>
           <p style={{
-            fontSize: '0.7rem',
+            fontSize: '1rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
-            color: '#7d6470',
+            color: '#fff',
             marginBottom: '1rem',
           }}>WEB DESIGN · CAPE TOWN · SOUTH AFRICA</p>
 
@@ -286,7 +287,7 @@ export default function Home() {
             }}>SHOW ME →</button>
           </form>
 
-          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#3d4358', margin: 0 }}>
+          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '1.05rem', fontWeight: 600, color: '#2e333a', margin: 0 }}>
             <span style={{ color: '#c9a445', fontSize: '0.8rem', letterSpacing: '0.1em' }}>★★★★★</span>
             4.9 on Google · 50+ sites built · Live in 14 days
           </p>
@@ -387,10 +388,10 @@ export default function Home() {
 
         {/* MOUNTAIN RIDGE */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
-            <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.10)" />
-            <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.16)" />
-            <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.24)" />
+          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+            <path d="M0,280 L0,200 Q120,168 240,184 Q360,200 480,170 Q600,140 720,156 Q840,172 960,146 Q1080,122 1200,150 Q1320,178 1440,164 L1440,280 Z" fill="rgba(26,26,46,0.18)" />
+            <path d="M0,280 L0,226 Q150,196 300,216 Q450,236 600,202 Q750,168 900,192 Q1050,216 1200,196 Q1320,182 1440,206 L1440,280 Z" fill="rgba(26,26,46,0.30)" />
+            <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
           </svg>
         </div>
       </div>
@@ -399,7 +400,7 @@ export default function Home() {
       <div id="reviews" style={{ background: '#f7f6fb', padding: '8rem 2rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p style={{
-            fontSize: '0.7rem',
+            fontSize: '1rem',
             fontWeight: 700,
             letterSpacing: '0.22em',
             textTransform: 'uppercase',
@@ -423,7 +424,7 @@ export default function Home() {
           maxWidth: '1240px',
           margin: 'auto',
         }}>
-          {/* Google Reviews Card */}
+          {/* Google Reviews Summary Card */}
           <div style={{
             background: '#fff',
             borderRadius: '14px',
@@ -432,68 +433,121 @@ export default function Home() {
             boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
             display: 'flex',
             flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
           }}>
-            <div style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '3rem', color: '#2e333a', fontWeight: 400, margin: 0 }}>4.9</div>
-            <StarRating count={5} />
-            <p style={{ fontSize: '0.85rem', color: '#5d6478', marginTop: '0.5rem', marginBottom: 'auto' }}>XX Google reviews</p>
+            {/* Google wordmark */}
+            <div style={{ fontSize: '1.6rem', fontWeight: 600, marginBottom: '0.5rem', fontFamily: 'sans-serif' }}>
+              <span style={{ color: '#4285F4' }}>G</span>
+              <span style={{ color: '#EA4335' }}>o</span>
+              <span style={{ color: '#FBBC05' }}>o</span>
+              <span style={{ color: '#4285F4' }}>g</span>
+              <span style={{ color: '#34A853' }}>l</span>
+              <span style={{ color: '#EA4335' }}>e</span>
+            </div>
+            {/* Mountain Studios */}
+            <div style={{ fontWeight: 700, fontSize: '1.35rem', color: '#1a1a2e', marginBottom: '1rem' }}>Mountain Studios</div>
+            {/* Rating and stars */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', justifyContent: 'center', marginBottom: '1rem' }}>
+              <div style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '2.5rem', color: '#2e333a' }}>4.9</div>
+              <StarRating count={5} />
+            </div>
+            {/* Reviews link */}
             <a href="#" style={{
-              border: '1px solid #d8d3e2',
-              padding: '0.55rem 1.1rem',
-              color: '#2e333a',
+              color: '#4285F4',
               textDecoration: 'none',
-              borderRadius: '999px',
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              display: 'inline-block',
-              marginTop: '1rem',
+              fontSize: '0.95rem',
+              marginBottom: '1rem',
+              flex: 1,
+              display: 'flex',
+              alignItems: 'flex-end',
             }}>
-              READ ON GOOGLE →
+              Read our XX Reviews
             </a>
+            {/* Write review button */}
+            <button style={{
+              background: '#000',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '999px',
+              padding: '0.8rem 2rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              fontSize: '0.95rem',
+              marginTop: 'auto',
+              width: 'fit-content',
+            }}>
+              Write a review
+            </button>
           </div>
 
           {/* Customer Review Cards */}
-          {reviews.map((review, i) => (
-            <div key={i} style={{
-              background: '#fff',
-              borderRadius: '14px',
-              padding: '2.5rem',
-              minHeight: '280px',
-              boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
-              display: 'flex',
-              flexDirection: 'column',
-            }}>
-              <StarRating count={5} />
-              <p style={{
-                fontSize: '0.95rem',
-                color: '#2e333a',
-                lineHeight: 1.6,
-                margin: '1rem 0',
-                flex: 1,
+          {reviews.map((review, i) => {
+            const avatarColors = ['#8a6f63', '#5b7a8c', '#7a8a5b'];
+            const initials = review.name?.charAt(0).toUpperCase() || '?';
+            return (
+              <div key={i} style={{
+                background: '#fff',
+                borderRadius: '14px',
+                padding: '2.5rem',
+                minHeight: '280px',
+                boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
+                display: 'flex',
+                flexDirection: 'column',
               }}>
-                {review.text}
-              </p>
-              <p style={{
-                fontWeight: 700,
-                fontSize: '0.9rem',
-                color: '#2e333a',
-                margin: '0.5rem 0 0',
-              }}>
-                {review.name}
-              </p>
-              <p style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.14em',
-                color: '#8a8fa0',
-                margin: 0,
-              }}>
-                {review.business}
-              </p>
-            </div>
-          ))}
+                {/* Header: avatar + name + time */}
+                <div style={{ display: 'flex', gap: '0.8rem', marginBottom: '1rem' }}>
+                  <div style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    background: avatarColors[i],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    color: '#fff',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                  }}>
+                    {initials}
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, color: '#1a1a2e', fontSize: '0.95rem', margin: '0 0 0.2rem' }}>
+                      {review.name}
+                    </div>
+                    <div style={{ fontSize: '0.85rem', color: '#6b7280', margin: 0 }}>
+                      {review.timeAgo}
+                    </div>
+                  </div>
+                </div>
+                {/* Stars */}
+                <div style={{ marginBottom: '0.8rem' }}>
+                  <StarRating count={5} />
+                </div>
+                {/* Review text */}
+                <p style={{
+                  fontSize: '0.95rem',
+                  color: '#2e333a',
+                  lineHeight: 1.6,
+                  margin: '0 0 1rem',
+                  flex: 1,
+                }}>
+                  {review.text}
+                </p>
+                {/* Footer: Google logo + View on Google */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#6b7280' }}>
+                  <svg width="18" height="18" viewBox="0 0 48 48" style={{ flexShrink: 0 }}>
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                  </svg>
+                  <span>View on Google</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -626,22 +680,18 @@ export default function Home() {
       {/* WORK SECTION */}
       <div id="work" style={{ background: '#f4f2fa', padding: '3rem 2rem 8rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-playfair), Georgia, serif',
+            fontSize: '2.6rem',
+            fontWeight: 400,
+            color: '#2e333a',
+            textAlign: 'center',
+            margin: '0 0 2rem',
+          }}>SEE THE BRANDS WE'VE BUILT</h2>
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
+            textAlign: 'center',
             marginBottom: '2.5rem',
-            flexWrap: 'wrap',
-            gap: '1rem',
           }}>
-            <p style={{
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              letterSpacing: '0.22em',
-              textTransform: 'uppercase',
-              color: '#7d6470',
-              margin: 0,
-            }}>SEE THE BRANDS WE'VE BUILT</p>
             <a href="#work" style={{
               fontSize: '0.9rem',
               color: '#7d3d4f',
@@ -934,11 +984,11 @@ export default function Home() {
         </div>
 
         {/* MOUNTAIN RIDGE */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1, paddingBottom: '6rem' }}>
-          <svg viewBox="0 0 1440 400" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
-            <path d="M0,400 L0,320 L120,280 L240,310 L360,240 L440,260 L520,180 L580,200 L640,120 L680,140 L720,60 L760,80 L800,130 L860,160 L920,200 L1000,240 L1060,220 L1120,260 L1200,290 L1280,270 L1360,300 L1440,280 L1440,400 Z" fill="rgba(26,26,46,0.10)" />
-            <path d="M0,400 L0,340 L100,310 L200,330 L320,270 L400,290 L480,220 L540,240 L620,160 L670,180 L740,100 L780,120 L840,170 L900,200 L980,250 L1060,230 L1140,270 L1220,300 L1320,280 L1440,310 L1440,400 Z" fill="rgba(26,26,46,0.16)" />
-            <path d="M0,400 L0,360 L80,340 L180,355 L280,300 L380,320 L460,260 L530,280 L600,210 L660,230 L730,160 L770,180 L830,220 L910,260 L1000,290 L1100,270 L1200,300 L1300,320 L1440,340 L1440,400 Z" fill="rgba(26,26,46,0.24)" />
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
+          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+            <path d="M0,280 L0,200 Q120,168 240,184 Q360,200 480,170 Q600,140 720,156 Q840,172 960,146 Q1080,122 1200,150 Q1320,178 1440,164 L1440,280 Z" fill="rgba(26,26,46,0.18)" />
+            <path d="M0,280 L0,226 Q150,196 300,216 Q450,236 600,202 Q750,168 900,192 Q1050,216 1200,196 Q1320,182 1440,206 L1440,280 Z" fill="rgba(26,26,46,0.30)" />
+            <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
           </svg>
         </div>
       </div>
@@ -946,33 +996,28 @@ export default function Home() {
       {/* FAQ SECTION */}
       <div style={{ background: '#efedf7', padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '760px', margin: 'auto' }}>
-          <p style={{
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#7d6470',
-            textAlign: 'center',
-            marginBottom: '1rem',
-          }}>FAQ</p>
           <h2 style={{
             fontFamily: 'var(--font-playfair), Georgia, serif',
-            fontSize: 'clamp(1.7rem,3vw,2.4rem)',
+            fontSize: '3rem',
+            fontWeight: 400,
             color: '#2e333a',
             textAlign: 'center',
-            fontWeight: 400,
             margin: '0 0 3rem',
-          }}>Questions people actually ask.</h2>
+          }}>FAQ</h2>
 
           <div>
             {faqItems.map((item, i) => (
-              <div key={i} style={{ marginBottom: '2px' }}>
+              <div key={i} style={{
+                marginBottom: '2px',
+                background: openFaq === i ? '#f0e6ec' : '#fff',
+                borderRadius: openFaq === i ? '8px' : '0',
+              }}>
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   style={{
                     width: '100%',
                     textAlign: 'left',
-                    background: openFaq === i ? '#f0e6ec' : '#fff',
+                    background: 'transparent',
                     border: 'none',
                     cursor: 'pointer',
                     padding: '1.15rem 1.4rem',
@@ -988,7 +1033,7 @@ export default function Home() {
                 </button>
                 {openFaq === i && (
                   <div style={{
-                    background: 'none',
+                    background: 'transparent',
                     padding: '0 1.4rem 1.25rem',
                     fontSize: '0.9rem',
                     color: '#5d6478',
