@@ -213,7 +213,15 @@ export default function ChatWidget() {
       )}
 
       {open && (
-        <div className="ms-chat-panel" role="dialog" aria-modal="false" aria-label="Chat with Mountain Studios">
+        // The panel grows out of whichever button opened it: bottom-left from
+        // this component's own launcher, bottom-right from the homepage's
+        // "Chat with us" pill on the chat variant.
+        <div
+          className={`ms-chat-panel${externalLauncher ? ' ms-chat-panel--right' : ''}`}
+          role="dialog"
+          aria-modal="false"
+          aria-label="Chat with Mountain Studios"
+        >
           <header className="ms-chat-head">
             <div>
               <p className="ms-chat-eyebrow">Mountain Studios</p>
@@ -331,6 +339,15 @@ const CSS = `
   box-shadow: 0 24px 64px rgba(26, 26, 46, .22);
   transform-origin: bottom left; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
 }
+
+/* Opened by the homepage's "Chat with us" pill, which is bottom-right, so the
+   panel unfolds from there instead of the opposite corner. Bottom stays at
+   84px, which clears the pill. */
+.ms-chat-panel--right {
+  /* 24px, not the 20px used elsewhere, to line the panel's right edge up with
+     the homepage pill's — that sits at 1.5rem. */
+  left: auto; right: 24px; transform-origin: bottom right;
+}
 @keyframes ms-chat-in {
   from { opacity: 0; transform: translateY(10px) scale(.97); }
   to   { opacity: 1; transform: none; }
@@ -417,8 +434,10 @@ const CSS = `
 }
 
 @media (max-width: 480px) {
-  .ms-chat-panel {
-    left: 0; bottom: 0; width: 100vw; max-width: 100vw;
+  /* Full screen on a phone whichever corner it was opened from, so the
+     --right modifier's offsets have to be cleared explicitly. */
+  .ms-chat-panel, .ms-chat-panel--right {
+    left: 0; right: auto; bottom: 0; width: 100vw; max-width: 100vw;
     height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0;
   }
   .ms-chat-launcher { left: 14px; bottom: 14px; }

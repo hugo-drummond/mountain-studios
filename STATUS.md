@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 13 August 2026
+Last updated: 13 August 2026 (evening — screenshot pass)
 
 ## Where things stand
 
@@ -163,6 +163,48 @@ not use the shell; its markup is still self-contained.
 
 The nav on every page (homepage included) now reads WORK · SERVICES · PRICING · REFER ·
 ABOUT · CONTACT, with PRICING and REFER still homepage anchors.
+
+## Screenshot pass — 13 August 2026, evening
+
+Commit `499140e`, live and verified. A third round against Hugo's annotations, and the
+first pass where the site shows real client work rather than composed stand-ins.
+
+**Client screenshots are real now.** All six portfolio images were captured from the live
+sites with Playwright at a 1440×810 viewport and written over the old files in
+`public/images/portfolio/`. `alistair-drummond.jpg` is a copy of `ada.jpg` used by the hero
+mock. Alistair Drummond's hero rotates its image, so that shot differs between captures.
+
+**Home.** Stars are `#F5B301` everywhere. The Google card lost its "Read our XX Reviews"
+link and its button now reads "All reviews" — still with no href. Referral steps are bolder
+and every `R1,000` reads `R1000`, top bar included. The work strip is a three-brand
+shortlist driven by `FEATURED_ON_HOME` in a 1440px section; **the CSS-composed browser
+mockups are gone** — a 16:9 screenshot is now the card's first element, cards are equal
+height and the copy is pinned to the bottom. Both floating hero cards are image-only inside
+a 5px frame.
+
+**`/work`.** The page carried an `img` field it never rendered — a grey box stood in for
+every case study. It now renders the screenshot at 16:9, and shows three cards behind a
+"See More" reveal rather than all six. The "VIEW THE SITE" buttons were already pointed at
+the real client domains, contrary to the note above.
+
+**`/services`.** Cards are horizontal: an 80px icon in a fixed left column, copy and button
+right, both vertically centred. The grid uses `minmax(min(420px, 100%), 1fr)` — the plain
+`minmax(420px, 1fr)` it started with overflowed a 375px viewport.
+
+**`/contact`.** The info column and the form are one card divided by a rule, the stats band
+underneath is deleted, and "Your business" is now a `tel` "Your contact number". The form
+still posts nowhere, so that number is not captured.
+
+### Traps this pass uncovered
+
+- `page-shell-grid` is shared by `PageShell`, `/about` and `/work`. A media query scoped to
+  it from a single page leaks into the others — `/contact` has its own `contact-card-grid`
+  and `contact-form-col` for that reason.
+- A `>` inside a `<style>{`…`}</style>` template literal causes a hydration mismatch: React
+  escapes it to `&gt;` server-side and not on the client. Put a class on the child instead
+  of using a child combinator. (A separate, pre-existing mismatch fires on `/about` too.)
+- **There is no ESLint config in this repo**, so `npx next lint` drops into its interactive
+  setup prompt and cannot be used as a check. `npx tsc --noEmit` is the pre-push gate here.
 
 ## reCAPTCHA — v2 registered, v3 calls made, verification broken
 

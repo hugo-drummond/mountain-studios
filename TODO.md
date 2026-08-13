@@ -26,12 +26,13 @@ Content Hugo owes before this page is honest:
 
 - [ ] **WhatsApp number.** `WHATSAPP_NUMBER` at the top of `app/page.tsx` is `27000000000`.
       The top bar and the floating chat pill both point at it, so both are dead links.
-- [ ] **Real Google reviews.** Three cards say "Placeholder review". The score card says
-      "XX Google reviews" and its "Read on Google" button goes to `#`.
+- [ ] **Real Google reviews.** Three cards say "Placeholder review". The score card's
+      button now reads "All reviews" and has no link at all — it needs the Google
+      reviews URL.
 - [ ] **Footer social links.** Instagram, Facebook, LinkedIn and Google are all `#`.
-- [ ] **Work grid images.** Three of the six are photographs, not site screenshots
-      (`ada.jpg`, `coimbra-bakery.jpg`, `pie-in-the-sky.jpg`), and the two tilted hero
-      cards reuse the first two. The mockups show screenshots throughout.
+- [x] **Work grid images.** Done 13 August — all six are Playwright screenshots of the
+      live client sites at 1440×810, and the tilted hero cards show them unadorned. The
+      composed browser mockups are gone.
 
 Still to build:
 
@@ -43,7 +44,10 @@ Still to build:
       `PageShell`. `/pricing` and `/refer` are still homepage anchors.
 - [ ] **Contact page form has no backend.** It shows a thank-you and sends nothing.
       `POST /api/contact/submit` + `contact_messages` + the CRM inbox are live — wire it.
-- [ ] **`/work` "VIEW THE SITE" buttons go to `#`.** Need the real client site URLs.
+- [x] **`/work` "VIEW THE SITE" buttons.** Verified 13 August — they already point at the
+      real client domains. The `#` note was stale.
+- [ ] **`/contact` contact-number field is not captured.** "Your business" became "Your
+      contact number" on 13 August, but `handleSubmit` still only flips a flag.
 - [ ] **About photo is a grey placeholder.** `public/images/team/hugo-drummond.jpg`
       exists — swap it in.
 - [ ] **The chat pill is a WhatsApp link, not a chat widget.** Deliberate for now.
