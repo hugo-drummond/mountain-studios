@@ -1,0 +1,332 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { crmAdmin } from '@/lib/crm'
+import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
+
+// ---------------------------------------------------------------------------
+// POST /api/chat
+//
+// The site's chatbot. Two jobs, in this order:
+//   1. answer the visitor's question, using only lib/chatbot/knowledge.ts
+//   2. get their email and phone number into the CRM
+//
+// Deliberately boring in three places:
+//
+//   * No streaming. A single JSON response is one thing that can fail instead
+//     of a stream that can half-fail and leave the widget stuck mid-sentence.
+//   * No JSON mode on the model. The reply is plain text, and the email and
+//     phone are pulled out of what the *visitor* typed with a regex. A model
+//     that returns malformed JSON would cost us the lead; a regex over a phone
+//     number cannot.
+//   * Stateless. The client posts the whole conversation each turn. Nothing to
+//     expire, nothing to store, no session table to go stale.
+//
+// The lead save is best-effort and never fails the response — same rule as
+// /api/brief/submit. A visitor must never see an error caused by our database.
+// ---------------------------------------------------------------------------
+
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
+const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions'
+const MODEL = 'deepseek-chat'
+
+// A chat reply is two or three sentences. Anything longer means the model has
+// started writing an essay, and cutting it off is the right outcome.
+const MAX_TOKENS = 400
+const REQUEST_TIMEOUT_MS = 20_000
+
+// Guard rails on what the client may post back to us.
+const MAX_MESSAGES = 24
+const MAX_CHARS_PER_MESSAGE = 1_000
+
+// Per-IP, per-instance. Serverless means each instance counts separately, so
+// this is a speed bump against a stuck client or a bored visitor, not a
+// security control.
+const RATE_LIMIT_MAX = 30
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const hits = new Map<string, number[]>()
+
+type Role = 'user' | 'assistant'
+interface Message {
+  role: Role
+  content: string
+}
+
+interface Payload {
+  messages?: unknown
+  leadId?: unknown
+}
+
+function rateLimited(ip: string): boolean {
+  const now = Date.now()
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
+  recent.push(now)
+  hits.set(ip, recent)
+
+  // Stop the Map growing without bound on a long-lived instance.
+  if (hits.size > 500) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) hits.delete(key)
+    }
+  }
+
+  return recent.length > RATE_LIMIT_MAX
+}
+
+const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
+
+function findEmail(text: string): string | null {
+  const match = text.match(EMAIL_RE)
+  return match ? match[match.length - 1].toLowerCase().replace(/[.,;:]+$/, '') : null
+}
+
+// South African numbers only, and strictly. The conversation is full of other
+// numbers — "14 days", "R1000", "50+ sites" — and a loose match would file a
+// price as a phone number. A candidate only counts if it normalises to a real
+// SA shape: 0XXXXXXXXX (10 digits) or 27XXXXXXXXX (11 digits).
+const PHONE_CANDIDATE_RE = /(?:\+|\b00)?\d[\d\s().-]{7,}\d/g
+
+function findPhone(text: string): string | null {
+  const candidates = text.match(PHONE_CANDIDATE_RE)
+  if (!candidates) return null
+
+  for (const raw of candidates.reverse()) {
+    let digits = raw.replace(/\D/g, '')
+    if (digits.startsWith('00')) digits = digits.slice(2)
+
+    if (digits.startsWith('27') && digits.length === 11) return `+${digits}`
+    if (digits.startsWith('0') && digits.length === 10) return digits
+  }
+  return null
+}
+
+// The visitor's email and number go to the CRM, not to DeepSeek. Once we have
+// them, they are stripped out of the transcript before it leaves the country.
+// The placeholder is left in on purpose: the model still needs to know it has
+// already been given the details so it stops asking for them.
+function redact(text: string): string {
+  return text
+    .replace(EMAIL_RE, '[email provided]')
+    .replace(PHONE_CANDIDATE_RE, (m) => (findPhone(m) ? '[phone provided]' : m))
+}
+
+function parseMessages(input: unknown): Message[] {
+  if (!Array.isArray(input)) return []
+  return input
+    .filter(
+      (m): m is Message =>
+        !!m &&
+        typeof m === 'object' &&
+        (m as Message).role !== undefined &&
+        ((m as Message).role === 'user' || (m as Message).role === 'assistant') &&
+        typeof (m as Message).content === 'string' &&
+        (m as Message).content.trim().length > 0,
+    )
+    .slice(-MAX_MESSAGES)
+    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS_PER_MESSAGE) }))
+}
+
+async function callDeepSeek(messages: Message[]): Promise<string | null> {
+  const apiKey = process.env.DEEPSEEK_API_KEY
+  if (!apiKey) {
+    console.error('[chat] Missing DEEPSEEK_API_KEY')
+    return null
+  }
+
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  try {
+    const res = await fetch(DEEPSEEK_URL, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        // Low but not zero. The bot is allowed to sound like a person; it is
+        // not allowed to be creative about the facts, and the prompt handles
+        // that far better than the temperature does.
+        temperature: 0.3,
+        max_tokens: MAX_TOKENS,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+      }),
+    })
+
+    if (!res.ok) {
+      console.error('[chat] DeepSeek returned', res.status, await res.text().catch(() => ''))
+      return null
+    }
+
+    const data = await res.json()
+    const content = data?.choices?.[0]?.message?.content
+    return typeof content === 'string' && content.trim() ? content.trim() : null
+  } catch (err) {
+    console.error('[chat] DeepSeek call failed:', err instanceof Error ? err.message : err)
+    return null
+  } finally {
+    clearTimeout(timer)
+  }
+}
+
+function buildNotes(email: string | null, phone: string | null, messages: Message[]): string {
+  const transcript = messages
+    .map((m) => `${m.role === 'user' ? 'Them' : 'Bot'}: ${m.content}`)
+    .join('\n')
+
+  return [
+    'Chatbot enquiry from the website.',
+    email ? `Email: ${email}` : null,
+    phone ? `Phone: ${phone}` : null,
+    '',
+    '--- chat transcript ---',
+    transcript,
+  ]
+    .filter((line) => line !== null)
+    .join('\n')
+    .slice(0, 8_000)
+}
+
+// Mirrors saveLead() in /api/brief/submit: one person, one row. The widget
+// hands back the leadId it was given, so a conversation that carries on after
+// the email is captured keeps updating the same row rather than making a new
+// one every message.
+async function saveLead(
+  leadId: string | null,
+  email: string | null,
+  phone: string | null,
+  messages: Message[],
+): Promise<string | null> {
+  try {
+    const notes = buildNotes(email, phone, messages)
+    const label = email || phone || 'unknown'
+
+    const fields: Record<string, unknown> = {
+      business_name: `Website chat — ${label}`,
+      notes,
+    }
+    if (email) fields.email = email
+    if (phone) fields.phone = phone
+
+    if (leadId) {
+      const { data, error } = await crmAdmin()
+        .from('leads')
+        .update(fields)
+        .eq('id', leadId)
+        .select('id')
+        .maybeSingle()
+
+      if (error) throw error
+      if (data) return data.id
+      // Stale id from sessionStorage. Fall through and find or create a row.
+    }
+
+    // An email is the only thing we can reliably match an existing lead on.
+    if (email) {
+      const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
+
+      const { data: existing, error: queryError } = await crmAdmin()
+        .from('leads')
+        .select('id')
+        .eq('source', 'website')
+        .eq('email', email)
+        .gt('created_at', thirtyDaysAgo)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (queryError) throw queryError
+
+      if (existing) {
+        const { data, error } = await crmAdmin()
+          .from('leads')
+          .update(fields)
+          .eq('id', existing.id)
+          .select('id')
+          .single()
+
+        if (error) throw error
+        return data?.id ?? null
+      }
+    }
+
+    const { data, error } = await crmAdmin()
+      .from('leads')
+      .insert({
+        ...fields,
+        category: null,
+        // 'website' rather than a new 'chatbot' value on purpose: this is the
+        // value the CRM board already keys its "Warm lead" badge off, and the
+        // notes say where it came from. A new value would need the board to
+        // know about it first.
+        source: 'website',
+        has_website: false,
+        crm_status: 'new',
+        // Inbound leads are assigned by hand, not dropped into a rep's
+        // territory batch. Same reasoning as /api/brief/submit.
+        search_area: null,
+        assigned_to: null,
+      })
+      .select('id')
+      .single()
+
+    if (error) throw error
+    return data?.id ?? null
+  } catch (err) {
+    console.error('[chat] CRM save failed:', err instanceof Error ? err.message : err)
+    return null
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const ip =
+    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+
+  if (rateLimited(ip)) {
+    return NextResponse.json(
+      { reply: "You're going a bit fast for me. Give it a minute and try again." },
+      { status: 429 },
+    )
+  }
+
+  let body: Payload
+  try {
+    body = await req.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+  }
+
+  const messages = parseMessages(body.messages)
+  if (messages.length === 0 || messages[messages.length - 1].role !== 'user') {
+    return NextResponse.json({ error: 'No message to reply to' }, { status: 400 })
+  }
+
+  const incomingLeadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
+
+  // Only ever read contact details out of what the visitor typed. Anything the
+  // bot said is its own output and must not be treated as a captured detail.
+  const fromVisitor = messages
+    .filter((m) => m.role === 'user')
+    .map((m) => m.content)
+    .join('\n')
+
+  const email = findEmail(fromVisitor)
+  const phone = findPhone(fromVisitor)
+
+  const outbound = messages.map((m) => ({ ...m, content: redact(m.content) }))
+  const reply = await callDeepSeek(outbound)
+
+  let leadId = incomingLeadId
+  if (email || phone) {
+    // Saved with the reply included, so the transcript in the CRM ends on what
+    // the bot actually said rather than trailing off mid-conversation.
+    const full = reply ? [...messages, { role: 'assistant' as const, content: reply }] : messages
+    leadId = await saveLead(incomingLeadId, email, phone, full)
+  }
+
+  return NextResponse.json({ reply: reply ?? FALLBACK_REPLY, leadId })
+}

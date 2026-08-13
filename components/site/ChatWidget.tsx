@@ -1,0 +1,376 @@
+'use client'
+
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+// ---------------------------------------------------------------------------
+// The chat widget: a launcher pill in the bottom-right corner and the panel it
+// opens. Talks to /api/chat, which is where the gatekeeping and the lead
+// capture live. This file holds no knowledge about the business at all — the
+// greeting below is the only copy it owns.
+//
+// Styling is a single <style> block of ms-chat-* classes rather than Tailwind
+// utilities. The palette is not in tailwind.config.ts, so every colour would
+// have to be an arbitrary value, and arbitrary values assembled in JS are
+// exactly what Tailwind's purge misses. Plain CSS cannot be purged.
+//
+// Deliberately not a chat-bubble UI. The site's own type is Playfair over a
+// lilac-tinted paper, and two rows of opposing bubbles would look like it was
+// bolted on from somewhere else. The visitor gets a solid navy chip, the studio
+// answers as plain text behind a hairline rule, and the asymmetry does the work
+// the bubbles would have done.
+// ---------------------------------------------------------------------------
+
+const GREETING =
+  "Hi — I can help with anything about Mountain Studios: what we build, how it works, what's included. What are you after?"
+
+// Three openers that map onto sections the bot definitely knows, so a visitor's
+// first tap is always a question it can answer well.
+const OPENERS = ["What does a site cost?", 'How long does it take?', "What's included?"]
+
+const STORAGE_KEY = 'ms-chat-v1'
+const MAX_INPUT = 1000
+
+interface Message {
+  role: 'user' | 'assistant'
+  content: string
+}
+
+interface Stored {
+  messages: Message[]
+  leadId: string | null
+}
+
+export default function ChatWidget() {
+  const [open, setOpen] = useState(false)
+  const [messages, setMessages] = useState<Message[]>([])
+  const [leadId, setLeadId] = useState<string | null>(null)
+  const [input, setInput] = useState('')
+  const [sending, setSending] = useState(false)
+
+  const launcherRef = useRef<HTMLButtonElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  // Survive a hard reload. Client-side navigation already keeps this component
+  // mounted, since it lives in the root layout.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY)
+      if (!raw) return
+      const saved = JSON.parse(raw) as Stored
+      if (Array.isArray(saved.messages)) setMessages(saved.messages)
+      if (typeof saved.leadId === 'string') setLeadId(saved.leadId)
+    } catch {
+      // A corrupt entry is not worth a broken widget.
+    }
+  }, [])
+
+  useEffect(() => {
+    if (messages.length === 0) return
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, leadId } satisfies Stored))
+    } catch {
+      // Private mode, quota, whatever. The chat still works in memory.
+    }
+  }, [messages, leadId])
+
+  // Pin to the newest message.
+  useEffect(() => {
+    const el = scrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [messages, sending, open])
+
+  useEffect(() => {
+    if (open) inputRef.current?.focus()
+  }, [open])
+
+  const close = useCallback(() => {
+    setOpen(false)
+    launcherRef.current?.focus()
+  }, [])
+
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, close])
+
+  const send = useCallback(
+    async (text: string) => {
+      const content = text.trim().slice(0, MAX_INPUT)
+      if (!content || sending) return
+
+      const next = [...messages, { role: 'user' as const, content }]
+      setMessages(next)
+      setInput('')
+      setSending(true)
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: next, leadId }),
+        })
+        const data = await res.json().catch(() => null)
+
+        // The route answers with a usable `reply` on every path it controls,
+        // including 429. This branch is for the ones it does not: a network
+        // drop, a cold start that times out, a gateway page.
+        const reply =
+          typeof data?.reply === 'string' && data.reply.trim()
+            ? data.reply.trim()
+            : "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za."
+
+        setMessages([...next, { role: 'assistant', content: reply }])
+        if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+      } catch {
+        setMessages([
+          ...next,
+          {
+            role: 'assistant',
+            content:
+              "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za.",
+          },
+        ])
+      } finally {
+        setSending(false)
+        inputRef.current?.focus()
+      }
+    },
+    [messages, leadId, sending],
+  )
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+
+      <button
+        ref={launcherRef}
+        type="button"
+        className="ms-chat-launcher"
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="ms-chat-dot" aria-hidden="true" />
+        <span className="ms-chat-launcher-label">{open ? 'Close' : 'Ask us'}</span>
+      </button>
+
+      {open && (
+        <div className="ms-chat-panel" role="dialog" aria-modal="false" aria-label="Chat with Mountain Studios">
+          <header className="ms-chat-head">
+            <div>
+              <p className="ms-chat-eyebrow">Mountain Studios</p>
+              <p className="ms-chat-title">Ask us anything</p>
+            </div>
+            <button type="button" className="ms-chat-close" onClick={close} aria-label="Close chat">
+              &#215;
+            </button>
+          </header>
+
+          <div className="ms-chat-log" ref={scrollRef} aria-live="polite">
+            <p className="ms-chat-said">{GREETING}</p>
+
+            {messages.map((m, i) =>
+              m.role === 'user' ? (
+                <p key={i} className="ms-chat-asked">
+                  {m.content}
+                </p>
+              ) : (
+                <p key={i} className="ms-chat-said">
+                  {m.content}
+                </p>
+              ),
+            )}
+
+            {sending && (
+              <p className="ms-chat-typing" aria-label="Typing">
+                <span /><span /><span />
+              </p>
+            )}
+
+            {messages.length === 0 && !sending && (
+              <div className="ms-chat-openers">
+                {OPENERS.map((q) => (
+                  <button key={q} type="button" className="ms-chat-opener" onClick={() => send(q)}>
+                    {q}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <form
+            className="ms-chat-form"
+            onSubmit={(e) => {
+              e.preventDefault()
+              send(input)
+            }}
+          >
+            <textarea
+              ref={inputRef}
+              className="ms-chat-input"
+              rows={1}
+              value={input}
+              maxLength={MAX_INPUT}
+              placeholder="Type your question"
+              aria-label="Your message"
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  send(input)
+                }
+              }}
+            />
+            <button type="submit" className="ms-chat-send" disabled={!input.trim() || sending}>
+              Send
+            </button>
+          </form>
+
+          <p className="ms-chat-foot">Replies within one business day · hello@mountainstudios.co.za</p>
+        </div>
+      )}
+    </>
+  )
+}
+
+// Palette and faces are the site's own: near-black navy, lilac-tinted paper,
+// wine accent, Playfair over Source Sans. The variables are set on <body> in
+// app/layout.tsx, with a stack behind them in case this ever renders outside it.
+const CSS = `
+.ms-chat-launcher {
+  position: fixed; right: 20px; bottom: 20px; z-index: 9998;
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 22px 13px 18px; border: 0; border-radius: 999px;
+  background: #1a1a2e; color: #f4f2fa; cursor: pointer;
+  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
+  font-size: 15px; font-weight: 600; letter-spacing: .01em;
+  box-shadow: 0 6px 28px rgba(26, 26, 46, .28);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease;
+}
+.ms-chat-launcher:hover { transform: translateY(-2px); box-shadow: 0 10px 34px rgba(26, 26, 46, .34); }
+.ms-chat-launcher:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 3px; }
+
+.ms-chat-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #e9cad0;
+  box-shadow: 0 0 0 0 rgba(233, 202, 208, .7); animation: ms-chat-pulse 2.8s ease-out infinite;
+}
+@keyframes ms-chat-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(233, 202, 208, .55); }
+  70%  { box-shadow: 0 0 0 9px rgba(233, 202, 208, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(233, 202, 208, 0); }
+}
+
+.ms-chat-panel {
+  position: fixed; right: 20px; bottom: 84px; z-index: 9999;
+  display: flex; flex-direction: column;
+  width: 372px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px);
+  background: #f4f2fa; border: 1px solid #d8d3e2; border-radius: 16px; overflow: hidden;
+  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
+  box-shadow: 0 24px 64px rgba(26, 26, 46, .22);
+  transform-origin: bottom right; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes ms-chat-in {
+  from { opacity: 0; transform: translateY(10px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ms-chat-head {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  padding: 16px 16px 14px 20px; background: #1a1a2e; color: #f4f2fa;
+}
+.ms-chat-eyebrow {
+  margin: 0 0 3px; font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: #ad9fbf;
+}
+.ms-chat-title {
+  margin: 0; font-family: var(--font-playfair), Georgia, serif;
+  font-size: 19px; font-style: italic; font-weight: 400; line-height: 1.1;
+}
+.ms-chat-close {
+  flex: none; width: 30px; height: 30px; margin: -3px -4px 0 0;
+  border: 0; border-radius: 50%; background: transparent; color: #ad9fbf;
+  font-size: 22px; line-height: 1; cursor: pointer; transition: color .18s ease;
+}
+.ms-chat-close:hover { color: #f4f2fa; }
+.ms-chat-close:focus-visible { outline: 2px solid #e9cad0; outline-offset: 1px; }
+
+.ms-chat-log { flex: 1; overflow-y: auto; padding: 20px; }
+
+/* The studio's turn: plain text on paper, held by a hairline wine rule. */
+.ms-chat-said {
+  margin: 0 0 18px; padding-left: 14px; border-left: 2px solid #7d3d4f;
+  color: #2e333a; font-size: 15px; line-height: 1.55; white-space: pre-wrap;
+}
+
+/* The visitor's turn: a solid chip, pulled right. */
+.ms-chat-asked {
+  max-width: 84%; margin: 0 0 18px auto; padding: 10px 14px;
+  border-radius: 14px 14px 3px 14px; background: #1a1a2e; color: #f4f2fa;
+  font-size: 15px; line-height: 1.5; white-space: pre-wrap;
+}
+
+.ms-chat-typing { display: flex; gap: 5px; margin: 0 0 18px; padding-left: 16px; }
+.ms-chat-typing span {
+  width: 6px; height: 6px; border-radius: 50%; background: #7d3d4f;
+  animation: ms-chat-blink 1.3s ease-in-out infinite;
+}
+.ms-chat-typing span:nth-child(2) { animation-delay: .18s; }
+.ms-chat-typing span:nth-child(3) { animation-delay: .36s; }
+@keyframes ms-chat-blink { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+
+.ms-chat-openers { display: flex; flex-wrap: wrap; gap: 8px; padding-left: 14px; }
+.ms-chat-opener {
+  padding: 8px 14px; border: 1px solid #d0b5c6; border-radius: 999px;
+  background: transparent; color: #7d3d4f; cursor: pointer;
+  font-family: inherit; font-size: 13.5px; transition: background .18s ease, color .18s ease;
+}
+.ms-chat-opener:hover { background: #7d3d4f; color: #f4f2fa; }
+.ms-chat-opener:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 2px; }
+
+.ms-chat-form {
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 12px; border-top: 1px solid #e3e0ea; background: #eceaf2;
+}
+.ms-chat-input {
+  flex: 1; max-height: 96px; padding: 10px 12px; border: 1px solid #d8d3e2; border-radius: 10px;
+  background: #fff; color: #2e333a; font-family: inherit; font-size: 15px; line-height: 1.4;
+  resize: none;
+}
+.ms-chat-input::placeholder { color: #8d8799; }
+.ms-chat-input:focus { outline: 2px solid #7d3d4f; outline-offset: -1px; border-color: #7d3d4f; }
+
+.ms-chat-send {
+  flex: none; padding: 11px 18px; border: 0; border-radius: 10px;
+  background: #7d3d4f; color: #f4f2fa; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  transition: background .18s ease;
+}
+.ms-chat-send:hover:not(:disabled) { background: #6b3343; }
+.ms-chat-send:disabled { background: #c3bcd0; cursor: not-allowed; }
+.ms-chat-send:focus-visible { outline: 2px solid #1a1a2e; outline-offset: 2px; }
+
+.ms-chat-foot {
+  margin: 0; padding: 9px 12px 11px; background: #eceaf2; border-top: 1px solid #e3e0ea;
+  color: #5d6478; font-size: 11px; letter-spacing: .02em; text-align: center;
+}
+
+@media (max-width: 480px) {
+  .ms-chat-panel {
+    right: 0; bottom: 0; width: 100vw; max-width: 100vw;
+    height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0;
+  }
+  .ms-chat-launcher { right: 14px; bottom: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-chat-panel, .ms-chat-launcher, .ms-chat-dot, .ms-chat-typing span {
+    animation: none; transition: none;
+  }
+  .ms-chat-launcher:hover { transform: none; }
+}
+`

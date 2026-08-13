@@ -51,7 +51,7 @@ export default function Contact() {
           display: 'grid',
           gridTemplateColumns: '1fr 1.1fr',
           gap: 0,
-        }} className="page-shell-grid">
+        }} className="page-shell-grid contact-card-grid">
           {/* LEFT COLUMN - CONTACT INFO */}
           <div style={{ padding: '2rem' }}>
             {/* WhatsApp */}
@@ -118,7 +118,7 @@ export default function Contact() {
           </div>
 
           {/* RIGHT COLUMN - FORM */}
-          <div style={{
+          <div className="contact-form-col" style={{
             borderLeft: '1px solid #e3e0ea',
             paddingLeft: '2rem',
             paddingRight: '2rem',
@@ -210,11 +210,11 @@ export default function Contact() {
 
         <style>{`
           @media (max-width: 767px) {
-            .page-shell-grid {
+            .contact-card-grid {
               grid-template-columns: 1fr !important;
               gap: 0 !important;
             }
-            .page-shell-grid > div:last-child {
+            .contact-form-col {
               border-left: none !important;
               border-top: 1px solid #e3e0ea;
               padding-left: 2rem !important;
