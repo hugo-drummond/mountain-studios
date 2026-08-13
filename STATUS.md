@@ -112,6 +112,58 @@ a lead goes through the wizard.
 (`27000000000`) and both the top bar and the chat pill link to it; the three reviews are
 placeholder text with a placeholder count and Google link; footer social links are `#`.
 
+## Homepage annotation pass + A/B test — 13 August 2026, afternoon
+
+A second pass over the rebuilt homepage against Hugo's annotated screenshots, plus a
+floating-CTA split test:
+
+- **Nav pill** is now near-opaque white with navy text and a navy CTA button.
+- **Mountains redrawn.** The jagged light peaks are now smooth rolling hills — three
+  Q-curve SVG layers, viewBox 1440×280, fills `rgba(26,26,46,.18/.30/.42)` — in both the
+  hero and the referral section. The referral hills are anchored to the section bottom so
+  the sky above the heading stays clear.
+- **Reviews section restyled as Google review widgets.** The summary card carries the
+  coloured Google wordmark, "Mountain Studios", a large 4.9 beside gold stars, a
+  "Read our XX Reviews" link and a black "Write a review" pill. Individual cards get an
+  avatar circle with initial, name, a relative timestamp, stars, the review text and a
+  "View on Google" footer with the Google G. Text is still placeholder; the links still
+  go to `#` until real review URLs exist.
+- **FAQ**: "FAQ" is now the section's large serif header ("Questions people actually ask."
+  removed), and the pink highlight fills the whole open item, answer included.
+- **Work section**: "SEE THE BRANDS WE'VE BUILT" is a proper centred serif heading.
+- **A/B test.** The floating bottom-right button is a 50/50 split: variant `site` is a
+  "SEE YOUR NEW SITE →" pill that scrolls to and focuses the hero input; variant `chat` is
+  the WhatsApp bubble (still pointing at the dummy number). Assignment is sticky via
+  `localStorage.ms_variant`, `?v=1|2` overrides for preview, clicks fire the GA event
+  `float_cta_click`, and the wizard stamps `Homepage variant: …` into the lead's notes via
+  both brief endpoints — win rate is a count of leads by that line. No schema change.
+
+## Standalone pages — 13 August 2026
+
+Four new routes built from Hugo's page mockups, all on a shared shell
+(`components/site/PageShell.tsx`: top bar, six-link nav pill, gradient hero with the
+rolling-hills SVG, "See what yours could look like" CTA band, footer). The homepage does
+not use the shell; its markup is still self-contained.
+
+- **`/about`** — "We build the website, then we stay for the boring part." plus a single
+  "How the studio works" section with a photo card. The mockup's story timeline and
+  careers sections were cut on Hugo's annotation. The photo is a grey placeholder even
+  though `public/images/team/hugo-drummond.jpg` exists — swap pending.
+- **`/work`** — case-study list of all six portfolio brands with category, name, blurb
+  and a "VIEW THE SITE" button. Buttons go to `#`; no live client URLs are recorded
+  anywhere in the repo yet.
+- **`/services`** — the four offer cards (Web design, Paid ads, AEO, Business
+  automation), kept compact per the annotation; the mockup's "How it runs" process
+  section was cut.
+- **`/contact`** — WhatsApp / email / hours column beside a contact form, with a stats
+  band underneath (50+ sites, 4.9 rating, 14 days — the real homepage stats, not the
+  mockup's filler). **The form is front-end only**: submit shows a thank-you and sends
+  nothing. `POST /api/contact/submit`, `mountainstudios.contact_messages` and the CRM
+  inbox are all still live and could be wired straight in.
+
+The nav on every page (homepage included) now reads WORK · SERVICES · PRICING · REFER ·
+ABOUT · CONTACT, with PRICING and REFER still homepage anchors.
+
 ## reCAPTCHA — v2 registered, v3 calls made, verification broken
 
 `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` and `RECAPTCHA_SECRET_KEY` were set up for reCAPTCHA

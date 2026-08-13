@@ -39,9 +39,13 @@ Still to build:
       Needs somewhere to write, or the section should come down.
 - [ ] **Referral form has no backend.** Same — name, email and mobile go nowhere, and no
       referral link is generated.
-- [ ] **`/work`, `/pricing`, `/refer`, `/about` do not exist.** Nav and footer point at
-      homepage anchors for now, and the nav's fourth link reads REVIEWS because there is
-      no About section left to anchor to.
+- [x] **`/work`, `/about`, `/services`, `/contact` built 13 August** on a shared
+      `PageShell`. `/pricing` and `/refer` are still homepage anchors.
+- [ ] **Contact page form has no backend.** It shows a thank-you and sends nothing.
+      `POST /api/contact/submit` + `contact_messages` + the CRM inbox are live — wire it.
+- [ ] **`/work` "VIEW THE SITE" buttons go to `#`.** Need the real client site URLs.
+- [ ] **About photo is a grey placeholder.** `public/images/team/hugo-drummond.jpg`
+      exists — swap it in.
 - [ ] **The chat pill is a WhatsApp link, not a chat widget.** Deliberate for now.
 - [ ] The reCAPTCHA badge sits under the chat pill in the bottom-right corner.
 
