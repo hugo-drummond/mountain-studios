@@ -3,6 +3,7 @@ import Script from 'next/script'
 import { Source_Sans_3, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import RecaptchaProvider from '../components/site/RecaptchaProvider'
+import ChatWidget from '../components/site/ChatWidget'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -88,6 +89,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <RecaptchaProvider>{children}</RecaptchaProvider>
+        {/* Hides itself on /admin and on generated previews. See ChatWidget. */}
+        <ChatWidget />
       </body>
     </html>
   )

@@ -54,7 +54,16 @@ export default function Work() {
                   background: '#d8d5e0',
                   borderRadius: '8px',
                   aspectRatio: '16/9',
-                }} />
+                  overflow: 'hidden',
+                }}>
+                  <img src={item.img} alt={item.name} style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    objectPosition: 'top center',
+                    display: 'block',
+                  }} />
+                </div>
 
                 {/* CONTENT AREA */}
                 <div style={{

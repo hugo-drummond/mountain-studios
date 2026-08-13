@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 // ---------------------------------------------------------------------------
@@ -30,6 +31,12 @@ const OPENERS = ["What does a site cost?", 'How long does it take?', "What's inc
 const STORAGE_KEY = 'ms-chat-v1'
 const MAX_INPUT = 1000
 
+// The widget is mounted in the root layout, which also wraps things that are
+// not the marketing site. It must not appear on the admin screens, and it must
+// never appear inside a generated client preview — a Mountain Studios bubble
+// floating over someone else's mock site is the wrong thing entirely.
+const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp']
+
 interface Message {
   role: 'user' | 'assistant'
   content: string
@@ -41,6 +48,7 @@ interface Stored {
 }
 
 export default function ChatWidget() {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [leadId, setLeadId] = useState<string | null>(null)
@@ -143,6 +151,9 @@ export default function ChatWidget() {
     [messages, leadId, sending],
   )
 
+  // After every hook, so the rules of hooks hold on the routes that hide it.
+  if (pathname && HIDDEN_ON.some((prefix) => pathname.startsWith(prefix))) return null
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
@@ -242,8 +253,12 @@ export default function ChatWidget() {
 // wine accent, Playfair over Source Sans. The variables are set on <body> in
 // app/layout.tsx, with a stack behind them in case this ever renders outside it.
 const CSS = `
+/* Bottom-LEFT on purpose. The homepage already parks a sticky "SEE YOUR NEW
+   SITE" pill in the bottom-right, and the reCAPTCHA badge sits under it. That
+   pill is the primary conversion action on the page and the chat should not be
+   competing with it for the same 200 pixels. */
 .ms-chat-launcher {
-  position: fixed; right: 20px; bottom: 20px; z-index: 9998;
+  position: fixed; left: 20px; bottom: 20px; z-index: 9998;
   display: inline-flex; align-items: center; gap: 9px;
   padding: 13px 22px 13px 18px; border: 0; border-radius: 999px;
   background: #1a1a2e; color: #f4f2fa; cursor: pointer;
@@ -266,13 +281,13 @@ const CSS = `
 }
 
 .ms-chat-panel {
-  position: fixed; right: 20px; bottom: 84px; z-index: 9999;
+  position: fixed; left: 20px; bottom: 84px; z-index: 9999;
   display: flex; flex-direction: column;
   width: 372px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px);
   background: #f4f2fa; border: 1px solid #d8d3e2; border-radius: 16px; overflow: hidden;
   font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
   box-shadow: 0 24px 64px rgba(26, 26, 46, .22);
-  transform-origin: bottom right; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
+  transform-origin: bottom left; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes ms-chat-in {
   from { opacity: 0; transform: translateY(10px) scale(.97); }
@@ -361,10 +376,10 @@ const CSS = `
 
 @media (max-width: 480px) {
   .ms-chat-panel {
-    right: 0; bottom: 0; width: 100vw; max-width: 100vw;
+    left: 0; bottom: 0; width: 100vw; max-width: 100vw;
     height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0;
   }
-  .ms-chat-launcher { right: 14px; bottom: 14px; }
+  .ms-chat-launcher { left: 14px; bottom: 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
