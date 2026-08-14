@@ -5,6 +5,7 @@ import PageShell from '@/components/site/PageShell'
 const services = [
   {
     name: 'Web design',
+    href: '/services/web-design',
     desc: 'Simple, good-looking websites for small South African businesses.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
@@ -17,6 +18,7 @@ const services = [
   },
   {
     name: 'Paid ads',
+    href: '/services/paid-ads',
     desc: 'Google and Meta campaigns that bring in enquiries, not just clicks.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
@@ -28,6 +30,7 @@ const services = [
   },
   {
     name: 'AEO',
+    href: '/services/aeo',
     desc: 'Getting your business named in AI search answers.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
@@ -39,6 +42,7 @@ const services = [
   },
   {
     name: 'Business automation',
+    href: '/services/business-automation',
     desc: 'Bookings, invoices and follow-ups that run themselves.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
@@ -90,7 +94,7 @@ export default function Services() {
                   fontWeight: 700,
                   fontSize: '1.15rem',
                   color: '#1a1a2e',
-                  margin: '0 0 0.75rem',
+                  margin: '0 0 0.55rem',
                 }}>
                   {service.name}
                 </h3>
@@ -99,13 +103,13 @@ export default function Services() {
                   fontSize: '0.95rem',
                   color: '#5d6478',
                   lineHeight: 1.5,
-                  margin: '0 0 1.5rem',
+                  margin: '0 0 1.1rem',
                   flex: 1,
                 }}>
                   {service.desc}
                 </p>
 
-                <a href="#" style={{
+                <a href={service.href} style={{
                   background: '#7d3d4f',
                   color: '#fff',
                   border: 'none',
