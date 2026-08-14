@@ -25,7 +25,11 @@ handing this over to the reps.
 Content Hugo owes before this page is honest:
 
 - [ ] **WhatsApp number.** `WHATSAPP_NUMBER` at the top of `app/page.tsx` is `27000000000`.
-      The top bar and the floating chat pill both point at it, so both are dead links.
+      The top bar and the footer still point at it, so both are dead links; `/contact`
+      has its own copy of the same dummy. The floating chat pill no longer uses it — it
+      opens the chatbot. The chatbot's knowledge base deliberately says nothing about
+      WhatsApp until this is real; `lib/chatbot/knowledge.ts` carries the line to paste
+      back in.
 - [ ] **Real Google reviews.** Three cards say "Placeholder review". The score card's
       button now reads "All reviews" and has no link at all — it needs the Google
       reviews URL.
@@ -50,8 +54,25 @@ Still to build:
       contact number" on 13 August, but `handleSubmit` still only flips a flag.
 - [ ] **About photo is a grey placeholder.** `public/images/team/hugo-drummond.jpg`
       exists — swap it in.
-- [ ] **The chat pill is a WhatsApp link, not a chat widget.** Deliberate for now.
-- [ ] The reCAPTCHA badge sits under the chat pill in the bottom-right corner.
+- [x] **The chat pill is a real chat widget.** Done 14 August — the `chat` A/B arm opens
+      the on-site chatbot instead of linking to the dummy WhatsApp number.
+- [ ] The reCAPTCHA badge sits under the floating pill in the bottom-right corner. The
+      chatbot's own launcher was put bottom-left to stay clear of both.
+
+**Chatbot** — built and live 14 August 2026, see [STATUS.md](STATUS.md)
+
+- [ ] **Run `supabase/migrations/chat_questions.sql`** in the Supabase SQL editor. Until
+      then the bot answers fine but logs nothing and can never serve a cached answer.
+      There is no DB password or connection string in either repo, so this cannot be
+      automated from here — it is a paste job.
+- [ ] **`/admin/chat-questions` has never been opened.** `ADMIN_PASSWORD` is not in
+      `.env.local`, so `/admin` cannot be logged into on this Mac at all. The route
+      compiles and gates correctly; the page itself is unverified in a browser.
+- [ ] **Read what people actually ask** once the table exists, and fix the knowledge base
+      where it comes up short. That ranked list is the point of the log.
+- [ ] **Re-test the two known prompt leaks after any edit to the prompt**: ask it to rule
+      something out ("do you do logo design?") and push it for a price ("just a rough
+      ballpark"). Both are correct now and both are the first things to regress.
 
 ## Vercel environment variables
 
@@ -89,7 +110,8 @@ values live in `.env.local` locally, never in this file.
   brief notification and contact form email. The careers form deliberately sends no email.
 - `ANTHROPIC_API_KEY`, `PEXELS_API_KEY` — preview generation.
 - `NEXT_PUBLIC_APP_URL`, `DEEPSEEK_API_KEY` — the latter is used by `/api/preview/scrape`
-  (stock photo proxy), not the deleted screening endpoint.
+  (stock photo proxy) and by the chatbot at `/api/chat`, not the deleted screening
+  endpoint. Removing it takes the chatbot down.
 
 ## Data cleanup
 

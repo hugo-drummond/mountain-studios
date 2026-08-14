@@ -277,6 +277,8 @@ Recordings are transcribed by the Python worker via Groq. Groq over OpenAI Whisp
 
 **Templates in progress** — `templates/redesigned-*.ts` holds the partially complete migration from 3 shared variants to 15 category-specific layouts. Not yet wired into the generation path.
 
+**Chatbot** — `components/site/ChatWidget.tsx` → `api/chat` → DeepSeek, with `lib/chatbot/knowledge.ts` as the only thing it is allowed to say. The knowledge base and the system prompt are one file of plain strings, injected whole on every request rather than retrieved or ranked; that is the entire gatekeeping mechanism, and it only works while the file stays server-side. The route is stateless — the client posts the full conversation each turn — and returns plain text rather than using the model's JSON mode, so contact details are extracted from the visitor's own words with regexes instead of depending on the model to format them. Captured leads land in `leads` alongside the wizard's, matched on email within 30 days. `lib/chatbot/questions.ts` logs every question to `chat_questions` and serves approved answers from it without calling the model, matching on a trigram Dice coefficient computed in TypeScript; every function there is best-effort, so an absent table degrades to "always ask the model" rather than an error.
+
 ---
 
 ## Authentication
