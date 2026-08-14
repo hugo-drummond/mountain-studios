@@ -46,6 +46,13 @@ Still to build:
       referral link is generated.
 - [x] **`/work`, `/about`, `/services`, `/contact` built 13 August** on a shared
       `PageShell`. `/pricing` and `/refer` are still homepage anchors.
+- [x] **Four individual service pages built 14 August**, see [STATUS.md](STATUS.md):
+      `/services/web-design`, `/services/paid-ads`, `/services/aeo`,
+      `/services/business-automation`.
+- [ ] **`/services` "LEARN MORE →" buttons still `href="#"`.** Point them at the four new
+      service pages now that they exist.
+- [ ] **`lib/chatbot/knowledge.ts` doesn't know the service pages exist.** The bot can
+      describe the four services but can't point a visitor at their own page for one.
 - [ ] **Contact page form has no backend.** It shows a thank-you and sends nothing.
       `POST /api/contact/submit` + `contact_messages` + the CRM inbox are live — wire it.
 - [x] **`/work` "VIEW THE SITE" buttons.** Verified 13 August — they already point at the

@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 14 August 2026 (chat CTA resize)
+Last updated: 14 August 2026 (service pages)
 
 ## Where things stand
 
@@ -139,6 +139,38 @@ floating-CTA split test:
   `localStorage.ms_variant`, `?v=1|2` overrides for preview, clicks fire the GA event
   `float_cta_click`, and the wizard stamps `Homepage variant: …` into the lead's notes via
   both brief endpoints — win rate is a count of leads by that line. No schema change.
+
+## Service pages — 14 August 2026
+
+Four individual service pages built as one repeated template, replacing the dead
+"LEARN MORE →" links on `/services`: `/services/web-design`, `/services/paid-ads`,
+`/services/aeo`, `/services/business-automation`.
+
+- **`PageShell` gained two optional props, `heroImage` and `heroCta`.** When passed, the
+  hero switches from the original centred single-column layout to a two-column one — copy
+  and a CTA button on the left, `heroImage` on the right, using the existing
+  `page-shell-grid` class so it collapses to one column on mobile the same way `/about` and
+  `/work` already do. Neither prop is passed on `/about`, `/work`, `/services` or `/contact`,
+  so all four render exactly as before.
+- **New `components/site/DeviceMockup.tsx`** — a CSS laptop frame around a screenshot,
+  reused across all four pages. Each page shows a different real portfolio screenshot
+  (Coimbra Bakery, Bali Blinds, Pie in the Sky, Hout Bay Curtain Call) rather than a
+  generic mockup.
+- **Each page ships its own `generateMetadata`** — the first per-page SEO titles/descriptions
+  anywhere on the site. Every other subpage is still `'use client'` with no metadata of its
+  own and inherits the single root-layout title.
+- **Copy is grounded in `lib/chatbot/knowledge.ts`.** Web design has three solid feature
+  points to draw on (mobile-first, ~14-day build, one person start to finish, what's
+  included). Paid ads, AEO and business automation only have one line each in the knowledge
+  base, so their feature cards stay deliberately conservative — no invented tactics,
+  stats or process detail beyond what that file and the "How we work" section actually say.
+- Hero CTA on all four routes to `/start-your-project`, the existing working wizard —
+  `PageShell`'s own bottom CTA band is unchanged and still just redirects home on submit
+  (see the `page-shell-grid` trap note above; that band was never wired to an endpoint).
+
+**Not done:** `lib/chatbot/knowledge.ts` still only knows about `/services` as one page —
+the bot cannot point a visitor at an individual service page. `/services`'s own
+"LEARN MORE →" buttons are still `href="#"`, not yet pointed at these four routes.
 
 ## Chat CTA resized — 14 August 2026
 
