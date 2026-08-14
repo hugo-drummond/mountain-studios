@@ -61,15 +61,18 @@ Still to build:
 
 **Chatbot** — built and live 14 August 2026, see [STATUS.md](STATUS.md)
 
-- [ ] **Run `supabase/migrations/chat_questions.sql`** in the Supabase SQL editor. Until
-      then the bot answers fine but logs nothing and can never serve a cached answer.
-      There is no DB password or connection string in either repo, so this cannot be
-      automated from here — it is a paste job.
+- [x] **Run `supabase/migrations/chat_questions.sql`.** Done 14 August, pasted into the
+      Supabase SQL editor. Verified against a real question through the live widget: the
+      row is there, `approved: false`, `asked_count: 1`. There is no DB password or
+      connection string in either repo, so any future migration here is also a paste job.
 - [ ] **`/admin/chat-questions` has never been opened.** `ADMIN_PASSWORD` is not in
       `.env.local`, so `/admin` cannot be logged into on this Mac at all. The route
       compiles and gates correctly; the page itself is unverified in a browser.
-- [ ] **Read what people actually ask** once the table exists, and fix the knowledge base
-      where it comes up short. That ranked list is the point of the log.
+- [ ] **Read what people actually ask** and fix the knowledge base where it comes up
+      short. The table is recording now; that ranked list is the point of the log.
+- [ ] **Approve the first answers.** Nothing is served from the cache until a row is
+      ticked at `/admin/chat-questions` — every question still costs a model call until
+      then. The model's own reply is seeded into each row as a draft to edit.
 - [ ] **Re-test the two known prompt leaks after any edit to the prompt**: ask it to rule
       something out ("do you do logo design?") and push it for a price ("just a rough
       ballpark"). Both are correct now and both are the first things to regress.

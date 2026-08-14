@@ -259,7 +259,7 @@ parent effects, so the page dispatches before the widget is listening.
 still the placeholder, so the bot cannot send anyone to a dead number. There is a comment
 in the file with the line to paste back once the real number exists.
 
-### Question log and answer cache — code live, table not created
+### Question log and answer cache — live and recording, 14 August 2026
 
 Every question is logged to `mountainstudios.chat_questions` and ranked by how often it
 comes up: the most honest available answer to "what is missing from the site?". Once an
@@ -274,10 +274,19 @@ to DeepSeek and is served from the table instead — instantly, worded the same 
 - The cache is only consulted on the **first** message of a conversation. After that,
   "what about for a bakery?" means nothing on its own and a fuzzy match would confidently
   answer a different question.
-- **`supabase/migrations/chat_questions.sql` has not been run.** No Postgres password or
-  connection string exists in either repo and the Supabase MCP is unauthorized for this
-  project, so it has to be pasted into the Supabase SQL editor by hand. Until then the bot
-  works exactly as it does now — it asks the model every time and keeps no record. Verified.
+- **`supabase/migrations/chat_questions.sql` was run on 14 August and the log is
+  recording.** Confirmed against a real question asked through the live widget: one row,
+  `approved: false`, `asked_count: 1`, with the model's reply seeded into `answer` as a
+  starting draft. No Postgres password or connection string exists in either repo and the
+  Supabase MCP is unauthorized for this project, so it was a manual paste into the SQL
+  editor — plan any future migration here around that.
+- **The `service_role` grant was missing from the first version of that migration and is
+  the whole reason this needs watching.** New tables in the `mountainstudios` schema do not
+  inherit service-role privileges, so every insert from `/api/chat` would have returned 403
+  — and because the log is deliberately best-effort, it would have swallowed the error and
+  recorded nothing at all, silently, for as long as nobody checked. `rep_applications` hit
+  this on its first submit and `contact_messages` hit it again on 10 August. Any new table
+  in this schema needs its grant written into the migration.
 
 ## reCAPTCHA — v2 registered, v3 calls made, verification broken
 
@@ -320,7 +329,10 @@ not the shared `ADMIN_PASSWORD`.
 - **Missing table grants.** New tables in the `mountainstudios` schema do not inherit
   `service_role` privileges; the first application submit failed on this. The fix is
   explicit: `grant select, insert, update on mountainstudios.contact_messages to
-  service_role;` in the migration. `contact_messages` hit this on 10 August.
+  service_role;` in the migration. `contact_messages` hit this on 10 August, and
+  `chat_questions` was written without it on 14 August — caught before the migration was
+  run, but it would have failed silently. **Three times now. Write the grant into every
+  new migration in this schema.**
 
 ## Preview template redesign — in progress, paused
 
@@ -358,7 +370,7 @@ exists on presets but is unused, and PDF generation quality is untested across v
 
 - `rep_applications` — applications plus the model's score, verdict, summary and flags
 - `shared_previews` — token, expiry, view counts, claim details
-- `chat_questions` — chatbot question log and approved-answer cache. **Not created yet**;
-  `supabase/migrations/chat_questions.sql` needs pasting into the SQL editor by hand
+- `chat_questions` — chatbot question log and approved-answer cache. Created 14 August,
+  recording. `service_role` grant is explicit in the migration, not inherited
 - Buckets `rep-cvs` and `previews`, both private, service-role access only
 
