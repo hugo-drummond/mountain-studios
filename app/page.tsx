@@ -1182,24 +1182,24 @@ export default function Home() {
             zIndex: 100,
             background: '#7d3d4f',
             color: '#fff',
-            padding: '0.85rem 1.5rem',
+            padding: '1.7rem 3rem',
             borderRadius: '999px',
             border: 'none',
             cursor: 'pointer',
             display: 'inline-flex',
-            gap: '0.5rem',
+            gap: '1rem',
             alignItems: 'center',
             fontFamily: 'inherit',
-            fontSize: '0.85rem',
+            fontSize: '1.7rem',
             fontWeight: 600,
             boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
             <path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.4L4 21.6V5a2 2 0 0 1 0-2zm0 2v12.4L8.6 15H20V5H4z" />
             <circle cx="8.5" cy="10" r="1.1" /><circle cx="12" cy="10" r="1.1" /><circle cx="15.5" cy="10" r="1.1" />
           </svg>
-          Chat with us
+          Chat with us - we reply instantly
         </button>
       )}
 
