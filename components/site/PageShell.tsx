@@ -9,11 +9,15 @@ export default function PageShell({
   eyebrow,
   title,
   sub,
+  heroImage,
+  heroCta,
   children,
 }: {
   eyebrow: string
   title: React.ReactNode
   sub: string
+  heroImage?: React.ReactNode
+  heroCta?: { label: string; href: string }
   children: React.ReactNode
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -145,43 +149,106 @@ export default function PageShell({
         )}
 
         {/* HERO CONTENT */}
-        <div style={{
-          maxWidth: '780px',
-          margin: 'auto',
-          padding: '5rem 2rem 0',
-          textAlign: 'center',
-          position: 'relative',
-          zIndex: 2,
-        }}>
-          <p style={{
-            fontSize: '1rem',
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#fff',
-            marginBottom: '1rem',
-          }}>{eyebrow}</p>
-
-          <h1 style={{
-            fontFamily: 'var(--font-playfair), Georgia, serif',
-            fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)',
-            fontWeight: 400,
-            color: '#1a1a2e',
-            lineHeight: 1.05,
-            margin: '1rem 0 1.25rem',
+        {heroImage ? (
+          <div className="page-shell-grid" style={{
+            maxWidth: '1180px',
+            margin: 'auto',
+            padding: '4rem 2rem 6rem',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '3rem',
+            alignItems: 'center',
+            position: 'relative',
+            zIndex: 2,
           }}>
-            {title}
-          </h1>
+            <div style={{ textAlign: 'left' }}>
+              <p style={{
+                fontSize: '1rem',
+                fontWeight: 700,
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+                color: '#fff',
+                marginBottom: '1rem',
+              }}>{eyebrow}</p>
 
-          <p style={{
-            fontSize: '1.02rem',
-            color: '#3d4358',
-            maxWidth: '640px',
-            margin: '0 auto 0',
+              <h1 style={{
+                fontFamily: 'var(--font-playfair), Georgia, serif',
+                fontSize: 'clamp(2.2rem, 4.5vw, 3.2rem)',
+                fontWeight: 400,
+                color: '#1a1a2e',
+                lineHeight: 1.05,
+                margin: '1rem 0 1.25rem',
+              }}>
+                {title}
+              </h1>
+
+              <p style={{
+                fontSize: '1.02rem',
+                color: '#3d4358',
+                maxWidth: '460px',
+                margin: '0 0 1.75rem',
+              }}>
+                {sub}
+              </p>
+
+              {heroCta && (
+                <a href={heroCta.href} style={{
+                  display: 'inline-block',
+                  background: '#7d3d4f',
+                  color: '#fff',
+                  padding: '0.95rem 1.8rem',
+                  borderRadius: '999px',
+                  textDecoration: 'none',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  boxShadow: '0 14px 30px -14px rgba(125,61,79,0.6)',
+                }}>{heroCta.label}</a>
+              )}
+            </div>
+
+            <div>{heroImage}</div>
+          </div>
+        ) : (
+          <div style={{
+            maxWidth: '780px',
+            margin: 'auto',
+            padding: '5rem 2rem 0',
+            textAlign: 'center',
+            position: 'relative',
+            zIndex: 2,
           }}>
-            {sub}
-          </p>
-        </div>
+            <p style={{
+              fontSize: '1rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: '#fff',
+              marginBottom: '1rem',
+            }}>{eyebrow}</p>
+
+            <h1 style={{
+              fontFamily: 'var(--font-playfair), Georgia, serif',
+              fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)',
+              fontWeight: 400,
+              color: '#1a1a2e',
+              lineHeight: 1.05,
+              margin: '1rem 0 1.25rem',
+            }}>
+              {title}
+            </h1>
+
+            <p style={{
+              fontSize: '1.02rem',
+              color: '#3d4358',
+              maxWidth: '640px',
+              margin: '0 auto 0',
+            }}>
+              {sub}
+            </p>
+          </div>
+        )}
 
         {/* MOUNTAIN RIDGE */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
