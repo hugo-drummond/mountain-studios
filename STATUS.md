@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 14 August 2026 (chatbot)
+Last updated: 14 August 2026 (chat CTA resize)
 
 ## Where things stand
 
@@ -139,6 +139,13 @@ floating-CTA split test:
   `localStorage.ms_variant`, `?v=1|2` overrides for preview, clicks fire the GA event
   `float_cta_click`, and the wizard stamps `Homepage variant: …` into the lead's notes via
   both brief endpoints — win rate is a count of leads by that line. No schema change.
+
+## Chat CTA resized — 14 August 2026
+
+The `chat` A/B pill (`app/page.tsx`) was easy to miss at its original size. Doubled every
+dimension (padding, font size, icon, gap) and changed the copy from "Chat with us" to
+"Chat with us - we reply instantly" to push clicks. `site` variant and the widget panel it
+opens (`components/site/ChatWidget.tsx`) are unchanged.
 
 ## Standalone pages — 13 August 2026
 
