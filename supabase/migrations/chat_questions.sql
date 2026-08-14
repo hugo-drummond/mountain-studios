@@ -56,4 +56,12 @@ create unique index if not exists chat_questions_norm_unique
 -- The table is only ever reached through the service key, from /api/chat and
 -- the admin page. RLS on with no policies means nothing else can read it, which
 -- matters because the questions people type can contain their own details.
+-- service_role bypasses RLS, so it still gets through; nobody else does.
 alter table mountainstudios.chat_questions enable row level security;
+
+-- New tables in this schema do NOT inherit service_role privileges — the first
+-- rep application submit failed on exactly this, and contact_messages hit it
+-- again on 10 August. Without these grants every insert from /api/chat is a 403
+-- and questions are silently never logged. delete is included because the admin
+-- page removes junk rows.
+grant select, insert, update, delete on mountainstudios.chat_questions to service_role;
