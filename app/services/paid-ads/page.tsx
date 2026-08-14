@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import PageShell from '@/components/site/PageShell'
 import DeviceMockup from '@/components/site/DeviceMockup'
 
-const TITLE = 'Web Design — Mountain Studios'
+const TITLE = 'Paid Ads — Mountain Studios'
 const DESCRIPTION =
-  'Simple, good-looking websites for South African businesses. One person designs and builds your site start to finish, live in about 14 days.'
+  'Google and Meta campaigns for South African businesses that bring in enquiries, not just clicks.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -15,29 +15,28 @@ export const metadata: Metadata = {
 
 const features = [
   {
-    name: 'Mobile-first',
-    desc: 'Most of your customers arrive on a phone. Every site is built and checked on mobile before it ever gets a desktop pass.',
+    name: 'Google & Meta',
+    desc: 'Campaigns run where your customers are already searching and scrolling — Google Search and Meta (Facebook & Instagram).',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <rect x="11" y="4" width="18" height="32" rx="2.5" />
-        <line x1="11" y1="28" x2="29" y2="28" />
-        <circle cx="20" cy="32" r="1.2" fill="#1a1a2e" />
+        <circle cx="20" cy="20" r="14" />
+        <circle cx="20" cy="20" r="8" />
+        <path d="M20 12V28M12 20H28" />
       </svg>
     ),
   },
   {
-    name: 'Live in ~14 days',
-    desc: 'From the day we have your content — photos, a menu, an old brochure — your site is typically live within two weeks.',
+    name: 'Built for enquiries',
+    desc: "Campaigns are pointed at getting your phone to ring or your inbox to fill up — not just at driving clicks.",
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <circle cx="20" cy="20" r="16" />
-        <path d="M20 11V20L26 24" />
+        <path d="M8 26L8 12C8 10.895 8.895 10 10 10L30 10C31.105 10 32 10.895 32 12L32 22C32 23.105 31.105 24 30 24L14 24L8 30V26Z" />
       </svg>
     ),
   },
   {
     name: 'One person, start to finish',
-    desc: 'No handoffs, no account managers. The person who designs your site is the person who builds it and answers your emails.',
+    desc: 'No handoffs, no account managers. The person who sets up your campaigns is the person who runs them.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
         <circle cx="20" cy="13" r="7" />
@@ -47,13 +46,13 @@ const features = [
   },
 ]
 
-export default function WebDesignPage() {
+export default function PaidAdsPage() {
   return (
     <PageShell
       eyebrow="SERVICES"
-      title={<>A website that <em style={{ fontStyle: 'italic' }}>does its job.</em></>}
-      sub="Simple, good-looking, and built around how your customers actually find and call you — not a template with your logo dropped in."
-      heroImage={<DeviceMockup src="/images/portfolio/coimbra-bakery.jpg" alt="Coimbra Bakery, a website built by Mountain Studios" />}
+      title={<>Ads that bring <em style={{ fontStyle: 'italic' }}>enquiries.</em></>}
+      sub="Google and Meta campaigns built for South African businesses — aimed at getting people to call, not just to click."
+      heroImage={<DeviceMockup src="/images/portfolio/bali-blinds.jpg" alt="Bali Blinds, a website built by Mountain Studios" />}
       heroCta={{ label: 'See your site free', href: '/start-your-project' }}
     >
       <div style={{ padding: '5rem 2rem 2rem' }}>
@@ -75,14 +74,13 @@ export default function WebDesignPage() {
             margin: '0 0 1.25rem',
             lineHeight: 1.15,
           }}>
-            Built by hand, not assembled from a template.
+            Campaigns run by the person who built them.
           </h2>
 
           <p style={{ fontSize: '1.02rem', color: '#3d4358', lineHeight: 1.6, margin: 0 }}>
-            You don&apos;t need to write the content — send what you have and we write the rest, you approve
-            it before it goes live. Hosting, the SSL certificate and the domain are included, and updates,
-            backups and small changes are part of the monthly retainer, not a separate invoice. The site,
-            the domain and the content are yours — if you ever cancel, the site stays yours.
+            Google and Meta campaigns, set up and managed for small South African businesses — built to
+            bring in enquiries, not just clicks. Enquiries through your site get a reply within one
+            business day.
           </p>
         </div>
       </div>

@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import PageShell from '@/components/site/PageShell'
 import DeviceMockup from '@/components/site/DeviceMockup'
 
-const TITLE = 'Web Design — Mountain Studios'
+const TITLE = 'Business Automation — Mountain Studios'
 const DESCRIPTION =
-  'Simple, good-looking websites for South African businesses. One person designs and builds your site start to finish, live in about 14 days.'
+  'Bookings, invoices and follow-ups that run themselves — automation for South African businesses.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -15,29 +15,31 @@ export const metadata: Metadata = {
 
 const features = [
   {
-    name: 'Mobile-first',
-    desc: 'Most of your customers arrive on a phone. Every site is built and checked on mobile before it ever gets a desktop pass.',
+    name: 'Bookings that run themselves',
+    desc: 'Customers book straight into your calendar, no back-and-forth messages needed.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <rect x="11" y="4" width="18" height="32" rx="2.5" />
-        <line x1="11" y1="28" x2="29" y2="28" />
-        <circle cx="20" cy="32" r="1.2" fill="#1a1a2e" />
+        <rect x="6" y="8" width="28" height="26" rx="2.5" />
+        <line x1="6" y1="16" x2="34" y2="16" />
+        <line x1="13" y1="5" x2="13" y2="11" />
+        <line x1="27" y1="5" x2="27" y2="11" />
       </svg>
     ),
   },
   {
-    name: 'Live in ~14 days',
-    desc: 'From the day we have your content — photos, a menu, an old brochure — your site is typically live within two weeks.',
+    name: 'Invoices, handled',
+    desc: 'Invoices and follow-ups go out on their own, so nothing sits waiting on you to remember it.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <circle cx="20" cy="20" r="16" />
-        <path d="M20 11V20L26 24" />
+        <path d="M11 5H29V35L24 32L20 35L16 32L11 35V5Z" />
+        <line x1="16" y1="14" x2="24" y2="14" />
+        <line x1="16" y1="20" x2="24" y2="20" />
       </svg>
     ),
   },
   {
     name: 'One person, start to finish',
-    desc: 'No handoffs, no account managers. The person who designs your site is the person who builds it and answers your emails.',
+    desc: 'No handoffs, no account managers. The person who builds your automations is the person who answers your emails.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
         <circle cx="20" cy="13" r="7" />
@@ -47,13 +49,13 @@ const features = [
   },
 ]
 
-export default function WebDesignPage() {
+export default function BusinessAutomationPage() {
   return (
     <PageShell
       eyebrow="SERVICES"
-      title={<>A website that <em style={{ fontStyle: 'italic' }}>does its job.</em></>}
-      sub="Simple, good-looking, and built around how your customers actually find and call you — not a template with your logo dropped in."
-      heroImage={<DeviceMockup src="/images/portfolio/coimbra-bakery.jpg" alt="Coimbra Bakery, a website built by Mountain Studios" />}
+      title={<>Follow-ups that <em style={{ fontStyle: 'italic' }}>run themselves.</em></>}
+      sub="Bookings, invoices and follow-ups automated, so your South African business keeps moving without you chasing every step."
+      heroImage={<DeviceMockup src="/images/portfolio/houtbay-curtain-call.jpg" alt="Hout Bay Curtain Call, a website built by Mountain Studios" />}
       heroCta={{ label: 'See your site free', href: '/start-your-project' }}
     >
       <div style={{ padding: '5rem 2rem 2rem' }}>
@@ -75,14 +77,12 @@ export default function WebDesignPage() {
             margin: '0 0 1.25rem',
             lineHeight: 1.15,
           }}>
-            Built by hand, not assembled from a template.
+            The busywork, taken off your plate.
           </h2>
 
           <p style={{ fontSize: '1.02rem', color: '#3d4358', lineHeight: 1.6, margin: 0 }}>
-            You don&apos;t need to write the content — send what you have and we write the rest, you approve
-            it before it goes live. Hosting, the SSL certificate and the domain are included, and updates,
-            backups and small changes are part of the monthly retainer, not a separate invoice. The site,
-            the domain and the content are yours — if you ever cancel, the site stays yours.
+            Bookings, invoices and follow-ups set up to run on their own, so you spend less time chasing
+            admin and more time running the business.
           </p>
         </div>
       </div>

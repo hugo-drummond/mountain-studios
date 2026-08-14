@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import PageShell from '@/components/site/PageShell'
 import DeviceMockup from '@/components/site/DeviceMockup'
 
-const TITLE = 'Web Design — Mountain Studios'
+const TITLE = 'AEO — Answer Engine Optimisation — Mountain Studios'
 const DESCRIPTION =
-  'Simple, good-looking websites for South African businesses. One person designs and builds your site start to finish, live in about 14 days.'
+  'Getting your South African business named in AI search answers — ChatGPT, Google AI Overviews and the rest.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -15,29 +15,28 @@ export const metadata: Metadata = {
 
 const features = [
   {
-    name: 'Mobile-first',
-    desc: 'Most of your customers arrive on a phone. Every site is built and checked on mobile before it ever gets a desktop pass.',
+    name: 'Built for AI search',
+    desc: 'Your site is structured so AI assistants can read it clearly and confidently name your business in their answers.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <rect x="11" y="4" width="18" height="32" rx="2.5" />
-        <line x1="11" y1="28" x2="29" y2="28" />
-        <circle cx="20" cy="32" r="1.2" fill="#1a1a2e" />
+        <circle cx="18" cy="14" r="4" />
+        <path d="M14 28L18 20L22 28" />
+        <path d="M28 28C28 22.477 24.418 18 20 18" />
       </svg>
     ),
   },
   {
-    name: 'Live in ~14 days',
-    desc: 'From the day we have your content — photos, a menu, an old brochure — your site is typically live within two weeks.',
+    name: 'Named, not just listed',
+    desc: 'The goal is your business coming up as an answer — someone asks an AI assistant a question, and yours is the name it gives.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
-        <circle cx="20" cy="20" r="16" />
-        <path d="M20 11V20L26 24" />
+        <path d="M8 28L8 14C8 12.895 8.895 12 10 12L30 12C31.105 12 32 12.895 32 14L32 24C32 25.105 31.105 26 30 26L14 26L8 32V28Z" />
       </svg>
     ),
   },
   {
     name: 'One person, start to finish',
-    desc: 'No handoffs, no account managers. The person who designs your site is the person who builds it and answers your emails.',
+    desc: 'No handoffs, no account managers. The person who does the work is the person who answers your emails.',
     icon: (
       <svg width="34" height="34" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
         <circle cx="20" cy="13" r="7" />
@@ -47,13 +46,13 @@ const features = [
   },
 ]
 
-export default function WebDesignPage() {
+export default function AeoPage() {
   return (
     <PageShell
       eyebrow="SERVICES"
-      title={<>A website that <em style={{ fontStyle: 'italic' }}>does its job.</em></>}
-      sub="Simple, good-looking, and built around how your customers actually find and call you — not a template with your logo dropped in."
-      heroImage={<DeviceMockup src="/images/portfolio/coimbra-bakery.jpg" alt="Coimbra Bakery, a website built by Mountain Studios" />}
+      title={<>Get named in <em style={{ fontStyle: 'italic' }}>AI answers.</em></>}
+      sub="Answer engine optimisation — getting your South African business named when people ask AI assistants for a recommendation."
+      heroImage={<DeviceMockup src="/images/portfolio/pie-in-the-sky.jpg" alt="Pie in the Sky, a website built by Mountain Studios" />}
       heroCta={{ label: 'See your site free', href: '/start-your-project' }}
     >
       <div style={{ padding: '5rem 2rem 2rem' }}>
@@ -75,14 +74,12 @@ export default function WebDesignPage() {
             margin: '0 0 1.25rem',
             lineHeight: 1.15,
           }}>
-            Built by hand, not assembled from a template.
+            Search is changing. Your site should keep up.
           </h2>
 
           <p style={{ fontSize: '1.02rem', color: '#3d4358', lineHeight: 1.6, margin: 0 }}>
-            You don&apos;t need to write the content — send what you have and we write the rest, you approve
-            it before it goes live. Hosting, the SSL certificate and the domain are included, and updates,
-            backups and small changes are part of the monthly retainer, not a separate invoice. The site,
-            the domain and the content are yours — if you ever cancel, the site stays yours.
+            More people are asking AI assistants for recommendations instead of scrolling search results.
+            AEO is about making sure your business is the name they get back.
           </p>
         </div>
       </div>
