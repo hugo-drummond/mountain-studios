@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha } from '@/lib/recaptcha'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/submit
@@ -34,6 +36,7 @@ interface Payload {
   secondaryColor?: string
   leadId?: string
   variant?: string
+  recaptchaToken?: string
 }
 
 function escapeHtml(value: string): string {
@@ -163,11 +166,25 @@ async function saveLead(
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit — advisory endpoint (logs reCAPTCHA verdict but never blocks)
+  const rateLimitResult = await rateLimit(req, 'brief/submit')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   let body: Payload
   try {
     body = await req.json()
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 })
+  }
+
+  // reCAPTCHA verdict is logged but never blocks (advisory only)
+  const recaptchaResult = await verifyRecaptcha(body.recaptchaToken)
+  if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
+    console.warn(
+      `[brief/submit] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+    )
   }
 
   const fullName = body.fullName?.trim()

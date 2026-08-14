@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha } from '@/lib/recaptcha'
 
 // ---------------------------------------------------------------------------
 // POST /api/careers/apply
@@ -70,6 +72,12 @@ function safeFilename(filename: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit — advisory endpoint (logs reCAPTCHA verdict but never blocks)
+  const rateLimitResult = await rateLimit(req, 'careers/apply')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   let form: FormData
   try {
     form = await req.formData()
@@ -80,6 +88,14 @@ export async function POST(req: NextRequest) {
   // Bots fill every field they find. A real applicant never sees this one.
   if (str(form, 'website')) {
     return NextResponse.json({ success: true, applicationId: null, eligible: true })
+  }
+
+  // reCAPTCHA verdict is logged but never blocks (advisory only)
+  const recaptchaResult = await verifyRecaptcha(str(form, 'recaptchaToken') || undefined)
+  if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
+    console.warn(
+      `[careers/apply] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+    )
   }
 
   const fullName = str(form, 'full_name')

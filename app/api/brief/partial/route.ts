@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
+import { verifyRecaptcha } from '@/lib/recaptcha'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/partial
@@ -19,60 +21,6 @@ import { crmAdmin } from '@/lib/crm'
 //   that is flagged is cheaper than a real lead that is silently discarded.
 // ---------------------------------------------------------------------------
 
-// The score threshold is deliberately low. reCAPTCHA v3 is harsh on a site it
-// has barely seen, and a new key on low traffic routinely scores real people
-// around 0.3. Nothing is blocked on this either way — it only decides whether
-// the row carries a warning — so the cost of being generous is a note we did
-// not need, and the cost of being strict is doubting every genuine lead.
-const RECAPTCHA_MIN_SCORE = 0.3
-
-// Distinguishes configuration/infrastructure failures from visitor verdicts.
-// Principle: A misconfiguration on our side is a fact about us, not about the lead.
-// Configuration failures belong in the server log, not in the sales note.
-function isOurFault(verdict: string): boolean {
-  return (
-    verdict.startsWith('no secret configured') ||
-    verdict.startsWith('no score returned') ||
-    verdict.startsWith('could not reach Google')
-  )
-}
-
-// Returns a human-readable verdict, not a boolean. What went wrong matters:
-// "we could not check" and "Google says this is a bot" are different facts
-// about a lead, and collapsing them makes the note useless for triage.
-async function verifyRecaptcha(token?: string): Promise<string> {
-  // The site key is bound to the live domain, so reCAPTCHA never returns a
-  // usable token in local development. Treat as passed to allow local testing.
-  if (process.env.NODE_ENV !== 'production') {
-    return 'passed'
-  }
-
-  const secret = process.env.RECAPTCHA_SECRET_KEY
-  if (!secret) return 'no secret configured'
-  if (!token) return 'no token from the browser'
-
-  try {
-    const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `secret=${secret}&response=${token}`,
-    })
-    const data = await res.json()
-
-    if (data.success === true) {
-      // v3 always returns a score. Its absence means a v2 key is registered
-      // against a v3 call, which is a configuration fault, not a verdict.
-      if (typeof data.score !== 'number') return 'no score returned — is the key reCAPTCHA v3?'
-      return data.score >= RECAPTCHA_MIN_SCORE ? 'passed' : `scored ${data.score}`
-    }
-
-    const codes = Array.isArray(data['error-codes']) ? data['error-codes'].join(', ') : 'no reason given'
-    return `rejected by Google (${codes})`
-  } catch (err) {
-    return `could not reach Google (${err instanceof Error ? err.message : 'unknown'})`
-  }
-}
-
 interface Payload {
   email?: string
   businessName?: string
@@ -85,6 +33,12 @@ interface Payload {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit
+  const rateLimitResult = await rateLimit(req, 'brief/partial')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   let body: Payload
   try {
     body = await req.json()
@@ -120,7 +74,7 @@ export async function POST(req: NextRequest) {
   const leadName = storedBusinessName || `${storedEmail} (wizard, no business name yet)`
 
   // Check reCAPTCHA outcome
-  const recaptchaOutcome = await verifyRecaptcha(body.recaptchaToken)
+  const recaptchaResult = await verifyRecaptcha(body.recaptchaToken)
 
   // Whitelist variant
   const variantLabel = body.variant === 'site' ? 'SEE YOUR NEW SITE pill' : body.variant === 'chat' ? 'Chat button' : null
@@ -136,17 +90,17 @@ export async function POST(req: NextRequest) {
 
   // Split reCAPTCHA outcomes: configuration failures go to the server log,
   // visitor verdicts go to the sales note.
-  if (recaptchaOutcome !== 'passed') {
-    if (isOurFault(recaptchaOutcome)) {
+  if (!recaptchaResult.passed) {
+    if (recaptchaResult.ourFault) {
       // Our setup failed. This is a fact about our infrastructure, not the lead.
       console.warn(
-        `[brief/partial] reCAPTCHA is misconfigured, leads are being saved unverified: ${recaptchaOutcome}`
+        `[brief/partial] reCAPTCHA is misconfigured, leads are being saved unverified: ${recaptchaResult.verdict}`
       )
     } else {
       // Visitor-related verdict. Says what actually happened rather than just
       // "unverified". A lead Google scored 0.2 and a lead we could not check at
       // all deserve different reactions.
-      noteLines.push(`Unverified — reCAPTCHA ${recaptchaOutcome}.`)
+      noteLines.push(`Unverified — reCAPTCHA ${recaptchaResult.verdict}.`)
     }
   }
 

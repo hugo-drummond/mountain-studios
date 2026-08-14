@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 // ---------------------------------------------------------------------------
 // The chat widget: a launcher pill in the bottom-right corner and the panel it
@@ -73,6 +74,7 @@ interface Stored {
 
 export default function ChatWidget() {
   const pathname = usePathname()
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [open, setOpen] = useState(false)
   const [externalLauncher, setExternalLauncher] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -157,23 +159,42 @@ export default function ChatWidget() {
       setSending(true)
 
       try {
+        let recaptchaToken: string | undefined
+        // Get reCAPTCHA token only on the first message
+        if (next.length === 1 && executeRecaptcha) {
+          try {
+            recaptchaToken = await Promise.race([
+              executeRecaptcha('chat_first_message'),
+              new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+            ])
+          } catch {
+            // reCAPTCHA failure is not critical
+          }
+        }
+
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, leadId }),
+          body: JSON.stringify({ messages: next, leadId, recaptchaToken }),
         })
         const data = await res.json().catch(() => null)
 
-        // The route answers with a usable `reply` on every path it controls,
-        // including 429. This branch is for the ones it does not: a network
-        // drop, a cold start that times out, a gateway page.
-        const reply =
-          typeof data?.reply === 'string' && data.reply.trim()
-            ? data.reply.trim()
-            : "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za."
+        // Handle 403 responses with returned error message
+        if (res.status === 403 && typeof data?.error === 'string') {
+          setMessages([...next, { role: 'assistant', content: data.error }])
+          if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+        } else {
+          // The route answers with a usable `reply` on every path it controls,
+          // including 429. This branch is for the ones it does not: a network
+          // drop, a cold start that times out, a gateway page.
+          const reply =
+            typeof data?.reply === 'string' && data.reply.trim()
+              ? data.reply.trim()
+              : "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za."
 
-        setMessages([...next, { role: 'assistant', content: reply }])
-        if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+          setMessages([...next, { role: 'assistant', content: reply }])
+          if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+        }
       } catch {
         setMessages([
           ...next,
@@ -188,7 +209,7 @@ export default function ChatWidget() {
         inputRef.current?.focus()
       }
     },
-    [messages, leadId, sending],
+    [messages, leadId, sending, executeRecaptcha],
   )
 
   // After every hook, so the rules of hooks hold on the routes that hide it.

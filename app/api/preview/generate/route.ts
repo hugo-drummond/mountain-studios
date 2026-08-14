@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
 import { presetContent, PresetContent } from './content'
 
@@ -6026,10 +6028,27 @@ ${evtFooter}
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit — this endpoint calls Claude and generates images (expensive)
+  const rateLimitResult = await rateLimit(req, 'preview/generate')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, scrapeId, scrapeData: bodyScrapedData } = body
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, scrapeId, scrapeData: bodyScrapedData, recaptchaToken } = body
     const locationInfo = getLocationInfo()
+
+    // Bot check — refuse requests from visitors Google scored as bots. Generation is
+    // expensive and we're not trying to help automated traffic. Rate limit covers
+    // the rest of the conversation.
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken)
+    if (blockedAsBot(recaptchaResult)) {
+      return NextResponse.json(
+        { success: false, error: 'Request blocked. Refresh the page and try again.' },
+        { status: 403 }
+      )
+    }
 
     // Use scrape data from body (direct pass-through) or pull from Supabase via scrapeId
     let scrapeData: Record<string, unknown> | null = bodyScrapedData || null

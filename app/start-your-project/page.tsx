@@ -323,23 +323,16 @@ export default function StartYourProject() {
     // from the one thing this wizard does. The reCAPTCHA score is still useful
     // in logs for fraud detection, but must never stop the flow.
     ;(async () => {
+      let recaptchaToken: string | undefined
       if (executeRecaptcha) {
         try {
           // Raced against a timeout because executeRecaptcha does not always
           // reject when Google is unreachable — it can simply never settle, and
           // an await that never returns is the same as a broken preview.
-          const token = await Promise.race([
+          recaptchaToken = await Promise.race([
             executeRecaptcha('preview_generate'),
             new Promise<undefined>(resolve => setTimeout(() => resolve(undefined), 5000)),
           ])
-          if (token) {
-            // Verified for the score in the logs. The result is not acted on.
-            await fetch('/api/recaptcha', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token }),
-            })
-          }
         } catch {
           // reCAPTCHA failure must not block the preview
         }
@@ -361,6 +354,7 @@ export default function StartYourProject() {
             visualBalance,
             noColors,
             images: uploadedImages.map(img => img.url),
+            recaptchaToken,
           }),
         })
         const res = await r.json()

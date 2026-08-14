@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha } from '@/lib/recaptcha'
 
 // ---------------------------------------------------------------------------
 // POST /api/momentbank/apply — Public signup (no auth required)
@@ -7,9 +9,23 @@ import { supabaseAdmin } from '@/lib/supabase-admin'
 // ---------------------------------------------------------------------------
 
 export async function POST(req: NextRequest) {
+  // Rate limit — advisory endpoint (logs reCAPTCHA verdict but never blocks)
+  const rateLimitResult = await rateLimit(req, 'momentbank/apply')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   try {
     const body = await req.json()
-    const { creator_name, channel_url, platform, email, niche } = body
+    const { creator_name, channel_url, platform, email, niche, recaptchaToken } = body
+
+    // reCAPTCHA verdict is logged but never blocks (advisory only)
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken)
+    if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
+      console.warn(
+        `[momentbank/apply] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+      )
+    }
 
     // Validate required fields
     const missing: string[] = []

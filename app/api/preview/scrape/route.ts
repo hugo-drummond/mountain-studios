@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY
 const FETCH_TIMEOUT = 15000
@@ -206,8 +208,25 @@ async function callDeepSeek(text: string): Promise<Record<string, unknown> | nul
 // ── POST handler ─────────────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  // Rate limit — this endpoint scrapes external websites (IO-heavy)
+  const rateLimitResult = await rateLimit(req, 'preview/scrape')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   try {
-    const { url } = await req.json()
+    const { url, recaptchaToken } = await req.json()
+
+    // Bot check — refuse requests from visitors Google scored as bots. Scraping is
+    // expensive and we're not trying to help automated traffic. Rate limit covers
+    // the rest of the conversation.
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken)
+    if (blockedAsBot(recaptchaResult)) {
+      return NextResponse.json(
+        { success: false, error: 'Request blocked. Refresh the page and try again.' },
+        { status: 403 }
+      )
+    }
 
     if (!url || typeof url !== 'string') {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 })

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
+import { rateLimit } from '@/lib/rate-limit'
+import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
 // ---------------------------------------------------------------------------
 // POST /api/chat
@@ -40,13 +42,6 @@ const REQUEST_TIMEOUT_MS = 20_000
 const MAX_MESSAGES = 24
 const MAX_CHARS_PER_MESSAGE = 1_000
 
-// Per-IP, per-instance. Serverless means each instance counts separately, so
-// this is a speed bump against a stuck client or a bored visitor, not a
-// security control.
-const RATE_LIMIT_MAX = 30
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
-const hits = new Map<string, number[]>()
-
 type Role = 'user' | 'assistant'
 interface Message {
   role: Role
@@ -56,22 +51,7 @@ interface Message {
 interface Payload {
   messages?: unknown
   leadId?: unknown
-}
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now()
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_LIMIT_WINDOW_MS)
-  recent.push(now)
-  hits.set(ip, recent)
-
-  // Stop the Map growing without bound on a long-lived instance.
-  if (hits.size > 500) {
-    for (const [key, times] of hits) {
-      if (times.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) hits.delete(key)
-    }
-  }
-
-  return recent.length > RATE_LIMIT_MAX
+  recaptchaToken?: unknown
 }
 
 const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
@@ -303,12 +283,10 @@ async function saveLead(
 }
 
 export async function POST(req: NextRequest) {
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown'
-
-  if (rateLimited(ip)) {
+  // Rate limit — centralized per-IP rate limiter. Replaces the per-instance
+  // in-memory map (which counted separately on each cold start and was mostly theatre).
+  const rateLimitResult = await rateLimit(req, 'chat')
+  if (!rateLimitResult.ok) {
     return NextResponse.json(
       { reply: "You're going a bit fast for me. Give it a minute and try again." },
       { status: 429 },
@@ -328,6 +306,21 @@ export async function POST(req: NextRequest) {
   }
 
   const incomingLeadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
+
+  // reCAPTCHA check only on the opening message — the first turn of a conversation.
+  // Once they're engaged, throwing them out over a low score is worse than the cost
+  // of the messages that follow. Rate limit covers the rest of the conversation.
+  if (messages.length === 1) {
+    const recaptchaResult = await verifyRecaptcha(
+      typeof body.recaptchaToken === 'string' ? body.recaptchaToken : undefined
+    )
+    if (blockedAsBot(recaptchaResult)) {
+      return NextResponse.json(
+        { reply: 'Request blocked. Refresh the page and try again.' },
+        { status: 403 }
+      )
+    }
+  }
 
   // Only ever read contact details out of what the visitor typed. Anything the
   // bot said is its own output and must not be treated as a captured detail.

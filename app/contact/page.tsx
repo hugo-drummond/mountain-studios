@@ -1,18 +1,84 @@
 'use client'
 
 import { useState } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import PageShell from '@/components/site/PageShell'
 
 const WHATSAPP_NUMBER = '27000000000'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
 export default function Contact() {
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [honeypot, setHoneypot] = useState('')
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setError('')
+
+    // Validate message length
+    if (formData.message.trim().length < 10) {
+      setError('Message must be at least 10 characters.')
+      return
+    }
+
+    setLoading(true)
+
+    // Honeypot check
+    const isBot = honeypot.trim() !== ''
+    if (isBot) {
+      setLoading(false)
+      setSubmitted(true)
+      return
+    }
+
+    try {
+      let recaptchaToken: string | undefined
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await Promise.race([
+            executeRecaptcha('contact_submit'),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+          ])
+        } catch {
+          // reCAPTCHA failure is not critical
+        }
+      }
+
+      const res = await fetch('/api/contact/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          recaptchaToken,
+          website: honeypot,
+        }),
+      })
+
+      const data = await res.json().catch(() => null)
+
+      if (res.ok) {
+        setSubmitted(true)
+        setFormData({ name: '', email: '', phone: '', message: '' })
+      } else {
+        // The route returns a usable sentence for every rejection it makes.
+        // Replacing it with "something went wrong" leaves someone with a typo
+        // no way to work out what to change.
+        setError(
+          typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.',
+        )
+      }
+    } catch {
+      setError('Something went wrong. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const CircleIcon = ({ children }: { children: React.ReactNode }) => (
@@ -136,6 +202,15 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {error && (
+                    <p style={{
+                      fontSize: '0.9rem',
+                      color: '#dc2626',
+                      margin: '0 0 0.5rem',
+                    }}>
+                      {error}
+                    </p>
+                  )}
                   <input
                     type="text"
                     placeholder="Your name"
@@ -193,7 +268,19 @@ export default function Contact() {
                       resize: 'vertical',
                     }}
                   />
-                  <button type="submit" style={{
+                  <input
+                    type="text"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    style={{
+                      position: 'absolute',
+                      left: '-9999px',
+                    }}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    tabIndex={-1}
+                  />
+                  <button type="submit" disabled={loading} style={{
                     background: '#7d3d4f',
                     color: '#fff',
                     border: 'none',
@@ -203,10 +290,11 @@ export default function Contact() {
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    cursor: 'pointer',
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    opacity: loading ? 0.7 : 1,
                     alignSelf: 'flex-start',
                   }}>
-                    SEND MESSAGE →
+                    {loading ? 'Sending…' : 'SEND MESSAGE →'}
                   </button>
                 </form>
               )}

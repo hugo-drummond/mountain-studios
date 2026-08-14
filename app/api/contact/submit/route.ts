@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
+import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { verifyRecaptcha } from '@/lib/recaptcha'
 
 // ---------------------------------------------------------------------------
 // POST /api/contact/submit
@@ -29,6 +31,7 @@ interface Payload {
   phone?: string
   message?: string
   website?: string
+  recaptchaToken?: string
 }
 
 function escapeHtml(value: string): string {
@@ -48,6 +51,12 @@ function row(label: string, value?: string | null): string {
 }
 
 export async function POST(req: NextRequest) {
+  // Rate limit — advisory endpoint (logs reCAPTCHA verdict but never blocks)
+  const rateLimitResult = await rateLimit(req, 'contact/submit')
+  if (!rateLimitResult.ok) {
+    return tooManyRequests()
+  }
+
   let body: Payload
   try {
     body = await req.json()
@@ -58,6 +67,14 @@ export async function POST(req: NextRequest) {
   // Bots fill every field they find. A real user never sees this one.
   if (body.website) {
     return NextResponse.json({ success: true })
+  }
+
+  // reCAPTCHA verdict is logged but never blocks (advisory only)
+  const recaptchaResult = await verifyRecaptcha(body.recaptchaToken)
+  if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
+    console.warn(
+      `[contact/submit] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+    )
   }
 
   const fullName = body.full_name?.trim()

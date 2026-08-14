@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 const WHATSAPP_NUMBER = '27000000000' // TODO: real number
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -56,14 +57,23 @@ const faqItems: FaqItem[] = [
 ]
 
 export default function Home() {
+  const { executeRecaptcha } = useGoogleReCaptcha()
   const [name, setName] = useState('')
   const [nameFinal, setNameFinal] = useState('')
   const [auditUrl, setAuditUrl] = useState('')
+  const [auditEmail, setAuditEmail] = useState('')
   const [auditDone, setAuditDone] = useState(false)
+  const [auditError, setAuditError] = useState('')
+  const [auditLoading, setAuditLoading] = useState(false)
+  const [auditHoneypot, setAuditHoneypot] = useState('')
   const [referName, setReferName] = useState('')
   const [referEmail, setReferEmail] = useState('')
   const [referPhone, setReferPhone] = useState('')
   const [referDone, setReferDone] = useState(false)
+  const [referError, setReferError] = useState('')
+  const [referLoading, setReferLoading] = useState(false)
+  const [referHoneypot, setReferHoneypot] = useState('')
+  const [referCode, setReferCode] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [menuOpen, setMenuOpen] = useState(false)
   const [variant, setVariant] = useState<'site' | 'chat' | null>(null)
@@ -80,14 +90,118 @@ export default function Home() {
     }
   }
 
-  const handleAuditSubmit = (e: React.FormEvent) => {
+  const handleAuditSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setAuditDone(true)
+    setAuditError('')
+    setAuditLoading(true)
+
+    const isBot = auditHoneypot.trim() !== ''
+    if (isBot) {
+      setAuditLoading(false)
+      setAuditDone(true)
+      return
+    }
+
+    try {
+      let recaptchaToken: string | undefined
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await Promise.race([
+            executeRecaptcha('audit_submit'),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+          ])
+        } catch {
+          // reCAPTCHA failure is not critical
+        }
+      }
+
+      const res = await fetch('/api/audit/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          websiteUrl: auditUrl,
+          email: auditEmail,
+          recaptchaToken,
+          website: auditHoneypot,
+        }),
+      })
+
+      const data = await res.json().catch(() => null)
+
+      if (res.ok) {
+        setAuditDone(true)
+        setAuditUrl('')
+        setAuditEmail('')
+      } else {
+        // Show what the server actually said. It knows whether the URL failed
+        // to parse, the email was malformed, or they have simply tried too
+        // many times — "something went wrong" tells someone with a typo
+        // nothing, and they retype the same thing and fail again.
+        setAuditError(
+          typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.',
+        )
+      }
+    } catch {
+      setAuditError('Something went wrong. Please try again.')
+    } finally {
+      setAuditLoading(false)
+    }
   }
 
-  const handleReferSubmit = (e: React.FormEvent) => {
+  const handleReferSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setReferDone(true)
+    setReferError('')
+    setReferLoading(true)
+
+    const isBot = referHoneypot.trim() !== ''
+    if (isBot) {
+      setReferLoading(false)
+      setReferDone(true)
+      return
+    }
+
+    try {
+      let recaptchaToken: string | undefined
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await Promise.race([
+            executeRecaptcha('referral_submit'),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+          ])
+        } catch {
+          // reCAPTCHA failure is not critical
+        }
+      }
+
+      const res = await fetch('/api/referral/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: referName,
+          email: referEmail,
+          phone: referPhone,
+          recaptchaToken,
+          website: referHoneypot,
+        }),
+      })
+
+      const data = await res.json().catch(() => null)
+      if (res.ok && data?.success && data?.refCode) {
+        setReferDone(true)
+        setReferCode(data.refCode)
+        setReferName('')
+        setReferEmail('')
+        setReferPhone('')
+      } else {
+        setReferError(
+          typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.',
+        )
+      }
+    } catch {
+      setReferError('Something went wrong. Please try again.')
+    } finally {
+      setReferLoading(false)
+    }
   }
 
   useEffect(() => {
@@ -769,43 +883,135 @@ export default function Home() {
             }}>Got it. Your audit is on the way.</p>
           ) : (
             <form onSubmit={handleAuditSubmit} style={{
-              display: 'flex',
-              background: '#fff',
-              borderRadius: '999px',
-              padding: '0.4rem 0.4rem 0.4rem 1.6rem',
               marginTop: '2rem',
-              alignItems: 'center',
-              boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
             }}>
-              <input
-                type="text"
-                placeholder="yourbusiness.co.za"
-                value={auditUrl}
-                onChange={(e) => setAuditUrl(e.target.value)}
-                style={{
-                  border: 'none',
-                  outline: 'none',
-                  flex: 1,
-                  fontSize: '1rem',
-                  background: 'transparent',
-                }}
-              />
-              <button type="submit" style={{
-                background: '#7d3d4f',
-                color: '#fff',
-                border: 'none',
-                padding: '0.85rem 1.4rem',
-                borderRadius: '999px',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                cursor: 'pointer',
-              }}>
-                AUDIT MY SITE →
-              </button>
+              {auditError && (
+                <p style={{
+                  fontSize: '0.9rem',
+                  color: '#dc2626',
+                  marginBottom: '1rem',
+                  margin: '0 0 1rem',
+                }}>
+                  {auditError}
+                </p>
+              )}
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.8rem',
+              }} className="audit-form-inputs">
+                <div style={{
+                  display: 'flex',
+                  background: '#fff',
+                  borderRadius: '999px',
+                  padding: '0.4rem 0.4rem 0.4rem 1.6rem',
+                  alignItems: 'center',
+                  boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
+                  gap: '1.2rem',
+                }} className="audit-pill">
+                  <input
+                    type="text"
+                    placeholder="yourbusiness.co.za"
+                    value={auditUrl}
+                    onChange={(e) => setAuditUrl(e.target.value)}
+                    style={{
+                      border: 'none',
+                      outline: 'none',
+                      flex: 1,
+                      fontSize: '1rem',
+                      background: 'transparent',
+                      minWidth: 0,
+                    }}
+                    className="audit-pill-input"
+                  /><div
+                    className="audit-pill-divider"
+                    style={{
+                      width: '1px',
+                      height: '24px',
+                      background: '#e3e0ea',
+                    }}
+                  />
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={auditEmail}
+                    onChange={(e) => setAuditEmail(e.target.value)}
+                    style={{
+                      border: 'none',
+                      outline: 'none',
+                      flex: 1,
+                      fontSize: '1rem',
+                      background: 'transparent',
+                      minWidth: 0,
+                    }}
+                    className="audit-pill-input"
+                  />
+                  <button type="submit" disabled={auditLoading} style={{
+                    background: '#7d3d4f',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '0.85rem 1.4rem',
+                    borderRadius: '999px',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    cursor: auditLoading ? 'not-allowed' : 'pointer',
+                    opacity: auditLoading ? 0.7 : 1,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {auditLoading ? 'Saving…' : 'AUDIT MY SITE →'}
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value={auditHoneypot}
+                  onChange={(e) => setAuditHoneypot(e.target.value)}
+                  style={{
+                    position: 'absolute',
+                    left: '-9999px',
+                  }}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  tabIndex={-1}
+                />
+              </div>
             </form>
           )}
+          {/*
+            No child combinator in here. A `>` inside a <style> template literal
+            is serialised as `&gt;` on the server and as `>` on the client, and
+            React counts that as a text-content mismatch: hydration fails, the
+            page still looks completely fine, and NOT ONE event handler is ever
+            attached — which on this section means the audit form silently stops
+            submitting. Target the children by class instead.
+          */}
+          <style>{`
+            @media (max-width: 560px) {
+              .audit-form-inputs {
+                flex-direction: column !important;
+              }
+              .audit-pill {
+                flex-direction: column !important;
+                gap: 0 !important;
+                padding: 0.4rem !important;
+                align-items: stretch !important;
+                /* A 999px radius is a pill only while this is one row tall.
+                   Stacked, it curves the whole card into a lozenge and the
+                   button reads as if it is falling out of it. */
+                border-radius: 18px !important;
+              }
+              .audit-pill-input {
+                padding: 0.85rem 1.2rem !important;
+              }
+              .audit-pill-divider {
+                display: none !important;
+              }
+              .audit-pill button {
+                width: 100% !important;
+              }
+            }
+          `}</style>
         </div>
       </div>
 
@@ -867,73 +1073,123 @@ export default function Home() {
           </div>
 
           {referDone ? (
-            <p style={{
-              fontSize: '0.9rem',
-              color: '#3d4358',
+            <div style={{
               marginTop: '2.5rem',
-            }}>Got it. We'll send your link shortly.</p>
+              textAlign: 'center',
+            }}>
+              <p style={{
+                fontSize: '0.9rem',
+                color: '#3d4358',
+                margin: '0 0 1rem',
+              }}>Got it. We'll send your link shortly.</p>
+              {referCode && (
+                <div style={{
+                  background: 'rgba(255,255,255,0.3)',
+                  borderRadius: '8px',
+                  padding: '1rem',
+                  fontSize: '0.85rem',
+                  color: '#3d4358',
+                }}>
+                  <p style={{ margin: '0 0 0.5rem', fontWeight: 600 }}>Your referral link:</p>
+                  <p style={{
+                    margin: 0,
+                    wordBreak: 'break-all',
+                    fontFamily: 'monospace',
+                    fontSize: '0.8rem',
+                  }}>
+                    https://mountainstudios.co.za/?ref={referCode}
+                  </p>
+                </div>
+              )}
+            </div>
           ) : (
             <form onSubmit={handleReferSubmit} style={{
-              display: 'flex',
-              gap: '0.6rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
               marginTop: '2.5rem',
             }}>
+              {referError && (
+                <p style={{
+                  fontSize: '0.9rem',
+                  color: '#dc2626',
+                  marginBottom: '1rem',
+                  textAlign: 'center',
+                }}>
+                  {referError}
+                </p>
+              )}
+              <div style={{
+                display: 'flex',
+                gap: '0.6rem',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}>
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={referName}
+                  onChange={(e) => setReferName(e.target.value)}
+                  style={{
+                    width: '190px',
+                    padding: '0.85rem 1.4rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    fontSize: '1rem',
+                    outline: 'none',
+                  }}
+                />
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={referEmail}
+                  onChange={(e) => setReferEmail(e.target.value)}
+                  style={{
+                    width: '190px',
+                    padding: '0.85rem 1.4rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    fontSize: '1rem',
+                    outline: 'none',
+                  }}
+                />
+                <input
+                  type="tel"
+                  placeholder="Your mobile"
+                  value={referPhone}
+                  onChange={(e) => setReferPhone(e.target.value)}
+                  style={{
+                    width: '190px',
+                    padding: '0.85rem 1.4rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    fontSize: '1rem',
+                    outline: 'none',
+                  }}
+                />
+                <button type="submit" disabled={referLoading} style={{
+                  background: '#fff',
+                  color: '#1a1a2e',
+                  border: 'none',
+                  padding: '0.85rem 1.4rem',
+                  borderRadius: '999px',
+                  fontSize: '1rem',
+                  fontWeight: 700,
+                  cursor: referLoading ? 'not-allowed' : 'pointer',
+                  opacity: referLoading ? 0.7 : 1,
+                }}>
+                  {referLoading ? 'Saving…' : 'GET MY LINK →'}
+                </button>
+              </div>
               <input
                 type="text"
-                placeholder="Your name"
-                value={referName}
-                onChange={(e) => setReferName(e.target.value)}
+                value={referHoneypot}
+                onChange={(e) => setReferHoneypot(e.target.value)}
                 style={{
-                  width: '190px',
-                  padding: '0.85rem 1.4rem',
-                  borderRadius: '999px',
-                  border: 'none',
-                  fontSize: '1rem',
-                  outline: 'none',
+                  position: 'absolute',
+                  left: '-9999px',
                 }}
+                autoComplete="off"
+                aria-hidden="true"
+                tabIndex={-1}
               />
-              <input
-                type="email"
-                placeholder="Your email"
-                value={referEmail}
-                onChange={(e) => setReferEmail(e.target.value)}
-                style={{
-                  width: '190px',
-                  padding: '0.85rem 1.4rem',
-                  borderRadius: '999px',
-                  border: 'none',
-                  fontSize: '1rem',
-                  outline: 'none',
-                }}
-              />
-              <input
-                type="tel"
-                placeholder="Your mobile"
-                value={referPhone}
-                onChange={(e) => setReferPhone(e.target.value)}
-                style={{
-                  width: '190px',
-                  padding: '0.85rem 1.4rem',
-                  borderRadius: '999px',
-                  border: 'none',
-                  fontSize: '1rem',
-                  outline: 'none',
-                }}
-              />
-              <button type="submit" style={{
-                background: '#fff',
-                color: '#1a1a2e',
-                border: 'none',
-                padding: '0.85rem 1.4rem',
-                borderRadius: '999px',
-                fontSize: '1rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}>
-                GET MY LINK →
-              </button>
             </form>
           )}
 
