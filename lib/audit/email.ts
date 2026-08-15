@@ -29,18 +29,10 @@ function formatDate(dateStr: string): string {
   return `${day} ${month} ${year}`;
 }
 
-function getVerdictColour(bucket: 'red' | 'amber' | 'green'): string {
-  switch (bucket) {
-    case 'green': return '#2E6F5E';
-    case 'amber': return '#B8791F';
-    case 'red': return '#A8362F';
-  }
-}
-
 function renderScoreBand(score: number): string {
   const filled = Math.round(score / 10);
   const cells = Array.from({ length: 10 }, (_, i) => {
-    const bg = i < filled ? getVerdictColour('green') : '#E6E1EA';
+    const bg = i < filled ? '#000000' : '#DDDDDD';
     return `<td style="height:8px;width:24px;border-radius:2px;background:${bg};"></td>`;
   });
 
@@ -58,9 +50,7 @@ export function renderAuditEmail(report: AuditReport): { subject: string; html: 
 
   const sslCheck = report.checks.ssl;
   if (sslCheck.status === 'ok') {
-    preheaderParts.push('SSL OK');
-  } else if (sslCheck.status !== 'error') {
-    preheaderParts.push('SSL Problem');
+    preheaderParts.push((sslCheck as any).pass ? 'SSL OK' : 'SSL problem');
   }
 
   const headersCheck = report.checks.headers;
@@ -99,30 +89,41 @@ export function renderAuditEmail(report: AuditReport): { subject: string; html: 
 <html>
 <head>
   <meta charset="UTF-8">
-  <style>
-    .preheader { display: none; font-size: 1px; color: #FBFAFC; max-height: 0; overflow: hidden; }
-  </style>
 </head>
-<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;margin:0;padding:0;background:#FBFAFC;">
-  <span class="preheader">${escapeHtml(preheader)}</span>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;margin:0;padding:0;background:#FFFFFF;">
+  <span style="display:none;font-size:1px;color:#FFFFFF;max-height:0;overflow:hidden;">${escapeHtml(preheader)}</span>
 
-  <div style="max-width:600px;margin:0 auto;background:#FBFAFC;">
-    <!-- Header Block -->
-    <div style="padding:32px 24px;background:#FBFAFC;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 12px;">Website Audit</p>
-      <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;color:#14121A;margin:0 0 8px;font-weight:400;">${hostname}</h1>
-      <p style="font-size:13px;color:#6B6570;margin:0;">Checked ${escapeHtml(dateFormatted)}</p>
-    </div>
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#FFFFFF;">
+    <tr>
+      <td align="center">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:600px;max-width:600px;background:#FFFFFF;">
+          <!-- Header Block -->
+          <tr>
+            <td style="padding:32px 24px;background:#FFFFFF;">
+              <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 12px;">Website Audit</p>
+              <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:28px;color:#000000;margin:0 0 8px;font-weight:400;">${hostname}</h1>
+              <p style="font-size:13px;color:#666666;margin:0;">Checked ${escapeHtml(dateFormatted)}</p>
+            </td>
+          </tr>
 
-    <!-- Ledger -->
-    ${ledgerHtml}
+          <!-- Ledger -->
+          <tr>
+            <td style="padding:0;">
+              ${ledgerHtml}
+            </td>
+          </tr>
 
-    <!-- Footer -->
-    <div style="padding:32px 24px;border-top:1px solid #E6E1EA;">
-      <p style="font-size:14px;color:#14121A;margin:0 0 12px;">Reply to this email and we'll walk you through any of it.</p>
-      <p style="font-size:13px;color:#6B6570;margin:0;">Mountain Studios · mountainstudios.co.za</p>
-    </div>
-  </div>
+          <!-- Footer -->
+          <tr>
+            <td style="padding:32px 24px;border-top:1px solid #DDDDDD;">
+              <p style="font-size:14px;color:#000000;margin:0 0 12px;">Reply to this email and we'll walk you through any of it.</p>
+              <p style="font-size:13px;color:#666666;margin:0;">Mountain Studios · mountainstudios.co.za</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`;
 
@@ -134,18 +135,18 @@ export function renderAuditEmail(report: AuditReport): { subject: string; html: 
 
 function buildCheckRow(check: any, label: string, verdictHtml: string): string {
   if (check.status === 'error') {
-    return `<div style="padding:24px;border-top:1px solid #E6E1EA;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 8px;">${label}</p>
-      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#14121A;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
-      <p style="font-size:14px;line-height:1.6;color:#6B6570;margin:0 0 12px;">${escapeHtml(check.body)}</p>
+    return `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+      <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 12px;">${escapeHtml(check.body)}</p>
       ${verdictHtml}
     </div>`;
   }
 
-  return `<div style="padding:24px;border-top:1px solid #E6E1EA;">
-    <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 8px;">${label}</p>
-    <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#14121A;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
-    <p style="font-size:14px;line-height:1.6;color:#6B6570;margin:0 0 12px;">${escapeHtml(check.body)}</p>
+  return `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+    <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+    <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+    <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 12px;">${escapeHtml(check.body)}</p>
     ${verdictHtml}
   </div>`;
 }
@@ -156,25 +157,23 @@ function buildHeadersRow(check: any, label: string): string {
 
   if (check.status === 'ok') {
     const count = check.present.length;
-    const bucket = check.bucket;
-    const colour = getVerdictColour(bucket);
-    verdictChip = `<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:${colour};border-radius:4px;padding:4px 10px;">${count} OF 5 PRESENT</span>`;
+    verdictChip = `<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#000000;margin:12px 0 0;">${count} OF 5 PRESENT</p>`;
 
     if (check.missing.length > 0) {
       missingList = `<div style="margin-top:12px;">` +
         check.missingDetail.map((detail: string) =>
-          `<div style="font-size:13px;color:#6B6570;margin:4px 0;">– ${escapeHtml(detail)}</div>`
+          `<div style="font-size:13px;color:#666666;margin:4px 0;">– ${escapeHtml(detail)}</div>`
         ).join('') +
         `</div>`;
     }
   } else {
-    verdictChip = `<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:#8C8792;border-radius:4px;padding:4px 10px;">NOT CHECKED</span>`;
+    verdictChip = `<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:12px 0 0;">NOT CHECKED</p>`;
   }
 
-  return `<div style="padding:24px;border-top:1px solid #E6E1EA;">
-    <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 8px;">${label}</p>
-    <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#14121A;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
-    <p style="font-size:14px;line-height:1.6;color:#6B6570;margin:0 0 12px;">${escapeHtml(check.body)}</p>
+  return `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+    <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+    <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+    <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 12px;">${escapeHtml(check.body)}</p>
     ${verdictChip}
     ${missingList}
   </div>`;
@@ -185,28 +184,23 @@ function buildSpeedRow(check: any, label: string): string {
 
   if (check.status === 'ok') {
     const score = check.score;
-    const colour = getVerdictColour(check.bucket);
-    const verdictChip = `<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:${colour};border-radius:4px;padding:4px 10px;">${score} / 100</span>`;
     const band = renderScoreBand(score);
 
-    content = `<div style="padding:24px;border-top:1px solid #E6E1EA;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 8px;">${label}</p>
-      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#14121A;margin:0 0 16px;font-weight:400;">${escapeHtml(check.headline)}</h2>
-      <p style="font-size:14px;line-height:1.6;color:#6B6570;margin:0 0 16px;">${escapeHtml(check.body)}</p>
+    content = `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 16px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+      <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 16px;">${escapeHtml(check.body)}</p>
       <div>
         ${band}
-        <span style="display:inline-block;font-family:Georgia,'Times New Roman',serif;font-size:40px;color:${colour};vertical-align:middle;margin-right:4px;">${score}</span><span style="display:inline-block;font-size:13px;color:#6B6570;vertical-align:middle;">/100</span>
-      </div>
-      <div style="margin-top:12px;">
-        ${verdictChip}
+        <span style="display:inline-block;font-family:Georgia,'Times New Roman',serif;font-size:40px;color:#000000;vertical-align:middle;margin-right:4px;">${score}</span><span style="display:inline-block;font-size:13px;color:#666666;vertical-align:middle;">/100</span>
       </div>
     </div>`;
   } else {
-    content = `<div style="padding:24px;border-top:1px solid #E6E1EA;">
-      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6B6570;margin:0 0 8px;">${label}</p>
-      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#14121A;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
-      <p style="font-size:14px;line-height:1.6;color:#6B6570;margin:0 0 12px;">${escapeHtml(check.body)}</p>
-      <span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:#8C8792;border-radius:4px;padding:4px 10px;">NOT CHECKED</span>
+    content = `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+      <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 12px;">${escapeHtml(check.body)}</p>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:12px 0 0;">NOT CHECKED</p>
     </div>`;
   }
 
@@ -215,13 +209,12 @@ function buildSpeedRow(check: any, label: string): string {
 
 function getVerdictChip(check: any): string {
   if (check.status === 'error') {
-    return `<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:#8C8792;border-radius:4px;padding:4px 10px;">NOT CHECKED</span>`;
+    return `<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:12px 0 0;">NOT CHECKED</p>`;
   }
 
   if (check.pass !== undefined) {
-    const colour = check.pass ? '#2E6F5E' : '#A8362F';
     const text = check.pass ? 'SECURE' : 'NOT SECURE';
-    return `<span style="display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:white;background:${colour};border-radius:4px;padding:4px 10px;">${text}</span>`;
+    return `<p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#000000;margin:12px 0 0;">${text}</p>`;
   }
 
   return '';
