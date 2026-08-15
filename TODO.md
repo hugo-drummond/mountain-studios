@@ -72,6 +72,11 @@ Still to build:
       row's uuid can read it.
 - [ ] Decide whether the mobile screenshot gets surfaced anywhere. It is captured and stored, but
       not emailed.
+- [ ] **Wire the PDF report.** `lib/audit-report/template.html` exists (see STATUS.md) but nothing
+      fills its placeholders from a real `audit_requests.report` row or attaches the rendered PDF
+      to the email in `lib/audit/email.ts`.
+- [ ] **Report only covers 4 of 5 checks — no Accessibility page, old naming.** Decide whether to
+      add a 4th page or leave it out on purpose; see STATUS.md for the exact gap.
 
 **Chatbot** — built and live 14 August 2026, see [STATUS.md](STATUS.md)
 

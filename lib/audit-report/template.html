@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Website Audit Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    color: #2e333a;
+  }
+
+  @page { size: A4; margin: 0; }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---------- shared header ---------- */
+  .brand-header {
+    position: absolute;
+    top: 14mm;
+    left: 16mm;
+    right: 16mm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 5;
+  }
+  .brand-wordmark {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+  .brand-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  /* ---------- PAGE 1 : COVER ---------- */
+  #cover {
+    background: url('{{cover_image_path}}') center / cover no-repeat;
+  }
+  #cover .brand-wordmark,
+  #cover .brand-tag { color: #20263a; }
+
+  #cover .cover-body {
+    position: absolute;
+    top: 38mm;
+    left: 16mm;
+    right: 16mm;
+  }
+  #cover .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #7d3d4f;
+    margin-bottom: 10mm;
+  }
+  #cover .business-name {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.15;
+    color: #20263a;
+    margin: 0 0 4mm;
+    max-width: 140mm;
+  }
+  #cover .cover-sub {
+    font-size: 15px;
+    color: #4a5166;
+  }
+  #cover .cover-footer {
+    position: absolute;
+    left: 16mm;
+    bottom: 16mm;
+    font-size: 10px;
+    color: #20263a;
+    opacity: 0.7;
+  }
+  #cover .cover-footer strong { opacity: 1; }
+
+  /* ---------- PAGES 2 & 3 : REPORT ---------- */
+  .report-page {
+    background: #d9adb8;
+  }
+  .report-page .brand-wordmark,
+  .report-page .brand-tag { color: #20263a; }
+
+  .report-page .page-title {
+    position: absolute;
+    top: 30mm;
+    left: 16mm;
+    right: 16mm;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+    color: #20263a;
+  }
+
+  .checks-stack {
+    position: absolute;
+    top: 46mm;
+    left: 16mm;
+    right: 16mm;
+    bottom: 16mm;
+    display: flex;
+    flex-direction: column;
+    gap: 8mm;
+  }
+
+  .check-card {
+    background: #ffffff;
+    border-radius: 6mm;
+    box-shadow: 0 6mm 10mm -7mm rgba(26,26,46,0.45);
+    padding: 8mm;
+    display: flex;
+    align-items: center;
+    gap: 8mm;
+    flex: 1;
+  }
+  .check-copy { flex: 1; }
+  .check-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #20263a;
+    margin: 0 0 2mm;
+  }
+  .check-status-word {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 1mm 3mm;
+    border-radius: 3mm;
+    margin-bottom: 3mm;
+  }
+  .status-red    { background: #fbe4e4; color: #b13a3a; }
+  .status-amber  { background: #fbeed9; color: #ad7a1f; }
+  .status-green  { background: #dcf0e1; color: #2f8a4d; }
+
+  .check-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #5d6478;
+    margin: 0;
+  }
+
+  /* ring gauge */
+  .gauge { flex-shrink: 0; width: 26mm; height: 26mm; position: relative; }
+  .gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .gauge-track { fill: none; stroke: #efedf7; stroke-width: 10; }
+  .gauge-fill  { fill: none; stroke-width: 10; stroke-linecap: round; }
+  .gauge-value {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #20263a;
+  }
+
+  /* ---------- PAGE 3 extras: summary + CTA ---------- */
+  .summary-block {
+    background: #ffffff;
+    border-radius: 6mm;
+    box-shadow: 0 6mm 10mm -7mm rgba(26,26,46,0.45);
+    padding: 10mm;
+  }
+  .summary-block .summary-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7d3d4f;
+    margin-bottom: 4mm;
+  }
+  .summary-block p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3a3f4d;
+    margin: 0 0 6mm;
+  }
+  .summary-block ul {
+    margin: 0 0 6mm;
+    padding-left: 5mm;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: #3a3f4d;
+  }
+  .cta-button {
+    display: inline-block;
+    background: #7d3d4f;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 5mm 10mm;
+    border-radius: 999px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ PAGE 1 — COVER ============ -->
+  <div class="page" id="cover">
+    <div class="brand-header">
+      <div class="brand-wordmark">mountain studios</div>
+      <div class="brand-tag">Free Website Audit</div>
+    </div>
+    <div class="cover-body">
+      <div class="eyebrow">Website Audit Report</div>
+      <h1 class="business-name">{{business_name}}</h1>
+      <p class="cover-sub">{{website_url}}</p>
+    </div>
+    <div class="cover-footer">
+      Prepared by <strong>Mountain Studios</strong> &middot; {{report_date}}
+    </div>
+  </div>
+
+  <!-- ============ PAGE 2 — CHECKS 1-3 ============ -->
+  <div class="page report-page">
+    <div class="brand-header">
+      <div class="brand-wordmark">mountain studios</div>
+      <div class="brand-tag">Page 2 of 3</div>
+    </div>
+    <div class="page-title">What we found — part one</div>
+
+    <div class="checks-stack">
+
+      <!-- SSL -->
+      <div class="check-card">
+        <div class="check-copy">
+          <span class="check-status-word status-{{ssl_status_class}}">{{ssl_status_word}}</span>
+          <div class="check-name">SSL Certificate</div>
+          <p class="check-desc">Checks if your site shows the safe padlock, or scares visitors with a red "Not Secure" warning the moment they land.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{ssl_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{ssl_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{ssl_score_label}}</div>
+        </div>
+      </div>
+
+      <!-- MOBILE -->
+      <div class="check-card">
+        <div class="check-copy">
+          <span class="check-status-word status-{{mobile_status_class}}">{{mobile_status_word}}</span>
+          <div class="check-name">Mobile Score</div>
+          <p class="check-desc">Checks if your site actually works on a phone — most of your visitors are on one, right now.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{mobile_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{mobile_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{mobile_score}}</div>
+        </div>
+      </div>
+
+      <!-- PAGESPEED -->
+      <div class="check-card">
+        <div class="check-copy">
+          <span class="check-status-word status-{{speed_status_class}}">{{speed_status_word}}</span>
+          <div class="check-name">PageSpeed Score</div>
+          <p class="check-desc">Checks how fast your site loads. Slow sites lose visitors before the page even finishes appearing.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{speed_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{speed_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{speed_score}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ PAGE 3 — CHECK 4 + SUMMARY/CTA ============ -->
+  <div class="page report-page">
+    <div class="brand-header">
+      <div class="brand-wordmark">mountain studios</div>
+      <div class="brand-tag">Page 3 of 3</div>
+    </div>
+    <div class="page-title">What we found — part two</div>
+
+    <div class="checks-stack">
+
+      <!-- SECURITY HEADERS -->
+      <div class="check-card" style="flex: 0 0 auto; min-height: 46mm;">
+        <div class="check-copy">
+          <span class="check-status-word status-{{headers_status_class}}">{{headers_status_word}}</span>
+          <div class="check-name">Security Headers</div>
+          <p class="check-desc">Checks for missing settings that make browsers flag your site as untrusted, even when the padlock looks fine.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{headers_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{headers_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{headers_score_label}}</div>
+        </div>
+      </div>
+
+      <!-- SUMMARY + CTA -->
+      <div class="summary-block" style="flex: 1;">
+        <div class="summary-label">In short</div>
+        <p>{{summary_text}}</p>
+        <ul>
+          {{summary_bullets}}
+        </ul>
+        <a class="cta-button" href="{{calendly_url}}">Book a free 15-min fix-it call →</a>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

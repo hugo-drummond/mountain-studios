@@ -512,6 +512,36 @@ report stored, the email delivered.
   `.update()` catches nothing — check the returned error or write failures pass silently.
 - The mobile screenshot is stored in the report but **left out of the email**: Gmail strips
   `data:` URI images.
+- This section's own description above says "four checks" and is stale — `lib/audit/types.ts`
+  and the live cards on the homepage now carry a fifth, Accessibility. See the report note below.
+
+## Website audit report — PDF template, 15 August 2026
+
+The branded report the audit engine above is meant to send is not built yet — today's email is
+plain text. The visual design is: `lib/audit-report/template.html`, a static A4 HTML file with
+`{{placeholder}}` tokens (business name, per-check score/color/dash-offset, summary text/bullets,
+Calendly URL) for a script to fill in per lead. Rendered to PDF locally with headless Chrome
+(`google-chrome --headless --print-to-pdf`) — no npm dependency added for this yet.
+
+Three pages: cover (business name over `public/images/audit-report/cover-mountain.png`, a
+Gemini-generated mountain-silhouette matching the homepage hero gradient/palette), then two report
+pages on a flat `#d9adb8` background (sampled off the cover art, just above the ridge) with one
+white ring-gauge card per check. Gauge fill is an SVG `stroke-dashoffset`, plain numbers — no
+raster graphics generated per report, only the cover art is one-time Gemini output.
+
+**Deliberately covers 4 of the engine's 5 checks, not all 5.** It was designed and approved before
+the Accessibility check existed on this branch. It ships as SSL / Security Headers / Mobile Score /
+PageSpeed Score under those names — it does **not** use the live cards' renamed copy (Encryption /
+Browser Protection / Mobile Speed / Desktop Speed) and has no Accessibility page. Known gap, decided
+15 August 2026: ship the 4-check report now rather than hold it for a redesign.
+
+Not wired to anything yet: no script fills the placeholders from a real `audit_requests.report`
+row, and no PDF gets attached to the email `lib/audit/email.ts` sends. That's the next build step,
+and it needs to either add a 4th page for Accessibility or explicitly decide to keep leaving it out.
+
+`{{cover_image_path}}` needs a real path or data URI at render time — headless Chrome loaded it
+fine from a `file://` path locally; confirm whatever renders this in production can reach the PNG
+the same way (bundled asset vs. fetched URL).
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
