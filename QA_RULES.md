@@ -39,6 +39,16 @@ These rules apply to every generated HTML preview. Memorise them before making a
 - "Meet the Team" / service showcase cards must be ABOVE "See All Projects" / portfolio grid
 - Contact section is ALWAYS last (before footer)
 
+### Mobile (≤768px)
+- The shared mobile rules live in `buildCssVars`, in its `@media (max-width: 768px)` block. They hit **every** template, so any change there must be re-rendered against all fifteen before it ships.
+- Multi-column grids collapse to one column. A grid only collapses if it carries `.ms-grid` or is declared inline on the hero section (or one level below it) — a grid that is neither stays multi-column on a phone and crushes its text.
+- Hero fills the screen: `min-height:100svh`. Use `svh`, never `dvh` — `dvh` resizes the hero mid-scroll when the address bar hides.
+- The 1.25rem side gutter is for text columns only. Never apply it to a full-bleed layer: it insets a hero photo to 389px on a 429px screen and leaves grey bands down both edges.
+- Content clears the fixed nav with a 5.5rem top pad — content layers only, never a photo layer.
+- **Split heroes** (image column + text column: health-wellness, creative, education, retail, home-services) put the photo full-bleed behind the copy, with a scrim and white type. `.ms-hero-photo` and `.ms-hero-text` are the hooks. Anything positioned inside the image column for the desktop layout — badges, gradient overlays — must be hidden, or it lands on top of the copy.
+- Text forced white must account for ghost CTAs. They declare `background:transparent`, so a "skip anything with its own background" exclusion skips them too and leaves ink text on a dark photo.
+- A transparent nav over a photo hero needs its logo and burger inverted until it picks up its scrolled background.
+
 ### Testimonials
 - Every testimonial must have a real-sounding name + role (e.g. "Sarah M., Homeowner")
 - Never use service names, placeholder text, or "model C" as reviewer names
@@ -70,9 +80,17 @@ These categories consistently return bad results. Use these proven query pattern
 
 ## How to verify changes
 
+All twenty-two `buildXTemplate()` functions live in `app/api/preview/generate/route.ts`. The `templates/` directory at the repo root is dead — nothing imports it.
+
 After changing any image queries or template code:
-1. Run the dev server: `npm run dev`
-2. POST to `/api/preview/generate` with a test business type
-3. Open the generated HTML in a browser
-4. Check EVERY image on the page — not just the hero
-5. If any image shows nature, landscapes, abstract art, or unrelated products: the query failed
+
+1. Start the dev server. **Never run `next build` while it is running** — both write `.next`, and React then silently stops hydrating: the page still looks right and no event handler fires. The dev server also dies on hot-reload of a file this size; just restart it.
+2. POST to `/api/preview/generate` with `businessName`, `businessType` and `businessCategory`. No `recaptchaToken` is needed — `blockedAsBot()` is an allowlist.
+3. **`businessType` must be an exact wizard dropdown label** from `constants/business-types.ts` — "Bakery", "Lawyer / Attorney", "Boutique / Fashion Store". Free text ("bakery", "plumber") matches no preset in `content.ts`, silently falls back to generic copy, and makes every template look identically bland. Testing with free text tells you nothing about the template.
+4. The rate limit is 5/hour keyed on the `x-forwarded-for` header. Send a unique one per request, and use a counter — `$RANDOM` collides and you get 429s.
+5. Open the generated HTML in a browser at **both** 1440×900 and 429×725. Most template rules are desktop-only or mobile-only; one width proves nothing about the other.
+6. Screenshot after the page has settled. These templates fade content in on load, so a capture taken immediately shows ghosted text and reads as a contrast bug that isn't there.
+7. Check EVERY image on the page — not just the hero.
+8. If any image shows nature, landscapes, abstract art, or unrelated products: the query failed.
+9. `npx tsc --noEmit` is the only usable check in this repo. **`npx next lint` does not work** — there is no ESLint config, so it opens an interactive prompt and hangs.
+10. Shared CSS (anything in `buildCssVars`) means a change to one template is a change to all fifteen. Re-render all of them.

@@ -467,6 +467,20 @@ function getLuminance(hex: string): number {
   return 0.299 * r + 0.587 * g + 0.114 * b
 }
 
+// categoryColors pairs a near-black "shell" primary with a vivid secondary, and the
+// templates were built around the vivid one — their `|| '#xxxxxx'` fallbacks are all
+// bright. Using primaryColor raw put a near-black accent on a near-black surface:
+// invisible buttons, eyebrows and stat rows. Below ~0.19 perceived brightness the primary is a
+// shell colour rather than an accent, so the secondary is what was meant. Lightening
+// is the last resort because it desaturates a brand colour into grey.
+function accentOnDark(primary: string | undefined, secondary: string | undefined, fallback: string): string {
+  const p = primary || fallback
+  if (getLuminance(p) >= 0.19) return p
+  const s = secondary || fallback
+  if (getLuminance(s) >= 0.25) return s
+  return lightenColor(p, 0.55)
+}
+
 function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, secondaryColor: string, theme: Theme = 'dark'): string {
   // Create a readable version of primary for dark backgrounds
   const primaryLum = getLuminance(primaryColor)
@@ -519,29 +533,103 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     #ms-mob-menu a:hover { border-bottom-color: rgba(255,255,255,0.5); }
     .ms-close-label { position: absolute; top: 2rem; right: 2rem; color: #fff; font-size: 2.5rem; cursor: pointer; z-index: 200; font-weight: 300; }
 
+    /* Tablet: step multi-column grids down before they collapse to one column at 768px. */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .ms-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      section { padding-top: 70px !important; padding-bottom: 70px !important; }
+      section > div { padding-left: 2rem !important; padding-right: 2rem !important; }
+    }
+
     @media (max-width: 768px) {
       .ms-burger { display: flex; }
       .ms-burger-inline { display: flex !important; }
       .ms-nav-links { display: none !important; }
       nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
+      /* A long business name wrapping to two lines makes the fixed nav ~2x taller,
+         which is what pushes hero content out of sight. Keep the logo on one line. */
+      nav a:first-child, .ms-nav a:first-child { white-space: nowrap !important; font-size: 0.95rem !important; overflow: hidden !important; text-overflow: ellipsis !important; min-width: 0 !important; flex: 0 1 auto !important; }
+      nav > div, .ms-nav > div { min-width: 0 !important; }
 
       section { padding: 40px 0 !important; }
       section > div { padding: 0 1.25rem !important; }
+      /* The side gutter above is for text columns. Absolutely-positioned layers are
+         full-bleed backgrounds (hero photos, gradient overlays) — padding them insets
+         the image so it stops short of the screen edge. */
+      section > div[style*="position:absolute"],
+      section > div[style*="position: absolute"] { padding-left: 0 !important; padding-right: 0 !important; }
+      /* The hero has padding-top:0 so its photo reaches the top of the screen, but the
+         nav is fixed and would cover the first line of content. Pad the content layer
+         only — never a photo layer, whether it is absolutely positioned in the markup
+         or made full-bleed by the split-hero rules below. */
+      section:first-of-type > div:not([style*="position:absolute"]):not([style*="position: absolute"]):not(.ms-hero-photo) { padding-top: 5.5rem !important; }
 
       /* All multi-col grids → 1 col */
       .ms-grid { grid-template-columns: 1fr !important; }
+      /* Split heroes declare their columns in an inline style attribute and carry no
+         .ms-grid class, so the rule above never reaches them. Education nests its grid
+         one level down inside the hero section. */
+      section:first-of-type[style*="grid-template-columns"],
+      section:first-of-type div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
 
       /* Gallery → 2 stacked full-width photos */
       #gallery .ms-grid { display: flex !important; flex-direction: column !important; }
       #gallery .ms-grid > * { width: 100% !important; height: 260px !important; overflow: hidden !important; grid-row: auto !important; grid-column: auto !important; }
-      #gallery .ms-grid > *:nth-child(n+3) { display: none !important; }
+      #gallery .ms-grid > *:nth-child(n+5) { display: none !important; }
 
       /* Flex process rows → vertical */
       .ms-flex { flex-direction: column !important; }
       .ms-flex > svg, .ms-arrow { transform: rotate(90deg); margin: 0.5rem auto !important; padding: 0 !important; }
 
       /* Hero sections */
-      section:first-of-type { min-height: auto !important; padding-top: 30px !important; padding-bottom: 30px !important; }
+      /* The hero fills the phone screen. svh (not dvh) so the height does not
+         change when the address bar hides on scroll, which would resize the hero
+         mid-gesture. The 100vh line is the fallback for browsers without svh. */
+      section:first-of-type { min-height: 100vh !important; min-height: 100svh !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+
+      /* Split heroes (health-wellness, creative, education, retail, home-services):
+         on mobile the image column becomes a full-bleed background and the copy sits
+         on top of it. .ms-hero-photo / .ms-hero-text mark the two columns in every
+         one of them. */
+      section:first-of-type:has(.ms-hero-photo) { position: relative !important; min-height: 100vh !important; min-height: 100svh !important; }
+      section:first-of-type .ms-hero-photo {
+        display: block !important; position: absolute !important; inset: 0 !important;
+        width: 100% !important; height: 100% !important; max-width: none !important;
+        margin: 0 !important; padding: 0 !important; opacity: 1 !important;
+        border-radius: 0 !important; overflow: hidden !important; z-index: 0 !important;
+      }
+      section:first-of-type .ms-hero-photo img { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
+      /* Badges and gradient overlays inside the image column are positioned for a
+         half-width desktop column; full-bleed they land on top of the copy. */
+      section:first-of-type .ms-hero-photo > [style*="position:absolute"],
+      section:first-of-type .ms-hero-photo > [style*="position: absolute"] { display: none !important; }
+      /* The photo is whatever Pexels returned, so the type carries its own contrast. */
+      section:first-of-type .ms-hero-photo::after { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(8,10,14,0.52) 0%, rgba(8,10,14,0.60) 45%, rgba(8,10,14,0.80) 100%); }
+      section:first-of-type .ms-hero-text { position: relative !important; z-index: 2 !important; background: none !important; }
+      section:first-of-type .ms-hero-text,
+      section:first-of-type .ms-hero-text h1,
+      section:first-of-type .ms-hero-text h2,
+      section:first-of-type .ms-hero-text p,
+      section:first-of-type .ms-hero-text li,
+      section:first-of-type .ms-hero-text strong,
+      section:first-of-type .ms-hero-text div:not([style*="background"]),
+      section:first-of-type .ms-hero-text span:not([style*="background"]),
+      section:first-of-type .ms-hero-text a:not([style*="background"]) { color: #fff !important; }
+      /* Hairlines drawn in ink stop reading once the backdrop is a photo. */
+      section:first-of-type .ms-hero-text [style*="border-top"],
+      section:first-of-type .ms-hero-text [style*="border-bottom"] { border-color: rgba(255,255,255,0.25) !important; }
+      /* Ghost/outline CTAs declare a transparent background, so the exclusions above
+         skip them and they keep their ink-coloured text and border. */
+      section:first-of-type .ms-hero-text [style*="background:transparent"],
+      section:first-of-type .ms-hero-text [style*="background: transparent"],
+      section:first-of-type .ms-hero-text [style*="background:none"] { color: #fff !important; border-color: rgba(255,255,255,0.45) !important; }
+
+      /* Education's image side is a 2x2 of three tiles, not a single photo — only the
+         tall left photo becomes the background. Its grid sits one level below the
+         section, so that wrapper goes static for the photo to fill the whole hero. */
+      .edu-hero > div[style*="clip-path"] { display: none !important; }
+      .edu-hero > div[style*="grid-template-columns"] { position: static !important; }
+      .edu-hero .ms-hero-photo > *:not(:first-child) { display: none !important; }
+      .edu-hero .ms-hero-photo > *:first-child { height: 100% !important; border-radius: 0 !important; }
 
       /* Fixed heights → sensible mobile height */
       .ms-img { height: 220px !important; }
@@ -571,8 +659,8 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       footer > div > div { grid-template-columns: 1fr !important; gap: 2rem !important; }
 
       /* Scale type */
-      h1 { font-size: clamp(1.6rem, 7vw, 2.2rem) !important; line-height: 1.15 !important; }
-      h2 { font-size: clamp(1.3rem, 5vw, 1.8rem) !important; }
+      h1 { font-size: clamp(2.1rem, 9vw, 3.4rem) !important; line-height: 1.1 !important; }
+      h2 { font-size: clamp(1.5rem, 6vw, 2.1rem) !important; line-height: 1.2 !important; }
 
       /* Form */
       form .ms-grid { grid-template-columns: 1fr !important; }
@@ -1987,7 +2075,7 @@ function buildRetailTemplate(data: TemplateData): string {
   const accentLight = secondaryColor
   const border = 'rgba(0,0,0,0.08)'
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
   const navLinks = navFlags.allLinks
 
   // CUSTOM NAV — transparent over hero, slides to solid
@@ -2004,7 +2092,10 @@ function buildRetailTemplate(data: TemplateData): string {
   </nav>
   <style>
     #retail-nav.scrolled { background:${bg} !important; border-bottom:1px solid ${border}; box-shadow:0 2px 8px rgba(0,0,0,0.08); }
-    @media(max-width:768px){ #retail-nav label { display:block!important; } .ret-nav-cta { display:none!important; } .ret-hero-inner { padding:clamp(4rem,10svh,8rem) 1.5rem clamp(3rem,8svh,4rem)!important; } }
+    /* On mobile the hero image becomes a full-bleed dark background, so the logo and
+       burger — ink-coloured for the light desktop hero — stop reading until the nav
+       picks up its solid .scrolled background. */
+    @media(max-width:768px){ #retail-nav label { display:block!important; } .ret-nav-cta { display:none!important; } .ret-hero-inner { padding:clamp(4rem,10svh,8rem) 1.5rem clamp(3rem,8svh,4rem)!important; } #retail-nav:not(.scrolled) > a, #retail-nav:not(.scrolled) label { color:#fff!important; } }
   </style>
   <script>
     window.addEventListener('scroll',function(){
@@ -2017,7 +2108,7 @@ function buildRetailTemplate(data: TemplateData): string {
   // HERO — split layout: dark left with massive headline, right = full-bleed product photo
   const heroSection = `
   <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
-    <div class="ret-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
+    <div class="ret-hero-inner ms-hero-text" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <span style="display:block;width:24px;height:2px;background:${accent}"></span>
         <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase">${content.heroEyebrow}</span>
@@ -2036,13 +2127,12 @@ function buildRetailTemplate(data: TemplateData): string {
         </div>`).join('')}
       </div>
     </div>
-    <div style="position:relative;overflow:hidden">
+    <div class="ms-hero-photo" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 12s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${bg} 0%,transparent 30%)"></div>
-      ${content.badge ? `<div style="position:absolute;top:2.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:${accent};font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
+      ${content.badge ? `<div style="position:absolute;top:6.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:${accent};font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
     </div>
-  </section>
-  <style>@media(max-width:768px){section:first-of-type{grid-template-columns:1fr!important}section:first-of-type>div:last-child{display:none!important}}</style>`
+  </section>`
 
   // PRODUCTS GRID — 4-col with hover reveal overlay
   const productsSection = `
@@ -2533,7 +2623,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Full-bleed split — soft cream left, full-bleed photo right, large serif italic tagline -->
 <section class="hw-hero-section" style="min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;background:${hw.bg};position:relative">
-  <div class="hw-hero-inner" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
+  <div class="hw-hero-inner ms-hero-text" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 6rem 5rem">
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:2rem">${content.heroEyebrow || 'Wellness & Care'}</p>
     <h1 class="hw-fade" style="font-family:'Cormorant',Georgia,serif;font-size:clamp(3.2rem,5vw,5.5rem);font-weight:300;font-style:italic;color:${hw.text};line-height:1.1;letter-spacing:-0.01em;margin-bottom:1.5rem">${content.tagline}</h1>
     <div class="hw-fade" style="width:48px;height:1px;background:${hw.accent};margin-bottom:1.75rem"></div>
@@ -2550,7 +2640,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       </div>`).join('')}
     </div>
   </div>
-  <div class="hw-img-hover hw-hero-img" style="position:relative">
+  <div class="hw-img-hover hw-hero-img ms-hero-photo" style="position:relative">
     <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
     <div style="position:absolute;inset:0;background:linear-gradient(to right,${hw.bg} 0%,transparent 8%)"></div>
     ${content.badge ? `<div style="position:absolute;bottom:3rem;left:2rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:1rem 1.5rem;max-width:220px">
@@ -2751,16 +2841,23 @@ function buildFitnessTemplate(data: TemplateData): string {
   const aboutImg = stockImages.about || stockPool[0]
 
   const fit = {
-    bg: '#0a0a0a',
-    bgAlt: '#111111',
-    bgCard: '#161616',
-    text: '#ffffff',
-    muted: '#bbbbbb',
-    accent: primaryColor || '#e8ff00',
-    border: 'rgba(255,255,255,0.06)',
+    bg: '#f5f5f3',
+    bgAlt: '#eaeae6',
+    bgCard: '#ffffff',
+    text: '#0d0d0d',
+    muted: '#5c5c5c',
+    // On light, the category's vivid partner colour is the energy in the design —
+    // the primary here is near-black, which reads as type rather than as an accent.
+    accent: secondaryColor || '#d42020',
+    border: 'rgba(0,0,0,0.08)',
+    // The hero sits on a photo under a hard dark gradient, so it stays dark even
+    // though the rest of the page is light. These are the hero-only text values.
+    onPhoto: '#ffffff',
+    onPhotoMuted: 'rgba(255,255,255,0.72)',
+    onPhotoBorder: 'rgba(255,255,255,0.3)',
   }
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
     + `<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
   const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 3)
@@ -2780,7 +2877,7 @@ function buildFitnessTemplate(data: TemplateData): string {
   .fit-fade.visible { opacity: 1; transform: none; }
   .fit-card { transition: transform 0.3s ease, background 0.3s ease; }
   .fit-card:hover { transform: translateY(-6px); background: ${fit.accent} !important; }
-  .fit-card:hover * { color: #000 !important; border-color: rgba(0,0,0,0.15) !important; }
+  .fit-card:hover * { color: #fff !important; border-color: rgba(0,0,0,0.15) !important; }
   .fit-img-zoom { overflow: hidden; }
   .fit-img-zoom img { transition: transform 0.6s ease; }
   .fit-img-zoom:hover img { transform: scale(1.05); }
@@ -2794,7 +2891,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 
 <!-- PROMO BAR -->
 <div style="background:${fit.accent};padding:0.55rem 2rem;text-align:center">
-  <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#000">${content.badge || content.heroEyebrow || 'Limited spots available — join today'}</p>
+  <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#fff">${content.badge || content.heroEyebrow || 'Limited spots available — join today'}</p>
 </div>
 
 ${buildStandardNav(businessName, content, navFlags)}
@@ -2811,19 +2908,19 @@ ${buildStandardNav(businessName, content, navFlags)}
       <div style="width:40px;height:2px;background:${fit.accent}"></div>
       <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.25em;text-transform:uppercase;color:${fit.accent}">${content.heroEyebrow || businessName}</p>
     </div>
-    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,11vw,11rem);font-weight:400;color:${fit.text};line-height:0.9;letter-spacing:0.02em;margin-bottom:2rem">${content.tagline.toUpperCase()}</h1>
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7.5vw,7rem);font-weight:400;color:${fit.onPhoto};line-height:0.92;letter-spacing:0.02em;margin-bottom:2rem">${content.tagline.toUpperCase()}</h1>
     <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
-      <a href="#services" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;border:1px solid rgba(255,255,255,0.3);color:${fit.text};text-decoration:none;display:inline-block">${content.ctaSecondary || 'View Classes'}</a>
+      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      <a href="#services" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;border:1px solid ${fit.onPhotoBorder};color:${fit.onPhoto};text-decoration:none;display:inline-block">${content.ctaSecondary || 'View Classes'}</a>
     </div>
   </div>
   <!-- Bottom stats bar -->
-  <div style="position:relative;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-top:1px solid ${fit.border}">
+  <div style="position:relative;background:rgba(255,255,255,0.07);backdrop-filter:blur(12px);border-top:1px solid ${fit.onPhotoBorder}">
     <div class="fit-hero-stats" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:flex;justify-content:space-between;flex-wrap:wrap">
       ${content.stats.slice(0, 4).map((s, i) => `
-      <div style="padding:1.5rem 0;${i < 3 ? `border-right:1px solid ${fit.border};padding-right:3rem;margin-right:3rem` : ''}">
-        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:${fit.text};line-height:1">${s.value}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:${fit.muted};margin-top:0.2rem">${s.label}</div>
+      <div style="padding:1.5rem 0;${i < 3 ? `border-right:1px solid ${fit.onPhotoBorder};padding-right:3rem;margin-right:3rem` : ''}">
+        <div class="fit-counter" style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:${fit.onPhoto};line-height:1">${s.value}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:${fit.onPhotoMuted};margin-top:0.2rem">${s.label}</div>
       </div>`).join('')}
     </div>
   </div>
@@ -2847,7 +2944,7 @@ ${buildStandardNav(businessName, content, navFlags)}
             ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${fit.accent};background:rgba(${parseInt(fit.accent.slice(1,3)||'e8',16)},${parseInt(fit.accent.slice(3,5)||'ff',16)},${parseInt(fit.accent.slice(5,7)||'00',16)},0.1);padding:0.25rem 0.65rem">${t}</span>`).join('')}
           </div>
         </div>
-        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(255,255,255,0.15)">&#8599;</div>
+        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(0,0,0,0.18)">&#8599;</div>
       </div>`).join('')}
     </div>
   </div>
@@ -2879,13 +2976,13 @@ ${buildStandardNav(businessName, content, navFlags)}
       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">${content.aboutHeading.toUpperCase()}</h2>
       ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${fit.accent};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.text};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
-      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#000;text-decoration:none">${content.ctaPrimary}</a>
+      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
     </div>
     <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
       <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
       <div style="position:absolute;bottom:2rem;left:-2rem;background:${fit.accent};padding:1.5rem 2rem;max-width:200px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#000;line-height:1">${content.stats[0]?.value || '500+'}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#000;margin-top:0.25rem">${content.stats[0]?.label || 'Active Members'}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#fff;line-height:1">${content.stats[0]?.value || '500+'}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#fff;margin-top:0.25rem">${content.stats[0]?.label || 'Active Members'}</div>
       </div>
     </div>
   </div>
@@ -2914,7 +3011,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- CONTACT: Dark 2-col, accent CTA bar above -->
 <div style="background:${fit.accent};padding:2.5rem 3rem;text-align:center">
-  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#000;letter-spacing:0.05em">${content.ctaPrimary.toUpperCase()} — START TODAY</h3>
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;letter-spacing:0.05em">${content.ctaPrimary.toUpperCase()} — START TODAY</h3>
 </div>
 <section id="contact" style="padding:6rem 0;background:${fit.bgAlt}">
   <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start">
@@ -2945,7 +3042,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           ${content.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
         </select>
         <textarea placeholder="Tell us about your fitness goals..." rows="4" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;resize:none"></textarea>
-        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:${fit.accent};color:#000;border:none;cursor:pointer">${content.ctaPrimary}</button>
+        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:${fit.accent};color:#fff;border:none;cursor:pointer">${content.ctaPrimary}</button>
       </form>
     </div>
   </div>
@@ -2958,7 +3055,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       ${content.services.slice(0, 3).map(s => `<a href="#services" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${fit.muted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">${s.tags?.[0] || s.name}</a>`).join('')}
       <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${fit.muted};text-decoration:none;letter-spacing:0.08em;text-transform:uppercase">Contact</a>
     </div>
-    <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.2)">&copy; ${new Date().getFullYear()} ${businessName}</p>
+    <p style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(0,0,0,0.38)">&copy; ${new Date().getFullYear()} ${businessName}</p>
   </div>
 </footer>
 
@@ -3035,7 +3132,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 <section class="edu-hero" style="background:${edu.bgWarm};min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;position:relative">
   <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:${edu.accentLight};clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
   <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
-    <div>
+    <div class="ms-hero-text">
       <div class="edu-fade" style="display:inline-flex;align-items:center;gap:0.75rem;background:${edu.accent};padding:0.5rem 1.25rem;margin-bottom:2rem">
         <div style="width:6px;height:6px;border-radius:50%;background:#fff"></div>
         <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#fff">${content.heroEyebrow || 'Education & Growth'}</p>
@@ -3054,7 +3151,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         </div>`).join('')}
       </div>
     </div>
-    <div class="edu-fade" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;height:500px">
+    <div class="edu-fade ms-hero-photo" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;height:500px">
       <div class="edu-img-zoom" style="grid-column:1/2;grid-row:1/3;border-radius:4px;overflow:hidden">
         <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
       </div>
@@ -3301,6 +3398,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const textMuted = '#555550'
   const borderCol = 'rgba(0,0,0,0.08)'
   const accent = primaryColor || '#b8975a'
+  const heroAccent = accentOnDark(primaryColor, secondaryColor, '#b8975a')
 
   const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
@@ -3374,7 +3472,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <!-- Eyebrow with flanking lines -->
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
         <div style="width:32px;height:1px;background:${accent}"></div>
-        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">${content.heroEyebrow}</span>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${heroAccent};font-weight:500">${content.heroEyebrow}</span>
         <div style="width:32px;height:1px;background:${accent}"></div>
       </div>
 
@@ -3631,19 +3729,21 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   const stockPool = buildImagePool(images, stockImages, businessName)
   let _pi = 0
 
-  // Futuristic dark palette
-  const bg = '#080810'
-  const bgAlt = '#0d0d1a'
-  const cardBg = '#111122'
-  const textPrimary = '#e8e8f0'
-  const textMuted = '#bbbbbb'
-  const borderCol = 'rgba(120,120,200,0.12)'
-  const accent = primaryColor || '#6c63ff'
-  const accentGlow = `${accent}40`
+  // Light palette
+  const bg = '#f7f8fb'
+  const bgAlt = '#eceef4'
+  const cardBg = '#ffffff'
+  const textPrimary = '#0d1220'
+  const textMuted = '#5b6478'
+  const borderCol = 'rgba(20,26,54,0.10)'
+  // On a light surface the dark brand primary is the readable accent; accentOnDark
+  // exists for the inverse case and would lift this into an unreadable pastel.
+  const accent = primaryColor || '#3730a3'
+  const accentGlow = `${accent}14`
 
   const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>`
 
   return `${headHtml}
   <style>
@@ -3678,8 +3778,8 @@ function buildTechDigitalTemplate(data: TemplateData): string {
       pointer-events: none;
       z-index: 0;
       background-image:
-        linear-gradient(rgba(120,120,200,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(120,120,200,0.04) 1px, transparent 1px);
+        linear-gradient(rgba(20,26,54,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20,26,54,0.05) 1px, transparent 1px);
       background-size: 60px 60px;
     }
 
@@ -3762,10 +3862,10 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,${accentGlow} 0%,transparent 65%);pointer-events:none;animation:orbPulse 6s ease-in-out infinite"></div>
 
     <!-- Floating code fragments -->
-    <div style="position:absolute;top:15%;left:5%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(108,99,255,0.2);line-height:1.8;pointer-events:none">
+    <div style="position:absolute;top:15%;left:5%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(20,26,54,0.28);line-height:1.8;pointer-events:none">
       const init = () =&gt; {<br />&nbsp;&nbsp;deploy();<br />};
     </div>
-    <div style="position:absolute;bottom:20%;right:6%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(108,99,255,0.2);line-height:1.8;pointer-events:none;text-align:right">
+    <div style="position:absolute;bottom:20%;right:6%;font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(20,26,54,0.28);line-height:1.8;pointer-events:none;text-align:right">
       &lt;Solution /&gt;<br />// v2.0.0
     </div>
 
@@ -3776,8 +3876,9 @@ ${buildStandardNav(businessName, content, navFlags)}
         ${content.badge}
       </div>` : ''}
 
-      <h1 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:1.0;letter-spacing:-0.03em;margin-bottom:1.75rem;color:${textPrimary}">
-        ${content.heroAccent ? `<span style="color:${accent}">${content.heroAccent}</span><br /><span style="color:${textPrimary}">${content.tagline}</span>` : content.tagline.replace(' ', `<br />`)}
+      ${content.heroAccent ? `<div class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(1.05rem,2vw,1.5rem);font-weight:600;letter-spacing:-0.01em;line-height:1.3;color:${accent};margin-bottom:0.85rem">${content.heroAccent}</div>` : ''}
+      <h1 class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:700;line-height:1.05;letter-spacing:-0.03em;margin-bottom:1.75rem;color:${textPrimary}">
+        ${content.heroAccent ? content.tagline : content.tagline.replace(' ', `<br />`)}
         <span class="tw-cursor"></span>
       </h1>
 
@@ -3822,7 +3923,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           <div style="font-size:1.75rem;margin-bottom:1.25rem;line-height:1">${s.icon || ['⚡', '◈', '⊕', '◉', '⬡', '◇'][i % 6]}</div>
           <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:${textPrimary};margin-bottom:0.75rem;letter-spacing:-0.01em">${s.name}</h3>
           <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;color:${textMuted};line-height:1.7;margin-bottom:1.5rem;font-weight:300">${s.description}</p>
-          ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap">${s.tags.map(t => `<span style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;padding:0.3rem 0.7rem;background:rgba(108,99,255,0.08);border:1px solid ${borderCol};border-radius:4px;color:${accent}">${t}</span>`).join('')}</div>` : ''}
+          ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap">${s.tags.map(t => `<span style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;padding:0.3rem 0.7rem;background:rgba(20,26,54,0.05);border:1px solid ${borderCol};border-radius:4px;color:${accent}">${t}</span>`).join('')}</div>` : ''}
         </div>`).join('')}
       </div>
     </div>
@@ -4007,7 +4108,7 @@ function buildTradesTemplate(data: TemplateData): string {
   const trDark = '#1c1a17'
   const trText = '#2a2620'
   const trMuted = '#7a7068'
-  const trAccent = primaryColor || '#c8480a'
+  const trAccent = accentOnDark(primaryColor, secondaryColor, '#c8480a')
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
@@ -4439,7 +4540,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const heroSection = `
   <section class="hm-hero-section" style="position:relative;min-height:88vh;overflow:hidden;display:grid;grid-template-columns:1fr 1fr">
     <!-- Left: warm cream/sage content panel -->
-    <div style="background:linear-gradient(160deg,${hmCream} 0%,${hmSage} 100%);display:flex;flex-direction:column;justify-content:center;padding:5rem 3.5rem 5rem 4rem;position:relative;z-index:1">
+    <div class="ms-hero-text" style="background:linear-gradient(160deg,${hmCream} 0%,${hmSage} 100%);display:flex;flex-direction:column;justify-content:center;padding:5rem 3.5rem 5rem 4rem;position:relative;z-index:1">
       <div class="hm-fade1" style="margin-bottom:1.5rem">
         <span class="hm-chip">&#127968; ${content.heroEyebrow}</span>
       </div>
@@ -4461,7 +4562,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <div style="position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:60px solid rgba(61,107,66,0.07);pointer-events:none"></div>
     </div>
     <!-- Right: Ken Burns photo -->
-    <div class="hm-hero-img-col" style="position:relative;overflow:hidden">
+    <div class="hm-hero-img-col ms-hero-photo" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" class="hm-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${hmSage} 0%,transparent 25%)"></div>
       <!-- floating badge -->
@@ -4743,16 +4844,21 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     stockImages.cards[2],
   ]
 
-  const autoBg = '#0a0a0a'
-  const autoAlt = '#111111'
-  const autoCard = '#141414'
-  const autoText = '#f0ede8'
-  const autoMuted = '#ffffff'
-  const autoBorder = 'rgba(255,255,255,0.07)'
-  const autoAccent = primaryColor || '#e63b1e'
+  const autoBg = '#f6f6f4'
+  const autoAlt = '#ebebe8'
+  const autoCard = '#ffffff'
+  const autoText = '#141414'
+  const autoMuted = '#5a5a58'
+  const autoBorder = 'rgba(0,0,0,0.10)'
+  // The hero sits on a photo under a dark overlay, so it stays light-on-dark
+  // even though the rest of the page is light.
+  const autoOnPhoto = '#ffffff'
+  const autoOnPhotoMuted = 'rgba(255,255,255,0.8)'
+  const autoOnPhotoBorder = 'rgba(255,255,255,0.28)'
+  const autoAccent = accentOnDark(primaryColor, secondaryColor, '#e63b1e')
   const autoAccentDim = 'rgba(230,59,30,0.12)'
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark')
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
   const extraFonts = `<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
@@ -4784,13 +4890,13 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     .auto-card { transition:border-color 0.3s ease, transform 0.3s ease; }
     .auto-card:hover { border-color:${autoAccent} !important; transform:translateY(-3px); }
     .auto-service-row { border-bottom:1px solid ${autoBorder}; transition:background 0.25s; cursor:default; }
-    .auto-service-row:hover { background:rgba(255,255,255,0.02); }
+    .auto-service-row:hover { background:rgba(0,0,0,0.03); }
     .auto-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:${autoAccent}; color:#fff; text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:opacity 0.25s; border:none; cursor:pointer; }
     .auto-cta:hover { opacity:0.88; }
     .auto-cta-outline { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.3); text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:border-color 0.25s; }
     .auto-cta-outline:hover { border-color:#fff; }
     .auto-badge { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:0.3rem 0.85rem; background:${autoAccentDim}; border:1px solid rgba(230,59,30,0.3); color:${autoAccent}; }
-    .auto-input { width:100%; box-sizing:border-box; font-family:'Barlow',sans-serif; font-size:0.9rem; padding:0.85rem 1rem; background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.15); color:${autoText}; outline:none; transition:border-color 0.25s; }
+    .auto-input { width:100%; box-sizing:border-box; font-family:'Barlow',sans-serif; font-size:0.9rem; padding:0.85rem 1rem; background:transparent; border:none; border-bottom:1px solid ${autoBorder}; color:${autoText}; outline:none; transition:border-color 0.25s; }
     .auto-input:focus { border-bottom-color:${autoAccent}; }
     .auto-input::placeholder { color:${autoMuted}; }
     /* scanline accent on hero */
@@ -4810,22 +4916,22 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         <div style="position:absolute;top:0;left:0;width:3px;height:40%;background:linear-gradient(180deg,${autoAccent},transparent)"></div>
       </div>
     </div>
-    <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 2rem 6rem;width:100%">
+    <div style="position:relative;max-width:1300px;margin:0 auto;padding:7rem 2rem 6rem;width:100%">
       <div class="auto-f1" style="margin-bottom:1.5rem">
         <span class="auto-badge">&#9632; ${content.heroEyebrow}</span>
       </div>
-      <h1 class="auto-f2" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:800;color:#fff;line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.75rem;max-width:900px">${content.tagline}</h1>
-      <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:#ffffff;max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <h1 class="auto-f2" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:800;color:${autoOnPhoto};line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.75rem;max-width:900px">${content.tagline}</h1>
+      <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:${autoOnPhoto};max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:4rem">
         <a href="#contact" class="auto-cta">${content.ctaPrimary}</a>
         <a href="#services" class="auto-cta-outline">${content.ctaSecondary || 'View Services'}</a>
       </div>
       <!-- stat row at bottom -->
-      <div style="display:flex;gap:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);flex-wrap:wrap">
+      <div style="display:flex;gap:3rem;padding-top:2rem;border-top:1px solid ${autoOnPhotoBorder};flex-wrap:wrap">
         ${content.stats.slice(0, 4).map(s => `
         <div>
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.75rem;font-weight:700;color:${autoAccent};letter-spacing:0.02em">${s.value}</div>
-          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:#ffffff;text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem">${s.label}</div>
+          <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;color:${autoOnPhotoMuted};text-transform:uppercase;letter-spacing:0.08em;margin-top:0.1rem">${s.label}</div>
         </div>`).join('')}
       </div>
     </div>
@@ -4882,7 +4988,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // PERFORMANCE STATS — dark panel, large numbers
+  // PERFORMANCE STATS — light panel, large numbers
   const statsSection = `
   <section style="padding:80px 2rem;background:${autoAlt};border-top:1px solid ${autoBorder};border-bottom:1px solid ${autoBorder}">
     <div style="max-width:1300px;margin:0 auto">
@@ -4891,7 +4997,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         <div style="padding:3rem 2rem;text-align:center;${i < 3 ? `border-right:1px solid ${autoBorder}` : ''}">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:3.5rem;font-weight:800;color:${autoAccent};letter-spacing:-0.02em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
           <div style="font-family:'Barlow',sans-serif;font-size:0.75rem;font-weight:500;color:${autoMuted};text-transform:uppercase;letter-spacing:0.1em">${s.label}</div>
-          ${s.sublabel ? `<div style="font-family:'Barlow',sans-serif;font-size:0.7rem;color:rgba(255,255,255,0.75);margin-top:0.25rem">${s.sublabel}</div>` : ''}
+          ${s.sublabel ? `<div style="font-family:'Barlow',sans-serif;font-size:0.7rem;color:${autoMuted};margin-top:0.25rem">${s.sublabel}</div>` : ''}
         </div>`).join('')}
       </div>
     </div>
@@ -4965,7 +5071,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
         ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
         <div class="auto-reveal" style="background:${autoBg};padding:2.5rem 2rem">
           <div style="font-family:'Barlow Condensed',sans-serif;font-size:4rem;font-weight:800;color:${autoAccent};opacity:0.2;line-height:0.8;margin-bottom:1.25rem">&ldquo;</div>
-          <p style="font-family:'Barlow',sans-serif;font-size:0.925rem;color:#ffffff;line-height:1.8;font-style:italic;margin-bottom:1.75rem">${t.quote}</p>
+          <p style="font-family:'Barlow',sans-serif;font-size:0.925rem;color:${autoText};line-height:1.8;font-style:italic;margin-bottom:1.75rem">${t.quote}</p>
           <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid ${autoBorder};padding-top:1.25rem">
             <div>
               <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;color:${autoText};text-transform:uppercase;letter-spacing:0.04em">${t.author.split(',')[0]}</div>
@@ -5036,31 +5142,31 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   <footer style="padding:3.5rem 2rem 2rem;background:${autoBg};border-top:1px solid ${autoBorder}">
     <div class="ms-grid" style="max-width:1300px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem">
       <div>
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem">${businessName}</div>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.75);line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.75rem">${businessName}</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoMuted};line-height:1.7;max-width:280px">${content.heroSubtitle}</p>
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem;transition:color 0.2s" onmouseover="this.style.color='${autoAccent}'" onmouseout="this.style.color='#ffffff'">${s.tags?.[0] || s.name}</a>`).join('')}
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};margin-bottom:1.25rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};text-decoration:none;margin-bottom:0.55rem;transition:color 0.2s" onmouseover="this.style.color='${autoAccent}'" onmouseout="this.style.color='${autoText}'">${s.tags?.[0] || s.name}</a>`).join('')}
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Company</div>
-        <a href="#about" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">About</a>
-        <a href="#testimonials" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">Reviews</a>
-        <a href="#contact" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;text-decoration:none;margin-bottom:0.55rem">Contact</a>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};margin-bottom:1.25rem">Company</div>
+        <a href="#about" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};text-decoration:none;margin-bottom:0.55rem">About</a>
+        <a href="#testimonials" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};text-decoration:none;margin-bottom:0.55rem">Reviews</a>
+        <a href="#contact" style="display:block;font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};text-decoration:none;margin-bottom:0.55rem">Contact</a>
       </div>
       <div>
-        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:1.25rem">Contact</div>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff;margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
-        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:#ffffff">${locationInfo.city}</p>
+        <div style="font-family:'Barlow',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${autoMuted};margin-bottom:1.25rem">Contact</div>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};margin-bottom:0.5rem">&#9742; ${locationInfo.phone}</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText};margin-bottom:0.5rem">&#9993; hello@${businessName.toLowerCase().replace(/\s+/g, '')}.com</p>
+        <p style="font-family:'Barlow',sans-serif;font-size:0.82rem;color:${autoText}">${locationInfo.city}</p>
       </div>
     </div>
     <div style="max-width:1300px;margin:0 auto;padding-top:2rem;border-top:1px solid ${autoBorder};display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-      <p style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5)">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+      <p style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:${autoMuted}">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
       <div style="display:flex;gap:1.5rem">
-        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5);text-decoration:none">Privacy Policy</a>
-        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.5);text-decoration:none">Terms</a>
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:${autoMuted};text-decoration:none">Privacy Policy</a>
+        <a href="#" style="font-family:'Barlow',sans-serif;font-size:0.72rem;color:${autoMuted};text-decoration:none">Terms</a>
       </div>
     </div>
   </footer>
@@ -5104,7 +5210,7 @@ function buildPropertyTemplate(data: TemplateData): string {
     stockPool[5] || stockImages.cards[5],
   ]
 
-  const gold = primaryColor || '#c9a96e'
+  const gold = accentOnDark(primaryColor, secondaryColor, '#c9a96e')
   const void_ = '#f7f5f0'
   const offwhite = '#0d0d0b'
   const muted = '#666660'
@@ -5124,7 +5230,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
       </div>
       <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:#ffffff;line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
-      <div class="pr-hero-bottom" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:2rem">
+      <div class="pr-hero-bottom" style="display:flex;flex-direction:column;align-items:flex-start;flex-wrap:wrap;gap:2.25rem">
         <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(255,255,255,0.75);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
         <div class="pr-hero-btns" style="display:flex;gap:1rem;flex-shrink:0">
           <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${gold};color:${gold};text-decoration:none;transition:all 0.3s ease">View Properties</a>
@@ -5431,7 +5537,7 @@ function buildCreativeTemplate(data: TemplateData): string {
 
   const heroSection = `
   <section style="background:${ink};min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;overflow:hidden" class="ms-grid">
-    <div class="cr-hero-content" style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
+    <div class="cr-hero-content ms-hero-text" style="display:flex;flex-direction:column;justify-content:space-between;padding:5rem 4rem;position:relative;z-index:1">
       <div style="font-family:'Space Grotesk',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${dust}">Creative Studio</div>
       <div>
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
@@ -5453,7 +5559,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         </div>`).join('')}
       </div>
     </div>
-    <div class="cr-hero-img" style="position:relative;overflow:hidden">
+    <div class="cr-hero-img ms-hero-photo" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%)" />
       <div style="position:absolute;inset:0;background:linear-gradient(to right,${ink} 0%,transparent 30%)"></div>
       <div style="position:absolute;bottom:3rem;right:3rem;background:${accent};padding:1rem 1.5rem">
@@ -5703,10 +5809,13 @@ function buildEventsTemplate(data: TemplateData): string {
   const parchment = '#faf8f4'
   const warmgrey = '#f0ece6'
   const muted = '#7a7570'
-  const vivid = primaryColor || '#e8410a'
+  // Light sections and the accent band take the dark brand colour; the hero sits on
+  // a photo and needs the lifted variant, or the accent disappears into the image.
+  const vivid = primaryColor || '#3a1a58'
+  const vividOnDark = accentOnDark(primaryColor, secondaryColor, '#e8410a')
   const gold = secondaryColor || '#d4a853'
 
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'dark') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
+  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
   <section style="position:relative;min-height:calc(100vh - 64px);display:flex;align-items:center;overflow:hidden;background:${midnight}">
@@ -5717,15 +5826,15 @@ function buildEventsTemplate(data: TemplateData): string {
     <div style="position:relative;max-width:1400px;margin:0 auto;padding:0 4rem;width:100%;padding-top:100px;padding-bottom:100px">
       <div style="max-width:800px">
         <div style="display:inline-flex;align-items:center;gap:0.75rem;margin-bottom:2.5rem;background:rgba(232,65,10,0.12);border:1px solid rgba(232,65,10,0.3);padding:0.5rem 1.25rem">
-          <div style="width:6px;height:6px;border-radius:50%;background:${vivid}"></div>
-          <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">${content.heroEyebrow || 'Events & Entertainment'}</span>
+          <div style="width:6px;height:6px;border-radius:50%;background:${vividOnDark}"></div>
+          <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vividOnDark}">${content.heroEyebrow || 'Events & Entertainment'}</span>
         </div>
         <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.5rem,10vw,9rem);font-weight:300;color:${parchment};line-height:0.88;letter-spacing:-0.02em;margin-bottom:0.5rem">${businessName.split(' ').slice(0,2).join('<br/>')}</h1>
         ${businessName.split(' ').length > 2 ? `<h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4.5rem,10vw,9rem);font-weight:300;color:${parchment};line-height:0.88;font-style:italic;letter-spacing:-0.02em;margin-bottom:2.5rem">${businessName.split(' ').slice(2).join(' ')}</h1>` : '<div style="margin-bottom:2.5rem"></div>'}
-        <div style="display:flex;align-items:flex-start;gap:4rem;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2.25rem;flex-wrap:wrap">
           <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:rgba(250,248,244,0.65);line-height:1.8;max-width:420px">${content.heroSubtitle}</p>
-          <div style="display:flex;flex-direction:column;gap:1rem;flex-shrink:0">
-            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${vivid};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+          <div style="display:flex;flex-direction:row;gap:1rem;flex-shrink:0;flex-wrap:wrap">
+            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${vividOnDark};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
             <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;border:1px solid rgba(250,248,244,0.2);color:${parchment};text-decoration:none;display:inline-block;text-align:center">${content.ctaSecondary || 'Our Services'}</a>
           </div>
         </div>
@@ -5774,13 +5883,13 @@ function buildEventsTemplate(data: TemplateData): string {
   </section>`
 
   const gallerySection = `
-  <section id="gallery" style="padding:140px 0;background:${midnight}">
+  <section id="gallery" style="padding:140px 0;background:${warmgrey}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
         <div style="width:30px;height:1px;background:${vivid}"></div>
         <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Past Events</span>
       </div>
-      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${parchment};font-style:italic;margin-bottom:4rem;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${midnight};font-style:italic;margin-bottom:4rem;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
       <div style="display:grid;grid-template-columns:5fr 3fr 4fr;gap:1.5px;background:rgba(250,248,244,0.06);margin-bottom:1.5px" class="ms-grid">
         ${[0,1,2].map((i) => `
         <div ${i===0?'class="ev-gal-img1"':''} style="overflow:hidden;height:480px;position:relative">
@@ -5788,7 +5897,7 @@ function buildEventsTemplate(data: TemplateData): string {
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
           <div style="position:absolute;bottom:1.5rem;left:1.5rem">
             <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${vivid};margin-bottom:0.35rem">${(content.projectCaptions && content.projectCaptions[i]) ? 'Event' : content.services[i]?.tags?.[0] || 'Event'}</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:${parchment};font-style:italic">${(content.projectCaptions && content.projectCaptions[i]) || content.services[i]?.name || 'Special Event'}</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:${midnight};font-style:italic">${(content.projectCaptions && content.projectCaptions[i]) || content.services[i]?.name || 'Special Event'}</div>
           </div>
         </div>`).join('')}
       </div>
@@ -5802,7 +5911,7 @@ function buildEventsTemplate(data: TemplateData): string {
   </section>`
 
   const aboutSection = `
-  <section id="about" style="padding:140px 0;background:${warmgrey}">
+  <section id="about" style="padding:140px 0;background:${parchment}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
         <div>
@@ -5832,7 +5941,7 @@ function buildEventsTemplate(data: TemplateData): string {
   </section>`
 
   const testimonialSection = content.testimonial ? `
-  <section style="padding:140px 0;background:${midnight};overflow:hidden">
+  <section style="padding:140px 0;background:${warmgrey};overflow:hidden">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
@@ -5840,16 +5949,16 @@ function buildEventsTemplate(data: TemplateData): string {
             <div style="width:30px;height:1px;background:${vivid}"></div>
             <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Testimonials</span>
           </div>
-          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3.5rem);font-weight:300;color:${parchment};font-style:italic;line-height:1.1">Client Stories</h2>
+          <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3.5rem);font-weight:300;color:${midnight};font-style:italic;line-height:1.1">Client Stories</h2>
         </div>
         <div style="display:flex;flex-direction:column;gap:3rem">
           <div>
             <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:5rem;font-weight:300;color:${vivid};line-height:0.6;opacity:0.3;margin-bottom:1.5rem">&ldquo;</div>
-            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:${parchment};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.testimonial.quote}</p>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:${midnight};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.testimonial.quote}</p>
             <div style="display:flex;align-items:center;gap:1.5rem">
               <div style="width:1px;height:40px;background:${vivid}"></div>
               <div>
-                <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;color:${parchment};letter-spacing:0.08em;text-transform:uppercase">${content.testimonial.author}</div>
+                <div style="font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;color:${midnight};letter-spacing:0.08em;text-transform:uppercase">${content.testimonial.author}</div>
                 ${content.testimonial.rating ? `<div style="color:${gold};font-size:0.75rem;margin-top:0.3rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
               </div>
             </div>

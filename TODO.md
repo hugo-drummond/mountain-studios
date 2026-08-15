@@ -150,3 +150,25 @@ values live in `.env.local` locally, never in this file.
       more than ~90 days. Note storage rows cannot be deleted with SQL — the Storage API
       is the only way.
 
+## Preview templates
+
+All fifteen are built and light, and the mobile pass including the five split heroes is
+done — see [STATUS.md](STATUS.md). What is left:
+
+- [ ] **Hugo's call: the "GOOGLE PARTNER AGENCY" badge in `tech-digital`.** It is a named
+      third-party certification, printed on a prospect's own preview of their site.
+      Invented stats and testimonials are a decided-and-settled thing; a specific
+      accreditation claim is a different category and needs a yes or no.
+- [ ] **`automotive` `.auto-badge` is unreadable.** It hardcodes `rgba(230,59,30,…)`
+      against a `#C42828` accent, so the hero eyebrow has almost no contrast. Its fourth
+      stat also sits off the baseline of the other three.
+- [ ] **`pets` hero stat pill overflows both screen edges on a phone.**
+      `.pts-hero-stats` is centred with `width:max-content`, so it is wider than the
+      viewport and the outer labels are clipped. Pre-existing, not from the mobile pass.
+- [ ] **Section rhythm is still mixed** — 100/110/120px across templates where the
+      reference standard holds a consistent 80px.
+- [ ] **Hero falls back to `picsum.photos/seed/<type>-hero/600/400` when Pexels fails.**
+      A random photo stretched full-bleed, and now that split heroes use the photo as a
+      background it is more visible than it was. Intermittent; seen once as an aerial of
+      San Francisco on a dog groomer. Needs a real per-category fallback image.
+

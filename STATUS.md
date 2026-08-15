@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 14 August 2026 (service pages)
+Last updated: 15 August 2026 (preview templates — mobile split heroes)
 
 ## Where things stand
 
@@ -373,37 +373,100 @@ not the shared `ADMIN_PASSWORD`.
   run, but it would have failed silently. **Three times now. Write the grant into every
   new migration in this schema.**
 
-## Preview template redesign — in progress, paused
+## Preview templates — fifteen built, mobile pass done
 
-Carried over from the sessions before this one. Replacing the three generic variants
-(`visual`, `service`, `portfolio`) with fifteen category-specific templates, each modelled
-on a real reference site so a restaurant does not get the same layout as a law firm.
+Replaced the three generic variants (`visual`, `service`, `portfolio`) with fifteen
+category-specific templates so a restaurant does not get the same layout as a law firm.
+Fourteen are category-specific; `other` falls through to `buildServiceTemplate()`. All
+share `buildNav()`, `buildFooter()`, `buildHead()`, `buildAboutSection()` and
+`buildContactSection()`; the POST handler picks the builder by category. The reference
+standard is antsawnings.co.za — itself a generated template, hand-edited.
 
-Method: collect a reference site per category, extract its homepage structure, then build
-that category as its own template function. All share `buildNav()`, `buildFooter()`,
-`buildHead()`, `buildAboutSection()` and `buildContactSection()`; the POST handler picks
-the builder by category.
+**All twenty-two `buildXTemplate()` functions live inside
+`app/api/preview/generate/route.ts`** — ~6,300 lines, and `POST` is the only export. The
+`templates/` directory at the repo root is dead: nothing imports it and nothing has since
+8 June. Do not edit it and expect a change.
 
-**Reference sites collected**
+**Testing trap.** Copy presets in `content.ts` are keyed on the exact wizard dropdown
+label from `constants/business-types.ts` — "Bakery", "Lawyer / Attorney", "Boutique /
+Fashion Store". Free text ("bakery", "plumber") matches nothing, silently falls through to
+a generic fallback, and makes all fifteen look identically bland. Always test with a real
+label or you are reviewing the fallback, not the template.
 
-- `food-hospitality` — crafto.themezaa.com/restaurant: full-screen hero, stats row, split
-  about, tabbed menu, card carousel, testimonials
-- `retail` — taiping.co.nz: red accent nav, stats row, 50/50 about, 50/50 locations,
-  2×2 department cards, brand logos
-- `health-wellness` — iveeapp.com: pastel blue, 50/50 hero, navy stats row, services
-  accordion, membership cards, team carousel, testimonial colour cards
-- `property` — 505statestreet.com: minimal pill nav, full-bleed hero, centred statement,
-  tabbed amenity galleries, floor plan tabs, day/night toggle
+**Rendering one without a refactor.** `POST /api/preview/generate` with `businessName`,
+`businessType` (a real label) and `businessCategory`. No `recaptchaToken` is needed —
+`blockedAsBot()` is an allowlist. The rate limit is 5/hour keyed on the `x-forwarded-for`
+header, so send a unique one per request, and use a counter rather than `$RANDOM`, which
+collides and returns 429s. The dev server dies on hot-reload of a file this size; restart
+it, and never run `next build` while it is up — both write `.next` and React silently
+stops hydrating. `npx next lint` does not work here at all (no ESLint config, it opens an
+interactive prompt). `npx tsc --noEmit` is the only usable check.
 
-**Built:** `buildPropertyTemplate()` only.
+**Colour**
 
-**Still needs a reference site and a template:** fitness-sport, pets,
-events-entertainment, creative, trades-construction, professional, home-services,
-education, automotive, tech-digital (plain.com — screenshots incomplete), other.
+- `accentOnDark(primary, secondary, fallback)`. Templates used to write
+  `primaryColor || '#vivid'`, but `categoryColors` supplies near-black primaries, so the
+  vivid fallback never fired and accents came out invisible. It now falls back to the
+  category's vivid secondary.
+- **`getLuminance` here is perceived brightness** (`0.299R + 0.587G + 0.114B`), not WCAG
+  relative luminance. A threshold written on the WCAG scale is a silent no-op. The cut is
+  0.19 / 0.25.
+- All fifteen templates are light. `tech-digital`, `fitness`, `events` and `automotive`
+  were converted.
+- A hero sitting on a photo needs its own `onPhoto` / `onPhotoMuted` / `onPhotoBorder`
+  tokens — a dark-gradient photo hero stays dark whatever the page theme is, so page-level
+  tokens do not reach it. `fitness` and `automotive` carry them; copy that pattern.
 
-**Also outstanding on previews:** templates use fixed-column CSS grid with no breakpoints,
-so they need mobile work. Portfolio `projectCaptions` rendering is unverified, `ogImageQuery`
-exists on presets but is unused, and PDF generation quality is untested across variants.
+**Mobile**
+
+Shared rules live in `buildCssVars`, in its `@media (max-width: 768px)` block. They apply
+to every template, so a change there has to be re-rendered against all fifteen.
+
+- Heroes fill the phone screen (`min-height:100svh`, with `100vh` as the fallback line —
+  `svh`, not `dvh`, so the hero does not resize mid-gesture when the address bar hides).
+- Absolutely-positioned layers are exempt from the 1.25rem side gutter. The gutter is for
+  text columns; applied to a full-bleed layer it was insetting hero photos to 389px on a
+  429px screen and leaving grey bands down both edges.
+- Hero content clears the fixed nav via a 5.5rem top pad — applied to the content layer
+  only, never to a photo layer. `.ms-hero-photo` is excluded by name: that rule outranks
+  the split-hero block on specificity and was putting an 88px grey band above every hero
+  photo.
+- The nav logo truncates with an ellipsis instead of wrapping. A long business name on two
+  lines doubles the fixed nav's height, which is what pushed hero content off-screen.
+- Per-template: tech-digital hero type scale, events + property CTA alignment,
+  professional hero eyebrow, fitness h1 size, automotive hero top padding, retail
+  badge/nav overlap.
+
+**Split heroes on mobile** — health-wellness, creative, education, retail, home-services
+
+These five pair an image column with a text column. On a phone the image column used to
+overlap the copy, hide it, or be switched off entirely, one per template.
+
+- Inline-declared grids now collapse:
+  `section:first-of-type[style*="grid-template-columns"]` plus a second selector one level
+  down, because **education declares its grid on a nested div, not on the section**. The
+  older `.ms-grid` rule never reached any of them.
+- The image column then becomes a full-bleed background with the copy on top: a scrim, and
+  the text forced white. `.ms-hero-photo` and `.ms-hero-text` are the hooks, and both are
+  already on the right elements in all five.
+- Badges and gradient overlays *inside* the image column are hidden on mobile. They are
+  positioned for a half-width desktop column and land on top of the copy once it goes
+  full-bleed.
+- Ghost CTAs declare `background:transparent`, so the "keeps its own background" exclusion
+  skipped them and they held their ink text and border on a dark photo. Handled explicitly.
+- Education's image side is a 2×2 of three tiles, not one photo — only the tall left photo
+  becomes the background, its decorative clip-path panel is hidden, and its grid wrapper is
+  forced `position:static` so the photo binds to the section rather than the wrapper.
+- Retail's nav is transparent until it picks up `.scrolled`, so its ink logo and burger
+  stopped reading over the now-dark hero. White until scrolled, on mobile only.
+
+Worth knowing when reading old notes: retail, home-services and creative previously showed
+**no hero photo at all** on a phone. They do now — that part was a visual change, not a
+bug fix.
+
+**Still outstanding on previews:** Portfolio `projectCaptions` rendering is unverified,
+`ogImageQuery` exists on presets but is unused, and PDF generation quality is untested
+across variants. See [TODO.md](TODO.md) for the open template items.
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
