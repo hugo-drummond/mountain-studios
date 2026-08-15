@@ -132,6 +132,15 @@ export default function Home() {
         setAuditDone(true)
         setAuditUrl('')
         setAuditEmail('')
+
+        // Fire-and-forget: run the audit automatically if we have an ID
+        if (data?.auditRequestId) {
+          fetch('/api/audit/run', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ auditRequestId: data.auditRequestId }),
+          }).catch(() => {})
+        }
       } else {
         // Show what the server actually said. It knows whether the URL failed
         // to parse, the email was malformed, or they have simply tried too
@@ -874,6 +883,44 @@ export default function Home() {
             color: '#5d6478',
             marginTop: '0.75rem',
           }}>Paste your website. We'll send you a full audit in minutes — free.</p>
+
+          <div className="ms-audit-checks" style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4,1fr)',
+            gap: '1rem',
+            margin: '2.5rem 0 2.5rem',
+            textAlign: 'left',
+          }}>
+            {[
+              { name: 'SSL Certificate', desc: "Checks if your site shows the safe padlock, or scares visitors with a red warning." },
+              { name: 'Mobile Score', desc: 'Checks if your site actually works on a phone — most visitors are on one.' },
+              { name: 'PageSpeed Score', desc: 'Checks how fast your site loads. Slow sites lose visitors fast.' },
+              { name: 'Security Headers', desc: 'Checks for missing settings that make browsers flag your site as untrusted.' },
+            ].map((check, i) => (
+              <div key={i} style={{
+                background: '#fff',
+                borderRadius: '14px',
+                padding: '1.4rem',
+                boxShadow: '0 12px 30px -18px rgba(26,26,46,0.3)',
+                transition: 'transform 0.3s ease',
+              }}
+                onMouseEnter={(e) => (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'}
+                onMouseLeave={(e) => (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'}
+              >
+                <div style={{
+                  fontSize: '0.92rem',
+                  fontWeight: 700,
+                  color: '#2e333a',
+                  marginBottom: '0.5rem',
+                }}>{check.name}</div>
+                <div style={{
+                  fontSize: '0.82rem',
+                  color: '#5d6478',
+                  lineHeight: 1.5,
+                }}>{check.desc}</div>
+              </div>
+            ))}
+          </div>
 
           {auditDone ? (
             <p style={{
