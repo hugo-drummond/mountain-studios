@@ -40,8 +40,7 @@ Content Hugo owes before this page is honest:
 
 Still to build:
 
-- [ ] **Audit form has no backend.** Submitting shows a thank-you and drops the URL.
-      Needs somewhere to write, or the section should come down.
+- [x] **Audit form has no backend.** Now runs four checks and emails the report. 15 August 2026.
 - [ ] **Referral form has no backend.** Same — name, email and mobile go nowhere, and no
       referral link is generated.
 - [x] **`/work`, `/about`, `/services`, `/contact` built 13 August** on a shared
@@ -65,6 +64,14 @@ Still to build:
       the on-site chatbot instead of linking to the dummy WhatsApp number.
 - [ ] The reCAPTCHA badge sits under the floating pill in the bottom-right corner. The
       chatbot's own launcher was put bottom-left to stay clear of both.
+
+**Website audit engine**
+
+- [ ] Delete the test row in `audit_requests` tagged `source='audit-engine-test'`.
+- [ ] Decide whether `/api/audit/run` should keep returning the full report — anyone holding the
+      row's uuid can read it.
+- [ ] Decide whether the mobile screenshot gets surfaced anywhere. It is captured and stored, but
+      not emailed.
 
 **Chatbot** — built and live 14 August 2026, see [STATUS.md](STATUS.md)
 
@@ -113,6 +120,12 @@ values live in `.env.local` locally, never in this file.
 - [ ] `ADMIN_PASSWORD` — without it `/admin` cannot be logged into. This now gates
       previews and the contact message inbox; applications review has its own Supabase
       login in the CRM.
+
+**Blocking for the website audit engine**
+
+- [ ] `GOOGLE_PSI_API_KEY` — PageSpeed Insights. Set in `.env.local`, NOT yet in Vercel.
+      Without it the speed checks fall back to an unauthenticated quota and start returning
+      429, and every audit email goes out saying "Speed test temporarily unavailable".
 
 **Already set, listed so nothing gets removed by accident**
 

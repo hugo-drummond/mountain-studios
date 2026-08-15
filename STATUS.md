@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 15 August 2026 (preview templates — mobile split heroes)
+Last updated: 15 August 2026 (website audit engine — live)
 
 ## Where things stand
 
@@ -467,6 +467,51 @@ bug fix.
 **Still outstanding on previews:** Portfolio `projectCaptions` rendering is unverified,
 `ogImageQuery` exists on presets but is unused, and PDF generation quality is untested
 across variants. See [TODO.md](TODO.md) for the open template items.
+
+## Website audit engine — 15 August 2026
+
+The free audit form now runs a real audit. `app/api/audit/submit` is unchanged and still owns
+lead capture; it just returns the new row's `auditRequestId`. The homepage fires
+`app/api/audit/run` after a successful submit, and that route does the work.
+
+Four deterministic checks, no LLM anywhere:
+
+- **SSL** — HTTPS fetch, certificate validity. Distinguishes a broken certificate from no HTTPS.
+- **Security headers** — presence of Strict-Transport-Security, X-Content-Type-Options,
+  X-Frame-Options, Content-Security-Policy, Referrer-Policy. Green 4–5, amber 2–3, red 0–1.
+- **Mobile speed** — PageSpeed Insights `strategy=mobile`, score plus `finalScreenshot`.
+- **Desktop speed** — the same API, `strategy=desktop`.
+
+Speed scores bucket red under 50, amber 50–89, green 90 and up. All four run in parallel through
+`Promise.allSettled` with their own timeouts, so one failure never blocks the other three — the
+run is recorded as `partial` instead. Report copy is canned in `lib/audit/copy.ts` and keyed off
+pass/fail and bucket. Nothing is generated.
+
+Results are written to the existing `audit_requests.report` jsonb column, so no migration was
+needed. `status` moves `new → running → done | partial | failed`. On `done` or `partial` the
+black-and-white report email goes to the person who asked for it and `report_sent_at` is stamped.
+`ssl_valid`, `pagespeed_mobile` and `pagespeed_desktop` are mirrored onto the linked `leads` row
+for CRM scoring.
+
+Verified end to end against mountainstudios.co.za on 15 August 2026: all four checks returned, the
+report stored, the email delivered.
+
+### Traps in the audit engine
+
+- **`GOOGLE_PSI_API_KEY` is a new environment variable.** Without it PageSpeed Insights still
+  answers, but unauthenticated, on a tiny shared quota that returns 429 under any real traffic. It
+  is set locally. It must also be set in Vercel or production audits will quietly degrade to
+  "Speed test temporarily unavailable".
+- The run is **triggered by the browser**, not by the server. Vercel kills work that outlives a
+  response, and two PageSpeed calls take 20–60s, so running it inside `audit/submit` would risk
+  timing out lead capture. The cost is that closing the tab straight after submitting leaves the
+  row at `status='new'`. It is re-runnable — POST the id to `/api/audit/run` again.
+- A run that dies mid-flight leaves `status='running'`, which blocks retries. `{"force": true}` on
+  the run route bypasses both that lock and the completed-report short circuit.
+- Supabase client calls **return** `{ error }`, they do not throw. A `try`/`catch` around an
+  `.update()` catches nothing — check the returned error or write failures pass silently.
+- The mobile screenshot is stored in the report but **left out of the email**: Gmail strips
+  `data:` URI images.
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
