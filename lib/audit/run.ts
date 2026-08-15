@@ -2,6 +2,8 @@ import { crmAdmin } from '@/lib/crm'
 import { normaliseUrl, checkSsl, checkHeaders, checkPsi } from './checks'
 import type { AuditReport, CheckError, SslResult, HeadersResult, PsiResult } from './types'
 import { PSI_ERROR_COPY, GENERIC_ERROR_COPY } from './copy'
+import { renderAuditEmail } from './email'
+import { sendMail } from '@/lib/ses'
 
 export async function runAudit(
   auditRequestId: string,
@@ -16,7 +18,7 @@ export async function runAudit(
   // 1. Fetch the audit request
   const { data: row, error: queryError } = await db
     .from('audit_requests')
-    .select('id, website_url, email, lead_id, status, report')
+    .select('id, website_url, email, lead_id, status, report, report_sent_at')
     .eq('id', auditRequestId)
     .single()
 
@@ -184,6 +186,31 @@ export async function runAudit(
   if (reportWriteError) {
     console.error('[audit/run] Failed to write report:', reportWriteError.message)
     return { ok: false, report, error: 'write_failed' }
+  }
+
+  // 7b. Send email (best effort)
+  try {
+    const shouldSendEmail =
+      (report.summary.overall === 'done' || report.summary.overall === 'partial') &&
+      (opts?.force || row.report_sent_at === null) &&
+      !!row.email?.trim()
+
+    if (shouldSendEmail) {
+      const { subject, html } = renderAuditEmail(report)
+      await sendMail({ to: row.email, subject, html })
+
+      // Update report_sent_at
+      const { error: updateError } = await db
+        .from('audit_requests')
+        .update({ report_sent_at: new Date().toISOString() })
+        .eq('id', auditRequestId)
+
+      if (updateError) {
+        console.error('[audit/run] Failed to update report_sent_at:', updateError.message)
+      }
+    }
+  } catch (err) {
+    console.error('[audit/run] Email send failed:', err instanceof Error ? err.message : err)
   }
 
   // 8. Best-effort lead mirror
