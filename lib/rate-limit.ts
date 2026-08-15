@@ -10,6 +10,7 @@ export const LIMITS = Object.freeze({
   'preview/generate': { limit: 5, windowSeconds: 3600 },
   'preview/scrape': { limit: 5, windowSeconds: 3600 },
   'audit/submit': { limit: 5, windowSeconds: 3600 },
+  'audit/run': { limit: 10, windowSeconds: 3600 },
   'contact/submit': { limit: 5, windowSeconds: 3600 },
   'referral/submit': { limit: 5, windowSeconds: 3600 },
   'careers/apply': { limit: 5, windowSeconds: 3600 },
