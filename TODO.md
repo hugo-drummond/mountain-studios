@@ -73,9 +73,14 @@ intent, once per visit, on every page.
 - [ ] **Watch whether the volume of audit requests goes up or down.** The old section only
       reached people who scrolled to it, but a popup is easier to dismiss on reflex.
       `audit_requests` rows per week is the number to compare.
-- [ ] **Consider a way to open it on demand.** There is currently no link anywhere that
-      brings it up — if someone dismisses it, or wants it back, they cannot get to it.
-      The chatbot pointing people at it would be the natural route.
+- [x] **A way to open it on demand.** Done 16 August — the chatbot offers the audit when it
+      is genuinely relevant and its button opens the popup, bypassing the once-per-visit
+      rule. Still the only route back after a dismissal; a link in the nav or footer would
+      be the obvious second one.
+- [ ] **Re-test the audit offer after any chatbot prompt edit.** It should fire on "my site
+      is slow on phones" and "do you check existing sites?", and stay quiet on a
+      new-business enquiry and a pricing question. Marker leaking into the visible reply is
+      the failure to watch for.
 - [ ] Exit intent cannot work on phones (no pointer to leave), so mobile visitors only ever
       get the 30-second trigger. Worth checking the mobile/desktop split of audit requests
       before assuming the timer is enough.

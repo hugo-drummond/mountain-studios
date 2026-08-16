@@ -556,6 +556,34 @@ the submit button landed roughly two screens down inside the modal. It is now 57
 Nothing behind it changed: same `POST /api/audit/submit`, same honeypot, same `audit_submit`
 reCAPTCHA action, same everything downstream.
 
+### The chatbot can offer and open it
+
+Moving the audit into a popup left it unreachable on demand — dismiss it and there was no route
+back. The bot now closes that hole.
+
+**The model ends a message with `[[AUDIT]]` when it wants to offer the audit.** `/api/chat` strips
+the marker and returns `offerAudit: true`; the widget renders a "Run my free audit →" button under
+that message, which closes the chat and dispatches `ms-audit:open`.
+
+- **A marker, not phrase matching.** Reading the reply's wording would fire on "we offer a free
+  audit" said in passing and miss every rewording of it. The strip is generous about case, spacing,
+  surrounding punctuation and stray backticks — a marker leaking into visible text is far worse
+  than one that fails to fire.
+- **Stripped before the question log writes its draft answer**, so a marker can never be baked into
+  a canned reply and served to a later visitor as literal text.
+- **Cached answers run through the same strip**, which means writing `[[AUDIT]]` into an approved
+  answer by hand at `/admin/chat-questions` is a supported way to make a stock reply offer the
+  audit.
+- **An explicit open bypasses the once-per-visit rule.** Someone who has just clicked a button to
+  see the form must always get it, dismissed earlier or not. Only the hidden-route check still
+  applies.
+
+The prompt restricts the offer to cases where it genuinely helps — they already have a site, they
+ask about the audit, or they name a problem the audit actually measures (slow, broken on a phone,
+"not secure" warning, hard to read). Verified against the live model: it offers on "my site is slow
+on phones" and "do you check existing sites?", and stays quiet on a new-business enquiry and on a
+pricing question. **Re-test those four after any edit to the prompt or the knowledge base.**
+
 ## Website audit report — live end to end, 16 August 2026
 
 Someone fills in the free-audit form — since 16 August that is the popup, not a homepage section —
