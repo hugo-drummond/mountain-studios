@@ -11,7 +11,8 @@
 // delete it here. There is no other lever.
 //
 // Prices are deliberately absent: the site quotes per job, so the bot must not
-// produce a number. See PACKAGES below.
+// produce a number. The named packages are gone from the site too — the bot
+// must not resurrect ESSENTIALS / STUDIO / COMPLETE. See Pricing below.
 // ---------------------------------------------------------------------------
 
 export const KNOWLEDGE = `
@@ -53,12 +54,11 @@ Enquiries through the site get a reply within one business day.
 ## Pricing
 Every site is priced on what it actually needs, so we quote per job rather than publish
 a price list. Tell us what you're after and you'll have a number the same week.
-There are three packages — ESSENTIALS, STUDIO and COMPLETE — but the price depends on
-what the job actually involves.
+There are no packages or tiers — do not describe any.
 There is a referral reward of R1000 for a successful referral.
 
 ## What's included
-- Hosting, the SSL certificate and the domain are included in every package.
+- Hosting, the SSL certificate and the domain are included in every site we build.
 - Hosting, updates, backups and small changes are part of the monthly retainer, not a separate invoice.
 - Bigger additions get quoted before we touch anything.
 - You do not need to write the content. Send what you have — photos, a menu, an old

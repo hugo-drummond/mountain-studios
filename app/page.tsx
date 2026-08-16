@@ -51,7 +51,7 @@ const faqItems: FaqItem[] = [
   { q: 'What does it cost?', a: 'Every site is priced on what it actually needs, so we quote per job rather than publish a menu. Tell us what you\'re after and you\'ll have a number the same week.' },
   { q: 'Do I own the website?', a: 'Yes. The site, the domain and the content are yours. Cancel the retainer and it stays yours.' },
   { q: 'What happens if I want changes later?', a: 'Small changes are part of the retainer. Bigger additions get quoted before we touch anything.' },
-  { q: 'Who hosts it?', a: 'We do. Hosting, the SSL certificate and the domain are included in every package.' },
+  { q: 'Who hosts it?', a: 'We do. Hosting, the SSL certificate and the domain are included in every site we build.' },
   { q: 'Do I need to write the content?', a: 'No. Send us what you have — photos, a menu, an old brochure — and we write the rest. You approve it before it goes live.' },
   { q: 'Do you do more than websites?', a: 'Yes. Bookings, payments, Google Business setup and the automations that sit behind them.' },
   { q: 'What if I already have a website?', a: 'Send it to us for a free audit — we check security, speed and accessibility and email you the report. If it only needs fixing, we\'ll say so.' },
@@ -170,7 +170,9 @@ export default function Home() {
         <div style={{
           maxWidth: '780px',
           margin: 'auto',
-          padding: '5rem 2rem 0',
+          // Sits lower than the two tilted screenshots that flank it, so the
+          // headline reads against the gradient rather than level with them.
+          padding: '8rem 2rem 0',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -444,132 +446,6 @@ export default function Home() {
             );
           })}
         </div>
-      </div>
-
-      {/* PACKAGES SECTION */}
-      <div id="pricing" style={{ background: '#f4f2fa', padding: '8rem 2rem 5rem' }}>
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-          <p style={{
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#7d6470',
-            marginBottom: '1rem',
-          }}>PACKAGES</p>
-          <h2 style={{
-            fontFamily: 'var(--font-playfair), Georgia, serif',
-            fontSize: 'clamp(1.9rem,3.2vw,2.9rem)',
-            fontWeight: 400,
-            color: '#2e333a',
-            margin: 0,
-          }}>Three ways to do this.</h2>
-        </div>
-
-        <div className="ms-cards-3" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3,1fr)',
-          gap: '2.25rem',
-          maxWidth: '1080px',
-          margin: 'auto',
-          alignItems: 'stretch',
-        }}>
-          {[
-            { name: 'ESSENTIALS', tagline: 'One page. Everything a customer needs to call you.', bullets: ['Mobile-ready', 'Google Maps', 'Contact form', 'Hosting'] },
-            { name: 'STUDIO', tagline: 'Up to 6 pages, built around how you actually sell.', bullets: ['Everything in Essentials', 'Copywriting', 'Google Business', '6 pages'] },
-            { name: 'COMPLETE', tagline: 'Everything in Studio, plus booking, payments and automation.', bullets: ['Everything in Studio', 'Bookings', 'Payments', 'Automations', 'Priority support'] },
-          ].map((pkg, i) => (
-            <div key={i} style={{
-              background: '#fff',
-              borderRadius: '14px',
-              padding: '2.75rem 2.5rem',
-              boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-              transform: i === 1 ? 'translateY(-1.25rem)' : 'none',
-            }}>
-              {i === 1 && (
-                <div style={{
-                  position: 'absolute',
-                  top: '-12px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  background: '#e3d6dd',
-                  color: '#7d3d4f',
-                  fontSize: '0.65rem',
-                  fontWeight: 700,
-                  letterSpacing: '0.14em',
-                  padding: '0.35rem 0.9rem',
-                  borderRadius: '999px',
-                  textTransform: 'uppercase',
-                }}>
-                  MOST CHOSEN
-                </div>
-              )}
-              <p style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.22em',
-                color: '#2e333a',
-                margin: '0 0 0.5rem',
-              }}>
-                {pkg.name}
-              </p>
-              <p style={{
-                fontSize: '0.92rem',
-                color: '#5d6478',
-                marginBottom: '1.25rem',
-              }}>
-                {pkg.tagline}
-              </p>
-              <ul style={{
-                listStyle: 'none',
-                margin: '0 0 1.5rem 0',
-                padding: 0,
-              }}>
-                {pkg.bullets.map((bullet, j) => (
-                  <li key={j} style={{
-                    fontSize: '0.92rem',
-                    color: '#5d6478',
-                    lineHeight: 2,
-                  }}>
-                    • {bullet}
-                  </li>
-                ))}
-              </ul>
-              <button onClick={() => handleBusinessNameSubmit('')} style={{
-                marginTop: 'auto',
-                background: '#7d3d4f',
-                color: '#fff',
-                border: 'none',
-                padding: '0.85rem',
-                borderRadius: '999px',
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-                cursor: 'pointer',
-                width: '100%',
-                textAlign: 'center',
-              }}>
-                GET A PRICE
-              </button>
-            </div>
-          ))}
-        </div>
-
-        <p style={{
-          fontSize: '0.85rem',
-          color: '#5d6478',
-          textAlign: 'center',
-          marginTop: '2.5rem',
-          maxWidth: '700px',
-          margin: '2.5rem auto 0',
-        }}>
-          Every package includes hosting, an SSL certificate and a domain. You own the site. Cancel the retainer and it stays yours.
-        </p>
       </div>
 
       {/* WORK SECTION */}
@@ -1005,7 +881,6 @@ export default function Home() {
               margin: '0 0 1rem',
             }}>PAGES</p>
             <a href="#work" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Work</a>
-            <a href="#pricing" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Pricing</a>
             <a href="#refer" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Refer</a>
             <a href="#reviews" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>About</a>
             <a href="/careers/sales-rep" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Careers</a>

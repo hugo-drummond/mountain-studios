@@ -36,7 +36,6 @@ const menus: NavMenu[] = [
       { label: 'Work', href: '/work' },
       { label: 'Services', href: '/services' },
       { label: 'Reviews', href: '/#reviews' },
-      { label: 'Pricing', href: '/#pricing' },
     ],
   },
   {
@@ -103,11 +102,18 @@ export default function SiteHeaderNav() {
             gap: '0.4rem',
           }}
         >
+          {/* Every child of the pill is a flex box with line-height 1. Left as
+              inline text, the Playfair wordmark carried its own tall line box
+              and sat visibly higher than the Source Sans links beside it —
+              flex centres the box, not the glyphs. */}
           <a
             href="/"
             style={{
+              display: 'flex',
+              alignItems: 'center',
               fontFamily: 'var(--font-playfair), Georgia, serif',
               fontSize: '1.15rem',
+              lineHeight: 1,
               color: '#1a1a2e',
               textDecoration: 'none',
               marginRight: '1rem',
@@ -312,7 +318,7 @@ const CSS = `
           display: inline-flex; align-items: center; gap: 0.35rem;
           padding: 0.45rem 0.85rem; border: 0; border-radius: 999px;
           background: transparent; color: #1a1a2e; cursor: pointer;
-          font-family: inherit; font-size: 0.78rem; font-weight: 600;
+          font-family: inherit; font-size: 0.78rem; font-weight: 600; line-height: 1;
           text-transform: uppercase; letter-spacing: 0.1em;
           transition: background 0.18s ease;
         }
@@ -348,9 +354,10 @@ const CSS = `
         .ms-hdr-drop-item:hover { background: #f4f2fa; color: #7d3d4f; }
 
         .ms-hdr-cta {
+          display: inline-flex; align-items: center;
           background: #1a1a2e; color: #fff;
           padding: 0.6rem 1.4rem; border-radius: 999px; text-decoration: none;
-          font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+          font-size: 0.78rem; font-weight: 700; line-height: 1; text-transform: uppercase;
           letter-spacing: 0.08em; white-space: nowrap;
           transition: opacity 0.18s ease;
         }
