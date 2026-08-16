@@ -20,18 +20,16 @@ const nextConfig = {
       // still has to be told to ship these — nothing imports them, so they are
       // invisible to static analysis.
       //
-      // Keyed by route, so every entry point that can reach runAudit() needs
-      // its own entry. /api/chat starts audits too since the chatbot was given
-      // the ability to run one, and it shipped without this — the render threw
-      // "/var/task/node_modules/@sparticuz/chromium/bin does not exist" and the
-      // visitor silently got the plain written report instead of the PDF.
-      // Adding an audit caller without adding it here will do that again.
+      // Keyed by route, and ONLY the audit routes get this. Adding /api/chat
+      // here — which it needed while it rendered PDFs in-process — shipped the
+      // 66MB browser into the chat function and made its cold start so slow
+      // that DeepSeek could not answer inside the 20s timeout. Every chat
+      // message on production returned the fallback apology.
+      //
+      // The chatbot now triggers /api/audit/run over HTTP instead of rendering
+      // anything itself, so Chrome belongs in exactly one place. Do not add
+      // another route here — give it the HTTP trigger instead.
       '/api/audit/**': [
-        './lib/audit-report/**',
-        './public/images/audit-report/**',
-        './node_modules/@sparticuz/chromium/bin/**',
-      ],
-      '/api/chat/**': [
         './lib/audit-report/**',
         './public/images/audit-report/**',
         './node_modules/@sparticuz/chromium/bin/**',

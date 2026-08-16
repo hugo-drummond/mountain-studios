@@ -468,6 +468,10 @@ export async function POST(req: NextRequest) {
         email,
         source: 'chatbot',
         originLabel: 'Requested through the site chatbot',
+        // Never inline: rendering the PDF here would mean shipping the 66MB
+        // headless browser into the chat function, which made its cold start
+        // too slow for the model to answer at all.
+        trigger: 'http',
       })
       auditStarted = result.auditRequestId !== null
     }

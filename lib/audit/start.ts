@@ -31,6 +31,19 @@ export interface StartAuditInput {
   recaptchaNote?: string | null
   /** Shown in the notification email so Ant knows which surface it came from. */
   originLabel?: string
+  /**
+   * How to start the run.
+   *
+   * 'inline' renders the PDF in the calling function. Only safe from a route
+   * that ships the headless browser — see outputFileTracingIncludes in
+   * next.config.js, which lists /api/audit/** and nothing else.
+   *
+   * 'http' hands off to /api/audit/run instead. Any other caller must use this.
+   * Adding the browser to a second route is not the answer: it is 66MB, and
+   * putting it in the chat function made cold starts slow enough that the chat
+   * could not answer at all.
+   */
+  trigger?: 'inline' | 'http'
 }
 
 export interface StartAuditResult {
@@ -60,6 +73,14 @@ export function normaliseWebsiteUrl(raw: string): { url: string; hostname: strin
   } catch {
     return null
   }
+}
+
+// Where to reach our own /api/audit/run. VERCEL_URL is the deployment's own
+// host and is always right on a preview or production build; the public app URL
+// is the local and fallback answer.
+function appOrigin(): string {
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
+  return process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 }
 
 function escapeHtml(value: string): string {
@@ -216,10 +237,32 @@ export async function startAudit(input: StartAuditInput): Promise<StartAuditResu
   // fired without await instead — the row is written either way, and the sweep
   // route finishes anything that never completed.
   if (auditRequestId) {
-    const run = () =>
-      runAudit(auditRequestId!).catch((err) =>
-        console.error('[audit/start] background audit failed:', err instanceof Error ? err.message : err),
-      )
+    const id = auditRequestId
+
+    const run =
+      input.trigger === 'http'
+        ? () =>
+            fetch(`${appOrigin()}/api/audit/run`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ auditRequestId: id }),
+            }).then(
+              (res) => {
+                if (!res.ok) console.error('[audit/start] audit/run returned', res.status)
+              },
+              (err) =>
+                console.error(
+                  '[audit/start] could not reach audit/run:',
+                  err instanceof Error ? err.message : err,
+                ),
+            )
+        : () =>
+            runAudit(id).catch((err) =>
+              console.error(
+                '[audit/start] background audit failed:',
+                err instanceof Error ? err.message : err,
+              ),
+            )
 
     if (process.env.VERCEL) waitUntil(run())
     else run()
