@@ -4,6 +4,7 @@ import { Source_Sans_3, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import RecaptchaProvider from '../components/site/RecaptchaProvider'
 import ChatWidget from '../components/site/ChatWidget'
+import AuditPopup from '../components/site/AuditPopup'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -88,7 +89,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <RecaptchaProvider>{children}</RecaptchaProvider>
+        <RecaptchaProvider>
+          {children}
+          {/* Inside the provider, unlike ChatWidget: the audit form calls
+              executeRecaptcha('audit_submit') and needs the context. */}
+          <AuditPopup />
+        </RecaptchaProvider>
         {/* Hides itself on /admin and on generated previews. See ChatWidget. */}
         <ChatWidget />
       </body>

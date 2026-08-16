@@ -53,19 +53,13 @@ const faqItems: FaqItem[] = [
   { q: 'Who hosts it?', a: 'We do. Hosting, the SSL certificate and the domain are included in every package.' },
   { q: 'Do I need to write the content?', a: 'No. Send us what you have — photos, a menu, an old brochure — and we write the rest. You approve it before it goes live.' },
   { q: 'Do you do more than websites?', a: 'Yes. Bookings, payments, Google Business setup and the automations that sit behind them.' },
-  { q: 'What if I already have a website?', a: 'Then start with the free audit above. If it only needs fixing, we\'ll say so.' },
+  { q: 'What if I already have a website?', a: 'Send it to us for a free audit — we check security, speed and accessibility and email you the report. If it only needs fixing, we\'ll say so.' },
 ]
 
 export default function Home() {
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [name, setName] = useState('')
   const [nameFinal, setNameFinal] = useState('')
-  const [auditUrl, setAuditUrl] = useState('')
-  const [auditEmail, setAuditEmail] = useState('')
-  const [auditDone, setAuditDone] = useState(false)
-  const [auditError, setAuditError] = useState('')
-  const [auditLoading, setAuditLoading] = useState(false)
-  const [auditHoneypot, setAuditHoneypot] = useState('')
   const [referName, setReferName] = useState('')
   const [referEmail, setReferEmail] = useState('')
   const [referPhone, setReferPhone] = useState('')
@@ -90,66 +84,14 @@ export default function Home() {
     }
   }
 
-  const handleAuditSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setAuditError('')
-    setAuditLoading(true)
-
-    // The honeypot is judged server-side only. Deciding it here meant a
-    // password manager filling the hidden field showed the visitor a success
-    // screen and never sent the request — no row, no email, no trace anywhere.
-    try {
-      let recaptchaToken: string | undefined
-      if (executeRecaptcha) {
-        try {
-          recaptchaToken = await Promise.race([
-            executeRecaptcha('audit_submit'),
-            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
-          ])
-        } catch {
-          // reCAPTCHA failure is not critical
-        }
-      }
-
-      const res = await fetch('/api/audit/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          websiteUrl: auditUrl,
-          email: auditEmail,
-          recaptchaToken,
-          website: auditHoneypot,
-        }),
-      })
-
-      const data = await res.json().catch(() => null)
-
-      if (res.ok) {
-        setAuditDone(true)
-        setAuditUrl('')
-        setAuditEmail('')
-      } else {
-        // Show what the server actually said. It knows whether the URL failed
-        // to parse, the email was malformed, or they have simply tried too
-        // many times — "something went wrong" tells someone with a typo
-        // nothing, and they retype the same thing and fail again.
-        setAuditError(
-          typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.',
-        )
-      }
-    } catch {
-      setAuditError('Something went wrong. Please try again.')
-    } finally {
-      setAuditLoading(false)
-    }
-  }
-
   const handleReferSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setReferError('')
     setReferLoading(true)
 
-    // Judged server-side only — see the note on the audit form above.
+    // The honeypot is judged server-side only. Deciding it client-side meant a
+    // password manager filling the hidden field showed the visitor a success
+    // screen and never sent the request.
     try {
       let recaptchaToken: string | undefined
       if (executeRecaptcha) {
@@ -838,216 +780,6 @@ export default function Home() {
               </a>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* FREE AUDIT SECTION */}
-      <div style={{ background: '#efedf7', padding: '7rem 2rem' }}>
-        <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
-          <p style={{
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#7d6470',
-            marginBottom: '1rem',
-          }}>FREE AUDIT</p>
-          <h2 style={{
-            fontFamily: 'var(--font-playfair), Georgia, serif',
-            fontSize: 'clamp(1.7rem,3vw,2.4rem)',
-            color: '#2e333a',
-            margin: '0 0 0.75rem',
-            fontWeight: 400,
-          }}>Get a free website audit now.</h2>
-          <p style={{
-            fontSize: '1rem',
-            color: '#5d6478',
-            marginTop: '0.75rem',
-          }}>Paste your website. We'll send you a full audit in minutes — free.</p>
-
-          <div className="ms-audit-checks" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '1rem',
-            margin: '2.5rem 0 2.5rem',
-            textAlign: 'left',
-          }}>
-            {[
-              { name: 'Encryption', desc: "Checks if your site shows the safe padlock, or scares visitors with a red warning." },
-              { name: 'Browser Protection', desc: 'Checks for missing settings that make browsers flag your site as untrusted.' },
-              { name: 'Mobile Speed', desc: 'Checks if your site actually works on a phone — most visitors are on one.' },
-              { name: 'Desktop Speed', desc: 'Checks how fast your site loads. Slow sites lose visitors fast.' },
-              { name: 'Accessibility', desc: 'Checks how easy your site is to use for people with poor eyesight or colour blindness.' },
-            ].map((check, i) => (
-              <div key={i} style={{
-                background: '#fff',
-                borderRadius: '14px',
-                padding: '1.4rem',
-                boxShadow: '0 12px 30px -18px rgba(26,26,46,0.3)',
-                transition: 'transform 0.3s ease',
-              }}
-                onMouseEnter={(e) => (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)'}
-                onMouseLeave={(e) => (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)'}
-              >
-                <div style={{
-                  fontSize: '0.92rem',
-                  fontWeight: 700,
-                  color: '#2e333a',
-                  marginBottom: '0.5rem',
-                }}>{check.name}</div>
-                <div style={{
-                  fontSize: '0.82rem',
-                  color: '#5d6478',
-                  lineHeight: 1.5,
-                }}>{check.desc}</div>
-              </div>
-            ))}
-          </div>
-
-          {auditDone ? (
-            <p style={{
-              fontSize: '0.9rem',
-              color: '#5d6478',
-              marginTop: '2rem',
-            }}>Got it. Your audit is on the way.</p>
-          ) : (
-            <form onSubmit={handleAuditSubmit} style={{
-              marginTop: '2rem',
-            }}>
-              {auditError && (
-                <p style={{
-                  fontSize: '0.9rem',
-                  color: '#dc2626',
-                  marginBottom: '1rem',
-                  margin: '0 0 1rem',
-                }}>
-                  {auditError}
-                </p>
-              )}
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.8rem',
-              }} className="audit-form-inputs">
-                <div style={{
-                  display: 'flex',
-                  background: '#fff',
-                  borderRadius: '999px',
-                  padding: '0.4rem 0.4rem 0.4rem 1.6rem',
-                  alignItems: 'center',
-                  boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
-                  gap: '1.2rem',
-                }} className="audit-pill">
-                  <input
-                    type="text"
-                    placeholder="yourbusiness.co.za"
-                    value={auditUrl}
-                    onChange={(e) => setAuditUrl(e.target.value)}
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      flex: 1,
-                      fontSize: '1rem',
-                      background: 'transparent',
-                      minWidth: 0,
-                    }}
-                    className="audit-pill-input"
-                  /><div
-                    className="audit-pill-divider"
-                    style={{
-                      width: '1px',
-                      height: '24px',
-                      background: '#e3e0ea',
-                    }}
-                  />
-                  <input
-                    type="email"
-                    placeholder="your@email.com"
-                    value={auditEmail}
-                    onChange={(e) => setAuditEmail(e.target.value)}
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      flex: 1,
-                      fontSize: '1rem',
-                      background: 'transparent',
-                      minWidth: 0,
-                    }}
-                    className="audit-pill-input"
-                  />
-                  <button type="submit" disabled={auditLoading} style={{
-                    background: '#7d3d4f',
-                    color: '#fff',
-                    border: 'none',
-                    padding: '0.85rem 1.4rem',
-                    borderRadius: '999px',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    cursor: auditLoading ? 'not-allowed' : 'pointer',
-                    opacity: auditLoading ? 0.7 : 1,
-                    whiteSpace: 'nowrap',
-                  }}>
-                    {auditLoading ? 'Saving…' : 'AUDIT MY SITE →'}
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  name="_hp_url"
-                  value={auditHoneypot}
-                  onChange={(e) => setAuditHoneypot(e.target.value)}
-                  // display:none, not an off-screen position: password
-                  // managers treat an off-screen input as a normal visible
-                  // field and autofill it, which is how a real customer ended
-                  // up flagged as a bot.
-                  style={{ display: 'none' }}
-                  autoComplete="off"
-                  aria-hidden="true"
-                  tabIndex={-1}
-                  // Password managers fill unnamed off-screen text inputs. These
-                  // opt 1Password, LastPass and Dashlane out by name.
-                  data-lpignore="true"
-                  data-1p-ignore=""
-                  data-form-type="other"
-                />
-              </div>
-            </form>
-          )}
-          {/*
-            No child combinator in here. A `>` inside a <style> template literal
-            is serialised as `&gt;` on the server and as `>` on the client, and
-            React counts that as a text-content mismatch: hydration fails, the
-            page still looks completely fine, and NOT ONE event handler is ever
-            attached — which on this section means the audit form silently stops
-            submitting. Target the children by class instead.
-          */}
-          <style>{`
-            @media (max-width: 560px) {
-              .audit-form-inputs {
-                flex-direction: column !important;
-              }
-              .audit-pill {
-                flex-direction: column !important;
-                gap: 0 !important;
-                padding: 0.4rem !important;
-                align-items: stretch !important;
-                /* A 999px radius is a pill only while this is one row tall.
-                   Stacked, it curves the whole card into a lozenge and the
-                   button reads as if it is falling out of it. */
-                border-radius: 18px !important;
-              }
-              .audit-pill-input {
-                padding: 0.85rem 1.2rem !important;
-              }
-              .audit-pill-divider {
-                display: none !important;
-              }
-              .audit-pill button {
-                width: 100% !important;
-              }
-            }
-          `}</style>
         </div>
       </div>
 
