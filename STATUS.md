@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 15 August 2026 (website audit engine — live)
+Last updated: 16 August 2026 (audit moved into a popup)
 
 ## Where things stand
 
@@ -83,16 +83,17 @@ started paying attention, not just the moment they finished.
 `app/page.tsx` was rewritten end to end against Hugo's mockups. The page now leads with
 the thing that actually sells — the free preview — instead of the old "Web Design Done
 Simply" hero. Order: top bar, hero with a business-name input, stats, reviews, packages,
-work grid, free audit, R1,000 referral block, FAQ, final CTA, footer, and a floating
-WhatsApp chat pill.
+work grid, R1,000 referral block, FAQ, final CTA, footer, and a floating pill. The free
+audit sat between the work grid and the referral block until 16 August; it is now a popup
+and lives nowhere on the page — see "Free audit popup" below.
 
 - **The hero input is the funnel.** Typing a business name goes to
   `/start-your-project?name=<typed>`, and the wizard prefills step 1 from the query
   string. It reads `window.location.search` in an effect rather than `useSearchParams`,
   which would need a Suspense boundary and fails the Next 14 build without one.
-- **The audit and referral forms are UI only.** No API, no network call — submitting sets
-  a local flag and swaps in a line of text. They exist so the page reads complete; nothing
-  is captured yet, so anyone who fills them in is lost.
+- **The audit and referral forms were UI only when this section was written** — no API, no
+  network call, so anyone who filled them in was lost. Both have had real backends since
+  15 August, and the audit has since moved out of the page entirely.
 - **Typography changed.** Playfair Display now sets every heading, alongside Source Sans 3
   for body. Registered in `app/layout.tsx` as `--font-playfair`.
 - **`globals.css` placeholder trap.** A global `::placeholder { color: rgba(255,255,255,
@@ -515,10 +516,51 @@ report stored, the email delivered.
 - This section's own description above says "four checks" and is stale — `lib/audit/types.ts`
   and the live cards on the homepage now carry a fifth, Accessibility. See the report note below.
 
+## Free audit popup — live 16 August 2026, tested on production
+
+The audit offer used to be a section mid-homepage, which meant it only ever reached people who
+scrolled that far and never reached anyone on `/work`, `/services` or `/about` at all. It is now
+`components/site/AuditPopup.tsx`, mounted in the root layout, and the homepage section is gone.
+
+**It fires on whichever comes first:**
+
+- 30 seconds on the site. Measured at 30,855 ms from page load.
+- Exit intent — `mouseout` with `clientY <= 0` and a null `relatedTarget`, meaning the pointer
+  left through the top of the window rather than moving between two elements.
+
+Exit intent is desktop-only, because a touchscreen has no pointer to leave. The dwell timer is what
+covers phones, and neither trigger fires in a visitor's first seconds.
+
+**The timer lives in the root layout, so it never restarts on navigation.** Thirty seconds means
+thirty seconds on the site, not thirty on each page — otherwise someone browsing quickly would
+never see it.
+
+- **Once per visit.** `sessionStorage['ms-audit-seen']` is set the moment it opens, so it cannot
+  reappear later in the same visit. Verified.
+- **Never again once they submit.** `localStorage['ms-audit-done']`.
+- Suppressed on `/admin`, `/p/`, `/preview` and `/temp` — the same list as the chatbot, and for the
+  same reason: a Mountain Studios popup over a generated client preview would be actively damaging.
+- **It will not open over an in-progress chatbot conversation.** Two overlays at once is nobody's
+  idea of a good time. It re-arms and retries in 15 seconds rather than throwing the trigger away.
+- Escape, the backdrop and the × all close it; the body scroll is locked while it is open and
+  restored after.
+
+**Mounted inside `RecaptchaProvider`, unlike `ChatWidget` which sits beside it.** The form calls
+`executeRecaptcha('audit_submit')` and gets `undefined` without that context — the submit would
+still work, but every one would arrive unscored.
+
+**On phones the per-check descriptions are hidden**, leaving the check names only. With them in,
+the submit button landed roughly two screens down inside the modal. It is now 577px tall in an
+812px viewport, so the button is visible without scrolling.
+
+Nothing behind it changed: same `POST /api/audit/submit`, same honeypot, same `audit_submit`
+reCAPTCHA action, same everything downstream.
+
 ## Website audit report — live end to end, 16 August 2026
 
-Someone fills in the free-audit form on the homepage and a branded PDF lands in their inbox about
-a minute later. No further involvement, no browser required, no manual step.
+Someone fills in the free-audit form — since 16 August that is the popup, not a homepage section —
+and a branded PDF lands in their inbox about a minute later. No further involvement, no browser
+required, no manual step.
 
 **The chain.** `/api/audit/submit` writes the rows, returns immediately, and starts the audit
 server-side with `waitUntil` from `@vercel/functions`. `lib/audit/run.ts` runs five checks,

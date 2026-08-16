@@ -65,6 +65,21 @@ Still to build:
 - [ ] The reCAPTCHA badge sits under the floating pill in the bottom-right corner. The
       chatbot's own launcher was put bottom-left to stay clear of both.
 
+**Free audit popup** — live and tested on production, 16 August 2026, see [STATUS.md](STATUS.md)
+
+The audit is no longer a homepage section. It fires after 30 seconds on the site or on exit
+intent, once per visit, on every page.
+
+- [ ] **Watch whether the volume of audit requests goes up or down.** The old section only
+      reached people who scrolled to it, but a popup is easier to dismiss on reflex.
+      `audit_requests` rows per week is the number to compare.
+- [ ] **Consider a way to open it on demand.** There is currently no link anywhere that
+      brings it up — if someone dismisses it, or wants it back, they cannot get to it.
+      The chatbot pointing people at it would be the natural route.
+- [ ] Exit intent cannot work on phones (no pointer to leave), so mobile visitors only ever
+      get the 30-second trigger. Worth checking the mobile/desktop split of audit requests
+      before assuming the timer is enough.
+
 **Website audit engine** — end to end and verified in production, 16 August 2026
 
 - [ ] Delete the test row in `audit_requests` tagged `source='audit-engine-test'`, and the
