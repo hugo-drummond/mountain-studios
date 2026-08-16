@@ -65,6 +65,10 @@ function pageOwnsLauncher(pathname: string | null): boolean {
 interface Message {
   role: 'user' | 'assistant'
   content: string
+  // Set on an assistant message when the bot offered the free audit. Renders a
+  // button under it that opens the audit popup. Never sent back to the server —
+  // parseMessages there ignores anything beyond role and content.
+  offerAudit?: boolean
 }
 
 interface Stored {
@@ -139,6 +143,13 @@ export default function ChatWidget() {
     launcherRef.current?.focus()
   }, [])
 
+  // Hands over to AuditPopup. The chat panel closes first — the popup is a
+  // modal and would otherwise land on top of an open conversation.
+  const openAudit = useCallback(() => {
+    setOpen(false)
+    window.dispatchEvent(new Event('ms-audit:open'))
+  }, [])
+
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -192,7 +203,10 @@ export default function ChatWidget() {
               ? data.reply.trim()
               : "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za."
 
-          setMessages([...next, { role: 'assistant', content: reply }])
+          setMessages([
+            ...next,
+            { role: 'assistant', content: reply, offerAudit: data?.offerAudit === true },
+          ])
           if (typeof data?.leadId === 'string') setLeadId(data.leadId)
         }
       } catch {
@@ -262,9 +276,14 @@ export default function ChatWidget() {
                   {m.content}
                 </p>
               ) : (
-                <p key={i} className="ms-chat-said">
-                  {m.content}
-                </p>
+                <div key={i}>
+                  <p className="ms-chat-said">{m.content}</p>
+                  {m.offerAudit && (
+                    <button type="button" className="ms-chat-audit" onClick={openAudit}>
+                      Run my free audit →
+                    </button>
+                  )}
+                </div>
               ),
             )}
 
@@ -408,6 +427,17 @@ const CSS = `
   border-radius: 14px 14px 3px 14px; background: #1a1a2e; color: #f4f2fa;
   font-size: 15px; line-height: 1.5; white-space: pre-wrap;
 }
+
+/* Offered by the bot, sits under the message that offered it. Solid wine so it
+   reads as the one thing to do, rather than another opener chip. */
+.ms-chat-audit {
+  display: inline-block; margin: -6px 0 18px 14px; padding: 10px 16px;
+  border: 0; border-radius: 999px; background: #7d3d4f; color: #f4f2fa; cursor: pointer;
+  font-family: inherit; font-size: 13.5px; font-weight: 600;
+  transition: background .18s ease;
+}
+.ms-chat-audit:hover { background: #6b3343; }
+.ms-chat-audit:focus-visible { outline: 2px solid #1a1a2e; outline-offset: 2px; }
 
 .ms-chat-typing { display: flex; gap: 5px; margin: 0 0 18px; padding-left: 16px; }
 .ms-chat-typing span {

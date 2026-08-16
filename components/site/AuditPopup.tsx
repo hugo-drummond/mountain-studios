@@ -149,6 +149,23 @@ export default function AuditPopup() {
     }
   }, [canShow])
 
+  // Asked for deliberately — currently the chatbot's "Run my free audit"
+  // button. This bypasses every guard on the automatic triggers: someone who
+  // just clicked a button to see this must always get it, whether or not they
+  // already dismissed it this visit. Only the hidden routes still apply.
+  useEffect(() => {
+    const onOpen = () => {
+      const path = pathRef.current
+      if (path && HIDDEN_ON.some((prefix) => path.startsWith(prefix))) return
+      remember('session', SEEN_KEY)
+      setDone(false)
+      setError('')
+      setOpen(true)
+    }
+    window.addEventListener('ms-audit:open', onOpen)
+    return () => window.removeEventListener('ms-audit:open', onOpen)
+  }, [])
+
   const close = useCallback(() => setOpen(false), [])
 
   useEffect(() => {

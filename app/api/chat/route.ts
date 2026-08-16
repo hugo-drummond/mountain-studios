@@ -173,6 +173,26 @@ function worthLogging(text: string, firstMessage: boolean): boolean {
   return trimmed.endsWith('?') || (INTERROGATIVES.test(trimmed) && trimmed.split(/\s+/).length >= 3)
 }
 
+// The model ends a message with [[AUDIT]] when it wants to put the free-audit
+// button under it. Deliberately a marker rather than reading the reply's
+// wording: matching on phrases would fire on "we offer a free audit" said in
+// passing and miss every rewording of it.
+//
+// Generous on purpose — case, spacing, surrounding punctuation and a stray
+// backtick all vary between generations, and a marker that leaks into the
+// visible text is worse than one that fails to fire.
+const AUDIT_MARKER = /[`*_]*\[\[\s*audit\s*\]\][`*_]*/gi
+
+function extractAuditOffer(reply: string): { reply: string; offerAudit: boolean } {
+  if (!AUDIT_MARKER.test(reply)) return { reply, offerAudit: false }
+  AUDIT_MARKER.lastIndex = 0
+
+  return {
+    reply: reply.replace(AUDIT_MARKER, '').replace(/\n{3,}/g, '\n\n').trim(),
+    offerAudit: true,
+  }
+}
+
 function buildNotes(email: string | null, phone: string | null, messages: Message[]): string {
   const transcript = messages
     .map((m) => `${m.role === 'user' ? 'Them' : 'Bot'}: ${m.content}`)
@@ -341,18 +361,29 @@ export async function POST(req: NextRequest) {
   const firstMessage = messages.length === 1
   const cached = firstMessage ? await findApprovedAnswer(question) : null
 
-  let reply: string | null
+  let raw: string | null
+  let fromCache = false
   if (cached) {
-    reply = cached.answer
+    raw = cached.answer
+    fromCache = true
     await bumpAskedCount(cached.id)
   } else {
     const outbound = messages.map((m) => ({ ...m, content: redact(m.content) }))
-    reply = await callDeepSeek(outbound)
-
-    // Logged whether or not the model answered. A question that made the model
-    // fall over is one of the more useful rows in the table.
-    if (worthLogging(question, firstMessage)) await logQuestion(question, reply)
+    raw = await callDeepSeek(outbound)
   }
+
+  // Both paths, so an approved answer can carry [[AUDIT]] too — writing the
+  // marker into a canned answer by hand is a supported way to make a stock
+  // reply offer the audit.
+  const { reply, offerAudit } = raw
+    ? extractAuditOffer(raw)
+    : { reply: null as string | null, offerAudit: false }
+
+  // After stripping, so a marker never lands in a draft answer and gets served
+  // to a later visitor as literal text. Logged whether or not the model
+  // answered — a question that made it fall over is one of the more useful rows
+  // in the table.
+  if (!fromCache && worthLogging(question, firstMessage)) await logQuestion(question, reply)
 
   let leadId = incomingLeadId
   if (email || phone) {
@@ -362,5 +393,5 @@ export async function POST(req: NextRequest) {
     leadId = await saveLead(incomingLeadId, email, phone, full)
   }
 
-  return NextResponse.json({ reply: reply ?? FALLBACK_REPLY, leadId })
+  return NextResponse.json({ reply: reply ?? FALLBACK_REPLY, leadId, offerAudit })
 }
