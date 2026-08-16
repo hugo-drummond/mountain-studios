@@ -15,7 +15,15 @@ const nextConfig = {
     // puppeteer-core with it) external leaves the real package on disk.
     serverComponentsExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
     outputFileTracingIncludes: {
-      '/api/audit/**': ['./lib/audit-report/**', './public/images/audit-report/**'],
+      // The chromium bin/ folder holds the brotli-compressed browser. Marking
+      // the package external keeps it out of the webpack chunk, but tracing
+      // still has to be told to ship these — nothing imports them, so they are
+      // invisible to static analysis.
+      '/api/audit/**': [
+        './lib/audit-report/**',
+        './public/images/audit-report/**',
+        './node_modules/@sparticuz/chromium/bin/**',
+      ],
     },
   },
 }
