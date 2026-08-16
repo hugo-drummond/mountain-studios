@@ -95,13 +95,9 @@ export default function Home() {
     setAuditError('')
     setAuditLoading(true)
 
-    const isBot = auditHoneypot.trim() !== ''
-    if (isBot) {
-      setAuditLoading(false)
-      setAuditDone(true)
-      return
-    }
-
+    // The honeypot is judged server-side only. Deciding it here meant a
+    // password manager filling the hidden field showed the visitor a success
+    // screen and never sent the request — no row, no email, no trace anywhere.
     try {
       let recaptchaToken: string | undefined
       if (executeRecaptcha) {
@@ -153,13 +149,7 @@ export default function Home() {
     setReferError('')
     setReferLoading(true)
 
-    const isBot = referHoneypot.trim() !== ''
-    if (isBot) {
-      setReferLoading(false)
-      setReferDone(true)
-      return
-    }
-
+    // Judged server-side only — see the note on the audit form above.
     try {
       let recaptchaToken: string | undefined
       if (executeRecaptcha) {
@@ -1004,6 +994,7 @@ export default function Home() {
                 </div>
                 <input
                   type="text"
+                  name="_hp_url"
                   value={auditHoneypot}
                   onChange={(e) => setAuditHoneypot(e.target.value)}
                   style={{
@@ -1013,6 +1004,11 @@ export default function Home() {
                   autoComplete="off"
                   aria-hidden="true"
                   tabIndex={-1}
+                  // Password managers fill unnamed off-screen text inputs. These
+                  // opt 1Password, LastPass and Dashlane out by name.
+                  data-lpignore="true"
+                  data-1p-ignore=""
+                  data-form-type="other"
                 />
               </div>
             </form>
@@ -1219,6 +1215,7 @@ export default function Home() {
               </div>
               <input
                 type="text"
+                name="_hp_url"
                 value={referHoneypot}
                 onChange={(e) => setReferHoneypot(e.target.value)}
                 style={{
@@ -1228,6 +1225,9 @@ export default function Home() {
                 autoComplete="off"
                 aria-hidden="true"
                 tabIndex={-1}
+                data-lpignore="true"
+                data-1p-ignore=""
+                data-form-type="other"
               />
             </form>
           )}

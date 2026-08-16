@@ -73,6 +73,11 @@ export async function POST(req: NextRequest) {
 
   // Bots fill every field they find. A real user never sees this one.
   if (body.website) {
+    // See the note in audit/submit — a real person filling this via a password
+    // manager must not vanish without a trace.
+    console.warn(
+      `[referral/submit] honeypot tripped — value=${String(body.website).slice(0, 80)}`,
+    )
     return NextResponse.json({ success: true, refCode: '' })
   }
 

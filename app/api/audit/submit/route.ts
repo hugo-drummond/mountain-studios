@@ -62,6 +62,12 @@ export async function POST(req: NextRequest) {
 
   // Bots fill every field they find. A real user never sees this one.
   if (body.website) {
+    // Logged, because a real person can trip this: password managers fill
+    // hidden fields, and a silently dropped enquiry leaves no trace in any
+    // table to find it by.
+    console.warn(
+      `[audit/submit] honeypot tripped — url=${body.websiteUrl ?? ''} email=${body.email ?? ''} value=${String(body.website).slice(0, 80)}`,
+    )
     return NextResponse.json({ success: true })
   }
 

@@ -66,6 +66,10 @@ export async function POST(req: NextRequest) {
 
   // Bots fill every field they find. A real user never sees this one.
   if (body.website) {
+    // See the note in audit/submit.
+    console.warn(
+      `[contact/submit] honeypot tripped — value=${String(body.website).slice(0, 80)}`,
+    )
     return NextResponse.json({ success: true })
   }
 
