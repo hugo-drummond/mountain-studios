@@ -180,14 +180,22 @@ export default function Home() {
         <SiteHeaderNav />
 
         {/* HERO CONTENT */}
-        <div style={{
+        <div className="ms-hero-copy" style={{
           maxWidth: '780px',
-          // Auto margins on both a flex column's first and last child split the
-          // free space between them, which is what sits the copy below the two
-          // tilted screenshots without a fixed padding that a short window
-          // cannot afford.
-          margin: 'auto',
-          padding: '0 2rem',
+          // All of the hero's spare height goes ABOVE this block, so the copy
+          // and the stats sit together just above the ridge whatever the window
+          // height is. A fixed top padding cannot do this: on a short window
+          // there is no spare height to spend, and the offset would push the
+          // ridge off the bottom of the screen instead.
+          marginTop: 'auto',
+          marginBottom: 0,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          // Sides only. `padding-top` belongs to .ms-hero-copy, and an inline
+          // shorthand would set it to 0 at a specificity no media query can
+          // beat.
+          paddingLeft: '2rem',
+          paddingRight: '2rem',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -295,15 +303,14 @@ export default function Home() {
 
         {/* STATS BAR */}
         <div className="ms-stats" style={{
-          // `auto` top margin, not a fixed gap: it pins the row just above the
-          // hero's bottom padding, which is the ridge. On a tall window the
-          // slack opens between the hero copy and the stats, never between the
-          // stats and the mountains. The explicit width is load-bearing —
-          // auto side margins on a flex item make it size to its content, and
-          // the four columns collapse into a huddle in the middle.
+          // Fixed gap: the copy above owns the spare height, so this row keeps
+          // a constant distance from it and lands just above the ridge. The
+          // explicit width is load-bearing — auto side margins on a flex item
+          // make it size to its content, and the four columns collapse into a
+          // huddle in the middle.
           width: '100%',
           maxWidth: '1000px',
-          marginTop: 'auto',
+          marginTop: '2.5rem',
           marginLeft: 'auto',
           marginRight: 'auto',
           display: 'grid',
