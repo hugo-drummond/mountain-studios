@@ -74,6 +74,11 @@ interface Message {
   auditStarted?: boolean
 }
 
+// `retryable` decides whether the button is worth offering. It points at the
+// same endpoint, so a rate-limited visitor must not be sent there — they would
+// just fail again.
+type AuditOutcome = { ok: true } | { ok: false; retryable: boolean; message: string }
+
 interface Stored {
   messages: Message[]
   leadId: string | null
@@ -166,30 +171,56 @@ export default function ChatWidget() {
   // posts to. It writes the rows, emails Ant and renders the PDF in the one
   // function that ships the headless browser, so there is no second code path
   // to keep working.
-  const submitAudit = useCallback(async (websiteUrl: string, email: string): Promise<boolean> => {
-    try {
-      let recaptchaToken: string | undefined
-      if (executeRecaptcha) {
-        try {
-          recaptchaToken = await Promise.race([
-            executeRecaptcha('audit_submit'),
-            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
-          ])
-        } catch {
-          // reCAPTCHA failure is not critical.
+  const submitAudit = useCallback(
+    async (websiteUrl: string, email: string): Promise<AuditOutcome> => {
+      try {
+        let recaptchaToken: string | undefined
+        if (executeRecaptcha) {
+          try {
+            recaptchaToken = await Promise.race([
+              executeRecaptcha('audit_submit'),
+              new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+            ])
+          } catch {
+            // reCAPTCHA failure is not critical.
+          }
         }
-      }
 
-      const res = await fetch('/api/audit/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ websiteUrl, email, recaptchaToken }),
-      })
-      return res.ok
-    } catch {
-      return false
-    }
-  }, [executeRecaptcha])
+        const res = await fetch('/api/audit/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ websiteUrl, email, recaptchaToken }),
+        })
+
+        if (res.ok) return { ok: true }
+
+        // Say what actually went wrong. "I couldn't get that started" sent
+        // someone to a button that hits the very same limit they had just
+        // exceeded, so the next thing they saw was the same failure again.
+        if (res.status === 429) {
+          return {
+            ok: false,
+            retryable: false,
+            message:
+              "You've run a few audits already in the last hour, so that one didn't go through. Give it an hour and it'll work again.",
+          }
+        }
+
+        const data = await res.json().catch(() => null)
+        return {
+          ok: false,
+          retryable: true,
+          message:
+            typeof data?.error === 'string'
+              ? data.error
+              : "I couldn't get that started just now.",
+        }
+      } catch {
+        return { ok: false, retryable: true, message: "I couldn't get that started just now." }
+      }
+    },
+    [executeRecaptcha],
+  )
 
   const send = useCallback(
     async (text: string) => {
@@ -240,23 +271,27 @@ export default function ChatWidget() {
           // the same endpoint the popup form uses, because that is the one path
           // proven to render and email a PDF on production.
           const request = data?.auditRequest
-          let started = false
+          let outcome: AuditOutcome | null = null
           if (request?.websiteUrl && request?.email) {
-            started = await submitAudit(request.websiteUrl, request.email)
+            outcome = await submitAudit(request.websiteUrl, request.email)
           }
+
+          const started = outcome?.ok === true
+          const failure = outcome && !outcome.ok ? outcome : null
 
           setMessages([
             ...next,
             {
               role: 'assistant',
-              content: started
-                ? reply
-                : request
-                  ? `${reply}\n\nActually — I couldn't get that started. Use the button below and it'll go through properly.`
-                  : reply,
+              content: failure ? `${reply}\n\n${failure.message}` : reply,
               // A started audit wins: the button would invite them to ask for
-              // the same thing twice.
-              offerAudit: (data?.offerAudit === true || (!!request && !started)) && !started,
+              // the same thing twice. And a failure that the button cannot fix
+              // must not show one — it posts to the same endpoint.
+              offerAudit: started
+                ? false
+                : failure
+                  ? failure.retryable
+                  : data?.offerAudit === true,
               auditStarted: started,
             },
           ])

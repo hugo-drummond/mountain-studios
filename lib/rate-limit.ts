@@ -9,7 +9,11 @@ import { crmAdmin } from '@/lib/crm'
 export const LIMITS = Object.freeze({
   'preview/generate': { limit: 5, windowSeconds: 3600 },
   'preview/scrape': { limit: 5, windowSeconds: 3600 },
-  'audit/submit': { limit: 5, windowSeconds: 3600 },
+  // Raised from 5. This one limit is now shared by three ways in — the popup
+  // form, the chatbot handing over a site and an email, and the audit page —
+  // so five an hour was being spent faster than it was written for. It is also
+  // per IP, and an office behind one NAT is one IP.
+  'audit/submit': { limit: 15, windowSeconds: 3600 },
   'audit/run': { limit: 10, windowSeconds: 3600 },
   'contact/submit': { limit: 5, windowSeconds: 3600 },
   'referral/submit': { limit: 5, windowSeconds: 3600 },
