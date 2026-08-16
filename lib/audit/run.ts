@@ -274,23 +274,63 @@ export async function runAudit(
         // the email has to stand alone.
         const hostname = new URL(row.website_url).hostname?.replace(/^www\./, '') || 'website'
         const cover = renderAuditCoverEmail(report, businessName)
-        messageId = await sendMailWithAttachment({
-          to: row.email,
-          subject: cover.subject,
-          html: cover.html,
-          attachment: {
-            filename: `website-audit-${hostname}.pdf`,
-            content: pdfBuffer,
-            contentType: 'application/pdf',
-          },
-        })
-        sendSuccess = true
+
+        // Tried twice before giving up on the attachment.
+        //
+        // The first istore report went out without its PDF, and every step of
+        // this path passed when replayed by hand afterwards — the render, the
+        // upload, the cover, the send. It was a transient failure, and one
+        // attempt was enough to turn a 700KB branded report into a plain email
+        // for good. The PDF is the deliverable; it is worth a second go.
+        let lastSendError: unknown
+        for (let attempt = 0; attempt < 2 && !sendSuccess; attempt++) {
+          if (attempt > 0) await new Promise((r) => setTimeout(r, 1500))
+          try {
+            messageId = await sendMailWithAttachment({
+              to: row.email,
+              subject: cover.subject,
+              html: cover.html,
+              attachment: {
+                filename: `website-audit-${hostname}.pdf`,
+                content: pdfBuffer,
+                contentType: 'application/pdf',
+              },
+            })
+            sendSuccess = true
+          } catch (sendErr) {
+            lastSendError = sendErr
+            console.error(
+              `[audit/run] attachment send attempt ${attempt + 1} failed:`,
+              sendErr instanceof Error ? sendErr.message : sendErr,
+            )
+          }
+        }
+
+        if (!sendSuccess) throw lastSendError
       } catch (err) {
-        // PDF render or upload failed — still send email as fallback
-        console.error(
-          '[audit/run] PDF render/upload failed, sending email without attachment:',
-          err instanceof Error ? err.message : err
-        )
+        // PDF render, upload or send failed — still send the written report.
+        //
+        // This fallback used to be completely silent: the visitor got an email
+        // with no PDF, the row still said the report was sent, and the reason
+        // existed only in a server log nobody reads. Someone had to notice the
+        // missing attachment by eye and say so. The reason is now written onto
+        // the report so it is visible in the database afterwards.
+        const reason = err instanceof Error ? `${err.name}: ${err.message}` : String(err)
+        console.error('[audit/run] PDF path failed, sending written report instead:', reason)
+
+        try {
+          await db
+            .from('audit_requests')
+            .update({
+              report: {
+                ...(report as Record<string, unknown>),
+                delivery: { pdfAttached: false, failedAt: new Date().toISOString(), reason },
+              },
+            })
+            .eq('id', auditRequestId)
+        } catch {
+          // Recording why is worth a try, never worth losing the email over.
+        }
 
         try {
           messageId = await sendMail({ to: row.email, subject, html })
