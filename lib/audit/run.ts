@@ -1,9 +1,10 @@
 import { crmAdmin } from '@/lib/crm'
 import { normaliseUrl, checkSsl, checkHeaders, checkPsi } from './checks'
-import type { AuditReport, CheckError, SslResult, HeadersResult, PsiResult } from './types'
-import { PSI_ERROR_COPY, GENERIC_ERROR_COPY } from './copy'
+import type { AuditReport, CheckError, SslResult, HeadersResult, PsiResult, AccessibilityResult } from './types'
+import { PSI_ERROR_COPY, A11Y_ERROR_COPY, GENERIC_ERROR_COPY } from './copy'
 import { renderAuditEmail } from './email'
-import { sendMail } from '@/lib/ses'
+import { sendMail, sendMailWithAttachment } from '@/lib/ses'
+import { renderReportPdf } from '@/lib/audit-report/render'
 
 export async function runAudit(
   auditRequestId: string,
@@ -81,8 +82,15 @@ export async function runAudit(
           headline: PSI_ERROR_COPY.blocked.headline,
           body: PSI_ERROR_COPY.blocked.body,
         },
+        accessibility: {
+          status: 'error',
+          reason: 'blocked',
+          detail: normalised.blocked,
+          headline: A11Y_ERROR_COPY.blocked.headline,
+          body: A11Y_ERROR_COPY.blocked.body,
+        },
       },
-      summary: { completed: 0, failed: 4, overall: 'failed' },
+      summary: { completed: 0, failed: 5, overall: 'failed' },
     }
 
     // Write and return
@@ -134,28 +142,46 @@ export async function runAudit(
         }
       : headersResult.value
 
-  const mobileCheck: PsiResult =
-    mobileResult.status === 'rejected'
-      ? {
-          status: 'error',
-          reason: 'api_error',
+  const mobileCheckResult = mobileResult.status === 'rejected'
+    ? {
+        psi: {
+          status: 'error' as const,
+          reason: 'api_error' as const,
           detail: mobileResult.reason instanceof Error ? mobileResult.reason.message : String(mobileResult.reason),
           ...GENERIC_ERROR_COPY,
-        }
-      : mobileResult.value
+        },
+        accessibility: {
+          status: 'error' as const,
+          reason: 'api_error' as const,
+          detail: mobileResult.reason instanceof Error ? mobileResult.reason.message : String(mobileResult.reason),
+          ...GENERIC_ERROR_COPY,
+        },
+      }
+    : mobileResult.value
 
-  const desktopCheck: PsiResult =
-    desktopResult.status === 'rejected'
-      ? {
-          status: 'error',
-          reason: 'api_error',
+  const desktopCheckResult = desktopResult.status === 'rejected'
+    ? {
+        psi: {
+          status: 'error' as const,
+          reason: 'api_error' as const,
           detail: desktopResult.reason instanceof Error ? desktopResult.reason.message : String(desktopResult.reason),
           ...GENERIC_ERROR_COPY,
-        }
-      : desktopResult.value
+        },
+        accessibility: null,
+      }
+    : desktopResult.value
+
+  const mobileCheck: PsiResult = mobileCheckResult.psi
+  const a11yCheck: AccessibilityResult = mobileCheckResult.accessibility || {
+    status: 'error',
+    reason: 'api_error',
+    detail: 'No accessibility result',
+    ...GENERIC_ERROR_COPY,
+  }
+  const desktopCheck: PsiResult = desktopCheckResult.psi
 
   // 6. Build report
-  const failed = [sslCheck, headersCheck, mobileCheck, desktopCheck].filter(
+  const failed = [sslCheck, headersCheck, mobileCheck, desktopCheck, a11yCheck].filter(
     (c) => c.status === 'error',
   ).length
 
@@ -168,11 +194,12 @@ export async function runAudit(
       headers: headersCheck,
       mobile: mobileCheck,
       desktop: desktopCheck,
+      accessibility: a11yCheck,
     },
     summary: {
-      completed: 4 - failed,
+      completed: 5 - failed,
       failed,
-      overall: failed === 0 ? 'done' : failed === 4 ? 'failed' : 'partial',
+      overall: failed === 0 ? 'done' : failed === 5 ? 'failed' : 'partial',
     },
   }
 
@@ -188,7 +215,7 @@ export async function runAudit(
     return { ok: false, report, error: 'write_failed' }
   }
 
-  // 7b. Send email (best effort)
+  // 7b. Send email with PDF attachment (best effort)
   try {
     const shouldSendEmail =
       (report.summary.overall === 'done' || report.summary.overall === 'partial') &&
@@ -197,16 +224,104 @@ export async function runAudit(
 
     if (shouldSendEmail) {
       const { subject, html } = renderAuditEmail(report)
-      await sendMail({ to: row.email, subject, html })
 
-      // Update report_sent_at
-      const { error: updateError } = await db
-        .from('audit_requests')
-        .update({ report_sent_at: new Date().toISOString() })
-        .eq('id', auditRequestId)
+      // Determine business name: prefer lead's business_name, else hostname
+      let businessName: string = ''
+      if (row.lead_id) {
+        try {
+          const { data: lead, error: leadError } = await db
+            .from('leads')
+            .select('business_name')
+            .eq('id', row.lead_id)
+            .single()
 
-      if (updateError) {
-        console.error('[audit/run] Failed to update report_sent_at:', updateError.message)
+          if (!leadError && lead?.business_name) {
+            businessName = lead.business_name
+          }
+        } catch (err) {
+          console.error('[audit/run] Failed to fetch lead business_name:', err)
+        }
+      }
+
+      if (!businessName) {
+        // Fall back to hostname with www. stripped
+        try {
+          const parsed = new URL(row.website_url)
+          businessName = parsed.hostname?.replace(/^www\./, '') || row.website_url
+        } catch {
+          businessName = row.website_url
+        }
+      }
+
+      let pdfBuffer: Buffer | null = null
+      let sendSuccess = false
+      let messageId: string | undefined
+
+      // Try to render and upload PDF
+      try {
+        pdfBuffer = await renderReportPdf(report, { businessName })
+
+        // Create bucket if it doesn't exist (best effort)
+        try {
+          await crmAdmin().storage.createBucket('audit-reports', { public: false })
+        } catch (bucketErr: any) {
+          // Ignore "already exists" error
+          if (bucketErr?.message?.includes('already exists')) {
+            // Expected, bucket exists
+          } else if (bucketErr?.status === 409) {
+            // Also expected for 409 conflicts
+          } else {
+            throw bucketErr
+          }
+        }
+
+        // Upload PDF to storage
+        await crmAdmin().storage
+          .from('audit-reports')
+          .upload(`${auditRequestId}.pdf`, pdfBuffer, {
+            contentType: 'application/pdf',
+            upsert: true,
+          })
+
+        // Send email with attachment
+        const hostname = new URL(row.website_url).hostname?.replace(/^www\./, '') || 'website'
+        messageId = await sendMailWithAttachment({
+          to: row.email,
+          subject,
+          html,
+          attachment: {
+            filename: `website-audit-${hostname}.pdf`,
+            content: pdfBuffer,
+            contentType: 'application/pdf',
+          },
+        })
+        sendSuccess = true
+      } catch (err) {
+        // PDF render or upload failed — still send email as fallback
+        console.error(
+          '[audit/run] PDF render/upload failed, sending email without attachment:',
+          err instanceof Error ? err.message : err
+        )
+
+        try {
+          messageId = await sendMail({ to: row.email, subject, html })
+          sendSuccess = true
+        } catch (emailErr) {
+          console.error('[audit/run] Fallback email send also failed:', emailErr instanceof Error ? emailErr.message : emailErr)
+          sendSuccess = false
+        }
+      }
+
+      // Only stamp report_sent_at if email actually went out
+      if (sendSuccess) {
+        const { error: updateError } = await db
+          .from('audit_requests')
+          .update({ report_sent_at: new Date().toISOString() })
+          .eq('id', auditRequestId)
+
+        if (updateError) {
+          console.error('[audit/run] Failed to update report_sent_at:', updateError.message)
+        }
       }
     }
   } catch (err) {

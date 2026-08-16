@@ -3,6 +3,8 @@ import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
+import { runAudit } from '@/lib/audit/run'
+import { waitUntil } from '@vercel/functions'
 
 // ---------------------------------------------------------------------------
 // POST /api/audit/submit
@@ -16,6 +18,8 @@ import { verifyRecaptcha } from '@/lib/recaptcha'
 // Each leg is caught separately. A lead that reaches one of them is worth
 // more than a clean error response.
 // ---------------------------------------------------------------------------
+
+export const maxDuration = 300
 
 const NOTIFY_TO = 'ant88835@gmail.com'
 
@@ -248,6 +252,25 @@ export async function POST(req: NextRequest) {
       { success: false, error: 'Could not submit your request. Please try again.' },
       { status: 502 },
     )
+  }
+
+  // Kick off audit server-side (best effort)
+  // On Vercel, waitUntil() keeps the function alive in the background after the response returns.
+  // Locally, waitUntil() does not keep a dev process alive reliably, so we fire-and-forget
+  // without await to avoid blocking the response.
+  if (auditRequestId) {
+    if (process.env.VERCEL) {
+      waitUntil(runAudit(auditRequestId).catch(err =>
+        console.error('[audit/submit] Background audit failed:', err instanceof Error ? err.message : err)
+      ))
+    } else {
+      // Local dev: fire the promise without await so the response returns immediately.
+      // The dev server stays alive long enough for most audits to complete, and if it
+      // doesn't, the audit row is still written and can be picked up by the sweep route.
+      runAudit(auditRequestId).catch(err =>
+        console.error('[audit/submit] Background audit failed:', err instanceof Error ? err.message : err)
+      )
+    }
   }
 
   return NextResponse.json({ success: true, auditRequestId })

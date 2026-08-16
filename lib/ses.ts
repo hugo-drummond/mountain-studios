@@ -56,3 +56,91 @@ export async function sendMail({
 
   return res.MessageId
 }
+
+// Encode subject for RFC 2047 so accented characters don't corrupt the header
+function encodeRfc2047Subject(subject: string): string {
+  // Check if the subject contains only ASCII characters
+  if (/^[\x00-\x7F]*$/.test(subject)) {
+    return subject
+  }
+
+  // Encode the subject in UTF-8 using base64
+  const buffer = Buffer.from(subject, 'utf-8')
+  const base64 = buffer.toString('base64')
+  return `=?UTF-8?B?${base64}?=`
+}
+
+// Wrap base64 at 76 characters per line (RFC 2045)
+function wrapBase64(base64: string): string {
+  const chunks = []
+  for (let i = 0; i < base64.length; i += 76) {
+    chunks.push(base64.slice(i, i + 76))
+  }
+  return chunks.join('\r\n')
+}
+
+export async function sendMailWithAttachment(opts: {
+  to: string
+  subject: string
+  html: string
+  replyTo?: string
+  attachment: { filename: string; content: Buffer; contentType: string }
+}): Promise<string | undefined> {
+  const boundary = `boundary_${Date.now()}_${Math.random().toString(36).slice(2)}`
+
+  // Build the MIME message
+  const headers = [
+    `From: ${FROM}`,
+    `To: ${opts.to}`,
+    `Subject: ${encodeRfc2047Subject(opts.subject)}`,
+    `MIME-Version: 1.0`,
+    ...(opts.replyTo ? [`Reply-To: ${opts.replyTo}`] : []),
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+  ].join('\r\n')
+
+  // HTML body part.
+  //
+  // Base64 rather than 8bit: the audit email is full of em-dashes and curly
+  // quotes, and an 8bit part carrying raw UTF-8 is not reliably delivered
+  // through a raw-MIME send. Base64 is 7-bit clean, so nothing can mangle it.
+  const bodyPart = [
+    `--${boundary}`,
+    `Content-Type: text/html; charset=UTF-8`,
+    `Content-Transfer-Encoding: base64`,
+    '',
+    wrapBase64(Buffer.from(opts.html, 'utf8').toString('base64')),
+  ].join('\r\n')
+
+  // Attachment part (base64-encoded)
+  const base64Content = opts.attachment.content.toString('base64')
+  const wrappedBase64 = wrapBase64(base64Content)
+  const attachmentPart = [
+    `--${boundary}`,
+    `Content-Type: ${opts.attachment.contentType}`,
+    `Content-Disposition: attachment; filename="${opts.attachment.filename}"`,
+    `Content-Transfer-Encoding: base64`,
+    '',
+    wrappedBase64,
+  ].join('\r\n')
+
+  // Closing boundary
+  const closing = `--${boundary}--`
+
+  // Combine all parts
+  const mimeMessage = [headers, '', bodyPart, attachmentPart, closing].join('\r\n')
+
+  // Send via Raw content
+  const res = await client().send(
+    new SendEmailCommand({
+      FromEmailAddress: FROM,
+      Destination: { ToAddresses: [opts.to] },
+      Content: {
+        Raw: {
+          Data: Buffer.from(mimeMessage, 'utf-8'),
+        },
+      },
+    }),
+  )
+
+  return res.MessageId
+}

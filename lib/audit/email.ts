@@ -85,6 +85,9 @@ export function renderAuditEmail(report: AuditReport): { subject: string; html: 
   // Desktop Row
   ledgerHtml += buildSpeedRow(desktopCheck as any, 'SPEED — DESKTOP');
 
+  // Accessibility Row
+  ledgerHtml += buildAccessibilityRow(report.checks.accessibility as any, 'ACCESSIBILITY');
+
   const html = `<!DOCTYPE html>
 <html>
 <head>
@@ -218,4 +221,42 @@ function getVerdictChip(check: any): string {
   }
 
   return '';
+}
+
+function buildAccessibilityRow(check: any, label: string): string {
+  let content = '';
+
+  if (check.status === 'ok') {
+    const score = check.score;
+    const band = renderScoreBand(score);
+    let failuresList = '';
+
+    if (check.failures && check.failures.length > 0) {
+      failuresList = `<div style="margin-top:12px;">` +
+        check.failures.map((failure: string) =>
+          `<div style="font-size:13px;color:#666666;margin:4px 0;">– ${escapeHtml(failure)}</div>`
+        ).join('') +
+        `</div>`;
+    }
+
+    content = `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 16px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+      <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 16px;">${escapeHtml(check.body)}</p>
+      <div>
+        ${band}
+        <span style="display:inline-block;font-family:Georgia,'Times New Roman',serif;font-size:40px;color:#000000;vertical-align:middle;margin-right:4px;">${score}</span><span style="display:inline-block;font-size:13px;color:#666666;vertical-align:middle;">/100</span>
+      </div>
+      ${failuresList}
+    </div>`;
+  } else {
+    content = `<div style="padding:24px;border-top:1px solid #DDDDDD;">
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:0 0 8px;">${label}</p>
+      <h2 style="font-family:Georgia,'Times New Roman',serif;font-size:19px;color:#000000;margin:0 0 8px;font-weight:400;">${escapeHtml(check.headline)}</h2>
+      <p style="font-size:14px;line-height:1.6;color:#666666;margin:0 0 12px;">${escapeHtml(check.body)}</p>
+      <p style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#666666;margin:12px 0 0;">NOT CHECKED</p>
+    </div>`;
+  }
+
+  return content;
 }

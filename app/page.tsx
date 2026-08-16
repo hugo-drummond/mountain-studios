@@ -132,15 +132,6 @@ export default function Home() {
         setAuditDone(true)
         setAuditUrl('')
         setAuditEmail('')
-
-        // Fire-and-forget: run the audit automatically if we have an ID
-        if (data?.auditRequestId) {
-          fetch('/api/audit/run', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ auditRequestId: data.auditRequestId }),
-          }).catch(() => {})
-        }
       } else {
         // Show what the server actually said. It knows whether the URL failed
         // to parse, the email was malformed, or they have simply tried too
@@ -886,16 +877,17 @@ export default function Home() {
 
           <div className="ms-audit-checks" style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4,1fr)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
             gap: '1rem',
             margin: '2.5rem 0 2.5rem',
             textAlign: 'left',
           }}>
             {[
-              { name: 'SSL Certificate', desc: "Checks if your site shows the safe padlock, or scares visitors with a red warning." },
-              { name: 'Mobile Score', desc: 'Checks if your site actually works on a phone — most visitors are on one.' },
-              { name: 'PageSpeed Score', desc: 'Checks how fast your site loads. Slow sites lose visitors fast.' },
-              { name: 'Security Headers', desc: 'Checks for missing settings that make browsers flag your site as untrusted.' },
+              { name: 'Encryption', desc: "Checks if your site shows the safe padlock, or scares visitors with a red warning." },
+              { name: 'Browser Protection', desc: 'Checks for missing settings that make browsers flag your site as untrusted.' },
+              { name: 'Mobile Speed', desc: 'Checks if your site actually works on a phone — most visitors are on one.' },
+              { name: 'Desktop Speed', desc: 'Checks how fast your site loads. Slow sites lose visitors fast.' },
+              { name: 'Accessibility', desc: 'Checks how easy your site is to use for people with poor eyesight or colour blindness.' },
             ].map((check, i) => (
               <div key={i} style={{
                 background: '#fff',

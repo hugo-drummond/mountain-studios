@@ -2,6 +2,7 @@ import type {
   SslResult,
   HeadersResult,
   PsiResult,
+  AccessibilityResult,
   SecurityHeader,
   CheckError,
 } from './types'
@@ -12,6 +13,9 @@ import {
   MOBILE_COPY,
   DESKTOP_COPY,
   PSI_ERROR_COPY,
+  A11Y_AUDIT_LABELS,
+  A11Y_COPY,
+  A11Y_ERROR_COPY,
   scoreBucket,
 } from './copy'
 import { SECURITY_HEADERS } from './types'
@@ -247,7 +251,7 @@ export async function checkHeaders(url: string): Promise<HeadersResult> {
 export async function checkPsi(
   url: string,
   strategy: 'mobile' | 'desktop',
-): Promise<PsiResult> {
+): Promise<{ psi: PsiResult; accessibility: AccessibilityResult | null }> {
   const timeout = 45000
   const controller = new AbortController()
   const timeoutId = setTimeout(() => controller.abort(), timeout)
@@ -264,8 +268,11 @@ export async function checkPsi(
     const params = new URLSearchParams({
       url,
       strategy,
-      category: 'performance',
     })
+    params.append('category', 'performance')
+    if (strategy === 'mobile') {
+      params.append('category', 'accessibility')
+    }
 
     if (process.env.GOOGLE_PSI_API_KEY) {
       params.append('key', process.env.GOOGLE_PSI_API_KEY)
@@ -283,7 +290,11 @@ export async function checkPsi(
     // Handle error responses
     if (!response.ok) {
       if (response.status === 429) {
-        return buildPsiError('rate_limit', `HTTP ${response.status}`)
+        const error = buildPsiError('rate_limit', `HTTP ${response.status}`)
+        return {
+          psi: error,
+          accessibility: strategy === 'mobile' ? buildA11yError('rate_limit', `HTTP ${response.status}`) : null,
+        }
       }
 
       // Check if it's an unreachable error
@@ -291,29 +302,39 @@ export async function checkPsi(
         try {
           const json = await response.json() as any
           const message = json?.error?.message || ''
-          if (
-            /could not|load|fetch|unreachable/i.test(message)
-          ) {
-            return buildPsiError('unreachable', message)
+          if (/could not|load|fetch|unreachable/i.test(message)) {
+            const error = buildPsiError('unreachable', message)
+            return {
+              psi: error,
+              accessibility: strategy === 'mobile' ? buildA11yError('unreachable', message) : null,
+            }
           }
         } catch {
           // Fall through
         }
       }
 
-      return buildPsiError('api_error', `HTTP ${response.status} ${response.statusText}`)
+      const error = buildPsiError('api_error', `HTTP ${response.status} ${response.statusText}`)
+      return {
+        psi: error,
+        accessibility: strategy === 'mobile' ? buildA11yError('api_error', `HTTP ${response.status} ${response.statusText}`) : null,
+      }
     }
 
     const json = await response.json() as any
 
-    // Extract score
+    // Extract performance score
     const score = Math.round(
       (json.lighthouseResult?.categories?.performance?.score ?? 0) * 100,
     )
 
     // Check if score extraction succeeded
     if (!json.lighthouseResult?.categories?.performance) {
-      return buildPsiError('api_error', 'Score data missing from response')
+      const error = buildPsiError('api_error', 'Score data missing from response')
+      return {
+        psi: error,
+        accessibility: strategy === 'mobile' ? buildA11yError('api_error', 'Score data missing from response') : null,
+      }
     }
 
     // Extract screenshot for mobile only
@@ -332,7 +353,7 @@ export async function checkPsi(
     const bucket = scoreBucket(score)
     const copyMap = strategy === 'mobile' ? MOBILE_COPY : DESKTOP_COPY
 
-    return {
+    const psiResult: PsiResult = {
       status: 'ok',
       score,
       bucket,
@@ -340,15 +361,30 @@ export async function checkPsi(
       headline: copyMap[bucket].headline,
       body: copyMap[bucket].body,
     }
+
+    // Extract accessibility for mobile only
+    let a11yResult: AccessibilityResult | null = null
+    if (strategy === 'mobile') {
+      a11yResult = extractAccessibility(json)
+    }
+
+    return {
+      psi: psiResult,
+      accessibility: a11yResult,
+    }
   } catch (err) {
     const detail = err instanceof Error ? err.message : String(err)
-    if (
+    const reason =
       err instanceof Error &&
       (err.name === 'AbortError' || err.name === 'TimeoutError')
-    ) {
-      return buildPsiError('timeout', detail)
+        ? ('timeout' as const)
+        : ('api_error' as const)
+
+    const error = buildPsiError(reason, detail)
+    return {
+      psi: error,
+      accessibility: strategy === 'mobile' ? buildA11yError(reason, detail) : null,
     }
-    return buildPsiError('api_error', detail)
   } finally {
     clearTimeout(timeoutId)
   }
@@ -363,5 +399,49 @@ function buildPsiError(
     reason,
     detail,
     ...PSI_ERROR_COPY[reason],
+  }
+}
+
+function buildA11yError(
+  reason: Exclude<CheckError['reason'], 'blocked'>,
+  detail: string,
+): AccessibilityResult {
+  return {
+    status: 'error',
+    reason,
+    detail,
+    ...A11Y_ERROR_COPY[reason],
+  }
+}
+
+export function extractAccessibility(json: any): AccessibilityResult {
+  const score = Math.round((json.lighthouseResult?.categories?.accessibility?.score ?? 0) * 100)
+
+  if (!json.lighthouseResult?.categories?.accessibility) {
+    return buildA11yError('api_error', 'Accessibility data missing from response')
+  }
+
+  const bucket = scoreBucket(score)
+
+  // Extract failures from audits
+  const failures: string[] = []
+  const audits = json.lighthouseResult?.audits || {}
+  const auditIds = Object.keys(audits)
+
+  for (const auditId of auditIds) {
+    const audit = audits[auditId]
+    if (audit.score === 0 && A11Y_AUDIT_LABELS[auditId]) {
+      failures.push(A11Y_AUDIT_LABELS[auditId])
+      if (failures.length >= 3) break
+    }
+  }
+
+  return {
+    status: 'ok',
+    score,
+    bucket,
+    failures,
+    headline: A11Y_COPY[bucket].headline,
+    body: A11Y_COPY[bucket].body,
   }
 }

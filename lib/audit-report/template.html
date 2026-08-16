@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Website Audit Report</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&display=swap');
+  {{font_face_css}}
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -87,8 +87,8 @@
     left: 16mm;
     bottom: 16mm;
     font-size: 10px;
-    color: #20263a;
-    opacity: 0.7;
+    color: #ffffff;
+    opacity: 0.9;
   }
   #cover .cover-footer strong { opacity: 1; }
 
@@ -118,17 +118,17 @@
     bottom: 16mm;
     display: flex;
     flex-direction: column;
-    gap: 8mm;
+    gap: 5mm;
   }
 
   .check-card {
     background: #ffffff;
     border-radius: 6mm;
     box-shadow: 0 6mm 10mm -7mm rgba(26,26,46,0.45);
-    padding: 8mm;
+    padding: 6mm;
     display: flex;
     align-items: center;
-    gap: 8mm;
+    gap: 6mm;
     flex: 1;
   }
   .check-copy { flex: 1; }
@@ -151,10 +151,22 @@
   .status-red    { background: #fbe4e4; color: #b13a3a; }
   .status-amber  { background: #fbeed9; color: #ad7a1f; }
   .status-green  { background: #dcf0e1; color: #2f8a4d; }
+  .status-grey   { background: #eceef1; color: #5d6478; }
+
+  .section-heading {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #7d3d4f;
+    margin-bottom: 6mm;
+    margin-top: 4mm;
+  }
+  .section-heading:first-child { margin-top: 0; }
 
   .check-desc {
-    font-size: 12px;
-    line-height: 1.55;
+    font-size: 11px;
+    line-height: 1.5;
     color: #5d6478;
     margin: 0;
   }
@@ -215,6 +227,35 @@
     padding: 5mm 10mm;
     border-radius: 999px;
   }
+
+  /* What happens next section */
+  .next-steps {
+    background: #f7f6fb;
+    border-radius: 6mm;
+    padding: 8mm;
+    margin-top: 8mm;
+  }
+  .next-steps-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #7d3d4f;
+    margin-bottom: 4mm;
+  }
+  .next-steps ol {
+    margin: 0;
+    padding-left: 6mm;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #3a3f4d;
+  }
+  .next-steps li {
+    margin-bottom: 3mm;
+  }
+  .next-steps li:last-child {
+    margin-bottom: 0;
+  }
 </style>
 </head>
 <body>
@@ -235,41 +276,24 @@
     </div>
   </div>
 
-  <!-- ============ PAGE 2 — CHECKS 1-3 ============ -->
+  <!-- ============ PAGE 2 — PAGE SPEED + SECURITY ============ -->
   <div class="page report-page">
     <div class="brand-header">
       <div class="brand-wordmark">mountain studios</div>
       <div class="brand-tag">Page 2 of 3</div>
     </div>
-    <div class="page-title">What we found — part one</div>
+    <div class="page-title">Performance & Security</div>
 
     <div class="checks-stack">
 
-      <!-- SSL -->
-      <div class="check-card">
-        <div class="check-copy">
-          <span class="check-status-word status-{{ssl_status_class}}">{{ssl_status_word}}</span>
-          <div class="check-name">SSL Certificate</div>
-          <p class="check-desc">Checks if your site shows the safe padlock, or scares visitors with a red "Not Secure" warning the moment they land.</p>
-        </div>
-        <div class="gauge">
-          <svg viewBox="0 0 120 120">
-            <circle class="gauge-track" cx="60" cy="60" r="52"/>
-            <circle class="gauge-fill" cx="60" cy="60" r="52"
-              stroke="{{ssl_color}}"
-              stroke-dasharray="326.7"
-              stroke-dashoffset="{{ssl_dashoffset}}"/>
-          </svg>
-          <div class="gauge-value">{{ssl_score_label}}</div>
-        </div>
-      </div>
+      <div class="section-heading">Page Speed</div>
 
-      <!-- MOBILE -->
+      <!-- MOBILE SPEED -->
       <div class="check-card">
         <div class="check-copy">
           <span class="check-status-word status-{{mobile_status_class}}">{{mobile_status_word}}</span>
-          <div class="check-name">Mobile Score</div>
-          <p class="check-desc">Checks if your site actually works on a phone — most of your visitors are on one, right now.</p>
+          <div class="check-name">Mobile Speed</div>
+          <p class="check-desc">Checks if your site actually works on a phone — most visitors are on one.</p>
         </div>
         <div class="gauge">
           <svg viewBox="0 0 120 120">
@@ -279,69 +303,120 @@
               stroke-dasharray="326.7"
               stroke-dashoffset="{{mobile_dashoffset}}"/>
           </svg>
-          <div class="gauge-value">{{mobile_score}}</div>
+          <div class="gauge-value">{{mobile_score_label}}</div>
         </div>
       </div>
 
-      <!-- PAGESPEED -->
+      <!-- DESKTOP SPEED -->
       <div class="check-card">
         <div class="check-copy">
-          <span class="check-status-word status-{{speed_status_class}}">{{speed_status_word}}</span>
-          <div class="check-name">PageSpeed Score</div>
+          <span class="check-status-word status-{{desktop_status_class}}">{{desktop_status_word}}</span>
+          <div class="check-name">Desktop Speed</div>
           <p class="check-desc">Checks how fast your site loads. Slow sites lose visitors before the page even finishes appearing.</p>
         </div>
         <div class="gauge">
           <svg viewBox="0 0 120 120">
             <circle class="gauge-track" cx="60" cy="60" r="52"/>
             <circle class="gauge-fill" cx="60" cy="60" r="52"
-              stroke="{{speed_color}}"
+              stroke="{{desktop_color}}"
               stroke-dasharray="326.7"
-              stroke-dashoffset="{{speed_dashoffset}}"/>
+              stroke-dashoffset="{{desktop_dashoffset}}"/>
           </svg>
-          <div class="gauge-value">{{speed_score}}</div>
+          <div class="gauge-value">{{desktop_score_label}}</div>
+        </div>
+      </div>
+
+      <div class="section-heading">Security</div>
+
+      <!-- ENCRYPTION -->
+      <div class="check-card">
+        <div class="check-copy">
+          <span class="check-status-word status-{{encryption_status_class}}">{{encryption_status_word}}</span>
+          <div class="check-name">Encryption</div>
+          <p class="check-desc">Checks if your site shows the safe padlock, or scares visitors with a red warning.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{encryption_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{encryption_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{encryption_score_label}}</div>
+        </div>
+      </div>
+
+      <!-- BROWSER PROTECTION -->
+      <div class="check-card">
+        <div class="check-copy">
+          <span class="check-status-word status-{{protection_status_class}}">{{protection_status_word}}</span>
+          <div class="check-name">Browser Protection</div>
+          <p class="check-desc">Checks for missing settings that make browsers flag your site as untrusted.</p>
+        </div>
+        <div class="gauge">
+          <svg viewBox="0 0 120 120">
+            <circle class="gauge-track" cx="60" cy="60" r="52"/>
+            <circle class="gauge-fill" cx="60" cy="60" r="52"
+              stroke="{{protection_color}}"
+              stroke-dasharray="326.7"
+              stroke-dashoffset="{{protection_dashoffset}}"/>
+          </svg>
+          <div class="gauge-value">{{protection_score_label}}</div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- ============ PAGE 3 — CHECK 4 + SUMMARY/CTA ============ -->
+  <!-- ============ PAGE 3 — ACCESSIBILITY + SUMMARY/CTA ============ -->
   <div class="page report-page">
     <div class="brand-header">
       <div class="brand-wordmark">mountain studios</div>
       <div class="brand-tag">Page 3 of 3</div>
     </div>
-    <div class="page-title">What we found — part two</div>
+    <div class="page-title">Accessibility & Summary</div>
 
     <div class="checks-stack">
 
-      <!-- SECURITY HEADERS -->
-      <div class="check-card" style="flex: 0 0 auto; min-height: 46mm;">
+      <div class="section-heading">Accessibility</div>
+
+      <!-- ACCESSIBILITY -->
+      <div class="check-card" style="flex: 0 0 auto;">
         <div class="check-copy">
-          <span class="check-status-word status-{{headers_status_class}}">{{headers_status_word}}</span>
-          <div class="check-name">Security Headers</div>
-          <p class="check-desc">Checks for missing settings that make browsers flag your site as untrusted, even when the padlock looks fine.</p>
+          <span class="check-status-word status-{{a11y_status_class}}">{{a11y_status_word}}</span>
+          <div class="check-name">Accessibility</div>
+          <p class="check-desc">Checks how easy your site is to use for people with poor eyesight or colour blindness.</p>
         </div>
         <div class="gauge">
           <svg viewBox="0 0 120 120">
             <circle class="gauge-track" cx="60" cy="60" r="52"/>
             <circle class="gauge-fill" cx="60" cy="60" r="52"
-              stroke="{{headers_color}}"
+              stroke="{{a11y_color}}"
               stroke-dasharray="326.7"
-              stroke-dashoffset="{{headers_dashoffset}}"/>
+              stroke-dashoffset="{{a11y_dashoffset}}"/>
           </svg>
-          <div class="gauge-value">{{headers_score_label}}</div>
+          <div class="gauge-value">{{a11y_score_label}}</div>
         </div>
       </div>
 
       <!-- SUMMARY + CTA -->
-      <div class="summary-block" style="flex: 1;">
+      <div class="summary-block" style="flex: 0 0 auto; margin-top: 4mm;">
         <div class="summary-label">In short</div>
         <p>{{summary_text}}</p>
         <ul>
           {{summary_bullets}}
         </ul>
         <a class="cta-button" href="{{calendly_url}}">Book a free 15-min fix-it call →</a>
+
+        <div class="next-steps">
+          <div class="next-steps-label">What happens next</div>
+          <ol>
+            <li>We look at your site</li>
+            <li>Free 15-minute call</li>
+            <li>You get a fixed quote, no obligation</li>
+          </ol>
+        </div>
       </div>
 
     </div>

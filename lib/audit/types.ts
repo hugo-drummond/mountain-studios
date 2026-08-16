@@ -43,6 +43,16 @@ export type PsiResult =
     }>
   | CheckError;
 
+export type AccessibilityResult =
+  | CheckOk<{
+      score: number;
+      bucket: Bucket;
+      failures: string[];
+      headline: string;
+      body: string;
+    }>
+  | CheckError;
+
 export type AuditReport = {
   version: 1;
   ranAt: string;
@@ -52,6 +62,7 @@ export type AuditReport = {
     headers: HeadersResult;
     mobile: PsiResult;
     desktop: PsiResult;
+    accessibility: AccessibilityResult;
   };
   summary: { completed: number; failed: number; overall: 'done' | 'partial' | 'failed' };
 };
