@@ -65,18 +65,22 @@ Still to build:
 - [ ] The reCAPTCHA badge sits under the floating pill in the bottom-right corner. The
       chatbot's own launcher was put bottom-left to stay clear of both.
 
-**Website audit engine**
+**Website audit engine** — end to end and verified in production, 16 August 2026
 
-- [ ] Delete the test row in `audit_requests` tagged `source='audit-engine-test'`.
+- [ ] Delete the test row in `audit_requests` tagged `source='audit-engine-test'`, and the
+      antsawnings / jumpstart-uk test rows from 15-16 August. Retire the test lead to
+      `crm_status='dead'` rather than deleting it — deleting destroys the scraper's dedupe.
+- [ ] Remove `/api/audit/diagnose` once the renderer has been stable for a while. It is gated on
+      `CRON_SECRET`, emails nothing and writes nothing, but it is debug scaffolding.
 - [ ] Decide whether `/api/audit/run` should keep returning the full report — anyone holding the
-      row's uuid can read it.
+      row's uuid can read it. It is also unauthenticated, so anyone holding a uuid can re-run an
+      audit and re-send the email.
 - [ ] Decide whether the mobile screenshot gets surfaced anywhere. It is captured and stored, but
-      not emailed.
-- [ ] **Wire the PDF report.** `lib/audit-report/template.html` exists (see STATUS.md) but nothing
-      fills its placeholders from a real `audit_requests.report` row or attaches the rendered PDF
-      to the email in `lib/audit/email.ts`.
-- [ ] **Report only covers 4 of 5 checks — no Accessibility page, old naming.** Decide whether to
-      add a 4th page or leave it out on purpose; see STATUS.md for the exact gap.
+      neither emailed nor placed in the PDF.
+- [ ] The report cover shows the bare hostname (`jumpstart-uk.com`). Consider prettifying it, or
+      reading the real business name from the site's `<title>` or schema during the audit.
+- [ ] Sweep cron runs **daily** — the most Hobby allows. On Pro it could run every 15 minutes,
+      which is the difference between a failed report being rescued within the hour or the day.
 
 **Chatbot** — built and live 14 August 2026, see [STATUS.md](STATUS.md)
 
@@ -128,9 +132,12 @@ values live in `.env.local` locally, never in this file.
 
 **Blocking for the website audit engine**
 
-- [ ] `GOOGLE_PSI_API_KEY` — PageSpeed Insights. Set in `.env.local`, NOT yet in Vercel.
-      Without it the speed checks fall back to an unauthenticated quota and start returning
-      429, and every audit email goes out saying "Speed test temporarily unavailable".
+- [x] `GOOGLE_PSI_API_KEY` — PageSpeed Insights. Set in `.env.local` and in Vercel.
+- [x] `CRON_SECRET` — gates `/api/audit/sweep` and `/api/audit/diagnose`. Vercel Cron sends it
+      automatically as a bearer token once the variable exists. The sweep refuses to run at all
+      when it is unset, rather than running unauthenticated.
+- [ ] `CALENDLY_URL` — optional. Defaults in code to `https://calendly.com/hugodrum6/30min`;
+      set the variable only to point the report's CTA somewhere else.
 
 **Already set, listed so nothing gets removed by accident**
 

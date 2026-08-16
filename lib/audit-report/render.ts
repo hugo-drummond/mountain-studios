@@ -178,7 +178,9 @@ export function fillTemplate(report: AuditReport, opts: { businessName: string }
   template = template.replace('{{summary_bullets}}', summaryBullets);
 
   // Fill Calendly URL
-  const calendlyUrl = process.env.CALENDLY_URL || 'https://mountainstudios.co.za/contact';
+  // Default rather than required: an unset env var must not silently turn the
+  // report's only call to action into a dead link. CALENDLY_URL still overrides.
+  const calendlyUrl = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min';
   template = template.replace('{{calendly_url}}', escapeHtml(calendlyUrl));
 
   return template;

@@ -293,7 +293,7 @@ export function renderAuditCoverEmail(
           <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 24px;">
             Everything in it is measured, not guessed. If anything needs explaining, reply to this email and a person will answer.
           </p>
-          <a href="https://mountainstudios.co.za/contact" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
+          <a href="${escapeHtml(process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min')}" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
         </td></tr>
         <tr><td style="padding:24px 32px 32px;">
           <p style="font-size:12px;line-height:1.6;color:#8a90a0;margin:0;">

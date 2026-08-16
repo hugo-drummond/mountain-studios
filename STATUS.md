@@ -515,33 +515,78 @@ report stored, the email delivered.
 - This section's own description above says "four checks" and is stale — `lib/audit/types.ts`
   and the live cards on the homepage now carry a fifth, Accessibility. See the report note below.
 
-## Website audit report — PDF template, 15 August 2026
+## Website audit report — live end to end, 16 August 2026
 
-The branded report the audit engine above is meant to send is not built yet — today's email is
-plain text. The visual design is: `lib/audit-report/template.html`, a static A4 HTML file with
-`{{placeholder}}` tokens (business name, per-check score/color/dash-offset, summary text/bullets,
-Calendly URL) for a script to fill in per lead. Rendered to PDF locally with headless Chrome
-(`google-chrome --headless --print-to-pdf`) — no npm dependency added for this yet.
+Someone fills in the free-audit form on the homepage and a branded PDF lands in their inbox about
+a minute later. No further involvement, no browser required, no manual step.
 
-Three pages: cover (business name over `public/images/audit-report/cover-mountain.png`, a
-Gemini-generated mountain-silhouette matching the homepage hero gradient/palette), then two report
-pages on a flat `#d9adb8` background (sampled off the cover art, just above the ridge) with one
-white ring-gauge card per check. Gauge fill is an SVG `stroke-dashoffset`, plain numbers — no
-raster graphics generated per report, only the cover art is one-time Gemini output.
+**The chain.** `/api/audit/submit` writes the rows, returns immediately, and starts the audit
+server-side with `waitUntil` from `@vercel/functions`. `lib/audit/run.ts` runs five checks,
+`lib/audit-report/render.ts` fills `template.html` and renders it with headless Chrome, the PDF is
+stored in the private `audit-reports` bucket keyed on the request's uuid, and
+`sendMailWithAttachment` in `lib/ses.ts` emails it as a raw-MIME attachment. `report_sent_at` is
+stamped only once a send actually succeeds.
 
-**Deliberately covers 4 of the engine's 5 checks, not all 5.** It was designed and approved before
-the Accessibility check existed on this branch. It ships as SSL / Security Headers / Mobile Score /
-PageSpeed Score under those names — it does **not** use the live cards' renamed copy (Encryption /
-Browser Protection / Mobile Speed / Desktop Speed) and has no Accessibility page. Known gap, decided
-15 August 2026: ship the 4-check report now rather than hold it for a redesign.
+**Five checks, three sections.** Page Speed (mobile + desktop), Security (Encryption + Browser
+Protection), Accessibility. The accessibility score rides along on the mobile PageSpeed call —
+`category` is a repeatable query param, so it costs no extra request — and failing Lighthouse
+audits are mapped to plain-English findings, capped at three.
 
-Not wired to anything yet: no script fills the placeholders from a real `audit_requests.report`
-row, and no PDF gets attached to the email `lib/audit/email.ts` sends. That's the next build step,
-and it needs to either add a 4th page for Accessibility or explicitly decide to keep leaving it out.
+**Cover art** is `public/images/audit-report/cover-mountain.png`, inlined as a data URI. Fonts are
+embedded base64 in `lib/audit-report/fonts.ts`, deliberately not a Google Fonts `@import`: a cold
+function with no network would otherwise email a prospect a report set in Arial.
 
-`{{cover_image_path}}` needs a real path or data URI at render time — headless Chrome loaded it
-fine from a `file://` path locally; confirm whatever renders this in production can reach the PNG
-the same way (bundled asset vs. fetched URL).
+<callout icon="🐛" color="red_bg">
+**Four things broke here that all looked fine locally.** Each cost a deploy to find.
+- `outputFileTracingIncludes` lives under `experimental` in Next 14. At the top level it is
+  silently ignored and the template and cover art never reach the bundle.
+- Webpack relocates `@sparticuz/chromium` into a chunk, so it cannot find its own `bin/`.
+  It must be in `serverComponentsExternalPackages`.
+- Even external, the 66MB browser never ships: nothing imports those `.br` files, so tracing
+  cannot see them. They need listing explicitly.
+- `page.pdf()` resolves to a **Uint8Array**, and `Uint8Array#toString('base64')` ignores its
+  argument and returns `"37,80,68,70,..."`. A 720KB report arrived as 2.5MB of decimal text that
+  no reader could open. The type is right and the length is plausible, so nothing upstream can
+  catch it — only a real email exposes it.
+</callout>
+
+**Local rendering uses the Mac's own Chrome**, because `@sparticuz/chromium` ships a Linux binary.
+That split is why every one of the above passed local testing. `scripts/audit-report-preview.ts`
+renders a fake report to `~/Desktop` without touching the database or sending anything;
+`/api/audit/diagnose` does the same on the server, gated on `CRON_SECRET`.
+
+**The report is the deliverable.** The email is a short covering note. The long written version in
+`renderAuditEmail()` is kept only as the fallback for a failed render, where it has to stand alone.
+
+**The cover names the audited site, from its URL.** It used to prefer the linked lead's
+`business_name`, and leads are matched on email — so a second audit from the same address produced
+a report titled with the first site's name.
+
+**Backstop.** `/api/audit/sweep` plus a daily Vercel cron finishes any report that never sent —
+crashed function, PSI outage, deploy mid-run. Hobby only allows daily granularity. It refuses to
+run when `CRON_SECRET` is unset rather than running unauthenticated.
+
+## Honeypots do not decide anything, 16 August 2026
+
+The audit and referral forms judged their honeypot **in the browser**: anything in the hidden field
+and the handler showed the success screen and never sent the request. Password managers fill hidden
+off-screen inputs, so a real visitor could submit, be told it worked, and produce no row, no email
+and no trace in any table. Confirmed in the wild — a submission that reached the rate limiter and
+then vanished.
+
+<callout icon="🐛" color="red_bg">
+**A honeypot catches the wrong side of this trade.** A real bot POSTs at the endpoint directly and
+never renders the page, so it never sees the field. The only people it reliably catches are
+customers with password managers. It is now recorded on the row via `recaptcha_note` and never used
+to discard anything, and it is hidden with `display:none` — autofill treats an off-screen input as
+an ordinary visible field.
+</callout>
+
+What actually blocks bots now is `blockedAsBot()`, enforced on audit and referral submit as it
+already was on chat and the preview routes. Those two verified the token and then only logged the
+verdict. It stays an allowlist: only a real judgement by Google refuses a request, so a missing or
+unverifiable token — ad blockers, privacy extensions, networks that cannot reach Google — never
+blocks a customer. Refusals return 403 instead of a fake success.
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
