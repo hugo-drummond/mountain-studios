@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 16 August 2026 (chatbot runs the audit — working end to end on production)
+Last updated: 16 August 2026 (header dropdowns, icon-only chat launcher, packages and pricing removed)
 
 ## Where things stand
 
@@ -129,11 +129,14 @@ floating-CTA split test:
   "Read our XX Reviews" link and a black "Write a review" pill. Individual cards get an
   avatar circle with initial, name, a relative timestamp, stars, the review text and a
   "View on Google" footer with the Google G. Text is still placeholder; the links still
-  go to `#` until real review URLs exist.
+  go to `#` until real review URLs exist. **Superseded 16 August 2026** — real names and
+  wording, and every dead link removed.
 - **FAQ**: "FAQ" is now the section's large serif header ("Questions people actually ask."
   removed), and the pink highlight fills the whole open item, answer included.
 - **Work section**: "SEE THE BRANDS WE'VE BUILT" is a proper centred serif heading.
-- **A/B test.** The floating bottom-right button is a 50/50 split: variant `site` is a
+- **A/B test — retired 16 August 2026**, see "Header, chatbot launcher and reviews pass" below.
+  Every visitor now gets the chat launcher. Kept here for what it was:
+  The floating bottom-right button is a 50/50 split: variant `site` is a
   "SEE YOUR NEW SITE →" pill that scrolls to and focuses the hero input; variant `chat` is
   a "Chat with us" pill which, since 14 August, opens the on-site chatbot — it was a
   WhatsApp link to the dummy number until then. Assignment is sticky via
@@ -760,6 +763,56 @@ already was on chat and the preview routes. Those two verified the token and the
 verdict. It stays an allowlist: only a real judgement by Google refuses a request, so a missing or
 unverifiable token — ad blockers, privacy extensions, networks that cannot reach Google — never
 blocks a customer. Refusals return 403 instead of a fake success.
+
+## Header, chatbot launcher and reviews pass — 16 August 2026, evening
+
+A pass over the marketing site's furniture from Hugo's annotated screenshots. Nothing behind
+any form changed.
+
+- **Header is one component again.** `components/site/SiteHeaderNav.tsx` is now used by both
+  the homepage and `PageShell`, which had each carried their own copy of the nav and had
+  drifted apart. Six flat links became two hover/click dropdowns — **About** (About us, Work,
+  Services, Reviews) and **Resources** (Refer & earn R1000, Free site audit, See your site
+  free) — and **Contact** takes the pill that "SEE YOUR SITE FREE" used to hold. Every href is
+  absolute (`/#refer`, not `#refer`) so a hash target resolves from `/work` and `/about` too.
+  "Free site audit" dispatches `ms-audit:open`, which is the second route back to the audit
+  after a dismissal that the popup write-up asked for. The dropdown trigger **opens rather
+  than toggles** — hover has already opened it by the time a mouse user presses — and a
+  transparent `::before` bridges the gap under the trigger, or the pointer crosses dead space
+  and the menu closes mid-reach.
+- **Chat launcher is an icon alone**, a 60px wine circle bottom-right with the presence dot on
+  its rim. The invitation moved into a dismissible bubble above it ("Chat with us — we reply
+  instantly"), which appears 1.6s in and stays gone for the visit once closed
+  (`sessionStorage.ms-chat-bubble-dismissed`).
+- **The homepage A/B test is gone.** Both arms removed: no `ms_variant`, no `SEE YOUR NEW SITE`
+  pill, no `ms-chat:variant` handshake, and `ChatWidget` no longer stands down for a launcher
+  drawn by the page. `app/start-your-project/page.tsx` still reads `localStorage.ms_variant`
+  and posts `variant` with each submit — nothing writes that key any more, so it is always
+  null. Harmless, worth deleting when the brief payload is next touched.
+- **reCAPTCHA badge hidden** in `app/globals.css` (`visibility: hidden`, never `display`).
+  Google permits this **only** while the notice it carries is on the page, so both footers now
+  read "This site is protected by reCAPTCHA…" with the two policy links. Delete that text and
+  the site breaks the reCAPTCHA terms.
+- **Reviews** carry the real names and wording — Alistair, Ant, Kathleen. The "All reviews"
+  button and the three "View on Google" footers are gone: every one of them linked to `#`, and
+  no Google reviews URL exists yet. Cards cropped to suit (`2rem` padding, no `min-height`).
+- **Packages and pricing removed everywhere.** The homepage PACKAGES section (`id="pricing"`,
+  the three ESSENTIALS/STUDIO/COMPLETE cards and their GET A PRICE buttons) is deleted, the
+  nav and both footers no longer link to it, and `lib/chatbot/knowledge.ts` now says there are
+  **no packages or tiers** rather than naming three. Quote-per-job wording is unchanged.
+- **Nav alignment.** Every child of the pill is a flex box with `line-height: 1`. Left as
+  inline text the Playfair wordmark carried its own tall line box and sat visibly higher than
+  the Source Sans links; flex centres the box, not the glyphs. Ink centres now sit within half
+  a pixel of each other. Hero content dropped from `5rem` to `8rem` top padding.
+
+<callout icon="🐛" color="red_bg">
+**A quote inside a `<style>` template literal breaks hydration exactly like a `>` does.**
+`content: ''` in the hover bridge serialised as `content: &#x27;&#x27;` on the server and
+`content: ''` on the client. React threw the server tree away and re-rendered — the page looked
+perfect and `tsc` passed throughout. The rule is not "avoid `>`", it is **do not put CSS in a
+text child of `<style>`**: use `dangerouslySetInnerHTML` with the CSS in a constant, as
+`ChatWidget` already did.
+</callout>
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
