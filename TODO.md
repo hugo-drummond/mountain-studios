@@ -107,6 +107,15 @@ intent, once per visit, on every page.
       neither emailed nor placed in the PDF.
 - [ ] The report cover shows the bare hostname (`jumpstart-uk.com`). Consider prettifying it, or
       reading the real business name from the site's `<title>` or schema during the audit.
+- [ ] **Watch for reports going out without their PDF.** The fallback now records the reason
+      on the report: `select report->'delivery' from mountainstudios.audit_requests where
+      report->'delivery' is not null;`. Any rows there mean someone got the plain written
+      email instead of the branded PDF. One transient failure did this on 16 August and
+      nobody would have known if Hugo had not noticed the missing attachment by eye.
+- [ ] **`createBucket` and `.upload()` return their errors rather than throwing.** The
+      `try/catch` around bucket creation in `lib/audit/run.ts` has therefore never fired,
+      and a failed upload would not be caught at all — it would go on to attach a PDF that
+      was never stored. Worth checking `up.error` explicitly.
 - [ ] Sweep cron runs **daily** — the most Hobby allows. On Pro it could run every 15 minutes,
       which is the difference between a failed report being rescued within the hour or the day.
 

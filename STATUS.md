@@ -516,6 +516,34 @@ report stored, the email delivered.
 - This section's own description above says "four checks" and is stale — `lib/audit/types.ts`
   and the live cards on the homepage now carry a fifth, Accessibility. See the report note below.
 
+## The PDF fallback was silent — 16 August 2026
+
+The istore report arrived as the plain written email with no PDF attached. Worth writing down
+because of how it hid: the PDF **rendered fine and uploaded fine** — a 712KB file is sitting in the
+`audit-reports` bucket for that request. The failure was in the send, and the `catch` around the
+whole attachment path quietly fell back to `renderAuditEmail()`, the long written version. The row
+still stamped `report_sent_at`. Nothing errored, nothing was flagged, and the only record of the
+reason was a server log nobody reads.
+
+**Every step passed when replayed by hand afterwards** — render, upload, cover render, and the SES
+raw-MIME send with the same 712KB attachment. So it was transient, and one attempt was enough to
+permanently downgrade the deliverable.
+
+Two changes, both in `lib/audit/run.ts`:
+
+- **The attachment send is tried twice**, 1.5s apart, before falling back. The PDF *is* the
+  deliverable; the written email is a consolation prize.
+- **The fallback records why**, onto the report as a `delivery` block with the reason and a
+  timestamp. Check it with
+  `select report->'delivery' from mountainstudios.audit_requests where id = '…'` — absent means the
+  PDF went out.
+
+Two things worth noticing here. `createBucket` and `.upload()` both **return** their errors rather
+than throwing, so the `try/catch` around the bucket creation has never once fired and an upload
+failure would not have been caught at all. And this is the second silent-loss bug found in one day,
+after the chatbot dropping audit requests — the pattern is a `catch` that degrades the outcome
+without recording that it did.
+
 ## Free audit popup — live 16 August 2026, tested on production
 
 The audit offer used to be a section mid-homepage, which meant it only ever reached people who
