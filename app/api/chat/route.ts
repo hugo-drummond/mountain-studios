@@ -454,7 +454,33 @@ export async function POST(req: NextRequest) {
   //   * it claimed the audit was running. Make that true rather than leave it
   //     a lie.
   const claimsRunning = raw ? CLAIMS_RUNNING.test(raw) : false
-  const shouldRun = haveDetails && (markers.runAudit || markers.offerAudit || claimsRunning)
+
+  // The model is not reliable enough to be the trigger. Handed a message
+  // containing both a website and an email it has, in testing, replied "what's
+  // the best email address to send the report to?" — the address being in the
+  // sentence it was answering. Every signal it controls was absent, so nothing
+  // ran and the visitor was asked for something they had already given.
+  //
+  // So the visitor's own words count too: they said "audit", and they handed
+  // over a site and an address. That is intent, whether or not the model
+  // noticed it.
+  // Consent comes from the visitor, not from the model and not from the bot
+  // having offered. Either they used the word themselves, or they said yes to
+  // an offer the bot just made.
+  //
+  // Neither marker is consulted here. Told to signal a run "the moment you have
+  // both details", the model duly signalled one for somebody who had handed
+  // over a site and an address while asking for a quote — which would have sent
+  // a stranger a report they never asked for.
+  const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant')
+  const saidYes = /^\s*(yes|yeah|yep|yup|sure|ok|okay|please|go ahead|do it|sounds good)\b/i.test(
+    messages[messages.length - 1].content,
+  )
+  const visitorWantsAudit =
+    /\baudits?\b/i.test(fromVisitor) ||
+    (saidYes && !!lastAssistant && /\baudit\b/i.test(lastAssistant.content))
+
+  const shouldRun = haveDetails && visitorWantsAudit
 
   // The audit is NOT started here. It is handed back to the widget, which posts
   // it to /api/audit/submit — the same endpoint the popup form uses.
@@ -477,12 +503,20 @@ export async function POST(req: NextRequest) {
   // The reply promised something that did not happen. Saying nothing would
   // leave them waiting for an email that is not coming, which is the whole
   // failure this change exists to fix.
+  // We are running an audit the model did not announce — usually because it
+  // failed to spot the email it was just given and asked for it again. Say so,
+  // or the reply asks a question the widget is simultaneously answering.
+  const announcedReply =
+    auditRequest && !claimsRunning && reply
+      ? `${reply}\n\nActually — I've got both already. The report is on its way to that inbox.`
+      : reply
+
   // The reply promised something we have nothing to hand over for. Saying
   // nothing would leave them waiting for an email that is not coming.
   const correctedReply =
-    claimsRunning && !auditRequest && reply
-      ? `${reply}\n\nActually — I couldn't get that started just now. Use the button below and it'll go through properly.`
-      : reply
+    claimsRunning && !auditRequest && announcedReply
+      ? `${announcedReply}\n\nActually — I couldn't get that started just now. Use the button below and it'll go through properly.`
+      : announcedReply
 
   let leadId = incomingLeadId
   if (email || phone) {
