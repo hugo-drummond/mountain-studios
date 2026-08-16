@@ -69,6 +69,9 @@ interface Message {
   // button under it that opens the audit popup. Never sent back to the server —
   // parseMessages there ignores anything beyond role and content.
   offerAudit?: boolean
+  // The audit is actually running. Confirmed by the server, never by the
+  // model's own say-so.
+  auditStarted?: boolean
 }
 
 interface Stored {
@@ -205,7 +208,14 @@ export default function ChatWidget() {
 
           setMessages([
             ...next,
-            { role: 'assistant', content: reply, offerAudit: data?.offerAudit === true },
+            {
+              role: 'assistant',
+              content: reply,
+              // A started audit wins: the button would invite them to ask for
+              // the same thing twice.
+              offerAudit: data?.offerAudit === true && data?.auditStarted !== true,
+              auditStarted: data?.auditStarted === true,
+            },
           ])
           if (typeof data?.leadId === 'string') setLeadId(data.leadId)
         }
@@ -282,6 +292,9 @@ export default function ChatWidget() {
                     <button type="button" className="ms-chat-audit" onClick={openAudit}>
                       Run my free audit →
                     </button>
+                  )}
+                  {m.auditStarted && (
+                    <p className="ms-chat-audit-running">Audit running — the report is on its way.</p>
                   )}
                 </div>
               ),
@@ -436,6 +449,14 @@ const CSS = `
   font-family: inherit; font-size: 13.5px; font-weight: 600;
   transition: background .18s ease;
 }
+/* Only ever rendered when the server confirmed the audit actually started. */
+.ms-chat-audit-running {
+  margin: -6px 0 18px 14px; padding: 8px 14px;
+  border-left: 2px solid #7d3d4f; background: rgba(125, 61, 79, .07);
+  border-radius: 0 8px 8px 0;
+  color: #7d3d4f; font-size: 13px; font-weight: 600;
+}
+
 .ms-chat-audit:hover { background: #6b3343; }
 .ms-chat-audit:focus-visible { outline: 2px solid #1a1a2e; outline-offset: 2px; }
 

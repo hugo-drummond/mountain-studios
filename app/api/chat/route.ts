@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
+import { normaliseWebsiteUrl, startAudit } from '@/lib/audit/start'
 import { rateLimit } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
@@ -183,14 +184,66 @@ function worthLogging(text: string, firstMessage: boolean): boolean {
 // visible text is worse than one that fails to fire.
 const AUDIT_MARKER = /[`*_]*\[\[\s*audit\s*\]\][`*_]*/gi
 
-function extractAuditOffer(reply: string): { reply: string; offerAudit: boolean } {
-  if (!AUDIT_MARKER.test(reply)) return { reply, offerAudit: false }
+// The stronger of the two: the visitor has given a website and an email in the
+// chat and wants the audit run now. Checked before [[AUDIT]] because the offer
+// marker's pattern also matches inside this one.
+const RUN_AUDIT_MARKER = /[`*_]*\[\[\s*run[_\s-]*audit\s*\]\][`*_]*/gi
+
+function extractAuditMarkers(reply: string): {
+  reply: string
+  offerAudit: boolean
+  runAudit: boolean
+} {
+  const runAudit = RUN_AUDIT_MARKER.test(reply)
+  RUN_AUDIT_MARKER.lastIndex = 0
+
+  let text = reply.replace(RUN_AUDIT_MARKER, '')
+
+  const offerAudit = AUDIT_MARKER.test(text)
   AUDIT_MARKER.lastIndex = 0
+  text = text.replace(AUDIT_MARKER, '')
 
   return {
-    reply: reply.replace(AUDIT_MARKER, '').replace(/\n{3,}/g, '\n\n').trim(),
-    offerAudit: true,
+    reply: text.replace(/\n{3,}/g, '\n\n').trim(),
+    offerAudit,
+    runAudit,
   }
+}
+
+// The model is not reliable about emitting [[RUN_AUDIT]]. Told to use it, it
+// will still cheerfully write "the report is on its way" and emit nothing,
+// which is the exact bug this whole change exists to fix — the visitor waits
+// for an email that was never going to arrive.
+//
+// So the marker is treated as one signal among several rather than the
+// mechanism. If the reply claims the audit is running and the visitor really
+// has given a website and an email, the claim is made true instead of being
+// left as a lie.
+const CLAIMS_RUNNING =
+  /\b(on (its|it's) way|running (the|your) audit|audit is running|started (the|your) audit|report (is|will be) (on its way|sent|emailed)|sending (it|the report)|getting it going|land(s|ing)? in your inbox)\b/i
+
+// A website in the visitor's own words. Emails are removed first, or the domain
+// half of "hugo@gmail.com" reads as a perfectly good website and every visitor
+// who gave an address would get gmail.com audited.
+//
+// Requires a dot and a plausible TLD, so "Mon-Fri" and a bare word are both
+// ignored. The last match wins: someone who corrects themselves means the
+// second one.
+const WEBSITE_RE =
+  /\b(?:https?:\/\/)?(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,24}\b(?:\/[^\s]*)?/gi
+
+function findWebsite(text: string): string | null {
+  const withoutEmails = text.replace(EMAIL_RE, ' ')
+  EMAIL_RE.lastIndex = 0
+
+  const matches = withoutEmails.match(WEBSITE_RE)
+  if (!matches) return null
+
+  for (const raw of matches.reverse()) {
+    const cleaned = raw.replace(/[.,;:!?)]+$/, '')
+    if (normaliseWebsiteUrl(cleaned)) return cleaned
+  }
+  return null
 }
 
 function buildNotes(email: string | null, phone: string | null, messages: Message[]): string {
@@ -375,9 +428,11 @@ export async function POST(req: NextRequest) {
   // Both paths, so an approved answer can carry [[AUDIT]] too — writing the
   // marker into a canned answer by hand is a supported way to make a stock
   // reply offer the audit.
-  const { reply, offerAudit } = raw
-    ? extractAuditOffer(raw)
-    : { reply: null as string | null, offerAudit: false }
+  const markers = raw
+    ? extractAuditMarkers(raw)
+    : { reply: null as string | null, offerAudit: false, runAudit: false }
+  const reply = markers.reply
+  let offerAudit = markers.offerAudit
 
   // After stripping, so a marker never lands in a draft answer and gets served
   // to a later visitor as literal text. Logged whether or not the model
@@ -385,13 +440,65 @@ export async function POST(req: NextRequest) {
   // in the table.
   if (!fromCache && worthLogging(question, firstMessage)) await logQuestion(question, reply)
 
+  // Whether to actually run one. The website and the email are always read out
+  // of what the *visitor* typed, never out of the model's reply, so a
+  // hallucinated address can never send a stranger a report.
+  const website = findWebsite(fromVisitor)
+  const target = website ? normaliseWebsiteUrl(website) : null
+  const haveDetails = Boolean(target && email)
+
+  // Three ways in, because the model cannot be trusted to pick one:
+  //   * it emitted [[RUN_AUDIT]] — what it is supposed to do
+  //   * it emitted [[AUDIT]] but we already have both details, so a button
+  //     asking for them again is just friction
+  //   * it claimed the audit was running. Make that true rather than leave it
+  //     a lie.
+  const claimsRunning = raw ? CLAIMS_RUNNING.test(raw) : false
+  const shouldRun = haveDetails && (markers.runAudit || markers.offerAudit || claimsRunning)
+
+  let auditStarted = false
+  if (shouldRun && target && email) {
+    // The audit's own limit, not the chat's. Chat allows 30 messages per 10
+    // minutes; audits are 5 an hour for very good reasons — each one runs two
+    // PageSpeed calls and a headless Chrome render, and emails a PDF.
+    const auditLimit = await rateLimit(req, 'audit/submit')
+    if (auditLimit.ok) {
+      const result = await startAudit({
+        websiteUrl: target.url,
+        email,
+        source: 'chatbot',
+        originLabel: 'Requested through the site chatbot',
+      })
+      auditStarted = result.auditRequestId !== null
+    }
+  }
+
+  // Anything that wanted to run and didn't — missing details, rate limited,
+  // insert failed — falls back to the button so there is still a way through.
+  if (!auditStarted && (markers.runAudit || shouldRun)) offerAudit = true
+
+  // The reply promised something that did not happen. Saying nothing would
+  // leave them waiting for an email that is not coming, which is the whole
+  // failure this change exists to fix.
+  const correctedReply =
+    claimsRunning && !auditStarted && reply
+      ? `${reply}\n\nActually — I couldn't get that started just now. Use the button below and it'll go through properly.`
+      : reply
+
   let leadId = incomingLeadId
   if (email || phone) {
     // Saved with the reply included, so the transcript in the CRM ends on what
     // the bot actually said rather than trailing off mid-conversation.
-    const full = reply ? [...messages, { role: 'assistant' as const, content: reply }] : messages
+    const full = correctedReply
+      ? [...messages, { role: 'assistant' as const, content: correctedReply }]
+      : messages
     leadId = await saveLead(incomingLeadId, email, phone, full)
   }
 
-  return NextResponse.json({ reply: reply ?? FALLBACK_REPLY, leadId, offerAudit })
+  return NextResponse.json({
+    reply: correctedReply ?? FALLBACK_REPLY,
+    leadId,
+    offerAudit,
+    auditStarted,
+  })
 }
