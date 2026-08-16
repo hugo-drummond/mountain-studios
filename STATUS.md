@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 16 August 2026 (header dropdowns, icon-only chat launcher, packages and pricing removed)
+Last updated: 16 August 2026 (referral attribution live; header dropdowns, icon-only chat launcher, packages and pricing removed)
 
 ## Where things stand
 
@@ -812,6 +812,46 @@ any form changed.
 perfect and `tsc` passed throughout. The rule is not "avoid `>`", it is **do not put CSS in a
 text child of `<style>`**: use `dangerouslySetInnerHTML` with the CSS in a constant, as
 `ChatWidget` already did.
+</callout>
+
+## Referral attribution — live 16 August 2026
+
+Codes were being issued and emailed and nothing watched them: `?ref=CODE` was read by no
+page, `leads` had no referral column, and who was owed R1000 was worked out by hand. The
+loop is closed in three pieces.
+
+- **The open.** `components/site/RefCapture.tsx` sits in the root layout — a partner is as
+  likely to share `/work` as the homepage — catches `?ref=`, keeps it in `localStorage` for
+  90 days and beacons `/api/referral/visit`. One row per visitor per code per day, enforced
+  by a unique index, so a partner refreshing their own link does not inflate their own
+  numbers. **No IP or user agent is stored**, only a salted hash of them, salted with the
+  code so the same person on two partners' links cannot be lined up.
+- **The lead.** The four public paths that can create one — audit popup, chatbot, wizard
+  step 1, wizard submit — send the stored code. `lib/referral.ts` checks it against a real
+  partner and writes `leads.referred_by_code` **only when it is null**. First touch wins:
+  arrive on Alice's link, come back on Bob's, enquire, and it is Alice's referral. That is
+  the version a partner can be told in one sentence.
+- **What is owed.** A trigger writes a R1000 `referral_payouts` row when a referred lead
+  reaches `crm_status='closed'`, unique on `lead_id`. In the database, not application
+  code, for the same reason the lead→client close hook is: `crm_status` is written from
+  five places and three are browser-direct calls that never reach a server route.
+
+The CRM's `/referrals` reads `mountainstudios.referral_summary` — opens, leads, closes,
+owed, paid per partner — with a rewards table underneath that marks each R1000 paid or
+unpaid. The counts are computed in the view rather than in the route: PostgREST caps a
+plain `select` at 1000 rows against 1,770 leads, so counting them in TypeScript would come
+out silently short for every partner.
+
+Migration `supabase/migrations/referral_attribution.sql`, applied via
+`SUPABASE_MANAGEMENT_TOKEN`. Verified end to end against production with a seeded partner —
+visit recorded, junk code ignored, repeat visit deduplicated, a second code did not
+override the first, one close produced exactly one unpaid R1000 — and every test row
+deleted afterwards.
+
+<callout icon="⚠️" color="orange_bg">
+**A referral must never take down the form it arrived on.** `attachReferralToLead()` never
+throws: an unknown code, a dead partner or a failed update is logged and swallowed. The
+lead is the thing that matters; the attribution is a nice-to-have on top of it.
 </callout>
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
