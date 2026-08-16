@@ -146,6 +146,12 @@ export default function Home() {
   return (
     <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0, overflow: 'hidden' }}>
 
+      {/* First frame: the strip and the hero together fill the viewport exactly,
+          so the ridge lands on the fold and the section below never shows as a
+          white band under it. svh, not vh — on mobile vh is the tallest the
+          viewport ever gets, which would push the ridge under the address bar. */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }}>
+
       {/* TOP BAR */}
       <div style={{ background: '#171b2b', padding: '0.6rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'rgba(255,255,255,0.72)' }}>
         <a href={WHATSAPP_URL} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'rgba(255,255,255,0.72)', whiteSpace: 'nowrap' }}>
@@ -160,7 +166,14 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
-        padding: '0 0 3.5rem',
+        // Bottom padding is the ridge's own height plus a little air, and both
+        // shrink together on a short window (the ridge caps at 22svh). The
+        // stats below take `margin-top: auto`, so they sit on that line at any
+        // viewport height rather than drifting onto the dark ridge.
+        padding: '0 0 min(200px, 24svh)',
+        flex: '1 0 auto',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
 
         {/* NAV */}
@@ -169,10 +182,12 @@ export default function Home() {
         {/* HERO CONTENT */}
         <div style={{
           maxWidth: '780px',
+          // Auto margins on both a flex column's first and last child split the
+          // free space between them, which is what sits the copy below the two
+          // tilted screenshots without a fixed padding that a short window
+          // cannot afford.
           margin: 'auto',
-          // Sits lower than the two tilted screenshots that flank it, so the
-          // headline reads against the gradient rather than level with them.
-          padding: '8rem 2rem 0',
+          padding: '0 2rem',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -280,10 +295,17 @@ export default function Home() {
 
         {/* STATS BAR */}
         <div className="ms-stats" style={{
+          // `auto` top margin, not a fixed gap: it pins the row just above the
+          // hero's bottom padding, which is the ridge. On a tall window the
+          // slack opens between the hero copy and the stats, never between the
+          // stats and the mountains. The explicit width is load-bearing —
+          // auto side margins on a flex item make it size to its content, and
+          // the four columns collapse into a huddle in the middle.
+          width: '100%',
           maxWidth: '1000px',
-          // Tight to the hero copy on purpose: the stats and the ridge below
-          // them have to clear the fold together on a ~780px viewport.
-          margin: '2.5rem auto 0',
+          marginTop: 'auto',
+          marginLeft: 'auto',
+          marginRight: 'auto',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
           gap: '2rem',
@@ -320,18 +342,18 @@ export default function Home() {
           ))}
         </div>
 
-        {/* MOUNTAIN RIDGE. Capped in height: it is anchored to the bottom of
-            the hero, so trimming the hero's padding alone would slide the stats
-            down onto the dark ridge instead of the pale sky above it.
-            preserveAspectRatio="none" already flattens these curves to the
-            viewport width, so a cap costs nothing they did not have already. */}
+        {/* MOUNTAIN RIDGE. Height is capped, and the hero's bottom padding is
+            set to match it — that pairing is what keeps the stats above the
+            crest on a short window. preserveAspectRatio="none" already flattens
+            these curves to the viewport width, so a cap costs them nothing. */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto', maxHeight: '150px' }}>
+          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 'min(190px, 22svh)' }}>
             <path d="M0,280 L0,200 Q120,168 240,184 Q360,200 480,170 Q600,140 720,156 Q840,172 960,146 Q1080,122 1200,150 Q1320,178 1440,164 L1440,280 Z" fill="rgba(26,26,46,0.18)" />
             <path d="M0,280 L0,226 Q150,196 300,216 Q450,236 600,202 Q750,168 900,192 Q1050,216 1200,196 Q1320,182 1440,206 L1440,280 Z" fill="rgba(26,26,46,0.30)" />
             <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
           </svg>
         </div>
+      </div>
       </div>
 
       {/* REVIEWS SECTION */}
