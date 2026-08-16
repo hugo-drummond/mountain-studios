@@ -80,7 +80,15 @@ intent, once per visit, on every page.
 - [ ] **Re-test the audit offer after any chatbot prompt edit.** It should fire on "my site
       is slow on phones" and "do you check existing sites?", and stay quiet on a
       new-business enquiry and a pricing question. Marker leaking into the visible reply is
-      the failure to watch for.
+      the failure to watch for. Also check that giving it a website **and** an email starts
+      a real audit — `auditStarted: true` and a row in `audit_requests` with
+      `source='chatbot'` — and that handing over the same two details while asking for a
+      *quote* starts nothing.
+- [ ] **Watch for the bot promising an audit it did not start.** The route now catches the
+      common phrasings and makes the claim true, or appends a correction if it cannot. A
+      new phrasing that slips past `CLAIMS_RUNNING` in `app/api/chat/route.ts` would put
+      the original silent-loss bug back. Rows in `audit_requests` with `source='chatbot'`
+      should roughly track how often the chat talks about audits.
 - [ ] Exit intent cannot work on phones (no pointer to leave), so mobile visitors only ever
       get the 30-second trigger. Worth checking the mobile/desktop split of audit requests
       before assuming the timer is enough.

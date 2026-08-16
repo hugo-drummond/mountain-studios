@@ -556,6 +556,39 @@ the submit button landed roughly two screens down inside the modal. It is now 57
 Nothing behind it changed: same `POST /api/audit/submit`, same honeypot, same `audit_submit`
 reCAPTCHA action, same everything downstream.
 
+### The chatbot runs the audit itself — 16 August 2026
+
+**The bug this fixed is worth remembering.** The bot could describe the audit and open the form,
+but had no way to run one — and it did not know that. So it improvised: it invited people to type
+their website and email into the chat, and then dropped both on the floor. A real request for
+istore.co.za was lost exactly this way. No row, no email, no trace, and the person left watching an
+inbox for a report that was never coming. Nothing errored, nothing logged, and it would have gone
+on silently forever.
+
+The audit-starting half of `/api/audit/submit` now lives in `lib/audit/start.ts` and both callers
+share it, rather than the chat route growing a copy that drifts.
+
+**The model is not the mechanism.** Told to end its message with `[[RUN_AUDIT]]`, it will still
+happily write "the report is on its way" and emit nothing — the original bug wearing a hat, and it
+did exactly that on the first attempt at this fix. So the route decides:
+
+> An audit runs when the visitor has given **both** a website and an email, **and** the reply either
+> carries a marker or claims to be running.
+
+- The website and email are always read from **what the visitor typed**, never from the model's
+  reply. A hallucinated address can never email a stranger a report. The extractor strips emails
+  before looking for a website, or `hugo@gmail.com` would get `gmail.com` audited.
+- **If a reply claims the audit started and it did not**, the response appends a correction rather
+  than leaving the lie standing. Anything that wanted to run and couldn't falls back to the button.
+- Audits started this way are charged against the **`audit/submit` limit (5/hour)**, not chat's
+  30/10min. Each one is two PageSpeed calls, a headless Chrome render and an email.
+- `audit_requests.source` is `'chatbot'`; the lead row stays `source='website'` so the CRM board's
+  "Warm lead" badge and the find-or-create dedupe keep working.
+
+Verified end to end: istore.co.za through the chat produced a row with `source='chatbot'` and a
+report sent 59 seconds later. A conversation that hands over a site and an email while asking for a
+quote starts nothing.
+
 ### The chatbot can offer and open it
 
 Moving the audit into a popup left it unreachable on demand — dismiss it and there was no route
