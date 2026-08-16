@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
-import { verifyRecaptcha } from '@/lib/recaptcha'
+import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { randomBytes } from 'crypto'
 
 // ---------------------------------------------------------------------------
@@ -71,14 +71,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Could not read the form.' }, { status: 400 })
   }
 
-  // Bots fill every field they find. A real user never sees this one.
-  if (body.website) {
-    // See the note in audit/submit — a real person filling this via a password
-    // manager must not vanish without a trace.
+  // Recorded, never used to discard — see the note in audit/submit. This form
+  // pays R1000, so a referral that vanishes silently costs someone real money.
+  const honeypotTripped = !!body.website
+  if (honeypotTripped) {
     console.warn(
       `[referral/submit] honeypot tripped — value=${String(body.website).slice(0, 80)}`,
     )
-    return NextResponse.json({ success: true, refCode: '' })
   }
 
   const fullName = body.fullName?.trim()
@@ -100,7 +99,8 @@ export async function POST(req: NextRequest) {
   const storedEmail = email.slice(0, 200).toLowerCase()
   const storedPhone = body.phone?.trim()?.slice(0, 50) || null
 
-  // reCAPTCHA verdict is logged but never blocks (advisory only)
+  // Google's verdict blocks; blockedAsBot() is an allowlist, so a missing or
+  // unverifiable token never refuses a real person. See audit/submit.
   const recaptchaResult = await verifyRecaptcha(body.recaptchaToken)
   const recaptchaNote =
     !recaptchaResult.passed && !recaptchaResult.ourFault ? recaptchaResult.verdict : null
@@ -108,6 +108,13 @@ export async function POST(req: NextRequest) {
   if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
     console.warn(
       `[referral/submit] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+    )
+  }
+
+  if (blockedAsBot(recaptchaResult)) {
+    return NextResponse.json(
+      { success: false, error: 'Could not verify your request. Please try again.' },
+      { status: 403 },
     )
   }
 
@@ -141,7 +148,9 @@ export async function POST(req: NextRequest) {
           email: storedEmail,
           phone: storedPhone,
           ref_code: refCode,
-          recaptcha_note: recaptchaNote,
+          recaptcha_note: honeypotTripped
+            ? `honeypot tripped${recaptchaNote ? ` • ${recaptchaNote}` : ''}`
+            : recaptchaNote,
           status: 'active',
         })
         .select('id, ref_code')

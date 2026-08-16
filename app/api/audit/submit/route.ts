@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
-import { verifyRecaptcha } from '@/lib/recaptcha'
+import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { runAudit } from '@/lib/audit/run'
 import { waitUntil } from '@vercel/functions'
 
@@ -60,15 +60,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Could not read the form.' }, { status: 400 })
   }
 
-  // Bots fill every field they find. A real user never sees this one.
-  if (body.website) {
-    // Logged, because a real person can trip this: password managers fill
-    // hidden fields, and a silently dropped enquiry leaves no trace in any
-    // table to find it by.
+  // The honeypot is a weak signal, not a verdict. A real bot POSTs here
+  // directly and never sees the field at all, while password managers fill it
+  // for real customers — which silently binned a genuine enquiry and showed the
+  // visitor a success screen. So it is recorded on the row, never used to
+  // discard the submission. Google's verdict below is what actually blocks.
+  const honeypotTripped = !!body.website
+  if (honeypotTripped) {
     console.warn(
       `[audit/submit] honeypot tripped — url=${body.websiteUrl ?? ''} email=${body.email ?? ''} value=${String(body.website).slice(0, 80)}`,
     )
-    return NextResponse.json({ success: true })
   }
 
   const websiteUrl = body.websiteUrl?.trim()
@@ -109,7 +110,10 @@ export async function POST(req: NextRequest) {
   const storedEmail = email.slice(0, 200)
   const storedUrl = normalizedUrl.slice(0, 500)
 
-  // reCAPTCHA verdict is logged but never blocks (advisory only)
+  // Google's verdict is what blocks here. blockedAsBot() is an allowlist: only
+  // a real judgement by Google refuses the request. A missing or unverifiable
+  // token — ad blockers, privacy extensions, networks that cannot reach Google
+  // — never blocks, so a genuine customer is never turned away.
   const recaptchaResult = await verifyRecaptcha(body.recaptchaToken)
   const recaptchaNote =
     !recaptchaResult.passed && !recaptchaResult.ourFault ? recaptchaResult.verdict : null
@@ -117,6 +121,14 @@ export async function POST(req: NextRequest) {
   if (!recaptchaResult.passed && !recaptchaResult.ourFault) {
     console.warn(
       `[audit/submit] reCAPTCHA verdict: ${recaptchaResult.verdict}`
+    )
+  }
+
+  if (blockedAsBot(recaptchaResult)) {
+    // Refused out loud, unlike the honeypot it replaces.
+    return NextResponse.json(
+      { success: false, error: 'Could not verify your request. Please try again.' },
+      { status: 403 },
     )
   }
 
@@ -133,7 +145,9 @@ export async function POST(req: NextRequest) {
       .insert({
         website_url: storedUrl,
         email: storedEmail,
-        recaptcha_note: recaptchaNote,
+        recaptcha_note: honeypotTripped
+          ? `honeypot tripped${recaptchaNote ? ` • ${recaptchaNote}` : ''}`
+          : recaptchaNote,
         source: 'website',
         status: 'new',
       })

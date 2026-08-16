@@ -997,10 +997,11 @@ export default function Home() {
                   name="_hp_url"
                   value={auditHoneypot}
                   onChange={(e) => setAuditHoneypot(e.target.value)}
-                  style={{
-                    position: 'absolute',
-                    left: '-9999px',
-                  }}
+                  // display:none, not an off-screen position: password
+                  // managers treat an off-screen input as a normal visible
+                  // field and autofill it, which is how a real customer ended
+                  // up flagged as a bot.
+                  style={{ display: 'none' }}
                   autoComplete="off"
                   aria-hidden="true"
                   tabIndex={-1}
@@ -1218,10 +1219,7 @@ export default function Home() {
                 name="_hp_url"
                 value={referHoneypot}
                 onChange={(e) => setReferHoneypot(e.target.value)}
-                style={{
-                  position: 'absolute',
-                  left: '-9999px',
-                }}
+                style={{ display: 'none' }}
                 autoComplete="off"
                 aria-hidden="true"
                 tabIndex={-1}
