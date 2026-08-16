@@ -146,12 +146,6 @@ export default function Home() {
   return (
     <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0, overflow: 'hidden' }}>
 
-      {/* First frame: the strip and the hero together fill the viewport exactly,
-          so the ridge lands on the fold and the section below never shows as a
-          white band under it. svh, not vh — on mobile vh is the tallest the
-          viewport ever gets, which would push the ridge under the address bar. */}
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }}>
-
       {/* TOP BAR */}
       <div style={{ background: '#171b2b', padding: '0.6rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'rgba(255,255,255,0.72)' }}>
         <a href={WHATSAPP_URL} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'rgba(255,255,255,0.72)', whiteSpace: 'nowrap' }}>
@@ -166,36 +160,19 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
-        // Bottom padding is the ridge's own height plus a little air, and both
-        // shrink together on a short window (the ridge caps at 22svh). The
-        // stats below take `margin-top: auto`, so they sit on that line at any
-        // viewport height rather than drifting onto the dark ridge.
-        padding: '0 0 min(200px, 24svh)',
-        flex: '1 0 auto',
-        display: 'flex',
-        flexDirection: 'column',
+        padding: '0 0 8rem',
       }}>
 
         {/* NAV */}
         <SiteHeaderNav />
 
         {/* HERO CONTENT */}
-        <div className="ms-hero-copy" style={{
+        <div style={{
           maxWidth: '780px',
-          // All of the hero's spare height goes ABOVE this block, so the copy
-          // and the stats sit together just above the ridge whatever the window
-          // height is. A fixed top padding cannot do this: on a short window
-          // there is no spare height to spend, and the offset would push the
-          // ridge off the bottom of the screen instead.
-          marginTop: 'auto',
-          marginBottom: 0,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          // Sides only. `padding-top` belongs to .ms-hero-copy, and an inline
-          // shorthand would set it to 0 at a specificity no media query can
-          // beat.
-          paddingLeft: '2rem',
-          paddingRight: '2rem',
+          margin: 'auto',
+          // Sits lower than the two tilted screenshots that flank it, so the
+          // headline reads against the gradient rather than level with them.
+          padding: '8rem 2rem 0',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -303,16 +280,8 @@ export default function Home() {
 
         {/* STATS BAR */}
         <div className="ms-stats" style={{
-          // Fixed gap: the copy above owns the spare height, so this row keeps
-          // a constant distance from it and lands just above the ridge. The
-          // explicit width is load-bearing — auto side margins on a flex item
-          // make it size to its content, and the four columns collapse into a
-          // huddle in the middle.
-          width: '100%',
           maxWidth: '1000px',
-          marginTop: '2.5rem',
-          marginLeft: 'auto',
-          marginRight: 'auto',
+          margin: '6rem auto 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
           gap: '2rem',
@@ -349,18 +318,14 @@ export default function Home() {
           ))}
         </div>
 
-        {/* MOUNTAIN RIDGE. Height is capped, and the hero's bottom padding is
-            set to match it — that pairing is what keeps the stats above the
-            crest on a short window. preserveAspectRatio="none" already flattens
-            these curves to the viewport width, so a cap costs them nothing. */}
+        {/* MOUNTAIN RIDGE */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto', maxHeight: 'min(190px, 22svh)' }}>
+          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
             <path d="M0,280 L0,200 Q120,168 240,184 Q360,200 480,170 Q600,140 720,156 Q840,172 960,146 Q1080,122 1200,150 Q1320,178 1440,164 L1440,280 Z" fill="rgba(26,26,46,0.18)" />
             <path d="M0,280 L0,226 Q150,196 300,216 Q450,236 600,202 Q750,168 900,192 Q1050,216 1200,196 Q1320,182 1440,206 L1440,280 Z" fill="rgba(26,26,46,0.30)" />
             <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
           </svg>
         </div>
-      </div>
       </div>
 
       {/* REVIEWS SECTION */}
