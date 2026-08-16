@@ -160,7 +160,7 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
-        padding: '0 0 8rem',
+        padding: '0 0 3.5rem',
       }}>
 
         {/* NAV */}
@@ -281,7 +281,9 @@ export default function Home() {
         {/* STATS BAR */}
         <div className="ms-stats" style={{
           maxWidth: '1000px',
-          margin: '6rem auto 0',
+          // Tight to the hero copy on purpose: the stats and the ridge below
+          // them have to clear the fold together on a ~780px viewport.
+          margin: '2.5rem auto 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
           gap: '2rem',
@@ -318,9 +320,13 @@ export default function Home() {
           ))}
         </div>
 
-        {/* MOUNTAIN RIDGE */}
+        {/* MOUNTAIN RIDGE. Capped in height: it is anchored to the bottom of
+            the hero, so trimming the hero's padding alone would slide the stats
+            down onto the dark ridge instead of the pale sky above it.
+            preserveAspectRatio="none" already flattens these curves to the
+            viewport width, so a cap costs nothing they did not have already. */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto' }}>
+          <svg viewBox="0 0 1440 280" preserveAspectRatio="none" style={{ display: 'block', width: '100%', height: 'auto', maxHeight: '150px' }}>
             <path d="M0,280 L0,200 Q120,168 240,184 Q360,200 480,170 Q600,140 720,156 Q840,172 960,146 Q1080,122 1200,150 Q1320,178 1440,164 L1440,280 Z" fill="rgba(26,26,46,0.18)" />
             <path d="M0,280 L0,226 Q150,196 300,216 Q450,236 600,202 Q750,168 900,192 Q1050,216 1200,196 Q1320,182 1440,206 L1440,280 Z" fill="rgba(26,26,46,0.30)" />
             <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
