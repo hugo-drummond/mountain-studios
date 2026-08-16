@@ -260,8 +260,20 @@ export async function renderReportPdf(report: AuditReport, opts: { businessName:
     let args: string[] | undefined;
     let usingLocalChrome = false;
 
-    try {
-      chromium = await import('@sparticuz/chromium');
+    // @sparticuz/chromium ships a Linux binary, so it is only usable on the
+    // serverless host. Branch on the environment rather than on whether the
+    // import happened to work: on a Mac its executablePath() returns a path to
+    // a Linux binary that cannot launch.
+    const isServerless = !!(process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.VERCEL);
+
+    if (isServerless) {
+      // @sparticuz/chromium puts its whole API on the default export — the
+      // namespace object only carries { default, inflate, setupLambdaEnvironment }.
+      // Reading executablePath off the namespace yields undefined, which used to
+      // throw below and silently degrade every production report to a
+      // no-attachment email. Unwrap the default first.
+      const mod: any = await import('@sparticuz/chromium');
+      chromium = mod.default ?? mod;
 
       if (typeof chromium.executablePath === 'function') {
         // executablePath is async in recent versions
@@ -273,12 +285,14 @@ export async function renderReportPdf(report: AuditReport, opts: { businessName:
 
       args = chromium.args;
 
-      // If we got an executablePath from @sparticuz/chromium, use it
-      if (executablePath) {
-        console.error('[PDF Render] Using @sparticuz/chromium');
+      if (!executablePath) {
+        throw new Error(
+          '@sparticuz/chromium returned no executablePath — the PDF cannot be rendered on this host',
+        );
       }
-    } catch (chromiumError) {
-      // @sparticuz/chromium not available or failed, use local Chrome
+
+      console.error('[PDF Render] Using @sparticuz/chromium at', executablePath);
+    } else {
       usingLocalChrome = true;
     }
 
