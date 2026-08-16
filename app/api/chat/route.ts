@@ -472,13 +472,29 @@ export async function POST(req: NextRequest) {
   // both details", the model duly signalled one for somebody who had handed
   // over a site and an address while asking for a quote — which would have sent
   // a stranger a report they never asked for.
-  const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant')
-  const saidYes = /^\s*(yes|yeah|yep|yup|sure|ok|okay|please|go ahead|do it|sounds good)\b/i.test(
-    messages[messages.length - 1].content,
+  const lastVisitorMessage = messages[messages.length - 1].content
+  // Any assistant turn, not just the last one. Details often arrive one at a
+  // time — the website, then the email two messages later, by which point the
+  // most recent reply is only "thanks, what's your email?" and mentions no
+  // audit at all. Checking the last message alone left that conversation
+  // stuck asking forever.
+  const assistantRaisedAudit = messages.some(
+    (m) => m.role === 'assistant' && /\baudit\b/i.test(m.content),
   )
+
+  const saidYes = /^\s*(yes|yeah|yep|yup|sure|ok|okay|please|go ahead|do it|sounds good)\b/i.test(
+    lastVisitorMessage,
+  )
+
+  // Handing over a website or an email right after the bot raised the audit is
+  // consent, and it is how most people actually answer. Requiring the word
+  // "audit" or a message starting with "yes" meant someone who replied
+  // "ant@example.com - https://theirsite.com" — exactly what was asked for —
+  // was told the email was still needed and nothing ran.
+  const suppliedDetails = !!findEmail(lastVisitorMessage) || !!findWebsite(lastVisitorMessage)
+
   const visitorWantsAudit =
-    /\baudits?\b/i.test(fromVisitor) ||
-    (saidYes && !!lastAssistant && /\baudit\b/i.test(lastAssistant.content))
+    /\baudits?\b/i.test(fromVisitor) || (assistantRaisedAudit && (saidYes || suppliedDetails))
 
   const shouldRun = haveDetails && visitorWantsAudit
 
@@ -498,7 +514,11 @@ export async function POST(req: NextRequest) {
 
   // Anything that wanted an audit and has nothing to hand over — missing site,
   // missing email — falls back to the button so there is still a way through.
-  if (!auditRequest && (markers.runAudit || shouldRun)) offerAudit = true
+  //
+  // claimsRunning is in here because the correction below tells them to use the
+  // button. It shipped without it and produced a reply that pointed at a button
+  // which was never rendered.
+  if (!auditRequest && (markers.runAudit || shouldRun || claimsRunning)) offerAudit = true
 
   // The reply promised something that did not happen. Saying nothing would
   // leave them waiting for an email that is not coming, which is the whole
