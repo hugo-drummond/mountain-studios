@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { storedRefCode } from './RefCapture'
 
 // ---------------------------------------------------------------------------
 // The chat widget: a launcher pill in the bottom-right corner and the panel it
@@ -194,7 +195,7 @@ export default function ChatWidget() {
         const res = await fetch('/api/audit/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ websiteUrl, email, recaptchaToken }),
+          body: JSON.stringify({ websiteUrl, email, recaptchaToken, refCode: storedRefCode() }),
         })
 
         if (res.ok) return { ok: true }
@@ -254,7 +255,7 @@ export default function ChatWidget() {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, leadId, recaptchaToken }),
+          body: JSON.stringify({ messages: next, leadId, recaptchaToken, refCode: storedRefCode() }),
         })
         const data = await res.json().catch(() => null)
 

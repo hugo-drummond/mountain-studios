@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
+import { attachReferralToLead } from '@/lib/referral'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
 import { normaliseWebsiteUrl } from '@/lib/audit/start'
@@ -53,6 +54,7 @@ interface Payload {
   messages?: unknown
   leadId?: unknown
   recaptchaToken?: unknown
+  refCode?: unknown
 }
 
 const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
@@ -546,6 +548,9 @@ export async function POST(req: NextRequest) {
       ? [...messages, { role: 'assistant' as const, content: correctedReply }]
       : messages
     leadId = await saveLead(incomingLeadId, email, phone, full)
+    // A chat that produced contact details is a lead like any other, and the
+    // visitor may well have arrived on a partner's link.
+    await attachReferralToLead(leadId, body.refCode)
   }
 
   return NextResponse.json({

@@ -1,4 +1,5 @@
 import { crmAdmin } from '@/lib/crm'
+import { attachReferralToLead } from '@/lib/referral'
 import { sendMail } from '@/lib/ses'
 import { runAudit } from '@/lib/audit/run'
 import { waitUntil } from '@vercel/functions'
@@ -31,6 +32,8 @@ export interface StartAuditInput {
   recaptchaNote?: string | null
   /** Shown in the notification email so Ant knows which surface it came from. */
   originLabel?: string
+  /** Partner referral code the visitor arrived on, if any. Validated downstream. */
+  refCode?: string | null
   /**
    * How to start the run.
    *
@@ -197,6 +200,11 @@ export async function startAudit(input: StartAuditInput): Promise<StartAuditResu
     if (auditRequestId && leadId) {
       await crmAdmin().from('audit_requests').update({ lead_id: leadId }).eq('id', auditRequestId)
     }
+
+    // Both surfaces that reach here — the popup form and the chatbot — can
+    // carry a partner code, and either can be the first thing a referred
+    // visitor does.
+    await attachReferralToLead(leadId, input.refCode)
   } catch (err) {
     console.error('[audit/start] leads operation failed:', err instanceof Error ? err.message : err)
   }

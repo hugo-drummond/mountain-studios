@@ -3,6 +3,7 @@ import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
+import { attachReferralToLead } from '@/lib/referral'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/submit
@@ -37,6 +38,9 @@ interface Payload {
   leadId?: string
   variant?: string
   recaptchaToken?: string
+  // The partner code this visitor arrived on, if any. Read from
+  // localStorage by the wizard; validated and stamped on the lead server-side.
+  refCode?: string
 }
 
 function escapeHtml(value: string): string {
@@ -222,6 +226,12 @@ export async function POST(req: NextRequest) {
     .join('\n')
 
   let leadId = await saveLead(body.leadId, leadName, businessType, email, phone, notes)
+
+  // First touch wins and the code is checked against a real partner, both
+  // inside the helper. Awaited rather than fired off, so the row is stamped
+  // before the response returns and a rep opening the lead sees where it came
+  // from immediately.
+  await attachReferralToLead(leadId, body.refCode)
 
   let emailed = false
   try {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { attachReferralToLead } from '@/lib/referral'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/partial
@@ -30,6 +31,7 @@ interface Payload {
   recaptchaToken?: string
   website?: string
   variant?: string
+  refCode?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -187,6 +189,10 @@ export async function POST(req: NextRequest) {
     // block the person's progress. Return success with null leadId so the
     // wizard continues.
   }
+
+  // The wizard's first step is where most referred visitors are first
+  // identifiable, so the code is stamped here as well as on the final submit.
+  await attachReferralToLead(leadId, body.refCode)
 
   return NextResponse.json({ success: true, leadId })
 }

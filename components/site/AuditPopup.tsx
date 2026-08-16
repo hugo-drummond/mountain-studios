@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { storedRefCode } from './RefCapture'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 // ---------------------------------------------------------------------------
@@ -214,7 +215,13 @@ export default function AuditPopup() {
       const res = await fetch('/api/audit/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ websiteUrl: url, email, recaptchaToken, website: honeypot }),
+        body: JSON.stringify({
+          websiteUrl: url,
+          email,
+          recaptchaToken,
+          website: honeypot,
+          refCode: storedRefCode(),
+        }),
       })
 
       const data = await res.json().catch(() => null)

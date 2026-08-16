@@ -23,6 +23,8 @@ interface Payload {
   email?: string
   recaptchaToken?: string
   website?: string
+  /** Partner referral code, read from localStorage by the popup form. */
+  refCode?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -119,6 +121,7 @@ export async function POST(req: NextRequest) {
       ? `honeypot tripped${recaptchaNote ? ` \u2022 ${recaptchaNote}` : ''}`
       : recaptchaNote,
     originLabel: 'Requested from the website',
+    refCode: body.refCode ?? null,
   })
 
   if (!auditRequestId && !emailed) {

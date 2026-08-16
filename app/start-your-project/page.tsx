@@ -11,6 +11,7 @@ import {
   type BusinessTypeEntry,
 } from '../../constants/business-types'
 import NavBar from '../../components/site/NavBar'
+import { storedRefCode } from '../../components/site/RefCapture'
 // Supabase import removed — images now use browser object URLs for preview
 
 // Steps run 1–7. There is no step 0 — the intro screen was removed, so the
@@ -411,6 +412,7 @@ export default function StartYourProject() {
           recaptchaToken,
           website: gateHoneypot,
           variant: msVariant,
+          refCode: storedRefCode(),
         }),
       })
 
@@ -462,6 +464,7 @@ export default function StartYourProject() {
           secondaryColor: noColors ? null : secondaryColor,
           leadId,
           variant: msVariant,
+          refCode: storedRefCode(),
         }),
       })
       const res = await r.json()

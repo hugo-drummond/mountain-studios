@@ -17,6 +17,10 @@ export const LIMITS = Object.freeze({
   'audit/run': { limit: 10, windowSeconds: 3600 },
   'contact/submit': { limit: 5, windowSeconds: 3600 },
   'referral/submit': { limit: 5, windowSeconds: 3600 },
+  // Higher than the rest on purpose: this one is a beacon, not a form. A
+  // partner's link landing on a busy office network is many people through one
+  // IP, and a refused visit is a referral that silently never gets counted.
+  'referral/visit': { limit: 60, windowSeconds: 3600 },
   'careers/apply': { limit: 5, windowSeconds: 3600 },
   'momentbank/apply': { limit: 5, windowSeconds: 3600 },
   'brief/partial': { limit: 10, windowSeconds: 3600 },

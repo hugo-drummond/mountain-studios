@@ -5,6 +5,7 @@ import './globals.css'
 import RecaptchaProvider from '../components/site/RecaptchaProvider'
 import ChatWidget from '../components/site/ChatWidget'
 import AuditPopup from '../components/site/AuditPopup'
+import RefCapture from '../components/site/RefCapture'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -89,6 +90,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        {/* Outside the reCAPTCHA provider: it calls no protected endpoint, and
+            a partner's link must be counted whether or not Google loads. */}
+        <RefCapture />
         <RecaptchaProvider>
           {children}
           {/* Both live inside the provider: each calls executeRecaptcha and
