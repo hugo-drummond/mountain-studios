@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import SiteHeaderNav from '../components/site/SiteHeaderNav'
 
 const WHATSAPP_NUMBER = '27000000000' // TODO: real number
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -35,9 +36,9 @@ interface ReviewItem {
 }
 
 const reviews: ReviewItem[] = [
-  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Sarah', business: 'CUSTOMER BUSINESS', timeAgo: '2 weeks ago' },
-  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Mark', business: 'CUSTOMER BUSINESS', timeAgo: '1 month ago' },
-  { stars: 5, text: 'Placeholder review — real Google review to be pasted here.', name: 'Jessica', business: 'CUSTOMER BUSINESS', timeAgo: '3 weeks ago' },
+  { stars: 5, text: 'Portrayed my brand and style beautifully.', name: 'Alistair', business: 'CUSTOMER BUSINESS', timeAgo: '2 weeks ago' },
+  { stars: 5, text: 'Great site for my simple business.', name: 'Ant', business: 'CUSTOMER BUSINESS', timeAgo: '1 month ago' },
+  { stars: 5, text: 'Really happy with the work and care taken by Hugo.', name: 'Kathleen', business: 'CUSTOMER BUSINESS', timeAgo: '3 weeks ago' },
 ]
 
 interface FaqItem {
@@ -69,8 +70,6 @@ export default function Home() {
   const [referHoneypot, setReferHoneypot] = useState('')
   const [referCode, setReferCode] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(0)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [variant, setVariant] = useState<'site' | 'chat' | null>(null)
 
   const WhatsAppIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -136,24 +135,6 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const v = new URLSearchParams(window.location.search).get('v')
-    let chosen: 'site' | 'chat'
-    if (v === '1') chosen = 'site'
-    else if (v === '2') chosen = 'chat'
-    else {
-      const stored = localStorage.getItem('ms_variant')
-      chosen = stored === 'site' || stored === 'chat' ? stored : (Math.random() < 0.5 ? 'site' : 'chat')
-    }
-    localStorage.setItem('ms_variant', chosen)
-    setVariant(chosen)
-    // Tells ChatWidget to re-check whether this page is drawing the launcher.
-    // It reads the localStorage value above on its own too; this is the catch-up
-    // for a variant picked after the widget had already settled, e.g. arriving
-    // here by client-side navigation from another page.
-    window.dispatchEvent(new Event('ms-chat:variant'))
-  }, [])
-
   const StarRating = ({ count }: { count: number }) => (
     <div style={{ display: 'flex', gap: '0.2rem' }}>
       {Array(count).fill(0).map((_, i) => (
@@ -183,89 +164,7 @@ export default function Home() {
       }}>
 
         {/* NAV */}
-        <nav style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '1.5rem 2rem 0',
-          position: 'relative',
-          zIndex: 5,
-        } as React.CSSProperties}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          background: 'rgba(255,255,255,0.92)',
-          backdropFilter: 'blur(14px)',
-          WebkitBackdropFilter: 'blur(14px)',
-          border: '1px solid rgba(255,255,255,0.35)',
-          borderRadius: '999px',
-          padding: '0.55rem 0.55rem 0.55rem 1.75rem',
-          gap: '0.4rem',
-        } as React.CSSProperties}>
-          <a href="/" style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.15rem', color: '#1a1a2e', textDecoration: 'none', marginRight: '1rem', fontWeight: 400, whiteSpace: 'nowrap' }}>mountain studios</a>
-          <div className="ms-nav-links" style={{ display: 'flex', gap: '0.4rem' }}>
-            {[{ label: 'WORK', href: '/work' }, { label: 'SERVICES', href: '/services' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '/about' }, { label: 'CONTACT', href: '/contact' }].map(link => (
-              <a key={link.href} href={link.href} style={{
-                fontSize: '0.78rem',
-                fontWeight: 600,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em',
-                color: '#1a1a2e',
-                textDecoration: 'none',
-              }}>
-                {link.label}
-              </a>
-            ))}
-          </div>
-          <a href="/start-your-project" className="ms-nav-cta" style={{
-            background: '#1a1a2e',
-            color: '#fff',
-            padding: '0.6rem 1.4rem',
-            borderRadius: '999px',
-            textDecoration: 'none',
-            fontSize: '0.78rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            whiteSpace: 'nowrap',
-          }}>SEE YOUR SITE FREE</a>
-          <button className="ms-burger" aria-label="Open menu" onClick={() => setMenuOpen(true)} style={{
-            display: 'none',
-            background: 'none',
-            border: 'none',
-            color: '#fff',
-            cursor: 'pointer',
-            fontSize: '1.4rem',
-          }}>☰</button>
-        </div>
-        </nav>
-
-        {menuOpen && (
-          <div onClick={() => setMenuOpen(false)} style={{
-            position: 'fixed', inset: 0, zIndex: 200,
-            background: 'rgba(10,12,22,0.96)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center', gap: '1.25rem',
-          }}>
-            <button onClick={() => setMenuOpen(false)} aria-label="Close menu" style={{
-              position: 'absolute', top: '1.25rem', right: '1.5rem',
-              background: 'none', border: 'none', color: '#fff',
-              fontSize: '2rem', cursor: 'pointer', lineHeight: 1,
-            }}>&times;</button>
-            {[{ label: 'WORK', href: '/work' }, { label: 'SERVICES', href: '/services' }, { label: 'PRICING', href: '#pricing' }, { label: 'REFER', href: '#refer' }, { label: 'ABOUT', href: '/about' }, { label: 'CONTACT', href: '/contact' }].map(link => (
-              <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{
-                fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.12em',
-                textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
-                padding: '0.7rem 2rem', borderRadius: '999px',
-                border: '1px solid rgba(255,255,255,0.25)',
-              }}>{link.label}</a>
-            ))}
-            <a href="/start-your-project" style={{
-              fontSize: '1.05rem', fontWeight: 700, color: '#1a1a2e', background: '#fff',
-              padding: '0.75rem 2rem', borderRadius: '999px', textDecoration: 'none',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-            }}>See your site free</a>
-          </div>
-        )}
+        <SiteHeaderNav />
 
         {/* HERO CONTENT */}
         <div style={{
@@ -447,7 +346,6 @@ export default function Home() {
           }}>What our clients are saying.</h2>
         </div>
 
-        {/* TODO: replace with real Google reviews — placeholder copy */}
         <div className="ms-cards-4" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
@@ -459,12 +357,12 @@ export default function Home() {
           <div style={{
             background: '#fff',
             borderRadius: '14px',
-            padding: '2.5rem',
-            minHeight: '280px',
+            padding: '2rem',
             boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
             textAlign: 'center',
           }}>
             {/* Google wordmark */}
@@ -478,26 +376,13 @@ export default function Home() {
             </div>
             {/* Mountain Studios */}
             <div style={{ fontWeight: 700, fontSize: '1.35rem', color: '#1a1a2e', marginBottom: '1rem' }}>Mountain Studios</div>
-            {/* Rating and stars */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', justifyContent: 'center', marginBottom: '1rem' }}>
+            {/* Rating and stars. The "All reviews" button that sat under this
+                went nowhere — there is still no Google reviews URL to send
+                anyone to, and a dead button costs more than the missing link. */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', justifyContent: 'center' }}>
               <div style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '2.5rem', color: '#2e333a' }}>4.9</div>
               <StarRating count={5} />
             </div>
-            {/* All reviews button */}
-            <button style={{
-              background: '#000',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '999px',
-              padding: '0.8rem 2rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontSize: '0.95rem',
-              marginTop: 'auto',
-              width: 'fit-content',
-            }}>
-              All reviews
-            </button>
           </div>
 
           {/* Customer Review Cards */}
@@ -508,8 +393,7 @@ export default function Home() {
               <div key={i} style={{
                 background: '#fff',
                 borderRadius: '14px',
-                padding: '2.5rem',
-                minHeight: '280px',
+                padding: '2rem',
                 boxShadow: '0 18px 40px -22px rgba(26,26,46,0.35)',
                 display: 'flex',
                 flexDirection: 'column',
@@ -544,26 +428,18 @@ export default function Home() {
                 <div style={{ marginBottom: '0.8rem' }}>
                   <StarRating count={5} />
                 </div>
-                {/* Review text */}
+                {/* Review text. No "View on Google" footer under it: each one
+                    linked nowhere, and three dead rows read as three broken
+                    links. The Google card to the left already says where these
+                    came from. */}
                 <p style={{
                   fontSize: '0.95rem',
                   color: '#2e333a',
                   lineHeight: 1.6,
-                  margin: '0 0 1rem',
-                  flex: 1,
+                  margin: 0,
                 }}>
                   {review.text}
                 </p>
-                {/* Footer: Google logo + View on Google */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem', color: '#6b7280' }}>
-                  <svg width="18" height="18" viewBox="0 0 48 48" style={{ flexShrink: 0 }}>
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                  </svg>
-                  <span>View on Google</span>
-                </div>
               </div>
             );
           })}
@@ -1158,75 +1034,24 @@ export default function Home() {
           textAlign: 'center',
           fontSize: '0.75rem',
         }}>
-          © {new Date().getFullYear()} Mountain Studios · Privacy · Terms
+          <p style={{ margin: '0 0 0.5rem' }}>© {new Date().getFullYear()} Mountain Studios · Privacy · Terms</p>
+          {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
+              which Google permits only while this notice is on the page. */}
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+            This site is protected by reCAPTCHA and the Google{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            and{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            apply.
+          </p>
         </div>
       </div>
 
-      {/* FLOATING CTA — A/B test: 'site' pill vs 'chat' bubble */}
-      {variant === 'site' && (
-        <button
-          onClick={() => {
-            try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'site' }) } catch { }
-            const input = document.getElementById('hero-name-input')
-            if (input) { input.scrollIntoView({ behavior: 'smooth', block: 'center' }); (input as HTMLInputElement).focus({ preventScroll: true }) }
-          }}
-          style={{
-            position: 'fixed',
-            bottom: '1.5rem',
-            right: '1.5rem',
-            zIndex: 100,
-            background: '#7d3d4f',
-            color: '#fff',
-            padding: '0.95rem 1.7rem',
-            borderRadius: '999px',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '0.82rem',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.08em',
-            boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
-          }}
-        >SEE YOUR NEW SITE →</button>
-      )}
-      {variant === 'chat' && (
-        // Opens the on-site chatbot (components/site/ChatWidget). This used to
-        // be a wa.me link on WHATSAPP_NUMBER, which is still the placeholder
-        // 27000000000 — half of the homepage's visitors were being sent to a
-        // number that does not exist. The widget hides its own launcher while
-        // this pill is on screen, so there is only ever one.
-        <button
-          onClick={() => {
-            try { (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'float_cta_click', { variant: 'chat' }) } catch { }
-            window.dispatchEvent(new Event('ms-chat:open'))
-          }}
-          style={{
-            position: 'fixed',
-            bottom: '1.5rem',
-            right: '1.5rem',
-            zIndex: 100,
-            background: '#7d3d4f',
-            color: '#fff',
-            padding: '1.7rem 3rem',
-            borderRadius: '999px',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'inline-flex',
-            gap: '1rem',
-            alignItems: 'center',
-            fontFamily: 'inherit',
-            fontSize: '1.7rem',
-            fontWeight: 600,
-            boxShadow: '0 12px 30px -10px rgba(0,0,0,0.5)',
-          }}
-        >
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.4L4 21.6V5a2 2 0 0 1 0-2zm0 2v12.4L8.6 15H20V5H4z" />
-            <circle cx="8.5" cy="10" r="1.1" /><circle cx="12" cy="10" r="1.1" /><circle cx="15.5" cy="10" r="1.1" />
-          </svg>
-          Chat with us - we reply instantly
-        </button>
-      )}
+      {/* The floating corner is the chatbot's alone (components/site/ChatWidget).
+          It used to be an A/B test between a "SEE YOUR NEW SITE" pill and a
+          chat pill, with the widget standing down whenever the page drew its
+          own. Both arms are gone: every visitor gets the chat launcher, and
+          the widget is the only thing that draws it. */}
 
       <style>{`
         @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
@@ -1238,8 +1063,6 @@ export default function Home() {
           .ms-footer { grid-template-columns: 1fr 1fr !important }
         }
         @media (max-width: 768px) {
-          .ms-nav-links, .ms-nav-cta { display:none !important }
-          .ms-burger { display:flex !important }
           .ms-footer { grid-template-columns: 1fr !important }
         }
         @media (max-width: 600px) {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import SiteHeaderNav from './SiteHeaderNav'
 
 const WHATSAPP_NUMBER = '27000000000'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -20,7 +21,6 @@ export default function PageShell({
   heroCta?: { label: string; href: string }
   children: React.ReactNode
 }) {
-  const [menuOpen, setMenuOpen] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
   const WhatsAppIcon = () => (
@@ -28,15 +28,6 @@ export default function PageShell({
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-2.759 0-5.327 1.273-7.04 3.51-.422.54-.423 1.417.099 1.91 1.11 1.107 2.105 2.293 2.889 3.643 1.572 2.765 4.575 4.528 7.52 4.568h.004c4.141 0 7.506-3.36 7.506-7.499 0-4.139-3.365-7.492-7.506-7.492m0-2c5.206 0 9.445 4.224 9.445 9.407 0 5.182-4.239 9.407-9.445 9.407-2.147 0-4.203-.738-5.834-2.097L.464 23.971a1 1 0 0 0 1.406 1.406l3.357-3.358C6.734 23.343 9.236 24 12.051 24c5.206 0 9.445-4.225 9.445-9.408 0-5.182-4.239-9.407-9.445-9.407Z" />
     </svg>
   )
-
-  const navLinks = [
-    { label: 'WORK', href: '/work' },
-    { label: 'SERVICES', href: '/services' },
-    { label: 'PRICING', href: '/#pricing' },
-    { label: 'REFER', href: '/#refer' },
-    { label: 'ABOUT', href: '/about' },
-    { label: 'CONTACT', href: '/contact' },
-  ]
 
   const handleCTA = (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,91 +53,7 @@ export default function PageShell({
         padding: '0 0 8rem',
       }}>
         {/* NAV */}
-        <nav style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '1.5rem 2rem 0',
-          position: 'relative',
-          zIndex: 5,
-        } as React.CSSProperties}>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(14px)',
-            WebkitBackdropFilter: 'blur(14px)',
-            border: '1px solid rgba(255,255,255,0.35)',
-            borderRadius: '999px',
-            padding: '0.55rem 0.55rem 0.55rem 1.75rem',
-            gap: '0.4rem',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          } as React.CSSProperties}>
-            <a href="/" style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.15rem', color: '#1a1a2e', textDecoration: 'none', marginRight: '1rem', fontWeight: 400, whiteSpace: 'nowrap' }}>mountain studios</a>
-            <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-              {navLinks.map(link => (
-                <a key={link.href} href={link.href} style={{
-                  fontSize: '0.7rem',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  color: '#1a1a2e',
-                  textDecoration: 'none',
-                }}>
-                  {link.label}
-                </a>
-              ))}
-            </div>
-            <a href="/" style={{
-              background: '#1a1a2e',
-              color: '#fff',
-              padding: '0.6rem 1.4rem',
-              borderRadius: '999px',
-              textDecoration: 'none',
-              fontSize: '0.7rem',
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-              whiteSpace: 'nowrap',
-            }}>SEE YOUR SITE FREE</a>
-            <button onClick={() => setMenuOpen(true)} style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              color: '#fff',
-              cursor: 'pointer',
-              fontSize: '1.4rem',
-            }}>☰</button>
-          </div>
-        </nav>
-
-        {menuOpen && (
-          <div onClick={() => setMenuOpen(false)} style={{
-            position: 'fixed', inset: 0, zIndex: 200,
-            background: 'rgba(10,12,22,0.96)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center', gap: '1.25rem',
-          }}>
-            <button onClick={() => setMenuOpen(false)} style={{
-              position: 'absolute', top: '1.25rem', right: '1.5rem',
-              background: 'none', border: 'none', color: '#fff',
-              fontSize: '2rem', cursor: 'pointer', lineHeight: 1,
-            }}>&times;</button>
-            {navLinks.map(link => (
-              <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)} style={{
-                fontSize: '1.1rem', fontWeight: 600, letterSpacing: '0.12em',
-                textTransform: 'uppercase', color: '#fff', textDecoration: 'none',
-                padding: '0.7rem 2rem', borderRadius: '999px',
-                border: '1px solid rgba(255,255,255,0.25)',
-              }}>{link.label}</a>
-            ))}
-            <a href="/" style={{
-              fontSize: '1.05rem', fontWeight: 700, color: '#1a1a2e', background: '#fff',
-              padding: '0.75rem 2rem', borderRadius: '999px', textDecoration: 'none',
-              letterSpacing: '0.06em', textTransform: 'uppercase',
-            }}>See your site free</a>
-          </div>
-        )}
+        <SiteHeaderNav />
 
         {/* HERO CONTENT */}
         {heroImage ? (
@@ -411,16 +318,22 @@ export default function PageShell({
           textAlign: 'center',
           fontSize: '0.75rem',
         }}>
-          © {new Date().getFullYear()} Mountain Studios · Privacy · Terms
+          <p style={{ margin: '0 0 0.5rem' }}>© {new Date().getFullYear()} Mountain Studios · Privacy · Terms</p>
+          {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
+              which Google permits only while this notice is on the page. */}
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+            This site is protected by reCAPTCHA and the Google{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            and{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            apply.
+          </p>
         </div>
       </div>
 
       <style>{`
         @media (max-width: 900px) {
           .page-shell-grid { grid-template-columns: 1fr !important }
-        }
-        @media (max-width: 768px) {
-          .ms-nav-links, .ms-nav-cta { display:none !important }
         }
         @media (max-width: 600px) {
           .ms-hours { display:none !important }

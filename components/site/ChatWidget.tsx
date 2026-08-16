@@ -38,29 +38,18 @@ const MAX_INPUT = 1000
 // floating over someone else's mock site is the wrong thing entirely.
 const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp']
 
-// The homepage runs an A/B test (app/page.tsx). On the 'chat' arm it renders its
-// own pill bottom-right, which used to be a WhatsApp link and now opens this
-// widget instead. When that pill is on screen it owns the job, and this
-// component must not draw a second launcher next to it.
-//
-// The handshake is localStorage rather than a React context because the pill
-// lives in the page and this lives in the layout, so there is no shared tree to
-// hang a provider on. It cannot be an event alone either: child effects run
-// before parent effects, so the page would dispatch before this component was
-// listening. localStorage is already written by then, so it is read on mount and
-// on every navigation, with the event as the catch-up for a variant chosen after
-// this component had already settled.
+// Anything on the site that wants to open the chat dispatches this. The
+// homepage used to draw its own pill on one arm of an A/B test and this
+// component stood down for it; that test is gone and the launcher below is now
+// the only one on every page.
 const OPEN_EVENT = 'ms-chat:open'
-const VARIANT_EVENT = 'ms-chat:variant'
 
-function pageOwnsLauncher(pathname: string | null): boolean {
-  if (pathname !== '/') return false
-  try {
-    return localStorage.getItem('ms_variant') === 'chat'
-  } catch {
-    return false
-  }
-}
+// The launcher is an icon alone. The invitation lives in a bubble above it,
+// which is dismissible — once someone has said no to it, it stays gone for the
+// visit rather than following them from page to page.
+const BUBBLE_TEXT = 'Chat with us — we reply instantly'
+const BUBBLE_DISMISSED_KEY = 'ms-chat-bubble-dismissed'
+const BUBBLE_DELAY_MS = 1600
 
 interface Message {
   role: 'user' | 'assistant'
@@ -88,7 +77,7 @@ export default function ChatWidget() {
   const pathname = usePathname()
   const { executeRecaptcha } = useGoogleReCaptcha()
   const [open, setOpen] = useState(false)
-  const [externalLauncher, setExternalLauncher] = useState(false)
+  const [bubble, setBubble] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [leadId, setLeadId] = useState<string | null>(null)
   const [input, setInput] = useState('')
@@ -131,20 +120,36 @@ export default function ChatWidget() {
     if (open) inputRef.current?.focus()
   }, [open])
 
-  // Whoever owns the launcher on this route, and anything else that wants to
-  // open the chat, goes through the same event.
+  // Anything on the site that wants to open the chat goes through this event.
   useEffect(() => {
-    const recheck = () => setExternalLauncher(pageOwnsLauncher(pathname))
-    recheck()
-
     const onOpen = () => setOpen(true)
     window.addEventListener(OPEN_EVENT, onOpen)
-    window.addEventListener(VARIANT_EVENT, recheck)
-    return () => {
-      window.removeEventListener(OPEN_EVENT, onOpen)
-      window.removeEventListener(VARIANT_EVENT, recheck)
+    return () => window.removeEventListener(OPEN_EVENT, onOpen)
+  }, [])
+
+  // The bubble arrives a beat after the page settles, so it reads as an offer
+  // rather than part of the page furniture. Dismissed or answered, it is done
+  // for the visit.
+  useEffect(() => {
+    let dismissed = false
+    try {
+      dismissed = sessionStorage.getItem(BUBBLE_DISMISSED_KEY) === '1'
+    } catch {
+      // Private mode. Show it.
     }
-  }, [pathname])
+    if (dismissed) return
+    const t = setTimeout(() => setBubble(true), BUBBLE_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [])
+
+  const dismissBubble = useCallback(() => {
+    setBubble(false)
+    try {
+      sessionStorage.setItem(BUBBLE_DISMISSED_KEY, '1')
+    } catch {
+      // Nothing to do — it just reappears on the next page.
+    }
+  }, [])
 
   const close = useCallback(() => {
     setOpen(false)
@@ -321,26 +326,65 @@ export default function ChatWidget() {
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      {!externalLauncher && (
-        <button
-          ref={launcherRef}
-          type="button"
-          className="ms-chat-launcher"
-          aria-expanded={open}
-          aria-haspopup="dialog"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span className="ms-chat-dot" aria-hidden="true" />
-          <span className="ms-chat-launcher-label">{open ? 'Close' : 'Ask us'}</span>
-        </button>
+      {bubble && !open && (
+        <div className="ms-chat-bubble">
+          <button
+            type="button"
+            className="ms-chat-bubble-text"
+            onClick={() => {
+              dismissBubble()
+              setOpen(true)
+            }}
+          >
+            {BUBBLE_TEXT}
+          </button>
+          <button
+            type="button"
+            className="ms-chat-bubble-close"
+            onClick={dismissBubble}
+            aria-label="Dismiss"
+          >
+            &#215;
+          </button>
+        </div>
       )}
 
+      <button
+        ref={launcherRef}
+        type="button"
+        className="ms-chat-launcher"
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label={open ? 'Close chat' : 'Chat with us'}
+        onClick={() => {
+          dismissBubble()
+          setOpen((v) => !v)
+        }}
+      >
+        <span className="ms-chat-dot" aria-hidden="true" />
+        {open ? (
+          <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path
+              d="M6 6l12 12M18 6L6 18"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              fill="none"
+            />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true">
+            <path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9.4L4 21.6V5a2 2 0 0 1 0-2zm0 2v12.4L8.6 15H20V5H4z" />
+            <circle cx="8.5" cy="10" r="1.1" />
+            <circle cx="12" cy="10" r="1.1" />
+            <circle cx="15.5" cy="10" r="1.1" />
+          </svg>
+        )}
+      </button>
+
       {open && (
-        // The panel grows out of whichever button opened it: bottom-left from
-        // this component's own launcher, bottom-right from the homepage's
-        // "Chat with us" pill on the chat variant.
         <div
-          className={`ms-chat-panel${externalLauncher ? ' ms-chat-panel--right' : ''}`}
+          className="ms-chat-panel"
           role="dialog"
           aria-modal="false"
           aria-label="Chat with Mountain Studios"
@@ -434,26 +478,28 @@ export default function ChatWidget() {
 // wine accent, Playfair over Source Sans. The variables are set on <body> in
 // app/layout.tsx, with a stack behind them in case this ever renders outside it.
 const CSS = `
-/* Bottom-LEFT on purpose. The homepage already parks a sticky "SEE YOUR NEW
-   SITE" pill in the bottom-right, and the reCAPTCHA badge sits under it. That
-   pill is the primary conversion action on the page and the chat should not be
-   competing with it for the same 200 pixels. */
+/* Bottom-RIGHT, the corner the eye already goes to for help, and now the only
+   thing parked there — the homepage's competing "SEE YOUR NEW SITE" pill and
+   the reCAPTCHA badge are both gone. The launcher carries no words: the
+   invitation is the bubble above it, which can be dismissed on its own. */
 .ms-chat-launcher {
-  position: fixed; left: 20px; bottom: 20px; z-index: 9998;
-  display: inline-flex; align-items: center; gap: 9px;
-  padding: 13px 22px 13px 18px; border: 0; border-radius: 999px;
-  background: #1a1a2e; color: #f4f2fa; cursor: pointer;
-  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
-  font-size: 15px; font-weight: 600; letter-spacing: .01em;
-  box-shadow: 0 6px 28px rgba(26, 26, 46, .28);
-  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease;
+  position: fixed; right: 24px; bottom: 24px; z-index: 9998;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px; padding: 0; border: 0; border-radius: 50%;
+  background: #7d3d4f; color: #f4f2fa; cursor: pointer;
+  box-shadow: 0 10px 30px rgba(26, 26, 46, .32);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, background .18s ease;
 }
-.ms-chat-launcher:hover { transform: translateY(-2px); box-shadow: 0 10px 34px rgba(26, 26, 46, .34); }
-.ms-chat-launcher:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 3px; }
+.ms-chat-launcher:hover { background: #6b3343; transform: translateY(-2px); box-shadow: 0 14px 36px rgba(26, 26, 46, .38); }
+.ms-chat-launcher:focus-visible { outline: 2px solid #1a1a2e; outline-offset: 3px; }
 
+/* Presence, not decoration: it says someone is at the other end. Sits on the
+   rim of the button rather than beside a label. */
 .ms-chat-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: #e9cad0;
-  box-shadow: 0 0 0 0 rgba(233, 202, 208, .7); animation: ms-chat-pulse 2.8s ease-out infinite;
+  position: absolute; top: 5px; right: 5px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #e9cad0; border: 2px solid #7d3d4f;
+  animation: ms-chat-pulse 2.8s ease-out infinite;
 }
 @keyframes ms-chat-pulse {
   0%   { box-shadow: 0 0 0 0 rgba(233, 202, 208, .55); }
@@ -461,23 +507,56 @@ const CSS = `
   100% { box-shadow: 0 0 0 0 rgba(233, 202, 208, 0); }
 }
 
+/* The bubble sits above the launcher and is two controls in one shell: the
+   text opens the chat, the cross retires the bubble for the visit. */
+.ms-chat-bubble {
+  position: fixed; right: 24px; bottom: 96px; z-index: 9998;
+  display: flex; align-items: flex-start; gap: 4px;
+  max-width: min(300px, calc(100vw - 48px));
+  padding: 12px 10px 12px 16px;
+  background: #fff; border: 1px solid #e3e0ea; border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(26, 26, 46, .18);
+  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
+  animation: ms-chat-bubble-in .28s cubic-bezier(.2,.8,.2,1);
+}
+/* The tail, pointing down at the launcher. Two stacked triangles so the
+   hairline border carries through it. */
+.ms-chat-bubble::after,
+.ms-chat-bubble::before {
+  content: ''; position: absolute; right: 22px; width: 0; height: 0;
+  border-left: 8px solid transparent; border-right: 8px solid transparent;
+}
+.ms-chat-bubble::before { bottom: -9px; border-top: 9px solid #e3e0ea; }
+.ms-chat-bubble::after  { bottom: -8px; border-top: 9px solid #fff; }
+
+.ms-chat-bubble-text {
+  padding: 0; border: 0; background: none; cursor: pointer; text-align: left;
+  color: #2e333a; font-family: inherit; font-size: 14.5px; font-weight: 600; line-height: 1.4;
+}
+.ms-chat-bubble-text:hover { color: #7d3d4f; }
+.ms-chat-bubble-text:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 2px; }
+
+.ms-chat-bubble-close {
+  flex: none; width: 22px; height: 22px; margin-top: -2px;
+  border: 0; border-radius: 50%; background: transparent; color: #8d8799;
+  font-size: 17px; line-height: 1; cursor: pointer; transition: color .18s ease;
+}
+.ms-chat-bubble-close:hover { color: #2e333a; }
+.ms-chat-bubble-close:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 1px; }
+
+@keyframes ms-chat-bubble-in {
+  from { opacity: 0; transform: translateY(8px) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+
 .ms-chat-panel {
-  position: fixed; left: 20px; bottom: 84px; z-index: 9999;
+  position: fixed; right: 24px; bottom: 96px; z-index: 9999;
   display: flex; flex-direction: column;
-  width: 372px; max-width: calc(100vw - 40px); height: 540px; max-height: calc(100vh - 120px);
+  width: 372px; max-width: calc(100vw - 48px); height: 540px; max-height: calc(100vh - 132px);
   background: #f4f2fa; border: 1px solid #d8d3e2; border-radius: 16px; overflow: hidden;
   font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
   box-shadow: 0 24px 64px rgba(26, 26, 46, .22);
-  transform-origin: bottom left; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
-}
-
-/* Opened by the homepage's "Chat with us" pill, which is bottom-right, so the
-   panel unfolds from there instead of the opposite corner. Bottom stays at
-   84px, which clears the pill. */
-.ms-chat-panel--right {
-  /* 24px, not the 20px used elsewhere, to line the panel's right edge up with
-     the homepage pill's — that sits at 1.5rem. */
-  left: auto; right: 24px; transform-origin: bottom right;
+  transform-origin: bottom right; animation: ms-chat-in .26s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes ms-chat-in {
   from { opacity: 0; transform: translateY(10px) scale(.97); }
@@ -584,17 +663,17 @@ const CSS = `
 }
 
 @media (max-width: 480px) {
-  /* Full screen on a phone whichever corner it was opened from, so the
-     --right modifier's offsets have to be cleared explicitly. */
-  .ms-chat-panel, .ms-chat-panel--right {
-    left: 0; right: auto; bottom: 0; width: 100vw; max-width: 100vw;
+  .ms-chat-panel {
+    left: 0; right: 0; bottom: 0; width: 100vw; max-width: 100vw;
     height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0;
   }
-  .ms-chat-launcher { left: 14px; bottom: 14px; }
+  .ms-chat-launcher { right: 16px; bottom: 16px; }
+  .ms-chat-bubble { right: 16px; bottom: 88px; }
+  .ms-chat-bubble::before, .ms-chat-bubble::after { right: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ms-chat-panel, .ms-chat-launcher, .ms-chat-dot, .ms-chat-typing span {
+  .ms-chat-panel, .ms-chat-launcher, .ms-chat-dot, .ms-chat-bubble, .ms-chat-typing span {
     animation: none; transition: none;
   }
   .ms-chat-launcher:hover { transform: none; }

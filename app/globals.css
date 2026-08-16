@@ -4,6 +4,17 @@
 
 /* ===== Mountain Studios - Aerial Style ===== */
 
+/* The reCAPTCHA v3 badge is hidden. Google allows this only if the notice it
+   carries appears somewhere on the page instead, so both the homepage footer
+   and PageShell's footer carry the wording and the two links. Remove that text
+   and this rule breaks the reCAPTCHA terms of service.
+   https://developers.google.com/recaptcha/docs/faq
+   `visibility`, not `display`: hiding the container outright has been known to
+   stop the challenge running at all. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 /* Background scroll - translates by 66.666% (2 of 3 images) then loops seamlessly */
 @keyframes bg-scroll {
   0% { transform: translate3d(0, 0, 0); }
