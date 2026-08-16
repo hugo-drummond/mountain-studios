@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 16 August 2026 (audit moved into a popup)
+Last updated: 16 August 2026 (chatbot runs the audit — working end to end on production)
 
 ## Where things stand
 
@@ -529,6 +529,12 @@ reason was a server log nobody reads.
 raw-MIME send with the same 712KB attachment. So it was transient, and one attempt was enough to
 permanently downgrade the deliverable.
 
+The real cause turned out to be the one thing the local replay could not reproduce: on production
+the chat route had no browser at all, because `outputFileTracingIncludes` in `next.config.js` is
+keyed by route and only lists `/api/audit/**`. Locally the renderer uses the Mac's own Chrome, so
+every local test passed and proved nothing. The recorded reason said it outright:
+`The input directory "/var/task/node_modules/@sparticuz/chromium/bin" does not exist.`
+
 Two changes, both in `lib/audit/run.ts`:
 
 - **The attachment send is tried twice**, 1.5s apart, before falling back. The PDF *is* the
@@ -593,29 +599,65 @@ istore.co.za was lost exactly this way. No row, no email, no trace, and the pers
 inbox for a report that was never coming. Nothing errored, nothing logged, and it would have gone
 on silently forever.
 
-The audit-starting half of `/api/audit/submit` now lives in `lib/audit/start.ts` and both callers
-share it, rather than the chat route growing a copy that drifts.
+**`/api/chat` does not start audits.** It returns the website and email it extracted as
+`auditRequest`, and the **widget posts them to `/api/audit/submit`** — the same endpoint the popup
+form uses. Two attempts to start it from the chat function both failed on production, in different
+ways, and both are worth knowing before anyone tries a third:
 
-**The model is not the mechanism.** Told to end its message with `[[RUN_AUDIT]]`, it will still
-happily write "the report is on its way" and emit nothing — the original bug wearing a hat, and it
-did exactly that on the first attempt at this fix. So the route decides:
+1. **Rendering in-process** needed the 66MB headless browser in the chat Lambda
+   (`outputFileTracingIncludes` is keyed by route). Its cold start went past the 20s DeepSeek
+   timeout and *every* chat message returned the fallback apology. The chatbot was down.
+2. **Handing off to `/api/audit/run` over HTTP** left rows stuck at `status='new'` — the
+   server-to-server call never landed, so the visitor got nothing at all.
 
-> An audit runs when the visitor has given **both** a website and an email, **and** the reply either
-> carries a marker or claims to be running.
+`/api/audit/submit` already does this correctly from a browser every day. Use it. **Do not add a
+route to `outputFileTracingIncludes`** — Chrome belongs in exactly one place.
 
-- The website and email are always read from **what the visitor typed**, never from the model's
-  reply. A hallucinated address can never email a stranger a report. The extractor strips emails
-  before looking for a website, or `hugo@gmail.com` would get `gmail.com` audited.
-- **If a reply claims the audit started and it did not**, the response appends a correction rather
-  than leaving the lie standing. Anything that wanted to run and couldn't falls back to the button.
-- Audits started this way are charged against the **`audit/submit` limit (5/hour)**, not chat's
-  30/10min. Each one is two PageSpeed calls, a headless Chrome render and an email.
-- `audit_requests.source` is `'chatbot'`; the lead row stays `source='website'` so the CRM board's
-  "Warm lead" badge and the find-or-create dedupe keep working.
+**The model decides nothing.** It will reply "what's the best email address?" to a message
+containing the email, emitting no signal at all; told instead to signal whenever it has both
+details, it signalled for someone who supplied a site and an address while asking for a *quote*.
+So the route decides, from the visitor's own words:
 
-Verified end to end: istore.co.za through the chat produced a row with `source='chatbot'` and a
-report sent 59 seconds later. A conversation that hands over a site and an email while asking for a
-quote starts nothing.
+> An audit runs when the visitor has given **both** a website and an email, **and** has actually
+> asked for one — they used the word "audit" themselves, or they said yes to an offer, **or they
+> handed over the details after the bot raised it**.
+
+- Supplying the details *is* consent. Requiring the word "audit" meant someone answering
+  `ant@example.com - https://theirsite.com` — exactly what was asked for — was told the email was
+  still needed and nothing ran.
+- Details arrive one at a time, so **any** assistant turn mentioning the audit counts, not just the
+  most recent. Checking only the last one left "website now, email two messages later" asking
+  forever.
+- The bot merely *offering* is not consent. Someone who wants a quote must not be sent a report.
+- Website and email always come from **what the visitor typed**, never the model's reply. The
+  extractor strips emails before looking for a website, or `hugo@gmail.com` audits `gmail.com`.
+- Charged against the **`audit/submit` limit**, shared with the popup form and keyed per IP.
+- `audit_requests.source` is `'chatbot'` when the route creates the row; going through
+  `/api/audit/submit` it is `'website'`. The lead row is always `source='website'` so the CRM
+  board's "Warm lead" badge and the find-or-create dedupe keep working.
+
+Verified on production from a real browser: a vague complaint followed by `url + email` in one
+message produced a report with its PDF 19 seconds later. Details split across two messages also
+runs. A quote request with details in the first message starts nothing.
+
+### The rate limit is shared, and it is the likeliest reason an audit "just fails"
+
+`audit/submit` is **15 an hour per IP** (raised from 5 on 16 August). One counter is shared by the
+popup form, the chatbot handover and anything else that starts an audit, and it is keyed on IP — an
+office behind one NAT is a single visitor as far as it is concerned.
+
+This is worth checking first whenever an audit does not arrive:
+
+```sql
+select key, hits, window_start from mountainstudios.rate_limits
+where route = 'audit/submit' order by window_start desc;
+```
+
+It cost an afternoon once already. Repeated testing pushed one IP to 6 against a limit of 5, the
+endpoint returned 429, and the widget reported a flat "I couldn't get that started" — then offered
+a button that posts to the very endpoint that had just refused, so following the advice failed
+identically. The widget now reads the status: a 429 says so in plain words and shows **no** button,
+because the button cannot help.
 
 ### The chatbot can offer and open it
 

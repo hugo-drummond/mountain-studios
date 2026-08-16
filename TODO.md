@@ -77,18 +77,23 @@ intent, once per visit, on every page.
       is genuinely relevant and its button opens the popup, bypassing the once-per-visit
       rule. Still the only route back after a dismissal; a link in the nav or footer would
       be the obvious second one.
-- [ ] **Re-test the audit offer after any chatbot prompt edit.** It should fire on "my site
-      is slow on phones" and "do you check existing sites?", and stay quiet on a
-      new-business enquiry and a pricing question. Marker leaking into the visible reply is
-      the failure to watch for. Also check that giving it a website **and** an email starts
-      a real audit — `auditStarted: true` and a row in `audit_requests` with
-      `source='chatbot'` — and that handing over the same two details while asking for a
-      *quote* starts nothing.
-- [ ] **Watch for the bot promising an audit it did not start.** The route now catches the
-      common phrasings and makes the claim true, or appends a correction if it cannot. A
-      new phrasing that slips past `CLAIMS_RUNNING` in `app/api/chat/route.ts` would put
-      the original silent-loss bug back. Rows in `audit_requests` with `source='chatbot'`
-      should roughly track how often the chat talks about audits.
+- [ ] **Re-run these four after any chatbot prompt or knowledge edit.** They are the ones
+      that broke, each in a different way:
+      1. vague complaint, then `url + email` in one message → audit runs
+      2. website first, email two messages later → audit runs
+      3. website given, no email yet → does NOT run, keeps asking
+      4. quote request with url + email in the first message → does NOT run
+- [ ] **Check the rate limit before anything else when an audit does not arrive.**
+      `select key, hits, window_start from mountainstudios.rate_limits where route =
+      'audit/submit'`. It is 15/hour per IP and shared with the popup form. Testing has hit
+      it before and the symptom looks nothing like a limit.
+- [ ] **Never add a route to `outputFileTracingIncludes`.** Adding `/api/chat` put the 66MB
+      browser in the chat function and took the chatbot down — its cold start went past the
+      DeepSeek timeout so every message returned the fallback apology. A new caller hands
+      off to `/api/audit/submit` instead.
+- [ ] **Watch for the bot promising an audit it did not start.** A phrasing that slips past
+      `CLAIMS_RUNNING` in `app/api/chat/route.ts` would put the original silent-loss bug
+      back.
 - [ ] Exit intent cannot work on phones (no pointer to leave), so mobile visitors only ever
       get the 30-second trigger. Worth checking the mobile/desktop split of audit requests
       before assuming the timer is enough.
