@@ -260,3 +260,51 @@ function buildAccessibilityRow(check: any, label: string): string {
 
   return content;
 }
+
+// ---------------------------------------------------------------------------
+// The covering note that carries the PDF.
+//
+// When the report renders, the PDF *is* the deliverable — repeating every score
+// in the email body gives the reader the same thing twice and makes the
+// attachment look redundant. renderAuditEmail() above stays as the fallback for
+// when the render fails: in that case the written version is all they get, so
+// it must still stand on its own.
+// ---------------------------------------------------------------------------
+export function renderAuditCoverEmail(
+  report: AuditReport,
+  businessName: string,
+): { subject: string; html: string } {
+  const hostname = getHostname(report.url);
+  const name = escapeHtml(businessName || hostname);
+
+  const html = `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:0;background:#F4F2FA;">
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;">Your website audit for ${escapeHtml(hostname)} is attached.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F4F2FA;padding:32px 16px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border-radius:12px;overflow:hidden;">
+        <tr><td style="padding:32px 32px 8px;">
+          <p style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7d3d4f;margin:0 0 12px;">Your free website audit</p>
+          <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:#20263a;margin:0 0 16px;">${name}</h1>
+          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 16px;">
+            Your report is attached as a PDF. It covers five checks — page speed on mobile and desktop, encryption, browser protection, and how easy your site is to use for people with poor eyesight or colour blindness.
+          </p>
+          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 24px;">
+            Everything in it is measured, not guessed. If anything needs explaining, reply to this email and a person will answer.
+          </p>
+          <a href="https://mountainstudios.co.za/contact" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
+        </td></tr>
+        <tr><td style="padding:24px 32px 32px;">
+          <p style="font-size:12px;line-height:1.6;color:#8a90a0;margin:0;">
+            Mountain Studios &middot; ${escapeHtml(formatDate(report.ranAt))}
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
+  return { subject: `Your website audit — ${hostname}`, html };
+}

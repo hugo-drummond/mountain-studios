@@ -2,7 +2,7 @@ import { crmAdmin } from '@/lib/crm'
 import { normaliseUrl, checkSsl, checkHeaders, checkPsi } from './checks'
 import type { AuditReport, CheckError, SslResult, HeadersResult, PsiResult, AccessibilityResult } from './types'
 import { PSI_ERROR_COPY, A11Y_ERROR_COPY, GENERIC_ERROR_COPY } from './copy'
-import { renderAuditEmail } from './email'
+import { renderAuditEmail, renderAuditCoverEmail } from './email'
 import { sendMail, sendMailWithAttachment } from '@/lib/ses'
 import { renderReportPdf } from '@/lib/audit-report/render'
 
@@ -283,12 +283,15 @@ export async function runAudit(
             upsert: true,
           })
 
-        // Send email with attachment
+        // Send email with attachment. The covering note carries the PDF — the
+        // long written version below is only for when the render failed and
+        // the email has to stand alone.
         const hostname = new URL(row.website_url).hostname?.replace(/^www\./, '') || 'website'
+        const cover = renderAuditCoverEmail(report, businessName)
         messageId = await sendMailWithAttachment({
           to: row.email,
-          subject,
-          html,
+          subject: cover.subject,
+          html: cover.html,
           attachment: {
             filename: `website-audit-${hostname}.pdf`,
             content: pdfBuffer,

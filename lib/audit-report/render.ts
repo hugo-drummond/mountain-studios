@@ -333,7 +333,12 @@ export async function renderReportPdf(report: AuditReport, opts: { businessName:
       margin: { top: 0, right: 0, bottom: 0, left: 0 },
     });
 
-    return pdf;
+    // page.pdf() resolves to a Uint8Array on current puppeteer. Calling
+    // .toString('base64') on one of those ignores the argument and returns
+    // "37,80,68,70,..." instead of base64 — which sails through every type
+    // check and arrives as a multi-megabyte corrupt attachment. Normalise here
+    // so no caller can hit it.
+    return Buffer.isBuffer(pdf) ? pdf : Buffer.from(pdf);
   } finally {
     if (page) {
       await page.close();

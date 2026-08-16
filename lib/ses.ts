@@ -112,7 +112,10 @@ export async function sendMailWithAttachment(opts: {
   ].join('\r\n')
 
   // Attachment part (base64-encoded)
-  const base64Content = opts.attachment.content.toString('base64')
+  // Buffer.from() rather than trusting the caller: a Uint8Array's toString()
+  // ignores the encoding argument and yields decimal text, which produces a
+  // corrupt attachment that nothing upstream flags.
+  const base64Content = Buffer.from(opts.attachment.content).toString('base64')
   const wrappedBase64 = wrapBase64(base64Content)
   const attachmentPart = [
     `--${boundary}`,
