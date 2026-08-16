@@ -225,32 +225,18 @@ export async function runAudit(
     if (shouldSendEmail) {
       const { subject, html } = renderAuditEmail(report)
 
-      // Determine business name: prefer lead's business_name, else hostname
-      let businessName: string = ''
-      if (row.lead_id) {
-        try {
-          const { data: lead, error: leadError } = await db
-            .from('leads')
-            .select('business_name')
-            .eq('id', row.lead_id)
-            .single()
-
-          if (!leadError && lead?.business_name) {
-            businessName = lead.business_name
-          }
-        } catch (err) {
-          console.error('[audit/run] Failed to fetch lead business_name:', err)
-        }
-      }
-
-      if (!businessName) {
-        // Fall back to hostname with www. stripped
-        try {
-          const parsed = new URL(row.website_url)
-          businessName = parsed.hostname?.replace(/^www\./, '') || row.website_url
-        } catch {
-          businessName = row.website_url
-        }
+      // The cover names the site that was audited, taken from the URL itself.
+      //
+      // It used to prefer the linked lead's business_name, but leads are
+      // matched on email: someone auditing a second site got a report titled
+      // with the first one's name. The lead describes a person, the report
+      // describes a website, and only one of those is on the cover.
+      let businessName: string
+      try {
+        const parsed = new URL(row.website_url)
+        businessName = parsed.hostname?.replace(/^www\./, '') || row.website_url
+      } catch {
+        businessName = row.website_url
       }
 
       let pdfBuffer: Buffer | null = null
