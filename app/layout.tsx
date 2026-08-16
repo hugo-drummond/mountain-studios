@@ -91,12 +91,14 @@ export default function RootLayout({
         />
         <RecaptchaProvider>
           {children}
-          {/* Inside the provider, unlike ChatWidget: the audit form calls
-              executeRecaptcha('audit_submit') and needs the context. */}
+          {/* Both live inside the provider: each calls executeRecaptcha and
+              gets undefined without the context. ChatWidget sat outside it and
+              had been sending every request unscored — harmless while
+              blockedAsBot is an allowlist, but it also posts the audit now.
+              Both hide themselves on /admin and on generated previews. */}
           <AuditPopup />
+          <ChatWidget />
         </RecaptchaProvider>
-        {/* Hides itself on /admin and on generated previews. See ChatWidget. */}
-        <ChatWidget />
       </body>
     </html>
   )

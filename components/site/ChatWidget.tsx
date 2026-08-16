@@ -162,6 +162,35 @@ export default function ChatWidget() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open, close])
 
+  // Fires the audit through /api/audit/submit — the endpoint the popup form
+  // posts to. It writes the rows, emails Ant and renders the PDF in the one
+  // function that ships the headless browser, so there is no second code path
+  // to keep working.
+  const submitAudit = useCallback(async (websiteUrl: string, email: string): Promise<boolean> => {
+    try {
+      let recaptchaToken: string | undefined
+      if (executeRecaptcha) {
+        try {
+          recaptchaToken = await Promise.race([
+            executeRecaptcha('audit_submit'),
+            new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+          ])
+        } catch {
+          // reCAPTCHA failure is not critical.
+        }
+      }
+
+      const res = await fetch('/api/audit/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ websiteUrl, email, recaptchaToken }),
+      })
+      return res.ok
+    } catch {
+      return false
+    }
+  }, [executeRecaptcha])
+
   const send = useCallback(
     async (text: string) => {
       const content = text.trim().slice(0, MAX_INPUT)
@@ -206,15 +235,29 @@ export default function ChatWidget() {
               ? data.reply.trim()
               : "Sorry — that didn't go through. Try me again, or email hello@mountainstudios.co.za."
 
+          // The bot gathered a website and an email and wants the audit run.
+          // The chat route deliberately does not start it — it posts here, to
+          // the same endpoint the popup form uses, because that is the one path
+          // proven to render and email a PDF on production.
+          const request = data?.auditRequest
+          let started = false
+          if (request?.websiteUrl && request?.email) {
+            started = await submitAudit(request.websiteUrl, request.email)
+          }
+
           setMessages([
             ...next,
             {
               role: 'assistant',
-              content: reply,
+              content: started
+                ? reply
+                : request
+                  ? `${reply}\n\nActually — I couldn't get that started. Use the button below and it'll go through properly.`
+                  : reply,
               // A started audit wins: the button would invite them to ask for
               // the same thing twice.
-              offerAudit: data?.offerAudit === true && data?.auditStarted !== true,
-              auditStarted: data?.auditStarted === true,
+              offerAudit: (data?.offerAudit === true || (!!request && !started)) && !started,
+              auditStarted: started,
             },
           ])
           if (typeof data?.leadId === 'string') setLeadId(data.leadId)
@@ -233,7 +276,7 @@ export default function ChatWidget() {
         inputRef.current?.focus()
       }
     },
-    [messages, leadId, sending, executeRecaptcha],
+    [messages, leadId, sending, executeRecaptcha, submitAudit],
   )
 
   // After every hook, so the rules of hooks hold on the routes that hide it.

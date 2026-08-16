@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
-import { normaliseWebsiteUrl, startAudit } from '@/lib/audit/start'
+import { normaliseWebsiteUrl } from '@/lib/audit/start'
 import { rateLimit } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
@@ -456,36 +456,31 @@ export async function POST(req: NextRequest) {
   const claimsRunning = raw ? CLAIMS_RUNNING.test(raw) : false
   const shouldRun = haveDetails && (markers.runAudit || markers.offerAudit || claimsRunning)
 
-  let auditStarted = false
-  if (shouldRun && target && email) {
-    // The audit's own limit, not the chat's. Chat allows 30 messages per 10
-    // minutes; audits are 5 an hour for very good reasons — each one runs two
-    // PageSpeed calls and a headless Chrome render, and emails a PDF.
-    const auditLimit = await rateLimit(req, 'audit/submit')
-    if (auditLimit.ok) {
-      const result = await startAudit({
-        websiteUrl: target.url,
-        email,
-        source: 'chatbot',
-        originLabel: 'Requested through the site chatbot',
-        // Never inline: rendering the PDF here would mean shipping the 66MB
-        // headless browser into the chat function, which made its cold start
-        // too slow for the model to answer at all.
-        trigger: 'http',
-      })
-      auditStarted = result.auditRequestId !== null
-    }
-  }
+  // The audit is NOT started here. It is handed back to the widget, which posts
+  // it to /api/audit/submit — the same endpoint the popup form uses.
+  //
+  // This route tried to start it directly and neither way worked. Rendering the
+  // PDF in-process needs the 66MB headless browser in the chat function, which
+  // made its cold start too slow for the model to answer at all and took the
+  // chatbot down. Handing off to /api/audit/run over HTTP left the row stuck at
+  // status='new' — the server-to-server call never landed, and the visitor got
+  // nothing whatsoever.
+  //
+  // /api/audit/submit already does all of this correctly from a browser, every
+  // day, for the popup. Use the path that works rather than a third variant.
+  const auditRequest = shouldRun && target && email ? { websiteUrl: target.url, email } : null
 
-  // Anything that wanted to run and didn't — missing details, rate limited,
-  // insert failed — falls back to the button so there is still a way through.
-  if (!auditStarted && (markers.runAudit || shouldRun)) offerAudit = true
+  // Anything that wanted an audit and has nothing to hand over — missing site,
+  // missing email — falls back to the button so there is still a way through.
+  if (!auditRequest && (markers.runAudit || shouldRun)) offerAudit = true
 
   // The reply promised something that did not happen. Saying nothing would
   // leave them waiting for an email that is not coming, which is the whole
   // failure this change exists to fix.
+  // The reply promised something we have nothing to hand over for. Saying
+  // nothing would leave them waiting for an email that is not coming.
   const correctedReply =
-    claimsRunning && !auditStarted && reply
+    claimsRunning && !auditRequest && reply
       ? `${reply}\n\nActually — I couldn't get that started just now. Use the button below and it'll go through properly.`
       : reply
 
@@ -503,6 +498,6 @@ export async function POST(req: NextRequest) {
     reply: correctedReply ?? FALLBACK_REPLY,
     leadId,
     offerAudit,
-    auditStarted,
+    auditRequest,
   })
 }
