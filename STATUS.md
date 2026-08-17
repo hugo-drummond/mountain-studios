@@ -192,8 +192,8 @@ not use the shell; its markup is still self-contained.
 
 - **`/about`** — "We build the website, then we stay for the boring part." plus a single
   "How the studio works" section with a photo card. The mockup's story timeline and
-  careers sections were cut on Hugo's annotation. The photo is a grey placeholder even
-  though `public/images/team/hugo-drummond.jpg` exists — swap pending.
+  careers sections were cut on Hugo's annotation. The photo card carries the real founder
+  photo since 17 August (`public/images/team/hugo-drummond.jpg`, `next/image` `fill`).
 - **`/work`** — case-study list of all six portfolio brands with category, name, blurb
   and a "VIEW THE SITE" button. Buttons go to `#`; no live client URLs are recorded
   anywhere in the repo yet.
@@ -208,6 +208,13 @@ not use the shell; its markup is still self-contained.
 
 The nav on every page (homepage included) now reads WORK · SERVICES · PRICING · REFER ·
 ABOUT · CONTACT, with PRICING and REFER still homepage anchors.
+
+**The client supplies the content — corrected 17 August 2026.** Three surfaces promised the
+opposite: the homepage FAQ answer on turnaround, the "What you get" paragraph on
+`/services/web-design`, and a bullet in `lib/chatbot/knowledge.ts`, which meant the bot repeated
+the promise on demand. All three now say the words and images for each page come from the client
+and we design around them. A copy claim that lives in the chatbot knowledge file is a promise the
+bot will make in conversation — anything about scope has to be changed in both places at once.
 
 ## Screenshot pass — 13 August 2026, evening
 
@@ -737,6 +744,35 @@ renders a fake report to `~/Desktop` without touching the database or sending an
 **The cover names the audited site, from its URL.** It used to prefer the linked lead's
 `business_name`, and leads are matched on email — so a second audit from the same address produced
 a report titled with the first site's name.
+
+### Report layout and CTA pass — 17 August 2026
+
+Hugo's annotations on the first production report. All of it is `lib/audit-report/template.html`
+plus the fill logic in `lib/audit-report/render.ts`.
+
+- The cover's "Free Website Audit" tag is gone; pages 2 and 3 keep their "Page X of 3".
+- The title block sits at `top: 95mm` instead of `38mm`, and the eyebrow and business name are
+  roughly double their old size.
+- Card and summary `box-shadow`s are gone — at 6mm blur on a pink page they read as dark bands
+  behind each card rather than as shadows.
+- The Browser Protection card now names the headers it did not find, from
+  `checks.headers.missing`. Saying "2/5" without saying which two was the point of the check.
+- "What happens next" (the three-step list) is cut.
+- The summary block gained a CTA paragraph above the button. It names the **two weakest checks**
+  — worst bucket first, then lowest score, at most two, one if only one is weak — and quotes the
+  once-off R2000 fix. `generateCtaPitch()` in `render.ts`.
+
+<callout icon="🐛" color="red_bg">
+**A bare domain is one unbreakable word.** Doubling the cover name to a fixed 80px clipped
+`mountainstudios.co.za` mid-word against the cover's `overflow: hidden` — nothing wrapped because
+there is no space to wrap on, and the PDF still rendered without error. `coverNameFontSize()` now
+steps the size down by character count (80px ≤14, then 62/50/40/32px) and the rule carries
+`overflow-wrap: anywhere` as a last resort. Any future change to the cover type size has to be
+checked against a long domain, not against "Example Business Co."
+</callout>
+
+Still open: `generateSummaryText()` hardcodes "Speed, browser protection and accessibility", so the
+"In short" paragraph can name a check the CTA below it did not pick.
 
 **Backstop.** `/api/audit/sweep` plus a daily Vercel cron finishes any report that never sent —
 crashed function, PSI outage, deploy mid-run. Hobby only allows daily granularity. It refuses to

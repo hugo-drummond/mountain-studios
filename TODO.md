@@ -58,8 +58,9 @@ Still to build:
       real client domains. The `#` note was stale.
 - [ ] **`/contact` contact-number field is not captured.** "Your business" became "Your
       contact number" on 13 August, but `handleSubmit` still only flips a flag.
-- [ ] **About photo is a grey placeholder.** `public/images/team/hugo-drummond.jpg`
-      exists — swap it in.
+- [x] **About photo is a grey placeholder.** Done 17 August —
+      `public/images/team/hugo-drummond.jpg` is now in the card as a `next/image` `fill`
+      with `objectFit: cover`.
 - [x] **The chat pill is a real chat widget.** Done 14 August — the `chat` A/B arm opens
       the on-site chatbot instead of linking to the dummy WhatsApp number.
 - [ ] The reCAPTCHA badge sits under the floating pill in the bottom-right corner. The
@@ -110,6 +111,10 @@ intent, once per visit, on every page.
       audit and re-send the email.
 - [ ] Decide whether the mobile screenshot gets surfaced anywhere. It is captured and stored, but
       neither emailed nor placed in the PDF.
+- [ ] **The "In short" paragraph and the CTA under it can disagree.** `generateSummaryText()` in
+      `lib/audit-report/render.ts` hardcodes "Speed, browser protection and accessibility" for any
+      amber report, while `generateCtaPitch()` below it names the two checks that actually scored
+      worst. Make the paragraph read from the same ranking.
 - [ ] The report cover shows the bare hostname (`jumpstart-uk.com`). Consider prettifying it, or
       reading the real business name from the site's `<title>` or schema during the audit.
 - [ ] **Watch for reports going out without their PDF.** The fallback now records the reason
