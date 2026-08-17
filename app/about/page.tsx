@@ -39,7 +39,7 @@ export default function About() {
               lineHeight: 1.7,
               margin: '0 0 1.5rem',
             }}>
-              We're a small Cape Town studio. We learn how a business actually gets its customers before we design anything.
+              I started Mountain Studios with one goal in mind: to provide great value to businesses small and large. I do this by providing a smooth onboarding process, a collaborative design and build phase, and a great site delivered time and time again.
             </p>
 
             <p style={{
@@ -48,7 +48,7 @@ export default function About() {
               lineHeight: 1.7,
               margin: '0 0 1.5rem',
             }}>
-              One person designs and builds your site start to finish — no handoffs, no account managers, no waiting a week for a reply.
+              I&rsquo;m not happy with the result till you&rsquo;re happy with the result.
             </p>
 
             <p style={{
@@ -57,7 +57,7 @@ export default function About() {
               lineHeight: 1.7,
               margin: 0,
             }}>
-              After launch we stay on: hosting, updates, backups and small changes are part of the deal, not an invoice.
+              After launch we&rsquo;re happy to look after your site. Hosting, backups and changes are our speciality!
             </p>
           </div>
 
