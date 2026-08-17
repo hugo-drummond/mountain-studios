@@ -160,7 +160,7 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
-        padding: '0 0 8rem',
+        padding: '0 0 5rem',
       }}>
 
         {/* NAV */}
@@ -172,7 +172,7 @@ export default function Home() {
           margin: 'auto',
           // Sits lower than the two tilted screenshots that flank it, so the
           // headline reads against the gradient rather than level with them.
-          padding: '8rem 2rem 0',
+          padding: '4rem 2rem 0',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -281,7 +281,7 @@ export default function Home() {
         {/* STATS BAR */}
         <div className="ms-stats" style={{
           maxWidth: '1000px',
-          margin: '6rem auto 0',
+          margin: '3.5rem auto 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
           gap: '2rem',
