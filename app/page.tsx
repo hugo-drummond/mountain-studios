@@ -47,14 +47,12 @@ interface FaqItem {
 }
 
 const faqItems: FaqItem[] = [
-  { q: 'How long does it take?', a: 'Typically about 14 days from when we receive your content.' },
-  { q: 'What does it cost?', a: 'Every site is priced on what it actually needs, so we quote per job rather than publish a menu. Tell us what you\'re after and you\'ll have a number the same week.' },
-  { q: 'Do I own the website?', a: 'Yes. The site, the domain and the content are yours. Cancel the retainer and it stays yours.' },
+  { q: 'What services does Mountain Studios offer?', a: 'Web design, paid ads, AEO and automation. Most people come to us for a website, then add the rest as they grow — bookings, payments, Google Business setup and the automations behind them.' },
+  { q: 'How does the website design service work?', a: 'Type your business name and we build you a real preview, free, in about a minute. If you like it, we take it from there: we learn how your business actually gets its customers, then one person designs and builds the site start to finish — no handoffs, no account managers. You approve everything before it goes live.' },
+  { q: 'How long does the process take to design a website?', a: 'Typically about 14 days from when we receive your content. Send us what you have — photos, a menu, an old brochure — and we write the rest.' },
+  { q: 'Can you help me with my existing website?', a: 'Yes. Send it to us for a free audit — we check speed, security and accessibility and email you the report. If it only needs fixing rather than replacing, we\'ll say so.' },
+  { q: 'Do you offer hosting services?', a: 'Yes. Hosting, the SSL certificate and the domain are included in every site we build. The site and its content stay yours either way.' },
   { q: 'What happens if I want changes later?', a: 'Small changes are part of the retainer. Bigger additions get quoted before we touch anything.' },
-  { q: 'Who hosts it?', a: 'We do. Hosting, the SSL certificate and the domain are included in every site we build.' },
-  { q: 'Do I need to write the content?', a: 'No. Send us what you have — photos, a menu, an old brochure — and we write the rest. You approve it before it goes live.' },
-  { q: 'Do you do more than websites?', a: 'Yes. Bookings, payments, Google Business setup and the automations that sit behind them.' },
-  { q: 'What if I already have a website?', a: 'Send it to us for a free audit — we check security, speed and accessibility and email you the report. If it only needs fixing, we\'ll say so.' },
 ]
 
 export default function Home() {
