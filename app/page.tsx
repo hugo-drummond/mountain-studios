@@ -177,7 +177,7 @@ export default function Home() {
           margin: 'auto',
           // Sits lower than the two tilted screenshots that flank it, so the
           // headline reads against the gradient rather than level with them.
-          padding: '4rem 2rem 0',
+          padding: '4rem 2rem 1.25rem',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -286,7 +286,7 @@ export default function Home() {
         {/* STATS BAR */}
         <div className="ms-stats" style={{
           maxWidth: '750px',
-          margin: '1.5rem auto 0',
+          margin: '3.5rem auto 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
           gap: '1.5rem',
