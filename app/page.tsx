@@ -165,7 +165,7 @@ export default function Home() {
         position: 'relative',
         overflow: 'hidden',
         flex: 1,
-        padding: '0 0 5rem',
+        padding: '0 0 4.7rem',
       }}>
 
         {/* NAV */}
@@ -177,7 +177,7 @@ export default function Home() {
           margin: 'auto',
           // Sits lower than the two tilted screenshots that flank it, so the
           // headline reads against the gradient rather than level with them.
-          padding: '4rem 2rem 1.25rem',
+          padding: '6.2rem 2rem 1.25rem',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
