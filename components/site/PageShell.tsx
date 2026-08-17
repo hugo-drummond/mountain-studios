@@ -12,6 +12,7 @@ export default function PageShell({
   sub,
   heroImage,
   heroCta,
+  ctaOverride,
   children,
 }: {
   eyebrow: string
@@ -19,6 +20,10 @@ export default function PageShell({
   sub: string
   heroImage?: React.ReactNode
   heroCta?: { label: string; href: string }
+  // Replaces the default "See what yours could look like" CTA band content
+  // (heading + form) with something else — e.g. the referral signup form on
+  // /refer/terms. Rendered inside the same gradient band / mountain ridge.
+  ctaOverride?: React.ReactNode
   children: React.ReactNode
 }) {
   const [submitted, setSubmitted] = useState(false)
@@ -186,51 +191,55 @@ export default function PageShell({
           position: 'relative',
           zIndex: 2,
         }}>
-          <h2 style={{
-            fontFamily: 'var(--font-playfair), Georgia, serif',
-            fontSize: 'clamp(1.7rem,3vw,2.4rem)',
-            color: '#1a1a2e',
-            fontWeight: 400,
-            margin: '0 0 2rem',
-          }}>
-            See what yours could look like. <em style={{ fontStyle: 'italic' }}>It's free.</em>
-          </h2>
-
-          {submitted ? (
-            <p style={{ fontSize: '0.9rem', color: '#3d4358', marginBottom: '2rem' }}>Thanks — we'll be in touch shortly.</p>
-          ) : (
-            <form style={{
-              display: 'flex',
-              gap: '0.6rem',
-              justifyContent: 'center',
-              flexWrap: 'wrap',
-              marginBottom: '2rem',
-            }} onSubmit={handleCTA}>
-              <input
-                type="text"
-                placeholder="What's your business called?"
-                style={{
-                  padding: '0.95rem 1.6rem',
-                  borderRadius: '999px',
-                  border: 'none',
-                  width: '320px',
-                  fontSize: '1rem',
-                  outline: 'none',
-                  boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
-                }}
-              />
-              <button type="submit" style={{
-                padding: '0.95rem 1.6rem',
-                borderRadius: '999px',
-                border: 'none',
-                background: '#fff',
+          {ctaOverride ? ctaOverride : (
+            <>
+              <h2 style={{
+                fontFamily: 'var(--font-playfair), Georgia, serif',
+                fontSize: 'clamp(1.7rem,3vw,2.4rem)',
                 color: '#1a1a2e',
-                fontSize: '1rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
-              }}>SHOW ME →</button>
-            </form>
+                fontWeight: 400,
+                margin: '0 0 2rem',
+              }}>
+                See what yours could look like. <em style={{ fontStyle: 'italic' }}>It's free.</em>
+              </h2>
+
+              {submitted ? (
+                <p style={{ fontSize: '0.9rem', color: '#3d4358', marginBottom: '2rem' }}>Thanks — we'll be in touch shortly.</p>
+              ) : (
+                <form style={{
+                  display: 'flex',
+                  gap: '0.6rem',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                  marginBottom: '2rem',
+                }} onSubmit={handleCTA}>
+                  <input
+                    type="text"
+                    placeholder="What's your business called?"
+                    style={{
+                      padding: '0.95rem 1.6rem',
+                      borderRadius: '999px',
+                      border: 'none',
+                      width: '320px',
+                      fontSize: '1rem',
+                      outline: 'none',
+                      boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
+                    }}
+                  />
+                  <button type="submit" style={{
+                    padding: '0.95rem 1.6rem',
+                    borderRadius: '999px',
+                    border: 'none',
+                    background: '#fff',
+                    color: '#1a1a2e',
+                    fontSize: '1rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 8px 24px -12px rgba(0,0,0,0.35)',
+                  }}>SHOW ME →</button>
+                </form>
+              )}
+            </>
           )}
         </div>
 

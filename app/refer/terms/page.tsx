@@ -1,6 +1,7 @@
 'use client'
 
 import PageShell from '@/components/site/PageShell'
+import ReferralForm from '@/components/site/ReferralForm'
 
 export default function ReferTerms() {
   return (
@@ -8,6 +9,7 @@ export default function ReferTerms() {
       eyebrow="REFERRAL PROGRAM"
       title={<>Refer a business. Get <em style={{ fontStyle: 'italic' }}>R1000</em>.</>}
       sub="How the program works, in full."
+      ctaOverride={<ReferralForm />}
     >
       <div style={{
         background: '#f4f2fa',
