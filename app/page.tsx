@@ -152,7 +152,7 @@ export default function Home() {
           <WhatsAppIcon />
           WhatsApp us<span className="ms-hours"> · Mon–Fri 8:00–17:00</span>
         </a>
-        <a href="#refer" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
+        <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
       </div>
 
       {/* HERO SECTION */}
