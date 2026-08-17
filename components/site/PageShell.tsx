@@ -324,14 +324,18 @@ export default function PageShell({
           textAlign: 'center',
           fontSize: '0.75rem',
         }}>
-          <p style={{ margin: '0 0 0.5rem' }}>© {new Date().getFullYear()} Mountain Studios · Privacy · Terms</p>
+          <p style={{ margin: '0 0 0.5rem' }}>
+            © {new Date().getFullYear()} Mountain Studios ·{' '}
+            <a href="/privacy" style={{ color: 'inherit' }}>Privacy</a> ·{' '}
+            <a href="/terms" style={{ color: 'inherit' }}>Terms</a>
+          </p>
           {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
               which Google permits only while this notice is on the page. */}
           <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
             This site is protected by reCAPTCHA and the Google{' '}
             <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
             and{' '}
-            <a href="/terms" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
             apply.
           </p>
         </div>
