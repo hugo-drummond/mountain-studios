@@ -6,7 +6,7 @@ const services = [
   {
     name: 'Web design',
     href: '/services/web-design',
-    desc: 'Simple, good-looking websites for small South African businesses.',
+    desc: 'Simple, good-looking websites for South African businesses.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
         <rect x="2" y="4" width="36" height="32" rx="2" />
@@ -19,7 +19,7 @@ const services = [
   {
     name: 'Paid ads',
     href: '/services/paid-ads',
-    desc: 'Google and Meta campaigns that bring in enquiries, not just clicks.',
+    desc: 'Google and Meta campaigns that bring in enquiries.',
     icon: (
       <svg width="80" height="80" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ stroke: '#1a1a2e', strokeWidth: 1.5 }}>
         <circle cx="20" cy="20" r="14" />
