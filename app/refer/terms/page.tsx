@@ -1,0 +1,76 @@
+'use client'
+
+import PageShell from '@/components/site/PageShell'
+
+export default function ReferTerms() {
+  return (
+    <PageShell
+      eyebrow="REFERRAL PROGRAM"
+      title={<>Refer a business. Get <em style={{ fontStyle: 'italic' }}>R1000</em>.</>}
+      sub="How the program works, in full."
+    >
+      <div style={{
+        background: '#f4f2fa',
+        padding: '4rem 2rem',
+      }}>
+        <div style={{
+          maxWidth: '760px',
+          margin: '0 auto',
+        }}>
+          <h2 style={{
+            fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+            fontWeight: 700,
+            fontSize: '1.6rem',
+            color: '#1a1a2e',
+            margin: '0 0 2rem',
+          }}>
+            How it works
+          </h2>
+
+          <ol style={{
+            margin: '0 0 3rem',
+            padding: '0 0 0 1.2rem',
+            fontSize: '1rem',
+            color: '#5d6478',
+            lineHeight: 1.7,
+          }}>
+            <li style={{ marginBottom: '0.75rem' }}>Give us your details and we email you a unique referral link.</li>
+            <li style={{ marginBottom: '0.75rem' }}>Forward it to any business that needs a website.</li>
+            <li>They sign with us and pay their deposit — you get R1000.</li>
+          </ol>
+
+          <h2 style={{
+            fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+            fontWeight: 700,
+            fontSize: '1.6rem',
+            color: '#1a1a2e',
+            margin: '0 0 2rem',
+          }}>
+            Terms
+          </h2>
+
+          <ul style={{
+            margin: 0,
+            padding: '0 0 0 1.2rem',
+            fontSize: '1rem',
+            color: '#5d6478',
+            lineHeight: 1.7,
+          }}>
+            <li style={{ marginBottom: '1rem' }}>
+              <strong style={{ color: '#1a1a2e' }}>Payout.</strong> R1000 per referred business, paid via EFT once they've signed and paid their deposit.
+            </li>
+            <li style={{ marginBottom: '1rem' }}>
+              <strong style={{ color: '#1a1a2e' }}>No limit.</strong> Refer as many businesses as you like — there's no cap on how much you can earn.
+            </li>
+            <li style={{ marginBottom: '1rem' }}>
+              <strong style={{ color: '#1a1a2e' }}>Your link doesn't expire.</strong> Use it whenever a referral comes up.
+            </li>
+            <li>
+              <strong style={{ color: '#1a1a2e' }}>Questions?</strong> Email <a href="mailto:hello@mountainstudios.co.za" style={{ color: '#7d3d4f' }}>hello@mountainstudios.co.za</a>.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </PageShell>
+  )
+}

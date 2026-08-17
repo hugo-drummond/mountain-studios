@@ -719,7 +719,7 @@ export default function Home() {
             color: '#4a5166',
             marginTop: '1rem',
           }}>
-            No limit on how many you refer. Full terms →
+            No limit on how many you refer. <a href="/refer/terms" style={{ color: 'inherit', textDecoration: 'underline' }}>Full terms →</a>
           </p>
         </div>
 
