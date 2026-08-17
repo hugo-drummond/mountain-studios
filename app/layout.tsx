@@ -60,6 +60,10 @@ const jsonLd = {
     '@type': 'BusinessAudience',
     name: 'South African small and medium businesses across all industries',
   },
+  sameAs: [
+    'https://www.linkedin.com/company/mountainstudioss/',
+    'https://www.facebook.com/profile.php?id=61593052667215',
+  ],
 }
 
 export default function RootLayout({
