@@ -914,7 +914,7 @@ export default function Home() {
             This site is protected by reCAPTCHA and the Google{' '}
             <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
             and{' '}
-            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            <a href="/terms" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
             apply.
           </p>
         </div>
