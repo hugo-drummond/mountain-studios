@@ -26,6 +26,15 @@ const ENCRYPTION_WORDS: Record<'pass' | 'fail' | 'error', string> = {
   error: 'NOT CHECKED',
 };
 
+// Header display names
+const HEADER_SHORT_NAMES: Record<SecurityHeader, string> = {
+  'strict-transport-security': 'Strict-Transport-Security',
+  'x-content-type-options': 'X-Content-Type-Options',
+  'x-frame-options': 'X-Frame-Options',
+  'content-security-policy': 'Content-Security-Policy',
+  'referrer-policy': 'Referrer-Policy',
+};
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -183,6 +192,21 @@ export function fillTemplate(report: AuditReport, opts: { businessName: string }
   const calendlyUrl = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min';
   template = template.replace('{{calendly_url}}', escapeHtml(calendlyUrl));
 
+  // Fill protection missing headers
+  if (report.checks.headers.status === 'ok' && report.checks.headers.missing) {
+    const missing = report.checks.headers.missing;
+    const protectionMissing = missing.length > 0
+      ? `Missing: ${missing.map((h) => HEADER_SHORT_NAMES[h]).join(', ')}`
+      : '';
+    template = template.replace('{{protection_missing}}', escapeHtml(protectionMissing));
+  } else {
+    template = template.replace('{{protection_missing}}', '');
+  }
+
+  // Fill CTA pitch
+  const ctaPitch = generateCtaPitch(report);
+  template = template.replace('{{cta_pitch}}', escapeHtml(ctaPitch));
+
   return template;
 }
 
@@ -246,6 +270,80 @@ function generateSummaryBullets(report: AuditReport): string {
   }
 
   return bullets.slice(0, 5).join('\n          ');
+}
+
+function generateCtaPitch(report: AuditReport): string {
+  interface WeakCheck {
+    label: string;
+    severity: number;
+  }
+
+  const weakChecks: WeakCheck[] = [];
+
+  // mobile check
+  if (report.checks.mobile.status === 'ok' && report.checks.mobile.bucket !== 'green') {
+    const score = report.checks.mobile.score ?? 0;
+    const severity = report.checks.mobile.bucket === 'red' ? 1000 : 0;
+    weakChecks.push({
+      label: 'page speed on phones',
+      severity: severity - score,
+    });
+  }
+
+  // desktop check
+  if (report.checks.desktop.status === 'ok' && report.checks.desktop.bucket !== 'green') {
+    const score = report.checks.desktop.score ?? 0;
+    const severity = report.checks.desktop.bucket === 'red' ? 1000 : 0;
+    weakChecks.push({
+      label: 'desktop page speed',
+      severity: severity - score,
+    });
+  }
+
+  // ssl check
+  if (report.checks.ssl.status === 'ok' && !report.checks.ssl.pass) {
+    weakChecks.push({
+      label: 'encryption',
+      severity: 1000,
+    });
+  }
+
+  // headers check
+  if (report.checks.headers.status === 'ok' && report.checks.headers.bucket !== 'green') {
+    const presentCount = report.checks.headers.present?.length ?? 0;
+    const score = Math.round((presentCount / 5) * 100);
+    const severity = report.checks.headers.bucket === 'red' ? 1000 : 0;
+    weakChecks.push({
+      label: 'browser protection',
+      severity: severity - score,
+    });
+  }
+
+  // accessibility check
+  if (report.checks.accessibility.status === 'ok' && report.checks.accessibility.bucket !== 'green') {
+    const score = report.checks.accessibility.score ?? 0;
+    const severity = report.checks.accessibility.bucket === 'red' ? 1000 : 0;
+    weakChecks.push({
+      label: 'accessibility',
+      severity: severity - score,
+    });
+  }
+
+  // Sort worst first (higher severity = worse)
+  weakChecks.sort((a, b) => b.severity - a.severity);
+
+  // Take first 2
+  const topWeaks = weakChecks.slice(0, 2);
+
+  if (topWeaks.length === 2) {
+    const [a, b] = topWeaks;
+    return `Your ${a.label} and ${b.label} are the two things holding this site back. We fix both for a once-off R2000 — no retainer, no rebuild — so the site loads clean and fast for every visitor who lands on it. Book the call and we will quote it on the spot.`;
+  } else if (topWeaks.length === 1) {
+    const [a] = topWeaks;
+    return `Your ${a.label} is the one thing holding this site back. We fix it for a once-off R2000 — no retainer, no rebuild — so the site loads clean and fast for every visitor who lands on it. Book the call and we will quote it on the spot.`;
+  } else {
+    return `Your fundamentals are already sound, so there is nothing urgent to fix. If you want more out of the site — bookings, e-commerce, better search visibility — book the call and we will map out what is worth doing.`;
+  }
 }
 
 export async function renderReportPdf(report: AuditReport, opts: { businessName: string }): Promise<Buffer> {

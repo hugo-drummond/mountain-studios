@@ -57,12 +57,12 @@
 
   #cover .cover-body {
     position: absolute;
-    top: 38mm;
+    top: 95mm;
     left: 16mm;
     right: 16mm;
   }
   #cover .eyebrow {
-    font-size: 11px;
+    font-size: 22px;
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
@@ -72,11 +72,11 @@
   #cover .business-name {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 400;
-    font-size: 40px;
+    font-size: 80px;
     line-height: 1.15;
     color: #20263a;
     margin: 0 0 4mm;
-    max-width: 140mm;
+    max-width: 175mm;
   }
   #cover .cover-sub {
     font-size: 15px;
@@ -124,7 +124,6 @@
   .check-card {
     background: #ffffff;
     border-radius: 6mm;
-    box-shadow: 0 6mm 10mm -7mm rgba(26,26,46,0.45);
     padding: 6mm;
     display: flex;
     align-items: center;
@@ -170,6 +169,13 @@
     color: #5d6478;
     margin: 0;
   }
+  .check-missing {
+    font-size: 10px;
+    line-height: 1.45;
+    color: #7d3d4f;
+    font-weight: 700;
+    margin: 2mm 0 0;
+  }
 
   /* ring gauge */
   .gauge { flex-shrink: 0; width: 26mm; height: 26mm; position: relative; }
@@ -191,7 +197,6 @@
   .summary-block {
     background: #ffffff;
     border-radius: 6mm;
-    box-shadow: 0 6mm 10mm -7mm rgba(26,26,46,0.45);
     padding: 10mm;
   }
   .summary-block .summary-label {
@@ -215,6 +220,12 @@
     line-height: 1.7;
     color: #3a3f4d;
   }
+  .cta-pitch {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3a3f4d;
+    margin: 0 0 6mm;
+  }
   .cta-button {
     display: inline-block;
     background: #7d3d4f;
@@ -228,34 +239,6 @@
     border-radius: 999px;
   }
 
-  /* What happens next section */
-  .next-steps {
-    background: #f7f6fb;
-    border-radius: 6mm;
-    padding: 8mm;
-    margin-top: 8mm;
-  }
-  .next-steps-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #7d3d4f;
-    margin-bottom: 4mm;
-  }
-  .next-steps ol {
-    margin: 0;
-    padding-left: 6mm;
-    font-size: 11px;
-    line-height: 1.6;
-    color: #3a3f4d;
-  }
-  .next-steps li {
-    margin-bottom: 3mm;
-  }
-  .next-steps li:last-child {
-    margin-bottom: 0;
-  }
 </style>
 </head>
 <body>
@@ -264,7 +247,6 @@
   <div class="page" id="cover">
     <div class="brand-header">
       <div class="brand-wordmark">mountain studios</div>
-      <div class="brand-tag">Free Website Audit</div>
     </div>
     <div class="cover-body">
       <div class="eyebrow">Website Audit Report</div>
@@ -353,6 +335,7 @@
           <span class="check-status-word status-{{protection_status_class}}">{{protection_status_word}}</span>
           <div class="check-name">Browser Protection</div>
           <p class="check-desc">Checks for missing settings that make browsers flag your site as untrusted.</p>
+          <p class="check-missing">{{protection_missing}}</p>
         </div>
         <div class="gauge">
           <svg viewBox="0 0 120 120">
@@ -407,16 +390,8 @@
         <ul>
           {{summary_bullets}}
         </ul>
+        <p class="cta-pitch">{{cta_pitch}}</p>
         <a class="cta-button" href="{{calendly_url}}">Book a free 15-min fix-it call →</a>
-
-        <div class="next-steps">
-          <div class="next-steps-label">What happens next</div>
-          <ol>
-            <li>We look at your site</li>
-            <li>Free 15-minute call</li>
-            <li>You get a fixed quote, no obligation</li>
-          </ol>
-        </div>
       </div>
 
     </div>
