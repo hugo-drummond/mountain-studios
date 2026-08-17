@@ -146,7 +146,11 @@ export default function Home() {
   return (
     <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0, overflow: 'hidden' }}>
 
-      {/* TOP BAR */}
+      {/* TOP BAR + HERO — grouped in a flex column that fills exactly one
+          viewport, so the hero's own height (not just a fixed rem padding)
+          stretches or shrinks to the screen instead of leaving a gap above
+          the next section on tall screens. */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <div style={{ background: '#171b2b', padding: '0.6rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'rgba(255,255,255,0.72)' }}>
         <a href={WHATSAPP_URL} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'rgba(255,255,255,0.72)', whiteSpace: 'nowrap' }}>
           <WhatsAppIcon />
@@ -160,6 +164,7 @@ export default function Home() {
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',
+        flex: 1,
         padding: '0 0 5rem',
       }}>
 
@@ -326,6 +331,7 @@ export default function Home() {
             <path d="M0,280 L0,250 Q180,226 360,240 Q540,254 720,230 Q900,206 1080,230 Q1260,254 1440,240 L1440,280 Z" fill="rgba(26,26,46,0.42)" />
           </svg>
         </div>
+      </div>
       </div>
 
       {/* REVIEWS SECTION */}
