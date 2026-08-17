@@ -285,11 +285,11 @@ export default function Home() {
 
         {/* STATS BAR */}
         <div className="ms-stats" style={{
-          maxWidth: '1000px',
-          margin: '3.5rem auto 0',
+          maxWidth: '750px',
+          margin: '1.5rem auto 0',
           display: 'grid',
           gridTemplateColumns: 'repeat(4,1fr)',
-          gap: '2rem',
+          gap: '1.5rem',
           textAlign: 'center',
           position: 'relative',
           zIndex: 2,
@@ -303,19 +303,19 @@ export default function Home() {
             <div key={i}>
               <div style={{
                 fontFamily: 'var(--font-playfair), Georgia, serif',
-                fontSize: 'clamp(2.4rem,4.5vw,3.4rem)',
+                fontSize: 'clamp(1.8rem,3.4vw,2.55rem)',
                 fontWeight: 400,
                 color: '#20263a',
               }}>
                 {stat.num}
               </div>
               <div style={{
-                fontSize: '0.72rem',
+                fontSize: '0.54rem',
                 fontWeight: 600,
                 textTransform: 'uppercase',
                 letterSpacing: '0.16em',
                 color: '#4a5166',
-                marginTop: '0.4rem',
+                marginTop: '0.3rem',
               }}>
                 {stat.label}
               </div>
