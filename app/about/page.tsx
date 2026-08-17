@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import PageShell from '@/components/site/PageShell'
 
 export default function About() {
@@ -72,11 +74,21 @@ export default function About() {
               margin: '0 auto',
             }}>
               <div style={{
-                background: '#d8d5e0',
+                position: 'relative',
                 aspectRatio: '1',
                 borderRadius: '8px',
+                overflow: 'hidden',
                 margin: '10px',
-              }} />
+              }}>
+                <Image
+                  src="/images/team/hugo-drummond.jpg"
+                  alt="Hugo Drummond, founder of Mountain Studios"
+                  fill
+                  sizes="(max-width: 768px) 90vw, 340px"
+                  style={{ objectFit: 'cover' }}
+                  priority
+                />
+              </div>
               <div style={{
                 padding: '1.5rem',
                 textAlign: 'center',
