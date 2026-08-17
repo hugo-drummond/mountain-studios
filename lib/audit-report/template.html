@@ -72,11 +72,14 @@
   #cover .business-name {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 400;
-    font-size: 80px;
+    /* Sized in render.ts from the name's length. A domain is one long word with
+       nothing to wrap on, so a fixed 80px silently ran off the page edge. */
+    font-size: {{name_font_size}};
     line-height: 1.15;
     color: #20263a;
     margin: 0 0 4mm;
     max-width: 175mm;
+    overflow-wrap: anywhere;
   }
   #cover .cover-sub {
     font-size: 15px;

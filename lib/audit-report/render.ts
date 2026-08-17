@@ -35,6 +35,18 @@ const HEADER_SHORT_NAMES: Record<SecurityHeader, string> = {
   'referrer-policy': 'Referrer-Policy',
 };
 
+// The cover name is often a bare domain — one unbreakable word. At a fixed 80px
+// anything past ~14 characters runs off the page and is clipped by the cover's
+// overflow:hidden, so step the size down as the name gets longer.
+function coverNameFontSize(name: string): string {
+  const len = name.trim().length;
+  if (len <= 14) return '80px';
+  if (len <= 20) return '62px';
+  if (len <= 26) return '50px';
+  if (len <= 34) return '40px';
+  return '32px';
+}
+
 function escapeHtml(value: string): string {
   return value
     .replace(/&/g, '&amp;')
@@ -175,6 +187,7 @@ export function fillTemplate(report: AuditReport, opts: { businessName: string }
 
   // Fill metadata
   template = template.replace('{{business_name}}', escapeHtml(opts.businessName));
+  template = template.replace('{{name_font_size}}', coverNameFontSize(opts.businessName));
   template = template.replace('{{website_url}}', escapeHtml(report.url));
   template = template.replace('{{report_date}}', escapeHtml(formatDate(report.ranAt)));
 
