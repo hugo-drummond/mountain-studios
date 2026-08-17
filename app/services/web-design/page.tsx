@@ -79,8 +79,8 @@ export default function WebDesignPage() {
           </h2>
 
           <p style={{ fontSize: '1.02rem', color: '#3d4358', lineHeight: 1.6, margin: 0 }}>
-            You don&apos;t need to write the content — send what you have and we write the rest, you approve
-            it before it goes live. Hosting, the SSL certificate and the domain are included, and updates,
+            You supply the content — the words and images for each page — and we design the site around
+            it, with your approval before it goes live. Hosting, the SSL certificate and the domain are included, and updates,
             backups and small changes are part of the monthly retainer, not a separate invoice. The site,
             the domain and the content are yours — if you ever cancel, the site stays yours.
           </p>

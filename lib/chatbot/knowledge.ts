@@ -61,8 +61,8 @@ There is a referral reward of R1000 for a successful referral.
 - Hosting, the SSL certificate and the domain are included in every site we build.
 - Hosting, updates, backups and small changes are part of the monthly retainer, not a separate invoice.
 - Bigger additions get quoted before we touch anything.
-- You do not need to write the content. Send what you have — photos, a menu, an old
-  brochure — and we write the rest. You approve it before it goes live.
+- You supply the content. The words and images for each page come from you; we design the
+  site around what you send, and you approve the build before it goes live.
 
 ## Ownership
 You own the website. The site, the domain and the content are yours. If you cancel the
