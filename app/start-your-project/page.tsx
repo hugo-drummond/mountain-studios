@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { type PageType } from '../../constants/pricing'
 import {
@@ -224,11 +225,21 @@ const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: n
   'other':                 { style: 'Clean & Minimal',       visualBalance: 50 },
 }
 
-export default function StartYourProject() {
-  const [step, setStep] = useState(1)
+function StartYourProjectInner() {
+  // Read on the server too, so the first HTML sent already shows the right
+  // step. Doing this in an effect would paint step 1 first and then swap.
+  const searchParams = useSearchParams()
+  const nameParam = (searchParams.get('name') || '').slice(0, 80)
+
+  const [step, setStep] = useState(nameParam ? 2 : 1)
+  // Set (still 1) when the visitor arrived with ?name=... and step 1 was
+  // skipped on first paint. Used to size the progress bar to the steps this
+  // visitor actually sees, and to hide the Back button on step 2 when there
+  // is no step 1 in this flow to go back to.
+  const [firstStep] = useState(nameParam ? 2 : 1)
 
   // Form data
-  const [businessName, setBusinessName] = useState('')
+  const [businessName, setBusinessName] = useState(nameParam)
   const [businessType, setBusinessType] = useState('')
   const [businessCategory, setBusinessCategory] = useState<BusinessCategory | ''>('')
   const [typeSearch, setTypeSearch] = useState('')
@@ -242,10 +253,7 @@ export default function StartYourProject() {
   const [noColors, setNoColors] = useState(false)
   const [msVariant, setMsVariant] = useState<string | null>(null)
 
-  // Populate business name from URL query parameter
   useEffect(() => {
-    const n = new URLSearchParams(window.location.search).get('name')
-    if (n) setBusinessName(n.slice(0, 80))
     const v = localStorage.getItem('ms_variant')
     if (v === 'site' || v === 'chat') setMsVariant(v)
   }, [])
@@ -300,7 +308,9 @@ export default function StartYourProject() {
 
   const weekdays = getWeekdays(new Date(), 2)
 
-  const progress = (step / TOTAL_STEPS) * 100
+  // Sized to the steps this visitor's flow actually has (firstStep..TOTAL_STEPS),
+  // so a visitor who skipped step 1 doesn't start partway through the bar.
+  const progress = ((step - firstStep + 1) / (TOTAL_STEPS - firstStep + 1)) * 100
 
   const { executeRecaptcha } = useGoogleReCaptcha()
 
@@ -652,7 +662,7 @@ export default function StartYourProject() {
                 )
               })}
             </div>
-            <Nav back={() => setStep(1)} next={() => setStep(3)} disabled={!businessType} />
+            <Nav back={firstStep === 2 ? undefined : () => setStep(1)} next={() => setStep(3)} disabled={!businessType} />
           </>
         )}
 
@@ -1073,5 +1083,13 @@ function Nav({ back, next, disabled, nextLabel }: { back?: () => void; next?: ()
         </button>
       )}
     </div>
+  )
+}
+
+export default function StartYourProject() {
+  return (
+    <Suspense fallback={null}>
+      <StartYourProjectInner />
+    </Suspense>
   )
 }

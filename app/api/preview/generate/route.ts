@@ -697,7 +697,10 @@ function buildMobileMenu(content: GeneratedContent, links?: { label: string; hre
 // Build a unique image pool from user images + stock, padded with picsum to avoid repeats
 function buildImagePool(images: string[], stockImages: { hero: string; cards: string[] }, businessName: string): string[] {
   // Deduplicate by photo ID — also exclude the hero image
-  const heroId = (images[0] || stockImages.hero).match(/photos\/(\d+)/)?.[1] || ''
+  // Pexels URLs dedupe by numeric photo ID; data: URLs (uploaded photos) have no such
+  // ID, so fall back to the full URL as the identity to still exclude the hero.
+  const heroUrl = images[0] || stockImages.hero
+  const heroId = heroUrl.match(/photos\/(\d+)/)?.[1] || heroUrl
   const all = [...images.slice(1), ...stockImages.cards].filter(Boolean)
   const seen = new Set<string>([heroId])
   const pool: string[] = []
@@ -1025,7 +1028,7 @@ function buildVisualTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about || stockPool[4]
+  const aboutImg = stockPool[4] || stockImages.about
 
   const pr = parseInt(primaryColor.slice(1, 3), 16)
   const pg = parseInt(primaryColor.slice(3, 5), 16)
@@ -1314,10 +1317,10 @@ function buildServiceTemplate(data: TemplateData): string {
 
   const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
   const tileImgs = [
-    stockImages.cards[7] || stockImages.hero,
-    stockImages.cards[8] || stockImages.cards[0],
-    stockImages.cards[9] || stockImages.cards[1],
-    stockImages.cards[10] || stockImages.cards[2],
+    stockPool[14] || stockImages.cards[7] || stockImages.hero,
+    stockPool[15] || stockImages.cards[8] || stockImages.cards[0],
+    stockPool[16] || stockImages.cards[9] || stockImages.cards[1],
+    stockPool[17] || stockImages.cards[10] || stockImages.cards[2],
   ]
   const statIcons = ['&#9878;', '&#9734;', '&#9823;']
 
@@ -1526,7 +1529,7 @@ function buildPortfolioTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about || stockPool[5]
+  const aboutImg = stockPool[5] || stockImages.about
 
   const pr = parseInt(primaryColor.slice(1, 3), 16)
   const pg = parseInt(primaryColor.slice(3, 5), 16)
@@ -2563,7 +2566,7 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about || stockPool[0]
+  const aboutImg = stockPool[0] || stockImages.about
 
   const hw = {
     bg: '#fdfcf9',
@@ -2838,7 +2841,7 @@ function buildFitnessTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about || stockPool[0]
+  const aboutImg = stockPool[0] || stockImages.about
 
   const fit = {
     bg: '#f5f5f3',
@@ -3078,7 +3081,7 @@ function buildEducationTemplate(data: TemplateData): string {
 
   const heroImg = images[0] || stockImages.hero
   const stockPool = buildImagePool(images, stockImages, businessName)
-  const aboutImg = stockImages.about || stockPool[0]
+  const aboutImg = stockPool[0] || stockImages.about
 
   const edu = {
     bg: '#ffffff',
@@ -3539,7 +3542,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <!-- Sticky image panel -->
         <div class="ms-sticky pro-svc-panel" style="position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;border:1px solid ${borderCol}">
           ${content.services.map((s, i) => `
-          <img src="${stockImages.cards[i] || stockPool[i % stockPool.length]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
+          <img src="${stockPool[i % stockPool.length] || stockImages.cards[i]}" alt="${s.name}" class="pro-svc-img" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.6s ease,transform 0.8s ease;opacity:${i === 0 ? '1' : '0'};transform:${i === 0 ? 'scale(1)' : 'scale(1.04)'}" />`).join('')}
           <!-- Overlay label -->
           <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem;background:linear-gradient(to top,rgba(13,13,11,0.85),transparent)">
             <div id="pro-svc-label" style="font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:400;color:#ffffff;font-style:italic">${content.services[0]?.name || ''}</div>
@@ -3556,7 +3559,7 @@ ${buildStandardNav(businessName, content, navFlags)}
       <!-- Left: Image with decorative offset border -->
       <div style="position:relative" class="reveal">
         <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:1px solid ${accent};opacity:0.3;pointer-events:none"></div>
-        <img src="${stockImages.about || stockPool[5]}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;position:relative;z-index:1" />
+        <img src="${stockPool[5] || stockImages.about}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;position:relative;z-index:1" />
         <!-- Accent badge -->
         <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;z-index:2;background:${accent};padding:1.25rem 1.75rem">
           <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:${bg};line-height:1">${content.stats[0]?.value || '20+'}</div>
@@ -3945,12 +3948,12 @@ ${buildStandardNav(businessName, content, navFlags)}
           <a href="#contact" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem">${content.ctaPrimary} <span>&#8594;</span></a>
         </div>
         <div class="td-feat-img" style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
-          <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
+          <img src="${stockPool[i] || stockImages.cards[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
           <div style="position:absolute;inset:0;background:linear-gradient(135deg,${accentGlow} 0%,transparent 60%)"></div>
         </div>
         ` : `
         <div class="td-feat-img" style="position:relative;border-radius:12px;overflow:hidden;border:1px solid ${borderCol}">
-          <img src="${stockImages.cards[i] || stockPool[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
+          <img src="${stockPool[i] || stockImages.cards[i]}" alt="" style="width:100%;height:360px;object-fit:cover;display:block" />
           <div style="position:absolute;inset:0;background:linear-gradient(225deg,${accentGlow} 0%,transparent 60%)"></div>
         </div>
         <div class="td-feat-text">
@@ -6349,9 +6352,9 @@ export async function POST(req: NextRequest) {
       images: (() => {
         const raw = Array.isArray(images) ? images.filter((u: string) => u && typeof u === 'string') : []
         if (raw.length === 0) return []
-        // Pad scraped images to fill all template slots (hero + 4 service + 4 gallery + about = ~10)
+        // Pad scraped images to fill all template slots, incl. deep templates (~20)
         const padded = [...raw]
-        while (padded.length < 10) {
+        while (padded.length < 20) {
           padded.push(raw[padded.length % raw.length])
         }
         return padded
