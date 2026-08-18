@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import SiteHeaderNav from '../components/site/SiteHeaderNav'
 
-const WHATSAPP_NUMBER = '27000000000' // TODO: real number
+const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
 interface PortfolioItem {

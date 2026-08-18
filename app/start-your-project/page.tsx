@@ -16,7 +16,7 @@ import { storedRefCode } from '../../components/site/RefCapture'
 // Supabase import removed — images now use browser object URLs for preview
 
 // Mirrors components/site/PageShell.tsx — same top bar, same source for these.
-const WHATSAPP_NUMBER = '27000000000'
+const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
 // Steps run 1–7. There is no step 0 — the intro screen was removed, so the

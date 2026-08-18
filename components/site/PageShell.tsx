@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import SiteHeaderNav from './SiteHeaderNav'
 
-const WHATSAPP_NUMBER = '27000000000'
+const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
 export default function PageShell({
