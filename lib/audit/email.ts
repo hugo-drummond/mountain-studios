@@ -273,9 +273,13 @@ function buildAccessibilityRow(check: any, label: string): string {
 export function renderAuditCoverEmail(
   report: AuditReport,
   businessName: string,
+  firstName?: string,
 ): { subject: string; html: string } {
   const hostname = getHostname(report.url);
   const name = escapeHtml(businessName || hostname);
+  // audit_requests holds no person's name. The linked lead sometimes does, so
+  // greet them by it when it is there and fall back to a bare "Hi," when not.
+  const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : 'Hi,';
 
   const html = `<!DOCTYPE html>
 <html>
@@ -287,13 +291,12 @@ export function renderAuditCoverEmail(
         <tr><td style="padding:32px 32px 8px;">
           <p style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7d3d4f;margin:0 0 12px;">Your free website audit</p>
           <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:#20263a;margin:0 0 16px;">${name}</h1>
-          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 16px;">
-            Your report is attached as a PDF. It covers five checks — page speed on mobile and desktop, encryption, browser protection, and how easy your site is to use for people with poor eyesight or colour blindness.
-          </p>
+          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 16px;">${greeting}</p>
           <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 24px;">
-            Everything in it is measured, not guessed. If anything needs explaining, reply to this email and a person will answer.
+            Attached is your website audit. It checks the items that turn website visitors into paying customers. If there&rsquo;s anything you need explained book in a free 15 minute call with our team and we&rsquo;ll talk you through it.
           </p>
           <a href="${escapeHtml(process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min')}" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
+          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:24px 0 0;">Hugo</p>
         </td></tr>
         <tr><td style="padding:24px 32px 32px;">
           <p style="font-size:12px;line-height:1.6;color:#8a90a0;margin:0;">

@@ -273,7 +273,24 @@ export async function runAudit(
         // long written version below is only for when the render failed and
         // the email has to stand alone.
         const hostname = new URL(row.website_url).hostname?.replace(/^www\./, '') || 'website'
-        const cover = renderAuditCoverEmail(report, businessName)
+        // The audit row carries no person's name; the linked lead sometimes
+        // does. Never let this lookup stop the report going out.
+        let firstName: string | undefined
+        if (row.lead_id) {
+          try {
+            const { data: lead } = await crmAdmin()
+              .from('leads')
+              .select('director_name')
+              .eq('id', row.lead_id)
+              .single()
+            const full = typeof lead?.director_name === 'string' ? lead.director_name.trim() : ''
+            if (full) firstName = full.split(/\s+/)[0]
+          } catch {
+            firstName = undefined
+          }
+        }
+
+        const cover = renderAuditCoverEmail(report, businessName, firstName)
 
         // Tried twice before giving up on the attachment.
         //
