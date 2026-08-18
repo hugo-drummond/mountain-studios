@@ -52,7 +52,7 @@ const faqItems: FaqItem[] = [
   { q: 'How long does the process take to design a website?', a: 'Typically about 14 days from when we receive your content. The words and images for each page come from you — send them over and we design the site around them.' },
   { q: 'Can you help me with my existing website?', a: 'Yes. Send it to us for a free audit — we check speed, security and accessibility and email you the report. If it only needs fixing rather than replacing, we\'ll say so.' },
   { q: 'Do you offer hosting services?', a: 'Yes. Hosting, the SSL certificate and the domain are included in every site we build. The site and its content stay yours either way.' },
-  { q: 'What happens if I want changes later?', a: 'Small changes are part of the retainer. Bigger additions get quoted before we touch anything.' },
+  { q: 'What happens if I want changes later?', a: 'Once the final website is built and signed off, if any changes are needed we\'ll quote for them and make them for you.' },
 ]
 
 export default function Home() {
