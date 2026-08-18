@@ -158,7 +158,7 @@ export default function Contact() {
               </CircleIcon>
               <div>
                 <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>HOURS</p>
-                <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Mon–Fri 8:00–17:00 SAST</p>
+                <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Mon–Fri 9:00–17:00 SAST</p>
               </div>
             </div>
 
