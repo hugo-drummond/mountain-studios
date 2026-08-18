@@ -15,6 +15,10 @@ import SiteHeaderNav from '../../components/site/SiteHeaderNav'
 import { storedRefCode } from '../../components/site/RefCapture'
 // Supabase import removed — images now use browser object URLs for preview
 
+// Mirrors components/site/PageShell.tsx — same top bar, same source for these.
+const WHATSAPP_NUMBER = '27000000000'
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
+
 // Steps run 1–7. There is no step 0 — the intro screen was removed, so the
 // progress bar is step/TOTAL rather than (step+1)/TOTAL.
 const TOTAL_STEPS = 7
@@ -81,7 +85,12 @@ const styleOptions = [
 
 // Shared styles
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
-const gradient = 'linear-gradient(180deg, #8e9fba 0%, #a8b8cc 40%, #d4b8c8 80%, #e8c8cf 100%)'
+
+const WhatsAppIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004c-2.759 0-5.327 1.273-7.04 3.51-.422.54-.423 1.417.099 1.91 1.11 1.107 2.105 2.293 2.889 3.643 1.572 2.765 4.575 4.528 7.52 4.568h.004c4.141 0 7.506-3.36 7.506-7.499 0-4.139-3.365-7.492-7.506-7.492m0-2c5.206 0 9.445 4.224 9.445 9.407 0 5.182-4.239 9.407-9.445 9.407-2.147 0-4.203-.738-5.834-2.097L.464 23.971a1 1 0 0 0 1.406 1.406l3.357-3.358C6.734 23.343 9.236 24 12.051 24c5.206 0 9.445-4.225 9.445-9.408 0-5.182-4.239-9.407-9.445-9.407Z" />
+  </svg>
+)
 
 const heading: React.CSSProperties = {
   fontFamily: font,
@@ -581,19 +590,39 @@ function StartYourProjectInner() {
   })()
 
   return (
-    <div style={{ minHeight: '100vh', fontFamily: font, background: gradient }}>
-      <SiteHeaderNav />
-
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-      {/* Progress bar */}
-      {!contactSubmitted && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '3px', backgroundColor: 'rgba(255,255,255,0.1)', zIndex: 10 }}>
-          <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'rgba(255,255,255,0.7)', transition: 'width 0.4s ease' }} />
+    <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
+      {/* TOP BAR + GRADIENT BAND — grouped in a flex column that fills at
+          least one viewport, so short steps still show the gradient all the
+          way down while tall steps grow the band past 100vh. */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        {/* TOP BAR */}
+        <div style={{ background: '#171b2b', padding: '0.6rem 2rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: 'rgba(255,255,255,0.72)' }}>
+          <a href={WHATSAPP_URL} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none', color: 'rgba(255,255,255,0.72)', whiteSpace: 'nowrap' }}>
+            <WhatsAppIcon />
+            WhatsApp us<span style={{ display: 'none' }}> · Mon–Fri 9:00–17:00</span>
+          </a>
+          <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
         </div>
-      )}
 
-      {/* Content area */}
-      <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 2rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        {/* GRADIENT BAND — same 5-stop gradient as the homepage hero / PageShell */}
+        <div style={{
+          background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        }}>
+          <SiteHeaderNav />
+
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          {/* Progress bar */}
+          {!contactSubmitted && (
+            <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '3px', backgroundColor: 'rgba(255,255,255,0.1)', zIndex: 10 }}>
+              <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'rgba(255,255,255,0.7)', transition: 'width 0.4s ease' }} />
+            </div>
+          )}
+
+          {/* Content area */}
+          <div style={{ maxWidth: '700px', margin: '0 auto', padding: '2rem 2rem 4rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
 
         {/* Step 1: Business name — the wizard opens here. There is no intro
             screen: it cost a click and said nothing the first question doesn't. */}
@@ -606,6 +635,7 @@ function StartYourProjectInner() {
               onChange={(e) => setBusinessName(e.target.value)}
               placeholder={`e.g. ${namePlaceholder}`}
               autoFocus
+              className="ms-wizard-input"
               style={inputStyle}
             />
             <Nav next={() => setStep(2)} disabled={!businessName.trim()} />
@@ -622,6 +652,7 @@ function StartYourProjectInner() {
               onChange={(e) => setTypeSearch(e.target.value)}
               placeholder="Search business type..."
               autoFocus
+              className="ms-wizard-input"
               style={{ ...fieldInput, fontSize: '1.1rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.2)' }}
             />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', maxHeight: '300px', overflowY: 'auto' }}>
@@ -697,6 +728,7 @@ function StartYourProjectInner() {
                 onChange={(e) => setCustomPageInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && addCustomPage()}
                 placeholder="Add custom page..."
+                className="ms-wizard-input"
                 style={{ ...fieldInput, flex: 1 }}
               />
               <button onClick={addCustomPage} style={{ background: 'none', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '50%', width: '32px', height: '32px', color: '#fff', cursor: 'pointer', fontSize: '1.2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
@@ -718,14 +750,14 @@ function StartYourProjectInner() {
                 <p style={label}>Primary</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <input type="color" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} style={{ width: '48px', height: '48px', border: 'none', borderRadius: '6px', cursor: 'pointer', background: 'none' }} />
-                  <input type="text" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
+                  <input type="text" value={primaryColor} onChange={(e) => setPrimaryColor(e.target.value)} className="ms-wizard-input" style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
                 </div>
               </div>
               <div>
                 <p style={label}>Secondary</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <input type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} style={{ width: '48px', height: '48px', border: 'none', borderRadius: '6px', cursor: 'pointer', background: 'none' }} />
-                  <input type="text" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
+                  <input type="text" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} className="ms-wizard-input" style={{ ...fieldInput, width: '90px', fontSize: '0.95rem' }} />
                 </div>
               </div>
             </div>
@@ -842,6 +874,7 @@ function StartYourProjectInner() {
                   autoComplete="email"
                   autoFocus
                   placeholder="your@email.com"
+                  className="ms-wizard-input"
                   style={inputStyle}
                 />
               </div>
@@ -986,7 +1019,7 @@ function StartYourProjectInner() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', marginBottom: '1rem' }}>
               <div>
                 <p style={label}>Full Name *</p>
-                <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} autoFocus style={inputStyle} />
+                <input type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} autoFocus className="ms-wizard-input" style={inputStyle} />
               </div>
               <div>
                 <p style={label}>Email</p>
@@ -1022,7 +1055,7 @@ function StartYourProjectInner() {
               </div>
               <div>
                 <p style={label}>Phone (optional)</p>
-                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} style={inputStyle} />
+                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="ms-wizard-input" style={inputStyle} />
               </div>
               <div>
                 <p style={label}>
@@ -1032,6 +1065,7 @@ function StartYourProjectInner() {
                   value={projectInfo}
                   onChange={(e) => setProjectInfo(e.target.value)}
                   rows={3}
+                  className="ms-wizard-input"
                   style={{ ...inputStyle, fontSize: '1rem', resize: 'vertical', borderBottom: '1.5px solid rgba(255,255,255,0.5)' }}
                 />
               </div>
@@ -1061,7 +1095,97 @@ function StartYourProjectInner() {
             </p>
           </div>
         )}
+          </div>
+          </div>
+        </div>
       </div>
+
+      {/* FOOTER — copied verbatim from components/site/PageShell.tsx */}
+      <div style={{ background: '#171b2b', color: 'rgba(255,255,255,0.55)', padding: '4rem 2rem 2rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '2rem',
+          maxWidth: '1100px',
+          margin: '0 auto 3rem',
+        }}>
+          <div>
+            <div style={{ marginBottom: '1rem' }}>
+              <span style={{ fontSize: '1.2rem' }}>▲</span>
+              <span style={{ fontFamily: 'var(--font-playfair), Georgia, serif', fontSize: '1.1rem', color: '#fff', marginLeft: '0.5rem', fontWeight: 400 }}>mountain studios</span>
+            </div>
+            <p style={{ fontSize: '0.85rem', margin: '0 0 0.5rem' }}>Websites for South African businesses.</p>
+            <p style={{ fontSize: '0.85rem', margin: 0 }}>Cape Town, South Africa</p>
+          </div>
+
+          <div>
+            <p style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.4)',
+              marginBottom: '1rem',
+              margin: '0 0 1rem',
+            }}>GET IN TOUCH</p>
+            <a href={WHATSAPP_URL} style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>WhatsApp us</a>
+            <a href="mailto:hello@mountainstudios.co.za" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>hello@mountainstudios.co.za</a>
+            <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', margin: 0 }}>Mon–Fri 9:00–17:00 SAST</p>
+          </div>
+
+          <div>
+            <p style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.4)',
+              marginBottom: '1rem',
+              margin: '0 0 1rem',
+            }}>PAGES</p>
+            <a href="/work" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Work</a>
+            <a href="/#refer" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Refer</a>
+            <a href="/about" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>About</a>
+            <a href="/careers/sales-rep" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Careers</a>
+            <a href="/contact" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Contact</a>
+          </div>
+
+          <div>
+            <p style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.4)',
+              marginBottom: '1rem',
+              margin: '0 0 1rem',
+            }}>FOLLOW</p>
+            <a href="https://www.facebook.com/profile.php?id=61593052667215" target="_blank" rel="noopener noreferrer" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Facebook</a>
+            <a href="https://www.linkedin.com/company/mountainstudioss/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>LinkedIn</a>
+          </div>
+        </div>
+
+        <div style={{
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          paddingTop: '1.5rem',
+          textAlign: 'center',
+          fontSize: '0.75rem',
+        }}>
+          <p style={{ margin: '0 0 0.5rem' }}>
+            © {new Date().getFullYear()} Mountain Studios ·{' '}
+            <a href="/privacy" style={{ color: 'inherit' }}>Privacy</a> ·{' '}
+            <a href="/terms" style={{ color: 'inherit' }}>Terms</a>
+          </p>
+          {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
+              which Google permits only while this notice is on the page. */}
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+            This site is protected by reCAPTCHA and the Google{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            and{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            apply.
+          </p>
+        </div>
       </div>
     </div>
   )

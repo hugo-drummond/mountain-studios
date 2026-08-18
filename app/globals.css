@@ -50,6 +50,11 @@
 .ms-dark ::-webkit-input-placeholder { color: rgba(255,255,255,0.75) !important; opacity: 1 !important; }
 .ms-dark :-ms-input-placeholder { color: rgba(255,255,255,0.75) !important; }
 
+/* Start-your-project wizard inputs — white typed text on the gradient band,
+   placeholder text dimmed so it reads as a placeholder, not typed content. */
+.ms-wizard-input::placeholder { color: rgba(255,255,255,0.6); opacity: 1; }
+.ms-wizard-input::-webkit-input-placeholder { color: rgba(255,255,255,0.6); opacity: 1; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

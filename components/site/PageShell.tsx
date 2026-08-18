@@ -27,6 +27,7 @@ export default function PageShell({
   children: React.ReactNode
 }) {
   const [submitted, setSubmitted] = useState(false)
+  const [ctaName, setCtaName] = useState('')
 
   const WhatsAppIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -34,9 +35,14 @@ export default function PageShell({
     </svg>
   )
 
+  // Carry the typed name straight into the wizard, same as the two homepage
+  // forms do. This used to drop it and send the visitor to '/', where they
+  // had to type it again.
   const handleCTA = (e: React.FormEvent) => {
     e.preventDefault()
-    window.location.href = '/'
+    const name = ctaName.trim()
+    if (!name) return
+    window.location.href = '/start-your-project?name=' + encodeURIComponent(name)
   }
 
   return (
@@ -216,6 +222,8 @@ export default function PageShell({
                   <input
                     type="text"
                     placeholder="What's your business called?"
+                    value={ctaName}
+                    onChange={(e) => setCtaName(e.target.value)}
                     style={{
                       padding: '0.95rem 1.6rem',
                       borderRadius: '999px',

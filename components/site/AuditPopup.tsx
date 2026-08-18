@@ -36,10 +36,13 @@ const RETRY_MS = 15_000
 const SEEN_KEY = 'ms-audit-seen'
 const DONE_KEY = 'ms-audit-done'
 
-// Same list as ChatWidget: the admin screens, and generated client previews
-// where a Mountain Studios popup over someone else's mock site would be
-// actively damaging.
-const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp']
+// ChatWidget's list, plus the Get Started wizard. The admin screens and
+// generated client previews are where a Mountain Studios popup over someone
+// else's mock site would be actively damaging. /start-your-project is here
+// for the opposite reason: that visitor is already converting, and offering
+// them a free audit mid-flow interrupts the thing we actually want them to
+// finish.
+const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp', '/start-your-project']
 
 const CHECK_GROUPS = [
   {
