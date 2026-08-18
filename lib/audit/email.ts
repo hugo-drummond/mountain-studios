@@ -273,13 +273,9 @@ function buildAccessibilityRow(check: any, label: string): string {
 export function renderAuditCoverEmail(
   report: AuditReport,
   businessName: string,
-  firstName?: string,
 ): { subject: string; html: string } {
   const hostname = getHostname(report.url);
   const name = escapeHtml(businessName || hostname);
-  // audit_requests holds no person's name. The linked lead sometimes does, so
-  // greet them by it when it is there and fall back to a bare "Hi," when not.
-  const greeting = firstName ? `Hi ${escapeHtml(firstName)},` : 'Hi,';
 
   const html = `<!DOCTYPE html>
 <html>
@@ -291,7 +287,7 @@ export function renderAuditCoverEmail(
         <tr><td style="padding:32px 32px 8px;">
           <p style="font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7d3d4f;margin:0 0 12px;">Your free website audit</p>
           <h1 style="font-family:Georgia,'Times New Roman',serif;font-size:24px;font-weight:400;color:#20263a;margin:0 0 16px;">${name}</h1>
-          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 16px;">${greeting}</p>
+          <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 16px;">Hi,</p>
           <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 24px;">
             Attached is your website audit. It checks the items that turn website visitors into paying customers. If there&rsquo;s anything you need explained book in a free 15 minute call with our team and we&rsquo;ll talk you through it.
           </p>
