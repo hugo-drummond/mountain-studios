@@ -36,6 +36,28 @@ function baseUrl(req: NextRequest): string {
   return new URL(req.url).origin
 }
 
+/**
+ * The wizard does not ask for a person's name until the step AFTER this email
+ * sends, so there is usually nothing to greet them by. A scraped lead may
+ * already carry a director_name, so look it up and use the first name when it
+ * is there. Falls back to a bare "Hi," rather than guessing.
+ */
+async function firstNameForLead(leadId: string | null): Promise<string> {
+  if (!leadId) return ''
+  try {
+    const { data } = await crmAdmin()
+      .from('leads')
+      .select('director_name')
+      .eq('id', leadId)
+      .single()
+    const full = typeof data?.director_name === 'string' ? data.director_name.trim() : ''
+    return full ? full.split(/\s+/)[0] : ''
+  } catch {
+    // Never let a missing name stop the email going out.
+    return ''
+  }
+}
+
 export async function POST(req: NextRequest) {
   const rateLimitResult = await rateLimit(req, 'preview/email')
   if (!rateLimitResult.ok) {
@@ -112,24 +134,29 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
   const name = escapeHtml(businessName)
+  const firstName = escapeHtml(await firstNameForLead(leadId))
+  const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
 
   const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
-    <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 8px;">Mountain Studios</p>
-    <h1 style="font-size:24px;color:#0f172a;margin:0 0 16px;">Like this preview?</h1>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 4px;">Here's the preview we put together for ${name}.</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">We'll give it to you with your content for R1000.</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 20px;">
-      <tr><td>
-        <a href="${url}" style="display:inline-block;background:#1e2333;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px;">View your preview</a>
-      </td></tr>
-    </table>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Book a meeting below to discuss further.</p>
+    <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Mountain Studios</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">${greeting}</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Most web designers send you a quote. We sent you the website.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Open it on your phone. That's ${name} at the top, your pages, your colours &mdash; a real website, not a picture of one.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
       <tr><td>
-        <a href="${escapeHtml(CALENDLY_URL)}" style="display:inline-block;background:#ffffff;color:#1e2333;text-decoration:none;font-size:14px;font-weight:600;padding:13px 27px;border-radius:999px;border:1px solid #1e2333;">Book a meeting</a>
+        <a href="${url}" style="display:inline-block;background:#1e2333;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px;">Open your website</a>
       </td></tr>
     </table>
-    <p style="font-size:13px;color:#94a3b8;margin:24px 0 0;">This link stays live for 30 days.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Add your own words and photos and it's yours for R2000.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Book 15 minutes below and we'll go through it together.</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
+      <tr><td>
+        <a href="${escapeHtml(CALENDLY_URL)}" style="display:inline-block;background:#ffffff;color:#1e2333;text-decoration:none;font-size:14px;font-weight:600;padding:13px 27px;border-radius:999px;border:1px solid #1e2333;">Book 15 minutes</a>
+      </td></tr>
+    </table>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 4px;">Looking forward to hearing from you</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">Hugo</p>
+    <p style="font-size:13px;color:#94a3b8;margin:24px 0 0;">Your website stays live at this link for 30 days.</p>
   </div>`
 
   try {
