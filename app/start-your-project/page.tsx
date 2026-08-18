@@ -379,6 +379,27 @@ function StartYourProjectInner() {
         const res = await r.json()
         if (res.success) {
           setPreviewHtml(res.data.html)
+
+          // Email the visitor a durable link to this preview. Fire and forget —
+          // must never block or delay the preview on screen, and a failure here
+          // must never surface to the visitor. previewRequested.current already
+          // guards this effect to one generation call, so this runs once per
+          // generated preview, not on every re-render.
+          if (gateEmail) {
+            fetch('/api/preview/email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                html: res.data.html,
+                businessName,
+                email: gateEmail,
+                leadId,
+                recaptchaToken,
+              }),
+            }).catch(() => {
+              // Never surface to the visitor — the on-screen preview already succeeded.
+            })
+          }
         } else {
           setPreviewError(true)
         }
