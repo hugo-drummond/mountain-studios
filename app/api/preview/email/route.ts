@@ -133,22 +133,19 @@ export async function POST(req: NextRequest) {
   }
 
   const url = `${baseUrl(req)}/p/${token}`
-  const name = escapeHtml(businessName)
   const firstName = escapeHtml(await firstNameForLead(leadId))
   const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
 
   const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
     <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Mountain Studios</p>
     <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">${greeting}</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Most web designers send you a quote. We sent you the website.</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Open it on your phone. That's ${name} at the top, your pages, your colours &mdash; a real website, not a picture of one.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">We put together this preview of your future website.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
       <tr><td>
         <a href="${url}" style="display:inline-block;background:#1e2333;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px;">Open your website</a>
       </td></tr>
     </table>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Add your own words and photos and it's yours for R2000.</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Book 15 minutes below and we'll go through it together.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">If you like it and want to turn your website visitors into paying customers, it can be yours for R2000 after a few tweaks &mdash; click the link below for a 15 minute meeting.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
       <tr><td>
         <a href="${escapeHtml(CALENDLY_URL)}" style="display:inline-block;background:#ffffff;color:#1e2333;text-decoration:none;font-size:14px;font-weight:600;padding:13px 27px;border-radius:999px;border:1px solid #1e2333;">Book 15 minutes</a>
