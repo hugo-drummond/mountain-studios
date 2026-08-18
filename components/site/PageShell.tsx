@@ -57,7 +57,7 @@ export default function PageShell({
       </div>
 
       {/* HERO SECTION */}
-      <div style={{
+      <div className="ms-shell-hero" style={{
         background: 'linear-gradient(180deg,#6f86a6 0%,#8f9ab6 30%,#ad9fbf 55%,#d0b5c6 78%,#e9cad0 100%)',
         position: 'relative',
         overflow: 'hidden',

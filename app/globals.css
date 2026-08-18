@@ -70,3 +70,36 @@
 .cr-input {
   font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
 }
+
+/* ---------------------------------------------------------------------------
+   Mobile spacing. Desktop is deliberately untouched — these sections were
+   spaced for a wide viewport, where the vertical rhythm reads as generous.
+   On a phone the same values push the next section a full thumb-scroll away
+   and the first screen carries almost no content.
+
+   Lives here rather than in a page's inline <style> literal: quotes and
+   apostrophes inside those serialise escaped on the server and bare on the
+   client, which silently breaks hydration.
+--------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* Hero: the tilted screenshots that this padding cleared are hidden below
+     900px, so the gap under the nav pill has nothing left to clear. */
+  .ms-hero-content { padding-top: 2.4rem !important; }
+
+  /* Trust line reads as a third headline on a narrow column and pushes the
+     stats below the fold. The same figures appear in the stat row directly
+     underneath it. */
+  .ms-trust { display: none !important; }
+
+  .ms-sec-reviews { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+  .ms-sec-work { padding-top: 1.5rem !important; padding-bottom: 3.5rem !important; }
+  .ms-sec-faq { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+
+  /* The trust line used to sit between the form and these stats. With it
+     gone the original margin reads as a hole. */
+  .ms-stats { margin-top: 2rem !important; }
+
+  /* Shared hero on the inner pages: the gap under the device mockup. */
+  .ms-shell-hero { padding-bottom: 3rem !important; }
+  .page-shell-grid { padding-bottom: 2.5rem !important; }
+}

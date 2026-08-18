@@ -170,11 +170,13 @@ export default function Home() {
         <SiteHeaderNav />
 
         {/* HERO CONTENT */}
-        <div style={{
+        <div className="ms-hero-content" style={{
           maxWidth: '780px',
           margin: 'auto',
           // Sits lower than the two tilted screenshots that flank it, so the
           // headline reads against the gradient rather than level with them.
+          // On mobile the flanking screenshots are hidden, so that reason is
+          // gone and the padding just wastes the first screen — see globals.css.
           padding: '6.2rem 2rem 1.25rem',
           textAlign: 'center',
           position: 'relative',
@@ -245,7 +247,7 @@ export default function Home() {
             }}>SHOW ME →</button>
           </form>
 
-          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '1.05rem', fontWeight: 600, color: '#2e333a', margin: 0 }}>
+          <p className="ms-trust" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '1.05rem', fontWeight: 600, color: '#2e333a', margin: 0 }}>
             <span style={{ color: '#c9a445', fontSize: '0.8rem', letterSpacing: '0.1em' }}>★★★★★</span>
             4.9 on Google · 50+ sites built · Live in 14 days
           </p>
@@ -333,7 +335,7 @@ export default function Home() {
       </div>
 
       {/* REVIEWS SECTION */}
-      <div id="reviews" style={{ background: '#f7f6fb', padding: '8rem 2rem' }}>
+      <div id="reviews" className="ms-sec-reviews" style={{ background: '#f7f6fb', padding: '8rem 2rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p style={{
             fontSize: '1rem',
@@ -453,7 +455,7 @@ export default function Home() {
       </div>
 
       {/* WORK SECTION */}
-      <div id="work" style={{ background: '#f4f2fa', padding: '3rem 2rem 8rem' }}>
+      <div id="work" className="ms-sec-work" style={{ background: '#f4f2fa', padding: '3rem 2rem 8rem' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
           <h2 style={{
             fontFamily: 'var(--font-playfair), Georgia, serif',
@@ -738,7 +740,7 @@ export default function Home() {
       </div>
 
       {/* FAQ SECTION */}
-      <div style={{ background: '#efedf7', padding: '7rem 2rem' }}>
+      <div className="ms-sec-faq" style={{ background: '#efedf7', padding: '7rem 2rem' }}>
         <div style={{ maxWidth: '760px', margin: 'auto' }}>
           <h2 style={{
             fontFamily: 'var(--font-playfair), Georgia, serif',

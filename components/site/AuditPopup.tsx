@@ -337,7 +337,7 @@ export default function AuditPopup() {
             </form>
           )}
 
-          <p className="ms-audit-foot">No obligation. We&apos;ll tell you if it only needs fixing.</p>
+          
         </div>
       </div>
     </>
