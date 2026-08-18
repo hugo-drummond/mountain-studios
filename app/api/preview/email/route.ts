@@ -145,7 +145,7 @@ export async function POST(req: NextRequest) {
         <a href="${url}" style="display:inline-block;background:#1e2333;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px;">Open your website</a>
       </td></tr>
     </table>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">If you like it and want to turn your website visitors into paying customers, it can be yours for R2000 (tweaks included if you want) &mdash; click the link below for a 15 minute meeting.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">If you like it and want to turn your website visitors into paying customers, it can be yours for R2000 (tweaks included) &mdash; click the link below for a 15 minute meeting.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
       <tr><td>
         <a href="${escapeHtml(CALENDLY_URL)}" style="display:inline-block;background:#ffffff;color:#1e2333;text-decoration:none;font-size:14px;font-weight:600;padding:13px 27px;border-radius:999px;border:1px solid #1e2333;">Book 15 minutes</a>
