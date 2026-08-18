@@ -173,6 +173,14 @@ export async function POST(req: NextRequest) {
               <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 8px;">Your Referral Link</p>
               <p style="font-size:14px;color:#0f172a;margin:0;word-break:break-all;"><a href="${escapeHtml(referralLink)}" style="color:#2563eb;">${escapeHtml(referralLink)}</a></p>
             </div>
+            <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:28px 0 12px;">Terms</p>
+            <ul style="font-size:14px;color:#334155;line-height:1.7;margin:0 0 20px;padding:0 0 0 18px;">
+              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Payout.</strong> R1000 per referred business, paid via EFT once they&rsquo;ve signed and paid their deposit.</li>
+              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">No limit.</strong> Refer as many businesses as you like &mdash; there&rsquo;s no cap on how much you can earn.</li>
+              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Your link doesn&rsquo;t expire.</strong> Use it whenever a referral comes up.</li>
+              <li><strong style="color:#0f172a;">Questions?</strong> Email <a href="mailto:hello@mountainstudios.co.za" style="color:#7d3d4f;">hello@mountainstudios.co.za</a>.</li>
+            </ul>
+            <p style="font-size:13px;color:#64748b;margin:0 0 20px;">Full terms: <a href="${escapeHtml(baseUrl)}/refer/terms" style="color:#7d3d4f;">${escapeHtml(baseUrl)}/refer/terms</a></p>
             <p style="font-size:13px;color:#64748b;margin:20px 0 0;">Thank you for helping us grow!</p>
           </div>`
 
