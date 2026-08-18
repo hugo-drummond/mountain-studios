@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
+import { renderEnquiryConfirmation } from '@/lib/emails/enquiry-confirmation'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 
@@ -164,6 +165,22 @@ export async function POST(req: NextRequest) {
     console.error('[contact/submit] notification email failed:', err instanceof Error ? err.message : err)
   }
 
+  // Tell the sender we got it. Separate from the notification above on
+  // purpose: this one failing must not fail the enquiry, which is already
+  // recorded. Logged rather than swallowed so a silent outage is findable.
+  let confirmationSent = false
+  try {
+    const confirmation = renderEnquiryConfirmation(storedName)
+    await sendMail({
+      to: storedEmail,
+      subject: confirmation.subject,
+      html: confirmation.html,
+    })
+    confirmationSent = true
+  } catch (err) {
+    console.error('[contact/submit] confirmation email failed:', err instanceof Error ? err.message : err)
+  }
+
   if (!messageId && !emailed) {
     // Both destinations gone. Say so, so the page can keep the form filled in
     // rather than thanking the person for a message we did not receive.
@@ -173,5 +190,5 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  return NextResponse.json({ success: true })
+  return NextResponse.json({ success: true, confirmationSent })
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
+import { renderEnquiryConfirmation } from '@/lib/emails/enquiry-confirmation'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { attachReferralToLead } from '@/lib/referral'
@@ -271,6 +272,22 @@ export async function POST(req: NextRequest) {
     console.error('[brief/submit] notification email failed:', err instanceof Error ? err.message : err)
   }
 
+  // Tell the sender we got it. Separate from the notification above on
+  // purpose: this one failing must not fail the enquiry, which is already
+  // recorded. Logged rather than swallowed so a silent outage is findable.
+  let confirmationSent = false
+  try {
+    const confirmation = renderEnquiryConfirmation(fullName)
+    await sendMail({
+      to: email,
+      subject: confirmation.subject,
+      html: confirmation.html,
+    })
+    confirmationSent = true
+  } catch (err) {
+    console.error('[brief/submit] confirmation email failed:', err instanceof Error ? err.message : err)
+  }
+
   if (!leadId && !emailed) {
     // Both destinations gone. Say so, so the wizard can keep the person on the
     // form rather than thanking them for something we did not receive.
@@ -280,5 +297,5 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  return NextResponse.json({ success: true, leadId, emailed })
+  return NextResponse.json({ success: true, leadId, emailed, confirmationSent })
 }
