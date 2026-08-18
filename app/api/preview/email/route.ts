@@ -36,27 +36,6 @@ function baseUrl(req: NextRequest): string {
   return new URL(req.url).origin
 }
 
-/**
- * The wizard does not ask for a person's name until the step AFTER this email
- * sends, so there is usually nothing to greet them by. A scraped lead may
- * already carry a director_name, so look it up and use the first name when it
- * is there. Falls back to a bare "Hi," rather than guessing.
- */
-async function firstNameForLead(leadId: string | null): Promise<string> {
-  if (!leadId) return ''
-  try {
-    const { data } = await crmAdmin()
-      .from('leads')
-      .select('director_name')
-      .eq('id', leadId)
-      .single()
-    const full = typeof data?.director_name === 'string' ? data.director_name.trim() : ''
-    return full ? full.split(/\s+/)[0] : ''
-  } catch {
-    // Never let a missing name stop the email going out.
-    return ''
-  }
-}
 
 export async function POST(req: NextRequest) {
   const rateLimitResult = await rateLimit(req, 'preview/email')
@@ -133,12 +112,10 @@ export async function POST(req: NextRequest) {
   }
 
   const url = `${baseUrl(req)}/p/${token}`
-  const firstName = escapeHtml(await firstNameForLead(leadId))
-  const greeting = firstName ? `Hi ${firstName},` : 'Hi,'
 
   const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
     <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Mountain Studios</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">${greeting}</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Hi,</p>
     <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">We put together this preview of your future website.</p>
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
       <tr><td>
