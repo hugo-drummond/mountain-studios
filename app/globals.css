@@ -63,3 +63,10 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Careers application inputs. The font-family must live here, not in the
+   page's inline <style> literal: a quoted font name serialises escaped on
+   the server and bare on the client, which breaks hydration on that page. */
+.cr-input {
+  font-family: var(--font-source-sans), "Source Sans 3", sans-serif;
+}
