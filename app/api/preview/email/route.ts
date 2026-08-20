@@ -172,24 +172,13 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
 
-  const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
-    <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Mountain Studios</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">Hi,</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">We put together this preview of your future website.</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 24px;">
-      <tr><td>
-        <a href="${url}" style="display:inline-block;background:#1e2333;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;padding:14px 28px;border-radius:999px;">Open your website</a>
-      </td></tr>
-    </table>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">If you like it and want to turn your website visitors into paying customers, it can be yours for R2000 (tweaks included) &mdash; click the link below for a 15 minute meeting.</p>
-    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 28px;">
-      <tr><td>
-        <a href="${escapeHtml(CALENDLY_URL)}" style="display:inline-block;background:#ffffff;color:#1e2333;text-decoration:none;font-size:14px;font-weight:600;padding:13px 27px;border-radius:999px;border:1px solid #1e2333;">Book 15 minutes</a>
-      </td></tr>
-    </table>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 4px;">Looking forward to hearing from you</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">Hugo</p>
-    <p style="font-size:13px;color:#94a3b8;margin:24px 0 0;">Your website stays live at this link for 30 days.</p>
+  const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;font-size:15px;color:#334155;line-height:1.6;">
+    <p style="margin:0 0 20px;">Hi,</p>
+    <p style="margin:0 0 20px;">We put together a preview of your website. You can open it here: <a href="${url}" style="color:#1e2333;">Open your preview</a></p>
+    <p style="margin:0 0 20px;">If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call &mdash; <a href="${escapeHtml(CALENDLY_URL)}" style="color:#1e2333;">book 15 minutes</a>.</p>
+    <p style="margin:0 0 4px;">Looking forward to hearing from you</p>
+    <p style="margin:0 0 24px;">Hugo</p>
+    <p style="font-size:13px;color:#94a3b8;margin:0;">The link stays live for 30 days.</p>
   </div>`
 
   try {
