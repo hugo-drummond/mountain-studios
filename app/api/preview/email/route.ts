@@ -36,6 +36,56 @@ function baseUrl(req: NextRequest): string {
   return new URL(req.url).origin
 }
 
+const NOTIFY_TO = 'ant88835@gmail.com'
+
+// Every exit from this route must leave a trace on the lead. The R2000 pitch
+// email broke for two days behind a 403 that wrote nothing anywhere, and the
+// only way anyone found out was noticing an absence. Read-modify-write is
+// safe enough at this volume and needs no migration.
+async function stampLead(leadId: string | null, line: string): Promise<void> {
+  if (!leadId) return
+  try {
+    const { data } = await crmAdmin()
+      .from('leads')
+      .select('notes')
+      .eq('id', leadId)
+      .maybeSingle()
+
+    const existing = data?.notes ? `${data.notes}\n` : ''
+    await crmAdmin()
+      .from('leads')
+      .update({ notes: `${existing}${line}` })
+      .eq('id', leadId)
+  } catch (err) {
+    // Never let the trace-writing itself break the route it is observing.
+    console.error('[preview/email] could not stamp lead:', err instanceof Error ? err.message : err)
+  }
+}
+
+// Only alerts when a lead row exists. A bot hitting this endpoint directly
+// carries no leadId, so this stays quiet for exactly the traffic that would
+// otherwise make it noise.
+async function alertFailure(leadId: string | null, reason: string, email: string): Promise<void> {
+  if (!leadId) return
+  try {
+    await sendMail({
+      to: NOTIFY_TO,
+      subject: `Preview email FAILED — ${reason}`,
+      html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
+        <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Preview email failed</p>
+        <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">${escapeHtml(reason)}</p>
+        <div style="font-size:13px;color:#94a3b8;margin:0 0 16px;">
+          <p style="margin:0 0 8px;"><strong>Visitor email:</strong> ${escapeHtml(email)}</p>
+          <p style="margin:0;"><strong>Lead ID:</strong> ${escapeHtml(leadId)}</p>
+        </div>
+        <p style="font-size:13px;color:#94a3b8;margin:0;">The visitor did not get their preview link or the R2000 pitch.</p>
+      </div>`,
+    })
+  } catch (err) {
+    console.error('[preview/email] failure alert could not be sent:', err instanceof Error ? err.message : err)
+  }
+}
+
 
 export async function POST(req: NextRequest) {
   const rateLimitResult = await rateLimit(req, 'preview/email')
@@ -60,15 +110,19 @@ export async function POST(req: NextRequest) {
   }
 
   if (!html || !businessName || !email) {
+    await stampLead(leadId, 'Preview email FAILED — missing required fields.')
     return NextResponse.json(
       { success: false, error: 'html, businessName and email are required' },
       { status: 400 },
     )
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    await stampLead(leadId, 'Preview email FAILED — invalid email format.')
     return NextResponse.json({ success: false, error: 'Invalid email format' }, { status: 400 })
   }
   if (Buffer.byteLength(html, 'utf8') > MAX_HTML_BYTES) {
+    await stampLead(leadId, 'Preview email FAILED — preview too large to email.')
+    await alertFailure(leadId, 'preview too large to email', email)
     return NextResponse.json({ success: false, error: 'Preview is too large to email' }, { status: 413 })
   }
 
@@ -77,6 +131,8 @@ export async function POST(req: NextRequest) {
   // verdict from Google blocks.
   const recaptchaResult = await verifyRecaptcha(recaptchaToken)
   if (blockedAsBot(recaptchaResult)) {
+    await stampLead(leadId, `Preview email FAILED — blocked as bot (${recaptchaResult.verdict}).`)
+    await alertFailure(leadId, `blocked as bot (${recaptchaResult.verdict})`, email)
     return NextResponse.json(
       { success: false, error: 'Request blocked. Refresh the page and try again.' },
       { status: 403 },
@@ -107,7 +163,10 @@ export async function POST(req: NextRequest) {
       throw error
     }
   } catch (err) {
-    console.error('[preview/email] could not save preview:', err instanceof Error ? err.message : err)
+    const errMsg = err instanceof Error ? err.message : err
+    console.error('[preview/email] could not save preview:', errMsg)
+    await stampLead(leadId, `Preview email FAILED — could not save the preview: ${errMsg}.`)
+    await alertFailure(leadId, 'could not save the preview', email)
     return NextResponse.json({ success: false, error: 'Could not save the preview' }, { status: 502 })
   }
 
@@ -140,11 +199,15 @@ export async function POST(req: NextRequest) {
       html: emailHtml,
     })
   } catch (err) {
-    console.error('[preview/email] send failed:', err instanceof Error ? err.message : err)
+    const errMsg = err instanceof Error ? err.message : err
+    console.error('[preview/email] send failed:', errMsg)
     // The preview is saved even though the email failed, but the point of this
     // endpoint is the email — never report success for a mail that did not go.
+    await stampLead(leadId, `Preview email FAILED — SES rejected the send: ${errMsg}.`)
+    await alertFailure(leadId, 'SES rejected the send', email)
     return NextResponse.json({ success: false, error: 'Could not send the email', url }, { status: 502 })
   }
 
+  await stampLead(leadId, 'Preview email sent.')
   return NextResponse.json({ success: true, url })
 }

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
+import { sendMail } from '@/lib/ses'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { attachReferralToLead } from '@/lib/referral'
@@ -21,6 +22,24 @@ import { attachReferralToLead } from '@/lib/referral'
 //   reCAPTCHA result is used to label the row, not block the save. A junk row
 //   that is flagged is cheaper than a real lead that is silently discarded.
 // ---------------------------------------------------------------------------
+
+const NOTIFY_TO = 'ant88835@gmail.com'
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function row(label: string, value?: string | null): string {
+  if (!value) return ''
+  return `<tr>
+    <td style="padding:6px 16px 6px 0;color:#64748b;font-size:13px;vertical-align:top;white-space:nowrap;">${escapeHtml(label)}</td>
+    <td style="padding:6px 0;color:#0f172a;font-size:14px;">${escapeHtml(value)}</td>
+  </tr>`
+}
 
 interface Payload {
   email?: string
@@ -193,6 +212,38 @@ export async function POST(req: NextRequest) {
   // The wizard's first step is where most referred visitors are first
   // identifiable, so the code is stamped here as well as on the final submit.
   await attachReferralToLead(leadId, body.refCode)
+
+  // Notify Ant as soon as the visitor provides their email at the gate
+  if (leadId) {
+    try {
+      const pagesText = storedPages.length > 0 ? storedPages.join(', ') : null
+
+      const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:600px;">
+      <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 4px;">Wizard lead — brief not finished</p>
+      <h1 style="font-size:22px;color:#0f172a;margin:0 0 4px;">${escapeHtml(storedBusinessName || storedEmail)}</h1>
+      <p style="font-size:14px;color:#64748b;margin:0 0 20px;">Captured at the email step, before the preview. They have not sent the brief.</p>
+      <table style="border-collapse:collapse;width:100%;">
+        ${row('Email', storedEmail)}
+        ${row('Business name', storedBusinessName)}
+        ${row('Business type', storedBusinessType)}
+        ${row('Pages wanted', pagesText)}
+        ${row('Style', storedStyle)}
+      </table>
+      <p style="font-size:13px;color:#64748b;margin:24px 0 0;">
+        In the CRM: <a href="https://crm.mountainstudios.co.za" style="color:#535f77;">crm.mountainstudios.co.za</a>
+      </p>
+    </div>`
+
+      await sendMail({
+        to: NOTIFY_TO,
+        subject: `Wizard lead — ${storedBusinessName || storedEmail}`,
+        html,
+        replyTo: storedEmail,
+      })
+    } catch (err) {
+      console.error('[brief/partial] notification email failed:', err instanceof Error ? err.message : err)
+    }
+  }
 
   return NextResponse.json({ success: true, leadId })
 }

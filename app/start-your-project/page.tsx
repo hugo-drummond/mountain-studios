@@ -386,19 +386,48 @@ function StartYourProjectInner() {
           // guards this effect to one generation call, so this runs once per
           // generated preview, not on every re-render.
           if (gateEmail) {
-            fetch('/api/preview/email', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                html: res.data.html,
-                businessName,
-                email: gateEmail,
-                leadId,
-                recaptchaToken,
-              }),
-            }).catch(() => {
-              // Never surface to the visitor — the on-screen preview already succeeded.
-            })
+            // A v3 token is single use. The one above was already spent by
+            // preview/generate, and Google rejects a reused token as
+            // timeout-or-duplicate — which blockedAsBot() reads as a real
+            // verdict and 403s, silently costing the visitor their email.
+            ;(async () => {
+              let emailToken: string | undefined
+              if (executeRecaptcha) {
+                try {
+                  emailToken = await Promise.race([
+                    executeRecaptcha('preview_email'),
+                    new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 5000)),
+                  ])
+                } catch {
+                  // A token we could not mint must not cost the visitor the email.
+                  // No token is not a bot signal — blockedAsBot() is an allowlist.
+                }
+              }
+
+              try {
+                const emailRes = await fetch('/api/preview/email', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    html: res.data.html,
+                    businessName,
+                    email: gateEmail,
+                    leadId,
+                    recaptchaToken: emailToken,
+                  }),
+                })
+                // fetch() does not throw on HTTP errors — only network failure throws.
+                // A 403 or 502 here is infrastructure failure, not a visitor mistake, and
+                // must be logged. The preview itself succeeded on screen, so never surface
+                // this to the visitor. The server-side stamp is the remedy.
+                if (!emailRes.ok) {
+                  const body = await emailRes.text().catch(() => '')
+                  console.error(`[preview/email] HTTP ${emailRes.status}:`, body.slice(0, 200))
+                }
+              } catch {
+                // Never surface to the visitor — the on-screen preview already succeeded.
+              }
+            })()
           }
         } else {
           setPreviewError(true)
