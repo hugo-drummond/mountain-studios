@@ -21,6 +21,7 @@ import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 const MAX_HTML_BYTES = 10 * 1024 * 1024
 const TTL_DAYS = 30
 const REPLY_TO = process.env.PREVIEW_REPLY_TO || 'hugodrum6@gmail.com'
+const FROM_ADDRESS = 'Hugo Drummond <hugo@mountainstudios.co.za>'
 
 function escapeHtml(value: string): string {
   return value
@@ -172,25 +173,16 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
 
-  // Tested one variable at a time against a fresh Gmail address. The original
-  // Spam verdict was an http://localhost link, not the copy. A bare Calendly
-  // URL in the body then pushed it out of Primary on its own, so it is gone —
-  // the R2000 price is in its place and did not cost the Primary placement.
-  const emailHtml = `<p>Hi,</p>
-<p>We put together a preview of your website:</p>
-<p><a href="${url}">${url}</a></p>
-<p>If you like it, we can finish it off and hand it over for R2000, tweaks included.</p>
-<p>Have a look and let me know what you think &mdash; just reply to this email.</p>
-<p>Hugo</p>
-<p>The link stays live for 30 days.</p>`
-
+  // Text only, no HTML part, no price, no second link. Each of these was
+  // isolated by a single-variable test against a fresh Gmail address: an
+  // http://localhost link landed it in Spam, and a Calendly URL and the R2000
+  // price each pushed it out of Primary on their own. The sell lives on the
+  // preview page instead, which the reader opens seconds later.
   const emailText = `Hi,
 
 We put together a preview of your website:
 
 ${url}
-
-If you like it, we can finish it off and hand it over for R2000, tweaks included.
 
 Have a look and let me know what you think — just reply to this email.
 
@@ -201,11 +193,10 @@ The link stays live for 30 days.`
   try {
     await sendMail({
       to: email,
-      subject: `Your website preview — ${businessName}`,
-      html: emailHtml,
+      subject: `preview for ${businessName}`,
       text: emailText,
       replyTo: REPLY_TO,
-      fromName: 'Hugo Drummond',
+      from: FROM_ADDRESS,
     })
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : err

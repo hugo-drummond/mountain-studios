@@ -35,27 +35,33 @@ export async function sendMail({
   html,
   text,
   replyTo,
-  fromName,
+  from,
 }: {
   to: string
   subject: string
-  html: string
+  html?: string
   text?: string
   replyTo?: string
-  fromName?: string
+  from?: string
 }): Promise<string | undefined> {
+  if (!html && !text) {
+    throw new Error('sendMail needs an html body, a text body, or both.')
+  }
+
   const res = await client().send(
     new SendEmailCommand({
-      FromEmailAddress: fromName ? `${fromName} <hello@mountainstudios.co.za>` : FROM,
+      FromEmailAddress: from ?? FROM,
       Destination: { ToAddresses: [to] },
       ReplyToAddresses: replyTo ? [replyTo] : undefined,
       Content: {
         Simple: {
           Subject: { Data: subject, Charset: 'UTF-8' },
           Body: {
-            Html: { Data: html, Charset: 'UTF-8' },
-            // A text/plain alternative. HTML-only is a bulk-mail signal to
-            // Gmail and pushes the message out of Primary into Promotions.
+            // Either part may be omitted. The wizard preview sends text only:
+            // a pure text/plain message is rarely filed into Promotions, and
+            // that email is genuinely a one-to-one note to someone who asked
+            // for it seconds earlier. Everything else still sends HTML.
+            ...(html ? { Html: { Data: html, Charset: 'UTF-8' } } : {}),
             ...(text ? { Text: { Data: text, Charset: 'UTF-8' } } : {}),
           },
         },
