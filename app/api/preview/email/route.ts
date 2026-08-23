@@ -20,7 +20,7 @@ import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 
 const MAX_HTML_BYTES = 10 * 1024 * 1024
 const TTL_DAYS = 30
-const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min'
+const REPLY_TO = process.env.PREVIEW_REPLY_TO || 'hugodrum6@gmail.com'
 
 function escapeHtml(value: string): string {
   return value
@@ -172,26 +172,25 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
 
-  // Deliberately plain. Heavy inline styling, brand colours and a styled
-  // button read as a marketing template to Gmail; a short, mostly-text note
-  // with a visible URL reads as a person writing to a person.
-  const emailHtml = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#000000;">
-    <p>Hi,</p>
-    <p>We put together a preview of your website. You can open it here:<br><a href="${url}">${url}</a></p>
-    <p>If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call &mdash; <a href="${escapeHtml(CALENDLY_URL)}">book 15 minutes</a>.</p>
-    <p>Looking forward to hearing from you<br>Hugo</p>
-    <p>The link stays live for 30 days.</p>
-  </div>`
+  // No inline CSS, no price, no third-party CTA link, one link only. Gmail
+  // reads a price in the body and a booking-CTA link as Promotions signals,
+  // and it was landing in the Promotions tab with all of them present. The
+  // R2000 offer moves to the reply.
+  const emailHtml = `<p>Hi,</p>
+<p>We put together a preview of your website:</p>
+<p><a href="${url}">${url}</a></p>
+<p>Have a look and let me know what you think &mdash; just reply to this email.</p>
+<p>Hugo</p>
+<p>The link stays live for 30 days.</p>`
 
   const emailText = `Hi,
 
-We put together a preview of your website. You can open it here:
+We put together a preview of your website:
+
 ${url}
 
-If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call — book 15 minutes here:
-${CALENDLY_URL}
+Have a look and let me know what you think — just reply to this email.
 
-Looking forward to hearing from you
 Hugo
 
 The link stays live for 30 days.`
@@ -202,6 +201,7 @@ The link stays live for 30 days.`
       subject: `Your website preview — ${businessName}`,
       html: emailHtml,
       text: emailText,
+      replyTo: REPLY_TO,
       fromName: 'Hugo Drummond',
     })
   } catch (err) {
