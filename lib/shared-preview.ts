@@ -15,6 +15,11 @@ import { randomBytes } from 'crypto'
 
 export const PREVIEW_BUCKET = 'previews'
 
+// The offer block's booking link. Kept out of the preview email on purpose —
+// a bare Calendly URL in the body pushed that mail out of Gmail's Primary tab
+// on its own. On the page it costs nothing.
+const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min'
+
 // Base58: no 0/O/I/l, so a token read aloud down a phone line survives.
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 const TOKEN_LENGTH = 16
@@ -133,6 +138,87 @@ export function decorate(html: string, opts: { token: string; businessName: stri
       submit.disabled=false;submit.textContent='Send my details';
     });
   };
+})();
+</script>
+<style>
+#ms-offer{position:fixed;right:24px;bottom:24px;width:360px;max-width:calc(100vw - 32px);z-index:2147483646;box-sizing:border-box;background:#fff;border:1px solid rgba(30,35,51,.08);border-radius:18px;padding:26px 26px 22px;box-shadow:0 24px 70px rgba(20,18,30,.28);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;opacity:0;transform:translateY(14px);visibility:hidden;transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1),visibility 0s .42s}
+#ms-offer.ms-offer-on{opacity:1;transform:none;visibility:visible;transition-delay:0s}
+#ms-offer .ms-o-eyebrow{margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#745762}
+#ms-offer .ms-o-lead{margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:26px;line-height:1.25;letter-spacing:-.01em;color:#1e2333}
+#ms-offer .ms-o-body{margin:0 0 20px;font-size:14px;line-height:1.6;color:#64748b}
+#ms-offer .ms-o-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#ms-offer .ms-o-claim{flex:1 1 auto;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:13px 22px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .18s ease}
+#ms-offer .ms-o-claim:hover{background:#2e3550}
+#ms-offer .ms-o-call{font-size:14px;color:#535f77;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+#ms-offer .ms-o-call:hover{color:#1e2333}
+#ms-offer .ms-o-close{position:absolute;top:12px;right:12px;width:30px;height:30px;padding:0;border:none;background:none;color:#94a3b8;font-size:20px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer}
+#ms-offer .ms-o-close:hover{color:#1e2333;background:#f4f3f8}
+#ms-offer button:focus-visible,#ms-offer a:focus-visible{outline:2px solid #745762;outline-offset:2px}
+@media (max-width:520px){#ms-offer{right:12px;left:12px;bottom:12px;width:auto;padding:22px 22px 18px}#ms-offer .ms-o-actions{gap:12px}#ms-offer .ms-o-claim{flex:1 1 100%}}
+@media (prefers-reduced-motion:reduce){#ms-offer{transform:none;transition:opacity .01s,visibility 0s}}
+</style>
+<div id="ms-offer" role="region" aria-label="Offer from Mountain Studios">
+  <button type="button" class="ms-o-close" id="ms-offer-close" aria-label="Dismiss">&times;</button>
+  <p class="ms-o-eyebrow">${name}</p>
+  <p class="ms-o-lead">This one&rsquo;s yours for R2000.</p>
+  <p class="ms-o-body">We finish it off and hand it over, tweaks included. Happy to walk you through it first.</p>
+  <div class="ms-o-actions">
+    <button type="button" class="ms-o-claim" id="ms-offer-claim">I want this website</button>
+    <a class="ms-o-call" id="ms-offer-call" href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener">Book 15 minutes</a>
+  </div>
+</div>
+<script>
+(function(){
+  var card=document.getElementById('ms-offer');
+  if(!card)return;
+  var pill=document.getElementById('ms-cta');
+  var modal=document.getElementById('ms-modal');
+  var KEY='ms-offer-${opts.token}';
+  var shown=false;
+  var dwell;
+
+  // Per token, per visit. A different preview on the same device is a
+  // different conversation and gets asked again.
+  function seen(){try{return sessionStorage.getItem(KEY)==='1';}catch(e){return false;}}
+  function remember(){try{sessionStorage.setItem(KEY,'1');}catch(e){}}
+
+  function teardown(){window.removeEventListener('scroll',onScroll);clearTimeout(dwell);}
+
+  function show(){
+    if(shown||seen())return;
+    // Never talk over the claim form.
+    if(modal&&modal.style.display==='flex')return;
+    shown=true;remember();teardown();
+    if(pill)pill.style.display='none';
+    card.classList.add('ms-offer-on');
+  }
+
+  function hide(){card.classList.remove('ms-offer-on');if(pill)pill.style.display='';}
+
+  function depth(){
+    var total=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);
+    if(total<=0)return 0;
+    return (window.pageYOffset+window.innerHeight)/total;
+  }
+
+  function onScroll(){if(window.pageYOffset>0&&depth()>=0.5)show();}
+
+  if(seen())return;
+  window.addEventListener('scroll',onScroll,{passive:true});
+  // A preview short enough that half is already on screen would never cross
+  // the scroll threshold. Time covers it rather than letting the offer
+  // silently never appear.
+  dwell=setTimeout(show,45000);
+
+  document.getElementById('ms-offer-close').onclick=hide;
+  document.getElementById('ms-offer-call').onclick=function(){remember();};
+  document.getElementById('ms-offer-claim').onclick=function(){
+    hide();
+    if(modal)modal.style.display='flex';
+  };
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&card.classList.contains('ms-offer-on'))hide();
+  });
 })();
 </script>`
 
