@@ -21,7 +21,6 @@ import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 const MAX_HTML_BYTES = 10 * 1024 * 1024
 const TTL_DAYS = 30
 const REPLY_TO = process.env.PREVIEW_REPLY_TO || 'hugodrum6@gmail.com'
-const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min'
 
 function escapeHtml(value: string): string {
   return value
@@ -173,15 +172,15 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
 
-  // No inline CSS, no price, no styled button. The Promotions/Spam problem was
-  // an http://localhost link, not the copy — but keep the shape plain and the
-  // links bare, and re-add anything else one at a time so a regression is
-  // attributable. The R2000 price is still out; it moves to the reply.
+  // Tested one variable at a time against a fresh Gmail address. The original
+  // Spam verdict was an http://localhost link, not the copy. A bare Calendly
+  // URL in the body then pushed it out of Primary on its own, so it is gone —
+  // the R2000 price is in its place and did not cost the Primary placement.
   const emailHtml = `<p>Hi,</p>
 <p>We put together a preview of your website:</p>
 <p><a href="${url}">${url}</a></p>
-<p>Have a look and let me know what you think &mdash; just reply to this email, or grab 15 minutes in my diary if that's easier:</p>
-<p><a href="${escapeHtml(CALENDLY_URL)}">${escapeHtml(CALENDLY_URL)}</a></p>
+<p>If you like it, we can finish it off and hand it over for R2000, tweaks included.</p>
+<p>Have a look and let me know what you think &mdash; just reply to this email.</p>
 <p>Hugo</p>
 <p>The link stays live for 30 days.</p>`
 
@@ -191,9 +190,9 @@ We put together a preview of your website:
 
 ${url}
 
-Have a look and let me know what you think — just reply to this email, or grab 15 minutes in my diary if that's easier:
+If you like it, we can finish it off and hand it over for R2000, tweaks included.
 
-${CALENDLY_URL}
+Have a look and let me know what you think — just reply to this email.
 
 Hugo
 
