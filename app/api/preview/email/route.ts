@@ -172,20 +172,37 @@ export async function POST(req: NextRequest) {
 
   const url = `${baseUrl(req)}/p/${token}`
 
-  const emailHtml = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;font-size:15px;color:#334155;line-height:1.6;">
-    <p style="margin:0 0 20px;">Hi,</p>
-    <p style="margin:0 0 20px;">We put together a preview of your website. You can open it here: <a href="${url}" style="color:#1e2333;">Open your preview</a></p>
-    <p style="margin:0 0 20px;">If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call &mdash; <a href="${escapeHtml(CALENDLY_URL)}" style="color:#1e2333;">book 15 minutes</a>.</p>
-    <p style="margin:0 0 4px;">Looking forward to hearing from you</p>
-    <p style="margin:0 0 24px;">Hugo</p>
-    <p style="font-size:13px;color:#94a3b8;margin:0;">The link stays live for 30 days.</p>
+  // Deliberately plain. Heavy inline styling, brand colours and a styled
+  // button read as a marketing template to Gmail; a short, mostly-text note
+  // with a visible URL reads as a person writing to a person.
+  const emailHtml = `<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#000000;">
+    <p>Hi,</p>
+    <p>We put together a preview of your website. You can open it here:<br><a href="${url}">${url}</a></p>
+    <p>If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call &mdash; <a href="${escapeHtml(CALENDLY_URL)}">book 15 minutes</a>.</p>
+    <p>Looking forward to hearing from you<br>Hugo</p>
+    <p>The link stays live for 30 days.</p>
   </div>`
+
+  const emailText = `Hi,
+
+We put together a preview of your website. You can open it here:
+${url}
+
+If you like it, we can finish it off and hand it over for R2000, tweaks included. Happy to walk you through it on a quick call — book 15 minutes here:
+${CALENDLY_URL}
+
+Looking forward to hearing from you
+Hugo
+
+The link stays live for 30 days.`
 
   try {
     await sendMail({
       to: email,
       subject: `Your website preview — ${businessName}`,
       html: emailHtml,
+      text: emailText,
+      fromName: 'Hugo Drummond',
     })
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : err

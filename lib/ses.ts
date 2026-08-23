@@ -33,22 +33,31 @@ export async function sendMail({
   to,
   subject,
   html,
+  text,
   replyTo,
+  fromName,
 }: {
   to: string
   subject: string
   html: string
+  text?: string
   replyTo?: string
+  fromName?: string
 }): Promise<string | undefined> {
   const res = await client().send(
     new SendEmailCommand({
-      FromEmailAddress: FROM,
+      FromEmailAddress: fromName ? `${fromName} <hello@mountainstudios.co.za>` : FROM,
       Destination: { ToAddresses: [to] },
       ReplyToAddresses: replyTo ? [replyTo] : undefined,
       Content: {
         Simple: {
           Subject: { Data: subject, Charset: 'UTF-8' },
-          Body: { Html: { Data: html, Charset: 'UTF-8' } },
+          Body: {
+            Html: { Data: html, Charset: 'UTF-8' },
+            // A text/plain alternative. HTML-only is a bulk-mail signal to
+            // Gmail and pushes the message out of Primary into Promotions.
+            ...(text ? { Text: { Data: text, Charset: 'UTF-8' } } : {}),
+          },
         },
       },
     }),
