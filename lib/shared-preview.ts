@@ -141,21 +141,21 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 })();
 </script>
 <style>
-#ms-offer{position:fixed;right:24px;bottom:24px;width:360px;max-width:calc(100vw - 32px);z-index:2147483646;box-sizing:border-box;background:#fff;border:1px solid rgba(30,35,51,.08);border-radius:18px;padding:26px 26px 22px;box-shadow:0 24px 70px rgba(20,18,30,.28);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;opacity:0;transform:translateY(14px);visibility:hidden;transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1),visibility 0s .42s}
-#ms-offer.ms-offer-on{opacity:1;transform:none;visibility:visible;transition-delay:0s}
-#ms-offer .ms-o-eyebrow{margin:0 0 10px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#745762}
-#ms-offer .ms-o-lead{margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:26px;line-height:1.25;letter-spacing:-.01em;color:#1e2333}
-#ms-offer .ms-o-body{margin:0 0 20px;font-size:14px;line-height:1.6;color:#64748b}
-#ms-offer .ms-o-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-#ms-offer .ms-o-claim{flex:1 1 auto;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:13px 22px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .18s ease}
+#ms-offer{position:fixed;top:50%;left:50%;width:540px;max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);overflow:auto;z-index:2147483646;box-sizing:border-box;background:#fff;border:1px solid rgba(30,35,51,.08);border-radius:27px;padding:39px 39px 33px;box-shadow:0 30px 90px rgba(20,18,30,.3);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;opacity:0;transform:translate(-50%,-50%) translateY(14px);visibility:hidden;transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1),visibility 0s .42s}
+#ms-offer.ms-offer-on{opacity:1;transform:translate(-50%,-50%);visibility:visible;transition-delay:0s}
+#ms-offer .ms-o-eyebrow{margin:0 0 15px;font-size:16px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#745762}
+#ms-offer .ms-o-lead{margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:39px;line-height:1.2;letter-spacing:-.01em;color:#1e2333}
+#ms-offer .ms-o-body{margin:0 0 30px;font-size:21px;line-height:1.6;color:#64748b}
+#ms-offer .ms-o-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+#ms-offer .ms-o-claim{flex:1 1 auto;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:20px 33px;font-size:22px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .18s ease}
 #ms-offer .ms-o-claim:hover{background:#2e3550}
-#ms-offer .ms-o-call{font-size:14px;color:#535f77;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+#ms-offer .ms-o-call{font-size:21px;color:#535f77;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 #ms-offer .ms-o-call:hover{color:#1e2333}
-#ms-offer .ms-o-close{position:absolute;top:12px;right:12px;width:30px;height:30px;padding:0;border:none;background:none;color:#94a3b8;font-size:20px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer}
+#ms-offer .ms-o-close{position:absolute;top:18px;right:18px;width:45px;height:45px;padding:0;border:none;background:none;color:#94a3b8;font-size:30px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer}
 #ms-offer .ms-o-close:hover{color:#1e2333;background:#f4f3f8}
 #ms-offer button:focus-visible,#ms-offer a:focus-visible{outline:2px solid #745762;outline-offset:2px}
-@media (max-width:520px){#ms-offer{right:12px;left:12px;bottom:12px;width:auto;padding:22px 22px 18px}#ms-offer .ms-o-actions{gap:12px}#ms-offer .ms-o-claim{flex:1 1 100%}}
-@media (prefers-reduced-motion:reduce){#ms-offer{transform:none;transition:opacity .01s,visibility 0s}}
+@media (max-width:560px){#ms-offer{max-width:calc(100vw - 24px);padding:32px 26px 26px;border-radius:22px}#ms-offer .ms-o-eyebrow{font-size:13px;margin-bottom:12px}#ms-offer .ms-o-lead{font-size:31px;margin-bottom:14px}#ms-offer .ms-o-body{font-size:17px;margin-bottom:24px}#ms-offer .ms-o-actions{gap:16px}#ms-offer .ms-o-claim{flex:1 1 100%;font-size:19px;padding:17px 28px}#ms-offer .ms-o-call{font-size:17px}#ms-offer .ms-o-close{top:14px;right:14px;width:38px;height:38px;font-size:26px}}
+@media (prefers-reduced-motion:reduce){#ms-offer{transform:translate(-50%,-50%);transition:opacity .01s,visibility 0s}}
 </style>
 <div id="ms-offer" role="region" aria-label="Offer from Mountain Studios">
   <button type="button" class="ms-o-close" id="ms-offer-close" aria-label="Dismiss">&times;</button>
@@ -179,6 +179,11 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 
   // Per token, per visit. A different preview on the same device is a
   // different conversation and gets asked again.
+  //
+  // Recorded when they act on it — dismiss, claim, or book — never merely
+  // because it appeared. Someone who scrolled past mid-read and reloaded has
+  // decided nothing, and stamping them on display meant the offer was spent
+  // without ever being read.
   function seen(){try{return sessionStorage.getItem(KEY)==='1';}catch(e){return false;}}
   function remember(){try{sessionStorage.setItem(KEY,'1');}catch(e){}}
 
@@ -188,12 +193,12 @@ export function decorate(html: string, opts: { token: string; businessName: stri
     if(shown||seen())return;
     // Never talk over the claim form.
     if(modal&&modal.style.display==='flex')return;
-    shown=true;remember();teardown();
+    shown=true;teardown();
     if(pill)pill.style.display='none';
     card.classList.add('ms-offer-on');
   }
 
-  function hide(){card.classList.remove('ms-offer-on');if(pill)pill.style.display='';}
+  function hide(){remember();card.classList.remove('ms-offer-on');if(pill)pill.style.display='';}
 
   function depth(){
     var total=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);
@@ -203,13 +208,9 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 
   function onScroll(){if(window.pageYOffset>0&&depth()>=0.5)show();}
 
-  if(seen())return;
-  window.addEventListener('scroll',onScroll,{passive:true});
-  // A preview short enough that half is already on screen would never cross
-  // the scroll threshold. Time covers it rather than letting the offer
-  // silently never appear.
-  dwell=setTimeout(show,45000);
-
+  // Wired before anything can return early. A card on screen must be
+  // clickable no matter how it got there — handlers left unattached behind an
+  // early return is a dead dialog the visitor cannot even close.
   document.getElementById('ms-offer-close').onclick=hide;
   document.getElementById('ms-offer-call').onclick=function(){remember();};
   document.getElementById('ms-offer-claim').onclick=function(){
@@ -219,6 +220,13 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&card.classList.contains('ms-offer-on'))hide();
   });
+
+  if(seen())return;
+  window.addEventListener('scroll',onScroll,{passive:true});
+  // A preview short enough that half is already on screen would never cross
+  // the scroll threshold. Time covers it rather than letting the offer
+  // silently never appear.
+  dwell=setTimeout(show,45000);
 })();
 </script>`
 
