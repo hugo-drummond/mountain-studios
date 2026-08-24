@@ -115,9 +115,19 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   var form=document.getElementById('ms-form');
   var err=document.getElementById('ms-error');
   var submit=document.getElementById('ms-submit');
-  open.onclick=function(){modal.style.display='flex';};
-  cancel.onclick=function(){modal.style.display='none';};
-  modal.onclick=function(e){if(e.target===modal)modal.style.display='none';};
+  // The stored page is somebody else's site. Its CSS can outrank an inline
+  // style, so every change to the dialog's visibility is set !important.
+  function openForm(){
+    modal.style.setProperty('display','flex','important');
+    modal.style.setProperty('visibility','visible','important');
+    modal.style.setProperty('opacity','1','important');
+    modal.style.setProperty('pointer-events','auto','important');
+  }
+  function closeForm(){modal.style.setProperty('display','none','important');}
+  window.msOpenPreviewForm=openForm;
+  open.onclick=openForm;
+  cancel.onclick=closeForm;
+  modal.onclick=function(e){if(e.target===modal)closeForm();};
   form.onsubmit=function(e){
     e.preventDefault();
     submit.disabled=true;submit.textContent='Sending…';err.style.display='none';
@@ -130,9 +140,9 @@ export function decorate(html: string, opts: { token: string; businessName: stri
       })
     }).then(function(r){return r.json();}).then(function(d){
       if(!d.success)throw new Error(d.error||'Something went wrong.');
-      form.style.display='none';
-      document.getElementById('ms-done').style.display='block';
-      document.getElementById('ms-cta').style.display='none';
+      form.style.setProperty('display','none','important');
+      document.getElementById('ms-done').style.setProperty('display','block','important');
+      document.getElementById('ms-cta').style.setProperty('display','none','important');
     }).catch(function(e){
       err.textContent=e.message||'Could not send. Please try again.';
       err.style.display='block';
@@ -210,10 +220,27 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   // clickable no matter how it got there — handlers left unattached behind an
   // early return is a dead dialog the visitor cannot even close.
   document.getElementById('ms-offer-close').onclick=hide;
-  document.getElementById('ms-offer-claim').onclick=function(){
-    hide();
-    if(modal)modal.style.display='flex';
-  };
+  function openForm(){
+    if(!modal)return;
+    if(window.msOpenPreviewForm){window.msOpenPreviewForm();return;}
+    modal.style.setProperty('display','flex','important');
+    modal.style.setProperty('visibility','visible','important');
+    modal.style.setProperty('opacity','1','important');
+    modal.style.setProperty('pointer-events','auto','important');
+  }
+  document.getElementById('ms-offer-claim').onclick=function(){hide();openForm();};
+  // The generated site's own scripts can swallow a click with a capture-phase
+  // handler on the document, which kills an onclick on the button before it
+  // ever runs. Listening at capture on the document goes earlier than anything
+  // the stored page can attach. Both paths are idempotent, so a click that
+  // survives to the onclick simply repeats work already done.
+  document.addEventListener('click',function(e){
+    var t=e.target;
+    while(t&&t!==document){
+      if(t.id==='ms-offer-claim'){hide();openForm();return;}
+      t=t.parentNode;
+    }
+  },true);
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&card.classList.contains('ms-offer-on'))hide();
   });
