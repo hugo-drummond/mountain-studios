@@ -89,7 +89,8 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   </button>
 </div>
 <div id="ms-modal" role="dialog" aria-modal="true" aria-labelledby="ms-modal-title" style="display:none;position:fixed;inset:0;z-index:2147483647;background:rgba(10,12,20,.75);align-items:center;justify-content:center;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <div style="background:#fff;border-radius:18px;padding:28px;max-width:400px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);">
+  <div style="position:relative;background:#fff;border-radius:18px;padding:28px;max-width:400px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);">
+    <button type="button" id="ms-form-close" aria-label="Close" style="position:absolute;top:12px;right:12px;width:34px;height:34px;padding:0;border:none;background:none;color:#94a3b8;font-size:26px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer;">&times;</button>
     <h2 id="ms-modal-title" style="margin:0 0 6px;font-size:20px;color:#1e2333;font-weight:600;">Let&rsquo;s get it live</h2>
     <p id="ms-modal-sub" style="margin:0 0 18px;font-size:14px;color:#64748b;line-height:1.6;">Leave your details and we&rsquo;ll be in touch about ${name}.</p>
     <form id="ms-form">
@@ -124,6 +125,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   function closeForm(){modal.style.setProperty('display','none','important');}
   window.msOpenPreviewForm=openForm;
   open.onclick=openForm;
+  document.getElementById('ms-form-close').onclick=closeForm;
   modal.onclick=function(e){if(e.target===modal)closeForm();};
   form.onsubmit=function(e){
     e.preventDefault();
