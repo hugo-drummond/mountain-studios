@@ -276,6 +276,10 @@ function StartYourProjectInner() {
   const [previewLoading, setPreviewLoading] = useState(false)
   const [previewProgress, setPreviewProgress] = useState(0)
   const [previewError, setPreviewError] = useState(false)
+  // The saved copy of this preview, returned by /api/preview/email. It is the
+  // page the visitor's email links to, and unlike the throwaway blob it carries
+  // the offer card and claim form that decorate() injects at serve time.
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const previewRequested = useRef(false)
 
   // Index 0 on the server, randomised after hydration — picking at render time
@@ -335,6 +339,7 @@ function StartYourProjectInner() {
     setPreviewProgress(0)
     setPreviewError(false)
     setPreviewHtml(null)
+    setPreviewUrl(null)
 
     // Attempt reCAPTCHA check if available, but the preview must never be gated
     // on its result. A customer on a network that cannot reach Google, or with
@@ -420,9 +425,18 @@ function StartYourProjectInner() {
                 // A 403 or 502 here is infrastructure failure, not a visitor mistake, and
                 // must be logged. The preview itself succeeded on screen, so never surface
                 // this to the visitor. The server-side stamp is the remedy.
+                const raw = await emailRes.text().catch(() => '')
+                let parsed: { url?: string } | null = null
+                try {
+                  parsed = raw ? JSON.parse(raw) : null
+                } catch {
+                  parsed = null
+                }
+                // The preview is saved before the mail is sent, so a failed send
+                // still leaves a durable link worth opening.
+                if (parsed?.url) setPreviewUrl(parsed.url)
                 if (!emailRes.ok) {
-                  const body = await emailRes.text().catch(() => '')
-                  console.error(`[preview/email] HTTP ${emailRes.status}:`, body.slice(0, 200))
+                  console.error(`[preview/email] HTTP ${emailRes.status}:`, raw.slice(0, 200))
                 }
               } catch {
                 // Never surface to the visitor — the on-screen preview already succeeded.
@@ -971,6 +985,14 @@ function StartYourProjectInner() {
             <div
               onClick={() => {
                 if (previewHtml && !previewLoading) {
+                  // The saved page carries the offer card and the claim form; the
+                  // blob is the raw generated HTML and carries neither. Prefer the
+                  // saved one, and fall back to the blob only while the save is
+                  // still in flight or has failed outright.
+                  if (previewUrl) {
+                    window.open(previewUrl, '_blank')
+                    return
+                  }
                   const blob = new Blob([previewHtml], { type: 'text/html' })
                   const url = URL.createObjectURL(blob)
                   window.open(url, '_blank')
