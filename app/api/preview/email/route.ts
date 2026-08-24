@@ -4,6 +4,7 @@ import { sendMail } from '@/lib/ses'
 import { makeToken, PREVIEW_BUCKET } from '@/lib/shared-preview'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
+import { waitUntil } from '@vercel/functions'
 
 // ---------------------------------------------------------------------------
 // POST /api/preview/email
@@ -190,24 +191,36 @@ Hugo
 
 The link stays live for 30 days.`
 
-  try {
-    await sendMail({
-      to: email,
-      subject: `preview for ${businessName}`,
-      text: emailText,
-      replyTo: REPLY_TO,
-      from: FROM_ADDRESS,
-    })
-  } catch (err) {
-    const errMsg = err instanceof Error ? err.message : err
-    console.error('[preview/email] send failed:', errMsg)
-    // The preview is saved even though the email failed, but the point of this
-    // endpoint is the email — never report success for a mail that did not go.
-    await stampLead(leadId, `Preview email FAILED — SES rejected the send: ${errMsg}.`)
-    await alertFailure(leadId, 'SES rejected the send', email)
-    return NextResponse.json({ success: false, error: 'Could not send the email', url }, { status: 502 })
+  // The preview is stored and its link exists the moment the row is written, so
+  // the response no longer waits on SES. The wizard opens this url as soon as the
+  // visitor clicks their preview, and a send taking several seconds meant a prompt
+  // click fell back to the undecorated blob — the offer card never appeared for
+  // exactly the people keenest to look.
+  //
+  // Delivery is detached, not abandoned: the same stamps and the same failure
+  // alert still run, just after the response has gone.
+  const deliver = async (): Promise<void> => {
+    try {
+      await sendMail({
+        to: email,
+        subject: `preview for ${businessName}`,
+        text: emailText,
+        replyTo: REPLY_TO,
+        from: FROM_ADDRESS,
+      })
+      await stampLead(leadId, 'Preview email sent.')
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : err
+      console.error('[preview/email] send failed:', errMsg)
+      await stampLead(leadId, `Preview email FAILED — SES rejected the send: ${errMsg}.`)
+      await alertFailure(leadId, 'SES rejected the send', email)
+    }
   }
 
-  await stampLead(leadId, 'Preview email sent.')
+  // On Vercel, waitUntil() keeps the function alive past the response. Locally it
+  // does not reliably hold a dev process open, so there the send is awaited.
+  if (process.env.VERCEL) waitUntil(deliver())
+  else await deliver()
+
   return NextResponse.json({ success: true, url })
 }
