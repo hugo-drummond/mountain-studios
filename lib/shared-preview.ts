@@ -163,6 +163,14 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 #ms-offer .ms-o-close{position:absolute;top:18px;right:18px;width:45px;height:45px;padding:0;border:none;background:none;color:#94a3b8;font-size:30px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer}
 #ms-offer .ms-o-close:hover{color:#1e2333;background:#f4f3f8}
 #ms-offer button:focus-visible,#ms-offer a:focus-visible{outline:2px solid #745762;outline-offset:2px}
+/* The stored page is a generated client site, and its stylesheet sets
+   pointer-events:none on a button while it is pressed. That makes the button
+   transparent to hit-testing between mousedown and mouseup, so the browser
+   fires click on the parent element and the button's own handler never runs.
+   Measured on a live preview: pointer-events went auto -> none -> auto across
+   one press, and the click landed on .ms-o-actions. Every control injected
+   here has to opt out of that rule explicitly. */
+#ms-offer button,#ms-offer button:active,#ms-cta button,#ms-cta button:active,#ms-modal button,#ms-modal button:active,#ms-modal a,#ms-modal a:active{pointer-events:auto!important}
 @media (max-width:560px){#ms-offer{max-width:calc(100vw - 24px);padding:32px 26px 26px;border-radius:22px}#ms-offer .ms-o-eyebrow{font-size:13px;margin-bottom:12px}#ms-offer .ms-o-lead{font-size:31px;margin-bottom:14px}#ms-offer .ms-o-body{font-size:17px;margin-bottom:24px}#ms-offer .ms-o-claim{font-size:19px;padding:17px 28px}#ms-offer .ms-o-close{top:14px;right:14px;width:38px;height:38px;font-size:26px}}
 @media (prefers-reduced-motion:reduce){#ms-offer{transform:translate(-50%,-50%);transition:opacity .01s,visibility 0s}}
 </style>
@@ -229,18 +237,6 @@ export function decorate(html: string, opts: { token: string; businessName: stri
     modal.style.setProperty('pointer-events','auto','important');
   }
   document.getElementById('ms-offer-claim').onclick=function(){hide();openForm();};
-  // The generated site's own scripts can swallow a click with a capture-phase
-  // handler on the document, which kills an onclick on the button before it
-  // ever runs. Listening at capture on the document goes earlier than anything
-  // the stored page can attach. Both paths are idempotent, so a click that
-  // survives to the onclick simply repeats work already done.
-  document.addEventListener('click',function(e){
-    var t=e.target;
-    while(t&&t!==document){
-      if(t.id==='ms-offer-claim'){hide();openForm();return;}
-      t=t.parentNode;
-    }
-  },true);
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'&&card.classList.contains('ms-offer-on'))hide();
   });
