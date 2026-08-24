@@ -102,7 +102,8 @@ export function decorate(html: string, opts: { token: string; businessName: stri
     </form>
     <div id="ms-done" style="display:none;text-align:center;padding:8px 0;">
       <p style="margin:0 0 6px;font-size:18px;color:#1e2333;font-weight:600;">Got it.</p>
-      <p style="margin:0;font-size:14px;color:#64748b;line-height:1.6;">We&rsquo;ll be in touch shortly.</p>
+      <p style="margin:0 0 18px;font-size:14px;color:#64748b;line-height:1.6;">We&rsquo;ll be in touch shortly.</p>
+      <a href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener" style="display:inline-block;font-size:14px;color:#535f77;text-decoration:underline;text-underline-offset:3px;">Book 15 minutes</a>
     </div>
   </div>
 </div>
@@ -146,15 +147,13 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 #ms-offer .ms-o-eyebrow{margin:0 0 15px;font-size:16px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#745762}
 #ms-offer .ms-o-lead{margin:0 0 18px;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:39px;line-height:1.2;letter-spacing:-.01em;color:#1e2333}
 #ms-offer .ms-o-body{margin:0 0 30px;font-size:21px;line-height:1.6;color:#64748b}
-#ms-offer .ms-o-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
-#ms-offer .ms-o-claim{flex:1 1 auto;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:20px 33px;font-size:22px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .18s ease}
+#ms-offer .ms-o-actions{display:block}
+#ms-offer .ms-o-claim{display:block;width:100%;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:20px 33px;font-size:22px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .18s ease}
 #ms-offer .ms-o-claim:hover{background:#2e3550}
-#ms-offer .ms-o-call{font-size:21px;color:#535f77;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-#ms-offer .ms-o-call:hover{color:#1e2333}
 #ms-offer .ms-o-close{position:absolute;top:18px;right:18px;width:45px;height:45px;padding:0;border:none;background:none;color:#94a3b8;font-size:30px;line-height:1;border-radius:50%;font-family:inherit;cursor:pointer}
 #ms-offer .ms-o-close:hover{color:#1e2333;background:#f4f3f8}
 #ms-offer button:focus-visible,#ms-offer a:focus-visible{outline:2px solid #745762;outline-offset:2px}
-@media (max-width:560px){#ms-offer{max-width:calc(100vw - 24px);padding:32px 26px 26px;border-radius:22px}#ms-offer .ms-o-eyebrow{font-size:13px;margin-bottom:12px}#ms-offer .ms-o-lead{font-size:31px;margin-bottom:14px}#ms-offer .ms-o-body{font-size:17px;margin-bottom:24px}#ms-offer .ms-o-actions{gap:16px}#ms-offer .ms-o-claim{flex:1 1 100%;font-size:19px;padding:17px 28px}#ms-offer .ms-o-call{font-size:17px}#ms-offer .ms-o-close{top:14px;right:14px;width:38px;height:38px;font-size:26px}}
+@media (max-width:560px){#ms-offer{max-width:calc(100vw - 24px);padding:32px 26px 26px;border-radius:22px}#ms-offer .ms-o-eyebrow{font-size:13px;margin-bottom:12px}#ms-offer .ms-o-lead{font-size:31px;margin-bottom:14px}#ms-offer .ms-o-body{font-size:17px;margin-bottom:24px}#ms-offer .ms-o-claim{font-size:19px;padding:17px 28px}#ms-offer .ms-o-close{top:14px;right:14px;width:38px;height:38px;font-size:26px}}
 @media (prefers-reduced-motion:reduce){#ms-offer{transform:translate(-50%,-50%);transition:opacity .01s,visibility 0s}}
 </style>
 <div id="ms-offer" role="region" aria-label="Offer from Mountain Studios">
@@ -163,8 +162,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   <p class="ms-o-lead">This one&rsquo;s yours for R2000.</p>
   <p class="ms-o-body">We finish it off and hand it over, tweaks included. Happy to walk you through it first.</p>
   <div class="ms-o-actions">
-    <button type="button" class="ms-o-claim" id="ms-offer-claim">I want this website</button>
-    <a class="ms-o-call" id="ms-offer-call" href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener">Book 15 minutes</a>
+    <button type="button" class="ms-o-claim" id="ms-offer-claim">Yes, I want it</button>
   </div>
 </div>
 <script>
@@ -212,7 +210,6 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   // clickable no matter how it got there — handlers left unattached behind an
   // early return is a dead dialog the visitor cannot even close.
   document.getElementById('ms-offer-close').onclick=hide;
-  document.getElementById('ms-offer-call').onclick=function(){remember();};
   document.getElementById('ms-offer-claim').onclick=function(){
     hide();
     if(modal)modal.style.display='flex';
