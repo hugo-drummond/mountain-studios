@@ -89,10 +89,33 @@ export async function POST(req: NextRequest, { params }: { params: { token: stri
   // the CRM creates the lead, so an interested business can never fall through.
   try {
     if (preview.lead_id) {
-      await crmAdmin()
+      // Keep every number we have. A scraped business line and the number the
+      // person actually typed are both worth holding, so neither overwrites the
+      // other: the first number found lands in phone, a second and different one
+      // in director_phone, and notes carry the whole claim either way. Until now
+      // this branch wrote only the two status flags, so on any preview that
+      // already had a lead — which is every wizard preview — the claimant's name
+      // and number never reached the CRM screen a rep actually works.
+      const { data: lead } = await crmAdmin()
         .from('leads')
-        .update({ crm_status: 'qualified', mockup_ready: true })
+        .select('phone, director_phone, director_name, notes')
         .eq('id', preview.lead_id)
+        .maybeSingle()
+
+      const digitsOnly = (value: string | null | undefined): string => (value || '').replace(/\D/g, '')
+      const updates: Record<string, unknown> = { crm_status: 'qualified', mockup_ready: true }
+
+      if (!lead?.director_name) updates.director_name = name
+      if (!lead?.phone) {
+        updates.phone = phone
+      } else if (digitsOnly(lead.phone) !== digitsOnly(phone) && !lead.director_phone) {
+        updates.director_phone = phone
+      }
+
+      const claimLine = `Claimed their website preview.\nContact: ${name} · ${phone}${note ? `\n\nThey said:\n${note}` : ''}`
+      updates.notes = lead?.notes ? `${lead.notes}\n\n${claimLine}` : claimLine
+
+      await crmAdmin().from('leads').update(updates).eq('id', preview.lead_id)
     } else {
       await crmAdmin().from('leads').insert({
         business_name: preview.business_name,
