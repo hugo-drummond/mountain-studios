@@ -91,19 +91,18 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 <div id="ms-modal" role="dialog" aria-modal="true" aria-labelledby="ms-modal-title" style="display:none;position:fixed;inset:0;z-index:2147483647;background:rgba(10,12,20,.75);align-items:center;justify-content:center;padding:20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <div style="background:#fff;border-radius:18px;padding:28px;max-width:400px;width:100%;box-shadow:0 30px 80px rgba(0,0,0,.4);">
     <h2 id="ms-modal-title" style="margin:0 0 6px;font-size:20px;color:#1e2333;font-weight:600;">Let&rsquo;s get it live</h2>
-    <p style="margin:0 0 18px;font-size:14px;color:#64748b;line-height:1.6;">Leave your details and we&rsquo;ll be in touch about ${name}.</p>
+    <p id="ms-modal-sub" style="margin:0 0 18px;font-size:14px;color:#64748b;line-height:1.6;">Leave your details and we&rsquo;ll be in touch about ${name}.</p>
     <form id="ms-form">
       <input id="ms-name" required placeholder="Your name" style="width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin-bottom:10px;border:1px solid #e2e0ea;border-radius:10px;outline:none;">
-      <input id="ms-phone" required placeholder="Phone number" inputmode="tel" style="width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin-bottom:10px;border:1px solid #e2e0ea;border-radius:10px;outline:none;">
-      <textarea id="ms-note" rows="3" placeholder="Anything you'd change? (optional)" style="width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin-bottom:14px;border:1px solid #e2e0ea;border-radius:10px;outline:none;resize:vertical;"></textarea>
+      <input id="ms-phone" required placeholder="Phone number" inputmode="tel" style="width:100%;box-sizing:border-box;font-size:15px;padding:12px 14px;margin-bottom:14px;border:1px solid #e2e0ea;border-radius:10px;outline:none;">
       <p id="ms-error" style="display:none;margin:0 0 10px;font-size:13px;color:#b91c1c;"></p>
       <button type="submit" id="ms-submit" style="width:100%;background:#1e2333;color:#fff;border:none;border-radius:999px;padding:13px;font-size:15px;font-weight:600;cursor:pointer;">Send my details</button>
-      <button type="button" id="ms-cancel" style="width:100%;background:none;border:none;color:#94a3b8;font-size:13px;padding:12px 0 0;cursor:pointer;">Not right now</button>
     </form>
-    <div id="ms-done" style="display:none;text-align:center;padding:8px 0;">
-      <p style="margin:0 0 6px;font-size:18px;color:#1e2333;font-weight:600;">Got it.</p>
-      <p style="margin:0 0 18px;font-size:14px;color:#64748b;line-height:1.6;">We&rsquo;ll be in touch shortly.</p>
-      <a href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener" style="display:inline-block;font-size:14px;color:#535f77;text-decoration:underline;text-underline-offset:3px;">Book 15 minutes</a>
+    <div id="ms-done" style="display:none;text-align:center;padding:4px 0 6px;">
+      <p style="margin:0 0 10px;font-size:27px;color:#1e2333;font-weight:600;line-height:1.2;">Got it.</p>
+      <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.6;">We&rsquo;ll be in touch shortly.</p>
+      <p style="margin:0 0 10px;font-size:15px;color:#1e2333;line-height:1.6;">Want to get things live sooner?</p>
+      <a href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener" style="display:inline-block;font-size:19px;font-weight:600;color:#1e2333;text-decoration:underline;text-underline-offset:4px;">Book 15 minutes</a>
     </div>
   </div>
 </div>
@@ -111,7 +110,6 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 (function(){
   var modal=document.getElementById('ms-modal');
   var open=document.getElementById('ms-cta-open');
-  var cancel=document.getElementById('ms-cancel');
   var form=document.getElementById('ms-form');
   var err=document.getElementById('ms-error');
   var submit=document.getElementById('ms-submit');
@@ -126,7 +124,6 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   function closeForm(){modal.style.setProperty('display','none','important');}
   window.msOpenPreviewForm=openForm;
   open.onclick=openForm;
-  cancel.onclick=closeForm;
   modal.onclick=function(e){if(e.target===modal)closeForm();};
   form.onsubmit=function(e){
     e.preventDefault();
@@ -136,11 +133,13 @@ export function decorate(html: string, opts: { token: string; businessName: stri
       body:JSON.stringify({
         name:document.getElementById('ms-name').value,
         phone:document.getElementById('ms-phone').value,
-        note:document.getElementById('ms-note').value
+        note:''
       })
     }).then(function(r){return r.json();}).then(function(d){
       if(!d.success)throw new Error(d.error||'Something went wrong.');
       form.style.setProperty('display','none','important');
+      document.getElementById('ms-modal-title').style.setProperty('display','none','important');
+      document.getElementById('ms-modal-sub').style.setProperty('display','none','important');
       document.getElementById('ms-done').style.setProperty('display','block','important');
       document.getElementById('ms-cta').style.setProperty('display','none','important');
     }).catch(function(e){
