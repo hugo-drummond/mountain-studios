@@ -275,17 +275,25 @@ export async function POST(req: NextRequest) {
   // Tell the sender we got it. Separate from the notification above on
   // purpose: this one failing must not fail the enquiry, which is already
   // recorded. Logged rather than swallowed so a silent outage is findable.
+  //
+  // Not sent to anyone who said the preview was not quite right. They have
+  // just told us what is wrong with it, and a template thanking them for
+  // getting in touch answers criticism with an acknowledgement that ignores
+  // it. Those get a written reply from Hugo instead — the notification above
+  // carries their comments and is set to reply straight to them.
   let confirmationSent = false
-  try {
-    const confirmation = renderEnquiryConfirmation(fullName)
-    await sendMail({
-      to: email,
-      subject: confirmation.subject,
-      html: confirmation.html,
-    })
-    confirmationSent = true
-  } catch (err) {
-    console.error('[brief/submit] confirmation email failed:', err instanceof Error ? err.message : err)
+  if (!notQuite) {
+    try {
+      const confirmation = renderEnquiryConfirmation(fullName)
+      await sendMail({
+        to: email,
+        subject: confirmation.subject,
+        html: confirmation.html,
+      })
+      confirmationSent = true
+    } catch (err) {
+      console.error('[brief/submit] confirmation email failed:', err instanceof Error ? err.message : err)
+    }
   }
 
   if (!leadId && !emailed) {
