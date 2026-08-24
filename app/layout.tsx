@@ -88,6 +88,29 @@ export default function RootLayout({
             gtag('config', 'G-RCLN88JPLC');
           `}
         </Script>
+
+        {/* Meta Pixel. Marketing site only — the CRM is a separate app and stays
+            untagged, and /p/[token] is a route handler rather than a page, so a
+            generated client preview never inherits this. Tagging someone else's
+            mock site would be wrong.
+
+            The id is public by nature: it ships in the client bundle either way,
+            so it lives here beside the GA4 id rather than in an env var that
+            would only suggest a secrecy it does not have. */}
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '1435033932015736');
+            fbq('track', 'PageView');
+          `}
+        </Script>
       </head>
       <body className={`${sourceSans.variable} ${playfair.variable}`} style={{ fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
         <script
