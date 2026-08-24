@@ -6,18 +6,30 @@ import { crmAdmin } from '@/lib/crm'
 // simplicity — the most common tuning (bumping a limit up or down) is a
 // one-line change and a redeploy, not a database migration that must run on
 // every replica.
+//
+// These are keyed per IP, and an IP is not a person. An office behind one NAT
+// is one IP, and a South African mobile network puts very large numbers of
+// users behind shared CGNAT addresses — so paid traffic arriving on mobile
+// collides with itself. A refused submission is an enquiry nobody ever hears
+// about, so the forms that cost nothing to serve are set high enough that a
+// real person can never reach them, while the routes that spend money on every
+// call stay deliberately tight. reCAPTCHA is not a second line of defence
+// here: blockedAsBot() is an allowlist, so a request with no token is allowed
+// through, and these numbers are what actually stands between an open endpoint
+// and a bill.
 export const LIMITS = Object.freeze({
-  'preview/generate': { limit: 5, windowSeconds: 3600 },
-  'preview/scrape': { limit: 5, windowSeconds: 3600 },
-  'preview/email': { limit: 5, windowSeconds: 3600 },
-  // Raised from 5. This one limit is now shared by three ways in — the popup
-  // form, the chatbot handing over a site and an email, and the audit page —
-  // so five an hour was being spent faster than it was written for. It is also
-  // per IP, and an office behind one NAT is one IP.
-  'audit/submit': { limit: 15, windowSeconds: 3600 },
+  // Costs money on every call — DeepSeek plus image lookups.
+  'preview/generate': { limit: 8, windowSeconds: 3600 },
+  'preview/email': { limit: 10, windowSeconds: 3600 },
+  // Costs money on every call — two PageSpeed requests, a headless Chrome
+  // render and a send. Shared by three ways in: the popup form, the chatbot
+  // handing over a site and an email, and the audit page.
+  'audit/submit': { limit: 20, windowSeconds: 3600 },
   'audit/run': { limit: 10, windowSeconds: 3600 },
-  'contact/submit': { limit: 5, windowSeconds: 3600 },
-  'referral/submit': { limit: 5, windowSeconds: 3600 },
+  // A database row and an email or two. Cheap to serve, and the one most
+  // likely to be reached by a real customer on a shared mobile IP.
+  'contact/submit': { limit: 25, windowSeconds: 3600 },
+  'referral/submit': { limit: 25, windowSeconds: 3600 },
   // Higher than the rest on purpose: this one is a beacon, not a form. A
   // partner's link landing on a busy office network is many people through one
   // IP, and a refused visit is a referral that silently never gets counted.
