@@ -1,13 +1,18 @@
 # Status
 
-Last updated: 16 August 2026 (referral attribution live; header dropdowns, icon-only chat launcher, packages and pricing removed)
+Last updated: 24 August 2026 (preview offer card fixed and reworked; claim details now reach the lead; every public form verified end to end; rate limits raised for paid traffic; delete added to the CRM)
 
 ## Where things stand
 
-The rep hiring page, client previews, and contact capture are built and live. The Get Started
-wizard and homepage now write leads to the database. All core infrastructure has been tested
-end to end in production, and test data is being cleared. Most work is done; what remains is
-a single Vercel configuration (reCAPTCHA v3 key pair registration) and manual cleanup.
+Every public form was submitted on production on 24 August and the resulting row read back:
+the wizard gate step and final brief, the contact form, the free audit popup, referral signup,
+the chatbot both for plain capture and for running an audit, and the preview claim form. All
+recorded correctly and all their emails arrived in the Primary inbox on a fresh Gmail. Test
+data has been cleared.
+
+Not yet verified: `/brief/[id]` and the brief invitation email that leads to it, the careers
+application, `/momentbank`, and the daily audit sweep cron. The Meta Pixel is still not
+installed, which is the one thing that actually gates advertising.
 Refer to [TODO.md](TODO.md) for the list.
 
 ## Careers page — `/careers/sales-rep`
@@ -890,11 +895,148 @@ throws: an unknown code, a dead partner or a failed update is logged and swallow
 lead is the thing that matters; the attribution is a nice-to-have on top of it.
 </callout>
 
+## Preview offer card and claim — 24 August 2026
+
+The card carrying the R2000 offer asked twice: a claim button beside a Calendly link, where
+the button read as navigation but actually opened a form. It is now one full-width button,
+**Yes, I want it**, and the booking link moved to the screen after submitting, so nothing is
+lost if the visitor never books. The form itself is down to name and phone — the optional
+"anything you'd change" note and the "Not right now" button are gone, replaced by a small
+close control in the corner. On success the form's heading and subtitle hide, so **Got it.**
+leads rather than sitting under a prompt for details already given.
+
+<callout>
+
+**The click was being eaten by the client's own stylesheet.** For two days the button looked
+completely dead: nothing happened on click, no console error. Every check said it was fine —
+the handler was attached, the button was topmost at its own centre, `pointer-events` computed
+as `auto`, nothing overlapped it, and a programmatic `.click()` opened the form correctly.
+
+Instrumenting the raw events was what found it. `pointerdown` and `mousedown` hit the button;
+`pointerup`, `mouseup` and `click` all landed on its **parent**. The stored page is a
+generated client site, and its stylesheet sets `pointer-events: none` on a pressed button — a
+double-click guard. Measured across one press, ours went `auto` → `none` → `auto`, so mid-press
+it was transparent to hit-testing and the browser fired `click` on the parent instead.
+
+The fix is one CSS rule opting every injected control out of it, `!important`, covering the
+offer card, the pill, and the dialog's own buttons — the form's submit would have failed the
+same way one step later.
+
+**Two earlier fixes were pushed at causes that had not been measured** (an inline style being
+outranked, then a capture-phase handler swallowing the click) and neither did anything. The
+capture-phase one could never have worked: it walked up from the event target, and the target
+was the button's parent, not a child. Instrument first.
+
+</callout>
+
+**The claim now reaches the lead.** It previously wrote `crm_status` and `mockup_ready` and
+nothing else, so on any preview that already had a lead — which is every wizard preview — the
+name and number the person typed reached `shared_previews` and the notification email but
+never the CRM screen a rep works. A rep saw "qualified, mockup ready" and had nothing to call.
+
+Every number is kept rather than chosen between: the first number found goes to `phone`, a
+second and different one to `director_phone`, and the notes carry the full claim in all cases.
+Comparison is on digits only, so one number formatted two ways is not stored twice.
+
+**The website preview is now the same page as the emailed one.** Clicking the preview in the
+wizard opened a `blob:` URL of the raw generated HTML, which never passes through `decorate()`
+and so carried no offer card at all — the R2000 pitch existed only on the emailed link.
+`/api/preview/email` already returned the saved url; the wizard was discarding the response and
+reading only `res.ok`. It now opens `/p/<token>`, so there is one implementation and no way for
+the two to drift.
+
+That route also no longer waits on SES before replying. The link exists the moment the row is
+written, and waiting on the send meant a prompt click fell back to the blob — the people
+keenest to look were the ones who never saw the offer. Delivery is detached with `waitUntil`,
+not abandoned: the same `sent`/`FAILED` stamp on the lead and the same failure alert still run.
+
+## No automated reply on "not quite right" — 24 August 2026
+
+Someone who says the preview missed has just told us what is wrong with it, and a template
+thanking them for getting in touch answers that criticism by ignoring it. The confirmation is
+skipped on that path only; the notification still fires, carries their comments and replies
+straight to them.
+
+Worth being deliberate about: those people now get **nothing** until a human replies. The
+acknowledgement was what covered the gap between submitting and hearing back, so a slow day
+now reads as silence to the person who just said the work missed.
+
+## Rate limits — raised for paid traffic, 24 August 2026
+
+Limits are keyed per IP, and an IP is not a person. A South African mobile network puts very
+large numbers of users behind shared CGNAT addresses, so paid traffic arriving on mobile
+collides with itself — and a refused submission is an enquiry nobody ever hears about. Five an
+hour on the contact form was the sharpest edge of that, right as ad spend starts.
+
+What costs nothing to serve is now well clear of any real person; what spends money on every
+call stays tight.
+
+| Route | Was | Now | Why |
+| --- | --- | --- | --- |
+| `contact/submit` | 5 | 25 | a row and two emails |
+| `referral/submit` | 5 | 25 | a row and an email |
+| `preview/email` | 5 | 10 | storage and a send |
+| `preview/generate` | 5 | 8 | DeepSeek and image lookups |
+| `audit/submit` | 15 | 20 | two PageSpeed calls, a Chrome render, a send |
+
+reCAPTCHA cannot cover the difference: `blockedAsBot()` is an allowlist, so a request carrying
+no token is allowed through, and these numbers are what actually stands between an open
+endpoint and a bill.
+
+`/api/preview/scrape` is deleted. It had no caller in either repo, took any URL it was handed,
+fetched it and paid DeepSeek to read it.
+
+## Deleting leads — the rule kept, the prohibition dropped (CRM repo)
+
+Deleting a scraped lead used to be refused outright, because the row is what stops the scraper
+re-adding it: `run.js` upserts on `google_place_id`, so a plain delete undoes itself on the
+next run over that area. That reasoning only ever covered scraped leads. Of 1,783 leads, 1,770
+are scraped and 13 are inbound — and an inbound lead has no place id, so nothing recreates it.
+
+`mountainstudios.suppressed_places` now records the place id of any scraped lead that is
+deleted, `run.js` filters against it before the upsert, and the delete route refuses to remove
+the row if the tombstone did not land — deleting anyway would look like the button silently
+not working when the lead reappeared days later.
+
+Delete is on the Lead List, Bad Data and Audits, per row and over a multi-select, both going
+through one route that takes a list of ids so the suppression step cannot be present in one
+path and missing from the other. Deleting an audit also removes its PDF, stored as `<id>.pdf`
+and unreachable once the row is gone. Admin only, through the service client: `authenticated`
+holds no DELETE grant.
+
+`Mark dead` stays alongside `Delete` on Bad Data. Retiring is right for a lead worth keeping
+out of the pool but not worth destroying; deleting is for rows that should never have existed.
+The 503 `email_crawl_empty` rows still have phone numbers — neither button is right for those.
+
+## Still open — 24 August 2026
+
+- **Meta Pixel is not installed.** GA4 (`G-RCLN88JPLC`) is in the root layout and nothing else
+  is. This is the one item that genuinely gates advertising.
+- The referral payout trigger `leads_referral_payout` needs
+  `alter table mountainstudios.leads disable trigger leads_referral_payout;` run by hand before
+  the referral page copy can honestly change to "25% of the deal up to R1000".
+- The wizard's brief confirmation email needs rewriting — it sends and arrives correctly, the
+  copy is the problem.
+- `/brief/[id]` and its invitation email have never been verified end to end.
+- `/momentbank` writes to `creator_leads` and appears in no document. Decide whether it belongs
+  on this domain.
+- The bottom pill still reads "I want this website" while the card says "Yes, I want it" — the
+  same action under two names.
+- Emails are still HTML-only with no `text/plain` part, and the apex still has no SPF record.
+- `/api/audit/run` is unauthenticated: anyone holding a row's uuid can re-run an audit and
+  re-trigger its email.
+
+**`TODO.md` is stale** and contradicts this file: it still claims the contact form and the
+referral form have no backend. Both are live and were verified against the database on
+24 August.
+
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
 - `rep_applications` — applications plus the model's score, verdict, summary and flags
 - `shared_previews` — token, expiry, view counts, claim details
 - `chat_questions` — chatbot question log and approved-answer cache. Created 14 August,
   recording. `service_role` grant is explicit in the migration, not inherited
-- Buckets `rep-cvs` and `previews`, both private, service-role access only
+- `suppressed_places` — google_place_id of every scraped lead deliberately deleted. Read by
+  `run.js` before its upsert; without that filter a deleted lead returns on the next scrape
+- Buckets `rep-cvs`, `previews` and `audit-reports`, all private, service-role access only
 
