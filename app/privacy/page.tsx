@@ -76,7 +76,8 @@ export default function Privacy() {
             <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: '#1a1a2e' }}>Amazon Web Services (SES)</strong> — sending and receiving our email.</li>
             <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: '#1a1a2e' }}>Vercel</strong> — website hosting.</li>
             <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: '#1a1a2e' }}>Google</strong> — Analytics, reCAPTCHA (spam prevention), and PageSpeed Insights for audit reports.</li>
-            <li><strong style={{ color: '#1a1a2e' }}>DeepSeek</strong> — powers our chat assistant. Contact details you type into the chat are stripped out before the conversation is sent to DeepSeek.</li>
+            <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: '#1a1a2e' }}>DeepSeek</strong> — powers our chat assistant. Contact details you type into the chat are stripped out before the conversation is sent to DeepSeek.</li>
+            <li><strong style={{ color: '#1a1a2e' }}>Meta (Facebook)</strong> — advertising measurement. Our pages carry the Meta pixel. Where you submit a form, your name, email address and phone number are hashed before being sent to Meta, so we can measure which adverts led to enquiries.</li>
           </ul>
           <p style={paragraph}>
             Some of these providers process data outside South Africa. We only use providers that offer an adequate level of protection, as POPIA requires.
@@ -101,7 +102,7 @@ export default function Privacy() {
 
           <h2 style={sectionHeading}>Cookies and analytics</h2>
           <p style={paragraph}>
-            Google Analytics sets cookies to measure how the site is used. Google reCAPTCHA runs on our forms to block automated abuse. Your browser settings can block these, and the site will still work.
+            Google Analytics sets cookies to measure how the site is used. Google reCAPTCHA runs on our forms to block automated abuse. The Meta pixel sets cookies so we can measure which of our adverts lead to enquiries, and show relevant adverts on Facebook and Instagram. Your browser settings can block these, and the site will still work.
           </p>
 
           <h2 style={sectionHeading}>Security</h2>

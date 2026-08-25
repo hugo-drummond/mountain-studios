@@ -29,7 +29,7 @@ const REF_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 const REF_CODE_LENGTH = 8
 
 // crypto.randomBytes, not Math.random or a hash of the clock. A referral code
-// is the thing that will decide who gets paid R1000, so a code that can be
+// is the thing that will decide who gets paid, so a code that can be
 // guessed from the time it was issued is a code someone else can claim. It
 // costs nothing to make it unguessable.
 //
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Recorded, never used to discard — see the note in audit/submit. This form
-  // pays R1000, so a referral that vanishes silently costs someone real money.
+  // pays out real money, so a referral that vanishes silently costs someone.
   const honeypotTripped = !!body.website
   if (honeypotTripped) {
     console.warn(
@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
             </div>
             <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:28px 0 12px;">Terms</p>
             <ul style="font-size:14px;color:#334155;line-height:1.7;margin:0 0 20px;padding:0 0 0 18px;">
-              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Payout.</strong> R1000 per referred business, paid via EFT once they&rsquo;ve signed and paid their deposit.</li>
+              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Payout.</strong> 25% of the deal up to R1000 per referred business, paid via EFT once they&rsquo;ve signed and paid their deposit.</li>
               <li style="margin-bottom:10px;"><strong style="color:#0f172a;">No limit.</strong> Refer as many businesses as you like &mdash; there&rsquo;s no cap on how much you can earn.</li>
               <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Your link doesn&rsquo;t expire.</strong> Use it whenever a referral comes up.</li>
               <li><strong style="color:#0f172a;">Questions?</strong> Email <a href="mailto:hello@mountainstudios.co.za" style="color:#7d3d4f;">hello@mountainstudios.co.za</a>.</li>

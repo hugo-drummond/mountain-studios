@@ -154,7 +154,7 @@ export default function Home() {
           <WhatsAppIcon />
           WhatsApp us<span className="ms-hours"> · Mon–Fri 9:00–17:00</span>
         </a>
-        <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
+        <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn up to R1000 →</a>
       </div>
 
       {/* HERO SECTION */}
@@ -563,7 +563,7 @@ export default function Home() {
             margin: '0 0 1rem',
             lineHeight: 1.2,
           }}>
-            Know a business that needs a website?<br />We'll pay you <em style={{ fontStyle: 'italic' }}>R1000</em>.
+            Know a business that needs a website?<br />We'll pay you up to <em style={{ fontStyle: 'italic' }}>R1000</em>.
           </h2>
 
           <div className="ms-cards-3" style={{
@@ -573,7 +573,7 @@ export default function Home() {
             marginTop: '2.5rem',
             textAlign: 'center',
           }}>
-            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They sign and pay a deposit — you get R1000.'].map((text, i) => (
+            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They sign and pay a deposit — you get 25% of the deal up to R1000.'].map((text, i) => (
               <div key={i}>
                 <div style={{
                   fontFamily: 'var(--font-playfair), Georgia, serif',

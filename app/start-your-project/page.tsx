@@ -672,7 +672,7 @@ function StartYourProjectInner() {
             <WhatsAppIcon />
             WhatsApp us<span style={{ display: 'none' }}> · Mon–Fri 9:00–17:00</span>
           </a>
-          <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn R1000 →</a>
+          <a href="/refer/terms" style={{ textDecoration: 'none', color: 'rgba(255,255,255,0.72)' }}>Refer & earn up to R1000 →</a>
         </div>
 
         {/* GRADIENT BAND — same 5-stop gradient as the homepage hero / PageShell */}

@@ -7,7 +7,7 @@ export default function ReferTerms() {
   return (
     <PageShell
       eyebrow="REFERRAL PROGRAM"
-      title={<>Refer a business. Get <em style={{ fontStyle: 'italic' }}>R1000</em>.</>}
+      title={<>Refer a business. Get up to <em style={{ fontStyle: 'italic' }}>R1000</em>.</>}
       sub="How the program works, in full."
       ctaOverride={<ReferralForm />}
     >
@@ -38,7 +38,7 @@ export default function ReferTerms() {
           }}>
             <li style={{ marginBottom: '0.75rem' }}>Give us your details and we email you a unique referral link.</li>
             <li style={{ marginBottom: '0.75rem' }}>Forward it to any business that needs a website.</li>
-            <li>They sign with us and pay their deposit — you get R1000.</li>
+            <li>They sign with us and pay their deposit — you get 25% of the deal up to R1000.</li>
           </ol>
 
           <h2 style={{
@@ -59,7 +59,7 @@ export default function ReferTerms() {
             lineHeight: 1.7,
           }}>
             <li style={{ marginBottom: '1rem' }}>
-              <strong style={{ color: '#1a1a2e' }}>Payout.</strong> R1000 per referred business, paid via EFT once they've signed and paid their deposit.
+              <strong style={{ color: '#1a1a2e' }}>Payout.</strong> 25% of the deal up to R1000 per referred business, paid via EFT once they've signed and paid their deposit.
             </li>
             <li style={{ marginBottom: '1rem' }}>
               <strong style={{ color: '#1a1a2e' }}>No limit.</strong> Refer as many businesses as you like — there's no cap on how much you can earn.

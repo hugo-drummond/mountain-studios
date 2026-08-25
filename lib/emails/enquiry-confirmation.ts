@@ -26,10 +26,13 @@ export function renderEnquiryConfirmation(fullName: string): { subject: string; 
   const html = `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:600px;margin:0 auto;">
     <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:0 0 16px;">Mountain Studios</p>
     <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 20px;">${greeting}</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">Thanks for reaching out to us. We&rsquo;ll do some research and be in contact shortly for further information.</p>
-    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 4px;">Thanks</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 24px;">Thank you for your enquiry. We will take a deeper look and get back to you within one business day.</p>
+    <p style="font-size:15px;color:#334155;line-height:1.6;margin:0 0 4px;">Chat soon.</p>
     <p style="font-size:15px;color:#334155;line-height:1.6;margin:0;">Hugo</p>
   </div>`
 
-  return { subject: 'Thanks for reaching out to us', html }
+  // The subject deliberately does not repeat the opening line. "Thanks for
+  // reaching out" as both subject and first sentence read as a template
+  // twice over.
+  return { subject: 'We have your enquiry', html }
 }
