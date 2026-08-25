@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 24 August 2026 (preview offer card fixed and reworked; claim details now reach the lead; every public form verified end to end; rate limits raised for paid traffic; delete added to the CRM)
+Last updated: 24 August 2026 (preview offer card fixed and reworked; claim details now reach the lead; every public form verified end to end; rate limits raised for paid traffic; delete added to the CRM; Meta Pixel and conversion events live)
 
 ## Where things stand
 
@@ -11,8 +11,10 @@ recorded correctly and all their emails arrived in the Primary inbox on a fresh 
 data has been cleared.
 
 Not yet verified: `/brief/[id]` and the brief invitation email that leads to it, the careers
-application, `/momentbank`, and the daily audit sweep cron. The Meta Pixel is still not
-installed, which is the one thing that actually gates advertising.
+application, `/momentbank`, and the daily audit sweep cron.
+
+The Meta Pixel is installed and reporting conversions, so nothing technical now blocks
+advertising.
 Refer to [TODO.md](TODO.md) for the list.
 
 ## Careers page — `/careers/sales-rep`
@@ -1008,10 +1010,64 @@ holds no DELETE grant.
 out of the pool but not worth destroying; deleting is for rows that should never have existed.
 The 503 `email_crawl_empty` rows still have phone numbers — neither button is right for those.
 
+## Meta Pixel and conversion events — 24 August 2026
+
+Dataset `1435033932015736`, in its own Mountain Studios business portfolio rather than the one
+holding ClickForge and the xpandd projects. Reusing an existing pixel would have blended two
+unrelated audiences with no way to separate them afterwards.
+
+One `next/script` tag in `app/layout.tsx`, `afterInteractive`, beside the GA4 tag. The CRM is a
+separate app and stays untagged. `/p/[token]` is a route handler rather than a page, so it never
+inherits the layout — a generated client preview carries no pixel, which is deliberate: tagging
+somebody else's mock site would be wrong. Verified in production on `/`, `/contact`, `/services`
+and `/work`, and verified absent from `/p/<token>`.
+
+Meta's `<noscript><img>` fallback was dropped. It cannot sit in `<head>`, and a visitor without
+JavaScript cannot use any form on this site, so it would measure nothing.
+
+**Conversion events**, all firing from `trackMeta()` in `lib/analytics.ts`:
+
+| Fire point | Event |
+| --- | --- |
+| Free audit, popup form | `Lead` |
+| Free audit, via the chatbot | `Lead` |
+| Contact form | `Contact` |
+| Wizard email step | `Lead` |
+| Wizard full brief | `SubmitApplication` |
+
+<callout>
+
+**Every event fires in the branch where the server has confirmed the write, never on the click.**
+Seven forms on this site once showed a success screen and saved nothing. An event fired on click
+would report conversions that never happened, and the bidding would run against fiction.
+
+`trackMeta()` no-ops when `fbq` is absent and swallows its own errors. Ad blockers and privacy
+extensions strip the pixel for a large share of real visitors, and an unguarded call sitting in a
+success branch would turn a completed enquiry into an error on screen.
+
+</callout>
+
+Two things to know when building a campaign. **Optimise for one event** — four are useful for
+audiences and reporting, but delivery optimises toward a single conversion, and `Lead` is the one
+with volume. And the **wizard email step can fire twice for one person**, because a returning
+visitor inside the 30-day dedupe window updates their existing lead rather than creating one, so
+the pixel's `Lead` count runs slightly ahead of distinct leads in the CRM. That is the deliberate
+trade: under-reporting a real capture costs the optimiser more than an occasional duplicate.
+
+**Not covered: the preview claim**, the strongest intent signal on the site. It happens on
+`/p/<token>`, which carries no pixel by design, so measuring it needs the Conversions API sending
+server-side from the claim route with an access token.
+
+Automatic advanced matching was turned on in Events Manager on 24 August. It hashes what visitors
+type into the forms — name, email, phone — and sends it to Meta to match them to an account.
+
 ## Still open — 24 August 2026
 
-- **Meta Pixel is not installed.** GA4 (`G-RCLN88JPLC`) is in the root layout and nothing else
-  is. This is the one item that genuinely gates advertising.
+- The privacy policy does not mention Meta. It names Supabase, AWS SES, Vercel, Google and
+  DeepSeek as the processors and gives Google as the only source of cookies, while advanced
+  matching now sends hashed contact details to Meta. Raised and consciously deprioritised on
+  24 August — the exposure is POPIA rather than reader annoyance, so it does not depend on
+  anyone reading the page.
 - The referral payout trigger `leads_referral_payout` needs
   `alter table mountainstudios.leads disable trigger leads_referral_payout;` run by hand before
   the referral page copy can honestly change to "25% of the deal up to R1000".
