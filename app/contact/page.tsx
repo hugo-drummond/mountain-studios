@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import PageShell from '@/components/site/PageShell'
 import { trackMeta } from '@/lib/analytics'
+import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 
 const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -15,10 +16,32 @@ export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [honeypot, setHoneypot] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
+  const [touched, setTouched] = useState({ email: false, phone: false })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setEmailError('')
+    setPhoneError('')
+
+    // Validate email
+    if (!isValidEmail(formData.email)) {
+      setEmailError(EMAIL_ERROR)
+      setTouched({ ...touched, email: true })
+      return
+    }
+
+    // Validate phone if provided
+    if (formData.phone.trim()) {
+      const phoneResult = normalizePhone(formData.phone)
+      if (!phoneResult.ok) {
+        setPhoneError(PHONE_ERROR)
+        setTouched({ ...touched, phone: true })
+        return
+      }
+    }
 
     // Validate message length
     if (formData.message.trim().length < 10) {
@@ -227,34 +250,68 @@ export default function Contact() {
                       fontFamily: 'inherit',
                     }}
                   />
-                  <input
-                    type="email"
-                    placeholder="Your email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    style={{
-                      border: '1px solid #e3e0ea',
-                      borderRadius: '999px',
-                      padding: '0.85rem 1.2rem',
-                      fontSize: '0.95rem',
-                      outline: 'none',
-                      fontFamily: 'inherit',
-                    }}
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Your contact number"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    style={{
-                      border: '1px solid #e3e0ea',
-                      borderRadius: '999px',
-                      padding: '0.85rem 1.2rem',
-                      fontSize: '0.95rem',
-                      outline: 'none',
-                      fontFamily: 'inherit',
-                    }}
-                  />
+                  <div>
+                    <input
+                      type="email"
+                      placeholder="Your email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onBlur={() => {
+                        setTouched({ ...touched, email: true })
+                        if (formData.email.trim() && !isValidEmail(formData.email)) {
+                          setEmailError(EMAIL_ERROR)
+                        } else {
+                          setEmailError('')
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        border: emailError && touched.email ? '1px solid #dc2626' : '1px solid #e3e0ea',
+                        borderRadius: '999px',
+                        padding: '0.85rem 1.2rem',
+                        fontSize: '0.95rem',
+                        outline: 'none',
+                        fontFamily: 'inherit',
+                      }}
+                    />
+                    {emailError && touched.email && (
+                      <p style={{ fontSize: '0.85rem', color: '#dc2626', margin: '0.35rem 0 0', marginLeft: '1.2rem' }}>
+                        {emailError}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="tel"
+                      placeholder="Your contact number"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onBlur={() => {
+                        setTouched({ ...touched, phone: true })
+                        if (formData.phone.trim() && !normalizePhone(formData.phone).ok) {
+                          setPhoneError(PHONE_ERROR)
+                        } else {
+                          setPhoneError('')
+                        }
+                      }}
+                      style={{
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        border: phoneError && touched.phone ? '1px solid #dc2626' : '1px solid #e3e0ea',
+                        borderRadius: '999px',
+                        padding: '0.85rem 1.2rem',
+                        fontSize: '0.95rem',
+                        outline: 'none',
+                        fontFamily: 'inherit',
+                      }}
+                    />
+                    {phoneError && touched.phone && (
+                      <p style={{ fontSize: '0.85rem', color: '#dc2626', margin: '0.35rem 0 0', marginLeft: '1.2rem' }}>
+                        {phoneError}
+                      </p>
+                    )}
+                  </div>
                   <textarea
                     placeholder="How can we help?"
                     value={formData.message}
@@ -282,7 +339,7 @@ export default function Contact() {
                     aria-hidden="true"
                     tabIndex={-1}
                   />
-                  <button type="submit" disabled={loading} style={{
+                  <button type="submit" disabled={loading || !!(touched.email && emailError) || !!(touched.phone && phoneError)} style={{
                     background: '#7d3d4f',
                     color: '#fff',
                     border: 'none',
@@ -292,8 +349,8 @@ export default function Contact() {
                     fontWeight: 700,
                     textTransform: 'uppercase',
                     letterSpacing: '0.08em',
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    opacity: loading ? 0.7 : 1,
+                    cursor: loading || !!(touched.email && emailError) || !!(touched.phone && phoneError) ? 'not-allowed' : 'pointer',
+                    opacity: loading || !!(touched.email && emailError) || !!(touched.phone && phoneError) ? 0.7 : 1,
                     alignSelf: 'flex-start',
                   }}>
                     {loading ? 'Sending…' : 'SEND MESSAGE →'}

@@ -14,6 +14,7 @@ import {
 } from '../../constants/business-types'
 import SiteHeaderNav from '../../components/site/SiteHeaderNav'
 import { storedRefCode } from '../../components/site/RefCapture'
+import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 // Supabase import removed — images now use browser object URLs for preview
 
 // Mirrors components/site/PageShell.tsx — same top bar, same source for these.
@@ -296,6 +297,8 @@ function StartYourProjectInner() {
   const [gateError, setGateError] = useState('')
   const [leadId, setLeadId] = useState<string | null>(null)
   const [gateHoneypot, setGateHoneypot] = useState('')
+  const [gateEmailError, setGateEmailError] = useState('')
+  const [gateTouched, setGateTouched] = useState(false)
 
   // Hydrate from sessionStorage on mount
   useEffect(() => {
@@ -319,6 +322,8 @@ function StartYourProjectInner() {
   const [previewVerdict, setPreviewVerdict] = useState<'loved' | 'not_quite'>('loved')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
+  const [phoneTouched, setPhoneTouched] = useState(false)
 
   const weekdays = getWeekdays(new Date(), 2)
 
@@ -458,17 +463,19 @@ function StartYourProjectInner() {
   // Capture email at step 6 before the preview generates
   async function handleSubmitGateEmail(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setGateSubmitting(true)
     setGateError('')
+    setGateEmailError('')
 
     const emailToSubmit = gateHoneypot.trim() ? '' : (e.currentTarget.querySelector('input[type="email"]') as HTMLInputElement)?.value?.trim() || ''
 
     // Client-side email validation
-    if (!emailToSubmit || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToSubmit)) {
-      setGateError('That email address does not look right.')
-      setGateSubmitting(false)
+    if (!isValidEmail(emailToSubmit)) {
+      setGateEmailError(EMAIL_ERROR)
+      setGateTouched(true)
       return
     }
+
+    setGateSubmitting(true)
 
     try {
       let recaptchaToken: string | undefined
@@ -532,8 +539,19 @@ function StartYourProjectInner() {
   // still shows the thank-you screen rather than blocking someone who has
   // already done the work of filling the form in.
   async function handleSubmitContact() {
-    setSubmitting(true)
     setSubmitError('')
+    setPhoneError('')
+
+    // Validate phone if provided
+    if (phone.trim()) {
+      const phoneResult = normalizePhone(phone)
+      if (!phoneResult.ok) {
+        setPhoneError(PHONE_ERROR)
+        return
+      }
+    }
+
+    setSubmitting(true)
     try {
       const r = await fetch('/api/brief/submit', {
         method: 'POST',
@@ -946,8 +964,25 @@ function StartYourProjectInner() {
                   autoFocus
                   placeholder="your@email.com"
                   className="ms-wizard-input"
-                  style={inputStyle}
+                  onBlur={() => {
+                    setGateTouched(true)
+                    const input = document.querySelector('input[type="email"]') as HTMLInputElement
+                    if (input?.value.trim() && !isValidEmail(input.value)) {
+                      setGateEmailError(EMAIL_ERROR)
+                    } else {
+                      setGateEmailError('')
+                    }
+                  }}
+                  style={{
+                    ...inputStyle,
+                    borderBottom: gateEmailError && gateTouched ? '1.5px solid #fca5a5' : undefined,
+                  }}
                 />
+                {gateEmailError && gateTouched && (
+                  <p style={{ color: '#fca5a5', fontSize: '0.85rem', fontFamily: font, margin: '0.35rem 0 0', lineHeight: 1.5 }}>
+                    {gateEmailError}
+                  </p>
+                )}
               </div>
 
               {/* Honeypot field — hidden from real users */}
@@ -969,8 +1004,8 @@ function StartYourProjectInner() {
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <button
                   type="submit"
-                  disabled={gateSubmitting}
-                  style={{ ...btnPrimary, opacity: gateSubmitting ? 0.4 : 1, cursor: gateSubmitting ? 'not-allowed' : 'pointer' }}
+                  disabled={gateSubmitting || !!(gateTouched && gateEmailError)}
+                  style={{ ...btnPrimary, opacity: gateSubmitting || !!(gateTouched && gateEmailError) ? 0.4 : 1, cursor: gateSubmitting || !!(gateTouched && gateEmailError) ? 'not-allowed' : 'pointer' }}
                 >
                   {gateSubmitting ? 'Saving…' : 'Build my preview'}
                 </button>
@@ -1134,7 +1169,29 @@ function StartYourProjectInner() {
               </div>
               <div>
                 <p style={label}>Phone (optional)</p>
-                <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="ms-wizard-input" style={inputStyle} />
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  onBlur={() => {
+                    setPhoneTouched(true)
+                    if (phone.trim() && !normalizePhone(phone).ok) {
+                      setPhoneError(PHONE_ERROR)
+                    } else {
+                      setPhoneError('')
+                    }
+                  }}
+                  className="ms-wizard-input"
+                  style={{
+                    ...inputStyle,
+                    borderBottom: phoneError && phoneTouched ? '1.5px solid #fca5a5' : undefined,
+                  }}
+                />
+                {phoneError && phoneTouched && (
+                  <p style={{ color: '#fca5a5', fontSize: '0.85rem', fontFamily: font, margin: '0.35rem 0 0', lineHeight: 1.5 }}>
+                    {phoneError}
+                  </p>
+                )}
               </div>
               <div>
                 <p style={label}>
@@ -1158,7 +1215,7 @@ function StartYourProjectInner() {
               back={() => setStep(6)}
               next={handleSubmitContact}
               nextLabel={submitting ? 'Sending…' : 'Send →'}
-              disabled={submitting || !fullName.trim() || !gateEmail.trim()}
+              disabled={submitting || !fullName.trim() || !gateEmail.trim() || !!(phoneTouched && phoneError)}
             />
           </>
         )}

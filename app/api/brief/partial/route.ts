@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { attachReferralToLead } from '@/lib/referral'
+import { isValidEmail } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/partial
@@ -23,7 +24,7 @@ import { attachReferralToLead } from '@/lib/referral'
 //   that is flagged is cheaper than a real lead that is silently discarded.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'ant88835@gmail.com'
+const NOTIFY_TO = NOTIFY_EMAIL
 
 function escapeHtml(value: string): string {
   return value
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Email is required' }, { status: 400 })
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'Invalid email format' }, { status: 400 })
   }
 

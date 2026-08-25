@@ -6,6 +6,7 @@ import NavBar from '../../../components/site/NavBar'
 import PageEditorModal, { type PageSection } from '../../../components/site/PageEditorModal'
 import { sortedBusinessTypes } from '../../../constants/business-types'
 import type { Brief, PageSelection, SocialHandles } from '../../../types'
+import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '../../../lib/validation'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 
@@ -168,6 +169,9 @@ export default function BriefPage() {
   const [contactPhone, setContactPhone] = useState('')
   const [contactAddress, setContactAddress] = useState('')
   const [businessHours, setBusinessHours] = useState('')
+  const [contactEmailError, setContactEmailError] = useState('')
+  const [contactPhoneError, setContactPhoneError] = useState('')
+  const [contactTouched, setContactTouched] = useState({ email: false, phone: false })
 
   // Section 05: Additional Details
   const [additionalNotes, setAdditionalNotes] = useState('')
@@ -836,11 +840,57 @@ export default function BriefPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
               <div>
                 <label style={labelStyle}>Email</label>
-                <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} placeholder="hello@yourbusiness.com" style={inputStyle} disabled={isSubmitted} />
+                <input
+                  type="email"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  onBlur={() => {
+                    setContactTouched({ ...contactTouched, email: true })
+                    if (contactEmail.trim() && !isValidEmail(contactEmail)) {
+                      setContactEmailError(EMAIL_ERROR)
+                    } else {
+                      setContactEmailError('')
+                    }
+                  }}
+                  placeholder="hello@yourbusiness.com"
+                  style={{
+                    ...inputStyle,
+                    borderBottomColor: contactEmailError && contactTouched.email ? '#ff6b6b' : undefined,
+                  }}
+                  disabled={isSubmitted}
+                />
+                {contactEmailError && contactTouched.email && (
+                  <p style={{ fontSize: '0.75rem', color: '#ff6b6b', margin: '0.35rem 0 0', fontFamily: font, lineHeight: 1.5 }}>
+                    {contactEmailError}
+                  </p>
+                )}
               </div>
               <div>
                 <label style={labelStyle}>Phone</label>
-                <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} placeholder="+27 21 000 0000" style={inputStyle} disabled={isSubmitted} />
+                <input
+                  type="tel"
+                  value={contactPhone}
+                  onChange={(e) => setContactPhone(e.target.value)}
+                  onBlur={() => {
+                    setContactTouched({ ...contactTouched, phone: true })
+                    if (contactPhone.trim() && !normalizePhone(contactPhone).ok) {
+                      setContactPhoneError(PHONE_ERROR)
+                    } else {
+                      setContactPhoneError('')
+                    }
+                  }}
+                  placeholder="+27 21 000 0000"
+                  style={{
+                    ...inputStyle,
+                    borderBottomColor: contactPhoneError && contactTouched.phone ? '#ff6b6b' : undefined,
+                  }}
+                  disabled={isSubmitted}
+                />
+                {contactPhoneError && contactTouched.phone && (
+                  <p style={{ fontSize: '0.75rem', color: '#ff6b6b', margin: '0.35rem 0 0', fontFamily: font, lineHeight: 1.5 }}>
+                    {contactPhoneError}
+                  </p>
+                )}
               </div>
               <div>
                 <label style={labelStyle}>Address</label>

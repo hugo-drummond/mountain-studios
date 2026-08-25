@@ -12,6 +12,8 @@ import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 // any address.
 const FROM = 'Mountain Studios <hello@mountainstudios.co.za>'
 
+export const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || 'hugodrum6@gmail.com'
+
 // Every HTML email also needs a plain-text alternative. A message carrying only
 // a text/html part is a bulk-mail signal in its own right, and it is one of the
 // few deliverability levers that costs nothing to pull.

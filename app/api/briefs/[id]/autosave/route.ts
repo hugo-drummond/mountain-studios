@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase-admin'
 import type { Brief } from '@/types'
+import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // Whitelist of fields the client is allowed to autosave
@@ -82,6 +83,23 @@ export async function POST(
     for (const field of ALLOWED_FIELDS) {
       if (field in body) {
         update[field] = body[field]
+      }
+    }
+
+    // Validate and normalize contact fields if present (autosave never rejects)
+    if ('contact_email' in update && update.contact_email) {
+      const email = String(update.contact_email)
+      if (!isValidEmail(email)) {
+        console.warn(`[briefs/autosave] malformed email rejected: raw=${email}`)
+      }
+    }
+    if ('contact_phone' in update && update.contact_phone) {
+      const phone = String(update.contact_phone)
+      const phoneResult = normalizePhone(phone)
+      if (phoneResult.ok) {
+        update.contact_phone = phoneResult.e164
+      } else {
+        console.warn(`[briefs/autosave] malformed phone rejected: raw=${phone}`)
       }
     }
 

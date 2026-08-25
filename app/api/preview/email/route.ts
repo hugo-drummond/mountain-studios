@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { makeToken, PREVIEW_BUCKET } from '@/lib/shared-preview'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { waitUntil } from '@vercel/functions'
+import { isValidEmail } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/preview/email
@@ -38,7 +39,7 @@ function baseUrl(req: NextRequest): string {
   return new URL(req.url).origin
 }
 
-const NOTIFY_TO = 'ant88835@gmail.com'
+const NOTIFY_TO = NOTIFY_EMAIL
 
 // Every exit from this route must leave a trace on the lead. The R2000 pitch
 // email broke for two days behind a 403 that wrote nothing anywhere, and the
@@ -118,7 +119,7 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     )
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     await stampLead(leadId, 'Preview email FAILED — invalid email format.')
     return NextResponse.json({ success: false, error: 'Invalid email format' }, { status: 400 })
   }

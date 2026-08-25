@@ -5,6 +5,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { storedRefCode } from './RefCapture'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { trackMeta } from '@/lib/analytics'
+import { isValidEmail, EMAIL_ERROR } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // The free-audit offer, moved off the homepage and into a popup.
@@ -96,6 +97,8 @@ export default function AuditPopup() {
   const [done, setDone] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [emailError, setEmailError] = useState('')
+  const [emailTouched, setEmailTouched] = useState(false)
 
   const urlRef = useRef<HTMLInputElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
@@ -198,6 +201,15 @@ export default function AuditPopup() {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setEmailError('')
+
+    // Validate email
+    if (!isValidEmail(email)) {
+      setEmailError(EMAIL_ERROR)
+      setEmailTouched(true)
+      return
+    }
+
     setLoading(true)
 
     // The honeypot is judged server-side only. Deciding it here meant a password
@@ -292,7 +304,7 @@ export default function AuditPopup() {
             <form onSubmit={submit}>
               {error && <p className="ms-audit-error">{error}</p>}
 
-              <div className="ms-audit-fields">
+              <div className="ms-audit-fields" style={{ flexDirection: emailError && emailTouched ? 'column' : undefined }}>
                 <input
                   ref={urlRef}
                   type="text"
@@ -303,16 +315,35 @@ export default function AuditPopup() {
                   onChange={(e) => setUrl(e.target.value)}
                 />
                 {/* Without this the two fields read as one long input. */}
-                <span className="ms-audit-divider" aria-hidden="true" />
-                <input
-                  type="email"
-                  className="ms-audit-input"
-                  placeholder="your@email.com"
-                  aria-label="Your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <button type="submit" className="ms-audit-submit" disabled={loading}>
+                <span className="ms-audit-divider" aria-hidden={emailError && emailTouched ? 'true' : 'false'} style={{ display: emailError && emailTouched ? 'none' : undefined }} />
+                <div style={{ flex: emailError && emailTouched ? undefined : 1, minWidth: 0, display: 'flex', flexDirection: 'column', width: emailError && emailTouched ? '100%' : undefined }}>
+                  <input
+                    type="email"
+                    className="ms-audit-input"
+                    placeholder="your@email.com"
+                    aria-label="Your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onBlur={() => {
+                      setEmailTouched(true)
+                      if (email.trim() && !isValidEmail(email)) {
+                        setEmailError(EMAIL_ERROR)
+                      } else {
+                        setEmailError('')
+                      }
+                    }}
+                    style={{
+                      borderBottom: emailError && emailTouched ? '2px solid #dc2626' : undefined,
+                      backgroundColor: emailError && emailTouched ? '#fff5f5' : undefined,
+                    }}
+                  />
+                  {emailError && emailTouched && (
+                    <p style={{ fontSize: '0.75rem', color: '#dc2626', margin: '0.35rem 0 0', lineHeight: 1.5 }}>
+                      {emailError}
+                    </p>
+                  )}
+                </div>
+                <button type="submit" className="ms-audit-submit" disabled={loading || !!(emailTouched && emailError)}>
                   {loading ? 'Saving…' : 'AUDIT MY SITE →'}
                 </button>
               </div>

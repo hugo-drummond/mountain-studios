@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { startAudit } from '@/lib/audit/start'
+import { isValidEmail } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/audit/submit
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: 'Please fill in all fields.' }, { status: 400 })
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'That email address does not look right.' }, { status: 400 })
   }
 

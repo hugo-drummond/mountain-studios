@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import SiteHeaderNav from '../components/site/SiteHeaderNav'
+import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 
 const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -68,6 +69,9 @@ export default function Home() {
   const [referHoneypot, setReferHoneypot] = useState('')
   const [referCode, setReferCode] = useState('')
   const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const [referEmailError, setReferEmailError] = useState('')
+  const [referPhoneError, setReferPhoneError] = useState('')
+  const [referTouched, setReferTouched] = useState({ email: false, phone: false })
 
   const WhatsAppIcon = () => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -84,6 +88,26 @@ export default function Home() {
   const handleReferSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setReferError('')
+    setReferEmailError('')
+    setReferPhoneError('')
+
+    // Validate email
+    if (!isValidEmail(referEmail)) {
+      setReferEmailError(EMAIL_ERROR)
+      setReferTouched({ ...referTouched, email: true })
+      return
+    }
+
+    // Validate phone if provided
+    if (referPhone.trim()) {
+      const phoneResult = normalizePhone(referPhone)
+      if (!phoneResult.ok) {
+        setReferPhoneError(PHONE_ERROR)
+        setReferTouched({ ...referTouched, phone: true })
+        return
+      }
+    }
+
     setReferLoading(true)
 
     // The honeypot is judged server-side only. Deciding it client-side meant a
@@ -667,13 +691,22 @@ export default function Home() {
                   placeholder="Your email"
                   value={referEmail}
                   onChange={(e) => setReferEmail(e.target.value)}
+                  onBlur={() => {
+                    setReferTouched({ ...referTouched, email: true })
+                    if (referEmail.trim() && !isValidEmail(referEmail)) {
+                      setReferEmailError(EMAIL_ERROR)
+                    } else {
+                      setReferEmailError('')
+                    }
+                  }}
                   style={{
                     width: '190px',
                     padding: '0.85rem 1.4rem',
                     borderRadius: '999px',
-                    border: 'none',
+                    border: referEmailError && referTouched.email ? '2px solid #dc2626' : 'none',
                     fontSize: '1rem',
                     outline: 'none',
+                    backgroundColor: referEmailError && referTouched.email ? '#fff5f5' : undefined,
                   }}
                 />
                 <input
@@ -681,16 +714,25 @@ export default function Home() {
                   placeholder="Your mobile"
                   value={referPhone}
                   onChange={(e) => setReferPhone(e.target.value)}
+                  onBlur={() => {
+                    setReferTouched({ ...referTouched, phone: true })
+                    if (referPhone.trim() && !normalizePhone(referPhone).ok) {
+                      setReferPhoneError(PHONE_ERROR)
+                    } else {
+                      setReferPhoneError('')
+                    }
+                  }}
                   style={{
                     width: '190px',
                     padding: '0.85rem 1.4rem',
                     borderRadius: '999px',
-                    border: 'none',
+                    border: referPhoneError && referTouched.phone ? '2px solid #dc2626' : 'none',
                     fontSize: '1rem',
                     outline: 'none',
+                    backgroundColor: referPhoneError && referTouched.phone ? '#fff5f5' : undefined,
                   }}
                 />
-                <button type="submit" disabled={referLoading} style={{
+                <button type="submit" disabled={referLoading || !!(referTouched.email && referEmailError) || !!(referTouched.phone && referPhoneError)} style={{
                   background: '#fff',
                   color: '#1a1a2e',
                   border: 'none',
@@ -698,8 +740,8 @@ export default function Home() {
                   borderRadius: '999px',
                   fontSize: '1rem',
                   fontWeight: 700,
-                  cursor: referLoading ? 'not-allowed' : 'pointer',
-                  opacity: referLoading ? 0.7 : 1,
+                  cursor: referLoading || !!(referTouched.email && referEmailError) || !!(referTouched.phone && referPhoneError) ? 'not-allowed' : 'pointer',
+                  opacity: referLoading || !!(referTouched.email && referEmailError) || !!(referTouched.phone && referPhoneError) ? 0.7 : 1,
                 }}>
                   {referLoading ? 'Saving…' : 'GET MY LINK →'}
                 </button>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { sendMetaEvent } from '@/lib/meta-capi'
 
 // ---------------------------------------------------------------------------
@@ -13,7 +13,7 @@ import { sendMetaEvent } from '@/lib/meta-capi'
 // rare, and it goes stale in hours.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'hello@mountainstudios.co.za'
+const NOTIFY_TO = NOTIFY_EMAIL
 
 function escapeHtml(value: string): string {
   return value

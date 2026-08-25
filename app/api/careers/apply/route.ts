@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
+import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/careers/apply
@@ -112,9 +113,20 @@ export async function POST(req: NextRequest) {
   if (missing || workRights === null || hasLaptop === null) {
     return NextResponse.json({ success: false, error: 'Please fill in every question.' }, { status: 400 })
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'That email address does not look right.' }, { status: 400 })
   }
+
+  // Validate and normalize phone if provided (phone is required so empty is caught above)
+  // Malformed phone should not block submission, just store as-is and warn
+  let storedPhone = phone
+  const phoneResult = normalizePhone(phone)
+  if (phoneResult.ok) {
+    storedPhone = phoneResult.e164
+  } else {
+    console.warn(`[careers/apply] malformed phone rejected: raw=${phone}`)
+  }
+
   if (!PROVINCES.includes(province)) {
     return NextResponse.json({ success: false, error: 'Choose a province from the list.' }, { status: 400 })
   }
@@ -151,7 +163,7 @@ export async function POST(req: NextRequest) {
       .insert({
         full_name: fullName,
         email,
-        phone,
+        phone: storedPhone,
         province,
         city,
         why_sales: whySales,

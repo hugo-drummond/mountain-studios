@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { renderEnquiryConfirmation } from '@/lib/emails/enquiry-confirmation'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
+import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/contact/submit
@@ -23,7 +24,7 @@ import { verifyRecaptcha } from '@/lib/recaptcha'
 // but unseen is worse than silence.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'ant88835@gmail.com'
+const NOTIFY_TO = NOTIFY_EMAIL
 const MIN_MESSAGE_LENGTH = 10
 
 interface Payload {
@@ -85,12 +86,13 @@ export async function POST(req: NextRequest) {
   const fullName = body.full_name?.trim()
   const email = body.email?.trim()
   const message = body.message?.trim()
+  const phone = body.phone?.trim()
 
   if (!fullName || !email || !message) {
     return NextResponse.json({ success: false, error: 'Please fill in all fields.' }, { status: 400 })
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'That email address does not look right.' }, { status: 400 })
   }
 
@@ -101,10 +103,21 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // Validate and normalize phone if provided (malformed phone should not block submission)
+  let storedPhone: string | null = null
+  if (phone) {
+    const phoneResult = normalizePhone(phone)
+    if (phoneResult.ok) {
+      storedPhone = phoneResult.e164
+    } else {
+      console.warn(`[contact/submit] malformed phone rejected: raw=${phone}`)
+      storedPhone = phone.slice(0, 50)
+    }
+  }
+
   // Cap stored lengths so a bot cannot post a novel
   const storedName = fullName.slice(0, 200)
   const storedEmail = email.slice(0, 200)
-  const storedPhone = body.phone?.trim()?.slice(0, 50) || null
   const storedMessage = message.slice(0, 5000)
 
   let messageId: string | null = null

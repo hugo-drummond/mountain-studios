@@ -4,6 +4,7 @@ import { sendMail } from '@/lib/ses'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { randomBytes } from 'crypto'
+import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/referral/submit
@@ -82,13 +83,25 @@ export async function POST(req: NextRequest) {
 
   const fullName = body.fullName?.trim()
   const email = body.email?.trim()
+  const phone = body.phone?.trim()
 
   if (!fullName || !email) {
     return NextResponse.json({ success: false, error: 'Please fill in all fields.' }, { status: 400 })
   }
 
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'That email address does not look right.' }, { status: 400 })
+  }
+
+  // Validate and normalize phone if provided (malformed phone should not block submission)
+  let storedPhone: string | null = null
+  if (phone) {
+    const phoneResult = normalizePhone(phone)
+    if (phoneResult.ok) {
+      storedPhone = phoneResult.e164
+    } else {
+      console.warn(`[referral/submit] malformed phone rejected: raw=${phone}`)
+    }
   }
 
   const storedName = fullName.slice(0, 200)
@@ -97,7 +110,6 @@ export async function POST(req: NextRequest) {
   // `hugo@x.com`, the insert would then trip the index, and the person would be
   // shown an error for filling their own form in twice.
   const storedEmail = email.slice(0, 200).toLowerCase()
-  const storedPhone = body.phone?.trim()?.slice(0, 50) || null
 
   // Google's verdict blocks; blockedAsBot() is an allowlist, so a missing or
   // unverifiable token never refuses a real person. See audit/submit.

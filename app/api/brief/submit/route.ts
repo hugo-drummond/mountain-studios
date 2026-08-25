@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { renderEnquiryConfirmation } from '@/lib/emails/enquiry-confirmation'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { attachReferralToLead } from '@/lib/referral'
+import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
 // POST /api/brief/submit
@@ -22,7 +23,7 @@ import { attachReferralToLead } from '@/lib/referral'
 // must never see a failure caused by our mailbox.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'ant88835@gmail.com'
+const NOTIFY_TO = NOTIFY_EMAIL
 
 interface Payload {
   fullName?: string
@@ -195,15 +196,27 @@ export async function POST(req: NextRequest) {
   const fullName = body.fullName?.trim()
   const email = body.email?.trim()
   const businessName = body.businessName?.trim()
+  const rawPhone = body.phone?.trim()
 
   if (!fullName || !email) {
     return NextResponse.json({ success: false, error: 'Name and email are required' }, { status: 400 })
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!isValidEmail(email)) {
     return NextResponse.json({ success: false, error: 'Invalid email format' }, { status: 400 })
   }
 
-  const phone = body.phone?.trim() || null
+  // Validate and normalize phone if provided (malformed phone should not block submission)
+  let phone: string | null = null
+  if (rawPhone) {
+    const phoneResult = normalizePhone(rawPhone)
+    if (phoneResult.ok) {
+      phone = phoneResult.e164
+    } else {
+      console.warn(`[brief/submit] malformed phone rejected: raw=${rawPhone}`)
+      phone = rawPhone.slice(0, 50)
+    }
+  }
+
   const projectInfo = body.projectInfo?.trim() || null
   const businessType = body.businessType?.trim() || null
   const notQuite = body.previewVerdict === 'not_quite'

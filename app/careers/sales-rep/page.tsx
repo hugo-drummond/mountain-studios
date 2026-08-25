@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import SiteHeaderNav from '../../../components/site/SiteHeaderNav'
+import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 
 const font = 'var(--font-source-sans), "Source Sans 3", sans-serif'
 const serif = 'Georgia, "Times New Roman", serif'
@@ -59,18 +60,44 @@ export default function SalesRepCareers() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setError('')
+
     if (!cvName) {
       setError('Attach your CV as a PDF.')
       setStatus('error')
       return
     }
+
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
+    const phone = formData.get('phone') as string
+
+    // Validate email
+    if (!isValidEmail(email)) {
+      setError(EMAIL_ERROR)
+      setStatus('error')
+      return
+    }
+
+    // Validate phone (required field)
+    if (!phone.trim()) {
+      setError('Phone number is required.')
+      setStatus('error')
+      return
+    }
+    const phoneResult = normalizePhone(phone)
+    if (!phoneResult.ok) {
+      setError(PHONE_ERROR)
+      setStatus('error')
+      return
+    }
+
     setStatus('sending')
-    setError('')
 
     try {
       const res = await fetch('/api/careers/apply', {
         method: 'POST',
-        body: new FormData(e.currentTarget),
+        body: formData,
       })
       const data = await res.json()
 

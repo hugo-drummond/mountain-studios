@@ -1,6 +1,6 @@
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
-import { sendMail } from '@/lib/ses'
+import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { runAudit } from '@/lib/audit/run'
 import { waitUntil } from '@vercel/functions'
 
@@ -20,7 +20,7 @@ import { waitUntil } from '@vercel/functions'
 // worth far more than a clean error.
 // ---------------------------------------------------------------------------
 
-const NOTIFY_TO = 'ant88835@gmail.com'
+const NOTIFY_TO = NOTIFY_EMAIL
 
 export interface StartAuditInput {
   /** Already normalised and validated — use normaliseWebsiteUrl() first. */
