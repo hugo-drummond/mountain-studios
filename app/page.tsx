@@ -690,7 +690,11 @@ export default function Home() {
                   type="email"
                   placeholder="Your email"
                   value={referEmail}
-                  onChange={(e) => setReferEmail(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setReferEmail(value)
+                    if (referEmailError && isValidEmail(value)) setReferEmailError('')
+                  }}
                   onBlur={() => {
                     setReferTouched({ ...referTouched, email: true })
                     if (referEmail.trim() && !isValidEmail(referEmail)) {
@@ -713,7 +717,11 @@ export default function Home() {
                   type="tel"
                   placeholder="Your mobile"
                   value={referPhone}
-                  onChange={(e) => setReferPhone(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setReferPhone(value)
+                    if (referPhoneError && (!value.trim() || normalizePhone(value).ok)) setReferPhoneError('')
+                  }}
                   onBlur={() => {
                     setReferTouched({ ...referTouched, phone: true })
                     if (referPhone.trim() && !normalizePhone(referPhone).ok) {

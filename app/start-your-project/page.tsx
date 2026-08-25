@@ -1172,7 +1172,11 @@ function StartYourProjectInner() {
                 <input
                   type="tel"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setPhone(value)
+                    if (phoneError && (!value.trim() || normalizePhone(value).ok)) setPhoneError('')
+                  }}
                   onBlur={() => {
                     setPhoneTouched(true)
                     if (phone.trim() && !normalizePhone(phone).ok) {

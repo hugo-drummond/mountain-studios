@@ -843,7 +843,11 @@ export default function BriefPage() {
                 <input
                   type="email"
                   value={contactEmail}
-                  onChange={(e) => setContactEmail(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setContactEmail(value)
+                    if (contactEmailError && isValidEmail(value)) setContactEmailError('')
+                  }}
                   onBlur={() => {
                     setContactTouched({ ...contactTouched, email: true })
                     if (contactEmail.trim() && !isValidEmail(contactEmail)) {
@@ -870,7 +874,11 @@ export default function BriefPage() {
                 <input
                   type="tel"
                   value={contactPhone}
-                  onChange={(e) => setContactPhone(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    setContactPhone(value)
+                    if (contactPhoneError && (!value.trim() || normalizePhone(value).ok)) setContactPhoneError('')
+                  }}
                   onBlur={() => {
                     setContactTouched({ ...contactTouched, phone: true })
                     if (contactPhone.trim() && !normalizePhone(contactPhone).ok) {

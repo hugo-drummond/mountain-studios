@@ -255,7 +255,11 @@ export default function Contact() {
                       type="email"
                       placeholder="Your email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setFormData({ ...formData, email: value })
+                        if (emailError && isValidEmail(value)) setEmailError('')
+                      }}
                       onBlur={() => {
                         setTouched({ ...touched, email: true })
                         if (formData.email.trim() && !isValidEmail(formData.email)) {
@@ -286,7 +290,11 @@ export default function Contact() {
                       type="tel"
                       placeholder="Your contact number"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        setFormData({ ...formData, phone: value })
+                        if (phoneError && (!value.trim() || normalizePhone(value).ok)) setPhoneError('')
+                      }}
                       onBlur={() => {
                         setTouched({ ...touched, phone: true })
                         if (formData.phone.trim() && !normalizePhone(formData.phone).ok) {

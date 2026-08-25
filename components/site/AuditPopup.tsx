@@ -323,7 +323,11 @@ export default function AuditPopup() {
                     placeholder="your@email.com"
                     aria-label="Your email address"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setEmail(value)
+                      if (emailError && isValidEmail(value)) setEmailError('')
+                    }}
                     onBlur={() => {
                       setEmailTouched(true)
                       if (email.trim() && !isValidEmail(email)) {
