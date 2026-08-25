@@ -1,5 +1,10 @@
 # TODO
 
+<!-- Read STATUS.md first. This file has twice carried items that were already
+     done — the contact and referral "no backend" lines survived months after both
+     forms were live, and were quoted back as fact. Before acting on anything here,
+     check it against reality: submit the form and read the row. -->
+
 ## Outstanding
 
 Most of the infrastructure is built and live. The following work remains before
@@ -41,8 +46,9 @@ Content Hugo owes before this page is honest:
 Still to build:
 
 - [x] **Audit form has no backend.** Now runs four checks and emails the report. 15 August 2026.
-- [ ] **Referral form has no backend.** Same — name, email and mobile go nowhere, and no
-      referral link is generated.
+- [x] **Referral form has no backend.** Wrong since at least August — `POST /api/referral/submit`
+      writes `referral_partners` and generates the code. Submitted and read back from the
+      database on 25 August 2026: partner `Jed`, code `KDUZY96B`, confirmation email in Primary.
 - [x] **`/work`, `/about`, `/services`, `/contact` built 13 August** on a shared
       `PageShell`. `/pricing` and `/refer` are still homepage anchors.
 - [x] **Four individual service pages built 14 August**, see [STATUS.md](STATUS.md):
@@ -52,12 +58,13 @@ Still to build:
       service pages now that they exist.
 - [ ] **`lib/chatbot/knowledge.ts` doesn't know the service pages exist.** The bot can
       describe the four services but can't point a visitor at their own page for one.
-- [ ] **Contact page form has no backend.** It shows a thank-you and sends nothing.
-      `POST /api/contact/submit` + `contact_messages` + the CRM inbox are live — wire it.
+- [x] **Contact page form has no backend.** Also wrong — it has been wired for some time.
+      Submitted and read back on 25 August 2026: a `contact_messages` row, a confirmation to the
+      sender and a notification to Hugo, both delivered to Primary.
 - [x] **`/work` "VIEW THE SITE" buttons.** Verified 13 August — they already point at the
       real client domains. The `#` note was stale.
-- [ ] **`/contact` contact-number field is not captured.** "Your business" became "Your
-      contact number" on 13 August, but `handleSubmit` still only flips a flag.
+- [x] **`/contact` contact-number field is not captured.** Captured — `handleSubmit` posts
+      name, email, phone and message, and the phone arrives on the row. Verified 25 August 2026.
 - [x] **About photo is a grey placeholder.** Done 17 August —
       `public/images/team/hugo-drummond.jpg` is now in the card as a `next/image` `fill`
       with `objectFit: cover`.
@@ -197,11 +204,10 @@ values live in `.env.local` locally, never in this file.
 
 ## Data cleanup
 
-- [ ] **Clear test leads.** Delete from `mountainstudios.leads` where `source='website'`:
-      21 rows with business names containing PROBE/TEST/Bot Co and emails with probe/test.
-      Keep: `Halo Hair / karen@gmail.com` and `Berts / bert@gmail.com` (genuine).
-- [ ] **Clear test contact messages.** Delete from `mountainstudios.contact_messages`:
-      2 rows (`Grant check`, `TEST - Claude, ignore`).
+- [x] **Clear test leads.** Done 25 August 2026, matched on exact test addresses rather than
+      name patterns. Inbound leads, contact messages and audit requests all back to zero; the
+      1,770 scraped leads and `anton@ultimitspit.co.za` untouched.
+- [x] **Clear test contact messages.** Done — the table is empty as of 25 August 2026.
 - [ ] **Clear test rep applications.** Delete from `mountainstudios.rep_applications`:
       3 older test rows (asdf asdf, Thandeka Mokoena, Peter Nel) plus 3 `TEST - delete me` rows.
 - [ ] **Confirm the retainer range.** `app/careers/sales-rep/page.tsx` states R350–R900 a

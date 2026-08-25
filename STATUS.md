@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 24 August 2026 (preview offer card fixed and reworked; claim details now reach the lead; every public form verified end to end; rate limits raised for paid traffic; delete added to the CRM; Meta Pixel and conversion events live)
+Last updated: 25 August 2026 (advertising is unblocked — pixel, four conversion events and server-side claim reporting all verified against Meta; audit/run closed; every HTML email now carries a plain-text part; referral pays 25% capped at R1000; MomentBank removed)
 
 ## Where things stand
 
@@ -13,8 +13,9 @@ data has been cleared.
 Not yet verified: `/brief/[id]` and the brief invitation email that leads to it, the careers
 application, `/momentbank`, and the daily audit sweep cron.
 
-The Meta Pixel is installed and reporting conversions, so nothing technical now blocks
-advertising.
+Nothing technical blocks advertising. The pixel, all four conversion events and the
+server-side claim report were each confirmed against Meta's own dashboard on 25 August,
+not merely deployed.
 Refer to [TODO.md](TODO.md) for the list.
 
 ## Careers page — `/careers/sales-rep`
@@ -1061,30 +1062,98 @@ server-side from the claim route with an access token.
 Automatic advanced matching was turned on in Events Manager on 24 August. It hashes what visitors
 type into the forms — name, email, phone — and sends it to Meta to match them to an account.
 
-## Still open — 24 August 2026
+## 25 August 2026 — advertising unblocked
 
-- The privacy policy does not mention Meta. It names Supabase, AWS SES, Vercel, Google and
-  DeepSeek as the processors and gives Google as the only source of cookies, while advanced
-  matching now sends hashed contact details to Meta. Raised and consciously deprioritised on
-  24 August — the exposure is POPIA rather than reader annoyance, so it does not depend on
-  anyone reading the page.
-- The referral payout trigger `leads_referral_payout` needs
-  `alter table mountainstudios.leads disable trigger leads_referral_payout;` run by hand before
-  the referral page copy can honestly change to "25% of the deal up to R1000".
-- The wizard's brief confirmation email needs rewriting — it sends and arrives correctly, the
-  copy is the problem.
-- `/brief/[id]` and its invitation email have never been verified end to end.
-- `/momentbank` writes to `creator_leads` and appears in no document. Decide whether it belongs
-  on this domain.
-- The bottom pill still reads "I want this website" while the card says "Yes, I want it" — the
-  same action under two names.
-- Emails are still HTML-only with no `text/plain` part, and the apex still has no SPF record.
-- `/api/audit/run` is unauthenticated: anyone holding a row's uuid can re-run an audit and
-  re-trigger its email.
+**Conversion events.** PageView alone tells Meta to optimise for people who load the site.
+Four events now report real captures, every one fired in the branch where the server has
+confirmed the write, never on the click — this site shipped seven forms that showed success
+and saved nothing, and an event on click would have bid against fiction.
 
-**`TODO.md` is stale** and contradicts this file: it still claims the contact form and the
-referral form have no backend. Both are live and were verified against the database on
-24 August.
+| Fire point | Event |
+| --- | --- |
+| Free audit, popup form | `Lead` |
+| Free audit, via the chatbot | `Lead` |
+| Contact form | `Contact` |
+| Wizard email step | `Lead` |
+| Wizard full brief | `SubmitApplication` |
+| Preview claim (server-side) | `Lead` |
+
+**The preview claim is reported through the Conversions API**, not the pixel. It happens on
+`/p/<token>`, a stored client site carrying no tracking by design, so the server reports it
+instead — tagging somebody else's mock site to measure our own funnel would be wrong.
+`lib/meta-capi.ts` normalises before hashing (a local `0814972033` becomes `27814972033`, or
+it matches nobody), drops events with no identifier, and is silent when `META_CAPI_TOKEN` is
+unset.
+
+<callout>
+
+**How this was actually verified, because two of the three checks were wrong first.**
+
+Test Events cannot prove the server event. A Conversions API call only routes there if the
+payload carries `test_event_code`, which ours does not — so the event can never appear on
+that screen no matter how well it works. Separately, browser events fired from an incognito
+window carry no test code either and land in the live dataset instead, which is why the
+midday runs left a two-hour hole in the Test Events list and looked like a failure.
+
+The proof is on the dataset **Overview** tab: `Lead` shows integration **Multiple** while
+`PageView` and `Contact` show **Meta pixel**. Multiple means pixel *and* server. That single
+word is the confirmation.
+
+Event match quality on `Lead` read **5.2/10** at five events. Below ~6 is weak, and it is
+dragged down by the browser-side leads; the server-side claims carry email, phone and both
+names and score better. Worth re-reading after a week of real traffic.
+
+</callout>
+
+**`/api/audit/run` is closed.** It re-runs an audit and re-sends its email, and was open to
+anyone holding a row's uuid — repeatedly, at our cost in two PageSpeed calls, a headless
+Chrome render and a send. Now gated on `CRON_SECRET` like `/api/audit/sweep`, refusing to run
+when the secret is unset rather than running unauthenticated. `lib/audit/start.ts` passes the
+header. Verified after deploy: an unauthenticated POST returns 401 (not the 500 it would give
+if the secret were missing), and a real audit still completed and emailed in 41 seconds.
+
+**Every HTML email now carries a plain-text alternative.** `text/html` alone is a bulk-mail
+signal. The text is derived from the HTML inside `sendMail` rather than written per template,
+so a new email cannot ship without one and the two cannot drift. A text-only caller is
+untouched — the wizard preview deliberately sends text alone.
+
+**Referral reward is now 25% of the deal capped at R1000.** It was promised in fourteen
+places across nine files: the terms page, the homepage hero and its three steps, the nav and
+footer links on five pages, the referral confirmation email, and the chatbot's knowledge file.
+Changing only the terms page would have left the homepage promising a flat amount, and a
+payout promise that contradicts itself is a dispute waiting to happen. The database trigger
+`leads_referral_payout` is **disabled**, so no flat R1000 row is raised on close any more.
+
+**MomentBank removed.** A creator-clipping signup form for a different product, living on the
+agency domain and in no document. It was also saving nothing: it wrote to `clips.creator_leads`
+through the dead legacy client, whose env vars are unset and whose schema does not exist in
+this project. An eighth form with the same failure, on a page nobody was watching.
+
+**Privacy policy** now names Meta as a processor and covers the pixel in the cookies section.
+It does not mention the IP address and user agent the Conversions API sends unhashed — raised
+and consciously deprioritised.
+
+**DNS.** `facebook-domain-verification` was first added to the wrong zone (`couchcup.co.za`),
+which is why verification failed; moved to `mountainstudios.co.za` and verified. The apex SPF
+record turned out to have been there all along — the "add an apex SPF record" to-do was stale,
+and was repeated here as fact without ever being checked.
+
+## Still open — 25 August 2026
+
+- **`/brief/[id]` and its invitation email have never been verified end to end.** Not in the
+  path of incoming enquiries — you send it from a lead when you choose to — but it is the step
+  before real work with a client.
+- **Careers form untested**, parked by decision.
+- The bottom pill on a preview still reads "I want this website" while the card says
+  "Yes, I want it" — the same action under two names.
+- DMARC is `p=none`, so SPF's `-all` is not enforced and forged mail is reported rather than
+  stopped. couchcup.co.za is already on `p=quarantine`.
+- The daily audit sweep cron has still never been observed firing.
+- No cookie consent banner. A decision, not an oversight.
+- **Event match quality 5.2/10** — re-read after a week of real traffic before acting on it.
+
+**`TODO.md` was corrected on 25 August.** It had claimed the contact and referral forms had no
+backend long after both were live and verified.
 
 ## Database (project `pqudglvwdfsnmckqswnk`, schema `mountainstudios`)
 
