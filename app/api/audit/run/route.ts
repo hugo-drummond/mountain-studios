@@ -17,6 +17,22 @@ function isUuidLike(str: string): boolean {
 }
 
 export async function POST(req: NextRequest) {
+  // This route re-runs an audit and re-sends its email. Until now it was open:
+  // anyone holding a row's uuid could trigger both, repeatedly, at our cost.
+  // It has no public caller — the popup, the chatbot and the sweep all reach
+  // the work through lib/audit/start.ts, which passes this secret.
+  //
+  // Refuses to run when the secret is unset rather than running unauthenticated,
+  // matching /api/audit/sweep.
+  const cronSecret = process.env.CRON_SECRET
+  if (!cronSecret) {
+    console.error('[audit/run] CRON_SECRET not set')
+    return NextResponse.json({ ok: false, error: 'Not configured' }, { status: 500 })
+  }
+  if (req.headers.get('Authorization') !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+  }
+
   // Rate limit
   const rateLimitResult = await rateLimit(req, 'audit/run')
   if (!rateLimitResult.ok) {

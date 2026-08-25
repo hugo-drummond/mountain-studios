@@ -252,7 +252,12 @@ export async function startAudit(input: StartAuditInput): Promise<StartAuditResu
         ? () =>
             fetch(`${appOrigin()}/api/audit/run`, {
               method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                // audit/run is no longer open. Without this header the handoff
+                // 401s and the row sits at 'running' until the sweep rescues it.
+                Authorization: `Bearer ${process.env.CRON_SECRET ?? ''}`,
+              },
               body: JSON.stringify({ auditRequestId: id }),
             }).then(
               (res) => {

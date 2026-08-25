@@ -12,6 +12,40 @@ import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2'
 // any address.
 const FROM = 'Mountain Studios <hello@mountainstudios.co.za>'
 
+// Every HTML email also needs a plain-text alternative. A message carrying only
+// a text/html part is a bulk-mail signal in its own right, and it is one of the
+// few deliverability levers that costs nothing to pull.
+//
+// Derived from the HTML rather than written by hand per template, so a new
+// email cannot ship without one and the two versions cannot drift apart.
+function htmlToText(html: string): string {
+  return html
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<a [^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, '$2 ($1)')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<li[^>]*>/gi, '- ')
+    .replace(/<\/(p|div|tr|h[1-6]|li|table)>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&rsquo;/g, '’')
+    .replace(/&lsquo;/g, '‘')
+    .replace(/&mdash;/g, '\u2014')
+    .replace(/&ndash;/g, '\u2013')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    // &amp; is decoded last, or an encoded entity like &amp;lt; would decode
+    // twice and turn into a real angle bracket.
+    .replace(/&amp;/g, '&')
+    .split('\n')
+    .map((line) => line.replace(/[ \t]+/g, ' ').trim())
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
 let _client: SESv2Client | null = null
 
 function client(): SESv2Client {
@@ -48,6 +82,11 @@ export async function sendMail({
     throw new Error('sendMail needs an html body, a text body, or both.')
   }
 
+  // An html-only caller gets a derived text part; a text-only caller is left
+  // exactly as it is. The wizard preview email deliberately sends text alone,
+  // and giving it an HTML part would undo that decision.
+  const textBody = text ?? (html ? htmlToText(html) : undefined)
+
   const res = await client().send(
     new SendEmailCommand({
       FromEmailAddress: from ?? FROM,
@@ -57,12 +96,12 @@ export async function sendMail({
         Simple: {
           Subject: { Data: subject, Charset: 'UTF-8' },
           Body: {
-            // Either part may be omitted. The wizard preview sends text only:
-            // a pure text/plain message is rarely filed into Promotions, and
-            // that email is genuinely a one-to-one note to someone who asked
-            // for it seconds earlier. Everything else still sends HTML.
+            // The wizard preview sends text only: a pure text/plain message is
+            // rarely filed into Promotions, and that email is genuinely a
+            // one-to-one note to someone who asked for it seconds earlier.
+            // Everything else sends HTML plus the derived text alternative.
             ...(html ? { Html: { Data: html, Charset: 'UTF-8' } } : {}),
-            ...(text ? { Text: { Data: text, Charset: 'UTF-8' } } : {}),
+            ...(textBody ? { Text: { Data: textBody, Charset: 'UTF-8' } } : {}),
           },
         },
       },
