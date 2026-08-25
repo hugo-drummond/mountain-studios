@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import PageShell from '@/components/site/PageShell'
+import { trackMeta } from '@/lib/analytics'
 
 const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -66,6 +67,7 @@ export default function Contact() {
       if (res.ok) {
         setSubmitted(true)
         setFormData({ name: '', email: '', phone: '', message: '' })
+        trackMeta('Contact', { content_name: 'Contact form' })
       } else {
         // The route returns a usable sentence for every rejection it makes.
         // Replacing it with "something went wrong" leaves someone with a typo

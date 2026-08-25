@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { storedRefCode } from './RefCapture'
+import { trackMeta } from '@/lib/analytics'
 
 // ---------------------------------------------------------------------------
 // The chat widget: a launcher pill in the bottom-right corner and the panel it
@@ -198,7 +199,10 @@ export default function ChatWidget() {
           body: JSON.stringify({ websiteUrl, email, recaptchaToken, refCode: storedRefCode() }),
         })
 
-        if (res.ok) return { ok: true }
+        if (res.ok) {
+          trackMeta('Lead', { content_name: 'Free website audit (chat)' })
+          return { ok: true }
+        }
 
         // Say what actually went wrong. "I couldn't get that started" sent
         // someone to a button that hits the very same limit they had just

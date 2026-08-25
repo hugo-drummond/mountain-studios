@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { storedRefCode } from './RefCapture'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { trackMeta } from '@/lib/analytics'
 
 // ---------------------------------------------------------------------------
 // The free-audit offer, moved off the homepage and into a popup.
@@ -234,6 +235,7 @@ export default function AuditPopup() {
         setUrl('')
         setEmail('')
         remember('local', DONE_KEY)
+        trackMeta('Lead', { content_name: 'Free website audit' })
       } else {
         // Show what the server actually said. It knows whether the URL failed to
         // parse, the email was malformed, or they have simply tried too many

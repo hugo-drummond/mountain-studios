@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { trackMeta } from '@/lib/analytics'
 import { type PageType } from '../../constants/pricing'
 import {
   businessTypeData,
@@ -506,6 +507,11 @@ function StartYourProjectInner() {
         if (typeof window !== 'undefined') {
           sessionStorage.setItem('ms-lead-id', data.leadId)
         }
+        // A returning visitor inside the 30-day dedupe window updates the same
+        // lead rather than creating one, so this can fire twice for one person.
+        // That is the correct trade: under-reporting a real capture would cost
+        // the optimiser more than an occasional duplicate.
+        trackMeta('Lead', { content_name: 'Get Started wizard — email step' })
       }
     } catch {
       // Network failure must not block the person. We would rather build the
@@ -555,6 +561,7 @@ function StartYourProjectInner() {
         return
       }
       setContactSubmitted(true)
+      trackMeta('SubmitApplication', { content_name: 'Get Started wizard — full brief' })
       // Clear sessionStorage on successful submit
       if (typeof window !== 'undefined') {
         sessionStorage.removeItem('ms-lead-email')
