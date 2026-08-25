@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { crmAdmin } from '@/lib/crm'
 import { sendMail } from '@/lib/ses'
+import { sendMetaEvent } from '@/lib/meta-capi'
 
 // ---------------------------------------------------------------------------
 // POST /api/preview/[token]/claim
@@ -85,6 +86,10 @@ export async function POST(req: NextRequest, { params }: { params: { token: stri
     console.error('[preview/claim] could not record claim:', err instanceof Error ? err.message : err)
   }
 
+  // Held outside the try so the Meta event below can still use it if the CRM
+  // write throws partway.
+  let leadEmail: string | null = null
+
   // Existing leads get flagged in place; a preview sent to someone not yet in
   // the CRM creates the lead, so an interested business can never fall through.
   try {
@@ -98,9 +103,11 @@ export async function POST(req: NextRequest, { params }: { params: { token: stri
       // and number never reached the CRM screen a rep actually works.
       const { data: lead } = await crmAdmin()
         .from('leads')
-        .select('phone, director_phone, director_name, notes')
+        .select('phone, director_phone, director_name, notes, email')
         .eq('id', preview.lead_id)
         .maybeSingle()
+
+      leadEmail = (lead?.email as string | null) ?? null
 
       const digitsOnly = (value: string | null | undefined): string => (value || '').replace(/\D/g, '')
       const updates: Record<string, unknown> = { crm_status: 'qualified', mockup_ready: true }
@@ -154,6 +161,23 @@ export async function POST(req: NextRequest, { params }: { params: { token: stri
   } catch (err) {
     console.error('[preview/claim] notification email failed:', err instanceof Error ? err.message : err)
   }
+
+  // Report the claim to Meta from here, since /p/<token> carries no pixel.
+  //
+  // Sent as Lead rather than a custom event so it lands in the same optimisation
+  // target the other captures use, and tagged so it stays separable in reporting
+  // — a Custom Conversion on this content_name can be built later if this ever
+  // deserves to be optimised for on its own.
+  await sendMetaEvent({
+    eventName: 'Lead',
+    eventSourceUrl: `${new URL(req.url).origin}/p/${params.token}`,
+    email: leadEmail,
+    phone,
+    fullName: name,
+    clientIp: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,
+    clientUserAgent: req.headers.get('user-agent'),
+    customData: { content_name: 'Preview claimed', business_name: preview.business_name },
+  })
 
   if (!recorded && !emailed) {
     return NextResponse.json({ success: false, error: 'Could not send your details. Please try again.' }, { status: 502 })
