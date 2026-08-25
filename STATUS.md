@@ -1138,6 +1138,61 @@ which is why verification failed; moved to `mountainstudios.co.za` and verified.
 record turned out to have been there all along — the "add an apex SPF record" to-do was stale,
 and was repeated here as fact without ever being checked.
 
+## Shared email and phone validation — live 25 August 2026
+
+`lib/validation.ts` exports four symbols used by six client forms and eight API routes:
+
+- `isValidEmail(email)` — rejects `hugo@gmail`, `hugo@x..com`, and leading/trailing whitespace
+- `normalizePhone(phone)` — accepts `0XXXXXXXXX` (South African) or `+CC` with 8–15 digits, returns E.164
+- `EMAIL_ERROR` — error message for invalid email, shown as form-field help text
+- `PHONE_ERROR` — error message for invalid phone
+
+Used on: `/contact`, the homepage referral block, the careers application, the Get Started wizard (the email
+gate at step 6 and the phone on the final step), the brief at `/brief/[id]`, and the free audit popup.
+Checked on: `/api/contact/submit`, `/api/referral/submit`, `/api/careers/apply`, `/api/brief/partial`,
+`/api/brief/submit`, `/api/audit/submit`, `/api/preview/email` and `/api/briefs/[id]/autosave`.
+
+The chatbot is **not** covered — it captures an email and phone out of free text on its own path and never
+imports this module. Worth closing if it starts producing junk addresses.
+
+**The core rule: only a bad email rejects a submission and returns 400.** A malformed phone is stored raw
+(capped 50 chars) with a `console.warn`, never rejected, because losing a contact number is worse than
+storing a messy string — the honeypot incident proved what silently discarding a lead costs. Brief autosave
+never rejects and never blanks what the user typed.
+
+### Field error clearing — trap worth recording
+
+A field error that clears only on blur will freeze the submit button: the user corrects the typo, presses send,
+and gets nothing because the error is still set from the earlier blur. First implementation set the error on
+submit and blur but cleared it only in `onBlur`, and the submit button was disabled whenever error was set.
+
+Fixed by clearing the error in `onChange` as soon as the value is valid; `onBlur` still owns **setting** it so
+nothing turns red mid-typing. The order is now: `onChange` validates and clears on success, `onBlur` validates
+and sets on failure, submit validates and handles both paths.
+
+## NOTIFY_EMAIL extraction — live 25 August 2026
+
+Internal notification recipients were hardcoded in five route files: `contact/submit`, `brief/submit`,
+`brief/partial`, `preview/email`, `preview/[token]/claim`, plus `lib/audit/start.ts`. Now exported
+from `lib/ses.ts` as `NOTIFY_EMAIL`, defaulting to `hugodrum6@gmail.com`.
+
+Affects: every route sending a notification to the project rather than the submitter, and
+`lib/audit/start.ts` when it notifies on startup.
+
+Not yet set in Vercel, so the default applies on production. The variable is optional, so
+leaving it unset is safe.
+
+### Sample email tool
+
+`scripts/send-sample-emails.ts` sends one sample of all 17 transactional emails to a single address for
+eyeballing, subjects prefixed `[SAMPLE]`, real templates with dummy data, writing nothing to the database.
+Seven of them normally go out over the nodemailer SMTP path whose password is unrecoverable, so the script
+loads the same `/emails/*.html` templates and pushes them through SES instead — same copy, different headers.
+Run 25 August; all seventeen delivered.
+
+The audit sample sends **without** its PDF: rendering one needs headless Chrome, which only works in
+production. For a real one, submit the form.
+
 ## Still open — 25 August 2026
 
 - **`/brief/[id]` and its invitation email have never been verified end to end.** Not in the

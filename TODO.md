@@ -16,6 +16,9 @@ handing this over to the reps.
 - [ ] Drag both calculator sliders. Check the numbers read honestly.
 - [ ] Answer "no" to the work-rights question and confirm the rejection wording is OK.
 - [ ] Decide whether the retainer range (R350–R900) stays. It is invented.
+- [ ] **Submit the form end to end with a real CV file** and confirm the application lands in the CRM and
+      the PDF is readable on preview. The form was written and never exercised in a real browser; validation
+      now uses email+phone shared rules.
 
 **Shared previews**
 
@@ -192,6 +195,12 @@ values live in `.env.local` locally, never in this file.
       when it is unset, rather than running unauthenticated.
 - [ ] `CALENDLY_URL` — optional. Defaults in code to `https://calendly.com/hugodrum6/30min`;
       set the variable only to point the report's CTA somewhere else.
+
+**Notification recipients**
+
+- [ ] `NOTIFY_EMAIL` — internal recipients for notifications from contact form, brief submit, audit startup,
+      and preview claim. Defaults to `hugodrum6@gmail.com` if unset. Set in Vercel when the default is
+      no longer wanted.
 
 **Already set, listed so nothing gets removed by accident**
 
