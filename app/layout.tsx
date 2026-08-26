@@ -73,12 +73,26 @@ export default function RootLayout({
   return (
     <html lang="en-ZA">
       <head>
-        {/* Google tag (gtag.js) */}
+        {/* Google tag (gtag.js)
+
+            lazyOnload, not afterInteractive. Once reCAPTCHA stopped loading on
+            every page, GA4 and the Meta Pixel became the ONLY long tasks left
+            on the homepage — measured at 78-111ms (GA, twice) and 144-214ms
+            plus 89-197ms (Pixel), against no render-blocking resources and a
+            0ms server response. Nothing else on the page competes for the main
+            thread during the paint window.
+
+            The cost is measurement fidelity: lazyOnload fires after the load
+            event, so a visitor who leaves within the first second or so may go
+            uncounted. PageView still fires for everyone else, and conversions
+            fire on user actions long afterwards, so ad attribution is
+            unaffected. Revert both to afterInteractive if the traffic numbers
+            look wrong. */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-RCLN88JPLC"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="gtag-init" strategy="afterInteractive">
+        <Script id="gtag-init" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -96,7 +110,7 @@ export default function RootLayout({
             The id is public by nature: it ships in the client bundle either way,
             so it lives here beside the GA4 id rather than in an env var that
             would only suggest a secrecy it does not have. */}
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?

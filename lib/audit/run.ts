@@ -1,5 +1,5 @@
 import { crmAdmin } from '@/lib/crm'
-import { normaliseUrl, checkSsl, checkHeaders, checkPsiBest } from './checks'
+import { normaliseUrl, checkSsl, checkHeaders, checkPsi } from './checks'
 import type { AuditReport, CheckError, SslResult, HeadersResult, PsiResult, AccessibilityResult } from './types'
 import { PSI_ERROR_COPY, A11Y_ERROR_COPY, GENERIC_ERROR_COPY } from './copy'
 import { renderAuditEmail, renderAuditCoverEmail } from './email'
@@ -108,14 +108,12 @@ export async function runAudit(
 
   const url = normalised.url
 
-  // 5. Run all checks in parallel. Each PSI strategy is sampled twice inside
-  //    checkPsiBest and the better run wins — a single Lighthouse sample is not
-  //    reproducible enough to put in front of a customer. See the note there.
+  // 5. Run all checks in parallel
   const results = await Promise.allSettled([
     checkSsl(url),
     checkHeaders(url),
-    checkPsiBest(url, 'mobile'),
-    checkPsiBest(url, 'desktop'),
+    checkPsi(url, 'mobile'),
+    checkPsi(url, 'desktop'),
   ])
 
   // Convert rejections to CheckError
