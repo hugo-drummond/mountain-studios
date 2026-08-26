@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 
 // Standalone referral signup form for the CTA band on non-homepage pages
 // (currently /refer/terms). Same endpoint and honeypot handling as the
@@ -9,7 +9,6 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 // because the homepage version is wired into that page's own local state
 // and JSX, not extracted as a component.
 export default function ReferralForm() {
-  const { executeRecaptcha } = useGoogleReCaptcha()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -110,7 +109,7 @@ export default function ReferralForm() {
           )}
         </div>
       ) : (
-        <form onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
+        <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={handleSubmit} style={{ marginBottom: '2rem' }}>
           {error && (
             <p style={{ fontSize: '0.9rem', color: '#dc2626', marginBottom: '1rem', textAlign: 'center' }}>
               {error}

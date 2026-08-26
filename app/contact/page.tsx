@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import PageShell from '@/components/site/PageShell'
 import { trackMeta } from '@/lib/analytics'
 import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
@@ -10,7 +10,6 @@ const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
 
 export default function Contact() {
-  const { executeRecaptcha } = useGoogleReCaptcha()
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -226,7 +225,7 @@ export default function Contact() {
                   <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Thanks — we'll reply within one business day.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                   {error && (
                     <p style={{
                       fontSize: '0.9rem',

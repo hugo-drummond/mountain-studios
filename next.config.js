@@ -1,8 +1,69 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       { protocol: 'https', hostname: 'cklxsdlmdbdlkuywcooh.supabase.co' }
+    ]
+  },
+  // The free website audit we sell checks for five security headers by name and
+  // scores their presence. Our own site shipped with only Vercel's
+  // strict-transport-security, so it scored 1/5 on its own report.
+  //
+  // The CSP here is deliberately permissive: app/layout.tsx carries three inline
+  // <script> blocks (JSON-LD, gtag-init, meta-pixel), so 'unsafe-inline' on
+  // script-src is required until those move to nonces. It still buys real
+  // protection against framing, mixed content and untrusted script hosts.
+  //
+  // The origin allowlist below was taken from an actual PageSpeed Insights
+  // network trace of the homepage, not guessed. Adding a third-party script
+  // means adding its origin here or it will be blocked silently in the console.
+  async headers() {
+    // React Fast Refresh evaluates strings as JavaScript, so `next dev` throws
+    // an EvalError on every page load without 'unsafe-eval'. It is dev-only —
+    // a production build contains no react-refresh runtime — so the allowance
+    // is scoped to development rather than weakening the shipped policy.
+    const devEval = process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''
+    const csp = [
+      "default-src 'self'",
+      `script-src 'self' 'unsafe-inline'${devEval} https://www.googletagmanager.com https://www.google-analytics.com https://connect.facebook.net https://www.google.com https://www.gstatic.com`,
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://www.gstatic.com",
+      "img-src 'self' data: blob: https:",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://connect.facebook.net https://*.facebook.com https://*.supabase.co https://www.google.com",
+      "frame-src 'self' blob: https://www.google.com https://td.doubleclick.net",
+      "frame-ancestors 'self'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "object-src 'none'",
+      'upgrade-insecure-requests',
+    ].join('; ')
+
+    const shared = [
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+    ]
+
+    return [
+      {
+        // Everything except /p/. A generated client preview is arbitrary HTML
+        // holding remote images, remote fonts and inline styles, and our CSP
+        // would break it. The negative lookahead is what keeps /p/ out — Next
+        // applies every matching source, so a separate looser entry for /p/
+        // would not override this one, it would stack with it.
+        source: '/((?!p/).*)',
+        headers: [
+          ...shared,
+          // SAMEORIGIN, not DENY: the wizard renders its in-page preview in an
+          // iframe from a blob: URL.
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'Content-Security-Policy', value: csp },
+        ],
+      },
+      {
+        source: '/p/:path*',
+        headers: shared,
+      },
     ]
   },
   // Next 14 keeps this under `experimental`; at the top level it is silently

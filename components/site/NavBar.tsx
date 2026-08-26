@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 const navLinks = [
   { label: 'About', href: '/about' },
@@ -31,9 +32,17 @@ export default function NavBar({ animate = false }: { animate?: boolean }) {
           opacity: startOpacity,
         }}
       >
-        <img
+        {/* The source is a 2.0MB 1536x1024 PNG that used to ship whole to every
+            visitor of /brief/[id], the only page mounting this nav. The
+            optimiser now serves it at 600x400 — 2x the 200px render height —
+            as AVIF/WebP. The source file itself is still 2MB and worth
+            shrinking; that only costs repo size, not visitor bytes. */}
+        <Image
           src="/images/logo.png"
           alt="Mountain Studios"
+          width={600}
+          height={400}
+          priority
           style={{ height: '200px', width: 'auto' }}
         />
       </a>

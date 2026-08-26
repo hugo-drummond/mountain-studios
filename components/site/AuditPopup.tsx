@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { trackMeta } from '@/lib/analytics'
@@ -88,7 +88,6 @@ function remember(storage: 'session' | 'local', key: string): void {
 
 export default function AuditPopup() {
   const pathname = usePathname()
-  const { executeRecaptcha } = useGoogleReCaptcha()
 
   const [open, setOpen] = useState(false)
   const [url, setUrl] = useState('')
@@ -301,7 +300,7 @@ export default function AuditPopup() {
           {done ? (
             <p className="ms-audit-done">Got it. Your audit is on the way.</p>
           ) : (
-            <form onSubmit={submit}>
+            <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={submit}>
               {error && <p className="ms-audit-error">{error}</p>}
 
               <div className="ms-audit-fields" style={{ flexDirection: emailError && emailTouched ? 'column' : undefined }}>

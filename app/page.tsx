@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import Image from 'next/image'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import SiteHeaderNav from '../components/site/SiteHeaderNav'
 import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 
@@ -57,7 +58,6 @@ const faqItems: FaqItem[] = [
 ]
 
 export default function Home() {
-  const { executeRecaptcha } = useGoogleReCaptcha()
   const [name, setName] = useState('')
   const [nameFinal, setNameFinal] = useState('')
   const [referName, setReferName] = useState('')
@@ -167,6 +167,7 @@ export default function Home() {
 
   return (
     <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0, overflow: 'hidden' }}>
+      <main>
 
       {/* TOP BAR + HERO — grouped in a flex column that fills exactly one
           viewport, so the hero's own height (not just a fixed rem padding)
@@ -288,7 +289,7 @@ export default function Home() {
         }}>
           <div style={{ background: '#fff', borderRadius: '18px', padding: '5px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
             <div style={{ borderRadius: '13px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
-              <img src="/images/portfolio/alistair-drummond.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+              <Image src="/images/portfolio/alistair-drummond.jpg" alt="" width={1440} height={810} sizes="280px" priority style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -302,7 +303,7 @@ export default function Home() {
         }}>
           <div style={{ background: '#fff', borderRadius: '18px', padding: '5px', boxShadow: '0 30px 60px -25px rgba(26,26,46,0.45)' }}>
             <div style={{ borderRadius: '13px', overflow: 'hidden', background: '#fff', border: '1px solid #eceaf2' }}>
-              <img src="/images/portfolio/coimbra-bakery.jpg" alt="" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+              <Image src="/images/portfolio/coimbra-bakery.jpg" alt="" width={1440} height={810} sizes="300px" priority style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -526,7 +527,7 @@ export default function Home() {
                   flexDirection: 'column',
                   width: '100%',
                 }}>
-                  <img src={item.img} alt={item.name} style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
+                  <Image src={item.img} alt={item.name} width={1440} height={810} sizes="(max-width: 900px) 100vw, 480px" style={{ width: '100%', aspectRatio: '16 / 9', objectFit: 'cover', objectPosition: 'center top', display: 'block' }} />
                   <div style={{ padding: '1.7rem 1.8rem', marginTop: 'auto' }}>
                     <p style={{
                       fontFamily: 'var(--font-playfair), Georgia, serif',
@@ -653,7 +654,7 @@ export default function Home() {
               )}
             </div>
           ) : (
-            <form onSubmit={handleReferSubmit} style={{
+            <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={handleReferSubmit} style={{
               marginTop: '2.5rem',
             }}>
               {referError && (
@@ -892,9 +893,10 @@ export default function Home() {
           </form>
         </div>
       </div>
+      </main>
 
       {/* FOOTER */}
-      <div style={{ background: '#171b2b', color: 'rgba(255,255,255,0.55)', padding: '4rem 2rem 2rem' }}>
+      <footer style={{ background: '#171b2b', color: 'rgba(255,255,255,0.55)', padding: '4rem 2rem 2rem' }}>
         <div className="ms-footer" style={{
           display: 'grid',
           gridTemplateColumns: '2fr 1fr 1fr 1fr',
@@ -917,7 +919,7 @@ export default function Home() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>GET IN TOUCH</p>
@@ -932,7 +934,7 @@ export default function Home() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>PAGES</p>
@@ -948,7 +950,7 @@ export default function Home() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>FOLLOW</p>
@@ -970,15 +972,15 @@ export default function Home() {
           </p>
           {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
               which Google permits only while this notice is on the page. */}
-          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>
             This site is protected by reCAPTCHA and the Google{' '}
-            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Privacy Policy</a>{' '}
             and{' '}
-            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Terms of Service</a>{' '}
             apply.
           </p>
         </div>
-      </div>
+      </footer>
 
       {/* The floating corner is the chatbot's alone (components/site/ChatWidget).
           It used to be an A/B test between a "SEE YOUR NEW SITE" pill and a

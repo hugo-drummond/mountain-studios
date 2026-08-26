@@ -564,7 +564,7 @@ export default function SalesRepCareers() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>GET IN TOUCH</p>
@@ -579,7 +579,7 @@ export default function SalesRepCareers() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>PAGES</p>
@@ -596,7 +596,7 @@ export default function SalesRepCareers() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>FOLLOW</p>
@@ -616,11 +616,11 @@ export default function SalesRepCareers() {
             <a href="/privacy" style={{ color: 'inherit' }}>Privacy</a> ·{' '}
             <a href="/terms" style={{ color: 'inherit' }}>Terms</a>
           </p>
-          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>
             This site is protected by reCAPTCHA and the Google{' '}
-            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Privacy Policy</a>{' '}
             and{' '}
-            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Terms of Service</a>{' '}
             apply.
           </p>
         </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { trackMeta } from '@/lib/analytics'
 import { type PageType } from '../../constants/pricing'
 import {
@@ -331,7 +331,6 @@ function StartYourProjectInner() {
   // so a visitor who skipped step 1 doesn't start partway through the bar.
   const progress = ((step - firstStep + 1) / (TOTAL_STEPS - firstStep + 1)) * 100
 
-  const { executeRecaptcha } = useGoogleReCaptcha()
 
   // Generate preview when entering Step 6 and email is captured
   useEffect(() => {
@@ -955,7 +954,7 @@ function StartYourProjectInner() {
             <p style={{ fontFamily: font, fontSize: '0.95rem', color: 'rgba(255,255,255,0.75)', marginBottom: '2rem', lineHeight: 1.5 }}>
               We are building it now. Leave your email and it is yours whether or not you go any further.
             </p>
-            <form onSubmit={handleSubmitGateEmail} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={handleSubmitGateEmail} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
               <div>
                 <input
                   type="email"
@@ -1264,7 +1263,7 @@ function StartYourProjectInner() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>GET IN TOUCH</p>
@@ -1279,7 +1278,7 @@ function StartYourProjectInner() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>PAGES</p>
@@ -1296,7 +1295,7 @@ function StartYourProjectInner() {
               fontWeight: 700,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.4)',
+              color: 'rgba(255,255,255,0.55)',
               marginBottom: '1rem',
               margin: '0 0 1rem',
             }}>FOLLOW</p>
@@ -1318,11 +1317,11 @@ function StartYourProjectInner() {
           </p>
           {/* Required wording. The reCAPTCHA badge is hidden in globals.css,
               which Google permits only while this notice is on the page. */}
-          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)' }}>
+          <p style={{ margin: 0, fontSize: '0.7rem', color: 'rgba(255,255,255,0.55)' }}>
             This site is protected by reCAPTCHA and the Google{' '}
-            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Privacy Policy</a>{' '}
+            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Privacy Policy</a>{' '}
             and{' '}
-            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)' }}>Terms of Service</a>{' '}
+            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.55)', textDecoration: 'underline' }}>Terms of Service</a>{' '}
             apply.
           </p>
         </div>

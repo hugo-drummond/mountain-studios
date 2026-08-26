@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Source_Sans_3, Playfair_Display } from 'next/font/google'
 import './globals.css'
-import RecaptchaProvider from '../components/site/RecaptchaProvider'
 import ChatWidget from '../components/site/ChatWidget'
 import AuditPopup from '../components/site/AuditPopup'
 import RefCapture from '../components/site/RefCapture'
@@ -120,16 +119,17 @@ export default function RootLayout({
         {/* Outside the reCAPTCHA provider: it calls no protected endpoint, and
             a partner's link must be counted whether or not Google loads. */}
         <RefCapture />
-        <RecaptchaProvider>
-          {children}
-          {/* Both live inside the provider: each calls executeRecaptcha and
-              gets undefined without the context. ChatWidget sat outside it and
-              had been sending every request unscored — harmless while
-              blockedAsBot is an allowlist, but it also posts the audit now.
-              Both hide themselves on /admin and on generated previews. */}
-          <AuditPopup />
-          <ChatWidget />
-        </RecaptchaProvider>
+        {children}
+        {/* No reCAPTCHA provider wraps any of this any more. Google's script
+            used to load for every visitor of every page from here — 939KB and
+            816ms of main-thread work, about a third of the homepage's weight,
+            to serve six forms. Each form now calls lib/recaptcha-client, which
+            injects the script the first time somebody touches a form and mints
+            a fresh token per endpoint. Nothing needs to sit inside a provider,
+            so ChatWidget and AuditPopup are plain siblings.
+            Both still hide themselves on /admin and on generated previews. */}
+        <AuditPopup />
+        <ChatWidget />
       </body>
     </html>
   )

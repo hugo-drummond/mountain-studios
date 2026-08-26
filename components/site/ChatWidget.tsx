@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
 import { trackMeta } from '@/lib/analytics'
 
@@ -77,7 +77,6 @@ interface Stored {
 
 export default function ChatWidget() {
   const pathname = usePathname()
-  const { executeRecaptcha } = useGoogleReCaptcha()
   const [open, setOpen] = useState(false)
   const [bubble, setBubble] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -118,8 +117,14 @@ export default function ChatWidget() {
     if (el) el.scrollTop = el.scrollHeight
   }, [messages, sending, open])
 
+  // Opening the chat is the single chokepoint for every route in — the pill,
+  // the bubble, and the OPEN_EVENT other components fire — so reCAPTCHA is
+  // warmed here rather than in each of them.
   useEffect(() => {
-    if (open) inputRef.current?.focus()
+    if (open) {
+      inputRef.current?.focus()
+      prewarmRecaptcha()
+    }
   }, [open])
 
   // Anything on the site that wants to open the chat goes through this event.
