@@ -390,6 +390,63 @@ export async function checkPsi(
   }
 }
 
+/**
+ * Runs checkPsi `samples` times SEQUENTIALLY and keeps the highest-scoring run.
+ *
+ * A single Lighthouse sample is not reproducible. Sampling our own homepage
+ * four times, 45 seconds apart, returned 64, 48, 57, 79 — a 31-point range on a
+ * site that did not change, spanning three of the report's four verdict bands.
+ * A prospect who re-runs the audit and sees a different number has no reason to
+ * trust any of it.
+ *
+ * Sequential, NOT concurrent, and this is the whole point. The PSI API caches
+ * its result for roughly a minute: six concurrent requests for the same URL all
+ * returned byte-identical Lighthouse runs (same `fetchTime`, 0.9s round trip
+ * against 10-16s for a real run). Concurrent sampling therefore reads the same
+ * cached number N times, reduces nothing, and burns N times the quota to do it.
+ * If you "optimise" this back into a Promise.all, it silently stops working.
+ *
+ * Highest, not mean: Lighthouse lab noise is one-sided. Contention on Google's
+ * measuring machine only ever makes a score worse, so the best run is the one
+ * least polluted by someone else's load. A mean bakes that contention into the
+ * number we hand a customer.
+ *
+ * The {psi, accessibility} pair travels together, so the accessibility score
+ * and its failure list always come from the same run as the performance score
+ * rather than being stitched from two different measurements.
+ *
+ * Costs wall time: roughly 10-16s per extra sample. run.ts runs the two
+ * strategies in parallel, so two mobile samples set the floor for the whole
+ * check phase. Watch app/api/audit/run/route.ts, which is capped at 60s and
+ * also has to render a PDF.
+ */
+export async function checkPsiBest(
+  url: string,
+  strategy: 'mobile' | 'desktop',
+  samples = 2,
+): Promise<{ psi: PsiResult; accessibility: AccessibilityResult | null }> {
+  const runs: Array<{ psi: PsiResult; accessibility: AccessibilityResult | null }> = []
+
+  for (let i = 0; i < samples; i++) {
+    runs.push(await checkPsi(url, strategy))
+  }
+
+  let best: (typeof runs)[number] | null = null
+  let bestScore = -1
+  for (const run of runs) {
+    // A failed sample carries no score. If every sample failed we fall through
+    // and return the first, so the caller still gets a real error result to
+    // render rather than a fabricated zero.
+    if (run.psi.status !== 'ok') continue
+    if (run.psi.score > bestScore) {
+      bestScore = run.psi.score
+      best = run
+    }
+  }
+
+  return best ?? runs[0]
+}
+
 function buildPsiError(
   reason: Exclude<CheckError['reason'], 'blocked'>,
   detail: string,
