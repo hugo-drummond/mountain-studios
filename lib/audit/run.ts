@@ -16,6 +16,36 @@ export async function runAudit(
 }> {
   const db = crmAdmin()
 
+  // Timing instrumentation.
+  //
+  // This whole function — checks, a headless-Chrome PDF render, storage upload
+  // and an email — runs inside ONE invocation, and on the Hobby plan every
+  // function is killed at 60s no matter what maxDuration claims. We are close
+  // enough to that ceiling that adding a second PageSpeed sample (branch
+  // audit-sampling) does not obviously fit, and nobody could say which phase
+  // to cut because nothing was measured.
+  //
+  // Emits one greppable line per run: search Vercel logs for [audit/timing].
+  const tStart = Date.now()
+  const phase: Record<string, number> = {}
+  let tMark = tStart
+  const mark = (name: string) => {
+    const now = Date.now()
+    phase[name] = now - tMark
+    tMark = now
+  }
+  const logTiming = (outcome: string) => {
+    const total = Date.now() - tStart
+    const breakdown = Object.entries(phase)
+      .map(([k, v]) => `${k}=${v}ms`)
+      .join(' ')
+    // 60000 is the Hobby ceiling; the margin is what a second PSI sample has
+    // to fit inside.
+    console.log(
+      `[audit/timing] ${outcome} total=${total}ms margin=${60000 - total}ms ${breakdown}`,
+    )
+  }
+
   // 1. Fetch the audit request
   const { data: row, error: queryError } = await db
     .from('audit_requests')
@@ -103,10 +133,12 @@ export async function runAudit(
       console.error('[audit/run] Failed to write blocked report:', blockedWriteError.message)
     }
 
+    logTiming('blocked')
     return { ok: true, report: blockedReport }
   }
 
   const url = normalised.url
+  mark('setup')
 
   // 5. Run all checks in parallel
   const results = await Promise.allSettled([
@@ -115,6 +147,7 @@ export async function runAudit(
     checkPsi(url, 'mobile'),
     checkPsi(url, 'desktop'),
   ])
+  mark('checks')
 
   // Convert rejections to CheckError
   const sslResult: typeof results[0] = results[0]
@@ -212,8 +245,10 @@ export async function runAudit(
 
   if (reportWriteError) {
     console.error('[audit/run] Failed to write report:', reportWriteError.message)
+    logTiming('write_failed')
     return { ok: false, report, error: 'write_failed' }
   }
+  mark('writeReport')
 
   // 7b. Send email with PDF attachment (best effort)
   try {
@@ -246,6 +281,7 @@ export async function runAudit(
       // Try to render and upload PDF
       try {
         pdfBuffer = await renderReportPdf(report, { businessName })
+        mark('pdfRender')
 
         // Create bucket if it doesn't exist (best effort)
         try {
@@ -268,6 +304,7 @@ export async function runAudit(
             contentType: 'application/pdf',
             upsert: true,
           })
+        mark('pdfUpload')
 
         // Send email with attachment. The covering note carries the PDF — the
         // long written version below is only for when the render failed and
@@ -307,6 +344,7 @@ export async function runAudit(
         }
 
         if (!sendSuccess) throw lastSendError
+        mark('emailWithPdf')
       } catch (err) {
         // PDF render, upload or send failed — still send the written report.
         //
@@ -335,6 +373,7 @@ export async function runAudit(
         try {
           messageId = await sendMail({ to: row.email, subject, html })
           sendSuccess = true
+          mark('emailFallback')
         } catch (emailErr) {
           console.error('[audit/run] Fallback email send also failed:', emailErr instanceof Error ? emailErr.message : emailErr)
           sendSuccess = false
@@ -389,5 +428,6 @@ export async function runAudit(
     }
   }
 
+  logTiming(report.summary.overall)
   return { ok: true, report }
 }

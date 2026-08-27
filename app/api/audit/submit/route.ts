@@ -17,7 +17,11 @@ import { isValidEmail } from '@/lib/validation'
 // more than a clean error response.
 // ---------------------------------------------------------------------------
 
-export const maxDuration = 300
+// Hobby caps every serverless function at 60s and silently ignores anything
+// higher, so this is the real ceiling, not a choice. It used to read 300,
+// which read like headroom that does not exist. runAudit() logs
+// [audit/timing] on every run — check the margin there before adding work.
+export const maxDuration = 60
 
 interface Payload {
   websiteUrl?: string
