@@ -31,6 +31,15 @@ const GREETING =
 // first tap is always a question it can answer well.
 const OPENERS = ["What does a site cost?", 'How long does it take?', "What's included?"]
 
+// Status messages shown during preview build, one every 3.5 seconds.
+const PREVIEW_STAGES = [
+  'Setting up your pages…',
+  'Writing your copy…',
+  'Choosing images…',
+  'Putting it together…',
+  'Almost there…',
+]
+
 const STORAGE_KEY = 'ms-chat-v1'
 const MAX_INPUT = 1000
 
@@ -56,6 +65,8 @@ const OPEN_EVENT = 'ms-chat:open'
 const BUBBLE_TEXT = 'Chat with us — we reply instantly'
 const BUBBLE_DISMISSED_KEY = 'ms-chat-bubble-dismissed'
 const BUBBLE_DELAY_MS = 1600
+
+const PREVIEW_READY = "That's it — have a scroll through it. What do you think? Anything you'd change?"
 
 interface Message {
   role: 'user' | 'assistant'
@@ -99,10 +110,12 @@ export default function ChatWidget() {
   const [previewToken, setPreviewToken] = useState<string | null>(null)
   const [previewOpen, setPreviewOpen] = useState(false)
   const [buildingPreview, setBuildingPreview] = useState(false)
+  const [previewStage, setPreviewStage] = useState(0)
 
   const launcherRef = useRef<HTMLButtonElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const previewFillRef = useRef<HTMLDivElement>(null)
 
   // Survive a hard reload. Client-side navigation already keeps this component
   // mounted, since it lives in the root layout.
@@ -217,6 +230,19 @@ export default function ChatWidget() {
       document.body.style.overflow = ''
     }
   }, [previewOpen])
+
+  // Advance preview build status message every 3.5 seconds, stopping at the last one.
+  // Clear the interval when the build finishes or the component unmounts.
+  useEffect(() => {
+    if (!buildingPreview) return
+
+    setPreviewStage(0)
+    const interval = setInterval(() => {
+      setPreviewStage((prev) => (prev < PREVIEW_STAGES.length - 1 ? prev + 1 : prev))
+    }, 3500)
+
+    return () => clearInterval(interval)
+  }, [buildingPreview])
 
   // Fires the audit through /api/audit/submit — the endpoint the popup form
   // posts to. It writes the rows, emails Ant and renders the PDF in the one
@@ -508,28 +534,55 @@ export default function ChatWidget() {
                     </button>
                   )}
                   {m.offerPreview && (
-                    <button
-                      type="button"
-                      className="ms-chat-audit"
-                      onClick={async () => {
-                        setBuildingPreview(true)
-                        const result = await submitPreview(messages)
-                        setBuildingPreview(false)
-                        if (!result.ok) {
-                          setMessages([
-                            ...messages,
-                            {
-                              role: 'assistant',
-                              content:
-                                "Your preview couldn't be built right now. Try visiting the Get Started page instead.",
-                            },
-                          ])
-                        }
-                      }}
-                      disabled={buildingPreview}
-                    >
-                      {buildingPreview ? 'Building your preview…' : 'Build my preview →'}
-                    </button>
+                    buildingPreview ? (
+                      <div className="ms-chat-progress">
+                        <div className="ms-chat-progress-label">
+                          {PREVIEW_STAGES[previewStage]}
+                        </div>
+                        <div className="ms-chat-progress-track">
+                          <div ref={previewFillRef} className="ms-chat-progress-fill" />
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        className="ms-chat-audit"
+                        onClick={async () => {
+                          setBuildingPreview(true)
+                          setPreviewStage(0)
+                          const result = await submitPreview(messages)
+
+                          if (result.ok) {
+                            if (previewFillRef.current) {
+                              previewFillRef.current.classList.add('is-done')
+                            }
+                            // The preview succeeded and the overlay is now open. Append a message
+                            // so the model learns the preview was actually opened — this is the only
+                            // signal it gets that the overlay exists, and it must appear instantly
+                            // rather than after a round-trip.
+                            setMessages([
+                              ...messages,
+                              { role: 'assistant', content: PREVIEW_READY },
+                            ])
+                          }
+
+                          setBuildingPreview(false)
+
+                          if (!result.ok) {
+                            setMessages([
+                              ...messages,
+                              {
+                                role: 'assistant',
+                                content:
+                                  "Your preview couldn't be built right now. Try visiting the Get Started page instead.",
+                              },
+                            ])
+                          }
+                        }}
+                      >
+                        Build my preview →
+                      </button>
+                    )
                   )}
                 </div>
               ),
@@ -817,4 +870,12 @@ const CSS = `
 .ms-chat-preview-bar button{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer}
 .ms-chat-preview-bar button:hover{background:rgba(255,255,255,.12)}
 .ms-chat-preview-frame{flex:1 1 auto;width:100%;border:0;background:#fff}
+
+.ms-chat-progress{margin-top:12px}
+.ms-chat-progress-label{font-size:13px;opacity:.7;margin-bottom:7px}
+.ms-chat-progress-track{height:4px;border-radius:999px;background:rgba(10,22,40,.12);overflow:hidden}
+.ms-chat-progress-fill{height:100%;width:4%;border-radius:999px;background:#7d3d4f;animation:ms-chat-fill 20s cubic-bezier(.15,.75,.25,1) forwards}
+@keyframes ms-chat-fill{from{width:4%}to{width:92%}}
+.ms-chat-progress-fill.is-done{animation:none;width:100%;transition:width .3s ease}
+@media (prefers-reduced-motion:reduce){.ms-chat-progress-fill{animation:none;width:60%}}
 `
