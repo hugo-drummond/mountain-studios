@@ -36,7 +36,7 @@ const MAX_INPUT = 1000
 
 // Where the "book a call" button sends people. A single named constant so the
 // link is easy to swap later without hunting through the render tree.
-const CALENDLY_URL = 'https://calendly.com/hugodrum6/15min'
+const CALENDLY_URL = 'https://calendly.com/hugodrum6/introduction-call'
 
 // The widget is mounted in the root layout, which also wraps things that are
 // not the marketing site. It must not appear on the admin screens, and it must
@@ -72,6 +72,9 @@ interface Message {
   // back to the server — parseMessages there ignores anything beyond role and
   // content.
   offerBooking?: boolean
+  // Set on an assistant message when the bot offered to build a preview.
+  // Renders a button under it that opens the preview in an overlay.
+  offerPreview?: boolean
 }
 
 // `retryable` decides whether the button is worth offering. It points at the
@@ -82,6 +85,7 @@ type AuditOutcome = { ok: true } | { ok: false; retryable: boolean; message: str
 interface Stored {
   messages: Message[]
   leadId: string | null
+  previewToken?: string | null
 }
 
 export default function ChatWidget() {
@@ -92,6 +96,9 @@ export default function ChatWidget() {
   const [leadId, setLeadId] = useState<string | null>(null)
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [previewToken, setPreviewToken] = useState<string | null>(null)
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const [buildingPreview, setBuildingPreview] = useState(false)
 
   const launcherRef = useRef<HTMLButtonElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -106,8 +113,15 @@ export default function ChatWidget() {
       const saved = JSON.parse(raw) as Stored
       if (Array.isArray(saved.messages)) setMessages(saved.messages)
       if (typeof saved.leadId === 'string') setLeadId(saved.leadId)
+      if (typeof saved.previewToken === 'string') setPreviewToken(saved.previewToken)
     } catch {
       // A corrupt entry is not worth a broken widget.
+    }
+    try {
+      const token = sessionStorage.getItem('ms-chat-preview-v1')
+      if (typeof token === 'string') setPreviewToken(token)
+    } catch {
+      // Private mode or quota.
     }
   }, [])
 
@@ -193,6 +207,17 @@ export default function ChatWidget() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open, close])
 
+  useEffect(() => {
+    if (previewOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [previewOpen])
+
   // Fires the audit through /api/audit/submit — the endpoint the popup form
   // posts to. It writes the rows, emails Ant and renders the PDF in the one
   // function that ships the headless browser, so there is no second code path
@@ -251,6 +276,39 @@ export default function ChatWidget() {
     [executeRecaptcha],
   )
 
+  const submitPreview = useCallback(
+    async (transcript: Message[]) => {
+      try {
+        const res = await fetch('/api/preview/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: transcript, leadId }),
+        })
+
+        if (!res.ok) {
+          return { ok: false }
+        }
+
+        const data = await res.json().catch(() => null)
+        if (data?.token && typeof data.token === 'string') {
+          setPreviewToken(data.token)
+          try {
+            sessionStorage.setItem('ms-chat-preview-v1', data.token)
+          } catch {
+            // Private mode or quota.
+          }
+          setPreviewOpen(true)
+          return { ok: true }
+        }
+
+        return { ok: false }
+      } catch {
+        return { ok: false }
+      }
+    },
+    [leadId],
+  )
+
   const send = useCallback(
     async (text: string) => {
       const content = text.trim().slice(0, MAX_INPUT)
@@ -278,7 +336,7 @@ export default function ChatWidget() {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, leadId, recaptchaToken, refCode: storedRefCode() }),
+          body: JSON.stringify({ messages: next, leadId, previewToken, recaptchaToken, refCode: storedRefCode() }),
         })
         const data = await res.json().catch(() => null)
 
@@ -323,6 +381,7 @@ export default function ChatWidget() {
                   : data?.offerAudit === true,
               auditStarted: started,
               offerBooking: data?.offerBooking === true,
+              offerPreview: data?.offerPreview === true,
             },
           ])
           if (typeof data?.leadId === 'string') setLeadId(data.leadId)
@@ -341,7 +400,7 @@ export default function ChatWidget() {
         inputRef.current?.focus()
       }
     },
-    [messages, leadId, sending, executeRecaptcha, submitAudit],
+    [messages, leadId, previewToken, sending, executeRecaptcha, submitAudit],
   )
 
   // After every hook, so the rules of hooks hold on the routes that hide it.
@@ -448,6 +507,30 @@ export default function ChatWidget() {
                       Pick a time →
                     </button>
                   )}
+                  {m.offerPreview && (
+                    <button
+                      type="button"
+                      className="ms-chat-audit"
+                      onClick={async () => {
+                        setBuildingPreview(true)
+                        const result = await submitPreview(messages)
+                        setBuildingPreview(false)
+                        if (!result.ok) {
+                          setMessages([
+                            ...messages,
+                            {
+                              role: 'assistant',
+                              content:
+                                "Your preview couldn't be built right now. Try visiting the Get Started page instead.",
+                            },
+                          ])
+                        }
+                      }}
+                      disabled={buildingPreview}
+                    >
+                      {buildingPreview ? 'Building your preview…' : 'Build my preview →'}
+                    </button>
+                  )}
                 </div>
               ),
             )}
@@ -498,6 +581,26 @@ export default function ChatWidget() {
           </form>
 
           <p className="ms-chat-foot">Replies within one business day · hello@mountainstudios.co.za</p>
+        </div>
+      )}
+
+      {previewOpen && previewToken && (
+        <div className="ms-chat-preview-overlay">
+          <div className="ms-chat-preview-bar">
+            <span>Your preview</span>
+            <button
+              type="button"
+              onClick={() => setPreviewOpen(false)}
+              aria-label="Close preview"
+            >
+              Close ✕
+            </button>
+          </div>
+          <iframe
+            className="ms-chat-preview-frame"
+            src={'/p/' + previewToken}
+            title="Website preview"
+          />
         </div>
       )}
     </>
@@ -708,4 +811,10 @@ const CSS = `
   }
   .ms-chat-launcher:hover { transform: none; }
 }
+
+.ms-chat-preview-overlay{position:fixed;inset:0;z-index:9990;display:flex;flex-direction:column;background:rgba(10,22,40,.88)}
+.ms-chat-preview-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:#0A1628;color:#fff;font-size:14px;letter-spacing:.02em;flex:0 0 auto}
+.ms-chat-preview-bar button{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:6px 14px;font-size:13px;cursor:pointer}
+.ms-chat-preview-bar button:hover{background:rgba(255,255,255,.12)}
+.ms-chat-preview-frame{flex:1 1 auto;width:100%;border:0;background:#fff}
 `

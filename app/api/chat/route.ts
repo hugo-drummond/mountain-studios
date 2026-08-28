@@ -57,6 +57,7 @@ interface Payload {
   leadId?: unknown
   recaptchaToken?: unknown
   refCode?: unknown
+  previewToken?: unknown
 }
 
 const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
@@ -199,11 +200,16 @@ const RUN_AUDIT_MARKER = /[`*_]*\[\[\s*run[_\s-]*audit\s*\]\][`*_]*/gi
 // markdown punctuation.
 const BOOK_MARKER = /[`*_]*\[\[\s*book\s*\]\][`*_]*/gi
 
+// The model ends a message with [[PREVIEW]] when it wants to put the "build my
+// preview" button under it. Same reasoning and generosity as the others.
+const PREVIEW_MARKER = /[`*_]*\[\[\s*preview\s*\]\][`*_]*/gi
+
 function extractAuditMarkers(reply: string): {
   reply: string
   offerAudit: boolean
   runAudit: boolean
   offerBooking: boolean
+  offerPreview: boolean
 } {
   const runAudit = RUN_AUDIT_MARKER.test(reply)
   RUN_AUDIT_MARKER.lastIndex = 0
@@ -218,11 +224,16 @@ function extractAuditMarkers(reply: string): {
   BOOK_MARKER.lastIndex = 0
   text = text.replace(BOOK_MARKER, '')
 
+  const offerPreview = PREVIEW_MARKER.test(text)
+  PREVIEW_MARKER.lastIndex = 0
+  text = text.replace(PREVIEW_MARKER, '')
+
   return {
     reply: text.replace(/\n{3,}/g, '\n\n').trim(),
     offerAudit,
     runAudit,
     offerBooking,
+    offerPreview,
   }
 }
 
@@ -267,6 +278,7 @@ function buildNotes(
   email: string | null,
   phone: string | null,
   messages: Message[],
+  previewToken: string | null = null,
 ): string {
   const transcript = messages
     .map((m) => `${m.role === 'user' ? 'Them' : 'Bot'}: ${m.content}`)
@@ -278,6 +290,7 @@ function buildNotes(
     'Chatbot enquiry from the website.',
     email ? `Email: ${email}` : null,
     phone ? `Phone: ${phone}` : null,
+    previewToken ? `Preview: https://mountainstudios.co.za/p/${previewToken}` : null,
     '',
     '--- chat transcript ---',
     transcript,
@@ -296,9 +309,10 @@ async function saveLead(
   email: string | null,
   phone: string | null,
   messages: Message[],
+  previewToken: string | null = null,
 ): Promise<string | null> {
   try {
-    const notes = buildNotes(null, email, phone, messages)
+    const notes = buildNotes(null, email, phone, messages, previewToken)
     const label = email || phone || 'unknown'
 
     const fields: Record<string, unknown> = {
@@ -402,6 +416,7 @@ export async function POST(req: NextRequest) {
   }
 
   const incomingLeadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
+  const previewToken = typeof body.previewToken === 'string' && body.previewToken ? body.previewToken : null
 
   // reCAPTCHA check only on the opening message — the first turn of a conversation.
   // Once they're engaged, throwing them out over a low score is worse than the cost
@@ -453,10 +468,11 @@ export async function POST(req: NextRequest) {
   // reply offer the audit.
   const markers = raw
     ? extractAuditMarkers(raw)
-    : { reply: null as string | null, offerAudit: false, runAudit: false, offerBooking: false }
+    : { reply: null as string | null, offerAudit: false, runAudit: false, offerBooking: false, offerPreview: false }
   const reply = markers.reply
   let offerAudit = markers.offerAudit
   const offerBooking = markers.offerBooking
+  const offerPreview = markers.offerPreview
 
   // After stripping, so a marker never lands in a draft answer and gets served
   // to a later visitor as literal text. Logged whether or not the model
@@ -569,7 +585,7 @@ export async function POST(req: NextRequest) {
     const full = correctedReply
       ? [...messages, { role: 'assistant' as const, content: correctedReply }]
       : messages
-    leadId = await saveLead(incomingLeadId, email, phone, full)
+    leadId = await saveLead(incomingLeadId, email, phone, full, previewToken)
     // A chat that produced contact details is a lead like any other, and the
     // visitor may well have arrived on a partner's link.
     await attachReferralToLead(leadId, body.refCode)
@@ -581,12 +597,13 @@ export async function POST(req: NextRequest) {
     // kickoff in lib/audit/start.ts.
     if (leadId) {
       const id = leadId
+      const token = previewToken
       const run = async () => {
         try {
           const profile = await extractLeadProfile(full)
           if (!profile) return
 
-          const notes = buildNotes(profile, email, phone, full)
+          const notes = buildNotes(profile, email, phone, full, token)
           const { error } = await crmAdmin().from('leads').update({ notes }).eq('id', id)
           if (error) throw error
         } catch (err) {
@@ -594,6 +611,23 @@ export async function POST(req: NextRequest) {
             '[chat] lead profile enrichment failed:',
             err instanceof Error ? err.message : err,
           )
+        }
+
+        // Attach preview to the lead
+        if (token) {
+          try {
+            const { error } = await crmAdmin()
+              .from('shared_previews')
+              .update({ lead_id: id })
+              .eq('token', token)
+              .is('lead_id', null)
+            if (error) throw error
+          } catch (err) {
+            console.error(
+              '[chat] preview attachment failed:',
+              err instanceof Error ? err.message : err,
+            )
+          }
         }
       }
 
@@ -608,5 +642,6 @@ export async function POST(req: NextRequest) {
     offerAudit,
     auditRequest,
     offerBooking,
+    offerPreview,
   })
 }
