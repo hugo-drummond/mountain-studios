@@ -743,8 +743,8 @@ function with no network would otherwise email a prospect a report set in Arial.
 
 **Local rendering uses the Mac's own Chrome**, because `@sparticuz/chromium` ships a Linux binary.
 That split is why every one of the above passed local testing. `scripts/audit-report-preview.ts`
-renders a fake report to `~/Desktop` without touching the database or sending anything;
-`/api/audit/diagnose` does the same on the server, gated on `CRON_SECRET`.
+renders a fake report to `~/Desktop` without touching the database or sending anything. The
+server-side equivalent, `/api/audit/diagnose`, was deleted on 28 Aug 2026 once the renderer settled.
 
 **The report is the deliverable.** The email is a short covering note. The long written version in
 `renderAuditEmail()` is kept only as the fallback for a failed render, where it has to stand alone.

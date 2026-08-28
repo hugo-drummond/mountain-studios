@@ -114,19 +114,19 @@ intent, once per visit, on every page.
 - [ ] Delete the test row in `audit_requests` tagged `source='audit-engine-test'`, and the
       antsawnings / jumpstart-uk test rows from 15-16 August. Retire the test lead to
       `crm_status='dead'` rather than deleting it — deleting destroys the scraper's dedupe.
-- [ ] Remove `/api/audit/diagnose` once the renderer has been stable for a while. It is gated on
-      `CRON_SECRET`, emails nothing and writes nothing, but it is debug scaffolding.
-- [ ] Decide whether `/api/audit/run` should keep returning the full report — anyone holding the
-      row's uuid can read it. It is also unauthenticated, so anyone holding a uuid can re-run an
-      audit and re-send the email.
+- [x] Remove `/api/audit/diagnose` — deleted 28 Aug 2026. `scripts/audit-report-preview.ts` still
+      covers local renderer testing.
+- [x] `/api/audit/run` is gated on `Bearer CRON_SECRET` plus a rate limit, so a bare uuid can no
+      longer re-run an audit or re-send the email.
 - [ ] Decide whether the mobile screenshot gets surfaced anywhere. It is captured and stored, but
       neither emailed nor placed in the PDF.
 - [ ] **The "In short" paragraph and the CTA under it can disagree.** `generateSummaryText()` in
       `lib/audit-report/render.ts` hardcodes "Speed, browser protection and accessibility" for any
       amber report, while `generateCtaPitch()` below it names the two checks that actually scored
       worst. Make the paragraph read from the same ranking.
-- [ ] The report cover shows the bare hostname (`jumpstart-uk.com`). Consider prettifying it, or
-      reading the real business name from the site's `<title>` or schema during the audit.
+- [x] The report cover shows the bare hostname (`jumpstart-uk.com`). **Decided 28 Aug 2026 (Hugo):
+      leave it.** The URL is the name — it is what the prospect recognises, and it is the one value
+      we always have. Do not add `<title>`/schema business-name scraping for this.
 - [ ] **Watch for reports going out without their PDF.** The fallback now records the reason
       on the report: `select report->'delivery' from mountainstudios.audit_requests where
       report->'delivery' is not null;`. Any rows there mean someone got the plain written
