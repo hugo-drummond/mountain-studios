@@ -36,7 +36,7 @@ const MAX_INPUT = 1000
 
 // Where the "book a call" button sends people. A single named constant so the
 // link is easy to swap later without hunting through the render tree.
-const CALENDLY_URL = 'https://calendly.com/hugodrum6/30min'
+const CALENDLY_URL = 'https://calendly.com/hugodrum6/15min'
 
 // The widget is mounted in the root layout, which also wraps things that are
 // not the marketing site. It must not appear on the admin screens, and it must
