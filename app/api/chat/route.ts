@@ -191,10 +191,17 @@ const AUDIT_MARKER = /[`*_]*\[\[\s*audit\s*\]\][`*_]*/gi
 // marker's pattern also matches inside this one.
 const RUN_AUDIT_MARKER = /[`*_]*\[\[\s*run[_\s-]*audit\s*\]\][`*_]*/gi
 
+// The model ends a message with [[BOOK]] when it wants to put the "book a
+// call" button under it. Same reasoning as AUDIT_MARKER: a marker rather than
+// matching on wording, and just as generous about case, spacing and stray
+// markdown punctuation.
+const BOOK_MARKER = /[`*_]*\[\[\s*book\s*\]\][`*_]*/gi
+
 function extractAuditMarkers(reply: string): {
   reply: string
   offerAudit: boolean
   runAudit: boolean
+  offerBooking: boolean
 } {
   const runAudit = RUN_AUDIT_MARKER.test(reply)
   RUN_AUDIT_MARKER.lastIndex = 0
@@ -205,10 +212,15 @@ function extractAuditMarkers(reply: string): {
   AUDIT_MARKER.lastIndex = 0
   text = text.replace(AUDIT_MARKER, '')
 
+  const offerBooking = BOOK_MARKER.test(text)
+  BOOK_MARKER.lastIndex = 0
+  text = text.replace(BOOK_MARKER, '')
+
   return {
     reply: text.replace(/\n{3,}/g, '\n\n').trim(),
     offerAudit,
     runAudit,
+    offerBooking,
   }
 }
 
@@ -432,9 +444,10 @@ export async function POST(req: NextRequest) {
   // reply offer the audit.
   const markers = raw
     ? extractAuditMarkers(raw)
-    : { reply: null as string | null, offerAudit: false, runAudit: false }
+    : { reply: null as string | null, offerAudit: false, runAudit: false, offerBooking: false }
   const reply = markers.reply
   let offerAudit = markers.offerAudit
+  const offerBooking = markers.offerBooking
 
   // After stripping, so a marker never lands in a draft answer and gets served
   // to a later visitor as literal text. Logged whether or not the model
@@ -558,5 +571,6 @@ export async function POST(req: NextRequest) {
     leadId,
     offerAudit,
     auditRequest,
+    offerBooking,
   })
 }

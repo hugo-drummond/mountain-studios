@@ -34,6 +34,10 @@ const OPENERS = ["What does a site cost?", 'How long does it take?', "What's inc
 const STORAGE_KEY = 'ms-chat-v1'
 const MAX_INPUT = 1000
 
+// Where the "book a call" button sends people. A single named constant so the
+// link is easy to swap later without hunting through the render tree.
+const CALENDLY_URL = 'https://calendly.com/hugodrum6/30min'
+
 // The widget is mounted in the root layout, which also wraps things that are
 // not the marketing site. It must not appear on the admin screens, and it must
 // never appear inside a generated client preview — a Mountain Studios bubble
@@ -63,6 +67,11 @@ interface Message {
   // The audit is actually running. Confirmed by the server, never by the
   // model's own say-so.
   auditStarted?: boolean
+  // Set on an assistant message when the bot offered a call with Hugo.
+  // Renders a button under it that opens Calendly in a new tab. Never sent
+  // back to the server — parseMessages there ignores anything beyond role and
+  // content.
+  offerBooking?: boolean
 }
 
 // `retryable` decides whether the button is worth offering. It points at the
@@ -168,6 +177,11 @@ export default function ChatWidget() {
   const openAudit = useCallback(() => {
     setOpen(false)
     window.dispatchEvent(new Event('ms-audit:open'))
+  }, [])
+
+  // Opens Calendly in a new tab. No visitor data is ever appended to the URL.
+  const openBooking = useCallback(() => {
+    window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
   }, [])
 
   useEffect(() => {
@@ -308,6 +322,7 @@ export default function ChatWidget() {
                   ? failure.retryable
                   : data?.offerAudit === true,
               auditStarted: started,
+              offerBooking: data?.offerBooking === true,
             },
           ])
           if (typeof data?.leadId === 'string') setLeadId(data.leadId)
@@ -427,6 +442,11 @@ export default function ChatWidget() {
                   )}
                   {m.auditStarted && (
                     <p className="ms-chat-audit-running">Audit running — the report is on its way.</p>
+                  )}
+                  {m.offerBooking && (
+                    <button type="button" className="ms-chat-audit" onClick={openBooking}>
+                      Pick a time →
+                    </button>
                   )}
                 </div>
               ),
