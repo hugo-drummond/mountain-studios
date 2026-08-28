@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { waitUntil } from '@vercel/functions'
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
+import { extractLeadProfile } from '@/lib/chatbot/lead-profile'
 import { normaliseWebsiteUrl } from '@/lib/audit/start'
 import { rateLimit } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
@@ -260,12 +262,19 @@ function findWebsite(text: string): string | null {
   return null
 }
 
-function buildNotes(email: string | null, phone: string | null, messages: Message[]): string {
+function buildNotes(
+  profile: string | null,
+  email: string | null,
+  phone: string | null,
+  messages: Message[],
+): string {
   const transcript = messages
     .map((m) => `${m.role === 'user' ? 'Them' : 'Bot'}: ${m.content}`)
     .join('\n')
 
   return [
+    profile,
+    profile ? '' : null,
     'Chatbot enquiry from the website.',
     email ? `Email: ${email}` : null,
     phone ? `Phone: ${phone}` : null,
@@ -289,7 +298,7 @@ async function saveLead(
   messages: Message[],
 ): Promise<string | null> {
   try {
-    const notes = buildNotes(email, phone, messages)
+    const notes = buildNotes(null, email, phone, messages)
     const label = email || phone || 'unknown'
 
     const fields: Record<string, unknown> = {
@@ -564,6 +573,33 @@ export async function POST(req: NextRequest) {
     // A chat that produced contact details is a lead like any other, and the
     // visitor may well have arrived on a partner's link.
     await attachReferralToLead(leadId, body.refCode)
+
+    // Enrich the notes with a sales-ready summary in the background. This is
+    // pure enrichment on top of a save that already succeeded — the visitor's
+    // response must never wait on it, and any failure here is swallowed and
+    // logged, never surfaced. Same fire-and-forget pattern as the audit
+    // kickoff in lib/audit/start.ts.
+    if (leadId) {
+      const id = leadId
+      const run = async () => {
+        try {
+          const profile = await extractLeadProfile(full)
+          if (!profile) return
+
+          const notes = buildNotes(profile, email, phone, full)
+          const { error } = await crmAdmin().from('leads').update({ notes }).eq('id', id)
+          if (error) throw error
+        } catch (err) {
+          console.error(
+            '[chat] lead profile enrichment failed:',
+            err instanceof Error ? err.message : err,
+          )
+        }
+      }
+
+      if (process.env.VERCEL) waitUntil(run())
+      else run()
+    }
   }
 
   return NextResponse.json({
