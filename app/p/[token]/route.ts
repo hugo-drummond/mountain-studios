@@ -37,6 +37,7 @@ interface PreviewRow {
   view_count: number
   first_viewed_at: string | null
   claimed_at: string | null
+  created_by: string | null
 }
 
 export async function GET(req: NextRequest, { params }: { params: { token: string } }) {
@@ -47,7 +48,7 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
   try {
     const { data, error } = await crmAdmin()
       .from('shared_previews')
-      .select('id, business_name, html_path, expires_at, revoked, view_count, first_viewed_at, claimed_at')
+      .select('id, business_name, html_path, expires_at, revoked, view_count, first_viewed_at, claimed_at, created_by')
       .eq('token', token)
       .single()
 
@@ -95,6 +96,9 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
       token,
       businessName: preview.business_name,
       claimed: preview.claimed_at !== null,
+      // Chatbot preview is discussed live in chat with bot's pricing rules;
+      // hard R2000 offer card contradicts that conversation context.
+      offer: preview.created_by !== 'chatbot',
     }),
   )
 }

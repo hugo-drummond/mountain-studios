@@ -70,8 +70,9 @@ function escapeHtml(value: string): string {
  * generator produced — the CTA can be changed later without rewriting every
  * preview ever saved.
  */
-export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean }): string {
+export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean; offer?: boolean }): string {
   const name = escapeHtml(opts.businessName)
+  const showOffer = opts.offer !== false
 
   const head = `
 <meta name="robots" content="noindex, nofollow, noarchive">
@@ -151,7 +152,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
     });
   };
 })();
-</script>
+</script>${showOffer ? `
 <style>
 #ms-offer{position:fixed;top:50%;left:50%;width:540px;max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);overflow:auto;z-index:2147483646;box-sizing:border-box;background:#fff;border:1px solid rgba(30,35,51,.08);border-radius:27px;padding:39px 39px 33px;box-shadow:0 30px 90px rgba(20,18,30,.3);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;opacity:0;transform:translate(-50%,-50%) translateY(14px);visibility:hidden;transition:opacity .42s cubic-bezier(.16,1,.3,1),transform .42s cubic-bezier(.16,1,.3,1),visibility 0s .42s}
 #ms-offer.ms-offer-on{opacity:1;transform:translate(-50%,-50%);visibility:visible;transition-delay:0s}
@@ -249,7 +250,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
   // silently never appear.
   dwell=setTimeout(show,45000);
 })();
-</script>`
+</script>` : ''}`
 
   // Fall back to appending if the document is not shaped as expected, so a
   // template change can never silently drop the CTA.
