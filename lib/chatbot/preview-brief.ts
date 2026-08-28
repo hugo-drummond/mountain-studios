@@ -70,6 +70,11 @@ function keyParts(key: string): string[] {
     .filter(part => part.length > 0)
 }
 
+// WHY: Visitors may correct themselves or discuss multiple businesses in one chat.
+// Without recency rules, earlier context wins and defeats the correction — e.g. a
+// pool company got a builder's site preview because an earlier message discussed
+// a building project. Always extract from the latest messages; later answers
+// replace earlier ones completely.
 function scoreKey(cleanedInput: string, key: string): number {
   let best = similarity(cleanedInput, normalise(key))
 
@@ -193,7 +198,11 @@ Strict rules:
 - Use only what the visitor actually said. Never invent a business name.
 - If they never gave a name or type, write NONE.
 - For pages, extract only what they explicitly mentioned wanting.
-- No commentary, no extra text, exactly three lines.`
+- No commentary, no extra text, exactly three lines.
+- The transcript may cover more than one business, or the visitor may have corrected themselves. Always use the most recent thing the visitor said. Later messages override earlier ones completely.
+- If two different business names appear, take the one from the latest message that names a business. The same applies to business type and pages.
+- A correction like "actually it's called X" or "no, we do Y not Z" completely replaces what came before. Never blend earlier and later answers.
+- If the visitor has clearly moved on to a different business from one discussed earlier, ignore the earlier one entirely.`
 
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
