@@ -6,6 +6,12 @@ import Link from 'next/link'
 const COOKIE_NAME = 'agency_admin'
 const SALT = 'agency-salt'
 
+// robots.txt asks crawlers not to fetch /admin, but a blocked URL can still be
+// listed if something links to it. This is what actually keeps it out.
+export const metadata = {
+  robots: { index: false, follow: false },
+}
+
 function isValidSession(): boolean {
   const password = process.env.ADMIN_PASSWORD
   if (!password) return false
