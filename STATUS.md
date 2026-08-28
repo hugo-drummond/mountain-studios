@@ -313,9 +313,23 @@ it. The handshake is `localStorage.ms_variant` plus a `ms-chat:open` window even
 has to read localStorage rather than rely on the event alone — child effects run before
 parent effects, so the page dispatches before the widget is listening.
 
-**WhatsApp is deliberately absent from the knowledge base** while `WHATSAPP_NUMBER` is
-still the placeholder, so the bot cannot send anyone to a dead number. There is a comment
-in the file with the line to paste back once the real number exists.
+**WhatsApp is now in the knowledge base — 28 August 2026.** The placeholder is gone; the
+real number is `+27 64 532 2093` and the bot may send people to it. Note it is not an
+environment variable — it is hardcoded as `WHATSAPP_NUMBER` in `app/page.tsx`,
+`app/contact/page.tsx` and `app/careers/sales-rep/page.tsx`, so changing it means changing
+it in four places including the knowledge file.
+
+Trading hours were **wrong in the knowledge base** until the same pass: it said 8:00–17:00
+while every page said 9:00–17:00. Now 9:00–17:00 everywhere.
+
+**The bot knows the site's page list — 28 August 2026.** A `## Pages on this site` section
+names the fourteen public routes with one line each, so it can point someone at
+`/services/paid-ads` instead of dead-ending. It is written out by hand rather than read
+from `app/sitemap.ts`: the knowledge file is the whole gate and it must stay a file a
+person can read top to bottom, and the admin routes, `/brief/[id]` and `/temp` must never
+appear in it. **Adding a public page means adding a line here as well as to the sitemap.**
+The cost is real — those fourteen lines go to the model on every single message — and that
+is the price of the one-file design, not an oversight.
 
 ### Question log and answer cache — live and recording, 14 August 2026
 
@@ -1192,6 +1206,72 @@ Run 25 August; all seventeen delivered.
 
 The audit sample sends **without** its PDF: rendering one needs headless Chrome, which only works in
 production. For a real one, submit the form.
+
+## Sitemap, robots.txt and noindex — 28 August 2026
+
+The site had **no sitemap and no `robots.txt` at all**. The only route a crawler could
+reach was whatever it found by following links from the homepage, and nothing anywhere
+told one to stay out of `/admin`, `/brief/[id]` or `/temp`.
+
+- **`app/sitemap.ts`** serves `/sitemap.xml`, fourteen public URLs.
+- **`app/robots.ts`** serves `/robots.txt`: one rule set for every user agent, `allow: /`,
+  disallowing `/admin`, `/brief/`, `/p/`, `/temp`, `/api/`, plus `Host` and `Sitemap`.
+
+**The page list in the sitemap is hand-written, not globbed.** A glob would happily publish
+`/admin`, `/temp` and every `/brief/[id]`, and the failure would be silent — nobody looks
+at a sitemap. Adding a public page means adding a line to `PAGES`.
+
+**AI crawlers are deliberately allowed.** GPTBot, ClaudeBot, PerplexityBot and
+Google-Extended all read `robots.txt`, and being cited in AI answers is the point of the
+AEO work. Never add a per-bot `disallow: '/'` without deciding to give that up.
+
+<!-- The trap worth keeping -->
+**`robots.txt` on its own would have made this worse, not better.** It stops a crawler
+*fetching* a page; it does not stop the URL *appearing* in results. Google will list a
+blocked URL — bare, no description — if anything links to it, and having never fetched the
+page it never sees the `noindex` that would have removed it. So `noindex` on the page is
+the real guard and `robots.txt` is the second layer:
+
+- `/p/*` already had it, via `decorate()` in `lib/shared-preview.ts`. Previews were never
+  actually at risk.
+- `/admin` sets it in `app/admin/layout.tsx`.
+- `/brief` and `/temp` each gained a layout that exists **only** to carry the tag, because
+  both pages are client components and a client component cannot export `metadata`.
+
+**Still missing: canonical tags.** There are none anywhere on the site. Whatever form is
+chosen, it has to agree with the sitemap, which writes the homepage as
+`https://mountainstudios.co.za` with no trailing slash.
+
+**Pre-existing bug found while verifying, not fixed:** `/temp` throws a hydration mismatch
+on localhost. `components/site/SiteNav.tsx:7` decides whether to show the Temp nav link
+with `typeof window !== 'undefined'`, so the server renders the nav without it and the
+client renders it with it. Localhost only — production never renders the link — but it is
+the same shape as the `>`-in-a-`<style>` trap: a perfect-looking page whose handlers may
+not attach.
+
+## Inbound test data cleared — 28 August 2026
+
+`leads` is back to exactly **1,770**, all `google_places`. Deleted: the three inbound leads
+(a preview-claim probe, a chatbot test, the `hugo@x..com` validation probe), all fourteen
+`shared_previews` (every one `created_by='wizard'`, `lead_id` null), the single
+`audit_requests` row, and `contact_messages`.
+
+**Kept on purpose:** `rep_applications` (5 real applicants) and `chat_questions` (28 — the
+question log, not lead data). `referral_partners`, `referral_visits` and `referral_payouts`
+were already empty.
+
+**A hard delete was correct here and does not contradict the never-delete-a-lead rule.**
+That rule exists to protect the scraper's dedupe, and the dedupe keys on `google_place_id`,
+which inbound rows do not have. Scraped rows still retire to `crm_status='dead'`.
+
+No `profiles` row pointed at any deleted lead, so no auth user was orphaned, and both
+`chat_channels` are internal (`general`, `sales-team`) and tied to no lead. Lead
+`d1a86607` — the row a `curl` probe had wrongly marked `qualified` — went with this clear,
+so that open question is closed.
+
+RLS was checked across all 34 tables in the schema: **enabled on every one.** Eleven have
+RLS on with zero policies, which is deny-all to any non-service client and is exactly
+right given writes go through the service client. Not a gap.
 
 ## Still open — 25 August 2026
 

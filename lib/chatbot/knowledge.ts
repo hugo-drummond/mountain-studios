@@ -80,13 +80,28 @@ The visitor needs to give their website address and their email address to get i
 
 ## Contact
 Email: hello@mountainstudios.co.za
-Hours: Monday to Friday, 8:00–17:00 SAST.
+WhatsApp: there is a WhatsApp link on the contact page and in the header, which is the
+fastest way to reach us. The number is +27 64 532 2093.
+Hours: Monday to Friday, 9:00–17:00 SAST.
 Based in Cape Town, South Africa.
 
-<!-- The site's WhatsApp link is still the placeholder wa.me/27000000000, so the
-     bot must not send anyone to it. Add the line back here once the real number
-     is live:  "There is a WhatsApp link on the contact page, which is the
-     fastest way to reach us." -->
+## Pages on this site
+Point people at the page that answers them rather than dead-ending. Never name any
+page that is not on this list.
+- / — the homepage.
+- /services — all four services in one place.
+- /services/web-design — web design.
+- /services/paid-ads — Google and Meta ad campaigns.
+- /services/aeo — answer engine optimisation, getting named in AI search answers.
+- /services/business-automation — bookings, invoices and follow-ups that run themselves.
+- /work — past work and the businesses we have built for.
+- /start-your-project — the Get Started wizard, where the free preview is generated.
+- /about — about Mountain Studios and Hugo.
+- /contact — the contact form, the email address and the WhatsApp link.
+- /careers/sales-rep — the freelance sales representative role.
+- /refer/terms — the terms of the referral reward.
+- /privacy — the privacy policy.
+- /terms — the terms of service.
 `.trim()
 
 // Everything below is instruction, not knowledge. Keeping the two apart means
