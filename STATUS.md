@@ -1495,3 +1495,60 @@ Outstanding on the tracking work: steps 4 to 10 of the plan — visitor id into 
 lead-creating routes, the Tier 1 call sites, the preview-page tracker, the aggregate
 functions and the CRM page. `SITE_EVENT_SALT` is unset, so the hash currently uses a default
 salt.
+
+## Funnel tracking — Tier 1 live, 29 August 2026, evening
+
+Everything below was found by firing an event and reading the row. **Every one of
+these bugs returned HTTP 200 and stored nothing**, which is the same shape as the
+seven forms that shipped saving nothing in August.
+
+- `lib/site-events.ts` imported `uuid`, which is not a dependency. Because
+  `SiteEvents` mounts in the root layout, that broke the client build for the whole
+  site, and it was pushed before anyone noticed. Now `crypto.randomUUID` with a
+  fallback, no new dependency.
+- Every `.from()` passed `'mountainstudios.<table>'`, but `crmAdmin()` already selects
+  that schema, so PostgREST resolved `mountainstudios.mountainstudios.site_events` and
+  failed `PGRST205` on every write.
+- The ingest route parsed with `req.json()`. **`navigator.sendBeacon(url, string)`
+  sends `text/plain`**, so `req.json()` threw and the catch returned 200. Every string
+  beacon was accepted and dropped. It reads raw text and parses that now — a beacon
+  does not get to choose its content type.
+- `source` was hardcoded `'site'`, so the preview-page tracker could never be told
+  apart from the React app, which is the single thing that column exists for.
+- The visitor upsert read `attribution.referrer_host`; both callers send
+  `first_referrer_host`, so it always stored null.
+- `stitchEventsToLead()` was written and never called, so a lead carried none of the
+  events from before it had a name — the pre-email half of the funnel. It is called
+  from inside `attachVisitorToLead()` rather than from each route, so a route can only
+  forget one call instead of two.
+
+**Verified end to end:** a lead created through `/api/brief/partial` is stamped with
+`visitor_id`, `site_visitors.lead_id` is set, and an anonymous `page_view` fired
+*before* the email is backfilled onto that lead. `preview_generated` fires server-side
+with the template variant as its label. Device type is derived server-side from the
+user agent and comes back as `mobile` for an iPhone UA. IP and user agent are stored
+only as a salted hash.
+
+Tier 1 events live: `calendly_click` on both in-page links, `lead_identified` on all
+five capture paths, `preview_generated`, `contact_submitted`, plus `page_view` and
+`page_exit` from the layout. The audit email and the audit PDF also carry Calendly
+links; neither is a surface a beacon can fire from, so those clicks stay invisible
+until someone wants a redirect link, which has its own deliverability cost.
+
+The preview-page tracker is its own IIFE and its own const, **outside** the offer
+block — the CTA pill and the offer card are both omitted for chatbot previews, and
+scroll depth and dwell are the only signal that anyone read one of those at all.
+
+<callout>
+
+**`014_funnel_functions.sql` is written and NOT applied.** Nine aggregate functions
+and the `/funnel` page in the CRM are both built; the page shows nothing until the
+migration is run. Apply it the same way as 013 — python writes the JSON body, `curl`
+posts it, because Cloudflare blocks `Python-urllib` in front of `api.supabase.com`
+with a 403 that looks exactly like a bad token.
+
+**Test rows are still in the database.** `site_events`, `site_visitors` and two
+`leads` rows named `TRACKING TEST%` are verification data and should be cleared before
+any number is trusted.
+
+</callout>
