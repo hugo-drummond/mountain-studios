@@ -268,29 +268,34 @@ done — see [STATUS.md](STATUS.md). What is left:
 
 ## Funnel tracking — 29 August 2026
 
-Schema is applied and the emitters are built. See STATUS.md. Steps 4 to 10 of the plan
-remain; the plan itself is the recipe.
+Tiers 1 is live end to end and the dashboard is up. The remaining work is Tier 2 and the
+SES config set. **The plan is committed at `~/mountainstudios-crm/docs/funnel-tracking-plan.md`
+— read it before picking any of this up.**
+
+Done: `013_site_events.sql` and `014_funnel_functions.sql` applied and verified, the
+client and server event helpers, `/api/site-event`, `SiteEvents` in the layout,
+`visitor_id` stamped on the four lead-creating routes with retroactive event stitching,
+the Tier 1 call sites, the preview-page tracker, and `/funnel` in the CRM.
 
 - [ ] **`pg_cron` is not installed on this Supabase project.** The `site_events` 180-day
       prune was never scheduled, and neither were the two jobs in the CRM's
       `010_mail_cron.sql`. Both migrations swallow the failure as a warning and read as if
       the jobs exist. Install the extension or delete the claim from both files.
-- [ ] Pass `visitorId` into the six lead-creating routes and stamp it on the lead, beside
-      the existing `attachReferralToLead()`. **The new call must be awaited and must never
-      throw** — a thrown error here loses a real enquiry.
-- [ ] Tier 1 call sites: the two Calendly links, `lead_identified`, `preview_generated`,
-      `contact_submitted`.
-- [ ] The preview-page tracker inside `decorate()`. It runs as a raw IIFE inside someone
-      else's generated HTML — guard every access and never throw before the offer script.
-      Re-check the offer card still works afterwards.
-- [ ] The nine aggregate functions and the `/funnel` page in the CRM.
+- [ ] **Tier 2 events, and the wizard is the one that matters.** `wizard_step` (1–7 with
+      seconds per step), `chat_opened`, `chat_message` with the turn index, and
+      `chat_offer_shown` / `chat_offer_taken` with the offer type in `props.label`.
+      Until these exist, three sections of `/funnel` are empty and the wizard drop-off —
+      the actual question this was built to answer — cannot be seen.
+- [ ] Store the template variant on `shared_previews` and echo it from the preview
+      tracker, so `site_previews` can split scroll, dwell and offers by template instead
+      of reporting them on one `(all previews)` row.
+- [ ] Nothing verifies that a real browser session produces a clean funnel. Walk the
+      wizard end to end in a browser and read `site_funnel` back.
 - [ ] SES configuration set so bounces and complaints can be attributed to site mail.
       **Open and click tracking must be off** — link rewriting and a tracking pixel are
       exactly what cost the preview email its Primary placement on 23 August. An empty
       `ConfigurationSetName` is rejected by SES and would kill every notification email at
       once, so the `lib/ses.ts` guard matters.
-- [ ] Nothing is verified at runtime yet. Fire an event and read the row — the tables were
-      created after the code was written.
 
 ## Chatbot — 29 August 2026
 

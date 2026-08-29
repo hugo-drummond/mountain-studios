@@ -1541,14 +1541,51 @@ scroll depth and dwell are the only signal that anyone read one of those at all.
 
 <callout>
 
-**`014_funnel_functions.sql` is written and NOT applied.** Nine aggregate functions
-and the `/funnel` page in the CRM are both built; the page shows nothing until the
-migration is run. Apply it the same way as 013 — python writes the JSON body, `curl`
-posts it, because Cloudflare blocks `Python-urllib` in front of `api.supabase.com`
-with a 403 that looks exactly like a bad token.
+**Applied and working, 29 August 2026.** `013_site_events.sql` and
+`014_funnel_functions.sql` are both on the database, all nine aggregate functions
+execute, and `/funnel` is live in the CRM sidebar. Verification rows have been
+cleared: `site_events` and `site_visitors` are empty and `leads` is back to exactly
+1,770 scraped rows with zero inbound, so the first real enquiry will be the first
+inbound row and the funnel starts from real traffic.
 
-**Test rows are still in the database.** `site_events`, `site_visitors` and two
-`leads` rows named `TRACKING TEST%` are verification data and should be cleared before
-any number is trusted.
+**Applying SQL to this project: use `curl`, never `urllib`.** `api.supabase.com` sits
+behind Cloudflare, which blocks `Python-urllib/3.x` with `403 error code: 1010` — a
+Cloudflare client ban that reads exactly like a bad token. Have python write the JSON
+body to a file and post it with `curl --data-binary @file`; that also sidesteps shell
+quoting on SQL containing `$$`.
 
 </callout>
+
+### The `create or replace` trap — four bugs, one shape
+
+`014` applied cleanly three times and was broken all three. **plpgsql does not parse a
+function body until the function is called**, so `HTTP 201` from the management API
+proves only that the text was stored. Every one of these was found by calling the
+function, never by applying it:
+
+- **Seven of the nine raised `42702` on first call.** Each function's `RETURNS TABLE`
+  output names — `stage`, `step`, `path`, `turn`, `utm_source`, `template_variant`,
+  `origin` — are also real column names on the tables they query, so every unqualified
+  reference was ambiguous. Fixed with `#variable_conflict use_column`: these functions
+  only ever `return query` and never read their own output parameters, so preferring
+  the column is what was meant throughout.
+- `site_chat_depth` selected `dropped_here` from a CTE that named the column `dropped`.
+- `site_chat_depth` again: `generate_series` returns `integer` and the output column is
+  `smallint`, so it raised `42804` even after the two fixes above.
+- `site_pages` took its median seconds from `page_view`, which carries no `value_num` —
+  the duration rides on `page_exit`. Every median would have read null and looked like
+  nobody stays on any page.
+
+One more that is not a bug but will mislead: `site_previews` can only split by template
+for `preview_generated`, because the events fired from the preview page itself come from
+injected vanilla JS that has no idea which template built the page. Those metrics report
+on a single `(all previews)` row. Splitting them needs the variant stored on
+`shared_previews` and echoed back by the tracker.
+
+**Three functions return zero rows, correctly.** `site_wizard_steps` and
+`site_chat_depth` wait on Tier 2 events that are not emitted yet; `site_email_health`
+waits on the SES configuration set. Empty is the expected state, and each section of the
+page says which event it is waiting for rather than showing a silent zero.
+
+The full plan, including the steps not yet built, is committed in the CRM repo at
+`docs/funnel-tracking-plan.md`.
