@@ -1,6 +1,6 @@
 # Status
 
-Last updated: 25 August 2026 (advertising is unblocked — pixel, four conversion events and server-side claim reporting all verified against Meta; audit/run closed; every HTML email now carries a plain-text part; referral pays 25% capped at R1000; MomentBank removed)
+Last updated: 29 August 2026 (chatbot previews were always the generic template and are now per-industry; chatbot rewritten for length, register and two missing conversation branches; the business-name repeat is fixed in code because the prompt could not fix it; funnel tracking schema applied and the emitters built)
 
 ## Where things stand
 
@@ -1300,3 +1300,198 @@ backend long after both were live and verified.
   `run.js` before its upsert; without that filter a deleted lead returns on the next scrape
 - Buckets `rep-cvs`, `previews` and `audit-reports`, all private, service-role access only
 
+## Chatbot previews used the wrong template every time — 29 August 2026
+
+Every preview the chatbot built came out as the generic service template in default
+purple, whatever the business was. A dog groomer got the same page as an accountant.
+
+`/api/preview/chat` sent `businessName`, `businessType` and `pages` and nothing else.
+`/api/preview/generate` reads `businessCategory || 'other'`, and `'other'` is the one
+category that falls through the fourteen category templates into the variant switch. The
+wizard has always sent the category; the chatbot never did. Fourteen templates were
+unreachable from the chat.
+
+The content was right the whole time — `presetContent` is keyed on the business type, so
+Dog Groomer copy appeared inside an accountant's shell, which is what made it look like a
+content bug rather than a routing one.
+
+- `categoryColors` and a new `categoryForType()` moved into `constants/business-types.ts`,
+  which already declares itself the one-to-one source of truth for type → category. The
+  wizard imports them instead of declaring its own copy.
+- `lib/chatbot/preview-brief.ts` returns `businessCategory` off the matched preset key.
+- `/api/preview/chat` forwards the category and the category's colours.
+- **The reCAPTCHA token is no longer forwarded to `/api/preview/generate`.** The chat route
+  verifies it, then generate verified the same token again — `timeout-or-duplicate`, read as
+  a real bot verdict, 403. Identical to the bug that killed the wizard preview email for two
+  days in August. It only worked at all because `ChatWidget` sends no token today.
+
+### The service template squashed every card
+
+`buildServiceTemplate` laid its service cards out as one flex row with `flex:1` each and no
+cap. **Every one of the 87 presets has more than three services**, so six cards and five
+connector arrows shared 1200px and each column wrapped to roughly one word per line. Now a
+`ms-grid` three-up grid capped at six, arrows removed — `ms-grid` picks up the existing
+responsive rules that step to two columns at 1024px and one at 768px for free.
+
+Worth knowing: this template is only reached by category `'other'`, which is one wizard
+entry ("Other") plus, until this fix, every single chatbot preview.
+
+## Chatbot rewritten for length and register — 29 August 2026
+
+The replies were three long sentences of warm-up. On a phone that is a wall of text before
+the point. § HOW YOU TALK now caps at **two sentences and about thirty words**, with worked
+before/after examples in the file.
+
+What the first pass got wrong, and what fixed it:
+
+- **Too casual.** Stripping the marketing preamble left it sounding matey — "no stress",
+  "yeah", "sec". Slang is now banned by name. Warm and professional, not chatty.
+- **Robotic rhythm.** Four consecutive replies were all *statement — em dash — clause —
+  question?*. The shape must vary, some messages end flat with no question, and there is a
+  cap of one em dash every few messages.
+- **No reaction.** Banning preamble also stopped it responding to the person. Reacting in a
+  few words ("Most people aren't." "That's fine.") is now explicitly distinguished from
+  warming up before the point.
+- **Never invite criticism of the preview.** It asked what they would change before they had
+  said whether they liked it. It is their business on the screen; planting the idea that the
+  work is wrong costs the sale. Ask if they like it, and only then what they would change.
+  Fixed in three places that contradicted each other: § HOW YOU TALK, § THE CONVERSATION
+  step 5, and the shape example in § BUILDING THEIR PREVIEW.
+- **Absolute claims softened.** "Ads and search only work if there's a site to land on"
+  became "work much better when". Plenty of businesses get work without a site, they know
+  it, and overstating it costs trust.
+
+## The business-name repeat needed code, not prompting — 29 August 2026
+
+The bot asked "What's the business called?" on five consecutive turns while real questions
+went unanswered. It reads as a form with a required field.
+
+Four rounds of prompt tightening did not fix it: a general rule, a countable rule ("leave it
+two messages"), rephrasing alternatives, and finally a directive appended to the system
+prompt for that one turn. It ignored all of them, because § THE CONVERSATION tells it the
+name is the last thing it needs before the preview and that pull wins.
+
+So it is enforced in `app/api/chat/route.ts`:
+
+- `ASKED_FOR_NAME` tests the assistant's own previous turn.
+- If it asked, `NO_NAME_THIS_TURN` is appended to the system prompt for that call **and**
+  `stripTrailingNameQuestion()` removes the question from the reply if it asks anyway.
+- The strip cuts at the em dash where there is one, so "I can put a preview together — what's
+  the business called?" keeps the offer and loses the question.
+- **It runs after marker extraction, not before.** The model puts `[[PREVIEW]]` after the
+  last sentence, so the raw reply does not end in `?` and the strip would silently no-op.
+
+Five asks became two, and neither is consecutive.
+
+## Site paths are links in the chat — 29 August 2026
+
+The bot said "the full terms are on the referral page" and the chat log rendered plain text,
+so there was nothing to tap and no way to get there.
+
+`ChatWidget` now renders assistant text through `withLinks()`: a **whitelist** of the
+thirteen public paths, longest match first, returning React nodes. Not
+`dangerouslySetInnerHTML` and not a URL regex — the text is model output, so a link it
+invents must never become clickable and nothing may point off this site. Visitor messages
+are never linkified.
+
+`knowledge.ts` tells it to write the path itself ("the full terms are on /refer/terms") rather
+than name a page in words, one link per message at most.
+
+## Two missing conversation branches — 29 August 2026
+
+§ THE CONVERSATION had exactly two roads: no website → preview, has website → audit. Anyone
+who did not fit was pushed down the first one.
+
+**Referrals.** Somebody offering to refer a business was taken through the whole funnel and
+offered a preview of a business they do not own, built from their second-hand description.
+There is now a third branch: a referrer is not the customer, gets no preview, is never asked
+for a business name in order to build one, and is sent to `/refer/terms`, where the terms and
+the signup form live. If they would rather hand the business over, take the details and say
+Hugo will follow up — never offer to book a call on a third party's behalf.
+
+**Having a website is not the same as having a good one.** The old rule sent every
+existing-site complaint to the audit. **The audit measures speed, security and accessibility.
+It does not measure whether a site sells anything** — so someone whose problem was "visitors
+never phone us" got a PageSpeed test and a green report against an untouched problem.
+
+The branch now asks one real question about how the site is performing, then splits:
+
+- Does not convert, looks dated, embarrasses them → **the main road.** These are the sites we
+  replace. Say plainly that this is what we build for, then offer the preview.
+- Slow, broken on phones, "not secure" → the audit.
+- Ads, SEO, AEO → answer properly, then offer the call.
+- Working and they are happy with it → ask once, believe them, leave it alone.
+
+The strongest claim available is "our sites specialise in that". Never a promised number.
+
+## Audit popup — engaged is not the same as off-limits, 29 August 2026
+
+The popup was blocked outright while the chat panel was open, and `/start-your-project` sat
+in `HIDDEN_ON` so it never fired there at all. Both triggers were losing the visitor.
+
+Split: `HIDDEN_ON` still hard-hides the admin screens, `/p/`, `/preview` and `/temp`. A new
+`isEngaged()` — chat panel open, in-chat preview overlay open, or on the wizard — blocks the
+**thirty-second dwell only**. Exit intent still fires, because someone leaving anyway is the
+last chance to catch them.
+
+Verified on localhost: thirty-eight seconds with the chat open and nothing fired, with
+`ms-audit-seen` never set so it is deferred rather than spent; a dispatched exit-intent with
+the chat open opened it immediately.
+
+Note this has no effect on phones, where there is no exit intent — a mobile visitor in the
+chat or the wizard now sees the audit popup not at all rather than late.
+
+## Chatbot previews carry no offer card and no CTA pill — 29 August 2026
+
+`decorate()` gained a `cta` flag beside the existing `offer` flag, and `/p/[token]` drives
+both off one `created_by === 'chatbot'` check. The chat is already asking for the sale; a
+second "I want this website" pill competes with it.
+
+**The two flags must move together.** The offer card's "Yes, I want it" button calls
+`openForm()`, which is defined inside the CTA block's script — an offer card shown without
+the CTA block would throw on click.
+
+## Funnel tracking — schema applied, emitters built, 29 August 2026
+
+Nothing on this site could answer "where do people fall out". GA4 is `gtag('config')` only
+and the Meta Pixel's five events are bidding signals in an ad account, not something you can
+join to a lead. The database already held most of the funnel across `leads`,
+`shared_previews`, `audit_requests`, `chat_questions` and `rate_limits`, and nothing joined
+them. The dashboard is being built in the CRM.
+
+Applied to the database as `mountainstudios-crm/scraper/migrations/013_site_events.sql`:
+
+- `site_visitors` — one row per browser, first-touch UTM / click id / referrer host / landing
+  path, device derived server-side.
+- `site_events` — append-only, `bigserial`, with `step` / `value_num` / `label` as real
+  columns rather than jsonb so the aggregates can use a btree index.
+- `leads.visitor_id`, so a lead can be stitched back to everything that browser did before it
+  had a name.
+- Three columns on `mail_events` so site mail is separable from CRM mail.
+- **RLS enabled with zero policies and grants to `service_role` only.** Verified after
+  applying: `has_table_privilege('authenticated', …, 'select')` is false. These rows describe
+  the browsing of people who never agreed to be identified, and the CRM has `client` users in
+  it. Only raw-IP-free salted hashes are stored.
+
+Built on the site: `lib/site-events.ts` (client, `sendBeacon`, never throws),
+`lib/site-events-server.ts` (device from user agent, hashing, lead stitching),
+`app/api/site-event/route.ts` (bot drop, server-derived device, query strings stripped), and
+`components/site/SiteEvents.tsx` mounted in the root layout.
+
+<callout>
+
+**`pg_cron` is not installed on this project.** The migration schedules a 180-day prune and
+wraps it in a `DO` block that downgrades the failure to a warning, so the migration applied
+cleanly and **the prune job does not exist**. Checked directly: `pg_extension` has no
+`pg_cron` row and `cron.job` does not exist as a relation.
+
+The same is true of `010_mail_cron.sql`, which schedules two jobs the same way. **Neither of
+those is running either, and nothing has ever said so.** Either install the extension or
+delete the claim from both files — a scheduled job nobody scheduled is worse than no job.
+
+</callout>
+
+Outstanding on the tracking work: steps 4 to 10 of the plan — visitor id into the six
+lead-creating routes, the Tier 1 call sites, the preview-page tracker, the aggregate
+functions and the CRM page. `SITE_EVENT_SALT` is unset, so the hash currently uses a default
+salt.

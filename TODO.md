@@ -196,6 +196,13 @@ values live in `.env.local` locally, never in this file.
 - [ ] `CALENDLY_URL` — optional. Defaults in code to `https://calendly.com/hugodrum6/30min`;
       set the variable only to point the report's CTA somewhere else.
 
+**Blocking for funnel tracking, once events matter**
+
+- [ ] `SITE_EVENT_SALT` — any long random string, salts the IP + user agent hash on
+      `site_events` and `site_visitors`. Unset it falls back to a default salt, which means
+      the hash is guessable and stops being the privacy control it exists to be. Set it once
+      and never rotate it — changing it makes every existing row stop matching new ones.
+
 **Notification recipients**
 
 - [ ] `NOTIFY_EMAIL` — internal recipients for notifications from contact form, brief submit, audit startup,
@@ -259,3 +266,43 @@ done — see [STATUS.md](STATUS.md). What is left:
       background it is more visible than it was. Intermittent; seen once as an aerial of
       San Francisco on a dog groomer. Needs a real per-category fallback image.
 
+## Funnel tracking — 29 August 2026
+
+Schema is applied and the emitters are built. See STATUS.md. Steps 4 to 10 of the plan
+remain; the plan itself is the recipe.
+
+- [ ] **`pg_cron` is not installed on this Supabase project.** The `site_events` 180-day
+      prune was never scheduled, and neither were the two jobs in the CRM's
+      `010_mail_cron.sql`. Both migrations swallow the failure as a warning and read as if
+      the jobs exist. Install the extension or delete the claim from both files.
+- [ ] Pass `visitorId` into the six lead-creating routes and stamp it on the lead, beside
+      the existing `attachReferralToLead()`. **The new call must be awaited and must never
+      throw** — a thrown error here loses a real enquiry.
+- [ ] Tier 1 call sites: the two Calendly links, `lead_identified`, `preview_generated`,
+      `contact_submitted`.
+- [ ] The preview-page tracker inside `decorate()`. It runs as a raw IIFE inside someone
+      else's generated HTML — guard every access and never throw before the offer script.
+      Re-check the offer card still works afterwards.
+- [ ] The nine aggregate functions and the `/funnel` page in the CRM.
+- [ ] SES configuration set so bounces and complaints can be attributed to site mail.
+      **Open and click tracking must be off** — link rewriting and a tracking pixel are
+      exactly what cost the preview email its Primary placement on 23 August. An empty
+      `ConfigurationSetName` is rejected by SES and would kill every notification email at
+      once, so the `lib/ses.ts` guard matters.
+- [ ] Nothing is verified at runtime yet. Fire an event and read the row — the tables were
+      created after the code was written.
+
+## Chatbot — 29 August 2026
+
+- [ ] **Re-test the tone rules after any edit to `knowledge.ts`.** Length (two sentences,
+      ~30 words), no warm-up opener, varied sentence shape, no "anything else?" close.
+      Every one of these regressed at least once while being written.
+- [ ] Re-test the three existing-website paths: "nobody phones us" must offer the preview,
+      "slow on phones" must offer the audit, "it works and I'm happy" must be left alone.
+- [ ] Re-test the referral branch: a referrer must never be offered a preview and must be
+      sent to `/refer/terms`.
+- [ ] The business-name repeat is held down by code in `app/api/chat/route.ts`, not by the
+      prompt. If that strip is ever removed the prompt alone will not hold it.
+- [ ] Consider whether the chatbot belongs on `/p/[token]` asking "what do you think?".
+      Deferred 29 August — the page is a raw document, not the React app, so it would mean
+      a second injected vanilla-JS widget competing with the offer card already there.

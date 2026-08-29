@@ -38,6 +38,11 @@ export const LIMITS = Object.freeze({
   'brief/partial': { limit: 10, windowSeconds: 3600 },
   'brief/submit': { limit: 10, windowSeconds: 3600 },
   'chat': { limit: 30, windowSeconds: 600 },
+  // Higher than the rest on purpose: this one is a beacon, not a form. A
+  // visitor on a busy office network is many people on one IP, and a refused
+  // event is a page view that silently never gets counted. Same reasoning as
+  // referral/visit above.
+  'site-event': { limit: 300, windowSeconds: 3600 },
 } as const)
 
 export type RouteName = keyof typeof LIMITS

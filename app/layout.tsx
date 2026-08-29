@@ -5,6 +5,7 @@ import './globals.css'
 import ChatWidget from '../components/site/ChatWidget'
 import AuditPopup from '../components/site/AuditPopup'
 import RefCapture from '../components/site/RefCapture'
+import SiteEvents from '../components/site/SiteEvents'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -131,8 +132,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {/* Outside the reCAPTCHA provider: it calls no protected endpoint, and
-            a partner's link must be counted whether or not Google loads. */}
+            a partner's link must be counted whether or not Google loads. Same
+            for SiteEvents — the tracking beacon must work on every page. */}
         <RefCapture />
+        <SiteEvents />
         {children}
         {/* No reCAPTCHA provider wraps any of this any more. Google's script
             used to load for every visitor of every page from here — 939KB and
