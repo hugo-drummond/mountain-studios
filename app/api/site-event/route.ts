@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     if (body.attribution) {
       try {
         const { error } = await crmAdmin()
-          .from('mountainstudios.site_visitors')
+          .from('site_visitors')
           .upsert(
             {
               visitor_id: visitorId,

@@ -68,7 +68,7 @@ export async function recordEvents(
   if (rows.length === 0) return
 
   try {
-    const { error } = await crmAdmin().from('mountainstudios.site_events').insert(rows)
+    const { error } = await crmAdmin().from('site_events').insert(rows)
 
     if (error) throw error
   } catch (err) {
@@ -95,7 +95,7 @@ export async function attachVisitorToLead(
   try {
     // Update the lead
     const { error: leadError } = await crmAdmin()
-      .from('mountainstudios.leads')
+      .from('leads')
       .update({ visitor_id: visitorId })
       .eq('id', leadId)
       .is('visitor_id', null)
@@ -105,7 +105,7 @@ export async function attachVisitorToLead(
     // Try to update the visitor row if it exists
     try {
       await crmAdmin()
-        .from('mountainstudios.site_visitors')
+        .from('site_visitors')
         .update({ lead_id: leadId, first_lead_at: new Date().toISOString() })
         .eq('visitor_id', visitorId)
         .is('lead_id', null)
@@ -133,7 +133,7 @@ export async function stitchEventsToLead(
 ): Promise<void> {
   try {
     const { error } = await crmAdmin()
-      .from('mountainstudios.site_events')
+      .from('site_events')
       .update({ lead_id: leadId })
       .eq('visitor_id', visitorId)
       .is('lead_id', null)
