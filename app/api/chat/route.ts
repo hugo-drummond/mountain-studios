@@ -46,6 +46,52 @@ const REQUEST_TIMEOUT_MS = 20_000
 const MAX_MESSAGES = 24
 const MAX_CHARS_PER_MESSAGE = 1_000
 
+// Matches the bot asking for the business name, however it phrased it.
+const ASKED_FOR_NAME =
+  /\b(business (is )?called|what'?s it called|what do you trade as|trade as\?|name do you go by|business name|name of (the|your) business)\b/i
+
+// The standing prompt tells it to answer the visitor's question before asking for
+// the name, and never to ask twice running. It does not obey: in testing it asked
+// on five consecutive turns while real questions went unanswered, which is what
+// makes it feel like a form with a required field. A directive scoped to one turn
+// is obeyed where a rule buried in a long prompt is not.
+const NO_NAME_THIS_TURN =
+  'THIS MESSAGE ONLY: your previous message already asked for the business name and they did not give it. Do not ask for it again in this message, in any form or wording — not reworded, not "what do you trade as", not slipped into a sentence. Answer what they have actually said instead. You may ask again in a later message once you have dealt with what is on their mind.'
+
+// The directive above is the polite ask; this is the guarantee. DeepSeek ignored
+// the instruction on every turn of a seven-turn test, so the repeated question is
+// removed from the reply itself. Only ever runs when the previous assistant turn
+// already asked, so a first ask is never touched.
+function stripTrailingNameQuestion(text: string): string {
+  const trimmed = text.trimEnd()
+  if (!trimmed.endsWith('?')) return text
+
+  // The final sentence is all that can carry the repeat.
+  const end = trimmed.length - 1
+  const start = Math.max(
+    trimmed.lastIndexOf('.', end - 1),
+    trimmed.lastIndexOf('!', end - 1),
+    trimmed.lastIndexOf('?', end - 1),
+    trimmed.lastIndexOf('\n', end - 1),
+  )
+  const lastSentence = trimmed.slice(start + 1)
+  if (!ASKED_FOR_NAME.test(lastSentence)) return text
+
+  const head = trimmed.slice(0, start + 1)
+
+  // Usually the question is tacked onto a sentence worth keeping — "I can build
+  // you a preview — what's the business called?". Cut at the dash so the offer
+  // survives; only drop the whole sentence when the question is the sentence.
+  const dash = Math.max(lastSentence.lastIndexOf('—'), lastSentence.lastIndexOf(' - '))
+  if (dash > 0 && ASKED_FOR_NAME.test(lastSentence.slice(dash))) {
+    const kept = lastSentence.slice(0, dash).replace(/[\s—–-]+$/, '').trimEnd()
+    if (kept) return `${head}${kept}.`
+  }
+
+  const out = head.replace(/[\s—–-]+$/, '').trimEnd()
+  return out || text
+}
+
 type Role = 'user' | 'assistant'
 interface Message {
   role: Role
@@ -113,7 +159,7 @@ function parseMessages(input: unknown): Message[] {
     .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_CHARS_PER_MESSAGE) }))
 }
 
-async function callDeepSeek(messages: Message[]): Promise<string | null> {
+async function callDeepSeek(messages: Message[], turnDirective?: string): Promise<string | null> {
   const apiKey = process.env.DEEPSEEK_API_KEY
   if (!apiKey) {
     console.error('[chat] Missing DEEPSEEK_API_KEY')
@@ -138,7 +184,13 @@ async function callDeepSeek(messages: Message[]): Promise<string | null> {
         // that far better than the temperature does.
         temperature: 0.3,
         max_tokens: MAX_TOKENS,
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+        messages: [
+          {
+            role: 'system',
+            content: turnDirective ? `${SYSTEM_PROMPT}\n\n${turnDirective}` : SYSTEM_PROMPT,
+          },
+          ...messages,
+        ],
       }),
     })
 
@@ -452,6 +504,11 @@ export async function POST(req: NextRequest) {
   const firstMessage = messages.length === 1
   const cached = firstMessage ? await findApprovedAnswer(question) : null
 
+  // Only the assistant's own last turn matters: if it asked for the business name
+  // and the visitor still has not given it, this turn must not ask again.
+  const lastAssistant = [...messages].reverse().find((m) => m.role === 'assistant')
+  const askedLastTurn = lastAssistant ? ASKED_FOR_NAME.test(lastAssistant.content) : false
+
   let raw: string | null
   let fromCache = false
   if (cached) {
@@ -460,7 +517,7 @@ export async function POST(req: NextRequest) {
     await bumpAskedCount(cached.id)
   } else {
     const outbound = messages.map((m) => ({ ...m, content: redact(m.content) }))
-    raw = await callDeepSeek(outbound)
+    raw = await callDeepSeek(outbound, askedLastTurn ? NO_NAME_THIS_TURN : undefined)
   }
 
   // Both paths, so an approved answer can carry [[AUDIT]] too — writing the
@@ -469,7 +526,7 @@ export async function POST(req: NextRequest) {
   const markers = raw
     ? extractAuditMarkers(raw)
     : { reply: null as string | null, offerAudit: false, runAudit: false, offerBooking: false, offerPreview: false }
-  const reply = markers.reply
+  const reply = markers.reply && askedLastTurn ? stripTrailingNameQuestion(markers.reply) : markers.reply
   let offerAudit = markers.offerAudit
   const offerBooking = markers.offerBooking
   const offerPreview = markers.offerPreview

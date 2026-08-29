@@ -27,6 +27,51 @@ import { trackMeta } from '@/lib/analytics'
 const GREETING =
   "Hi — I can help with anything about Mountain Studios: what we build, how it works, what's included. What are you after?"
 
+// The pages the bot is allowed to link to — the same list it is given in
+// lib/chatbot/knowledge.ts under "Pages on this site". A whitelist rather than a
+// URL regex on purpose: the text is model output, so a link it invents must never
+// become clickable, and nothing may point off this site.
+const LINKABLE_PATHS = [
+  '/services/web-design',
+  '/services/paid-ads',
+  '/services/business-automation',
+  '/services/aeo',
+  '/services',
+  '/start-your-project',
+  '/careers/sales-rep',
+  '/refer/terms',
+  '/contact',
+  '/privacy',
+  '/terms',
+  '/about',
+  '/work',
+]
+
+// Longest first, so /services/web-design is matched before /services.
+const PATH_PATTERN = new RegExp(
+  `(${LINKABLE_PATHS.slice().sort((a, b) => b.length - a.length).join('|')})(?![\\w/-])`,
+  'g',
+)
+
+// Splits a reply into text and links without ever handing markup to the DOM.
+function withLinks(text: string) {
+  const out: (string | JSX.Element)[] = []
+  let last = 0
+  let m: RegExpExecArray | null
+  PATH_PATTERN.lastIndex = 0
+  while ((m = PATH_PATTERN.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index))
+    out.push(
+      <a key={`${m.index}-${m[0]}`} className="ms-chat-link" href={m[0]}>
+        {m[0]}
+      </a>,
+    )
+    last = m.index + m[0].length
+  }
+  if (last < text.length) out.push(text.slice(last))
+  return out
+}
+
 // Three openers that map onto sections the bot definitely knows, so a visitor's
 // first tap is always a question it can answer well.
 const OPENERS = ["What does a site cost?", 'How long does it take?', "What's included?"]
@@ -510,7 +555,7 @@ export default function ChatWidget() {
           </header>
 
           <div className="ms-chat-log" ref={scrollRef} aria-live="polite">
-            <p className="ms-chat-said">{GREETING}</p>
+            <p className="ms-chat-said">{withLinks(GREETING)}</p>
 
             {messages.map((m, i) =>
               m.role === 'user' ? (
@@ -519,7 +564,7 @@ export default function ChatWidget() {
                 </p>
               ) : (
                 <div key={i}>
-                  <p className="ms-chat-said">{m.content}</p>
+                  <p className="ms-chat-said">{withLinks(m.content)}</p>
                   {m.offerAudit && (
                     <button type="button" className="ms-chat-audit" onClick={openAudit}>
                       Run my free audit →
@@ -776,6 +821,15 @@ const CSS = `
   margin: 0 0 18px; padding-left: 14px; border-left: 2px solid #7d3d4f;
   color: #2e333a; font-size: 15px; line-height: 1.55; white-space: pre-wrap;
 }
+
+/* A whitelisted page path in the bot's reply becomes a clickable link. */
+.ms-chat-link {
+  color: #7d3d4f; text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 2px; cursor: pointer;
+  transition: color .18s ease;
+}
+.ms-chat-link:hover { color: #6b3343; }
+.ms-chat-link:focus-visible { outline: 2px solid #7d3d4f; outline-offset: 1px; }
 
 /* The visitor's turn: a solid chip, pulled right. */
 .ms-chat-asked {
