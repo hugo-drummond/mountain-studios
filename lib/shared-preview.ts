@@ -70,9 +70,10 @@ function escapeHtml(value: string): string {
  * generator produced — the CTA can be changed later without rewriting every
  * preview ever saved.
  */
-export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean; offer?: boolean }): string {
+export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean; offer?: boolean; cta?: boolean }): string {
   const name = escapeHtml(opts.businessName)
   const showOffer = opts.offer !== false
+  const showCta = opts.cta !== false
 
   const head = `
 <meta name="robots" content="noindex, nofollow, noarchive">
@@ -81,9 +82,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">`
 
-  const cta = opts.claimed
-    ? ''
-    : `
+  const cta = opts.claimed || !showCta ? '' : `
 <div id="ms-cta" style="position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:2147483647;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <button id="ms-cta-open" style="background:#1e2333;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 8px 30px rgba(0,0,0,.35);">
     I want this website

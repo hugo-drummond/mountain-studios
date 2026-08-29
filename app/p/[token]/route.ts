@@ -91,14 +91,19 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
       .then(undefined, err => console.error('[p/token] view count update failed:', err))
   }
 
+  const fromChatbot = preview.created_by === 'chatbot'
+
   return htmlResponse(
     decorate(html, {
       token,
       businessName: preview.business_name,
       claimed: preview.claimed_at !== null,
-      // Chatbot preview is discussed live in chat with bot's pricing rules;
-      // hard R2000 offer card contradicts that conversation context.
-      offer: preview.created_by !== 'chatbot',
+      // Chatbot previews are discussed live in the chat, which is already asking for
+      // the sale. The hard R2000 offer card contradicts the bot's pricing rules, and a
+      // second "I want this website" pill competes with the conversation. Both flags
+      // move together — the offer card's button lives inside the CTA block's script.
+      offer: !fromChatbot,
+      cta: !fromChatbot,
     }),
   )
 }

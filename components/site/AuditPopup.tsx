@@ -38,13 +38,14 @@ const RETRY_MS = 15_000
 const SEEN_KEY = 'ms-audit-seen'
 const DONE_KEY = 'ms-audit-done'
 
-// ChatWidget's list, plus the Get Started wizard. The admin screens and
-// generated client previews are where a Mountain Studios popup over someone
-// else's mock site would be actively damaging. /start-your-project is here
-// for the opposite reason: that visitor is already converting, and offering
-// them a free audit mid-flow interrupts the thing we actually want them to
-// finish.
-const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp', '/start-your-project']
+// The admin screens and generated client previews are where a Mountain Studios
+// popup over someone else's mock site would be actively damaging.
+const HIDDEN_ON = ['/admin', '/p/', '/preview', '/temp']
+
+// Engaged, not off-limits. Someone mid-conversation or mid-wizard should not be
+// interrupted by a timer — but if they are leaving anyway, the popup is the last
+// chance to catch them, so exit intent still fires here.
+const ENGAGED_ON = ['/start-your-project']
 
 const CHECK_GROUPS = [
   {
@@ -111,9 +112,15 @@ export default function AuditPopup() {
     const path = pathRef.current
     if (path && HIDDEN_ON.some((prefix) => path.startsWith(prefix))) return false
     if (stored('local', DONE_KEY) || stored('session', SEEN_KEY)) return false
-    // The chatbot is mid-conversation. Do not talk over it.
-    if (document.querySelector('.ms-chat-panel')) return false
     return true
+  }, [])
+
+  const isEngaged = useCallback((): boolean => {
+    const path = pathRef.current
+    if (path && ENGAGED_ON.some((prefix) => path.startsWith(prefix))) return true
+    if (document.querySelector('.ms-chat-panel')) return true
+    if (document.querySelector('.ms-chat-preview-overlay')) return true
+    return false
   }, [])
 
   useEffect(() => {
@@ -123,15 +130,14 @@ export default function AuditPopup() {
     let retryTimer: ReturnType<typeof setTimeout>
     let fired = false
 
-    const fire = () => {
+    const fire = (fromExitIntent: boolean) => {
       if (fired) return
-      if (!canShow()) {
+      if (!canShow()) return
+      if (!fromExitIntent && isEngaged()) {
         // Wrong moment rather than wrong visitor — come back to it instead of
         // throwing the trigger away.
-        if (!stored('local', DONE_KEY) && !stored('session', SEEN_KEY)) {
-          clearTimeout(retryTimer)
-          retryTimer = setTimeout(fire, RETRY_MS)
-        }
+        clearTimeout(retryTimer)
+        retryTimer = setTimeout(() => fire(false), RETRY_MS)
         return
       }
       fired = true
@@ -139,13 +145,13 @@ export default function AuditPopup() {
       setOpen(true)
     }
 
-    dwellTimer = setTimeout(fire, DWELL_MS)
+    dwellTimer = setTimeout(() => fire(false), DWELL_MS)
 
     // Exit intent: the pointer crosses the top edge of the window. A null
     // relatedTarget means it left the document rather than moving between two
     // elements inside it.
     const onMouseOut = (e: MouseEvent) => {
-      if (e.clientY <= 0 && !e.relatedTarget) fire()
+      if (e.clientY <= 0 && !e.relatedTarget) fire(true)
     }
     document.addEventListener('mouseout', onMouseOut)
 
@@ -154,7 +160,7 @@ export default function AuditPopup() {
       clearTimeout(retryTimer)
       document.removeEventListener('mouseout', onMouseOut)
     }
-  }, [canShow])
+  }, [canShow, isEngaged])
 
   // Asked for deliberately — currently the chatbot's "Run my free audit"
   // button. This bypasses every guard on the automatic triggers: someone who
