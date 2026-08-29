@@ -113,6 +113,13 @@ export async function attachVisitorToLead(
       // Visitor row might not exist yet (event arrived before the visitor beacon),
       // which is fine. Just log it if we want to investigate, but don't throw.
     }
+
+    // Called from here rather than from each route. Every lead-creating route
+    // has to remember one call instead of two, and a route that forgets the
+    // second one loses the entire pre-email half of that lead's funnel — the
+    // page views and the wizard steps that happened before we knew who they
+    // were. It is bounded and it never throws.
+    await stitchEventsToLead(visitorId, leadId)
   } catch (err) {
     console.error('[site-events] attachVisitorToLead failed:', err instanceof Error ? err.message : err)
   }

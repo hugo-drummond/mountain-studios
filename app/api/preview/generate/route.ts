@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
+import { recordEvents, deviceFromUserAgent } from '@/lib/site-events-server'
 
 import { presetContent, PresetContent } from './content'
 
@@ -6402,6 +6403,28 @@ export async function POST(req: NextRequest) {
           htmlString = buildServiceTemplate(templateData)
           break
       }
+    }
+
+    // Track preview generation server-side
+    try {
+      const userAgent = req.headers.get('user-agent') || 'unknown'
+      const deviceType = deviceFromUserAgent(userAgent)
+      await recordEvents([
+        {
+          visitor_id: '',
+          session_id: '',
+          event: 'preview_generated',
+          path: req.nextUrl.pathname,
+          device_type: deviceType,
+          occurred_at: new Date(),
+          label: variant,
+          props: { category: category },
+          source: 'server',
+        },
+      ])
+    } catch (err) {
+      // Event recording failure must never block the response
+      console.error('[preview/generate] event recording failed:', err instanceof Error ? err.message : err)
     }
 
     return NextResponse.json({

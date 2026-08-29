@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
+import { visitorId, track } from '@/lib/site-events'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { trackMeta } from '@/lib/analytics'
 import { isValidEmail, EMAIL_ERROR } from '@/lib/validation'
@@ -242,16 +243,21 @@ export default function AuditPopup() {
           recaptchaToken,
           website: honeypot,
           refCode: storedRefCode(),
+          visitorId: visitorId(),
         }),
       })
 
       const data = await res.json().catch(() => null)
 
       if (res.ok) {
+        const responseData = data as { leadId?: string | null } | null
         setDone(true)
         setUrl('')
         setEmail('')
         remember('local', DONE_KEY)
+        if (typeof responseData?.leadId === 'string') {
+          track('lead_identified', { props: { leadId: responseData.leadId, via: 'audit_popup' } })
+        }
         trackMeta('Lead', { content_name: 'Free website audit' })
       } else {
         // Show what the server actually said. It knows whether the URL failed to

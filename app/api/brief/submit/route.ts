@@ -5,6 +5,7 @@ import { renderEnquiryConfirmation } from '@/lib/emails/enquiry-confirmation'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { attachReferralToLead } from '@/lib/referral'
+import { attachVisitorToLead } from '@/lib/site-events-server'
 import { isValidEmail, normalizePhone } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
@@ -43,6 +44,7 @@ interface Payload {
   // The partner code this visitor arrived on, if any. Read from
   // localStorage by the wizard; validated and stamped on the lead server-side.
   refCode?: string
+  visitorId?: string
 }
 
 function escapeHtml(value: string): string {
@@ -246,6 +248,7 @@ export async function POST(req: NextRequest) {
   // before the response returns and a rep opening the lead sees where it came
   // from immediately.
   await attachReferralToLead(leadId, body.refCode)
+  await attachVisitorToLead(leadId, body.visitorId)
 
   let emailed = false
   try {

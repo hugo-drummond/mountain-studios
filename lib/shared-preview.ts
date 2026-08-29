@@ -103,7 +103,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
       <p style="margin:0 0 10px;font-size:27px;color:#1e2333;font-weight:600;line-height:1.2;">Got it.</p>
       <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.6;">We&rsquo;ll be in touch shortly.</p>
       <p style="margin:0 0 10px;font-size:15px;color:#1e2333;line-height:1.6;">Want to get things live sooner?</p>
-      <a href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener" style="display:inline-block;font-size:19px;font-weight:600;color:#1e2333;text-decoration:underline;text-underline-offset:4px;">Book 15 minutes</a>
+      <a id="ms-calendly-book" href="${escapeHtml(CALENDLY_URL)}" target="_blank" rel="noopener" style="display:inline-block;font-size:19px;font-weight:600;color:#1e2333;text-decoration:underline;text-underline-offset:4px;">Book 15 minutes</a>
     </div>
   </div>
 </div>
@@ -150,6 +150,38 @@ export function decorate(html: string, opts: { token: string; businessName: stri
       submit.disabled=false;submit.textContent='Send my details';
     });
   };
+  // Read the ids lib/site-events.ts wrote. Same origin, so localStorage is
+  // shared with the React app even though this page is a raw document and
+  // SiteEvents never mounts here. The KEYS MUST MATCH that file: 'ms_vid' and
+  // 'ms_sid', each holding {id, at}. Someone who opened this straight from the
+  // email has neither, which is normal — the click is still counted, just not
+  // attributed to a browser we have seen before.
+  function msRead(store,key){
+    try{
+      var raw=store.getItem(key);
+      if(!raw)return null;
+      var parsed=JSON.parse(raw);
+      return parsed&&parsed.id?parsed.id:null;
+    }catch(err){return null;}
+  }
+  var calendlyLink=document.getElementById('ms-calendly-book');
+  if(calendlyLink){
+    calendlyLink.onclick=function(){
+      try{
+        var payload={source:'preview',events:[{event:'calendly_click',props:{from:'preview',token:'${opts.token}'}}]};
+        var vid=msRead(localStorage,'ms_vid');if(vid)payload.visitorId=vid;
+        var sid=msRead(sessionStorage,'ms_sid');if(sid)payload.sessionId=sid;
+        var body=JSON.stringify(payload);
+        // The link opens a new tab and this document may be torn down; a plain
+        // fetch can be cancelled mid-flight, sendBeacon cannot.
+        if(typeof navigator!=='undefined'&&navigator.sendBeacon){
+          navigator.sendBeacon('/api/site-event',new Blob([body],{type:'application/json'}));
+        }else{
+          fetch('/api/site-event',{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}).catch(function(){});
+        }
+      }catch(err){}
+    };
+  }
 })();
 </script>${showOffer ? `
 <style>
@@ -251,10 +283,110 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 })();
 </script>` : ''}`
 
+  // Its own IIFE and its own const, deliberately outside the offer block. The
+  // CTA pill and the offer card are both omitted for chatbot-built previews,
+  // and scroll depth and dwell still matter on those — they are the only
+  // signal of whether anyone actually read the thing.
+  const tracker = `
+<script>
+(function(){
+  try{
+    var token='${opts.token}';
+    function msRead(store,key){
+      try{
+        var raw=store.getItem(key);
+        if(!raw)return null;
+        var parsed=JSON.parse(raw);
+        return parsed&&parsed.id?parsed.id:null;
+      }catch(err){return null;}
+    }
+    var visitorId=msRead(localStorage,'ms_vid');
+    // The session id MUST be the one lib/site-events.ts uses — key 'ms_sid',
+    // shape {id, at:<epoch ms>}. An earlier version minted its own under
+    // 'ms-sid-<token>', which produced a second session id on the same origin
+    // and meant preview events could never join to the rest of that visit.
+    // Minted here when absent, because a preview opened straight from the
+    // email is a real session that nothing else has started yet.
+    var sessionId=msRead(sessionStorage,'ms_sid');
+    if(!sessionId){
+      try{
+        sessionId=(typeof crypto!=='undefined'&&crypto.randomUUID)
+          ?crypto.randomUUID()
+          :'v-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10);
+        sessionStorage.setItem('ms_sid',JSON.stringify({id:sessionId,at:Date.now()}));
+      }catch(e){sessionId=null;}
+    }
+    var maxScroll=0;
+    var pageStartTime=new Date().getTime();
+    function depth(){
+      var total=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);
+      if(total<=0)return 0;
+      return(window.pageYOffset+window.innerHeight)/total;
+    }
+    function track(event,fields){
+      try{
+        var payload={source:'preview',events:[{event:event}]};
+        if(fields){
+          if(fields.value_num!==undefined)payload.events[0].value_num=fields.value_num;
+          if(fields.props)payload.events[0].props=fields.props;
+        }
+        if(visitorId)payload.visitorId=visitorId;
+        if(sessionId)payload.sessionId=sessionId;
+        var body=JSON.stringify(payload);
+        if(typeof navigator!=='undefined'&&navigator.sendBeacon){
+          navigator.sendBeacon('/api/site-event',new Blob([body],{type:'application/json'}));
+        }else{
+          fetch('/api/site-event',{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true}).catch(function(){});
+        }
+      }catch(err){}
+    }
+    function onScroll(){
+      var d=depth();
+      if(d>maxScroll)maxScroll=d;
+    }
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('pagehide',function(){
+      track('preview_scroll',{value_num:Math.round(maxScroll*100)});
+      var seconds=Math.round((new Date().getTime()-pageStartTime)/1000);
+      track('preview_dwell',{value_num:seconds});
+    });
+    var offerCard=document.getElementById('ms-offer');
+    if(offerCard){
+      var offerShown=false;
+      try{
+        var observer=new MutationObserver(function(mutations){
+          try{
+            for(var i=0;i<mutations.length;i++){
+              var m=mutations[i];
+              if(m.type==='attributes'&&m.attributeName==='class'){
+                var hasClass=offerCard.classList.contains('ms-offer-on');
+                if(hasClass&&!offerShown){
+                  offerShown=true;
+                  var d=depth();
+                  var trigger=d>=0.5?'scroll':'dwell';
+                  track('offer_shown',{props:{trigger:trigger}});
+                }else if(!hasClass&&offerShown){
+                  offerShown=false;
+                  track('offer_dismissed');
+                }
+              }
+            }
+          }catch(err){}
+        });
+        observer.observe(offerCard,{attributes:true});
+      }catch(err){}
+    }
+  }catch(err){}
+})();
+</script>
+`
+
+
   // Fall back to appending if the document is not shaped as expected, so a
   // template change can never silently drop the CTA.
   const withHead = html.includes('</head>') ? html.replace('</head>', `${head}\n</head>`) : head + html
-  return withHead.includes('</body>') ? withHead.replace('</body>', `${cta}\n</body>`) : withHead + cta
+  const injected = cta + tracker
+  return withHead.includes('</body>') ? withHead.replace('</body>', `${injected}\n</body>`) : withHead + injected
 }
 
 export function expiredPage(businessName: string): string {

@@ -30,6 +30,8 @@ interface Payload {
   website?: string
   /** Partner referral code, read from localStorage by the popup form. */
   refCode?: string
+  /** First-party visitor ID for funnel tracking. */
+  visitorId?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -118,7 +120,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { auditRequestId, emailed } = await startAudit({
+  const { auditRequestId, leadId, emailed } = await startAudit({
     websiteUrl: storedUrl,
     email: storedEmail,
     source: 'website',
@@ -127,6 +129,7 @@ export async function POST(req: NextRequest) {
       : recaptchaNote,
     originLabel: 'Requested from the website',
     refCode: body.refCode ?? null,
+    visitorId: body.visitorId ?? null,
   })
 
   if (!auditRequestId && !emailed) {
@@ -137,5 +140,5 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  return NextResponse.json({ success: true, auditRequestId })
+  return NextResponse.json({ success: true, auditRequestId, leadId })
 }

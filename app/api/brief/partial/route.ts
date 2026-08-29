@@ -4,6 +4,7 @@ import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 import { attachReferralToLead } from '@/lib/referral'
+import { attachVisitorToLead } from '@/lib/site-events-server'
 import { isValidEmail } from '@/lib/validation'
 
 // ---------------------------------------------------------------------------
@@ -52,6 +53,7 @@ interface Payload {
   website?: string
   variant?: string
   refCode?: string
+  visitorId?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -213,6 +215,7 @@ export async function POST(req: NextRequest) {
   // The wizard's first step is where most referred visitors are first
   // identifiable, so the code is stamped here as well as on the final submit.
   await attachReferralToLead(leadId, body.refCode)
+  await attachVisitorToLead(leadId, body.visitorId)
 
   // Notify Ant as soon as the visitor provides their email at the gate
   if (leadId) {

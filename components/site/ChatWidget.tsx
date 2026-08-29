@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
+import { visitorId, track, flush } from '@/lib/site-events'
 import { trackMeta } from '@/lib/analytics'
 
 // ---------------------------------------------------------------------------
@@ -253,6 +254,9 @@ export default function ChatWidget() {
 
   // Opens Calendly in a new tab. No visitor data is ever appended to the URL.
   const openBooking = useCallback(() => {
+    // Track the click with sendBeacon before opening, since the tab switch races the fetch
+    track('calendly_click', { props: { from: 'chat' } })
+    flush()
     window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
   }, [])
 
@@ -311,7 +315,7 @@ export default function ChatWidget() {
         const res = await fetch('/api/audit/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ websiteUrl, email, recaptchaToken, refCode: storedRefCode() }),
+          body: JSON.stringify({ websiteUrl, email, recaptchaToken, refCode: storedRefCode(), visitorId: visitorId() }),
         })
 
         if (res.ok) {
@@ -407,14 +411,17 @@ export default function ChatWidget() {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, leadId, previewToken, recaptchaToken, refCode: storedRefCode() }),
+          body: JSON.stringify({ messages: next, leadId, previewToken, recaptchaToken, refCode: storedRefCode(), visitorId: visitorId() }),
         })
         const data = await res.json().catch(() => null)
 
         // Handle 403 responses with returned error message
         if (res.status === 403 && typeof data?.error === 'string') {
           setMessages([...next, { role: 'assistant', content: data.error }])
-          if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+          if (typeof data?.leadId === 'string') {
+            setLeadId(data.leadId)
+            track('lead_identified', { props: { leadId: data.leadId, via: 'chat' } })
+          }
         } else {
           // The route answers with a usable `reply` on every path it controls,
           // including 429. This branch is for the ones it does not: a network
@@ -455,7 +462,10 @@ export default function ChatWidget() {
               offerPreview: data?.offerPreview === true,
             },
           ])
-          if (typeof data?.leadId === 'string') setLeadId(data.leadId)
+          if (typeof data?.leadId === 'string') {
+            setLeadId(data.leadId)
+            track('lead_identified', { props: { leadId: data.leadId, via: 'chat_audit' } })
+          }
         }
       } catch {
         setMessages([

@@ -1,5 +1,6 @@
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
+import { attachVisitorToLead } from '@/lib/site-events-server'
 import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { runAudit } from '@/lib/audit/run'
 import { waitUntil } from '@vercel/functions'
@@ -34,6 +35,8 @@ export interface StartAuditInput {
   originLabel?: string
   /** Partner referral code the visitor arrived on, if any. Validated downstream. */
   refCode?: string | null
+  /** First-party visitor ID for funnel tracking. */
+  visitorId?: string | null
   /**
    * How to start the run.
    *
@@ -205,6 +208,7 @@ export async function startAudit(input: StartAuditInput): Promise<StartAuditResu
     // carry a partner code, and either can be the first thing a referred
     // visitor does.
     await attachReferralToLead(leadId, input.refCode)
+    await attachVisitorToLead(leadId, input.visitorId)
   } catch (err) {
     console.error('[audit/start] leads operation failed:', err instanceof Error ? err.message : err)
   }

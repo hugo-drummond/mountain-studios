@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import PageShell from '@/components/site/PageShell'
 import { trackMeta } from '@/lib/analytics'
+import { track } from '@/lib/site-events'
 import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 
 const WHATSAPP_NUMBER = '27645322093'
@@ -89,6 +90,7 @@ export default function Contact() {
       if (res.ok) {
         setSubmitted(true)
         setFormData({ name: '', email: '', phone: '', message: '' })
+        track('contact_submitted', { props: { form: 'contact' } })
         trackMeta('Contact', { content_name: 'Contact form' })
       } else {
         // The route returns a usable sentence for every rejection it makes.

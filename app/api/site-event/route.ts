@@ -29,6 +29,7 @@ import { deviceFromUserAgent, eventHash, recordEvents, attachVisitorToLead, stit
 interface Payload {
   visitorId?: string
   sessionId?: string
+  source?: string
   attribution?: Record<string, unknown> | null
   events?: Array<{
     event: string
@@ -52,9 +53,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true })
   }
 
+  // Parsed from raw text rather than req.json(). `navigator.sendBeacon(url, string)`
+  // sends `text/plain;charset=UTF-8`, and req.json() throws on that — which this
+  // route then swallows into a 200, so every beacon sent as a string was accepted
+  // and silently stored nothing. Content type is not something a beacon gets to
+  // choose reliably; the body is always JSON text either way.
   let body: Payload
   try {
-    body = await req.json()
+    body = JSON.parse(await req.text())
   } catch {
     return NextResponse.json({ ok: true })
   }
@@ -98,7 +104,14 @@ export async function POST(req: NextRequest) {
         label: typeof evt.label === 'string' ? evt.label : null,
         props: evt.props || {},
         ip_ua_hash: ipUaHash,
-        source: 'site' as const,
+        // The schema separates these on purpose: 'preview' is the vanilla-JS
+        // tracker injected into somebody else's generated document, which is a
+        // different reliability story from the React app and has to be
+        // separable when a number looks wrong. Validated against the check
+        // constraint rather than trusted, so a bad value cannot fail the insert
+        // for the whole batch.
+        source: (body.source === 'preview' || body.source === 'server' ? body.source : 'site') as
+          'site' | 'preview' | 'server',
       }
     })
 
@@ -116,7 +129,8 @@ export async function POST(req: NextRequest) {
               first_seen_at: now,
               last_seen_at: now,
               first_path: body.attribution.first_path as string | null,
-              first_referrer_host: body.attribution.referrer_host as string | null,
+              first_referrer_host: (body.attribution.first_referrer_host ??
+                body.attribution.referrer_host) as string | null,
               utm_source: body.attribution.utm_source as string | null,
               utm_medium: body.attribution.utm_medium as string | null,
               utm_campaign: body.attribution.utm_campaign as string | null,

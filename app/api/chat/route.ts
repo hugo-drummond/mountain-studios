@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
+import { attachVisitorToLead } from '@/lib/site-events-server'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
 import { extractLeadProfile } from '@/lib/chatbot/lead-profile'
@@ -104,6 +105,7 @@ interface Payload {
   recaptchaToken?: unknown
   refCode?: unknown
   previewToken?: unknown
+  visitorId?: unknown
 }
 
 const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
@@ -646,6 +648,7 @@ export async function POST(req: NextRequest) {
     // A chat that produced contact details is a lead like any other, and the
     // visitor may well have arrived on a partner's link.
     await attachReferralToLead(leadId, body.refCode)
+    await attachVisitorToLead(leadId, body.visitorId as string | undefined)
 
     // Enrich the notes with a sales-ready summary in the background. This is
     // pure enrichment on top of a save that already succeeded — the visitor's
