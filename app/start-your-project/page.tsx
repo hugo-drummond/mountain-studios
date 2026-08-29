@@ -9,6 +9,7 @@ import {
   businessTypeData,
   sortedBusinessTypes,
   popularTypes,
+  categoryColors,
   type BusinessCategory,
   type BusinessTypeEntry,
 } from '../../constants/business-types'
@@ -199,24 +200,6 @@ function getWeekdays(startDate: Date, weeks: number): Date[] {
 }
 
 
-
-const categoryColors: Record<BusinessCategory, { primary: string; secondary: string }> = {
-  'food-hospitality':      { primary: '#9C4221', secondary: '#F0C896' },  // rich burnt sienna + warm peach — appetite, warmth, artisan
-  'retail':                { primary: '#1B3A6B', secondary: '#D4A843' },  // rich navy + warm gold — trust, purchase intent, upmarket
-  'trades-construction':   { primary: '#1D5C8A', secondary: '#E07B3C' },  // rich steel blue + amber — reliability, energy, industry
-  'health-wellness':       { primary: '#2E7D6E', secondary: '#B8DFCF' },  // deep sage-teal + soft mint — calm, healing, clinical trust
-  'professional':          { primary: '#0F2B52', secondary: '#C49A3C' },  // Oxford navy + antique gold — authority, prestige, trust
-  'creative':              { primary: '#1A1A2E', secondary: '#E8956D' },  // deep charcoal-navy + warm coral — sophistication, creativity
-  'fitness-sport':         { primary: '#111111', secondary: '#D42020' },  // near-black + crisp crimson — power, energy, performance
-  'home-services':         { primary: '#1A6464', secondary: '#7DCFCA' },  // deep teal + light teal — clean, trustworthy, refreshing
-  'education':             { primary: '#1A4B8A', secondary: '#F0B429' },  // warm royal blue + golden amber — focus, optimism, learning
-  'automotive':            { primary: '#1A2030', secondary: '#C42828' },  // gunmetal navy + deep crimson — sophisticated, powerful
-  'property':              { primary: '#162030', secondary: '#C49060' },  // midnight navy + warm copper — prestige, stability, luxury
-  'events-entertainment':  { primary: '#3A1A58', secondary: '#D4AF5A' },  // deep plum + champagne gold — celebration, elegance
-  'tech-digital':          { primary: '#0C1A2E', secondary: '#00B4A6' },  // deep tech navy + electric teal — innovation, precision
-  'pets':                  { primary: '#3A6232', secondary: '#E8B040' },  // forest green + warm amber — nature, warmth, care
-  'other':                 { primary: '#3A4F6B', secondary: '#B87878' },  // slate blue + dusty rose — refined, neutral, welcoming
-}
 
 const categoryStyles: Record<BusinessCategory, { style: string; visualBalance: number }> = {
   'food-hospitality':      { style: 'Elegant & Luxury',     visualBalance: 70 },

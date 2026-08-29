@@ -4,6 +4,7 @@ import { extractPreviewBrief } from '@/lib/chatbot/preview-brief'
 import { makeToken, PREVIEW_BUCKET } from '@/lib/shared-preview'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
 import { clientKey } from '@/lib/rate-limit'
+import { categoryColors } from '@/constants/business-types'
 
 // ---------------------------------------------------------------------------
 // POST /api/preview/chat
@@ -109,14 +110,20 @@ export async function POST(req: NextRequest) {
     // Call the preview generator endpoint
     let html: string
     try {
+      // The token is not forwarded. A reCAPTCHA v3 token can be verified once, and
+      // this route already spent it above — /api/preview/generate would get
+      // `timeout-or-duplicate`, read it as a real bot verdict and 403. Same bug that
+      // silently killed the wizard preview email for two days in August.
       const generateRes = await fetch(new URL('/api/preview/generate', req.url), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           businessName: brief.businessName,
           businessType: brief.businessType,
+          businessCategory: brief.businessCategory,
+          primaryColor: categoryColors[brief.businessCategory].primary,
+          secondaryColor: categoryColors[brief.businessCategory].secondary,
           pages: brief.pages,
-          recaptchaToken,
         }),
       })
 

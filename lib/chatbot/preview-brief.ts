@@ -14,6 +14,7 @@
 import { similarity, normalise } from '@/lib/chatbot/questions'
 import { presetContent } from '@/app/api/preview/generate/content'
 import { crmAdmin } from '@/lib/crm'
+import { categoryForType, type BusinessCategory } from '@/constants/business-types'
 
 const DEEPSEEK_URL = 'https://api.deepseek.com/v1/chat/completions'
 const MODEL = 'deepseek-chat'
@@ -29,6 +30,7 @@ interface Message {
 export interface PreviewBrief {
   businessName: string
   businessType: string
+  businessCategory: BusinessCategory
   pages: string[]
   matchedPreset: boolean
 }
@@ -262,6 +264,7 @@ Strict rules:
       return {
         businessName: parsed.businessName,
         businessType: matchedPreset ? presetKey : parsed.businessType,
+        businessCategory: matchedPreset && presetKey ? categoryForType(presetKey) : 'other',
         pages: mapPagesToLabels(parsed.pages || ''),
         matchedPreset,
       }

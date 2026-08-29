@@ -1339,14 +1339,9 @@ function buildServiceTemplate(data: TemplateData): string {
           <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:550px">${content.servicesHeading}</h2>
           <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);text-decoration:none;white-space:nowrap;flex-shrink:0">${content.ctaPrimary} &rarr;</a>
         </div>
-        <div class="ms-flex" style="display:flex;align-items:stretch;gap:1rem">
-          ${content.services.map((s, i) => `${i > 0 ? `
-            <div class="ms-arrow" style="display:flex;align-items:center;flex-shrink:0;padding:0 0.25rem;opacity:0.35">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--text)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>` : ''}
-            <div class="svc-card" style="flex:1;${theme === 'light' ? 'background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 2rem;position:relative;overflow:hidden">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+          ${content.services.slice(0, 6).map((s, i) => `
+            <div class="svc-card" style="${theme === 'light' ? 'background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 2rem;position:relative;overflow:hidden">
               <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(${pr},${pg},${pb},${i === 0 ? '1' : '0.3'})"></div>
               <div style="width:56px;height:56px;border-radius:3px;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.75rem">
                 <span style="font-size:1.5rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
