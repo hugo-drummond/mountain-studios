@@ -112,6 +112,15 @@ const BUBBLE_TEXT = 'Chat with us — we reply instantly'
 const BUBBLE_DISMISSED_KEY = 'ms-chat-bubble-dismissed'
 const BUBBLE_DELAY_MS = 1600
 
+// With the preview open and the chat closed, the launcher is a mystery icon over
+// somebody's own website. This is the one moment their reaction is worth the most,
+// so the bubble asks for it directly rather than offering help in general. It is
+// dismissed separately — retiring the invitation on the homepage should not cost
+// us the question that actually earns the call.
+const PREVIEW_BUBBLE_TEXT = 'What do you think?'
+const PREVIEW_BUBBLE_DISMISSED_KEY = 'ms-chat-bubble-preview-dismissed'
+const PREVIEW_BUBBLE_DELAY_MS = 2200
+
 const PREVIEW_READY =
   "That's it — have a scroll through it. The layout is the real part; the photos and the wording " +
   "are stand-ins until your own go in. Does it feel about right for you?"
@@ -283,14 +292,29 @@ export default function ChatWidget() {
     return () => clearTimeout(t)
   }, [])
 
+  // A second invitation, on its own timer and its own key, for the moment the
+  // preview is on screen. Long enough after it opens that they have looked at it.
+  useEffect(() => {
+    if (!previewOpen) return
+    let dismissed = false
+    try {
+      dismissed = sessionStorage.getItem(PREVIEW_BUBBLE_DISMISSED_KEY) === '1'
+    } catch {
+      // Private mode. Show it.
+    }
+    if (dismissed) return
+    const t = setTimeout(() => setBubble(true), PREVIEW_BUBBLE_DELAY_MS)
+    return () => clearTimeout(t)
+  }, [previewOpen])
+
   const dismissBubble = useCallback(() => {
     setBubble(false)
     try {
-      sessionStorage.setItem(BUBBLE_DISMISSED_KEY, '1')
+      sessionStorage.setItem(previewOpen ? PREVIEW_BUBBLE_DISMISSED_KEY : BUBBLE_DISMISSED_KEY, '1')
     } catch {
       // Nothing to do — it just reappears on the next page.
     }
-  }, [])
+  }, [previewOpen])
 
   const close = useCallback(() => {
     setOpen(false)
@@ -557,7 +581,7 @@ export default function ChatWidget() {
               setOpen(true)
             }}
           >
-            {BUBBLE_TEXT}
+            {previewOpen ? PREVIEW_BUBBLE_TEXT : BUBBLE_TEXT}
           </button>
           <button
             type="button"
