@@ -598,7 +598,7 @@ export default function Home() {
             marginTop: '2.5rem',
             textAlign: 'center',
           }}>
-            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They sign and pay a deposit — you get 25% of the deal up to R1000.'].map((text, i) => (
+            {['Give us your details, we send you your link.', 'Forward it to anyone who needs a site.', 'They book with Hugo and pay in instalments — you earn 25% of each one, up to R1000.'].map((text, i) => (
               <div key={i}>
                 <div style={{
                   fontFamily: 'var(--font-playfair), Georgia, serif',

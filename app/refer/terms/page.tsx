@@ -38,7 +38,7 @@ export default function ReferTerms() {
           }}>
             <li style={{ marginBottom: '0.75rem' }}>Give us your details and we email you a unique referral link.</li>
             <li style={{ marginBottom: '0.75rem' }}>Forward it to any business that needs a website.</li>
-            <li>They sign with us and pay their deposit — you get 25% of the deal up to R1000.</li>
+            <li>They book a meeting with Hugo and sign with us — you earn 25% of every instalment they pay, up to R1000 total.</li>
           </ol>
 
           <h2 style={{
@@ -59,7 +59,7 @@ export default function ReferTerms() {
             lineHeight: 1.7,
           }}>
             <li style={{ marginBottom: '1rem' }}>
-              <strong style={{ color: '#1a1a2e' }}>Payout.</strong> 25% of the deal up to R1000 per referred business, paid via EFT once they've signed and paid their deposit.
+              <strong style={{ color: '#1a1a2e' }}>Payout.</strong> A referral only counts once the business books a meeting with Hugo — passing on a name or a number earns nothing on its own. From there you earn 25% of every instalment they pay, up to R1000 total per referred business, paid via EFT as each instalment comes in. For example, a R400 build paid in three R200, R100, R100 instalments earns you R50, then R25, then R25.
             </li>
             <li style={{ marginBottom: '1rem' }}>
               <strong style={{ color: '#1a1a2e' }}>No limit.</strong> Refer as many businesses as you like — there's no cap on how much you can earn.

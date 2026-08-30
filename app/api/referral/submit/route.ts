@@ -187,7 +187,7 @@ export async function POST(req: NextRequest) {
             </div>
             <p style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#745762;margin:28px 0 12px;">Terms</p>
             <ul style="font-size:14px;color:#334155;line-height:1.7;margin:0 0 20px;padding:0 0 0 18px;">
-              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Payout.</strong> 25% of the deal up to R1000 per referred business, paid via EFT once they&rsquo;ve signed and paid their deposit.</li>
+              <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Payout.</strong> A referral only counts once the business books a meeting with Hugo &mdash; passing on a name or a number earns nothing on its own. From there you earn 25% of every instalment they pay, up to R1000 total per referred business, paid via EFT as each instalment comes in. For example, a R400 build paid in three R200, R100, R100 instalments earns you R50, then R25, then R25.</li>
               <li style="margin-bottom:10px;"><strong style="color:#0f172a;">No limit.</strong> Refer as many businesses as you like &mdash; there&rsquo;s no cap on how much you can earn.</li>
               <li style="margin-bottom:10px;"><strong style="color:#0f172a;">Your link doesn&rsquo;t expire.</strong> Use it whenever a referral comes up.</li>
               <li><strong style="color:#0f172a;">Questions?</strong> Email <a href="mailto:hello@mountainstudios.co.za" style="color:#7d3d4f;">hello@mountainstudios.co.za</a>.</li>
