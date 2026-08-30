@@ -26,7 +26,8 @@ const categoryVariant: Record<BusinessCategory, TemplateVariant> = {
   'home-services': 'service',
   'education': 'service',
   'automotive': 'service',
-  'other': 'service',
+  // 'other' has no bespoke builder; buildVisualTemplate is the strongest generic.
+  'other': 'visual',
   'creative': 'portfolio',
   'property': 'portfolio',
 }
@@ -461,11 +462,53 @@ function lightenColor(hex: string, amount: number): string {
   return `#${lr.toString(16).padStart(2, '0')}${lg.toString(16).padStart(2, '0')}${lb.toString(16).padStart(2, '0')}`
 }
 
-function getLuminance(hex: string): number {
-  const r = parseInt(hex.slice(1, 3), 16) / 255
-  const g = parseInt(hex.slice(3, 5), 16) / 255
-  const b = parseInt(hex.slice(5, 7), 16) / 255
-  return 0.299 * r + 0.587 * g + 0.114 * b
+// True WCAG relative luminance — NOT the perceived-brightness formula
+// (0.299/0.587/0.114) this file used to carry as getLuminance(), whose scale
+// silently broke every contrast threshold tuned against it. Every legibility
+// decision uses these helpers.
+function relativeLuminance(hex: string): number {
+  const lin = (c: number) => { const s = c / 255; return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4) }
+  const r = lin(parseInt(hex.slice(1, 3), 16) || 0)
+  const g = lin(parseInt(hex.slice(3, 5), 16) || 0)
+  const b = lin(parseInt(hex.slice(5, 7), 16) || 0)
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+function contrastRatio(hexA: string, hexB: string): number {
+  const a = relativeLuminance(hexA)
+  const b = relativeLuminance(hexB)
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+}
+
+function darkenColor(hex: string, amount: number): string {
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
+  const dr = Math.max(0, r - Math.round(r * amount))
+  const dg = Math.max(0, g - Math.round(g * amount))
+  const db = Math.max(0, b - Math.round(b * amount))
+  return `#${dr.toString(16).padStart(2, '0')}${dg.toString(16).padStart(2, '0')}${db.toString(16).padStart(2, '0')}`
+}
+
+// Walk fg toward white (on a dark bg) or black (on a light bg) until it clears
+// minRatio against bg. Binary-search the blend amount; if even a full blend
+// cannot clear the ratio, fall back to plain near-white/near-black ink.
+function ensureContrast(fg: string, bg: string, minRatio: number): string {
+  if (contrastRatio(fg, bg) >= minRatio) return fg
+  const towardWhite = relativeLuminance(bg) < 0.5
+  const blend = (amt: number) => (towardWhite ? lightenColor(fg, amt) : darkenColor(fg, amt))
+  if (contrastRatio(blend(1), bg) < minRatio) return towardWhite ? '#f5f5f0' : '#14140f'
+  let lo = 0, hi = 1
+  for (let i = 0; i < 8; i++) {
+    const mid = (lo + hi) / 2
+    if (contrastRatio(blend(mid), bg) >= minRatio) hi = mid
+    else lo = mid
+  }
+  return blend(hi)
+}
+
+function bestTextColor(bg: string, dark = '#14140f', light = '#ffffff'): string {
+  return contrastRatio(dark, bg) >= contrastRatio(light, bg) ? dark : light
 }
 
 // categoryColors pairs a near-black "shell" primary with a vivid secondary, and the
@@ -476,17 +519,18 @@ function getLuminance(hex: string): number {
 // is the last resort because it desaturates a brand colour into grey.
 function accentOnDark(primary: string | undefined, secondary: string | undefined, fallback: string): string {
   const p = primary || fallback
-  if (getLuminance(p) >= 0.19) return p
+  if (contrastRatio(p, '#0f0f0f') >= 3.0) return p
   const s = secondary || fallback
-  if (getLuminance(s) >= 0.25) return s
-  return lightenColor(p, 0.55)
+  if (contrastRatio(s, '#0f0f0f') >= 3.0) return s
+  return ensureContrast(p, '#0f0f0f', 3.0)
 }
 
 function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, secondaryColor: string, theme: Theme = 'dark'): string {
-  // Create a readable version of primary for dark backgrounds
-  const primaryLum = getLuminance(primaryColor)
-  const primaryOnDark = primaryLum < 0.4 ? lightenColor(primaryColor, 0.6) : primaryColor
-  const primaryOnLight = primaryLum > 0.7 ? '#1a1a2e' : primaryColor
+  // Readable versions of primary per surface — real WCAG ratios, not perceived
+  // brightness. 3:1 = large text/graphics on dark, 4.5:1 = body-size on light
+  // (several templates reuse --primary as body-sized text and border colour).
+  const primaryOnDark = ensureContrast(primaryColor, '#0f0f0f', 3.0)
+  const primaryOnLight = ensureContrast(primaryColor, '#fafafa', 4.5)
 
   const vars = theme === 'light' ? `
       --bg: #fafafa;
@@ -509,7 +553,10 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       --primary: ${theme === 'dark' ? primaryOnDark : primaryOnLight};
       --primary-on-dark: ${primaryOnDark};
       --primary-raw: ${primaryColor};
-      --secondary: ${secondaryColor};${vars}
+      --secondary: ${secondaryColor};
+      --on-photo: #f5f5f0;
+      --on-photo-muted: rgba(245,245,240,0.72);
+      --on-photo-border: rgba(255,255,255,0.28);${vars}
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: var(--bg); color: var(--text); font-family: var(--body-font); -webkit-font-smoothing: antialiased; }
@@ -544,6 +591,9 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
     @media (max-width: 768px) {
       .ms-burger { display: flex; }
       .ms-burger-inline { display: flex !important; }
+      /* The nav CTA squeezes the business name to an ellipsis on a phone and
+         crowds the burger. The same call to action is in the hero right below. */
+      .ms-nav-cta { display: none !important; }
       .ms-nav-links { display: none !important; }
       nav { padding: 0 1rem !important; height: auto !important; min-height: 56px; }
       /* A long business name wrapping to two lines makes the fixed nav ~2x taller,
@@ -614,10 +664,10 @@ function buildCssVars(fonts: { headingFamily: string }, primaryColor: string, se
       section:first-of-type .ms-hero-text strong,
       section:first-of-type .ms-hero-text div:not([style*="background"]),
       section:first-of-type .ms-hero-text span:not([style*="background"]),
-      section:first-of-type .ms-hero-text a:not([style*="background"]) { color: #fff !important; }
+      section:first-of-type .ms-hero-text a:not([style*="background"]) { color: var(--on-photo) !important; }
       /* Hairlines drawn in ink stop reading once the backdrop is a photo. */
       section:first-of-type .ms-hero-text [style*="border-top"],
-      section:first-of-type .ms-hero-text [style*="border-bottom"] { border-color: rgba(255,255,255,0.25) !important; }
+      section:first-of-type .ms-hero-text [style*="border-bottom"] { border-color: var(--on-photo-border) !important; }
       /* Ghost/outline CTAs declare a transparent background, so the exclusions above
          skip them and they keep their ink-coloured text and border. */
       section:first-of-type .ms-hero-text [style*="background:transparent"],
@@ -818,7 +868,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
         <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
           ${allLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none">${l.label}</a>`).join('\n          ')}
         </div>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
+        <a href="#contact" class="ms-nav-cta" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
         <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
           <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
           <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
@@ -836,7 +886,7 @@ function buildStandardNav(businessName: string, content: GeneratedContent, navFl
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 2rem">
       ${logoHtml}
       <div style="display:flex;align-items:center;gap:1.25rem">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
+        <a href="#contact" class="ms-nav-cta" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:var(--primary-raw);background:#fff;padding:0.55rem 1.5rem;border-radius:999px;text-decoration:none;cursor:pointer">${content.ctaPrimary}</a>
         <label for="ms-menu-toggle" style="background:transparent;border:1.5px solid #fff;border-radius:999px;color:#fff;cursor:pointer;padding:0.55rem 1.5rem;display:flex;flex-direction:column;gap:3.5px;align-items:center;justify-content:center" aria-label="Menu">
           <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
           <span style="display:block;width:18px;height:1.5px;background:#fff"></span>
@@ -1042,7 +1092,7 @@ function buildVisualTemplate(data: TemplateData): string {
       .vs-svc-item { border-top:1px solid var(--border);padding:2rem 0;cursor:default;transition:background 0.3s }
       .vs-svc-item:last-child { border-bottom:1px solid var(--border) }
       .vs-svc-item:hover { background:rgba(${pr},${pg},${pb},0.04) }
-      .vs-num { font-family:var(--heading-font);font-size:4rem;font-weight:400;line-height:1;color:rgba(${pr},${pg},${pb},0.18);float:left;margin-right:1.5rem;margin-top:-0.5rem }
+      .vs-num { font-family:var(--heading-font);font-size:4rem;font-weight:400;line-height:1;color:rgba(${pr},${pg},${pb},0.32);float:left;margin-right:1.5rem;margin-top:-0.5rem }
     </style>
     <section id="services" style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
@@ -1065,9 +1115,6 @@ function buildVisualTemplate(data: TemplateData): string {
                   <span class="vs-num">${String(i + 1).padStart(2, '0')}</span>
                   <h3 style="font-family:var(--heading-font);font-size:1.5rem;font-weight:400;color:var(--text);margin:0 0 0.75rem 0;line-height:1.2">${s.name}</h3>
                   <p style="font-family:var(--body-font);font-size:0.9rem;color:var(--text-muted);line-height:1.8;margin:0 0 1rem 0;clear:both">${s.description}</p>
-                </div>
-                <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:1rem">
-                  ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.1);color:var(--primary);font-weight:500;letter-spacing:0.03em">${t}</span>`).join('')}
                 </div>
               </div>`).join('')}
           </div>
@@ -1187,22 +1234,22 @@ ${buildStandardNav(businessName, content, navFlags)}
         <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
         <div style="width:48px;height:1px;background:var(--primary)"></div>
       </div>
-      <h1 class="vs-fade-2" style="font-family:var(--heading-font);font-size:clamp(3.2rem,7vw,6rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:780px;letter-spacing:-0.01em">${content.tagline}</h1>
-      <p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:rgba(245,245,240,0.72);max-width:500px;line-height:1.8;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
+      <h1 class="vs-fade-2" style="font-family:var(--heading-font);font-size:clamp(3.2rem,7vw,6rem);font-weight:400;color:var(--on-photo);line-height:1.02;margin:0 0 1.75rem;max-width:780px;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:var(--on-photo-muted);max-width:500px;line-height:1.8;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
       ${content.heroAccent ? `<p class="vs-fade-3" style="font-family:var(--body-font);font-size:1.1rem;color:var(--primary);font-weight:600;margin:0 0 2.75rem;letter-spacing:0.01em">${content.heroAccent}</p>` : ''}
       <div class="vs-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.9rem;font-weight:600;padding:1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.04em;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.9rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:var(--on-photo);border:1px solid var(--on-photo-border);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
       ${content.ctaNote ? `<p class="vs-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.42);margin-top:1.25rem">${content.ctaNote}</p>` : ''}
     </div>
     <!-- Hero bottom stat strip -->
-    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.07)">
+    <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(12px);border-top:1px solid var(--on-photo-border)">
       <div class="vs-hero-stats" style="max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;gap:0">
         ${content.stats.slice(0, 4).map((s, i) => `
-        <div style="flex:1;padding:1.5rem 2rem;${i > 0 ? 'border-left:1px solid rgba(255,255,255,0.08)' : ''}">
-          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:#f5f5f0;line-height:1">${s.value}</div>
-          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.55);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
+        <div style="flex:1;padding:1.5rem 2rem;${i > 0 ? 'border-left:1px solid var(--on-photo-border)' : ''}">
+          <div style="font-family:var(--heading-font);font-size:2rem;font-weight:400;color:var(--on-photo);line-height:1">${s.value}</div>
+          <div style="font-family:var(--body-font);font-size:0.78rem;color:var(--on-photo-muted);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
         </div>`).join('')}
       </div>
     </div>
@@ -1325,30 +1372,29 @@ function buildServiceTemplate(data: TemplateData): string {
   ]
   const statIcons = ['&#9878;', '&#9734;', '&#9823;']
 
+  const svcAccent = ensureContrast(primaryColor, '#ffffff', 4.5)
+
   const servicesSection = `
     <style>
       .svc-card { transition:transform 0.3s ease,box-shadow 0.3s ease }
       .svc-card:hover { transform:translateY(-4px);box-shadow:0 12px 40px rgba(${pr},${pg},${pb},0.15) !important }
     </style>
-    <section id="services" style="padding:110px 0;background:var(--bg-alt)">
+    <section id="services" style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-          <div style="width:32px;height:2px;background:var(--primary);border-radius:1px"></div>
-          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:700;margin:0">${content.heroEyebrow}</p>
+          <div style="width:32px;height:2px;background:${svcAccent};border-radius:1px"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${svcAccent};font-weight:700;margin:0">${content.heroEyebrow}</p>
         </div>
         <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;gap:2rem">
           <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:550px">${content.servicesHeading}</h2>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);text-decoration:none;white-space:nowrap;flex-shrink:0">${content.ctaPrimary} &rarr;</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${svcAccent};text-decoration:none;white-space:nowrap;flex-shrink:0">${content.ctaPrimary} &rarr;</a>
         </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${content.services.length === 4 ? 2 : 3},1fr);gap:2rem">
           ${content.services.slice(0, 6).map((s, i) => `
-            <div class="svc-card" style="${theme === 'light' ? 'background:#fff;box-shadow:0 2px 16px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 2rem;position:relative;overflow:hidden">
-              <div style="position:absolute;top:0;left:0;right:0;height:3px;background:rgba(${pr},${pg},${pb},${i === 0 ? '1' : '0.3'})"></div>
-              <div style="width:56px;height:56px;border-radius:3px;background:rgba(${pr},${pg},${pb},0.1);display:flex;align-items:center;justify-content:center;margin-bottom:1.75rem">
-                <span style="font-size:1.5rem;color:var(--primary)">${s.icon ? (iconMap[s.icon] || defaultServiceIcons[i] || defaultServiceIcons[0]) : (defaultServiceIcons[i] || defaultServiceIcons[0])}</span>
-              </div>
-              <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.2em;color:var(--text-muted);font-weight:600;text-transform:uppercase;margin-bottom:0.75rem">0${i + 1}</div>
-              <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:var(--text);margin:0 0 0.85rem;line-height:1.25">${s.name}</h3>
+            <div style="padding:0;position:relative">
+              <div style="width:32px;height:2px;background:${svcAccent};margin-bottom:1.5rem"></div>
+              <div style="font-family:var(--body-font);font-size:0.78rem;letter-spacing:0.14em;color:${svcAccent};font-weight:700;text-transform:uppercase;margin-bottom:0.75rem">0${i + 1}</div>
+              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text);margin:0 0 0.85rem;line-height:1.25">${s.name}</h3>
               <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.8;margin:0">${s.description}</p>
             </div>`).join('')}
         </div>
@@ -1378,63 +1424,55 @@ function buildServiceTemplate(data: TemplateData): string {
       </div>
     </section>`
 
+  const processAccent = accentOnDark(primaryColor, secondaryColor, '#6C5CE7')
+
   const processSection = isProfessionalCategory ? professionalSection : !showProcessSection ? '' : `
-    <section id="gallery" style="padding:110px 0;background:var(--bg)">
+    <section style="padding:120px 0;background:var(--bg)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
         <div style="text-align:center;margin-bottom:4rem">
           <div style="display:inline-flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-            <div style="width:32px;height:1px;background:var(--primary)"></div>
-            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.stepsHeading || 'How It Works'}</p>
-            <div style="width:32px;height:1px;background:var(--primary)"></div>
+            <div style="width:32px;height:1px;background:${processAccent}"></div>
+            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${processAccent};font-weight:600;margin:0">${content.stepsHeading || 'How It Works'}</p>
+            <div style="width:32px;height:1px;background:${processAccent}"></div>
           </div>
           <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.75rem);font-weight:400;color:var(--text);margin:0 0 1rem;line-height:1.2">A Simple, Proven Process</h2>
           <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);max-width:460px;margin:0 auto;line-height:1.7">Straightforward from first contact to final delivery — no surprises.</p>
         </div>
-        <div class="ms-flex" style="display:flex;align-items:stretch;gap:0;position:relative">
-          <div style="position:absolute;top:36px;left:0;right:0;height:1px;background:var(--border);z-index:0"></div>
-          ${steps.map((s, i) => `${i > 0 ? `
-            <div class="ms-arrow" style="display:flex;align-items:flex-start;flex-shrink:0;padding:0 0.5rem;margin-top:24px;z-index:1">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>` : ''}
-            <div style="flex:1;${theme === 'light' ? 'background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.06)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem 1.75rem;text-align:center;position:relative;z-index:1">
-              <div style="width:72px;height:72px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 4px 16px rgba(${pr},${pg},${pb},0.3)">
-                <span style="font-family:var(--heading-font);font-size:1.5rem;font-weight:700;color:#fff">${s.step}</span>
+        <div class="ms-flex" style="display:flex;align-items:flex-start;gap:2rem;position:relative">
+          <div style="position:absolute;top:20px;left:0;right:0;height:1px;background:rgba(0,0,0,0.14);z-index:0;pointer-events:none"></div>
+          ${steps.map((s, i) => `
+            <div style="flex:1;text-align:center;position:relative;z-index:1">
+              <div style="width:80px;height:80px;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:50%;position:relative;z-index:2">
+                <span style="font-family:var(--heading-font);font-size:2.6rem;font-weight:400;color:${processAccent};line-height:1">${s.step}</span>
               </div>
-              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:var(--text);margin:0 0 0.75rem">${s.title}</h3>
+              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text);margin:0 0 0.75rem">${s.title}</h3>
               <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.75;margin:0">${s.description}</p>
             </div>`).join('')}
         </div>
       </div>
     </section>`
 
+  const testimonialsAccent = ensureContrast(primaryColor, '#f0f0f0', 3.0)
+
   const testimonialsSection = `
-    <section style="padding:100px 0;background:var(--bg-alt)">
+    <section style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:3rem">
-          <div style="width:32px;height:2px;background:var(--primary);border-radius:1px"></div>
-          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--primary);font-weight:700;margin:0">Client Feedback</p>
+          <div style="width:32px;height:2px;background:${testimonialsAccent};border-radius:1px"></div>
+          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${testimonialsAccent};font-weight:700;margin:0">Client Feedback</p>
         </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(fallbackTestimonials.length + (content.testimonial ? 1 : 0), 3)},1fr);gap:1.5rem">
+        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(fallbackTestimonials.length + (content.testimonial ? 1 : 0), 3)},1fr);gap:2rem">
           ${content.testimonial ? `
-          <div style="${theme === 'light' ? 'background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem;position:relative;overflow:hidden">
-            <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--primary)"></div>
-            <div style="font-size:0.9rem;color:var(--primary);letter-spacing:0.15em;margin-bottom:1.25rem">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
+          <div style="padding:0;position:relative;border-top:1px solid rgba(0,0,0,0.12)">
+            <div style="font-size:0.9rem;color:${testimonialsAccent};letter-spacing:0.15em;margin:1.5rem 0">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
             <p style="font-family:var(--heading-font);font-size:1rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.5rem">"${content.testimonial.quote}"</p>
-            <div style="display:flex;align-items:center;gap:0.75rem;padding-top:1.25rem;border-top:1px solid var(--border)">
-              <div style="width:8px;height:8px;border-radius:50%;background:var(--primary)"></div>
-              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${content.testimonial.author}</p>
-            </div>
+            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${content.testimonial.author}</p>
           </div>` : ''}
           ${fallbackTestimonials.slice(0, 2).map(t => `
-          <div style="${theme === 'light' ? 'background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.07);border:1px solid rgba(0,0,0,0.05)' : 'background:var(--card-bg);border:1px solid var(--border)'};border-radius:3px;padding:2.5rem">
-            <div style="font-size:0.9rem;color:var(--primary);letter-spacing:0.15em;margin-bottom:1.25rem">${'&#9733;'.repeat(t.rating)}</div>
+          <div style="padding:0;position:relative;border-top:1px solid rgba(0,0,0,0.12)">
+            <div style="font-size:0.9rem;color:${testimonialsAccent};letter-spacing:0.15em;margin:1.5rem 0">${'&#9733;'.repeat(t.rating)}</div>
             <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.8;font-style:italic;margin:0 0 1.5rem">"${t.quote}"</p>
-            <div style="display:flex;align-items:center;gap:0.75rem;padding-top:1.25rem;border-top:1px solid var(--border)">
-              <div style="width:8px;height:8px;border-radius:50%;background:rgba(${pr},${pg},${pb},0.4)"></div>
-              <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${t.author}</p>
-            </div>
+            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${t.author}</p>
           </div>`).join('')}
         </div>
       </div>
@@ -1465,22 +1503,22 @@ ${buildStandardNav(businessName, content, navFlags)}
   <!-- Hero -->
   <section style="position:relative;min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
     <div style="position:absolute;inset:0">
-      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover;opacity:${theme === 'dark' ? '0.25' : '0.35'}" />
-      <div style="position:absolute;inset:0;background:linear-gradient(120deg,rgba(0,0,0,0.92) 0%,rgba(0,0,0,0.7) 50%,rgba(0,0,0,0.85) 100%)"></div>
+      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,12,16,0.88) 0%, rgba(10,12,16,0.62) 48%, rgba(10,12,16,0.32) 100%)"></div>
     </div>
     <!-- Left accent bar -->
     <div class="hero-ab" style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
     <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 5rem;width:100%">
-      ${content.badge ? `<div class="svc-fade-1 svc-badge" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:rgba(255,255,255,0.85);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
-      <p class="svc-fade-1 svc-eyebrow" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--primary-on-dark);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
-      <h1 class="svc-fade-2" style="font-family:var(--heading-font);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:400;color:#f5f5f0;line-height:1.02;margin:0 0 1.75rem;max-width:750px">${content.tagline}</h1>
-      <p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:rgba(245,245,240,0.65);max-width:500px;line-height:1.82;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--primary-on-dark);font-weight:600;margin:0 0 2.75rem">${content.heroAccent}</p>` : ''}
+      ${content.badge ? `<div class="svc-fade-1 svc-badge" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:var(--on-photo);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
+      <p class="svc-fade-1 svc-eyebrow" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--on-photo);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
+      <h1 class="svc-fade-2" style="font-family:var(--heading-font);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:400;color:var(--on-photo);line-height:1.02;margin:0 0 1.75rem;max-width:750px">${content.tagline}</h1>
+      <p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--on-photo-muted);max-width:500px;line-height:1.82;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:${accentOnDark(primaryColor, secondaryColor, '#6C5CE7')};font-weight:600;margin:0 0 2.75rem">${content.heroAccent}</p>` : ''}
       <div class="svc-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:${content.ctaNote ? '0.75rem' : '0'}">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:var(--primary-on-dark);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.25);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:${svcAccent};color:${bestTextColor(svcAccent)};border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:var(--on-photo);border:1px solid var(--on-photo-border);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
-      ${content.ctaNote ? `<p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-bottom:0">${content.ctaNote}</p>` : ''}
+      ${content.ctaNote ? `<p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:var(--on-photo-muted);margin-bottom:0">${content.ctaNote}</p>` : ''}
       <!-- Stats strip -->
       <div class="svc-hero-stats" style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
         ${content.stats.slice(0, 4).map((s, i) => `
@@ -1496,8 +1534,87 @@ ${buildStandardNav(businessName, content, navFlags)}
   ${servicesSection}
   ${processSection}
   ${buildAboutSection(content)}
+
+  ${stockPool.length > 0 ? `
+  <section id="gallery" style="padding:0;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto;padding:80px 2rem 0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem">
+        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:500px">${content.galleryHeading || 'Our Work'}</h2>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem 80px">
+      ${(() => {
+        const galleryCount = 1 + Math.min(stockPool.slice(5, 8).length, 3);
+        let gridStyle = 'display:grid;gap:14px';
+        let firstTileSpan = '';
+
+        if (galleryCount >= 6) {
+          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+          firstTileSpan = 'grid-column:span 2;grid-row:span 2;';
+        } else if (galleryCount === 5) {
+          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+          firstTileSpan = 'grid-column:span 2;';
+        } else if (galleryCount === 4) {
+          gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:260px';
+          firstTileSpan = '';
+        } else if (galleryCount === 3) {
+          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+          firstTileSpan = '';
+        } else {
+          gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:300px';
+          firstTileSpan = '';
+        }
+
+        return `<div class="ms-grid" style="${gridStyle}">
+        <div style="${firstTileSpan}position:relative;overflow:hidden;border-radius:2px">
+          <img src="${stockPool[4] || stockImages.cards[0]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover;display:block" />
+        </div>
+        ${stockPool.slice(5, 8).map((img, i) => `
+        <div style="position:relative;overflow:hidden;border-radius:2px">
+          <img src="${img}" alt="Gallery" style="width:100%;height:100%;object-fit:cover;display:block" />
+        </div>`).join('')}
+      </div>`;
+      })()}
+    </div>
+  </section>` : ''}
+
   ${testimonialsSection}
-  ${buildContactSection(content, locationInfo)}
+
+  <section id="contact" style="padding:120px 0;background:var(--bg)">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+        <div>
+          <div style="margin-bottom:2rem">
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${locationInfo.address}, ${locationInfo.city}, ${locationInfo.postcode}</p>
+          </div>
+          <div style="margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)">
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Phone</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${locationInfo.phone}</p>
+          </div>
+          <div style="margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)">
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">hello@yourbusiness.com</p>
+          </div>
+          ${content.contactHours ? `
+          <div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${content.contactHours?.replace(/ · /g, '<br />') ?? ''}</p>
+          </div>` : ''}
+        </div>
+        <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
+            <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
+          </div>
+          <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
+          <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+          <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:${svcAccent};color:${bestTextColor(svcAccent)};border:none;border-radius:2px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
 ${buildFooter(businessName, content, theme)}
 
@@ -1531,6 +1648,9 @@ function buildPortfolioTemplate(data: TemplateData): string {
   const pg = parseInt(primaryColor.slice(3, 5), 16)
   const pb = parseInt(primaryColor.slice(5, 7), 16)
 
+  const pfAccent = accentOnDark(primaryColor, secondaryColor, '#6C5CE7')
+  const pfAccentContrast = ensureContrast(primaryColor, '#ffffff', 4.5)
+
   const serviceImgs = [
     images[1] || stockImages.cards[0],
     images[2] || stockImages.cards[1],
@@ -1547,8 +1667,8 @@ function buildPortfolioTemplate(data: TemplateData): string {
       .pf2-acc-body.pf2-open { max-height:320px;opacity:1 }
       .pf2-acc-icon { display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);transition:transform 0.35s ease,background 0.3s,border-color 0.3s;flex-shrink:0;font-size:1.1rem;color:var(--text-muted);font-weight:300 }
       .pf2-acc-icon.pf2-open { transform:rotate(45deg);background:var(--primary);border-color:var(--primary);color:#fff }
-      .pf2-svc-row { border-top:1px solid var(--border) }
-      .pf2-svc-row:last-child { border-bottom:1px solid var(--border) }
+      .pf2-svc-row { border-top:1px solid rgba(255,255,255,0.12);padding-top:1.25rem }
+      .pf2-svc-row:last-child { border-bottom:1px solid rgba(255,255,255,0.12) }
       .pf2-svc-trigger { cursor:pointer;width:100%;background:none;border:none;padding:2rem 0;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:1rem }
       .pf2-img-stage { position:relative;overflow:hidden;border-radius:2px }
       .pf2-img-stage img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.5s ease,transform 0.7s ease }
@@ -1559,8 +1679,8 @@ function buildPortfolioTemplate(data: TemplateData): string {
     <section id="services" style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
         <div style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem">
-          <div style="width:1px;height:48px;background:var(--primary)"></div>
-          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;color:var(--text);line-height:1.12;margin:0">${content.servicesHeading}</h2>
+          <div style="width:1px;height:48px;background:${pfAccent}"></div>
+          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3.2rem);font-weight:400;color:#f5f5f0;line-height:1.12;margin:0">${content.servicesHeading}</h2>
         </div>
         <div class="ms-grid" style="display:grid;grid-template-columns:48% 52%;gap:4rem;align-items:start;margin-top:3.5rem">
           <!-- Left: sticky image stage -->
@@ -1578,16 +1698,13 @@ function buildPortfolioTemplate(data: TemplateData): string {
               <div class="pf2-svc-row">
                 <button class="pf2-svc-trigger" onclick="(function(){var bodies=document.querySelectorAll('.pf2-acc-body');var icons=document.querySelectorAll('.pf2-acc-icon');var imgs=document.querySelectorAll('[id^=pf2-img]');var dots=document.querySelectorAll('[id^=pf2-dot]');bodies.forEach(function(el,j){if(j===${i}){el.classList.toggle('pf2-open');icons[j].classList.toggle('pf2-open')}else{el.classList.remove('pf2-open');icons[j].classList.remove('pf2-open')}});imgs.forEach(function(el,j){el.className=j===${i}?'pf2-active':'pf2-inactive'});dots.forEach(function(el,j){el.style.width=j===${i}?'24px':'8px';el.style.background=j===${i}?'var(--primary)':'var(--border)'})})()">
                   <div>
-                    <div style="font-family:var(--body-font);font-size:0.68rem;letter-spacing:0.22em;color:var(--primary);font-weight:700;text-transform:uppercase;margin-bottom:0.6rem">0${i + 1}</div>
+                    <div style="font-family:var(--body-font);font-size:0.68rem;letter-spacing:0.22em;color:${pfAccent};font-weight:700;text-transform:uppercase;margin-bottom:0.6rem">0${i + 1}</div>
                     <h3 style="font-family:var(--heading-font);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;color:var(--text);margin:0;line-height:1.15">${s.name}</h3>
                   </div>
                   <span class="pf2-acc-icon${i === 0 ? ' pf2-open' : ''}">+</span>
                 </button>
                 <div class="pf2-acc-body${i === 0 ? ' pf2-open' : ''}" style="padding:0 0 2rem">
-                  <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.82;margin:0 0 1.25rem">${s.description}</p>
-                  <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-                    ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.72rem;padding:0.3rem 0.85rem;border-radius:1px;background:rgba(${pr},${pg},${pb},0.08);color:var(--primary);font-weight:600;letter-spacing:0.04em">${t}</span>`).join('')}
-                  </div>
+                  <p style="font-family:var(--body-font);font-size:0.95rem;color:rgba(245,245,240,0.72);line-height:1.82;margin:0">${s.description}</p>
                 </div>
               </div>`).join('')}
           </div>
@@ -1614,54 +1731,68 @@ function buildPortfolioTemplate(data: TemplateData): string {
           <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;margin:0">${businessName} &mdash; Selected Works</p>
         </div>
       </div>
-      <!-- Asymmetric gallery grid -->
+      <!-- Gallery grid -->
       <div style="max-width:1400px;margin:0 auto">
-        <div class="ms-grid" style="display:grid;grid-template-columns:1.8fr 1fr 1fr;grid-template-rows:380px 280px;gap:3px">
-          <div class="pf2-cell" style="grid-row:1/3">
-            <img src="${stockPool[8]}" alt="${captions[0] || 'Featured Project'}" />
+        ${(() => {
+          const galleryCount = 5;
+          let gridStyle = 'display:grid;gap:14px';
+          let firstTileSpan = '';
+
+          if (galleryCount >= 6) {
+            gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+            firstTileSpan = 'grid-column:span 2;grid-row:span 2;';
+          } else if (galleryCount === 5) {
+            gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+            firstTileSpan = 'grid-column:span 2;';
+          } else if (galleryCount === 4) {
+            gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:260px';
+            firstTileSpan = '';
+          } else if (galleryCount === 3) {
+            gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
+            firstTileSpan = '';
+          } else {
+            gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:300px';
+            firstTileSpan = '';
+          }
+
+          return `<div class="ms-grid" style="${gridStyle}">
+          <div class="pf2-cell" style="${firstTileSpan}">
+            <img src="${stockPool[8] || stockImages.cards[0]}" alt="${captions[0] || 'Featured Project'}" />
             <div class="pf2-cap">
               <div class="pf2-cap-title">${captions[0] || 'Featured Project'}</div>
               <div class="pf2-cap-sub">${businessName}</div>
             </div>
           </div>
           <div class="pf2-cell">
-            <img src="${stockPool[9]}" alt="${captions[1] || 'Project'}" />
+            <img src="${stockPool[9] || stockImages.cards[1]}" alt="${captions[1] || 'Project'}" />
             <div class="pf2-cap">
               <div class="pf2-cap-title">${captions[1] || 'Project'}</div>
               <div class="pf2-cap-sub">${content.heroEyebrow}</div>
             </div>
           </div>
           <div class="pf2-cell">
-            <img src="${stockPool[10]}" alt="${captions[2] || 'Project'}" />
+            <img src="${stockPool[10] || stockImages.cards[2]}" alt="${captions[2] || 'Project'}" />
             <div class="pf2-cap">
               <div class="pf2-cap-title">${captions[2] || 'Project'}</div>
-              <div class="pf2-cap-sub">${content.heroEyebrow}</div>
+              <div class="pf2-cap-sub">${businessName}</div>
             </div>
           </div>
           <div class="pf2-cell">
-            <img src="${stockPool[11]}" alt="${captions[3] || 'Project'}" />
+            <img src="${stockPool[11] || stockImages.cards[3]}" alt="${captions[3] || 'Project'}" />
             <div class="pf2-cap">
               <div class="pf2-cap-title">${captions[3] || 'Project'}</div>
               <div class="pf2-cap-sub">${businessName}</div>
             </div>
           </div>
           <div class="pf2-cell">
-            <img src="${stockPool[12]}" alt="${captions[4] || 'Project'}" />
+            <img src="${stockPool[12] || stockImages.cards[0]}" alt="${captions[4] || 'Project'}" />
             <div class="pf2-cap">
               <div class="pf2-cap-title">${captions[4] || 'Project'}</div>
               <div class="pf2-cap-sub">${businessName}</div>
             </div>
           </div>
-        </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;height:220px;gap:3px;margin-top:3px">
-          ${[stockPool[13], stockPool[14], stockPool[15]].map((img, i) => `
-          <div class="pf2-cell">
-            <img src="${img}" alt="${captions[i] || 'Work'}" />
-            <div class="pf2-cap">
-              <div class="pf2-cap-title">${captions[i] || 'Work'}</div>
-            </div>
-          </div>`).join('')}
-        </div>
+        </div>`;
+        })()}
       </div>
       <div style="padding:40px 2rem 80px;text-align:center">
         <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--primary);text-decoration:none;border-bottom:1px solid var(--primary);padding-bottom:0.25rem">Work With Us &rarr;</a>
@@ -1669,26 +1800,26 @@ function buildPortfolioTemplate(data: TemplateData): string {
     </section>`
 
   const testimonialsSection = `
-    <section style="padding:100px 0;background:var(--bg-alt)">
+    <section style="padding:120px 0;background:var(--bg-alt)">
       <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
         ${content.testimonial ? `
         <div style="max-width:820px;margin:0 auto;text-align:center">
-          <div style="font-family:var(--heading-font);font-size:6rem;line-height:0.7;color:var(--primary);opacity:0.2;margin-bottom:2rem">&ldquo;</div>
-          <p style="font-family:var(--heading-font);font-size:clamp(1.25rem,2.5vw,1.7rem);font-weight:400;font-style:italic;color:var(--text);line-height:1.6;margin:0 0 2.5rem">"${content.testimonial.quote}"</p>
+          <div style="font-family:var(--heading-font);font-size:6rem;line-height:0.7;color:${pfAccent};opacity:0.2;margin-bottom:2rem">&ldquo;</div>
+          <p style="font-family:var(--heading-font);font-size:clamp(1.25rem,2.5vw,1.7rem);font-weight:400;font-style:italic;color:#f5f5f0;line-height:1.6;margin:0 0 2.5rem">"${content.testimonial.quote}"</p>
           <div style="display:flex;align-items:center;justify-content:center;gap:1.5rem">
-            <div style="width:48px;height:1px;background:var(--border)"></div>
-            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.12em;text-transform:uppercase;font-weight:500;margin:0">${content.testimonial.author}</p>
-            <div style="width:48px;height:1px;background:var(--border)"></div>
+            <div style="width:48px;height:1px;background:rgba(255,255,255,0.12)"></div>
+            <p style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.72);letter-spacing:0.12em;text-transform:uppercase;font-weight:500;margin:0">${content.testimonial.author}</p>
+            <div style="width:48px;height:1px;background:rgba(255,255,255,0.12)"></div>
           </div>
-          ${content.testimonial.rating ? `<div style="color:var(--primary);font-size:0.9rem;letter-spacing:0.15em;margin-top:1.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+          ${content.testimonial.rating ? `<div style="color:${pfAccent};font-size:0.9rem;letter-spacing:0.15em;margin-top:1.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
         </div>
-        <div style="width:1px;height:60px;background:var(--border);margin:4rem auto"></div>` : ''}
+        <div style="width:1px;height:60px;background:rgba(255,255,255,0.12);margin:4rem auto"></div>` : ''}
         <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
           ${fallbackTestimonials.slice(0, 2).map(t => `
-          <div style="padding:2.5rem;border:1px solid var(--border);border-radius:2px;background:var(--card-bg);position:relative">
-            <div style="color:var(--primary);font-size:0.85rem;letter-spacing:0.15em;margin-bottom:1.5rem">${'&#9733;'.repeat(t.rating)}</div>
-            <p style="font-family:var(--heading-font);font-size:1rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 2rem">"${t.quote}"</p>
-            <div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);letter-spacing:0.1em;text-transform:uppercase;font-weight:600">${t.author}</div>
+          <div style="padding:0;border-top:1px solid rgba(255,255,255,0.12);position:relative">
+            <div style="color:${pfAccent};font-size:0.85rem;letter-spacing:0.15em;margin:1.5rem 0">${'&#9733;'.repeat(t.rating)}</div>
+            <p style="font-family:var(--heading-font);font-size:1rem;color:#f5f5f0;line-height:1.75;font-style:italic;margin:0 0 1.5rem">"${t.quote}"</p>
+            <div style="font-family:var(--body-font);font-size:0.75rem;color:rgba(245,245,240,0.72);letter-spacing:0.1em;text-transform:uppercase;font-weight:600;margin:0">${t.author}</div>
           </div>`).join('')}
         </div>
       </div>
@@ -1732,16 +1863,16 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div style="position:relative;max-width:860px;margin:0 auto;padding:8rem 2rem 6rem">
       ${content.badge ? `<div class="pf2-f1" style="display:inline-block;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.45rem 1.25rem;border-radius:999px;background:rgba(${pr},${pg},${pb},0.15);border:1px solid rgba(${pr},${pg},${pb},0.35);color:rgba(255,255,255,0.85);margin-bottom:2.25rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
       <div class="pf2-f1" style="display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-bottom:2rem">
-        <div style="width:40px;height:1px;background:rgba(${pr},${pg},${pb},0.7)"></div>
-        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--primary);font-weight:600;margin:0">${content.heroEyebrow}</p>
-        <div style="width:40px;height:1px;background:rgba(${pr},${pg},${pb},0.7)"></div>
+        <div style="width:40px;height:1px;background:${pfAccent}"></div>
+        <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.25em;text-transform:uppercase;color:${pfAccent};font-weight:600;margin:0">${content.heroEyebrow}</p>
+        <div style="width:40px;height:1px;background:${pfAccent}"></div>
       </div>
-      <h1 class="pf2-f2" style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,6.5rem);font-weight:400;color:#f5f5f0;line-height:1.0;margin:0 0 2rem;letter-spacing:-0.01em">${content.tagline}</h1>
-      <p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:rgba(245,245,240,0.65);max-width:480px;margin:0 auto ${content.heroAccent ? '1.25rem' : '2.75rem'};line-height:1.82">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--primary);font-weight:600;margin:0 auto 2.75rem;max-width:480px">${content.heroAccent}</p>` : ''}
+      <h1 class="pf2-f2" style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,6.5rem);font-weight:400;color:var(--on-photo);line-height:1.0;margin:0 0 2rem;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--on-photo-muted);max-width:480px;margin:0 auto ${content.heroAccent ? '1.25rem' : '2.75rem'};line-height:1.82">${content.heroSubtitle}</p>
+      ${content.heroAccent ? `<p class="pf2-f3" style="font-family:var(--body-font);font-size:1.05rem;color:${pfAccent};font-weight:600;margin:0 auto 2.75rem;max-width:480px">${content.heroAccent}</p>` : ''}
       <div class="pf2-f4" style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="#gallery" style="font-family:var(--body-font);font-size:0.88rem;font-weight:600;padding:1.1rem 2.75rem;background:var(--primary);color:#fff;border-radius:2px;text-decoration:none;letter-spacing:0.05em;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1.1rem 2.25rem;background:transparent;color:#f5f5f0;border:1px solid rgba(255,255,255,0.28);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
+        <a href="#gallery" style="font-family:var(--body-font);font-size:0.88rem;font-weight:600;padding:1.1rem 2.75rem;background:${pfAccentContrast};color:${bestTextColor(pfAccentContrast)};border-radius:2px;text-decoration:none;letter-spacing:0.05em;transition:opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1.1rem 2.25rem;background:transparent;color:var(--on-photo);border:1px solid var(--on-photo-border);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
       </div>
       ${content.ctaNote ? `<p class="pf2-f5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:rgba(255,255,255,0.38);margin-top:1.5rem">${content.ctaNote}</p>` : ''}
     </div>
@@ -1788,7 +1919,39 @@ ${buildStandardNav(businessName, content, navFlags)}
   </section>
 
   ${testimonialsSection}
-  ${buildContactSection(content, locationInfo)}
+
+  <!-- Contact Section -->
+  <section id="contact" style="padding:100px 0;background:var(--bg)">
+    <div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
+        <div>
+          <div style="margin-bottom:2rem">
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${locationInfo.address}, ${locationInfo.city}, ${locationInfo.postcode}</p>
+          </div>
+          <div style="margin-bottom:2rem">
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">hello@yourbusiness.com<br />${locationInfo.phone}</p>
+          </div>
+          ${content.contactHours ? `
+          <div>
+            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
+            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7">${content.contactHours?.replace(/ · /g, '<br />') ?? ''}</p>
+          </div>` : ''}
+        </div>
+        <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
+          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+            <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+          </div>
+          <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none" />
+          <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
+          <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:${pfAccentContrast};color:${bestTextColor(pfAccentContrast)};border:none;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
 ${buildFooter(businessName, content)}
 
@@ -1826,6 +1989,11 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   const goldLight = '#d4a84b'
   const cream = '#fdf8f0'
 
+  // Brand color wiring (clamped for contrast)
+  const brandAccent = primaryColor || gold
+  const accentOnInk = ensureContrast(brandAccent, '#171310', 3.0)
+  const accentOnParchment = ensureContrast(brandAccent, '#f5efe6', 3.0)
+
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
   const navLinks = navFlags.allLinks
@@ -1836,7 +2004,7 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <a href="#" style="font-family:var(--heading-font);font-size:1.2rem;font-weight:600;color:#fff;text-decoration:none;letter-spacing:0.12em;text-transform:uppercase">${businessName}</a>
     <div style="display:flex;align-items:center;gap:2.5rem">
       ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.85);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s">${l.label}</a>`).join('')}
-      <a class="food-nav-cta" href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.6rem 1.75rem;border:1.5px solid rgba(255,255,255,0.7);color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+      <a class="food-nav-cta ms-nav-cta" href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:0.6rem 1.75rem;border:1.5px solid rgba(255,255,255,0.7);color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
       <label for="ms-menu-toggle" style="display:none;cursor:pointer;color:#fff;font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
@@ -1864,20 +2032,20 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(20,12,4,0.55) 0%,rgba(10,6,2,0.72) 60%,rgba(28,20,8,0.85) 100%)"></div>
     <div style="position:relative;z-index:2;text-align:center;padding:0 2rem;max-width:900px">
       <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;margin-bottom:2rem">
-        <span style="display:block;width:50px;height:1px;background:${goldLight};opacity:0.8"></span>
-        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:500;color:${goldLight};letter-spacing:0.25em;text-transform:uppercase">${content.heroEyebrow}</span>
-        <span style="display:block;width:50px;height:1px;background:${goldLight};opacity:0.8"></span>
+        <span style="display:block;width:50px;height:1px;background:var(--on-photo);opacity:0.8"></span>
+        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:500;color:var(--on-photo);letter-spacing:0.25em;text-transform:uppercase">${content.heroEyebrow}</span>
+        <span style="display:block;width:50px;height:1px;background:var(--on-photo);opacity:0.8"></span>
       </div>
-      <h1 style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,7rem);font-weight:400;color:#fff;line-height:1.0;margin-bottom:1.5rem;letter-spacing:-0.01em">${content.tagline}</h1>
-      <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.75);max-width:520px;margin:0 auto 2.5rem;line-height:1.7;font-weight:300">${content.heroSubtitle}</p>
+      <h1 style="font-family:var(--heading-font);font-size:clamp(3.5rem,8vw,7rem);font-weight:400;color:var(--on-photo);line-height:1.0;margin-bottom:1.5rem;letter-spacing:-0.01em">${content.tagline}</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:var(--on-photo-muted);max-width:520px;margin:0 auto 2.5rem;line-height:1.7;font-weight:300">${content.heroSubtitle}</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:1rem 2.5rem;background:${gold};color:#fff;text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;padding:1rem 2.5rem;border:1px solid rgba(255,255,255,0.5);color:rgba(255,255,255,0.9);text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaSecondary || 'View Menu'}</a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.78rem;font-weight:600;padding:1rem 2.5rem;background:${accentOnInk};color:${bestTextColor(accentOnInk)};text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;padding:1rem 2.5rem;border:1px solid var(--on-photo-border);color:var(--on-photo);text-decoration:none;letter-spacing:0.14em;text-transform:uppercase;transition:all 0.3s">${content.ctaSecondary || 'View Menu'}</a>
       </div>
     </div>
     <div style="position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;animation:scrollpulse 2.5s ease-in-out infinite">
-      <span style="font-family:var(--body-font);font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:0.18em;text-transform:uppercase">Scroll</span>
-      <span style="color:rgba(255,255,255,0.5);font-size:1.2rem">&#8595;</span>
+      <span style="font-family:var(--body-font);font-size:0.65rem;color:var(--on-photo-muted);letter-spacing:0.18em;text-transform:uppercase">Scroll</span>
+      <span style="color:var(--on-photo-muted);font-size:1.2rem">&#8595;</span>
     </div>
   </section>
   <style>
@@ -1890,9 +2058,9 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   <section style="padding:2rem 3rem;background:${inkDark};display:flex;align-items:center;justify-content:center;gap:4rem;flex-wrap:wrap;text-align:center">
     ${content.stats.slice(0, 3).map(s => `
     <div class="food-stat" style="text-align:center;flex:0 0 auto">
-      <div style="font-family:var(--heading-font);font-size:1.7rem;font-weight:600;color:${goldLight};margin-bottom:0.2rem">${s.value}</div>
-      <div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(255,255,255,0.55);letter-spacing:0.12em;text-transform:uppercase">${s.label}</div>
-    </div>`).join(`<span class="food-sep" style="display:block;width:1px;height:40px;background:rgba(255,255,255,0.1)"></span>`)}
+      <div style="font-family:var(--heading-font);font-size:1.7rem;font-weight:600;color:${accentOnInk};margin-bottom:0.2rem">${s.value}</div>
+      <div style="font-family:var(--body-font);font-size:0.7rem;color:var(--on-photo-muted);letter-spacing:0.12em;text-transform:uppercase">${s.label}</div>
+    </div>`).join(`<span class="food-sep" style="display:block;width:1px;height:40px;background:var(--on-photo-border)"></span>`)}
   </section>
   <style>@media(max-width:640px){ .food-sep { display:none !important; } .food-stat { flex:1 1 100% !important; text-align:center !important; padding:0.5rem 0 !important; } }</style>`
 
@@ -1901,11 +2069,10 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   <section id="about" style="padding:120px 0;background:${bg}">
     <div class="ms-grid" style="max-width:1180px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.1fr;gap:6rem;align-items:center">
       <div style="position:relative">
-        <div style="aspect-ratio:3/4;border-radius:0;overflow:hidden">
+        <div style="aspect-ratio:3/4;border-radius:0;overflow:hidden;position:relative;z-index:1">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
         </div>
-        <div style="position:absolute;bottom:-2rem;right:-2rem;width:160px;height:160px;border:2px solid ${gold};opacity:0.4"></div>
-        <div style="position:absolute;top:-1.5rem;left:-1.5rem;width:120px;height:120px;border:1px solid ${gold};opacity:0.25"></div>
+        <div style="position:absolute;top:16px;left:16px;width:100%;aspect-ratio:3/4;border:1px solid ${accentOnParchment};z-index:0"></div>
       </div>
       <div>
         <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
@@ -1920,31 +2087,24 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   </section>
   <style>@media(max-width:768px){ #about { padding:60px 0 40px !important; } }</style>`
 
-  // MENU SECTION — ornate heading, stacked menu rows with thumbnail
+  // MENU SECTION — fine-dining typographic menu with dotted leaders
   const menuSection = `
   <section id="services" style="padding:120px 0;background:${bgAlt}">
     <div style="max-width:1000px;margin:0 auto;padding:0 3rem">
       <div style="text-align:center;margin-bottom:4rem">
-        <div style="font-size:1.5rem;color:${gold};margin-bottom:0.75rem">&#10022;</div>
+        <div style="font-size:1.5rem;color:${accentOnParchment};margin-bottom:0.75rem">&#10022;</div>
         <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:400;color:${inkDark};margin-bottom:0.5rem">${content.servicesHeading}</h2>
-        <div style="font-size:1.5rem;color:${gold};margin-top:0.75rem">&#10022;</div>
+        <div style="font-size:1.5rem;color:${accentOnParchment};margin-top:0.75rem">&#10022;</div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:0">
-        ${content.services.map((s, i) => `
-        <div style="display:flex;align-items:center;gap:2rem;padding:2rem 0;border-bottom:1px solid rgba(28,20,8,0.08);transition:background 0.3s">
-          <div style="width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0">
-            <img src="${stockPool[i] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover" />
+      <div style="display:flex;flex-direction:column;gap:2.25rem">
+        ${content.services.map((s) => `
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:0.5rem">
+            <h3 style="font-family:Cormorant Garamond,serif;font-size:1.4rem;font-weight:400;color:${inkDark};margin:0;flex-shrink:0">${s.name}</h3>
+            <div style="flex-grow:1;border-bottom:1px dotted rgba(23,19,16,0.35);margin-bottom:6px"></div>
+            <span style="font-family:var(--body-font);font-size:0.78rem;color:${accentOnParchment};letter-spacing:0.14em;text-transform:uppercase;font-variant:small-caps;flex-shrink:0">${s.tags[0] || ''}</span>
           </div>
-          <div style="flex:1">
-            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.35rem">
-              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:${inkDark}">${s.name}</h3>
-              <span style="font-family:var(--heading-font);font-size:1rem;color:${gold};flex-shrink:0;margin-left:1rem">&#9135;&#9135;&#9135;</span>
-            </div>
-            <p style="font-family:var(--body-font);font-size:0.88rem;color:${muted};line-height:1.6">${s.description}</p>
-            <div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap">
-              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;color:${gold};letter-spacing:0.1em;text-transform:uppercase">${t}</span>`).join('<span style="color:rgba(28,20,8,0.2)"> · </span>')}
-            </div>
-          </div>
+          <p style="font-family:var(--body-font);font-size:0.88rem;color:${muted};line-height:1.6;margin:0;max-width:60ch">${s.description}</p>
         </div>`).join('')}
       </div>
       <div style="text-align:center;margin-top:3rem">
@@ -1953,24 +2113,24 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // GALLERY — unified mosaic grid: big image spans 2 rows left, 4 images fill right
+  // GALLERY — unified mosaic grid: first image spans 2 cols x 2 rows, 4 images fill rest
   const gallerySection = `
   <section id="gallery" style="padding:0 0 80px;background:${bg}">
     <div style="max-width:1400px;margin:0 auto">
-      <div class="food-gal-top" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3px">
-        <div style="grid-row:1/3;overflow:hidden;height:603px">
+      <div class="food-gal-top" style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:240px;gap:3px">
+        <div style="grid-column:span 2;overflow:hidden">
           <img src="${stockPool[6]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="overflow:hidden;height:300px">
+        <div style="overflow:hidden">
           <img src="${stockPool[7]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="overflow:hidden;height:300px">
+        <div style="overflow:hidden">
           <img src="${stockPool[8]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="overflow:hidden;height:300px">
+        <div style="overflow:hidden">
           <img src="${stockPool[9]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
-        <div style="overflow:hidden;height:300px">
+        <div style="overflow:hidden">
           <img src="${stockPool[10]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
         </div>
       </div>
@@ -1978,9 +2138,8 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
   </section>
   <style>
     @media(max-width:768px){
-      .food-gal-top { grid-template-columns:1fr !important; }
-      .food-gal-top > div { height:260px !important; }
-      .food-gal-top > div:first-child { grid-row:auto !important; height:260px !important; }
+      .food-gal-top { grid-template-columns:1fr !important; grid-auto-rows:260px !important; }
+      .food-gal-top > div:first-child { grid-column:span 1 !important; }
       .food-gal-top > div:nth-child(n+4) { display:none !important; }
     }
   </style>`
@@ -2024,6 +2183,9 @@ function buildFoodHospitalityTemplate(data: TemplateData): string {
       --text: ${inkDark};
       --text-muted: ${muted};
       --border: rgba(28,20,8,0.07);
+      --on-photo: rgba(255,255,255,0.95);
+      --on-photo-muted: rgba(255,255,255,0.55);
+      --on-photo-border: rgba(255,255,255,0.2);
     }
     /* Film grain */
     body::before {
@@ -2074,6 +2236,10 @@ function buildRetailTemplate(data: TemplateData): string {
   const accentLight = secondaryColor
   const border = 'rgba(0,0,0,0.08)'
 
+  // Accent guard for WCAG compliance
+  const retCtaBg = ensureContrast(accent, '#ffffff', 4.5)
+  const retAccentInk = ensureContrast(accent, '#ffffff', 4.5)
+
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
   const navLinks = navFlags.allLinks
 
@@ -2085,7 +2251,7 @@ function buildRetailTemplate(data: TemplateData): string {
       <div class="ms-nav-links" style="display:flex;align-items:center;gap:2rem">
         ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.78rem;font-weight:500;color:${textMuted};text-decoration:none;letter-spacing:0.06em;transition:color 0.3s" onmouseover="this.style.color='${textPrimary}'" onmouseout="this.style.color='${textMuted}'">${l.label}</a>`).join('')}
       </div>
-      <a href="#contact" class="ret-nav-cta" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <a href="#contact" class="ret-nav-cta ms-nav-cta" style="font-family:var(--body-font);font-size:0.78rem;font-weight:700;padding:0.65rem 1.75rem;background:${retCtaBg};color:#fff;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;border-radius:4px;transition:opacity 0.3s">${content.ctaPrimary}</a>
       <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:${textPrimary};font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
@@ -2109,13 +2275,13 @@ function buildRetailTemplate(data: TemplateData): string {
   <section style="position:relative;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;background:${bg}">
     <div class="ret-hero-inner ms-hero-text" style="display:flex;flex-direction:column;justify-content:center;padding:8rem 4rem 4rem;position:relative;z-index:2">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
-        <span style="display:block;width:24px;height:2px;background:${accent}"></span>
-        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase">${content.heroEyebrow}</span>
+        <span style="display:block;width:24px;height:2px;background:${retAccentInk}"></span>
+        <span style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${retAccentInk};letter-spacing:0.2em;text-transform:uppercase">${content.heroEyebrow}</span>
       </div>
       <h1 style="font-family:var(--heading-font);font-size:clamp(3rem,5.5vw,5.5rem);font-weight:900;color:${textPrimary};line-height:0.95;margin-bottom:1.75rem;letter-spacing:-0.03em;text-transform:uppercase">${content.tagline}</h1>
       <p style="font-family:var(--body-font);font-size:1rem;color:${textMuted};max-width:420px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
       <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:700;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border-radius:4px;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:700;padding:1rem 2.5rem;background:${retCtaBg};color:#fff;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;border-radius:4px;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
         <a href="#gallery" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;color:${textMuted};text-decoration:none;letter-spacing:0.06em;display:flex;align-items:center;gap:0.5rem;transition:color 0.3s">${content.ctaSecondary || 'Explore Collection'} <span style="font-size:1rem">&#8594;</span></a>
       </div>
       <div style="display:flex;gap:3rem;margin-top:4rem;padding-top:2.5rem;border-top:1px solid ${border}">
@@ -2129,13 +2295,13 @@ function buildRetailTemplate(data: TemplateData): string {
     <div class="ms-hero-photo" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 12s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${bg} 0%,transparent 30%)"></div>
-      ${content.badge ? `<div style="position:absolute;top:6.5rem;right:2.5rem;padding:0.5rem 1.25rem;background:${accent};font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
+      ${content.badge ? `<div style="position:absolute;bottom:1.5rem;left:1.5rem;z-index:10;padding:0.5rem 1.25rem;background:rgba(255,255,255,0.92);font-family:var(--body-font);font-size:0.72rem;font-weight:700;color:#111;letter-spacing:0.12em;text-transform:uppercase;border-radius:4px">${content.badge}</div>` : ''}
     </div>
   </section>`
 
   // PRODUCTS GRID — 4-col with hover reveal overlay
   const productsSection = `
-  <section id="services" style="padding:100px 0;background:${bg}">
+  <section id="services" style="padding:120px 0;background:${bg}">
     <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;flex-wrap:wrap;gap:1rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em">${content.servicesHeading}</h2>
@@ -2149,9 +2315,6 @@ function buildRetailTemplate(data: TemplateData): string {
           </div>
           <div class="overlay" style="position:absolute;inset:0;background:rgba(13,13,13,0.75);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;opacity:0;transition:opacity 0.4s ease">
             <p style="font-family:var(--body-font);font-size:0.88rem;color:rgba(255,255,255,0.85);line-height:1.6;margin-bottom:1.25rem">${s.description}</p>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center">
-              ${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;padding:0.25rem 0.75rem;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);letter-spacing:0.08em;text-transform:uppercase;border-radius:2px">${t}</span>`).join('')}
-            </div>
           </div>
           <div style="padding:1.25rem 1.5rem;background:${bgCard}">
             <h3 style="font-family:var(--heading-font);font-size:1rem;font-weight:700;color:${textPrimary};text-transform:uppercase;letter-spacing:0.04em">${s.name}</h3>
@@ -2161,14 +2324,24 @@ function buildRetailTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // MARQUEE BANNER — scrolling text
+  // TRUST STRIP — static band with three service phrases
+  const trustPhrases = [
+    ...(content.services.slice(0, 3).map(s => s.name)),
+    'Independent & Local',
+    'Quality Stock',
+    'Personal Service'
+  ].slice(0, 3)
   const marqueeBanner = `
-  <section style="padding:1.5rem 0;background:${accent};overflow:hidden;white-space:nowrap">
-    <div style="display:inline-flex;animation:marquee 25s linear infinite;gap:3rem">
-      ${[...Array(8)].map(() => `<span style="font-family:var(--heading-font);font-size:1.3rem;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:0.08em">${content.heroEyebrow} &nbsp;&#10022;&nbsp; ${businessName} &nbsp;&#10022;&nbsp; ${content.ctaPrimary}</span>`).join('')}
+  <section style="padding:2rem 0;background:${retCtaBg};overflow:hidden">
+    <div style="display:flex;justify-content:center;align-items:center;gap:2.5rem;max-width:100%;padding:0 2.5rem">
+      ${trustPhrases.map((phrase, i) => `
+      <span style="font-family:var(--heading-font);font-size:0.85rem;font-weight:700;color:${bestTextColor(retCtaBg)};text-transform:uppercase;letter-spacing:0.14em;white-space:nowrap">
+        ${phrase}
+        ${i < trustPhrases.length - 1 ? '&nbsp;✦' : ''}
+      </span>
+      `).join('')}
     </div>
-  </section>
-  <style>@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}</style>`
+  </section>`
 
   // EDITORIAL SPLIT — full-height image + story right
   const editorialSplit = `
@@ -2177,18 +2350,18 @@ function buildRetailTemplate(data: TemplateData): string {
       <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 1.2s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
     </div>
     <div style="display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem">
-      <div style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${accent};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">${content.badge || 'Our Story'}</div>
+      <div style="font-family:var(--body-font);font-size:0.7rem;font-weight:700;color:${retAccentInk};letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.5rem">${content.badge || 'Our Story'}</div>
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,4.5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;margin-bottom:1.5rem;text-transform:uppercase;letter-spacing:-0.02em">${content.aboutHeading}</h2>
       ${content.aboutMission ? `<p style="font-family:var(--body-font);font-size:1.05rem;color:${textPrimary};font-weight:600;line-height:1.65;margin-bottom:1.25rem">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).slice(0,2).map(p => `<p style="font-family:var(--body-font);font-size:0.92rem;color:${textMuted};line-height:1.8;margin-bottom:0.9rem">${p}</p>`).join('')}
-      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;margin-top:2rem;font-family:var(--body-font);font-size:0.8rem;font-weight:700;color:${textPrimary};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} <span style="display:block;width:36px;height:1px;background:${accent}"></span></a>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;margin-top:2rem;font-family:var(--body-font);font-size:0.8rem;font-weight:700;color:${textPrimary};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase">${content.ctaPrimary} <span style="display:block;width:36px;height:1px;background:${retAccentInk}"></span></a>
     </div>
   </section>
   <style>@media(max-width:768px){#about{grid-template-columns:1fr!important}#about>div:first-child{height:300px!important}}</style>`
 
   // GALLERY — asymmetric grid: 1 big + 4 smaller
   const gallerySection = `
-  <section id="gallery" style="padding:100px 0;background:${bgAlt}">
+  <section id="gallery" style="padding:120px 0;background:${bgAlt}">
     <div style="max-width:1400px;margin:0 auto;padding:0 2.5rem">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:3rem">${content.galleryHeading}</h2>
       <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;grid-template-rows:280px 280px;gap:4px">
@@ -2205,30 +2378,30 @@ function buildRetailTemplate(data: TemplateData): string {
 
   // TESTIMONIAL — bold dark card, accent quote mark
   const testimonialSection = content.testimonial ? `
-  <section style="padding:100px 2.5rem;background:${bg}">
+  <section style="padding:120px 2.5rem;background:${bg}">
     <div style="max-width:900px;margin:0 auto;text-align:center">
-      <div style="font-family:var(--heading-font);font-size:6rem;color:${accent};line-height:0.8;margin-bottom:1.5rem;opacity:0.6">&#8220;</div>
+      <div style="font-family:var(--heading-font);font-size:6rem;color:${retAccentInk};line-height:0.8;margin-bottom:1.5rem;opacity:0.6">&#8220;</div>
       <p style="font-family:var(--heading-font);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:700;color:${textPrimary};line-height:1.35;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:2rem">"${content.testimonial.quote}"</p>
       <div style="display:flex;align-items:center;justify-content:center;gap:1.25rem">
-        <span style="display:block;width:50px;height:1px;background:${accent}"></span>
+        <span style="display:block;width:50px;height:1px;background:${retAccentInk}"></span>
         <span style="font-family:var(--body-font);font-size:0.78rem;color:${textMuted};letter-spacing:0.15em;text-transform:uppercase">${content.testimonial.author}</span>
-        <span style="display:block;width:50px;height:1px;background:${accent}"></span>
+        <span style="display:block;width:50px;height:1px;background:${retAccentInk}"></span>
       </div>
-      ${content.testimonial.rating ? `<div style="margin-top:1.25rem;display:flex;justify-content:center;gap:0.25rem">${[...Array(content.testimonial.rating)].map(() => `<span style="color:${accent};font-size:1rem">&#9733;</span>`).join('')}</div>` : ''}
+      ${content.testimonial.rating ? `<div style="margin-top:1.25rem;display:flex;justify-content:center;gap:0.25rem">${[...Array(content.testimonial.rating)].map(() => `<span style="color:${retAccentInk};font-size:1rem">&#9733;</span>`).join('')}</div>` : ''}
     </div>
   </section>` : ''
 
   // FEATURES STRIP — what sets apart, dark bg
   const featuresData = content.features || content.services.slice(0, 3)
   const featuresSection = `
-  <section style="padding:100px 0;background:${bgCard}">
+  <section style="padding:120px 0;background:${bgCard}">
     <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem">
       <h2 style="font-family:var(--heading-font);font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:${textPrimary};line-height:0.95;text-transform:uppercase;letter-spacing:-0.02em;text-align:center;margin-bottom:4rem">Why Shop With Us</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:${border}">
         ${featuresData.slice(0, 3).map((f, i) => `
         <div style="background:${bgCard};padding:3rem 2.5rem;transition:background 0.3s" onmouseover="this.style.background='${bg}'" onmouseout="this.style.background='${bgCard}'">
-          <div style="font-family:var(--heading-font);font-size:3rem;font-weight:900;color:${accent};opacity:0.3;line-height:1;margin-bottom:1.25rem">0${i+1}</div>
-          <h3 style="font-family:var(--heading-font);font-size:1.2rem;font-weight:700;color:${textPrimary};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">${f.name}</h3>
+          <div style="border-top:3px solid ${retAccentInk};width:40px;margin-bottom:1.25rem"></div>
+          <h3 style="font-family:var(--heading-font);font-size:1.05rem;font-weight:800;color:${textPrimary};text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem;line-height:1.2">${f.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.9rem;color:${textMuted};line-height:1.7">${f.description}</p>
         </div>`).join('')}
       </div>
@@ -2302,6 +2475,9 @@ function buildPetsTemplate(data: TemplateData): string {
   const accentWarm = '#c4793a'
   const accentYellow = '#e8b84b'
 
+  const petsCtaBg = ensureContrast(accentWarm, '#ffffff', 4.5)
+  const petsGreenCtaBg = ensureContrast(accentGreen, '#ffffff', 4.5)
+
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
   const navLinks = navFlags.allLinks
 
@@ -2313,7 +2489,7 @@ function buildPetsTemplate(data: TemplateData): string {
       <div class="ms-nav-links" style="display:flex;align-items:center;gap:1.75rem">
         ${navLinks.map(l => `<a href="${l.href}" style="font-family:var(--body-font);font-size:0.85rem;font-weight:500;color:${textMid};text-decoration:none;transition:color 0.3s" onmouseover="this.style.color='${accentGreen}'" onmouseout="this.style.color='${textMid}'">${l.label}</a>`).join('')}
       </div>
-      <a href="#contact" style="font-family:var(--body-font);font-size:0.82rem;font-weight:700;padding:0.7rem 1.75rem;background:${accentGreen};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.04em;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <a href="#contact" class="ms-nav-cta" style="font-family:var(--body-font);font-size:0.82rem;font-weight:700;padding:0.7rem 1.75rem;background:${petsGreenCtaBg};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.04em;transition:opacity 0.3s">${content.ctaPrimary}</a>
       <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:${textDark};font-size:1.5rem">&#9776;</label>
     </div>
   </nav>
@@ -2346,7 +2522,7 @@ function buildPetsTemplate(data: TemplateData): string {
         <h1 style="font-family:var(--heading-font);font-size:clamp(2.8rem,6vw,5.5rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:1.25rem">${content.tagline}</h1>
         <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.82);line-height:1.7;max-width:480px;margin-bottom:2.25rem">${content.heroSubtitle}</p>
         <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.25rem;background:${accentWarm};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
+          <a href="#contact" style="font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.25rem;background:${petsCtaBg};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:transform 0.2s,opacity 0.2s">${content.ctaPrimary}</a>
           <a href="#services" style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;padding:1rem 2.25rem;background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);color:#fff;text-decoration:none;border-radius:999px;border:1.5px solid rgba(255,255,255,0.4);letter-spacing:0.06em">${content.ctaSecondary || 'Our Services'}</a>
         </div>
       </div>
@@ -2367,15 +2543,12 @@ function buildPetsTemplate(data: TemplateData): string {
   <section id="about" style="padding:120px 0;background:${bgWarm}">
     <div class="ms-grid" style="max-width:1180px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center">
       <div style="position:relative">
-        <div style="border-radius:32px;overflow:hidden;aspect-ratio:4/5">
+        <div style="border-radius:32px;overflow:hidden;aspect-ratio:4/5;position:relative">
           <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;width:140px;height:140px;border-radius:24px;overflow:hidden;border:4px solid ${bgWarm};box-shadow:0 8px 32px rgba(74,124,78,0.2)">
-          <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover" />
-        </div>
-        <div style="position:absolute;top:2rem;left:-1.5rem;background:${accentYellow};border-radius:16px;padding:1rem 1.25rem;box-shadow:0 4px 20px rgba(232,184,75,0.3)">
-          <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${textDark}">${content.stats[2]?.value || '5★'}</div>
-          <div style="font-family:var(--body-font);font-size:0.68rem;color:${textMid};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.1rem">${content.stats[2]?.label || 'Rating'}</div>
+          <div style="position:absolute;bottom:1.5rem;left:1.5rem;background:${accentYellow};border-radius:16px;padding:1rem 1.25rem;box-shadow:0 4px 20px rgba(232,184,75,0.3)">
+            <div style="font-family:var(--heading-font);font-size:1.4rem;font-weight:700;color:${textDark}">${content.stats[2]?.value || '5★'}</div>
+            <div style="font-family:var(--body-font);font-size:0.68rem;color:${textMid};letter-spacing:0.08em;text-transform:uppercase;margin-top:0.1rem">${content.stats[2]?.label || 'Rating'}</div>
+          </div>
         </div>
       </div>
       <div>
@@ -2398,7 +2571,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // SERVICES — playful cards with emoji icons, sage tinted bg
   const servicesSection = `
-  <section id="services" style="padding:100px 0;background:${bgSage}">
+  <section id="services" style="padding:120px 0;background:${bgSage}">
     <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
       <div style="text-align:center;margin-bottom:3.5rem">
         <div style="display:inline-flex;align-items:center;gap:0.6rem;background:rgba(255,255,255,0.8);padding:0.4rem 1.1rem;border-radius:999px;margin-bottom:1rem">
@@ -2408,15 +2581,9 @@ function buildPetsTemplate(data: TemplateData): string {
       </div>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem">
         ${content.services.slice(0, 6).map((s, i) => `
-        <div style="background:${bgWarm};border-radius:24px;padding:2rem;transition:transform 0.3s,box-shadow 0.3s;cursor:default" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 16px 40px rgba(74,124,78,0.12)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-          <div style="width:60px;height:60px;border-radius:18px;background:${[bgSage,'rgba(196,121,58,0.12)','rgba(74,124,78,0.12)'][i%3]};display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:1.5rem">
-            ${s.icon || ['&#128062;','&#128049;','&#9999;&#65039;','&#128137;','&#127968;','&#128144;'][i] || '&#128062;'}
-          </div>
-          <h3 style="font-family:var(--heading-font);font-size:1.1rem;font-weight:700;color:${textDark};margin-bottom:0.6rem">${s.name}</h3>
+        <div style="background:rgba(74,124,78,0.06);border-radius:14px;padding:1.75rem;transition:transform 0.3s,opacity 0.3s;cursor:default" onmouseover="this.style.transform='translateY(-4px)';this.style.opacity='0.95'" onmouseout="this.style.transform='translateY(0)';this.style.opacity='1'">
+          <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:700;color:${textDark};margin-bottom:0.75rem">${s.name}</h3>
           <p style="font-family:var(--body-font);font-size:0.88rem;color:${textMuted};line-height:1.7">${s.description}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:1rem">
-            ${s.tags.slice(0,3).map(t => `<span style="font-family:var(--body-font);font-size:0.68rem;font-weight:600;padding:0.25rem 0.75rem;background:${bgSage};border-radius:999px;color:${textMid};letter-spacing:0.06em">${t}</span>`).join('')}
-          </div>
         </div>`).join('')}
       </div>
     </div>
@@ -2424,7 +2591,7 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // GALLERY — mosaic grid with rounded corners, warm hover
   const gallerySection = `
-  <section id="gallery" style="padding:100px 0;background:${bg}">
+  <section id="gallery" style="padding:120px 0;background:${bg}">
     <div style="max-width:1300px;margin:0 auto;padding:0 3rem">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.15">${content.galleryHeading}</h2>
@@ -2451,7 +2618,7 @@ function buildPetsTemplate(data: TemplateData): string {
   ].slice(0, 3)
 
   const testimonialsSection = allTestimonials.length > 0 ? `
-  <section style="padding:100px 0;background:${bgWarm}">
+  <section style="padding:120px 0;background:${bgWarm}">
     <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
       <div style="text-align:center;margin-bottom:3.5rem">
         <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${textDark};line-height:1.2">Happy Families, Happy Pets</h2>
@@ -2479,14 +2646,14 @@ function buildPetsTemplate(data: TemplateData): string {
 
   // CTA BANNER — dark green, playful
   const ctaBanner = `
-  <section style="padding:80px 3rem;background:${bgDark};position:relative;overflow:hidden">
+  <section style="padding:120px 3rem;background:${bgDark};position:relative;overflow:hidden">
     <div style="position:absolute;right:-4rem;top:-4rem;width:300px;height:300px;border-radius:50%;background:rgba(74,124,78,0.15)"></div>
     <div style="position:absolute;left:10%;bottom:-3rem;width:200px;height:200px;border-radius:50%;background:rgba(232,184,75,0.1)"></div>
-    <div style="max-width:700px;margin:0 auto;text-align:center;position:relative;z-index:2">
+    <div style="max-width:1000px;margin:0 auto;text-align:center;position:relative;z-index:2">
       <div style="font-size:2.5rem;margin-bottom:1rem">&#128062;</div>
       <h2 class="pet-cta-heading" style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1rem">${content.contactHeading}</h2>
-      <p class="pet-cta-sub" style="font-family:var(--body-font);font-size:1rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:2.5rem;max-width:480px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
-      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.5rem;background:${accentWarm};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:opacity 0.3s">${content.ctaPrimary}</a>
+      <p class="pet-cta-sub" style="font-family:var(--body-font);font-size:clamp(1.3rem,2.2vw,1.7rem);color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:2.5rem;max-width:720px;margin-left:auto;margin-right:auto">${content.heroSubtitle}</p>
+      <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.85rem;font-weight:700;padding:1rem 2.5rem;background:${petsCtaBg};color:#fff;text-decoration:none;border-radius:999px;letter-spacing:0.06em;transition:opacity 0.3s">${content.ctaPrimary}</a>
     </div>
   </section>`
 
@@ -2574,6 +2741,8 @@ function buildHealthWellnessTemplate(data: TemplateData): string {
     border: 'rgba(0,0,0,0.07)',
   }
 
+  const hwCtaBg = ensureContrast(hw.accent, '#ffffff', 4.5)
+
   const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 3)
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
@@ -2628,7 +2797,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div class="hw-fade" style="width:48px;height:1px;background:${hw.accent};margin-bottom:1.75rem"></div>
     <p class="hw-fade" style="font-family:'DM Sans',sans-serif;font-size:1rem;color:${hw.muted};line-height:1.8;max-width:400px;margin-bottom:2.5rem;font-weight:300">${content.heroSubtitle}</p>
     <div class="hw-fade" style="display:flex;gap:1rem;align-items:center">
-      <a href="#contact" class="hw-btn-primary" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.08em;padding:1rem 2.25rem;background:${hw.accent};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      <a href="#contact" class="hw-btn-primary" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;letter-spacing:0.08em;padding:1rem 2.25rem;background:${hwCtaBg};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
       <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:400;letter-spacing:0.06em;color:${hw.muted};text-decoration:none;display:flex;align-items:center;gap:0.4rem">Explore &rarr;</a>
     </div>
     <div class="hw-fade hw-stats" style="display:flex;gap:2.5rem;margin-top:4rem;padding-top:3rem;border-top:1px solid ${hw.border}">
@@ -2642,22 +2811,21 @@ ${buildStandardNav(businessName, content, navFlags)}
   <div class="hw-img-hover hw-hero-img ms-hero-photo" style="position:relative">
     <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
     <div style="position:absolute;inset:0;background:linear-gradient(to right,${hw.bg} 0%,transparent 8%)"></div>
-    ${content.badge ? `<div style="position:absolute;bottom:3rem;left:2rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:1rem 1.5rem;max-width:220px">
+    ${content.badge ? `<div style="position:absolute;bottom:1.5rem;right:1.5rem;background:rgba(255,255,255,0.92);backdrop-filter:blur(8px);padding:1rem 1.5rem;max-width:220px">
       <p style="font-family:'Cormorant',Georgia,serif;font-size:1rem;font-style:italic;color:${hw.text};line-height:1.5">${content.badge}</p>
     </div>` : ''}
   </div>
 </section>
 
-<!-- MARQUEE STRIP -->
-<div style="background:${hw.accent};padding:0.9rem 0;overflow:hidden;white-space:nowrap">
-  <div style="display:inline-block;animation:marquee 22s linear infinite">
-    ${[...Array(6)].map(() => content.services.map(s => `<span style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.9);padding:0 2.5rem">${s.name}</span>`).join('')).join('')}
+<!-- SERVICE NAMES BAND -->
+<div style="background:${hwCtaBg};padding:0.9rem 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 3rem;display:flex;gap:2.5rem;align-items:center;justify-content:center;flex-wrap:wrap">
+    ${content.services.slice(0, 3).map((s, i) => `${i > 0 ? `<div style="width:1px;height:24px;background:rgba(255,255,255,0.35)"></div>` : ''}<span style="font-family:'DM Sans',sans-serif;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:#fff">${s.name}</span>`).join('')}
   </div>
 </div>
-<style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
 
 <!-- SERVICES: Alternating large image + content rows -->
-<section id="services" style="padding:8rem 0;background:${hw.bg}">
+<section id="services" style="padding:120px 0;background:${hw.bg}">
   <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
     <div class="hw-fade" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem">
       <div style="width:32px;height:1px;background:${hw.accent}"></div>
@@ -2668,12 +2836,10 @@ ${buildStandardNav(businessName, content, navFlags)}
       <div class="hw-fade ms-grid" style="display:grid;grid-template-columns:${i % 2 === 0 ? '1fr 1.2fr' : '1.2fr 1fr'};min-height:420px;border-top:1px solid ${hw.border}${i === Math.min(content.services.length,4)-1 ? `;border-bottom:1px solid ${hw.border}` : ''}">
         ${i % 2 !== 0 ? `<div class="hw-img-hover" style="background:${hw.bgAlt}"><img src="${stockPool[i] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>` : ''}
         <div style="display:flex;flex-direction:column;justify-content:center;padding:4rem;${i % 2 === 0 ? 'order:-1' : ''}">
-          <div style="font-family:'Cormorant',Georgia,serif;font-size:4rem;font-weight:300;color:${hw.bgDeep};line-height:1;margin-bottom:1.5rem;user-select:none">0${i + 1}</div>
+          <div style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:${hw.accent};margin-bottom:0.75rem">0${i + 1}</div>
+          <div style="width:32px;height:2px;background:${hw.accent};margin-bottom:1.5rem"></div>
           <h3 style="font-family:'Cormorant',Georgia,serif;font-size:2rem;font-weight:400;color:${hw.text};margin-bottom:1rem;line-height:1.2">${s.name}</h3>
           <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;color:${hw.muted};line-height:1.8;margin-bottom:1.5rem;max-width:360px">${s.description}</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-            ${s.tags.slice(0, 3).map(t => `<span style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:${hw.accent};border:1px solid ${hw.accent};padding:0.25rem 0.65rem">${t}</span>`).join('')}
-          </div>
         </div>
         ${i % 2 === 0 ? `<div class="hw-img-hover" style="background:${hw.bgAlt}"><img src="${stockPool[i] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" /></div>` : ''}
       </div>`).join('')}
@@ -2682,15 +2848,13 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- ABOUT: Asymmetric 2-col — stacked images left, editorial content right -->
-<section id="about" style="padding:8rem 0;background:${hw.bgAlt}">
+<section id="about" style="padding:120px 0;background:${hw.bgAlt}">
   <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
     <div style="position:relative">
-      <div class="hw-img-hover" style="height:480px;margin-bottom:1.5rem">
-        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+      <div class="hw-img-hover" style="height:480px;position:relative;z-index:1">
+        <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;border:1px solid ${hw.accent}" />
       </div>
-      <div class="hw-img-hover" style="height:220px;margin-left:3rem">
-        <img src="${stockPool[4] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-      </div>
+      <div style="position:absolute;bottom:-16px;right:-16px;width:calc(100% - 32px);height:calc(100% - 32px);border:1px solid ${hw.accent};z-index:0"></div>
       <div class="hw-about-label" style="position:absolute;top:50%;left:-1.5rem;transform:translateY(-50%) rotate(-90deg);font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:${hw.muted};white-space:nowrap">${businessName}</div>
     </div>
     <div class="hw-fade">
@@ -2710,7 +2874,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- TESTIMONIALS: Soft cream, large italic quote, portrait grid -->
-<section id="testimonials" style="padding:8rem 0;background:${hw.bg}">
+<section id="testimonials" style="padding:120px 0;background:${hw.bg}">
   <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
     <div class="hw-fade" style="text-align:center;margin-bottom:5rem">
       <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1rem">Client Stories</p>
@@ -2718,7 +2882,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem">
       ${testimonials.map((t, i) => `
-      <div class="hw-fade hw-service-card" style="background:${i === 1 ? hw.accent : hw.bgAlt};padding:2.5rem;position:relative">
+      <div class="hw-fade hw-service-card" style="background:${i === 1 ? hwCtaBg : hw.bgAlt};padding:2.5rem;position:relative">
         <div style="font-family:'Cormorant',Georgia,serif;font-size:5rem;line-height:1;color:${i === 1 ? 'rgba(255,255,255,0.25)' : hw.bgDeep};position:absolute;top:1rem;left:1.5rem;user-select:none">&ldquo;</div>
         <div style="color:${i === 1 ? 'rgba(255,255,255,0.9)' : '#f59e0b'};font-size:0.8rem;letter-spacing:0.1em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
         <p style="font-family:'Cormorant',Georgia,serif;font-size:1.15rem;font-style:italic;color:${i === 1 ? '#fff' : hw.text};line-height:1.7;margin-bottom:2rem;position:relative;z-index:1">"${t!.quote}"</p>
@@ -2735,7 +2899,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- CONTACT: Warm linen bg, 2-col, elegant form -->
-<section id="contact" style="padding:8rem 0;background:${hw.bgAlt}">
+<section id="contact" style="padding:120px 0;background:${hw.bgAlt}">
   <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.1fr;gap:6rem;align-items:start">
     <div class="hw-fade">
       <p style="font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:${hw.accent};margin-bottom:1.5rem">Get In Touch</p>
@@ -2786,7 +2950,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           <label style="font-family:'DM Sans',sans-serif;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:${hw.muted};display:block;margin-bottom:0.5rem">Message</label>
           <textarea rows="4" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;padding:0.75rem 0;border:none;border-bottom:1px solid ${hw.border};background:transparent;font-size:0.9rem;color:${hw.text};outline:none;resize:none"></textarea>
         </div>
-        <button type="submit" class="hw-btn-primary" style="margin-top:0.5rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${hw.accent};color:#fff;border:none;cursor:pointer;align-self:flex-start">${content.ctaPrimary}</button>
+        <button type="submit" class="hw-btn-primary" style="margin-top:0.5rem;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${hwCtaBg};color:#fff;border:none;cursor:pointer;align-self:flex-start">${content.ctaPrimary}</button>
       </form>
     </div>
   </div>
@@ -2861,6 +3025,13 @@ function buildFitnessTemplate(data: TemplateData): string {
 
   const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 3)
 
+  // Contrast helpers for accent colors used as text/backgrounds
+  const accentBgWhiteText = ensureContrast(fit.accent, '#ffffff', 4.5)
+  const accentTextOnLight = ensureContrast(fit.accent, fit.bg, 4.5) // clamped ink for yellow on light bg
+  // For the CTA band: ensure it's dark enough, use bestTextColor to pick white or dark text
+  const bandBg = contrastRatio(fit.accent, '#f4f4f2') < 1.35 ? darkenColor(fit.accent, 0.18) : fit.accent
+  const bandTextColor = bestTextColor(bandBg)
+
   return `${headHtml}
 <style>
   :root {
@@ -2888,11 +3059,6 @@ function buildFitnessTemplate(data: TemplateData): string {
   @media(max-width:768px){.fit-hero-inner{padding:clamp(4rem,10svh,6rem) 1.25rem 1rem!important}.fit-hero-stats{padding:0!important}.fit-hero-stats>div{flex:1!important;padding-right:0!important;margin-right:0!important;border-right:none!important;text-align:center!important;padding:1rem 0!important}.fit-hero-stats>div:nth-child(n+4){display:none!important}}
 </style>
 
-<!-- PROMO BAR -->
-<div style="background:${fit.accent};padding:0.55rem 2rem;text-align:center">
-  <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#fff">${content.badge || content.heroEyebrow || 'Limited spots available — join today'}</p>
-</div>
-
 ${buildStandardNav(businessName, content, navFlags)}
 
 <!-- HERO: Dark cinematic full-bleed, massive Bebas headline, split stats bar -->
@@ -2909,7 +3075,7 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <h1 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7.5vw,7rem);font-weight:400;color:${fit.onPhoto};line-height:0.92;letter-spacing:0.02em;margin-bottom:2rem">${content.tagline.toUpperCase()}</h1>
     <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+      <a href="#contact" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:${bestTextColor(fit.accent)};text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
       <a href="#services" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1.1rem 2.8rem;border:1px solid ${fit.onPhotoBorder};color:${fit.onPhoto};text-decoration:none;display:inline-block">${content.ctaSecondary || 'View Classes'}</a>
     </div>
   </div>
@@ -2934,33 +3100,27 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div>
       ${content.services.map((s, i) => `
-      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr auto;gap:2rem;align-items:center;padding:2rem 0">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;color:${fit.accent};line-height:1;opacity:0.7">0${i + 1}</div>
+      <div class="fit-service-row" style="display:grid;grid-template-columns:80px 1fr;gap:2rem;align-items:center;padding:2rem 0">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:${accentTextOnLight};line-height:1">0${i + 1}</div>
         <div>
           <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:${fit.text};letter-spacing:0.05em;margin-bottom:0.35rem">${s.name.toUpperCase()}</h3>
           <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${fit.text};font-weight:300;line-height:1.6;max-width:520px">${s.description}</p>
-          <div style="display:flex;gap:0.5rem;margin-top:0.75rem;flex-wrap:wrap">
-            ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Inter',sans-serif;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:${fit.accent};background:rgba(${parseInt(fit.accent.slice(1,3)||'e8',16)},${parseInt(fit.accent.slice(3,5)||'ff',16)},${parseInt(fit.accent.slice(5,7)||'00',16)},0.1);padding:0.25rem 0.65rem">${t}</span>`).join('')}
-          </div>
         </div>
-        <div style="font-family:'Inter',sans-serif;font-size:1.5rem;color:rgba(0,0,0,0.18)">&#8599;</div>
       </div>`).join('')}
     </div>
   </div>
 </section>
 
-<!-- PHOTO GRID: Asymmetric 3+2 mosaic, full-bleed -->
-<section style="display:grid;grid-template-columns:3fr 2fr;background:${fit.bg};gap:3px">
-  <div class="fit-img-zoom" style="height:520px">
+<!-- PHOTO GRID: 3-column layout, equal tiles -->
+<section style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:340px;background:${fit.bg};gap:3px">
+  <div class="fit-img-zoom">
     <img src="${stockPool[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
   </div>
-  <div style="display:grid;grid-template-rows:1fr 1fr;gap:3px">
-    <div class="fit-img-zoom" style="height:258px">
-      <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-    </div>
-    <div class="fit-img-zoom" style="height:258px">
-      <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-    </div>
+  <div class="fit-img-zoom">
+    <img src="${stockPool[1] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
+  </div>
+  <div class="fit-img-zoom">
+    <img src="${stockPool[2] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
   </div>
 </section>
 
@@ -2969,19 +3129,19 @@ ${buildStandardNav(businessName, content, navFlags)}
   <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center">
     <div class="fit-fade">
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
-        <div style="width:32px;height:2px;background:${fit.accent}"></div>
-        <p style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${fit.accent}">Our Philosophy</p>
+        <div style="width:32px;height:2px;background:${accentTextOnLight}"></div>
+        <p style="font-family:'Inter',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${accentTextOnLight}">Our Philosophy</p>
       </div>
       <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,4.5vw,4.5rem);color:${fit.text};line-height:1;letter-spacing:0.03em;margin-bottom:1.5rem">${content.aboutHeading.toUpperCase()}</h2>
-      ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${fit.accent};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
+      ${content.aboutMission ? `<p style="font-family:'Inter',sans-serif;font-size:1.05rem;color:${accentTextOnLight};line-height:1.7;margin-bottom:1.5rem;font-weight:400">${content.aboutMission}</p>` : ''}
       ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Inter',sans-serif;font-size:0.88rem;color:${fit.text};line-height:1.9;margin-bottom:1rem;font-weight:300">${p}</p>`).join('')}
-      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
+      <a href="#contact" class="fit-btn" style="display:inline-block;margin-top:2rem;font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.1rem 2.8rem;background:${fit.accent};color:${bestTextColor(fit.accent)};text-decoration:none">${content.ctaPrimary}</a>
     </div>
     <div class="fit-fade fit-img-zoom" style="height:560px;position:relative">
       <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-      <div style="position:absolute;bottom:2rem;left:-2rem;background:${fit.accent};padding:1.5rem 2rem;max-width:200px">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:#fff;line-height:1">${content.stats[0]?.value || '500+'}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:#fff;margin-top:0.25rem">${content.stats[0]?.label || 'Active Members'}</div>
+      <div style="position:absolute;bottom:2rem;left:2rem;background:${fit.accent};padding:1.5rem 2rem;max-width:200px">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:${bestTextColor(fit.accent)};line-height:1">${content.stats[0]?.value || '500+'}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${bestTextColor(fit.accent)};margin-top:0.25rem">${content.stats[0]?.label || 'Active Members'}</div>
       </div>
     </div>
   </div>
@@ -3009,8 +3169,8 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- CONTACT: Dark 2-col, accent CTA bar above -->
-<div style="background:${fit.accent};padding:2.5rem 3rem;text-align:center">
-  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:#fff;letter-spacing:0.05em">${content.ctaPrimary.toUpperCase()} — START TODAY</h3>
+<div style="background:${bandBg};padding:2.5rem 3rem;text-align:center">
+  <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,4vw,3.5rem);color:${bandTextColor};letter-spacing:0.05em">${content.ctaPrimary.toUpperCase()} — START TODAY</h3>
 </div>
 <section id="contact" style="padding:6rem 0;background:${fit.bgAlt}">
   <div class="ms-grid" style="max-width:1400px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.4fr;gap:6rem;align-items:start">
@@ -3023,8 +3183,8 @@ ${buildStandardNav(businessName, content, navFlags)}
           { label: 'Email', val: `hello@${businessName.toLowerCase().replace(/\s/g,'')}.com` },
           ...(content.contactHours ? [{ label: 'Hours', val: content.contactHours }] : []),
         ].map(item => `
-        <div style="border-left:2px solid ${fit.accent};padding-left:1.25rem">
-          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${fit.accent};margin-bottom:0.3rem">${item.label}</div>
+        <div style="border-left:2px solid ${accentTextOnLight};padding-left:1.25rem">
+          <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:${accentTextOnLight};margin-bottom:0.3rem">${item.label}</div>
           <div style="font-family:'Inter',sans-serif;font-size:0.9rem;color:${fit.text};font-weight:300">${item.val}</div>
         </div>`).join('')}
       </div>
@@ -3041,7 +3201,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           ${content.services.map(s => `<option value="${s.name}">${s.name}</option>`).join('')}
         </select>
         <textarea placeholder="Tell us about your fitness goals..." rows="4" style="font-family:'Inter',sans-serif;padding:1rem 1.25rem;background:${fit.bgCard};border:1px solid ${fit.border};color:${fit.text};font-size:0.88rem;outline:none;resize:none"></textarea>
-        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:${fit.accent};color:#fff;border:none;cursor:pointer">${content.ctaPrimary}</button>
+        <button type="submit" class="fit-btn" style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:1.2rem 2.5rem;background:${bandBg};color:${bandTextColor};border:none;cursor:pointer">${content.ctaPrimary}</button>
       </form>
     </div>
   </div>
@@ -3090,6 +3250,8 @@ function buildEducationTemplate(data: TemplateData): string {
     border: 'rgba(0,0,0,0.07)',
   }
 
+  const eduCtaBg = ensureContrast(edu.accent, '#ffffff', 4.5)
+
   const testimonials = [content.testimonial, ...getFallbackTestimonials(content, businessCategory)].filter(Boolean).slice(0, 2)
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
@@ -3132,14 +3294,14 @@ ${buildStandardNav(businessName, content, navFlags)}
   <div style="position:absolute;top:0;right:0;width:45%;height:100%;background:${edu.accentLight};clip-path:polygon(8% 0,100% 0,100% 100%,0% 100%)"></div>
   <div style="max-width:1200px;margin:0 auto;padding:6rem 3rem;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1">
     <div class="ms-hero-text">
-      <div class="edu-fade" style="display:inline-flex;align-items:center;gap:0.75rem;background:${edu.accent};padding:0.5rem 1.25rem;margin-bottom:2rem">
+      <div class="edu-fade" style="display:inline-flex;align-items:center;gap:0.75rem;background:${eduCtaBg};padding:0.5rem 1.25rem;margin-bottom:2rem">
         <div style="width:6px;height:6px;border-radius:50%;background:#fff"></div>
         <p style="font-family:'Inter',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#fff">${content.heroEyebrow || 'Education & Growth'}</p>
       </div>
       <h1 class="edu-fade" style="font-family:'Merriweather',Georgia,serif;font-size:clamp(2.5rem,4.5vw,4rem);font-weight:700;color:${edu.text};line-height:1.2;margin-bottom:1.5rem">${content.tagline}</h1>
       <p class="edu-fade" style="font-family:'Inter',sans-serif;font-size:1rem;color:${edu.muted};line-height:1.8;max-width:420px;margin-bottom:2.5rem;font-weight:300">${content.heroSubtitle}</p>
       <div class="edu-fade" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-        <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.06em;padding:1rem 2.5rem;background:${edu.accent};color:#fff;text-decoration:none;display:inline-block;transition:filter 0.25s ease">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.06em;padding:1rem 2.5rem;background:${eduCtaBg};color:#fff;text-decoration:none;display:inline-block;transition:filter 0.25s ease">${content.ctaPrimary}</a>
         <a href="#services" style="font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:400;color:${edu.text};text-decoration:none;display:flex;align-items:center;gap:0.4rem;border-bottom:1px solid ${edu.text};padding-bottom:0.15rem">${content.ctaSecondary || 'See Programs'}</a>
       </div>
       <div class="edu-fade" style="display:flex;gap:2rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid ${edu.border}">
@@ -3150,34 +3312,18 @@ ${buildStandardNav(businessName, content, navFlags)}
         </div>`).join('')}
       </div>
     </div>
-    <div class="edu-fade ms-hero-photo" style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1rem;height:500px">
-      <div class="edu-img-zoom" style="grid-column:1/2;grid-row:1/3;border-radius:4px;overflow:hidden">
-        <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-      </div>
-      <div class="edu-img-zoom" style="border-radius:4px;overflow:hidden">
-        <img src="${stockPool[0] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-      </div>
-      <div style="background:${edu.accent};border-radius:4px;display:flex;flex-direction:column;justify-content:center;padding:1.5rem">
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:1.4rem;font-weight:700;color:#fff;line-height:1.2">${content.stats[3]?.value || content.stats[0]?.value || '98%'}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.75);margin-top:0.35rem;line-height:1.4">${content.stats[3]?.label || 'Student satisfaction'}</div>
+    <div class="edu-fade ms-hero-photo" style="position:relative;height:500px">
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px" />
+      <div style="position:absolute;bottom:1.5rem;left:1.5rem;background:#fff;border-radius:10px;padding:10px 16px">
+        <div style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;color:${edu.text}">4.9★ Google Rating</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TRUST STRIP -->
-<div class="edu-trust-strip" style="background:${edu.text};padding:1.5rem 3rem">
-  <div style="max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-    ${content.stats.slice(0, 4).map(s => `
-    <div style="text-align:center">
-      <span style="font-family:'Merriweather',Georgia,serif;font-size:1.3rem;font-weight:700;color:#fff">${s.value}</span>
-      <span style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.45);margin-left:0.5rem;letter-spacing:0.06em">${s.label}</span>
-    </div>`).join('')}
-  </div>
-</div>
 
 <!-- PROGRAMS: Clean card grid, category badge, hover lift -->
-<section id="services" style="padding:7rem 0;background:${edu.bg}">
+<section id="services" style="padding:120px 0;background:${edu.bg}">
   <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
     <div class="edu-fade" style="display:flex;flex-direction:column;align-items:flex-start;gap:0.75rem;margin-bottom:4rem">
       <div style="display:flex;align-items:center;gap:1rem">
@@ -3188,19 +3334,18 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
       ${content.services.slice(0, 6).map((s, i) => `
-      <div class="edu-fade edu-card" style="background:${i === 0 ? edu.accent : edu.bgAlt};border-radius:2px;padding:2.5rem;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;right:0;width:80px;height:80px;background:${i === 0 ? 'rgba(255,255,255,0.08)' : edu.accentLight};border-radius:0 0 0 80px"></div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:${i === 0 ? 'rgba(255,255,255,0.7)' : edu.accent};margin-bottom:1rem">${s.tags[0] || 'Program'}</div>
-        <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1.2rem;font-weight:700;color:${i === 0 ? '#fff' : edu.text};margin-bottom:0.75rem;line-height:1.3">${s.name}</h3>
-        <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${i === 0 ? 'rgba(255,255,255,0.75)' : edu.muted};line-height:1.7;font-weight:300;margin-bottom:1.5rem">${s.description}</p>
-        <a href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${i === 0 ? '#fff' : edu.accent};text-decoration:none;display:flex;align-items:center;gap:0.4rem">Learn More &rarr;</a>
+      <div class="edu-fade edu-card" style="background:#fff;border:1px solid rgba(0,0,0,0.10);border-radius:12px;padding:1.75rem;position:relative;overflow:hidden">
+        <div style="font-family:'Inter',sans-serif;font-size:0.65rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:${edu.accent};margin-bottom:1rem">${s.tags[0] || 'Program'}</div>
+        <h3 style="font-family:'Merriweather',Georgia,serif;font-size:1.1rem;font-weight:700;color:${edu.text};margin-bottom:0.75rem;line-height:1.3">${s.name}</h3>
+        <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:${edu.muted};line-height:1.7;font-weight:300;margin-bottom:1.5rem">${s.description}</p>
+        <a class="edu-link" href="#contact" style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${edu.accent};text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem">Learn More &rarr;</a>
       </div>`).join('')}
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS: Clean 3-step with connecting line, numbered circles -->
-<section style="padding:7rem 0;background:${edu.bgWarm}">
+<section style="padding:120px 0;background:${edu.bgWarm}">
   <div style="max-width:1000px;margin:0 auto;padding:0 3rem;text-align:center">
     <div class="edu-fade" style="margin-bottom:5rem">
       <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent};margin-bottom:1rem">How It Works</p>
@@ -3226,14 +3371,14 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- ABOUT: Split — image left, warm editorial content right -->
-<section id="about" style="padding:7rem 0;background:${edu.bg}">
+<section id="about" style="padding:120px 0;background:${edu.bg}">
   <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
     <div class="edu-fade" style="position:relative">
-      <div class="edu-img-zoom" style="height:520px;border-radius:2px;overflow:hidden">
+      <div class="edu-img-zoom" style="height:520px;border-radius:12px;overflow:hidden;position:relative">
         <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover;display:block" />
-      </div>
-      <div style="position:absolute;bottom:-2rem;right:-2rem;background:${edu.bgWarm};border:1px solid ${edu.border};padding:1.5rem 2rem">
-        <p style="font-family:'Merriweather',Georgia,serif;font-size:0.9rem;font-style:italic;color:${edu.text};line-height:1.5;max-width:160px">${content.badge || 'Committed to your growth'}</p>
+        <div style="position:absolute;bottom:1.5rem;right:1.5rem;background:#fff;border:1px solid ${edu.border};padding:1.5rem 2rem;border-radius:12px;max-width:160px">
+          <p style="font-family:'Merriweather',Georgia,serif;font-size:0.9rem;font-style:italic;color:${edu.text};line-height:1.5">${content.badge || 'Committed to your growth'}</p>
+        </div>
       </div>
     </div>
     <div class="edu-fade">
@@ -3259,7 +3404,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- TESTIMONIALS: Warm bg, large serif quote, 2-col -->
-<section id="testimonials" style="padding:7rem 0;background:${edu.bgAlt}">
+<section id="testimonials" style="padding:120px 0;background:${edu.bgAlt}">
   <div style="max-width:1200px;margin:0 auto;padding:0 3rem">
     <div class="edu-fade" style="text-align:center;margin-bottom:4rem">
       <p style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:${edu.accent};margin-bottom:1rem">Student Stories</p>
@@ -3267,15 +3412,14 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
     <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
       ${testimonials.map((t, i) => `
-      <div class="edu-fade edu-card" style="background:${i === 0 ? edu.accent : edu.bg};padding:3rem;border-radius:2px;position:relative">
-        <div style="font-family:'Merriweather',Georgia,serif;font-size:6rem;line-height:1;color:${i === 0 ? 'rgba(255,255,255,0.15)' : edu.accentLight};position:absolute;top:1rem;left:2rem;user-select:none;font-style:italic">"</div>
-        <div style="color:${i === 0 ? 'rgba(255,255,255,0.9)' : '#f59e0b'};font-size:0.85rem;letter-spacing:0.05em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
-        <p style="font-family:'Merriweather',Georgia,serif;font-size:1.05rem;font-style:italic;color:${i === 0 ? '#fff' : edu.text};line-height:1.75;margin-bottom:2rem;position:relative;z-index:1">"${t!.quote}"</p>
-        <div style="display:flex;align-items:center;gap:1rem;border-top:1px solid ${i === 0 ? 'rgba(255,255,255,0.2)' : edu.border};padding-top:1.25rem">
-          <div style="width:40px;height:40px;border-radius:50%;background:${i === 0 ? 'rgba(255,255,255,0.2)' : edu.accentLight};display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:1rem;color:${i === 0 ? '#fff' : edu.accent};flex-shrink:0">${t!.author[0]}</div>
+      <div class="edu-fade edu-card" style="background:#fff;border:1px solid ${edu.border};padding:3rem;border-radius:12px;position:relative">
+        <div style="color:${edu.accent};font-size:0.85rem;letter-spacing:0.05em;margin-bottom:1.5rem;position:relative;z-index:1">${'★'.repeat(t!.rating)}</div>
+        <p style="font-family:'Merriweather',Georgia,serif;font-size:1.05rem;font-style:italic;color:${edu.text};line-height:1.75;margin-bottom:2rem;position:relative;z-index:1">"${t!.quote}"</p>
+        <div style="display:flex;align-items:center;gap:1rem;border-top:1px solid ${edu.border};padding-top:1.25rem">
+          <div style="width:40px;height:40px;border-radius:50%;background:${edu.accentLight};display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:1rem;color:${edu.accent};flex-shrink:0">${t!.author[0]}</div>
           <div>
-            <div style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:600;color:${i === 0 ? '#fff' : edu.text}">${t!.author.split(',')[0]}</div>
-            <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${i === 0 ? 'rgba(255,255,255,0.6)' : edu.muted};margin-top:0.1rem">${t!.author.split(',')[1]?.trim() || 'Student'}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:600;color:${edu.text};text-transform:uppercase;letter-spacing:0.05em;font-size:0.75rem">${t!.author.split(',')[0]}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:${edu.muted};margin-top:0.1rem">${t!.author.split(',')[1]?.trim() || 'Student'}</div>
           </div>
         </div>
       </div>`).join('')}
@@ -3284,7 +3428,7 @@ ${buildStandardNav(businessName, content, navFlags)}
 </section>
 
 <!-- CONTACT: Warm, 2-col, friendly form -->
-<section id="contact" style="padding:7rem 0;background:${edu.bgWarm}">
+<section id="contact" style="padding:120px 0;background:${edu.bgWarm}">
   <div class="ms-grid" style="max-width:1200px;margin:0 auto;padding:0 3rem;display:grid;grid-template-columns:1fr 1.2fr;gap:6rem;align-items:start">
     <div class="edu-fade">
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
@@ -3397,6 +3541,8 @@ function buildProfessionalTemplate(data: TemplateData): string {
   const textMuted = '#555550'
   const borderCol = 'rgba(0,0,0,0.08)'
   const accent = primaryColor || '#b8975a'
+  const accentInk = ensureContrast(accent, '#ffffff', 4.5)
+  const statsBg = ensureContrast(accent, '#ffffff', 4.5)
   const heroAccent = accentOnDark(primaryColor, secondaryColor, '#b8975a')
 
   const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
@@ -3412,7 +3558,11 @@ function buildProfessionalTemplate(data: TemplateData): string {
       --text: ${textPrimary};
       --text-muted: ${textMuted};
       --border: ${borderCol};
-      --primary: ${accent};
+      --primary: ${accentInk};
+      --primary-raw: ${statsBg};
+      --on-photo: #ffffff;
+      --on-photo-muted: rgba(255,255,255,0.75);
+      --on-photo-border: rgba(255,255,255,0.15);
       --heading-font: 'Playfair Display', Georgia, serif;
       --body-font: 'DM Sans', sans-serif;
     }
@@ -3430,8 +3580,8 @@ function buildProfessionalTemplate(data: TemplateData): string {
 
     /* Custom cursor */
     body { cursor: none; }
-    #ms-cursor-dot { position:fixed;width:6px;height:6px;background:${accent};border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s; }
-    #ms-cursor-ring { position:fixed;width:36px;height:36px;border:1px solid ${accent};border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s; }
+    #ms-cursor-dot { position:fixed;width:6px;height:6px;background:${accentInk};border-radius:50%;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);transition:opacity 0.3s; }
+    #ms-cursor-ring { position:fixed;width:36px;height:36px;border:1px solid ${accentInk};border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s; }
 
     /* Reveal animations */
     .reveal { opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease; }
@@ -3451,7 +3601,7 @@ function buildProfessionalTemplate(data: TemplateData): string {
     .pro-accordion-body { max-height:0;overflow:hidden;transition:max-height 0.4s ease; }
     .pro-accordion-body.open { max-height:400px; }
     .pro-accordion-icon { width:28px;height:28px;border:1px solid ${borderCol};border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s,background 0.3s; }
-    .pro-accordion-trigger:hover .pro-accordion-icon { background:${accent};border-color:${accent}; }
+    .pro-accordion-trigger:hover .pro-accordion-icon { background:${accentInk};border-color:${accentInk}; }
   </style>
 
   <!-- Custom cursor -->
@@ -3470,9 +3620,9 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 2.5rem 7rem;width:100%">
       <!-- Eyebrow with flanking lines -->
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2rem">
-        <div style="width:32px;height:1px;background:${accent}"></div>
+        <div style="width:32px;height:1px;background:${heroAccent}"></div>
         <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${heroAccent};font-weight:500">${content.heroEyebrow}</span>
-        <div style="width:32px;height:1px;background:${accent}"></div>
+        <div style="width:32px;height:1px;background:${heroAccent}"></div>
       </div>
 
       <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(3rem,5.5vw,5.5rem);font-weight:400;color:#ffffff;line-height:1.08;margin-bottom:1.75rem;max-width:700px;letter-spacing:-0.01em" class="reveal">${content.tagline}</h1>
@@ -3480,24 +3630,24 @@ ${buildStandardNav(businessName, content, navFlags)}
       <p style="font-family:var(--body-font);font-size:1.05rem;color:rgba(255,255,255,0.8);max-width:480px;line-height:1.75;margin-bottom:3rem;font-weight:300" class="reveal reveal-delay-1">${content.heroSubtitle}</p>
 
       <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap" class="reveal reveal-delay-2">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.8);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:opacity 0.3s">${content.ctaSecondary} <span style="font-size:1.1rem">&#8594;</span></a>
+        <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accentInk};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
+        <a href="#services" style="font-family:var(--body-font);font-size:0.8rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--on-photo-muted);text-decoration:none;display:flex;align-items:center;gap:0.6rem;transition:opacity 0.3s">${content.ctaSecondary} <span style="font-size:1.1rem">&#8594;</span></a>
       </div>
     </div>
 
     <!-- Scroll indicator -->
     <div style="position:absolute;bottom:2.5rem;right:2.5rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem">
-      <div style="width:1px;height:48px;background:linear-gradient(to bottom,${accent},transparent);animation:scrollPulse 2s ease-in-out infinite"></div>
-      <span style="font-family:var(--body-font);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:${accent};writing-mode:vertical-rl">Scroll</span>
+      <div style="width:1px;height:48px;background:linear-gradient(to bottom,${heroAccent},transparent);animation:scrollPulse 2s ease-in-out infinite"></div>
+      <span style="font-family:var(--body-font);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:${heroAccent};writing-mode:vertical-rl">Scroll</span>
     </div>
   </section>
 
   <!-- ═══════════ STATS RIBBON ═══════════ -->
-  <section style="padding:0;background:${accent};overflow:hidden">
+  <section style="padding:0;background:${statsBg};overflow:hidden">
     <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 4)},1fr)">
       ${content.stats.slice(0, 4).map((s, i) => `
-      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(13,13,11,0.15);text-align:center${i === Math.min(content.stats.length, 4) - 1 ? ';border-right:none' : ''}">
-        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:${bg};line-height:1;margin-bottom:0.35rem">${s.value}</div>
+      <div style="padding:2.25rem 2rem;border-right:1px solid rgba(255,255,255,0.2);text-align:center${i === Math.min(content.stats.length, 4) - 1 ? ';border-right:none' : ''}">
+        <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.2rem;font-weight:700;color:#ffffff;line-height:1;margin-bottom:0.35rem">${s.value}</div>
         <div style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.85);font-weight:500">${s.label}</div>
       </div>`).join('')}
     </div>
@@ -3508,8 +3658,8 @@ ${buildStandardNav(businessName, content, navFlags)}
     <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
       <!-- Section label -->
       <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-        <div style="width:32px;height:1px;background:${accent}"></div>
-        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">Our Services</span>
+        <div style="width:32px;height:1px;background:${accentInk}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accentInk};font-weight:500">Our Services</span>
       </div>
       <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:400;color:${textPrimary};margin-bottom:4rem;max-width:560px;line-height:1.2" class="reveal">${content.servicesHeading}</h2>
 
@@ -3520,7 +3670,7 @@ ${buildStandardNav(businessName, content, navFlags)}
           <div class="pro-accordion-item">
             <button class="pro-accordion-trigger" onclick="(function(btn){var body=btn.nextElementSibling,icon=btn.querySelector('.pro-svc-icon'),isOpen=body.classList.contains('open');document.querySelectorAll('.pro-accordion-body').forEach(function(b){b.classList.remove('open')});document.querySelectorAll('.pro-svc-icon').forEach(function(ic){ic.textContent='+'});if(!isOpen){body.classList.add('open');icon.textContent='&#215;'}var idx=${i};document.querySelectorAll('.pro-svc-img').forEach(function(im,j){im.style.opacity=j===idx?'1':'0';im.style.transform=j===idx?'scale(1)':'scale(1.04)'});})(this)">
               <div style="display:flex;align-items:center;gap:1.5rem">
-                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:${accent};font-weight:400;opacity:0.7;min-width:20px">${String(i + 1).padStart(2, '0')}</span>
+                <span style="font-family:'Playfair Display',Georgia,serif;font-size:0.7rem;color:${accentInk};font-weight:400;opacity:0.7;min-width:20px">${String(i + 1).padStart(2, '0')}</span>
                 <span style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:400;color:${textPrimary}">${s.name}</span>
               </div>
               <div class="pro-accordion-icon pro-svc-icon" style="font-size:0.85rem;color:${textPrimary}">+</div>
@@ -3528,8 +3678,7 @@ ${buildStandardNav(businessName, content, navFlags)}
             <div class="pro-accordion-body${i === 0 ? ' open' : ''}">
               <div style="padding:0 0 1.75rem 2.8rem">
                 <p style="font-family:var(--body-font);font-size:0.95rem;color:${textMuted};line-height:1.8;margin-bottom:1.25rem">${s.description}</p>
-                ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem">${s.tags.map(t => `<span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.85rem;border:1px solid ${borderCol};color:${textMuted}">${t}</span>`).join('')}</div>` : ''}
-                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:${accent};text-decoration:none;font-weight:500">Enquire &#8594;</a>
+                <a href="#contact" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:${accentInk};text-decoration:none;font-weight:500">Enquire &#8594;</a>
               </div>
             </div>
           </div>`).join('')}
@@ -3554,11 +3703,11 @@ ${buildStandardNav(businessName, content, navFlags)}
 
       <!-- Left: Image with decorative offset border -->
       <div style="position:relative" class="reveal">
-        <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:1px solid ${accent};opacity:0.3;pointer-events:none"></div>
+        <div style="position:absolute;top:16px;left:16px;right:0;bottom:0;border:1px solid rgba(15,43,82,0.35);pointer-events:none;z-index:0"></div>
         <img src="${stockPool[5] || stockImages.about}" alt="" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;position:relative;z-index:1" />
         <!-- Accent badge -->
-        <div style="position:absolute;bottom:-1.5rem;right:-1.5rem;z-index:2;background:${accent};padding:1.25rem 1.75rem">
-          <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:${bg};line-height:1">${content.stats[0]?.value || '20+'}</div>
+        <div style="position:absolute;bottom:-1.25rem;right:-1.25rem;z-index:2;background:${statsBg};padding:1.25rem 1.75rem">
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.8rem;font-weight:700;color:#ffffff;line-height:1">${content.stats[0]?.value || '20+'}</div>
           <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-top:0.2rem">${content.stats[0]?.label || 'Years'}</div>
         </div>
       </div>
@@ -3566,8 +3715,8 @@ ${buildStandardNav(businessName, content, navFlags)}
       <!-- Right: Heading + text + stats grid -->
       <div>
         <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem">
-          <div style="width:32px;height:1px;background:${accent}"></div>
-          <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">About Us</span>
+          <div style="width:32px;height:1px;background:${accentInk}"></div>
+          <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accentInk};font-weight:500">About Us</span>
         </div>
         <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${textPrimary};line-height:1.2;margin-bottom:1.5rem" class="reveal">${content.aboutHeading}</h2>
         ${content.aboutMission ? `<p style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:${textPrimary};line-height:1.65;font-style:italic;margin-bottom:1.5rem;opacity:0.85" class="reveal">${content.aboutMission}</p>` : ''}
@@ -3577,7 +3726,7 @@ ${buildStandardNav(businessName, content, navFlags)}
         <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;padding-top:2.5rem;border-top:1px solid ${borderCol}">
           ${content.stats.slice(1, 5).map(s => `
           <div class="reveal">
-            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:${accent};line-height:1;margin-bottom:0.3rem">${s.value}</div>
+            <div style="font-family:'Playfair Display',Georgia,serif;font-size:2rem;font-weight:500;color:${accentInk};line-height:1;margin-bottom:0.3rem">${s.value}</div>
             <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;color:${textMuted};font-weight:400">${s.label}</div>
             ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.7rem;color:${textMuted};opacity:0.6;margin-top:0.15rem">${s.sublabel}</div>` : ''}
           </div>`).join('')}
@@ -3591,16 +3740,16 @@ ${buildStandardNav(businessName, content, navFlags)}
   <section style="padding:120px 0;background:${bg}">
     <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
       <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-        <div style="width:32px;height:1px;background:${accent}"></div>
-        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">How We Work</span>
+        <div style="width:32px;height:1px;background:${accentInk}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accentInk};font-weight:500">How We Work</span>
       </div>
       <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;color:${textPrimary};margin-bottom:5rem;max-width:500px;line-height:1.2" class="reveal">${content.stepsHeading || 'Our Approach'}</h2>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(content.processSteps.length, 4)},1fr);gap:3rem">
         ${content.processSteps.slice(0, 4).map((step, i) => `
         <div class="reveal reveal-delay-${i + 1}" style="position:relative">
           ${i < content.processSteps!.length - 1 ? `<div style="position:absolute;top:1.25rem;left:calc(100% + 1.5rem);width:calc(3rem - 1px);height:1px;background:${borderCol}"></div>` : ''}
-          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.5rem;font-weight:400;color:${accent};opacity:0.35;line-height:1;margin-bottom:1.25rem">${step.step.padStart ? step.step.padStart(2, '0') : step.step}</div>
-          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:${textPrimary};margin-bottom:0.75rem">${step.title}</h3>
+          <div style="font-family:'Playfair Display',Georgia,serif;font-size:2.6rem;font-weight:400;color:${accentInk};font-style:italic;line-height:1;margin-bottom:0.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(0,0,0,0.12)">${step.step.padStart ? step.step.padStart(2, '0') : step.step}</div>
+          <h3 style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:500;color:${textPrimary};margin-bottom:0.75rem;margin-top:1rem">${step.title}</h3>
           <p style="font-family:var(--body-font);font-size:0.85rem;color:${textMuted};line-height:1.8;font-weight:300">${step.description}</p>
         </div>`).join('')}
       </div>
@@ -3611,21 +3760,21 @@ ${buildStandardNav(businessName, content, navFlags)}
   <section style="padding:120px 0;background:${bgAlt}">
     <div style="max-width:1240px;margin:0 auto;padding:0 2.5rem">
       <div class="reveal" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-        <div style="width:32px;height:1px;background:${accent}"></div>
-        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accent};font-weight:500">Client Testimonials</span>
+        <div style="width:32px;height:1px;background:${accentInk}"></div>
+        <span style="font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:${accentInk};font-weight:500">Client Testimonials</span>
       </div>
 
       ${content.testimonial ? `
       <!-- Large feature testimonial -->
       <div class="reveal" style="margin-bottom:4rem;padding-bottom:4rem;border-bottom:1px solid ${borderCol}">
         <div style="position:relative;padding-left:4rem">
-          <div style="position:absolute;top:-1rem;left:0;font-family:'Playfair Display',Georgia,serif;font-size:6rem;line-height:1;color:${accent};opacity:0.3;font-style:italic">&ldquo;</div>
+          <div style="position:absolute;top:-1rem;left:0;font-family:'Playfair Display',Georgia,serif;font-size:6rem;line-height:1;color:${accentInk};opacity:0.3;font-style:italic">&ldquo;</div>
           <p style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:400;color:${textPrimary};line-height:1.55;font-style:italic;margin-bottom:1.75rem">${content.testimonial.quote}</p>
           <div style="display:flex;align-items:center;gap:1.25rem">
-            <div style="width:1px;height:36px;background:${accent}"></div>
+            <div style="width:1px;height:36px;background:${accentInk}"></div>
             <div>
               <div style="font-family:var(--body-font);font-size:0.85rem;font-weight:600;color:${textPrimary};letter-spacing:0.04em">${content.testimonial.author}</div>
-              ${content.testimonial.rating ? `<div style="color:${accent};font-size:0.75rem;margin-top:0.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+              ${content.testimonial.rating ? `<div style="color:${accentInk};font-size:0.75rem;margin-top:0.25rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
             </div>
           </div>
         </div>
@@ -3634,10 +3783,9 @@ ${buildStandardNav(businessName, content, navFlags)}
       <!-- Secondary testimonials grid -->
       <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2rem">
         ${fallbackTestimonials.map(t => `
-        <div class="reveal" style="background:${cardBg};border:1px solid ${borderCol};padding:2.5rem">
-          <div style="color:${accent};font-size:0.75rem;margin-bottom:1.25rem">${'&#9733;'.repeat(t.rating)}</div>
-          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:${textPrimary};line-height:1.7;font-style:italic;margin-bottom:1.5rem">"${t.quote}"</p>
-          <div style="font-family:var(--body-font);font-size:0.8rem;color:${textMuted};font-weight:500;letter-spacing:0.04em">— ${t.author}</div>
+        <div class="reveal" style="padding-top:2rem;border-top:1px solid rgba(0,0,0,0.12)">
+          <p style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:#333333;line-height:1.7;font-style:italic;margin-bottom:1rem">"${t.quote}"</p>
+          <div style="font-family:var(--body-font);font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:#777777;font-weight:400">— ${t.author}</div>
         </div>`).join('')}
       </div>
     </div>
@@ -3646,9 +3794,9 @@ ${buildStandardNav(businessName, content, navFlags)}
   <!-- ═══════════ FULL-BLEED IMAGE BREAK ═══════════ -->
   <section style="height:45vh;overflow:hidden;position:relative">
     <img src="${stockPool[6] || heroImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
-    <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(13,13,11,0.6),rgba(13,13,11,0.1))"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,14,20,0.82) 0%,rgba(10,14,20,0.55) 55%,rgba(10,14,20,0.35) 100%)"></div>
     <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 4rem">
-      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:400;color:#fff;line-height:1.2;font-style:italic;max-width:600px">${content.contactHeading}</h2>
+      <h2 style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:400;color:var(--on-photo);line-height:1.2;font-style:italic;max-width:600px">${content.contactHeading}</h2>
     </div>
   </section>
 
@@ -3659,25 +3807,25 @@ ${buildContactSection(content, locationInfo)}
     <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem">
       <div>
         <div style="font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:400;color:${textPrimary};margin-bottom:0.5rem;letter-spacing:0.02em">${businessName}</div>
-        <div style="width:32px;height:1px;background:${accent};margin-bottom:1.25rem"></div>
+        <div style="width:32px;height:1px;background:${accentInk};margin-bottom:1.25rem"></div>
         <p style="font-family:var(--body-font);font-size:0.85rem;color:${textMuted};line-height:1.75;max-width:280px;font-weight:400">${content.heroSubtitle}</p>
       </div>
       <div>
-        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Navigate</div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentInk};font-weight:600;margin-bottom:1.5rem">Navigate</div>
         <a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">Services</a>
         <a href="#about" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">About Us</a>
         <a href="#contact" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;transition:color 0.2s;font-weight:400">Contact</a>
       </div>
       <div>
-        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Services</div>
-        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">${s.tags?.[0] || s.name}</a>`).join('')}
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentInk};font-weight:600;margin-bottom:1.5rem">Services</div>
+        ${content.services.slice(0, 4).map(s => `<a href="#services" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">${s.name}</a>`).join('')}
       </div>
       <div>
-        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accent};font-weight:600;margin-bottom:1.5rem">Legal</div>
+        <div style="font-family:var(--body-font);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentInk};font-weight:600;margin-bottom:1.5rem">Legal</div>
         <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Privacy Policy</a>
         <a href="#" style="display:block;font-family:var(--body-font);font-size:0.85rem;color:${textPrimary};text-decoration:none;margin-bottom:0.75rem;font-weight:400">Terms of Service</a>
         <div style="margin-top:2rem">
-          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem;background:${accent};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
+          <a href="#contact" style="display:inline-block;font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;padding:0.75rem;background:${accentInk};color:#fff;text-decoration:none;transition:opacity 0.3s">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
@@ -3738,6 +3886,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
   // On a light surface the dark brand primary is the readable accent; accentOnDark
   // exists for the inverse case and would lift this into an unreadable pastel.
   const accent = primaryColor || '#3730a3'
+  const accentInk = ensureContrast(accent, bg, 4.5)
   const accentGlow = `${accent}14`
 
   const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
@@ -3827,7 +3976,7 @@ function buildTechDigitalTemplate(data: TemplateData): string {
       font-size: 0.65rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: ${accent};
+      color: ${accentInk};
     }
 
     /* Typewriter cursor blink */
@@ -3840,6 +3989,11 @@ function buildTechDigitalTemplate(data: TemplateData): string {
     /* Accordion */
     .tech-accord-body { max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
     .tech-accord-body.open { max-height:300px; }
+
+    /* Contact form override */
+    #contact input, #contact textarea { background:#fff !important;border:1px rgba(0,0,0,0.15) !important;border-radius:10px !important;padding:0.9rem 1rem !important; }
+    #contact button { background:${accentInk} !important;color:#fff !important; }
+    #contact h2::before { content:'// ';font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:${accentInk};display:block;margin-bottom:1rem; }
 
     @media(max-width:768px){
       .td-feat-text{order:1!important}
@@ -3870,8 +4024,8 @@ ${buildStandardNav(businessName, content, navFlags)}
 
     <div style="position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:0 2.5rem;text-align:center;width:100%">
 
-      ${content.badge ? `<div class="reveal" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1.25rem;border:1px solid ${borderCol};border-radius:999px;color:${accent};margin-bottom:2.5rem">
-        <span style="width:6px;height:6px;border-radius:50%;background:${accent};animation:blink 1.5s ease-in-out infinite"></span>
+      ${content.badge ? `<div class="reveal" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.5rem 1.25rem;border:1px solid ${borderCol};border-radius:999px;color:${accentInk};margin-bottom:2.5rem">
+        <span style="width:6px;height:6px;border-radius:50%;background:${accentInk};animation:blink 1.5s ease-in-out infinite"></span>
         ${content.badge}
       </div>` : ''}
 
@@ -3892,14 +4046,13 @@ ${buildStandardNav(businessName, content, navFlags)}
     </div>
   </section>
 
-  <!-- ═══════════ STATS MARQUEE ═══════════ -->
-  <div style="position:relative;z-index:1;padding:1.5rem 0;border-top:1px solid ${borderCol};border-bottom:1px solid ${borderCol};background:${bgAlt};overflow:hidden">
-    <div style="display:flex;align-items:center;gap:5rem;animation:marquee 20s linear infinite;white-space:nowrap">
-      ${[...content.stats, ...content.stats, ...content.stats].map(s => `
-      <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-        <span style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:${accent}">${s.value}</span>
-        <span style="font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:${textMuted}">${s.label}</span>
-        <span style="color:${borderCol};font-size:1.2rem">&#47;</span>
+  <!-- ═══════════ STATS BAND ═══════════ -->
+  <div style="position:relative;z-index:1;padding:2rem 0;border-top:1px solid ${borderCol};border-bottom:1px solid ${borderCol};background:${bgAlt}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2.5rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center">
+      ${content.stats.slice(0, 4).map(s => `
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:${accent};letter-spacing:-0.03em;line-height:1;margin-bottom:0.3rem">${s.value}</div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:${textMuted}">${s.label}</div>
       </div>`).join('')}
     </div>
   </div>
@@ -3915,14 +4068,13 @@ ${buildStandardNav(businessName, content, navFlags)}
         <a href="#contact" class="reveal" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${accent};text-decoration:none;display:flex;align-items:center;gap:0.5rem;flex-shrink:0">All Services <span style="font-size:1rem">&#8594;</span></a>
       </div>
 
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem">
-        ${content.services.slice(0, Math.min(content.services.length, 6)).map((s, i) => `
-        <div class="tech-card reveal reveal-delay-${(i % 3) + 1}">
-          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${textMuted};letter-spacing:0.1em;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem">
+        ${content.services.slice(0, Math.min(content.services.length, 4)).map((s, i) => `
+        <div class="tech-card reveal reveal-delay-${(i % 2) + 1}" style="background:transparent;border:1px solid ${borderCol};padding:2rem;border-radius:14px">
+          <div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:${accentInk};letter-spacing:0.1em;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
           <div style="font-size:1.75rem;margin-bottom:1.25rem;line-height:1">${s.icon || ['⚡', '◈', '⊕', '◉', '⬡', '◇'][i % 6]}</div>
           <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:600;color:${textPrimary};margin-bottom:0.75rem;letter-spacing:-0.01em">${s.name}</h3>
-          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;color:${textMuted};line-height:1.7;margin-bottom:1.5rem;font-weight:300">${s.description}</p>
-          ${s.tags && s.tags.length > 0 ? `<div style="display:flex;gap:0.5rem;flex-wrap:wrap">${s.tags.map(t => `<span style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;padding:0.3rem 0.7rem;background:rgba(20,26,54,0.05);border:1px solid ${borderCol};border-radius:4px;color:${accent}">${t}</span>`).join('')}</div>` : ''}
+          <p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;color:${textMuted};line-height:1.7;font-weight:300">${s.description}</p>
         </div>`).join('')}
       </div>
     </div>
@@ -3978,9 +4130,10 @@ ${buildStandardNav(businessName, content, navFlags)}
         <!-- Stats grid -->
         <div class="ms-grid td-stats-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding-top:3rem">
           ${content.stats.slice(0, 4).map(s => `
-          <div class="tech-card reveal">
-            <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:${accent};letter-spacing:-0.03em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
-            <div class="mono-label" style="color:${textMuted};font-size:0.6rem">${s.label}</div>
+          <div class="reveal" style="position:relative;padding-top:1.5rem">
+            <div style="position:absolute;top:0;left:0;width:32px;height:2px;background:${accentInk}"></div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:${accentInk};letter-spacing:-0.03em;line-height:1;margin-bottom:0.5rem">${s.value}</div>
+            <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:${textMuted};letter-spacing:0.1em;text-transform:uppercase">${s.label}</div>
             ${s.sublabel ? `<div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:${textMuted};opacity:0.5;margin-top:0.25rem">${s.sublabel}</div>` : ''}
           </div>`).join('')}
         </div>
@@ -3994,9 +4147,9 @@ ${buildStandardNav(businessName, content, navFlags)}
       <div class="ms-flex" style="display:flex;align-items:start;gap:0">
         ${content.processSteps.slice(0, 4).map((step, i, arr) => `
         <div class="reveal reveal-delay-${i + 1}" style="flex:1;text-align:center;padding:0 1.5rem;position:relative">
-          ${i < arr.length - 1 ? `<div style="position:absolute;top:2rem;left:calc(50% + 2.5rem);right:calc(-50% + 2.5rem);height:1px;background:linear-gradient(to right,${accent}60,${accent}20)"></div>` : ''}
-          <div style="width:64px;height:64px;border-radius:50%;border:1px solid ${accent};display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;position:relative;z-index:1;background:${bg}">
-            <span style="font-family:'Space Mono',monospace;font-size:0.8rem;color:${accent};font-weight:700">${String(i + 1).padStart(2, '0')}</span>
+          ${i < arr.length - 1 ? `<div style="position:absolute;top:2rem;left:calc(50% + 2.5rem);right:calc(-50% + 2.5rem);height:1px;background:linear-gradient(to right,${accentInk}60,${accentInk}20);background:rgba(0,0,0,0.15)"></div>` : ''}
+          <div style="width:64px;height:64px;border-radius:50%;border:1px solid ${accentInk};display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;position:relative;z-index:1;background:${bg}">
+            <span style="font-family:'Space Mono',monospace;font-size:0.8rem;color:${accentInk};font-weight:700">${String(i + 1).padStart(2, '0')}</span>
           </div>
           <h3 style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;color:${textPrimary};margin-bottom:0.6rem;letter-spacing:-0.01em">${step.title}</h3>
           <p style="font-family:'Space Grotesk',sans-serif;font-size:0.82rem;color:${textMuted};line-height:1.7;font-weight:300">${step.description}</p>
@@ -4062,7 +4215,6 @@ ${buildFooter(businessName, content, 'dark')}
 
   <style>
     @keyframes orbPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6} 50%{transform:translate(-50%,-50%) scale(1.1);opacity:1} }
-    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
   </style>
 
   <script>
@@ -4108,6 +4260,8 @@ function buildTradesTemplate(data: TemplateData): string {
   const trText = '#2a2620'
   const trMuted = '#7a7068'
   const trAccent = accentOnDark(primaryColor, secondaryColor, '#c8480a')
+  const trCtaBg = ensureContrast(trAccent, '#ffffff', 4.5)
+  const trAccentInk = ensureContrast(trAccent, '#f9f7f4', 3.0)
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
@@ -4125,6 +4279,9 @@ function buildTradesTemplate(data: TemplateData): string {
       --border: rgba(0,0,0,0.08);
       --heading-font: 'Oswald', sans-serif;
       --body-font: 'Inter', sans-serif;
+      --on-photo: #fff;
+      --on-photo-muted: rgba(255,255,255,0.65);
+      --on-photo-border: rgba(255,255,255,0.12);
     }
     body::before {
       content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.025;
@@ -4142,7 +4299,7 @@ function buildTradesTemplate(data: TemplateData): string {
     .tr-fade2 { animation: fadeUp 0.9s 0.2s ease both; }
     .tr-fade3 { animation: fadeUp 0.9s 0.4s ease both; }
     .tr-tag { display:inline-block; font-family:'Inter',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.75rem; border:1px solid rgba(0,0,0,0.18); border-radius:2px; color:${trMuted}; }
-    .tr-cta-primary { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:${trAccent}; color:#fff; text-decoration:none; transition:opacity 0.25s; }
+    .tr-cta-primary { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:${trCtaBg}; color:#fff; text-decoration:none; transition:opacity 0.25s; }
     .tr-cta-primary:hover { opacity:0.88; }
     .tr-cta-ghost { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Inter',sans-serif; font-size:0.875rem; font-weight:600; letter-spacing:0.04em; padding:0.9rem 2.25rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.55); text-decoration:none; transition:border-color 0.25s; }
     .tr-cta-ghost:hover { border-color:#fff; }
@@ -4172,10 +4329,10 @@ function buildTradesTemplate(data: TemplateData): string {
     <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 2rem 7rem;width:100%">
       <div class="tr-fade1" style="display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem">
         <div style="width:36px;height:2px;background:${trAccent}"></div>
-        <span style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">${content.heroEyebrow}</span>
+        <span style="font-family:'Inter',sans-serif;font-size:0.75rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--on-photo-muted)">${content.heroEyebrow}</span>
       </div>
-      <h1 class="tr-fade2" style="font-family:'Oswald',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:#fff;line-height:1.0;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:1.5rem;max-width:820px">${content.tagline}</h1>
-      <p class="tr-fade3" style="font-family:'Inter',sans-serif;font-size:1.05rem;color:rgba(255,255,255,0.72);max-width:540px;line-height:1.75;margin-bottom:2.5rem">${content.heroSubtitle}</p>
+      <h1 class="tr-fade2" style="font-family:'Oswald',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:700;color:var(--on-photo);line-height:1.0;letter-spacing:0.01em;text-transform:uppercase;margin-bottom:1.5rem;max-width:820px">${content.tagline}</h1>
+      <p class="tr-fade3" style="font-family:'Inter',sans-serif;font-size:1.05rem;color:var(--on-photo-muted);max-width:540px;line-height:1.75;margin-bottom:2.5rem">${content.heroSubtitle}</p>
       <div style="display:flex;gap:1rem;flex-wrap:wrap">
         <a href="#contact" class="tr-cta-primary">${content.ctaPrimary} &rarr;</a>
         <a href="#services" class="tr-cta-ghost">${content.ctaSecondary || 'See Our Work'}</a>
@@ -4190,7 +4347,7 @@ function buildTradesTemplate(data: TemplateData): string {
       ${content.stats.slice(0, 4).map((s, i) => `
       <div style="padding:2.5rem 1.5rem;${i < 3 ? 'border-right:1px solid rgba(255,255,255,0.06)' : ''}">
         <div style="font-family:'Oswald',sans-serif;font-size:2.5rem;font-weight:700;color:${trAccent};line-height:1;margin-bottom:0.35rem">${s.value}</div>
-        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.08em">${s.label}</div>
+        <div style="font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:500;color:#b8b4ac;text-transform:uppercase;letter-spacing:0.08em">${s.label}</div>
         ${s.sublabel ? `<div style="font-family:'Inter',sans-serif;font-size:0.72rem;color:rgba(255,255,255,0.3);margin-top:0.2rem">${s.sublabel}</div>` : ''}
       </div>`).join('')}
     </div>
@@ -4198,7 +4355,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   // SERVICES — editorial two-column grid, numbered, with image
   const servicesSection = `
-  <section id="services" style="padding:100px 2rem;background:${trBg}">
+  <section id="services" style="padding:120px 2rem;background:${trBg}">
     <div style="max-width:1240px;margin:0 auto">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:4rem;flex-wrap:wrap;gap:1.5rem">
         <div>
@@ -4212,16 +4369,11 @@ function buildTradesTemplate(data: TemplateData): string {
       </div>
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:${trBg}">
         ${content.services.slice(0, 6).map((s, i) => `
-        <div class="tr-service-card tr-reveal" style="background:${trBg};padding:2.5rem 2rem;position:relative;overflow:hidden">
-          <span class="tr-step-num tr-step-num-el">${String(i + 1).padStart(2, '0')}</span>
-          <div style="margin-bottom:1.25rem">
-            <span style="font-family:'Inter',sans-serif;font-size:1.5rem">${mapIcon(s.icon, i)}</span>
-          </div>
+        <div class="tr-service-card tr-reveal" style="background:${trBg};padding:2.5rem 2rem;position:relative">
+          <div style="border-top:2px solid ${trAccentInk};width:32px;margin-bottom:0.625rem"></div>
+          <div style="font-family:'Oswald',sans-serif;font-size:0.8rem;letter-spacing:0.14em;color:${trAccentInk};font-weight:600;text-transform:uppercase;margin-bottom:0.625rem">${String(i + 1).padStart(2, '0')}</div>
           <h3 style="font-family:'Oswald',sans-serif;font-size:1.3rem;font-weight:600;color:${trText};text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.75rem">${s.name}</h3>
-          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:${trMuted};line-height:1.75;margin-bottom:1.25rem">${s.description}</p>
-          <div style="display:flex;gap:0.4rem;flex-wrap:wrap">
-            ${s.tags.slice(0, 2).map(t => `<span class="tr-tag">${t}</span>`).join('')}
-          </div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.875rem;color:${trMuted};line-height:1.75">${s.description}</p>
         </div>`).join('')}
       </div>
     </div>
@@ -4234,19 +4386,19 @@ function buildTradesTemplate(data: TemplateData): string {
     description: s.description,
   }))
   const processSection = `
-  <section style="padding:100px 2rem;background:${trDark}">
+  <section style="padding:120px 2rem;background:${trDark}">
     <div style="max-width:1240px;margin:0 auto">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
         <div style="width:28px;height:2px;background:${trAccent}"></div>
         <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4)">How It Works</span>
       </div>
       <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:#fff;text-transform:uppercase;margin-bottom:4rem">${content.stepsHeading || 'Our Process'}</h2>
-      <div class="ms-flex" style="display:flex;gap:0;align-items:stretch">
+      <div class="ms-flex" style="display:flex;gap:0;align-items:stretch;position:relative;border-top:1px solid rgba(255,255,255,0.12)">
         ${processSteps.slice(0, 4).map((step, i) => `
         <div style="flex:1;padding:2.5rem 2rem;border-left:1px solid rgba(255,255,255,0.08);${i === 0 ? 'border-left:none' : ''}">
-          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:${trAccent};opacity:0.4;line-height:1;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
+          <div style="font-family:'Oswald',sans-serif;font-size:3.5rem;font-weight:700;color:${trAccent};line-height:1;margin-bottom:1.5rem">${String(i + 1).padStart(2, '0')}</div>
           <h3 style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.75rem">${step.title}</h3>
-          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.75">${step.description}</p>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#c7c3ba;line-height:1.75">${step.description}</p>
         </div>`).join('')}
       </div>
     </div>
@@ -4255,7 +4407,7 @@ function buildTradesTemplate(data: TemplateData): string {
   // ABOUT — asymmetric: image 60%, text 40% with offset border detail
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
-  <section id="about" style="padding:100px 2rem;background:${trBg}">
+  <section id="about" style="padding:120px 2rem;background:${trBg}">
     <div class="ms-grid" style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr 1fr;gap:5rem;align-items:center">
       <div style="position:relative">
         <div style="position:absolute;top:-20px;left:-20px;right:20px;bottom:20px;border:2px solid ${trAccent};opacity:0.25;pointer-events:none"></div>
@@ -4288,21 +4440,21 @@ function buildTradesTemplate(data: TemplateData): string {
 
   // PROJECT SHOWCASE — full-width image grid, 3 columns with hover caption overlay
   const projectSection = `
-  <section style="padding:100px 2rem;background:${trAlt}">
+  <section style="padding:120px 2rem;background:${trAlt}">
     <div style="max-width:1240px;margin:0 auto">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
         <div style="width:28px;height:2px;background:${trAccent}"></div>
         <span style="font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:${trMuted}">Recent Work</span>
       </div>
       <h2 style="font-family:'Oswald',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:${trText};text-transform:uppercase;margin-bottom:3rem">${content.galleryHeading || 'Projects'}</h2>
-      <div class="ms-grid tr-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:rgba(0,0,0,0.07)">
+      <div class="ms-grid tr-gallery" style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:240px;gap:1.5px;background:rgba(0,0,0,0.07)">
         ${serviceImgs.slice(0, 6).map((img, i) => `
-        <div style="position:relative;overflow:hidden;background:${trDark}">
-          <div class="ms-img" style="height:300px;overflow:hidden">
+        <div style="position:relative;overflow:hidden;background:${trDark};${i === 0 ? 'grid-column:span 2;grid-row:span 2' : ''}">
+          <div class="ms-img" style="height:100%;overflow:hidden">
             <img src="${img || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.07)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
-          <div style="position:absolute;bottom:0;left:0;right:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.75));pointer-events:none">
-            <div style="font-family:'Oswald',sans-serif;font-size:0.9rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.05em">${content.projectCaptions?.[i] || content.services[i % content.services.length]?.name || 'Project'}</div>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:1rem 1.25rem;background:rgba(15,14,12,0.82);pointer-events:none">
+            <div style="font-family:'Oswald',sans-serif;font-size:0.72rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.12em">${content.projectCaptions?.[i] || content.services[i % content.services.length]?.name || 'Project'}</div>
           </div>
         </div>`).join('')}
       </div>
@@ -4311,7 +4463,7 @@ function buildTradesTemplate(data: TemplateData): string {
 
   // TESTIMONIALS — dark bg, 3 cards, large italic quote
   const testimonialSection = content.testimonial ? `
-  <section id="testimonials" style="padding:100px 2rem;background:${trDark}">
+  <section id="testimonials" style="padding:120px 2rem;background:${trDark}">
     <div style="max-width:1240px;margin:0 auto">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem">
         <div style="width:28px;height:2px;background:${trAccent}"></div>
@@ -4321,11 +4473,11 @@ function buildTradesTemplate(data: TemplateData): string {
       <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,0.06)">
         ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
         <div style="background:${trDark};padding:2.5rem 2rem">
-          <div style="font-size:3rem;line-height:1;color:${trAccent};opacity:0.5;margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
-          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.75rem">${t.quote}</p>
+          <div style="font-size:3rem;line-height:1;color:${trAccent};margin-bottom:1rem;font-family:Georgia,serif">&ldquo;</div>
+          <p style="font-family:'Inter',sans-serif;font-size:0.925rem;font-style:italic;color:#e8e4dc;line-height:1.8;margin-bottom:1.75rem">${t.quote}</p>
           <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:1.25rem">
             <div style="font-family:'Oswald',sans-serif;font-size:0.95rem;font-weight:600;color:#fff;text-transform:uppercase;letter-spacing:0.04em">${t.author.split(',')[0]}</div>
-            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:rgba(255,255,255,0.35);margin-top:0.2rem">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
+            <div style="font-family:'Inter',sans-serif;font-size:0.78rem;color:#b8b4ac;margin-top:0.2rem">${t.author.split(',')[1]?.trim() || 'Customer'}</div>
             <div style="color:${trAccent};font-size:0.8rem;margin-top:0.4rem">${'&#9733;'.repeat(t.rating || 5)}</div>
           </div>
         </div>`).join('')}
@@ -4484,6 +4636,8 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   const hmText = '#1e2920'
   const hmMuted = '#6b7d6c'
   const hmAccent = primaryColor || '#3d6b42'
+  const hmCtaBg = ensureContrast(hmAccent, '#ffffff', 4.5)
+  const hmAccentInk = ensureContrast(hmAccent, '#faf7f2', 4.5)
   const hmWarm = '#f5f0e8'
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
@@ -4517,7 +4671,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     .hm-card { transition:transform 0.35s ease, box-shadow 0.35s ease; }
     .hm-card:hover { transform:translateY(-5px); box-shadow:0 16px 48px rgba(0,0,0,0.1); }
     .hm-chip { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Poppins',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; padding:0.35rem 0.9rem; border-radius:999px; background:rgba(61,107,66,0.1); color:${hmAccent}; }
-    .hm-pill-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; padding:0.9rem 2.25rem; border-radius:999px; background:${hmAccent}; color:#fff; text-decoration:none; transition:background 0.25s; }
+    .hm-pill-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; padding:0.9rem 2.25rem; border-radius:999px; background:${hmCtaBg}; color:#fff; text-decoration:none; transition:background 0.25s; }
     .hm-pill-cta:hover { background:${hmDeep}; }
     .hm-pill-ghost { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Poppins',sans-serif; font-size:0.875rem; font-weight:600; padding:0.9rem 2.25rem; border-radius:999px; background:transparent; color:#fff; border:2px solid rgba(255,255,255,0.5); text-decoration:none; transition:border-color 0.25s; }
     .hm-pill-ghost:hover { border-color:#fff; }
@@ -4546,14 +4700,14 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <h1 class="hm-fade2" style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:400;font-style:italic;color:${hmText};line-height:1.15;margin-bottom:1.25rem;max-width:480px">${content.tagline}</h1>
       <p class="hm-fade3" style="font-family:'Poppins',sans-serif;font-size:0.975rem;color:${hmMuted};line-height:1.8;max-width:420px;margin-bottom:2.25rem">${content.heroSubtitle}</p>
       <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:3rem">
-        <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
+        <a href="#contact" class="hm-pill-cta" style="background:${hmCtaBg}">${content.ctaPrimary}</a>
         <a href="#services" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:0.9rem 2.25rem;border-radius:999px;background:transparent;color:${hmText};border:2px solid rgba(0,0,0,0.15);text-decoration:none">${content.ctaSecondary || 'Our Services'}</a>
       </div>
       <!-- mini trust strip -->
       <div style="display:flex;gap:2rem;flex-wrap:wrap">
         ${content.stats.slice(0, 3).map(s => `
         <div>
-          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.6rem;color:${hmAccent}">${s.value}</div>
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.6rem;color:${hmAccentInk}">${s.value}</div>
           <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:500;color:${hmMuted};text-transform:uppercase;letter-spacing:0.06em">${s.label}</div>
         </div>`).join('')}
       </div>
@@ -4561,12 +4715,12 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <div style="position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;border:60px solid rgba(61,107,66,0.07);pointer-events:none"></div>
     </div>
     <!-- Right: Ken Burns photo -->
-    <div class="hm-hero-img-col ms-hero-photo" style="position:relative;overflow:hidden">
+    <div class="hm-hero-img-col ms-hero-photo" style="position:relative;overflow:visible">
       <img src="${heroImg}" alt="" class="hm-hero-bg" style="width:100%;height:100%;object-fit:cover" />
       <div style="position:absolute;inset:0;background:linear-gradient(90deg,${hmSage} 0%,transparent 25%)"></div>
       <!-- floating badge -->
-      <div style="position:absolute;top:2.5rem;right:2.5rem;background:#fff;border-radius:16px;padding:1rem 1.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.12);display:flex;align-items:center;gap:0.75rem">
-        <div style="width:40px;height:40px;border-radius:50%;background:${hmAccent};display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff">&#10003;</div>
+      <div style="position:absolute;bottom:1.5rem;right:1.5rem;background:#fff;border-radius:16px;padding:1rem 1.5rem;box-shadow:0 8px 32px rgba(0,0,0,0.12);display:flex;align-items:center;gap:0.75rem;z-index:10">
+        <div style="width:40px;height:40px;border-radius:50%;background:${hmCtaBg};display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff">&#10003;</div>
         <div>
           <div style="font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;color:${hmText}">${content.badge || 'Trusted & Insured'}</div>
           <div style="font-family:'Poppins',sans-serif;font-size:0.7rem;color:${hmMuted}">${content.stats[3]?.value || '500+'} happy clients</div>
@@ -4577,26 +4731,23 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 
   // SERVICES — card grid with photo tops, organic rounded corners
   const servicesSection = `
-  <section id="services" style="padding:100px 2rem;background:${hmCream}">
+  <section id="services" style="padding:120px 2rem;background:${hmCream}">
     <div style="max-width:1200px;margin:0 auto">
       <div style="text-align:center;margin-bottom:4rem">
         <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">${content.heroEyebrow}</span>
         <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin:0.5rem 0 1rem">${content.servicesHeading}</h2>
         <p style="font-family:'Poppins',sans-serif;font-size:0.95rem;color:${hmMuted};max-width:520px;margin:0 auto;line-height:1.75">${content.aboutMission || content.heroSubtitle}</p>
       </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem">
         ${content.services.slice(0, 4).map((s, i) => `
-        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;overflow:hidden;border:1px solid rgba(0,0,0,0.05)">
-          <div class="ms-img" style="height:195px;overflow:hidden;position:relative">
+        <div class="hm-card hm-reveal" style="background:transparent;overflow:visible;border:none;display:flex;flex-direction:column;padding-left:2rem;border-left:${i === 0 ? 'none' : '1px solid rgba(0,0,0,0.08)'}">
+          <div class="ms-img" style="width:100%;height:180px;overflow:hidden;position:relative;border-radius:10px;margin-bottom:1.25rem">
             <img src="${serviceImgs[i] || stockPool[_pi++]}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover" />
-            <div style="position:absolute;top:1rem;left:1rem">
-              <span class="hm-chip" style="background:rgba(255,255,255,0.9);color:${hmAccent};backdrop-filter:blur(8px)">${s.tags?.[0] || ''}</span>
-            </div>
           </div>
-          <div style="padding:1.5rem">
-            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.15rem;color:${hmText};margin-bottom:0.6rem">${s.name}</h3>
+          <div style="padding:0">
+            <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.25rem;color:${hmText};margin-bottom:0.6rem">${s.name}</h3>
             <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmMuted};line-height:1.75;margin-bottom:1.25rem">${s.description}</p>
-            <a href="#contact" style="font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:600;color:${hmAccent};text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem">Get a Quote &rarr;</a>
+            <a href="#contact" style="font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:600;color:${hmAccentInk};text-decoration:none;display:inline-flex;align-items:center;gap:0.35rem">Get a Quote &rarr;</a>
           </div>
         </div>`).join('')}
       </div>
@@ -4614,27 +4765,24 @@ function buildHomeServicesTemplate(data: TemplateData): string {
     </div>
   </section>`
 
-  // HOW IT WORKS — horizontal steps, warm background, friendly icons
+  // HOW IT WORKS — horizontal steps with dotted line and step numbers
   const processSteps = content.processSteps || content.services.slice(0, 3).map((s, i) => ({
     step: String(i + 1),
     title: s.name,
     description: s.description,
   }))
-  const stepEmoji = ['&#128222;', '&#128203;', '&#127968;', '&#10003;']
   const processSection = `
-  <section style="padding:90px 2rem;background:${hmWarm}">
+  <section style="padding:120px 2rem;background:${hmWarm}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Simple Process</span>
       <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin-bottom:4rem">${content.stepsHeading || 'How It Works'}</h2>
-      <div class="ms-flex" style="display:flex;align-items:flex-start;gap:0">
-        ${processSteps.slice(0, 4).map((step, i) => `${i > 0 ? `
-        <div class="ms-arrow" style="flex:0 0 48px;display:flex;align-items:center;justify-content:center;padding-top:2rem">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="${hmMuted}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>` : ''}
-        <div style="flex:1;padding:2.5rem 1.5rem;background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,0.06);text-align:center">
-          <div style="width:64px;height:64px;border-radius:50%;background:${hmSage};display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.6rem">${stepEmoji[i]}</div>
-          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:0.85rem;color:${hmAccent};font-style:italic;margin-bottom:0.25rem">Step ${step.step}</div>
-          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.15rem;color:${hmText};margin-bottom:0.6rem">${step.title}</h3>
+      <div class="ms-flex" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;align-items:start;position:relative">
+        <!-- dotted line -->
+        <div style="position:absolute;top:3.5rem;left:0;right:0;height:2px;border-top:2px dotted rgba(0,0,0,0.18);z-index:0;pointer-events:none"></div>
+        ${processSteps.slice(0, 3).map((step, i) => `
+        <div style="text-align:center;position:relative;z-index:1">
+          <div style="font-family:'DM Serif Display',Georgia,serif;font-size:3rem;font-style:italic;font-weight:400;color:${hmAccentInk};margin-bottom:1.25rem;background:${hmWarm};padding:0 1rem;display:inline-block">${step.step}</div>
+          <h3 style="font-family:'DM Serif Display',Georgia,serif;font-size:1.05rem;font-weight:600;color:${hmText};margin-bottom:0.6rem">${step.title}</h3>
           <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:${hmMuted};line-height:1.75">${step.description}</p>
         </div>`).join('')}
       </div>
@@ -4644,7 +4792,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   // ABOUT — photo right, warm left, bullet benefits, soft rounded image
   const aboutParagraphs = content.aboutText.split('\n').filter(p => p.trim())
   const aboutSection = `
-  <section id="about" style="padding:100px 2rem;background:${hmCream}">
+  <section id="about" style="padding:120px 2rem;background:${hmCream}">
     <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center">
       <div class="hm-about-text">
         <span class="hm-chip" style="margin-bottom:1.25rem;display:inline-flex">Our Story</span>
@@ -4661,7 +4809,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
           </div>`).join('')}
         </div>
         <div style="margin-top:2.5rem">
-          <a href="#contact" class="hm-pill-cta" style="background:${hmAccent}">${content.ctaPrimary}</a>
+          <a href="#contact" class="hm-pill-cta" style="background:${hmCtaBg}">${content.ctaPrimary}</a>
         </div>
       </div>
       <div class="hm-about-img-col" style="position:relative">
@@ -4672,7 +4820,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
         <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:1.25rem">
           ${content.stats.slice(0, 4).map(s => `
           <div style="background:#fff;border-radius:14px;padding:1.25rem 1.5rem;border:1px solid rgba(0,0,0,0.05)">
-            <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.8rem;color:${hmAccent}">${s.value}</div>
+            <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.8rem;color:${hmAccentInk}">${s.value}</div>
             <div style="font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:500;color:${hmMuted};margin-top:0.2rem">${s.label}</div>
           </div>`).join('')}
         </div>
@@ -4681,25 +4829,22 @@ function buildHomeServicesTemplate(data: TemplateData): string {
   </section>`
 
   // TESTIMONIALS — soft cards with avatar initials, stars, italic quote
-  const testimonialSection = content.testimonial ? `
-  <section id="testimonials" style="padding:90px 2rem;background:${hmSage}">
+  const testimonialList = content.testimonials && content.testimonials.length > 0 ? content.testimonials : (content.testimonial ? [content.testimonial] : [])
+  const fullTestimonialList = testimonialList.length > 0 ? testimonialList : getFallbackTestimonials(content, businessCategory)
+  const showThreeCol = fullTestimonialList.length >= 3
+  const testimonialSection = fullTestimonialList.length > 0 ? `
+  <section id="testimonials" style="padding:120px 2rem;background:${hmSage}">
     <div style="max-width:1200px;margin:0 auto;text-align:center">
       <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Reviews</span>
       <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;color:${hmText};margin-bottom:3.5rem">What Our Clients Say</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:left">
-        ${[content.testimonial, ...getFallbackTestimonials(content, businessCategory)].slice(0, 3).map((t, i) => `
-        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;padding:2rem;border:1px solid rgba(0,0,0,0.05);position:relative">
-          <div style="font-size:2.5rem;line-height:1;font-family:'DM Serif Display',Georgia,serif;color:${hmAccent};opacity:0.3;position:absolute;top:1.5rem;right:1.75rem">&ldquo;</div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:${showThreeCol ? 'repeat(3,1fr)' : '1fr'};gap:1.5rem;text-align:left;${!showThreeCol ? 'max-width:680px;margin:0 auto' : ''}">
+        ${fullTestimonialList.slice(0, 3).map((t, i) => `
+        <div class="hm-card hm-reveal" style="background:#fff;border-radius:20px;padding:2.5rem;border:1px solid rgba(0,0,0,0.05);position:relative">
           <div style="color:#f59e0b;font-size:0.9rem;margin-bottom:1rem">${'&#9733;'.repeat(t.rating || 5)}</div>
-          <p style="font-family:'Poppins',sans-serif;font-size:0.9rem;font-style:italic;color:${hmMuted};line-height:1.8;margin-bottom:1.5rem">"${t.quote}"</p>
-          <div style="display:flex;align-items:center;gap:0.75rem;border-top:1px solid rgba(0,0,0,0.06);padding-top:1.25rem">
-            <div style="width:40px;height:40px;border-radius:50%;background:${hmSage};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-              <span style="font-family:'DM Serif Display',Georgia,serif;font-size:1rem;color:${hmAccent}">${t.author.charAt(0)}</span>
-            </div>
-            <div>
-              <div style="font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:${hmText}">${t.author.split(',')[0]}</div>
-              <div style="font-family:'Poppins',sans-serif;font-size:0.75rem;color:${hmMuted}">${t.author.split(',')[1]?.trim() || 'Happy Client'}</div>
-            </div>
+          <p style="font-family:'Poppins',sans-serif;font-size:1.05rem;font-style:italic;color:${hmMuted};line-height:1.8;margin-bottom:1.5rem">"${t.quote}"</p>
+          <div style="border-top:1px solid rgba(0,0,0,0.06);padding-top:1.25rem">
+            <div style="font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:${hmText}">${t.author.split(',')[0]}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:0.75rem;color:${hmMuted}">${t.author.split(',')[1]?.trim() || 'Happy Client'}</div>
           </div>
         </div>`).join('')}
       </div>
@@ -4708,19 +4853,19 @@ function buildHomeServicesTemplate(data: TemplateData): string {
 
   // CTA BANNER — warm full-width, friendly tone
   const ctaBanner = `
-  <section style="padding:80px 2rem;background:${hmAccent}">
+  <section style="padding:80px 2rem;background:${hmCtaBg}">
     <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem">
       <div>
         <h2 style="font-family:'DM Serif Display',Georgia,serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;font-style:italic;color:#fff;line-height:1.2;margin-bottom:0.5rem">${content.aboutMission || content.heroSubtitle}</h2>
         <p class="ms-cta-note" style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.7)">${content.ctaNote || 'No obligation. Fast response.'}</p>
       </div>
-      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2.5rem;border-radius:999px;background:#fff;color:${hmAccent};text-decoration:none;white-space:nowrap">${content.ctaPrimary} &rarr;</a>
+      <a href="#contact" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2.5rem;border-radius:999px;background:#fff;color:${hmCtaBg};text-decoration:none;white-space:nowrap">${content.ctaPrimary} &rarr;</a>
     </div>
   </section>`
 
   // CONTACT — 2-col warm layout
   const contactSection = `
-  <section id="contact" style="padding:100px 2rem;background:${hmCream}">
+  <section id="contact" style="padding:120px 2rem;background:${hmCream}">
     <div style="max-width:1200px;margin:0 auto">
       <div style="text-align:center;margin-bottom:3.5rem">
         <span class="hm-chip" style="margin-bottom:1rem;display:inline-flex">Get In Touch</span>
@@ -4734,7 +4879,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
             { icon: '&#9906;', label: 'Service Area', value: `${locationInfo.city} & surrounds` },
           ].map(item => `
           <div style="display:flex;gap:1rem;align-items:flex-start;padding:1.5rem;background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06)">
-            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccent}">${item.icon}</div>
+            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccentInk}">${item.icon}</div>
             <div>
               <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:${hmMuted};margin-bottom:0.25rem">${item.label}</div>
               <div style="font-family:'Poppins',sans-serif;font-size:0.9rem;color:${hmText};font-weight:500">${item.value}</div>
@@ -4742,7 +4887,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
           </div>`).join('')}
           ${content.contactHours ? `
           <div style="display:flex;gap:1rem;align-items:flex-start;padding:1.5rem;background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,0.06)">
-            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccent}">&#9200;</div>
+            <div style="width:44px;height:44px;border-radius:12px;background:${hmSage};display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;color:${hmAccentInk}">&#9200;</div>
             <div>
               <div style="font-family:'Poppins',sans-serif;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:${hmMuted};margin-bottom:0.25rem">Hours</div>
               <div style="font-family:'Poppins',sans-serif;font-size:0.875rem;color:${hmText}">${content.contactHours.replace(/ · /g, '<br />')}</div>
@@ -4759,7 +4904,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
             </div>
             <input type="email" placeholder="Email address" class="hm-input" />
             <textarea placeholder="Tell us about your needs..." rows="4" class="hm-input" style="resize:none"></textarea>
-            <button type="submit" style="font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2rem;border-radius:999px;background:${hmAccent};color:#fff;border:none;cursor:pointer;transition:background 0.25s;width:100%">${content.ctaPrimary} &rarr;</button>
+            <button type="submit" style="font-family:'Poppins',sans-serif;font-size:0.875rem;font-weight:600;padding:1rem 2rem;border-radius:999px;background:${hmCtaBg};color:#fff;border:none;cursor:pointer;transition:background 0.25s;width:100%">${content.ctaPrimary} &rarr;</button>
           </form>
         </div>
       </div>
@@ -4773,7 +4918,7 @@ function buildHomeServicesTemplate(data: TemplateData): string {
       <div>
         <div style="font-family:'DM Serif Display',Georgia,serif;font-size:1.5rem;color:#fff;margin-bottom:0.75rem">${businessName}</div>
         <p style="font-family:'Poppins',sans-serif;font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.7;max-width:280px;margin-bottom:1.5rem">${content.heroSubtitle}</p>
-        <a href="#contact" class="hm-pill-cta" style="font-size:0.8rem;padding:0.7rem 1.75rem">${content.ctaPrimary}</a>
+        <a href="#contact" class="hm-pill-cta" style="font-size:0.8rem;padding:0.7rem 1.75rem;background:${hmCtaBg}">${content.ctaPrimary}</a>
       </div>
       <div>
         <div style="font-family:'Poppins',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1.25rem">Services</div>
@@ -4856,6 +5001,9 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const autoOnPhotoBorder = 'rgba(255,255,255,0.28)'
   const autoAccent = accentOnDark(primaryColor, secondaryColor, '#e63b1e')
   const autoAccentDim = 'rgba(230,59,30,0.12)'
+  const autoAccentBgWhiteText = ensureContrast(autoAccent, '#ffffff', 4.5) // orange contact panel
+  const autoAccentOnLight = ensureContrast(autoAccent, autoBg, 3.0) // accent as text on light bg (display size)
+  const autoHeroEyebrow = ensureContrast(secondaryColor || '#F26419', '#14100c', 3.0) // hero eyebrow on dark photo
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light')
 
@@ -4890,11 +5038,11 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     .auto-card:hover { border-color:${autoAccent} !important; transform:translateY(-3px); }
     .auto-service-row { border-bottom:1px solid ${autoBorder}; transition:background 0.25s; cursor:default; }
     .auto-service-row:hover { background:rgba(0,0,0,0.03); }
-    .auto-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:${autoAccent}; color:#fff; text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:opacity 0.25s; border:none; cursor:pointer; }
+    .auto-cta { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:${autoAccentBgWhiteText}; color:#fff; text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:opacity 0.25s; border:none; cursor:pointer; }
     .auto-cta:hover { opacity:0.88; }
     .auto-cta-outline { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:0.85rem 2.5rem; background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,0.3); text-decoration:none; clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); transition:border-color 0.25s; }
     .auto-cta-outline:hover { border-color:#fff; }
-    .auto-badge { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Barlow Condensed',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; padding:0.3rem 0.85rem; background:${autoAccentDim}; border:1px solid rgba(230,59,30,0.3); color:${autoAccent}; }
+    .auto-badge { display:inline-flex; align-items:center; gap:0.4rem; font-family:'Barlow Condensed',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; padding:0.3rem 0.85rem; background:${autoAccentDim}; border:1px solid rgba(230,59,30,0.3); color:${autoAccent}; }
     .auto-input { width:100%; box-sizing:border-box; font-family:'Barlow',sans-serif; font-size:0.9rem; padding:0.85rem 1rem; background:transparent; border:none; border-bottom:1px solid ${autoBorder}; color:${autoText}; outline:none; transition:border-color 0.25s; }
     .auto-input:focus { border-bottom-color:${autoAccent}; }
     .auto-input::placeholder { color:${autoMuted}; }
@@ -4917,7 +5065,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
     </div>
     <div style="position:relative;max-width:1300px;margin:0 auto;padding:7rem 2rem 6rem;width:100%">
       <div class="auto-f1" style="margin-bottom:1.5rem">
-        <span class="auto-badge">&#9632; ${content.heroEyebrow}</span>
+        <span class="auto-badge" style="font-size:0.85rem;letter-spacing:0.14em;color:${autoHeroEyebrow}">&#9632; ${content.heroEyebrow}</span>
       </div>
       <h1 class="auto-f2" style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(3.5rem,9vw,8.5rem);font-weight:800;color:${autoOnPhoto};line-height:0.92;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.75rem;max-width:900px">${content.tagline}</h1>
       <p class="auto-f3" style="font-family:'Barlow',sans-serif;font-size:1.05rem;color:${autoOnPhoto};max-width:500px;line-height:1.7;margin-bottom:2.5rem">${content.heroSubtitle}</p>
@@ -4970,16 +5118,13 @@ function buildAutomotiveTemplate(data: TemplateData): string {
                ">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
               <div style="display:flex;align-items:center;gap:1.5rem">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;color:${autoAccent};min-width:2.5rem">${String(i + 1).padStart(2, '0')}</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:0.1em;color:${autoAccentOnLight};min-width:2.5rem">${String(i + 1).padStart(2, '0')}</div>
                 <div>
                   <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;color:${autoText};text-transform:uppercase;letter-spacing:0.03em;margin-bottom:0.3rem">${s.name}</h3>
                   <p style="font-family:'Barlow',sans-serif;font-size:0.875rem;color:${autoMuted};line-height:1.65">${s.description}</p>
                 </div>
               </div>
               <div style="color:${autoMuted};font-size:1.25rem;flex-shrink:0">&rsaquo;</div>
-            </div>
-            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;padding-left:4rem">
-              ${s.tags.slice(0, 3).map(t => `<span style="font-family:'Barlow',sans-serif;font-size:0.72rem;padding:0.25rem 0.65rem;border:1px solid ${autoBorder};color:${autoMuted}">${t}</span>`).join('')}
             </div>
           </div>`).join('')}
         </div>
@@ -5042,8 +5187,8 @@ function buildAutomotiveTemplate(data: TemplateData): string {
           <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;color:${autoText};text-transform:uppercase;letter-spacing:-0.01em;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
         </div>
       </div>
-      <div class="ms-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:230px 230px;gap:3px">
-        <div style="position:relative;overflow:hidden;grid-row:span 2" class="auto-reveal">
+      <div class="ms-grid" style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:240px;gap:3px">
+        <div style="position:relative;overflow:hidden;grid-column:span 2" class="auto-reveal">
           <img src="${serviceImgs[3] || stockPool[_pi++]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))">
             <div style="font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;color:#fff;text-transform:uppercase">${content.services[3]?.name || content.services[0]?.name || ''}</div>
@@ -5087,7 +5232,7 @@ function buildAutomotiveTemplate(data: TemplateData): string {
   const contactSection = `
   <section id="contact" style="padding:0;background:${autoBg}">
     <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.5fr">
-      <div style="background:${autoAccent};padding:5rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
+      <div style="background:${autoAccentBgWhiteText};padding:5rem 3rem;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden">
         <div style="position:absolute;top:-4rem;right:-4rem;width:200px;height:200px;border-radius:50%;border:40px solid rgba(255,255,255,0.06);pointer-events:none"></div>
         <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.5rem,4vw,3.5rem);font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:-0.01em;line-height:1;margin-bottom:1.5rem">${content.contactHeading}</h2>
         <p style="font-family:'Barlow',sans-serif;font-size:0.9rem;color:rgba(255,255,255,0.75);line-height:1.75;margin-bottom:2.5rem;max-width:300px">${content.heroSubtitle}</p>
@@ -5181,7 +5326,6 @@ function buildAutomotiveTemplate(data: TemplateData): string {
 ${nav}
 ${heroSection}
 ${servicesSection}
-${statsSection}
 ${aboutSection}
 ${gallerySection}
 ${testimonialSection}
@@ -5212,8 +5356,10 @@ function buildPropertyTemplate(data: TemplateData): string {
   const gold = accentOnDark(primaryColor, secondaryColor, '#c9a96e')
   const void_ = '#f7f5f0'
   const offwhite = '#0d0d0b'
-  const muted = '#666660'
+  const muted = '#5d5952'
   const border = 'rgba(0,0,0,0.1)'
+  const goldCtaBg = ensureContrast(gold, '#ffffff', 4.5)
+  const goldInk = ensureContrast(gold, void_, 4.5)
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet"/>`
 
@@ -5225,15 +5371,15 @@ function buildPropertyTemplate(data: TemplateData): string {
     </div>
     <div style="position:relative;flex:1;display:flex;flex-direction:column;justify-content:flex-end;max-width:1400px;margin:0 auto;width:100%;padding:0 4rem 4rem">
       <div style="display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem">
-        <div style="width:40px;height:1px;background:${gold}"></div>
-        <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
+        <div style="width:40px;height:1px;background:${goldInk}"></div>
+        <span style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">${content.heroEyebrow || 'Luxury Real Estate'}</span>
       </div>
       <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(4rem,9vw,8rem);font-weight:300;color:#ffffff;line-height:0.92;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
       <div class="pr-hero-bottom" style="display:flex;flex-direction:column;align-items:flex-start;flex-wrap:wrap;gap:2.25rem">
-        <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:rgba(255,255,255,0.75);line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
+        <p style="font-family:'Jost',sans-serif;font-size:1rem;font-weight:200;color:#ffffff;line-height:1.8;max-width:480px">${content.heroSubtitle}</p>
         <div class="pr-hero-btns" style="display:flex;gap:1rem;flex-shrink:0">
-          <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${gold};color:${gold};text-decoration:none;transition:all 0.3s ease">View Properties</a>
-          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:#ffffff;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;border:1px solid ${goldInk};color:${goldInk};text-decoration:none;transition:all 0.3s ease">View Properties</a>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1rem 2.5rem;background:${goldCtaBg};color:#ffffff;text-decoration:none">${content.ctaPrimary}</a>
         </div>
       </div>
     </div>
@@ -5242,7 +5388,7 @@ function buildPropertyTemplate(data: TemplateData): string {
         ${content.stats.slice(0, 3).map(s => `
         <div style="text-align:center">
           <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.5rem;font-weight:300;color:#ffffff;line-height:1">${s.value}</div>
-          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-top:0.4rem">${s.label}</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;margin-top:0.4rem;opacity:0.75">${s.label}</div>
         </div>`).join('')}
       </div>
     </div>
@@ -5254,12 +5400,12 @@ function buildPropertyTemplate(data: TemplateData): string {
       <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:5rem;flex-wrap:wrap;gap:2rem">
         <div>
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
-            <div style="width:30px;height:1px;background:${gold}"></div>
-            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Our Portfolio</span>
+            <div style="width:30px;height:1px;background:${goldInk}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">Our Portfolio</span>
           </div>
           <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic">${content.galleryHeading || 'Featured Properties'}</h2>
         </div>
-        <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;border-bottom:1px solid ${gold};padding-bottom:0.25rem">View All Listings &rarr;</a>
+        <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${goldInk};text-decoration:none;border-bottom:1px solid ${goldInk};padding-bottom:0.25rem">View All Listings &rarr;</a>
       </div>
       <div class="pr-gallery-row1" style="display:grid;grid-template-columns:1.4fr 1fr;gap:1.5px;background:${border}">
         ${[0,1].map((i) => {
@@ -5270,13 +5416,13 @@ function buildPropertyTemplate(data: TemplateData): string {
           <div style="height:${i === 0 ? '580px' : '580px'};overflow:hidden">
             <img src="${galleryImgs[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 50%)"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 55%)"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;padding:2rem 2.5rem">
-            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">${propSub}</div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;margin-bottom:0.5rem;opacity:0.95">${propSub}</div>
             <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:#ffffff;font-style:italic">${propCaption}</h3>
           </div>
-          <div style="position:absolute;top:1.5rem;right:1.5rem;background:${gold};padding:0.35rem 0.9rem">
-            <span style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${void_}">For Sale</span>
+          <div style="position:absolute;top:1.5rem;right:1.5rem;background:${goldCtaBg};padding:0.35rem 0.9rem">
+            <span style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:#ffffff">For Sale</span>
           </div>
         </div>`
         }).join('')}
@@ -5292,7 +5438,7 @@ function buildPropertyTemplate(data: TemplateData): string {
           </div>
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 55%)"></div>
           <div style="position:absolute;bottom:0;left:0;right:0;padding:1.5rem 2rem">
-            <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${gold};margin-bottom:0.35rem">${propSub}</div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;margin-bottom:0.35rem;opacity:0.95">${propSub}</div>
             <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:300;color:#ffffff;font-style:italic">${propCaption}</h3>
           </div>
         </div>`
@@ -5307,29 +5453,29 @@ function buildPropertyTemplate(data: TemplateData): string {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
         <div>
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:2rem">
-            <div style="width:30px;height:1px;background:${gold}"></div>
-            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">About</span>
+            <div style="width:30px;height:1px;background:${goldInk}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">About</span>
           </div>
           <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:300;color:${offwhite};line-height:1.1;font-style:italic;margin-bottom:2.5rem">${content.aboutHeading}</h2>
-          ${content.aboutMission ? `<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;font-weight:300;color:${offwhite};line-height:1.6;font-style:italic;margin-bottom:2rem;border-left:2px solid ${gold};padding-left:1.5rem">${content.aboutMission}</p>` : ''}
+          ${content.aboutMission ? `<p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.25rem;font-weight:300;color:${offwhite};line-height:1.6;font-style:italic;margin-bottom:2rem;border-left:2px solid ${goldInk};padding-left:1.5rem">${content.aboutMission}</p>` : ''}
           ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${muted};line-height:2;margin-bottom:1.25rem">${p}</p>`).join('')}
-          <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;margin-top:1rem">${content.ctaSecondary || 'Learn More'} <span style="width:40px;height:1px;background:${gold};display:inline-block"></span></a>
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:0.75rem;font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${goldInk};text-decoration:none;margin-top:1rem">${content.ctaSecondary || 'Learn More'} <span style="width:40px;height:1px;background:${goldInk};display:inline-block"></span></a>
         </div>
         <div style="position:relative">
           <div style="position:absolute;top:-1.5rem;left:-1.5rem;right:1.5rem;bottom:1.5rem;border:1px solid ${border}"></div>
           <div style="overflow:hidden;height:600px;position:relative">
             <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
           </div>
-          <div style="position:absolute;bottom:-2rem;right:-2rem;background:${gold};padding:2rem 2.5rem;min-width:180px">
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:${void_};line-height:1">${content.stats[0]?.value || '20+'}</div>
-            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${void_};opacity:0.7;margin-top:0.4rem">${content.stats[0]?.label || 'Years Experience'}</div>
+          <div style="position:absolute;bottom:-2rem;right:-2rem;background:${goldCtaBg};padding:2rem 2.5rem;min-width:180px">
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:#ffffff;line-height:1">${content.stats[0]?.value || '20+'}</div>
+            <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;opacity:0.8;margin-top:0.4rem">${content.stats[0]?.label || 'Years Experience'}</div>
           </div>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid ${border};margin-top:7rem" class="ms-grid">
         ${content.stats.slice(1, 5).map((s, i) => `
         <div style="padding:2.5rem;${i > 0 ? 'border-left:1px solid ' + border : ''}">
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:${gold};line-height:1">${s.value}</div>
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:3rem;font-weight:300;color:${goldInk};line-height:1">${s.value}</div>
           <div style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:${muted};margin-top:0.6rem">${s.label}</div>
           ${s.sublabel ? `<div style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:200;color:${muted};margin-top:0.35rem;opacity:0.6">${s.sublabel}</div>` : ''}
         </div>`).join('')}
@@ -5341,17 +5487,20 @@ function buildPropertyTemplate(data: TemplateData): string {
   <section id="services" style="padding:140px 0;background:${void_}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
-        <div style="width:30px;height:1px;background:${gold}"></div>
-        <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">What We Do</span>
+        <div style="width:30px;height:1px;background:${goldInk}"></div>
+        <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">What We Do</span>
       </div>
       <h2 class="pr-svc-heading" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${offwhite};line-height:1;font-style:italic;margin-bottom:5rem">${content.servicesHeading}</h2>
       <div style="display:grid;grid-template-columns:1fr;gap:0">
         ${content.services.map((s, i) => `
         <div style="display:grid;grid-template-columns:80px 1fr 1.5fr auto;gap:2rem;align-items:start;padding:3rem 0;border-bottom:1px solid ${border}" class="ms-grid">
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:4rem;font-weight:300;color:${border.replace('0.2','0.4')};line-height:1;padding-top:0.25rem">${String(i + 1).padStart(2, '0')}</div>
+          <div style="display:flex;flex-direction:column;align-items:flex-start;padding-top:0.25rem">
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:0.85rem;font-weight:300;color:${goldInk};line-height:1;margin-bottom:0.5rem">${String(i + 1).padStart(2, '0')}</div>
+            <div style="width:32px;height:2px;background:${goldInk}"></div>
+          </div>
           <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:300;color:${offwhite};font-style:italic;padding-top:0.5rem">${s.name}</h3>
-          <p style="font-family:'Jost',sans-serif;font-size:0.85rem;font-weight:200;color:${muted};line-height:1.9">${s.description}</p>
-          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:${gold};text-decoration:none;border:1px solid ${border};padding:0.75rem 1.5rem;white-space:nowrap;transition:all 0.3s" onmouseover="this.style.borderColor='${gold}'" onmouseout="this.style.borderColor='${border}'">Enquire</a>
+          <p style="font-family:'Jost',sans-serif;font-size:0.95rem;font-weight:200;color:${muted};line-height:1.9">${s.description}</p>
+          <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;background:${goldCtaBg};text-decoration:none;border:none;padding:0.75rem 1.5rem;white-space:nowrap;transition:all 0.3s;cursor:pointer">Enquire</a>
         </div>`).join('')}
       </div>
     </div>
@@ -5363,8 +5512,8 @@ function buildPropertyTemplate(data: TemplateData): string {
       <div style="display:grid;grid-template-columns:1fr 2fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
-            <div style="width:30px;height:1px;background:${gold}"></div>
-            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Testimonials</span>
+            <div style="width:30px;height:1px;background:${goldInk}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">Testimonials</span>
           </div>
           <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2rem,3vw,3rem);font-weight:300;color:${offwhite};font-style:italic;line-height:1.2">What Our Clients Say</h2>
         </div>
@@ -5372,11 +5521,11 @@ function buildPropertyTemplate(data: TemplateData): string {
           <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:8rem;font-weight:300;color:${border};line-height:0.6;margin-bottom:2rem">&ldquo;</div>
           <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:300;color:${offwhite};line-height:1.6;font-style:italic;margin-bottom:2.5rem">${content.testimonial.quote}</p>
           <div style="display:flex;align-items:center;gap:1.5rem">
-            <div style="width:1px;height:50px;background:${gold}"></div>
+            <div style="width:1px;height:50px;background:${goldInk}"></div>
             <div>
               <div style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:400;color:${offwhite};letter-spacing:0.1em;text-transform:uppercase">${content.testimonial.author.split(',')[0]}</div>
               <div style="font-family:'Jost',sans-serif;font-size:0.75rem;font-weight:200;color:${muted};margin-top:0.25rem">${content.testimonial.author.split(',')[1]?.trim() || 'Valued Client'}</div>
-              ${content.testimonial.rating ? `<div style="color:${gold};font-size:0.75rem;letter-spacing:0.15em;margin-top:0.4rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
+              ${content.testimonial.rating ? `<div style="color:${goldInk};font-size:0.75rem;letter-spacing:0.15em;margin-top:0.4rem">${'&#9733;'.repeat(content.testimonial.rating)}</div>` : ''}
             </div>
           </div>
           ${(() => {
@@ -5398,22 +5547,22 @@ function buildPropertyTemplate(data: TemplateData): string {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:start" class="ms-grid">
         <div>
           <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem">
-            <div style="width:30px;height:1px;background:${gold}"></div>
-            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${gold}">Get in Touch</span>
+            <div style="width:30px;height:1px;background:${goldInk}"></div>
+            <span style="font-family:'Jost',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;color:${goldInk}">Get in Touch</span>
           </div>
           <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:300;color:${offwhite};line-height:1.1;font-style:italic;margin-bottom:2.5rem">${content.contactHeading}</h2>
           <p style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${muted};line-height:2;margin-bottom:3rem">${content.aboutMission || content.heroSubtitle}</p>
           <div style="display:flex;flex-direction:column;gap:2rem;border-top:1px solid ${border};padding-top:3rem">
             <div>
-              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Address</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:0.5rem">Address</div>
               <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${locationInfo.address}, ${locationInfo.city}</div>
             </div>
             <div>
-              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Contact</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:0.5rem">Contact</div>
               <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${locationInfo.phone}<br/>hello@${businessName.toLowerCase().replace(/\s/g,'')}.com</div>
             </div>
             ${content.contactHours ? `<div>
-              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:0.5rem">Office Hours</div>
+              <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:0.5rem">Office Hours</div>
               <div style="font-family:'Jost',sans-serif;font-size:0.9rem;font-weight:200;color:${offwhite}">${content.contactHours.replace(/ · /g, '<br/>')}</div>
             </div>` : ''}
           </div>
@@ -5422,22 +5571,22 @@ function buildPropertyTemplate(data: TemplateData): string {
           <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:300;color:${offwhite};font-style:italic;margin-bottom:2rem">Send an Enquiry</h3>
           <form style="display:flex;flex-direction:column;gap:1.5rem" onsubmit="return false">
             <div>
-              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Full Name</label>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};display:block;margin-bottom:0.6rem">Full Name</label>
               <input type="text" placeholder="Your name" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
             </div>
             <div>
-              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Email</label>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};display:block;margin-bottom:0.6rem">Email</label>
               <input type="email" placeholder="your@email.com" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
             </div>
             <div>
-              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Phone</label>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};display:block;margin-bottom:0.6rem">Phone</label>
               <input type="tel" placeholder="${locationInfo.phone}" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none" />
             </div>
             <div>
-              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};display:block;margin-bottom:0.6rem">Message</label>
+              <label style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};display:block;margin-bottom:0.6rem">Message</label>
               <textarea placeholder="Tell us about the property you are looking for..." rows="4" style="width:100%;box-sizing:border-box;font-family:'Jost',sans-serif;font-weight:200;padding:0.85rem 0;background:transparent;border:none;border-bottom:1px solid ${border};color:${offwhite};font-size:0.9rem;outline:none;resize:none"></textarea>
             </div>
-            <button type="submit" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;padding:1rem 2.5rem;background:${gold};color:${void_};border:none;cursor:pointer;align-self:flex-start;transition:opacity 0.3s">Submit Enquiry</button>
+            <button type="submit" style="font-family:'Jost',sans-serif;font-size:0.7rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;padding:1rem 2.5rem;background:${goldCtaBg};color:#ffffff;border:none;cursor:pointer;align-self:flex-start;transition:opacity 0.3s">Submit Enquiry</button>
           </form>
         </div>
       </div>
@@ -5453,18 +5602,18 @@ function buildPropertyTemplate(data: TemplateData): string {
           <p style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};line-height:1.9;max-width:320px">${content.heroSubtitle}</p>
         </div>
         <div>
-          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Navigate</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:1.5rem">Navigate</div>
           <a href="#properties" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem;transition:color 0.2s">Properties</a>
           <a href="#about" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">About</a>
           <a href="#services" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Services</a>
           <a href="#contact" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">Contact</a>
         </div>
         <div>
-          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Services</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:1.5rem">Services</div>
           ${content.services.slice(0, 4).map(s => `<a href="#services" style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};text-decoration:none;display:block;margin-bottom:0.75rem">${s.tags?.[0] || s.name}</a>`).join('')}
         </div>
         <div>
-          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${gold};margin-bottom:1.5rem">Contact</div>
+          <div style="font-family:'Jost',sans-serif;font-size:0.6rem;font-weight:300;letter-spacing:0.25em;text-transform:uppercase;color:${goldInk};margin-bottom:1.5rem">Contact</div>
           <p style="font-family:'Jost',sans-serif;font-size:0.8rem;font-weight:200;color:${muted};line-height:1.9">${locationInfo.address}<br/>${locationInfo.city}<br/>${locationInfo.phone}</p>
         </div>
       </div>
@@ -5488,8 +5637,10 @@ function buildPropertyTemplate(data: TemplateData): string {
       --text-muted: ${muted};
       --border: ${border};
       --primary: ${gold};
+      --primary-raw: ${goldCtaBg};
       --secondary: ${secondaryColor};
     }
+    .ms-nav { background: ${goldCtaBg} !important; }
     @media(max-width:768px){
       .pr-hero-btns{flex-direction:column!important;width:100%}
       .pr-hero-btns a{text-align:center}
@@ -5532,6 +5683,9 @@ function buildCreativeTemplate(data: TemplateData): string {
   const stone = '#e8e4dd'
   const dust = '#6a6560'
   const accent = primaryColor || '#d4522a'
+  const accentColor = accentOnDark(primaryColor, secondaryColor, '#D97706')
+  const buttonBgColor = ensureContrast(accent, '#ffffff', 4.5)
+  const accentMarqueeBg = ensureContrast(accent, '#ffffff', 4.5)
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>`
 
   const heroSection = `
@@ -5546,7 +5700,7 @@ function buildCreativeTemplate(data: TemplateData): string {
         <h1 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(4rem,7vw,7rem);font-weight:400;color:${chalk};line-height:0.9;letter-spacing:-0.02em;margin-bottom:2.5rem;font-style:italic">${businessName}</h1>
         <p style="font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:300;color:${dust};line-height:1.8;max-width:420px;margin-bottom:3rem">${content.heroSubtitle}</p>
         <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${accent};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
+          <a href="#work" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.5rem;background:${buttonBgColor};color:#fff;text-decoration:none">${content.ctaPrimary}</a>
           <a href="#about" style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${dust};text-decoration:none;border-bottom:1px solid ${dust};padding-bottom:0.1rem">${content.ctaSecondary || 'About'}</a>
         </div>
       </div>
@@ -5561,18 +5715,20 @@ function buildCreativeTemplate(data: TemplateData): string {
     <div class="cr-hero-img ms-hero-photo" style="position:relative;overflow:hidden">
       <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;filter:grayscale(20%)" />
       <div style="position:absolute;inset:0;background:linear-gradient(to right,${ink} 0%,transparent 30%)"></div>
-      <div style="position:absolute;bottom:3rem;right:3rem;background:${accent};padding:1rem 1.5rem">
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${content.badge || 'Available for Work'}</div>
+      <div style="position:absolute;bottom:1.5rem;right:1.5rem;background:${accentMarqueeBg};padding:1rem 1.5rem">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--on-photo)">${content.badge || 'Available for Work'}</div>
       </div>
     </div>
   </section>`
 
   const marqueeSection = `
-  <section style="background:${accent};padding:1.25rem 0;overflow:hidden;white-space:nowrap">
-    <div style="display:inline-flex;gap:4rem;animation:marquee 20s linear infinite">
-      ${[...content.services.map(s => s.name), ...content.services.map(s => s.name)].map(name => `<span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:#fff">${name} &nbsp;&bull;</span>`).join('')}
+  <section style="background:${accentMarqueeBg};padding:1.25rem 0;overflow:hidden">
+    <div style="display:flex;justify-content:center;align-items:center;gap:2rem">
+      ${content.services.slice(0, 3).map((s, idx) => `
+        <span style="font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#fff">${s.name}</span>
+        ${idx < 2 ? `<div style="width:1px;height:1rem;background:rgba(255,255,255,0.3)"></div>` : ''}
+      `).join('')}
     </div>
-    <style>@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
   </section>`
 
   const workSection = `
@@ -5590,11 +5746,11 @@ function buildCreativeTemplate(data: TemplateData): string {
           <div style="position:absolute;inset:0;background:rgba(10,10,8,0);transition:background 0.3s ease;display:flex;align-items:flex-end;padding:2rem" onmouseover="this.style.background='rgba(10,10,8,0.6)'" onmouseout="this.style.background='rgba(10,10,8,0)'">
             <div style="opacity:0;transform:translateY(10px);transition:all 0.3s ease" onmouseover="this.parentElement.style.opacity='1';this.style.opacity='1';this.style.transform='translateY(0)'" >
               <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${accent};margin-bottom:0.4rem">${(content.features && content.features[0]) ? (content.features[0] as {name:string;description:string}).name : (content.services[0]?.tags?.[0] || 'Photography')}</p>
-              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;color:#fff;font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
+              <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.5rem;font-weight:400;color:var(--on-photo);font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
             </div>
           </div>
           <div style="padding:1.25rem 0">
-            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.35rem">${(content.features && content.features[0]) ? (content.features[0] as {name:string}).name : (content.services[0]?.tags?.[0] || 'Photography')}</p>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.72rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${dust};margin-bottom:0.35rem">${(content.features && content.features[0]) ? (content.features[0] as {name:string}).name : (content.services[0]?.tags?.[0] || 'Photography')}</p>
             <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.6rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[0]) || content.services[0]?.name || 'Editorial Series'}</h3>
           </div>
         </div>
@@ -5605,7 +5761,7 @@ function buildCreativeTemplate(data: TemplateData): string {
               <img src="${stockPool[_pi++] || stockImages.cards[idx]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
             </div>
             <div style="padding:1rem 0">
-              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx]?.tags?.[0] || 'Creative'}</p>
+              <p style="font-family:'Space Grotesk',sans-serif;font-size:0.72rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx]?.tags?.[0] || 'Creative'}</p>
               <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[idx]) || content.services[idx]?.name || 'Project'}</h3>
             </div>
           </div>`).join('')}
@@ -5618,7 +5774,7 @@ function buildCreativeTemplate(data: TemplateData): string {
             <img src="${stockPool[_pi++] || stockImages.cards[idx]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
           </div>
           <div style="padding:1rem 0">
-            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx % content.services.length]?.tags?.[0] || 'Creative'}</p>
+            <p style="font-family:'Space Grotesk',sans-serif;font-size:0.72rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${dust};margin-bottom:0.25rem">${content.services[idx % content.services.length]?.tags?.[0] || 'Creative'}</p>
             <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:1.1rem;font-weight:400;color:${ink};font-style:italic">${(content.projectCaptions && content.projectCaptions[idx]) || content.services[idx % content.services.length]?.name || 'Project'}</h3>
           </div>
         </div>`).join('')}
@@ -5640,15 +5796,10 @@ function buildCreativeTemplate(data: TemplateData): string {
         </div>
         <div>
           ${content.services.map((s, i) => `
-          <div style="display:flex;gap:2.5rem;padding:2rem 0;border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
+          <div style="display:flex;gap:2.5rem;padding-top:1.25rem;padding-bottom:2rem;border-top:1px solid rgba(0,0,0,0.12);border-bottom:1px solid rgba(247,245,240,0.08);align-items:start">
             <div style="font-family:'Instrument Serif',Georgia,serif;font-size:1.2rem;font-weight:400;color:rgba(247,245,240,0.2);font-style:italic;flex-shrink:0;width:2.5rem">${String(i + 1).padStart(2, '0')}</div>
             <div style="flex:1">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem">
-                <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:${chalk}">${s.name}</h3>
-                <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
-                  ${s.tags.slice(0, 2).map(tag => `<span style="font-family:'Space Grotesk',sans-serif;font-size:0.6rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;border:1px solid rgba(247,245,240,0.15);color:${dust}">${tag}</span>`).join('')}
-                </div>
-              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:500;color:${chalk};margin-bottom:0.75rem">${s.name}</h3>
               <p style="font-family:'Space Grotesk',sans-serif;font-size:0.85rem;font-weight:300;color:${dust};line-height:1.8">${s.description}</p>
             </div>
           </div>`).join('')}
@@ -5658,7 +5809,7 @@ function buildCreativeTemplate(data: TemplateData): string {
   </section>`
 
   const aboutSection = `
-  <section id="about" style="padding:120px 0;background:${stone}">
+  <section id="about" style="padding:120px 0;background:${chalk}">
     <div style="max-width:1400px;margin:0 auto;padding:0 4rem">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center" class="ms-grid">
         <div class="cr-about-img" style="position:relative">
@@ -5672,17 +5823,17 @@ function buildCreativeTemplate(data: TemplateData): string {
             <div style="width:30px;height:1px;background:${accent}"></div>
             <span style="font-family:'Space Grotesk',sans-serif;font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:${accent}">About</span>
           </div>
-          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:${ink};font-style:italic;line-height:1.1;margin-bottom:2rem">${content.aboutHeading}</h2>
-          ${content.aboutMission ? `<p style="font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;font-weight:400;color:${ink};font-style:italic;line-height:1.5;margin-bottom:2rem">${content.aboutMission}</p>` : ''}
-          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:#4a4a45;line-height:1.9;margin-bottom:1.25rem">${p}</p>`).join('')}
-          <a href="#contact" style="display:inline-flex;align-items:center;gap:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${ink};text-decoration:none;margin-top:2rem;border-bottom:1px solid ${ink};padding-bottom:0.25rem">${content.ctaPrimary} &rarr;</a>
+          <h2 style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(2.5rem,4vw,4rem);font-weight:400;color:#f5f1ea;font-style:italic;line-height:1.1;margin-bottom:2rem">${content.aboutHeading}</h2>
+          ${content.aboutMission ? `<p style="font-family:'Instrument Serif',Georgia,serif;font-size:1.3rem;font-weight:400;color:#f5f1ea;font-style:italic;line-height:1.5;margin-bottom:2rem">${content.aboutMission}</p>` : ''}
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:300;color:rgba(245,241,234,0.78);line-height:1.9;margin-bottom:1.25rem">${p}</p>`).join('')}
+          <a href="#contact" style="display:inline-flex;align-items:center;gap:1rem;font-family:'Space Grotesk',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${accentColor};text-decoration:none;margin-top:2rem;border-bottom:1px solid ${accentColor};padding-bottom:0.25rem">${content.ctaPrimary} &rarr;</a>
         </div>
       </div>
     </div>
   </section>`
 
   const testimonialSection = content.testimonial ? `
-  <section style="padding:100px 0;background:${accent}">
+  <section style="padding:120px 0;background:${accent}">
     <div style="max-width:900px;margin:0 auto;padding:0 4rem;text-align:center">
       <div style="font-family:'Instrument Serif',Georgia,serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.2);line-height:0.6;margin-bottom:2.5rem">&ldquo;</div>
       <p style="font-family:'Instrument Serif',Georgia,serif;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:400;color:#fff;line-height:1.4;font-style:italic;margin-bottom:2.5rem">${content.testimonial.quote}</p>
@@ -5768,6 +5919,9 @@ function buildCreativeTemplate(data: TemplateData): string {
       --border: rgba(10,10,8,0.1);
       --primary: ${accent};
       --secondary: ${secondaryColor};
+      --on-photo: #ffffff;
+      --on-photo-muted: rgba(255,255,255,0.7);
+      --on-photo-border: rgba(255,255,255,0.2);
     }
     @media(max-width:768px){
       .cr-hero-content{padding:clamp(5rem,12svh,8rem) 1.25rem 3rem!important}
@@ -5793,6 +5947,303 @@ ${crFooter}
 </html>`
 }
 
+function buildDesignStudioTemplate(data: TemplateData): string {
+  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
+  const navFlags = resolveNavLinks(pages)
+
+  const heroImg = images[0] || stockImages.hero
+  const stockPool = buildImagePool(images, stockImages, businessName)
+  const aboutImg = images[5] || stockImages.about
+
+  // Architect/designer drafting paper palette
+  const paper = '#F7F6F2'
+  const ink = '#14151A'
+  const graphite = '#6B6E76'
+  const hairline = 'rgba(20,21,26,0.16)'
+  const accentInk = ensureContrast(primaryColor || '#B4552D', paper, 4.5)
+  const accentOnInkStrip = accentOnDark(primaryColor, secondaryColor, '#D9825F')
+
+  // Combined fonts: Space Grotesk + IBM Plex Mono
+  const fontsConfig = {
+    heading: 'Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500',
+    headingFamily: "'Space Grotesk', sans-serif"
+  }
+  const headHtml = buildHead(businessName, fontsConfig, primaryColor, secondaryColor, 'light')
+  const navLinks = navFlags.allLinks
+
+  // NAV — minimal fixed bar
+  const customNav = `
+  <nav id="ds-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(247,246,242,0.92);backdrop-filter:blur(8px);border-bottom:1px solid ${hairline}">
+    <a href="#" style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:600;color:${ink};text-decoration:none;letter-spacing:0.06em;text-transform:uppercase">${businessName}</a>
+    <div style="display:flex;align-items:center;gap:2rem">
+      <div class="ms-nav-links" style="display:flex;align-items:center;gap:2.5rem">
+        ${navLinks.map(l => `<a href="${l.href}" style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;color:${graphite};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s" onmouseover="this.style.color='${ink}'" onmouseout="this.style.color='${graphite}'">${l.label}</a>`).join('')}
+      </div>
+      <label for="ms-menu-toggle" class="ms-burger-inline" style="display:none;cursor:pointer;color:${ink};font-size:1.5rem">&#9776;</label>
+    </div>
+  </nav>
+  ${buildMobileMenu(content, navLinks)}`
+
+  // HERO — split layout: left text column, right image with frame & ticks
+  const heroSection = `
+  <section style="background:${paper};min-height:92vh;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;position:relative;padding-top:64px" class="ms-grid">
+    <div class="ds-hero-text ms-hero-text" style="display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem;position:relative;z-index:1">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:${accentInk};margin-bottom:2rem">${content.heroEyebrow || 'DESIGN STUDIO — CAPE TOWN'}</div>
+      <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(3rem,6.5vw,5.2rem);font-weight:700;color:${ink};line-height:1.02;margin-bottom:1.75rem">${businessName}</h1>
+      <p style="font-family:var(--body-font);font-size:1.05rem;color:${graphite};max-width:46ch;line-height:1.8;margin-bottom:2.75rem">${content.heroSubtitle || 'Award-winning design practice specializing in residential and commercial spaces.'}</p>
+      <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+        <a href="#contact" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:0.9rem 2rem;background:${ink};color:${paper};text-decoration:none;transition:opacity 0.2s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">${content.ctaPrimary}</a>
+        <a href="#gallery" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;padding:0.9rem 2rem;background:transparent;color:${ink};text-decoration:none;border:1px solid ${ink};transition:all 0.2s" onmouseover="this.style.background='rgba(20,21,26,0.05)'" onmouseout="this.style.background='transparent'">${content.ctaSecondary || 'View Work'}</a>
+      </div>
+    </div>
+    <div class="ds-hero-photo ms-hero-photo" style="position:relative;overflow:visible">
+      <!-- Offset frame background (behind image) -->
+      <div class="ds-frame" style="position:absolute;top:18px;left:18px;right:-18px;bottom:-18px;border:1px solid ${ink};z-index:0;pointer-events:none"></div>
+      <img src="${heroImg}" alt="" style="width:100%;height:100%;object-fit:cover;position:relative;z-index:1;display:block" />
+      <!-- Registration ticks (4 corners) -->
+      <div class="ds-tick" style="position:absolute;top:0;left:0;width:16px;height:16px;border-top:2px solid ${ink};border-left:2px solid ${ink};z-index:2"></div>
+      <div class="ds-tick" style="position:absolute;top:0;right:0;width:16px;height:16px;border-top:2px solid ${ink};border-right:2px solid ${ink};z-index:2"></div>
+      <div class="ds-tick" style="position:absolute;bottom:0;left:0;width:16px;height:16px;border-bottom:2px solid ${ink};border-left:2px solid ${ink};z-index:2"></div>
+      <div class="ds-tick" style="position:absolute;bottom:0;right:0;width:16px;height:16px;border-bottom:2px solid ${ink};border-right:2px solid ${ink};z-index:2"></div>
+    </div>
+  </section>
+
+  <!-- Title block: registration-style 4-cell strip below hero -->
+  <div style="background:${paper};padding:0 2rem 120px">
+    <div class="ds-titleblock" style="max-width:1200px;margin:0 auto;border:1px solid ${ink};display:grid;grid-template-columns:repeat(4,1fr);gap:0">
+      ${[
+        { label: 'PROJECT', value: businessName },
+        { label: 'LOCATION', value: 'Cape Town, ZA' },
+        { label: 'REGISTRATION', value: (content.badge && content.badge.length > 24 ? content.badge.split(' ').slice(0, 3).join(' ') : content.badge) || 'SACAP Registered' },
+        { label: 'EST.', value: '2020' }
+      ].map((cell, i) => `
+      <div style="padding:1rem 1.25rem;flex:1;${i < 3 ? `border-right:1px solid ${ink}` : ''};display:flex;flex-direction:column;gap:0.5rem">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite}">${cell.label}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:500;color:${ink};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cell.value}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <style>
+    @media(max-width:768px){
+      .ds-hero-text { padding:clamp(3rem,8svh,5rem) 1.5rem !important; }
+      .ds-hero-photo { display:none !important; }
+      .ds-frame, .ds-tick { display:none !important; }
+      .ds-titleblock { grid-template-columns:repeat(2,1fr) !important; }
+      .ds-stats { grid-template-columns:repeat(2,1fr) !important; }
+      .ds-stats > div div:first-child { font-size:1.8rem !important; }
+    }
+  </style>`
+
+  // GALLERY — INDEX: DWG-01..
+  const gallerySection = `
+  <section id="gallery" style="padding:120px 0;background:${paper}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <div style="width:40px;height:1px;background:${accentInk}"></div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:${accentInk};margin:0">INDEX — SELECTED WORK</p>
+      </div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:600;color:${ink};line-height:1.15;margin:0 0 3rem 0">Selected Work</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;grid-auto-rows:auto">
+        <!-- Featured tile: 2x2 grid spans -->
+        <div style="grid-column:span 2;grid-row:span 2">
+          <div style="overflow:hidden;height:540px;border:1px solid ${hairline}">
+            <img src="${stockPool[0]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0.75rem 0 0 0">DWG-01 · ${content.services[0]?.name || 'Residential'}</p>
+        </div>
+        <!-- Top-right small tile -->
+        <div>
+          <div style="overflow:hidden;height:260px;border:1px solid ${hairline}">
+            <img src="${stockPool[1]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0.75rem 0 0 0">DWG-02 · ${content.services[1]?.name || 'Commercial'}</p>
+        </div>
+        <!-- Bottom-right small tile -->
+        <div>
+          <div style="overflow:hidden;height:260px;border:1px solid ${hairline}">
+            <img src="${stockPool[2]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0.75rem 0 0 0">DWG-03 · ${content.services[2]?.name || 'Interiors'}</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem">
+        ${[3,4,5].map((idx) => `
+        <div>
+          <div style="overflow:hidden;height:280px;border:1px solid ${hairline}">
+            <img src="${stockPool[idx]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'" />
+          </div>
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0.75rem 0 0 0">DWG-0${idx + 1} · ${content.services[idx % content.services.length]?.name || 'Project'}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // SERVICES — specification list format
+  const servicesSection = `
+  <section id="services" style="padding:120px 0;background:${paper}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+        <div style="width:40px;height:1px;background:${accentInk}"></div>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:${accentInk};margin:0">SPECIFICATION — SERVICES</p>
+      </div>
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start">
+        ${content.services.slice(0, 4).map((s, i) => `
+        <div style="border-top:1px solid ${hairline};padding-top:1.5rem">
+          <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${accentInk};margin:0 0 0.5rem 0">S.0${i+1}</p>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:600;color:${ink};margin:0 0 0.75rem 0">${s.name}</h3>
+          <p style="font-family:var(--body-font);font-size:0.9rem;color:${graphite};line-height:1.7;margin:0">${s.description}</p>
+        </div>`).join('')}
+      </div>
+    </div>
+  </section>`
+
+  // ABOUT — 2-col with offset frame + ticks
+  const aboutSection = `
+  <section id="about" style="padding:120px 0;background:${paper}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:center">
+        <div style="position:relative">
+          <div style="overflow:hidden;height:480px;position:relative;z-index:1">
+            <img src="${aboutImg}" alt="" style="width:100%;height:100%;object-fit:cover" />
+          </div>
+          <!-- Offset frame -->
+          <div style="position:absolute;top:14px;left:14px;right:-14px;bottom:-14px;border:1px solid ${ink};z-index:0;pointer-events:none"></div>
+          <!-- Corner ticks -->
+          <div style="position:absolute;top:0;left:0;width:12px;height:12px;border-top:2px solid ${ink};border-left:2px solid ${ink};z-index:2"></div>
+          <div style="position:absolute;top:0;right:0;width:12px;height:12px;border-top:2px solid ${ink};border-right:2px solid ${ink};z-index:2"></div>
+          <div style="position:absolute;bottom:0;left:0;width:12px;height:12px;border-bottom:2px solid ${ink};border-left:2px solid ${ink};z-index:2"></div>
+          <div style="position:absolute;bottom:0;right:0;width:12px;height:12px;border-bottom:2px solid ${ink};border-right:2px solid ${ink};z-index:2"></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+            <div style="width:40px;height:1px;background:${accentInk}"></div>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:${accentInk};margin:0">PRACTICE — ABOUT</p>
+          </div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:600;color:${ink};line-height:1.15;margin:0 0 2rem 0">${content.aboutHeading}</h2>
+          ${content.aboutText.split('\n').filter(p => p.trim()).map(p => `<p style="font-family:var(--body-font);font-size:0.95rem;color:${graphite};line-height:1.8;margin:0 0 1.25rem 0">${p}</p>`).join('')}
+          ${content.testimonial ? `
+          <div style="border-left:2px solid ${accentInk};padding-left:1rem;margin-top:2rem">
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:400;color:${ink};line-height:1.8;font-style:normal;margin:0">"${content.testimonial.quote}"</p>
+          </div>` : ''}
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    @media(max-width:768px){
+      #about .ms-grid { grid-template-columns:1fr !important; gap:2rem !important; }
+    }
+  </style>`
+
+  // STATS — full-width ink strip with 4 columns
+  const statsSection = `
+  <section style="background:${ink};padding:70px 0">
+    <div class="ds-stats" style="max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-left:1px solid rgba(247,246,242,0.14);border-right:1px solid rgba(247,246,242,0.14)">
+      ${content.stats.slice(0, 4).map((s, i) => `
+      <div style="padding:0 2rem;text-align:center;${i > 0 ? `border-left:1px solid rgba(247,246,242,0.14)` : ''}">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:600;color:${accentOnInkStrip};line-height:1;margin-bottom:0.75rem">${s.value}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.6)">${s.label}</div>
+      </div>`).join('')}
+    </div>
+  </section>
+  <style>
+    @media(max-width:768px){
+      section[style*="background:${ink.replace('#', '%23')}"] { padding:3rem 0 !important; }
+      section[style*="background:${ink.replace('#', '%23')}"] .ms-grid { grid-template-columns:repeat(2,1fr) !important; }
+    }
+  </style>`
+
+  // CONTACT — 2-col info + underline form
+  const contactSection = `
+  <section id="contact" style="padding:120px 0;background:${paper}">
+    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
+      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start">
+        <div>
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+            <div style="width:40px;height:1px;background:${accentInk}"></div>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:${accentInk};margin:0">ENQUIRY</p>
+          </div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(2.2rem,4vw,3.5rem);font-weight:600;color:${ink};line-height:1.15;margin:0 0 2rem 0">${content.contactHeading}</h2>
+          <div style="display:flex;flex-direction:column;gap:2rem">
+            <div style="border-bottom:1px solid ${hairline};padding-bottom:1.5rem">
+              <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0 0 0.5rem 0">Phone</p>
+              <a href="tel:${locationInfo.phone}" style="font-family:var(--body-font);font-size:0.95rem;color:${ink};text-decoration:none">${locationInfo.phone}</a>
+            </div>
+            <div style="border-bottom:1px solid ${hairline};padding-bottom:1.5rem">
+              <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0 0 0.5rem 0">Email</p>
+              <a href="mailto:hello@example.com" style="font-family:var(--body-font);font-size:0.95rem;color:${ink};text-decoration:none">hello@example.com</a>
+            </div>
+            <div style="border-bottom:1px solid ${hairline};padding-bottom:1.5rem">
+              <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0 0 0.5rem 0">Area</p>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:${ink};margin:0">${locationInfo.city}, South Africa</p>
+            </div>
+            <div>
+              <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};margin:0 0 0.5rem 0">Hours</p>
+              <p style="font-family:var(--body-font);font-size:0.95rem;color:${ink};margin:0">${content.contactHours || 'Mon–Fri 09:00–18:00'}</p>
+            </div>
+          </div>
+        </div>
+        <form style="display:flex;flex-direction:column;gap:2rem" onsubmit="return false">
+          <div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};display:block;margin-bottom:0.5rem">Name</label>
+            <input type="text" placeholder="" style="width:100%;box-sizing:border-box;font-family:var(--body-font);font-size:0.95rem;padding:0.75rem 0;background:transparent;border:none;border-bottom:1px solid ${ink};color:${ink};outline:none" />
+          </div>
+          <div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};display:block;margin-bottom:0.5rem">Email</label>
+            <input type="email" placeholder="" style="width:100%;box-sizing:border-box;font-family:var(--body-font);font-size:0.95rem;padding:0.75rem 0;background:transparent;border:none;border-bottom:1px solid ${ink};color:${ink};outline:none" />
+          </div>
+          <div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;font-weight:400;letter-spacing:0.12em;text-transform:uppercase;color:${graphite};display:block;margin-bottom:0.5rem">Message</label>
+            <textarea placeholder="" rows="4" style="width:100%;box-sizing:border-box;font-family:var(--body-font);font-size:0.95rem;padding:0.75rem 0;background:transparent;border:none;border-bottom:1px solid ${ink};color:${ink};outline:none;resize:none"></textarea>
+          </div>
+          <button type="submit" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:0.9rem 2rem;background:${ink};color:${paper};border:none;cursor:pointer;transition:opacity 0.2s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">${content.ctaPrimary}</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <style>
+    @media(max-width:768px){
+      #contact .ms-grid { grid-template-columns:1fr !important; gap:2rem !important; }
+    }
+  </style>`
+
+  // FOOTER — minimal
+  const footerHtml = `
+  <footer style="padding:3rem 2rem;background:${paper};border-top:1px solid ${hairline};display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:600;color:${ink};letter-spacing:0.06em;text-transform:uppercase">${businessName}</div>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      ${navLinks.map(l => `<a href="${l.href}" style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:${graphite};text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s" onmouseover="this.style.color='${ink}'" onmouseout="this.style.color='${graphite}'">${l.label}</a>`).join('')}
+    </div>
+    <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;color:${graphite};letter-spacing:0.08em;margin:0">&copy; ${new Date().getFullYear()} ${businessName}. All rights reserved.</p>
+  </footer>`
+
+  return `${headHtml}
+<style>
+  :root {
+    --bg: ${paper};
+    --text: ${ink};
+    --text-muted: ${graphite};
+    --primary: ${accentInk};
+    --border: ${hairline};
+  }
+  @media(max-width:768px){ .ms-nav-links { display:none !important; } }
+</style>
+
+${customNav}
+
+${heroSection}
+${gallerySection}
+${servicesSection}
+${aboutSection}
+${statsSection}
+${contactSection}
+${footerHtml}
+
+</body>
+</html>`
+}
+
 
 function buildEventsTemplate(data: TemplateData): string {
   const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
@@ -5813,6 +6264,8 @@ function buildEventsTemplate(data: TemplateData): string {
   const vivid = primaryColor || '#3a1a58'
   const vividOnDark = accentOnDark(primaryColor, secondaryColor, '#e8410a')
   const gold = secondaryColor || '#d4a853'
+  const vividCtaBg = ensureContrast(vivid, '#ffffff', 4.5)
+  const vividOnLight = ensureContrast(vivid, parchment, 4.5)
 
   const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, 'light') + `<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>`
 
@@ -5833,8 +6286,8 @@ function buildEventsTemplate(data: TemplateData): string {
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:2.25rem;flex-wrap:wrap">
           <p style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:300;color:rgba(250,248,244,0.65);line-height:1.8;max-width:420px">${content.heroSubtitle}</p>
           <div style="display:flex;flex-direction:row;gap:1rem;flex-shrink:0;flex-wrap:wrap">
-            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${vividOnDark};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
-            <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;border:1px solid rgba(250,248,244,0.2);color:${parchment};text-decoration:none;display:inline-block;text-align:center">${content.ctaSecondary || 'Our Services'}</a>
+            <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;background:${vividCtaBg};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+            <a href="#services" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 2.5rem;border:1px solid ${parchment};color:${parchment};text-decoration:none;display:inline-block;text-align:center">${content.ctaSecondary || 'Our Services'}</a>
           </div>
         </div>
       </div>
@@ -5861,22 +6314,16 @@ function buildEventsTemplate(data: TemplateData): string {
         </div>
         <p style="font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:${muted};max-width:300px;line-height:1.7">${content.aboutMission || content.heroSubtitle}</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(13,13,18,0.08)" class="ms-grid">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3rem" class="ms-grid">
         ${content.services.slice(0, 6).map((s, i) => `
-        <div style="padding:2.5rem;${i % 3 > 0 ? 'border-left:1px solid rgba(13,13,18,0.08);' : ''}${i >= 3 ? 'border-top:1px solid rgba(13,13,18,0.08);' : ''}position:relative;overflow:hidden;background:${parchment};transition:background 0.3s ease" onmouseover="this.style.background='${warmgrey}'" onmouseout="this.style.background='${parchment}'">
-          <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,65,10,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem">
-            <span style="font-size:1.2rem">${s.icon || '&#9733;'}</span>
-          </div>
-          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;font-weight:400;color:${midnight};margin-bottom:0.75rem;font-style:italic">${s.name}</h3>
-          <p style="font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:300;color:${muted};line-height:1.8;margin-bottom:1.5rem">${s.description}</p>
-          <div style="display:flex;flex-wrap:wrap;gap:0.4rem">
-            ${s.tags.slice(0, 3).map(tag => `<span style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:0.2rem 0.6rem;background:rgba(13,13,18,0.05);color:${muted}">${tag}</span>`).join('')}
-          </div>
-          <div style="position:absolute;bottom:0;left:0;width:0;height:2px;background:${vivid};transition:width 0.4s ease" onmouseover="this.parentElement.style.background='${warmgrey}';this.style.width='100%'" onmouseout="this.parentElement.style.background='${parchment}';this.style.width='0'"></div>
+        <div style="position:relative">
+          <div style="width:40px;height:1px;background:${vividOnLight};margin-bottom:1.5rem"></div>
+          <h3 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.3rem;font-weight:600;color:${midnight};margin-bottom:0.75rem;font-style:normal">${s.name}</h3>
+          <p style="font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:300;color:${muted};line-height:1.8">${s.description}</p>
         </div>`).join('')}
       </div>
       <div style="text-align:center;margin-top:3rem">
-        <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${midnight};color:${parchment};text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
+        <a href="#contact" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${vividCtaBg};color:#fff;text-decoration:none;display:inline-block">${content.ctaPrimary}</a>
       </div>
     </div>
   </section>`
@@ -5889,21 +6336,15 @@ function buildEventsTemplate(data: TemplateData): string {
         <span style="font-family:'DM Sans',sans-serif;font-size:0.65rem;font-weight:500;letter-spacing:0.25em;text-transform:uppercase;color:${vivid}">Past Events</span>
       </div>
       <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3rem,5vw,5rem);font-weight:300;color:${midnight};font-style:italic;margin-bottom:4rem;line-height:1">${content.galleryHeading || 'Our Work'}</h2>
-      <div style="display:grid;grid-template-columns:5fr 3fr 4fr;gap:1.5px;background:rgba(250,248,244,0.06);margin-bottom:1.5px" class="ms-grid">
-        ${[0,1,2].map((i) => `
-        <div ${i===0?'class="ev-gal-img1"':''} style="overflow:hidden;height:480px;position:relative">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:240px;gap:1.5px;background:rgba(250,248,244,0.06)" class="ms-grid">
+        ${[0,1,2,3,4,5].map((i) => `
+        <div ${i===0?'style="grid-column:span 2;grid-row:span 2;overflow:hidden;position:relative"':'style="overflow:hidden;position:relative"'}>
           <img src="${stockPool[_pi++] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,18,0.8) 0%,transparent 50%)"></div>
-          <div style="position:absolute;bottom:1.5rem;left:1.5rem">
-            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${vivid};margin-bottom:0.35rem">${(content.projectCaptions && content.projectCaptions[i]) ? 'Event' : content.services[i]?.tags?.[0] || 'Event'}</div>
-            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:${midnight};font-style:italic">${(content.projectCaptions && content.projectCaptions[i]) || content.services[i]?.name || 'Special Event'}</div>
-          </div>
-        </div>`).join('')}
-      </div>
-      <div style="display:grid;grid-template-columns:3fr 4fr 5fr;gap:1.5px;background:rgba(250,248,244,0.06)" class="ms-grid">
-        ${[3,4,5].map((i) => `
-        <div style="overflow:hidden;height:360px;position:relative">
-          <img src="${stockPool[_pi++] || stockImages.cards[i]}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;filter:grayscale(15%)" onmouseover="this.style.transform='scale(1.04)';this.style.filter='grayscale(0%)'" onmouseout="this.style.transform='scale(1)';this.style.filter='grayscale(15%)'" />
+          ${i===0 ? `<div style="position:absolute;bottom:1.5rem;left:1.5rem">
+            <div style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:${vividOnLight};margin-bottom:0.35rem">${(content.projectCaptions && content.projectCaptions[i]) ? 'Event' : content.services[i]?.tags?.[0] || 'Event'}</div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.1rem;font-weight:300;color:#ffffff;font-style:italic">${(content.projectCaptions && content.projectCaptions[i]) || content.services[i]?.name || 'Special Event'}</div>
+          </div>` : ''}
         </div>`).join('')}
       </div>
     </div>
@@ -5966,7 +6407,7 @@ function buildEventsTemplate(data: TemplateData): string {
             const fallbacks = getFallbackTestimonials(content, 'events-entertainment')
             return fallbacks.slice(0, 2).map(t => `
           <div style="padding-top:3rem;border-top:1px solid rgba(250,248,244,0.06)">
-            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:300;color:rgba(250,248,244,0.6);font-style:italic;line-height:1.6;margin-bottom:1.5rem">${t.quote}</p>
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.2rem;font-weight:300;color:${midnight};font-style:italic;line-height:1.6;margin-bottom:1.5rem">${t.quote}</p>
             <div style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:400;color:${muted};letter-spacing:0.08em">— ${t.author}</div>
           </div>`).join('')
           })()}
@@ -6061,7 +6502,7 @@ function buildEventsTemplate(data: TemplateData): string {
               <label style="font-family:'DM Sans',sans-serif;font-size:0.6rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:${midnight};display:block;margin-bottom:0.6rem">Tell Us About Your Event</label>
               <textarea placeholder="Guest count, venue, vision, budget..." rows="5" style="width:100%;box-sizing:border-box;font-family:'DM Sans',sans-serif;font-weight:300;font-size:0.9rem;padding:0.85rem 1.25rem;background:${warmgrey};border:1px solid rgba(13,13,18,0.08);color:${midnight};outline:none;resize:none"></textarea>
             </div>
-            <button type="submit" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${vivid};color:#fff;border:none;cursor:pointer;align-self:flex-start">Send Enquiry</button>
+            <button type="submit" style="font-family:'DM Sans',sans-serif;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;padding:1.1rem 3rem;background:${vividCtaBg};color:#fff;border:none;cursor:pointer;align-self:flex-start">Send Enquiry</button>
           </form>
         </div>
       </div>
@@ -6361,8 +6802,17 @@ export async function POST(req: NextRequest) {
     }
 
     let htmlString: string
-    // Category-specific templates
-    if (category === 'property') {
+    // Design studio routing for architects/interior designers
+    const DESIGN_STUDIO_TYPES = new Set(['Architect', 'Interior Designer'])
+    // Screen-based work (reels, motion, audio) reads better in the dark
+    // showcase-first template than in the light editorial one the rest of
+    // the creative category uses. Stills photographers stay on creative.
+    const PORTFOLIO_TYPES = new Set(['Videographer', 'Animator / Motion Design', 'Music Producer / Studio'])
+    if (DESIGN_STUDIO_TYPES.has(effectiveBusinessType)) {
+      htmlString = buildDesignStudioTemplate(templateData)
+    } else if (PORTFOLIO_TYPES.has(effectiveBusinessType)) {
+      htmlString = buildPortfolioTemplate(templateData)
+    } else if (category === 'property') {
       htmlString = buildPropertyTemplate(templateData)
     } else if (category === 'tech-digital') {
       htmlString = buildTechDigitalTemplate(templateData)
