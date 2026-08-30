@@ -311,6 +311,11 @@ function StartYourProjectInner() {
 
   const weekdays = getWeekdays(new Date(), 2)
 
+  // Step timing refs for wizard funnel tracking
+  const previousStepRef = useRef(step)
+  const stepTimerRef = useRef(Date.now())
+  const didFireForCurrentStepRef = useRef(false) // Guard against double-fire in StrictMode
+
   // Sized to the steps this visitor's flow actually has (firstStep..TOTAL_STEPS),
   // so a visitor who skipped step 1 doesn't start partway through the bar.
   const progress = ((step - firstStep + 1) / (TOTAL_STEPS - firstStep + 1)) * 100
@@ -598,6 +603,34 @@ function StartYourProjectInner() {
       setPreviewProgress(100)
     }
   }, [previewLoading])
+
+  // Fire wizard_step when leaving a step (advancing or going back)
+  useEffect(() => {
+    if (step !== previousStepRef.current) {
+      // Step changed, fire for the step we're leaving
+      const leftStep = previousStepRef.current
+
+      if (!didFireForCurrentStepRef.current) {
+        const elapsed = Math.round((Date.now() - stepTimerRef.current) / 1000)
+        track('wizard_step', { step: leftStep, value: elapsed })
+        didFireForCurrentStepRef.current = true
+      }
+
+      // Reset for the new step
+      previousStepRef.current = step
+      stepTimerRef.current = Date.now()
+      didFireForCurrentStepRef.current = false
+    }
+  }, [step])
+
+  // Fire wizard_step when submitting the contact form on step 7
+  useEffect(() => {
+    if (step === 7 && contactSubmitted && !didFireForCurrentStepRef.current) {
+      const elapsed = Math.round((Date.now() - stepTimerRef.current) / 1000)
+      track('wizard_step', { step: 7, value: elapsed })
+      didFireForCurrentStepRef.current = true
+    }
+  }, [step, contactSubmitted])
 
   async function handleImageUpload(files: FileList | null) {
     if (!files || files.length === 0) return

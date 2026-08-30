@@ -162,6 +162,7 @@ export default function ChatWidget() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const previewFillRef = useRef<HTMLDivElement>(null)
+  const offersTrackedRef = useRef<Set<string>>(new Set())
 
   // Survive a hard reload. Client-side navigation already keeps this component
   // mounted, since it lives in the root layout.
@@ -216,6 +217,52 @@ export default function ChatWidget() {
     return () => window.removeEventListener(OPEN_EVENT, onOpen)
   }, [])
 
+  // Track chat opened once per session.
+  useEffect(() => {
+    if (!open) return
+
+    // Read and write are separately guarded. Private mode throws on both, and a
+    // throw on the read must not take the event with it — an untracked open is
+    // worse than one that repeats across a session we cannot deduplicate.
+    let alreadyOpened = false
+    try {
+      alreadyOpened = sessionStorage.getItem('ms-chat-opened-v1') === '1'
+    } catch {
+      // Private mode or quota.
+    }
+    if (alreadyOpened) return
+
+    track('chat_opened')
+
+    try {
+      sessionStorage.setItem('ms-chat-opened-v1', '1')
+    } catch {
+      // Private mode or quota.
+    }
+  }, [open])
+
+  // Track offer shown: one event per offer, at the moment it arrives in state.
+  // Using a ref guard so React re-renders do not fire duplicates.
+  useEffect(() => {
+    for (let i = 0; i < messages.length; i++) {
+      const msg = messages[i]
+      if (msg.role === 'assistant') {
+        if (msg.offerAudit && !offersTrackedRef.current.has(`${i}-audit`)) {
+          track('chat_offer_shown', { props: { offer: 'audit' } })
+          offersTrackedRef.current.add(`${i}-audit`)
+        }
+        if (msg.offerPreview && !offersTrackedRef.current.has(`${i}-preview`)) {
+          track('chat_offer_shown', { props: { offer: 'preview' } })
+          offersTrackedRef.current.add(`${i}-preview`)
+        }
+        if (msg.offerBooking && !offersTrackedRef.current.has(`${i}-book`)) {
+          track('chat_offer_shown', { props: { offer: 'book' } })
+          offersTrackedRef.current.add(`${i}-book`)
+        }
+      }
+    }
+  }, [messages])
+
   // The bubble arrives a beat after the page settles, so it reads as an offer
   // rather than part of the page furniture. Dismissed or answered, it is done
   // for the visit.
@@ -248,6 +295,7 @@ export default function ChatWidget() {
   // Hands over to AuditPopup. The chat panel closes first — the popup is a
   // modal and would otherwise land on top of an open conversation.
   const openAudit = useCallback(() => {
+    track('chat_offer_taken', { props: { offer: 'audit' } })
     setOpen(false)
     window.dispatchEvent(new Event('ms-audit:open'))
   }, [])
@@ -256,6 +304,7 @@ export default function ChatWidget() {
   const openBooking = useCallback(() => {
     // Track the click with sendBeacon before opening, since the tab switch races the fetch
     track('calendly_click', { props: { from: 'chat' } })
+    track('chat_offer_taken', { props: { offer: 'book' } })
     flush()
     window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
   }, [])
@@ -391,6 +440,8 @@ export default function ChatWidget() {
 
       const next = [...messages, { role: 'user' as const, content }]
       setMessages(next)
+      const userMessageCount = next.filter((m) => m.role === 'user').length
+      track('chat_message', { step: userMessageCount })
       setInput('')
       setSending(true)
 
@@ -603,6 +654,7 @@ export default function ChatWidget() {
                         type="button"
                         className="ms-chat-audit"
                         onClick={async () => {
+                          track('chat_offer_taken', { props: { offer: 'preview' } })
                           setBuildingPreview(true)
                           setPreviewStage(0)
                           const result = await submitPreview(messages)
