@@ -303,6 +303,15 @@ function extractAuditMarkers(reply: string): {
 const CLAIMS_RUNNING =
   /\b(on (its|it's) way|running (the|your) audit|audit is running|started (the|your) audit|report (is|will be) (on its way|sent|emailed)|sending (it|the report)|getting it going|land(s|ing)? in your inbox)\b/i
 
+// The model is not reliable about emitting [[PREVIEW]]. It will claim a preview
+// is being built or is on screen but omit the marker, leaving the visitor waiting
+// for something that was never actually started. So the marker is treated as one
+// signal among several. If the reply claims a preview is coming or already on
+// screen, the button is rendered so the claim can be made true rather than left
+// a lie — unless one has already been built, which the sentinel below catches.
+const CLAIMS_PREVIEW =
+  /\b(put(?:ting)? a preview together|build you a preview|building your preview|preview (?:should be|is) on screen|preview is ready|have a look at the preview|give me a minute and I['’]ll|take a look at it now)\b/i
+
 // A website in the visitor's own words. Emails are removed first, or the domain
 // half of "hugo@gmail.com" reads as a perfectly good website and every visitor
 // who gave an address would get gmail.com audited.
@@ -531,7 +540,7 @@ export async function POST(req: NextRequest) {
   const reply = markers.reply && askedLastTurn ? stripTrailingNameQuestion(markers.reply) : markers.reply
   let offerAudit = markers.offerAudit
   const offerBooking = markers.offerBooking
-  const offerPreview = markers.offerPreview
+  let offerPreview = markers.offerPreview
 
   // After stripping, so a marker never lands in a draft answer and gets served
   // to a later visitor as literal text. Logged whether or not the model
@@ -553,6 +562,17 @@ export async function POST(req: NextRequest) {
   //   * it claimed the audit was running. Make that true rather than leave it
   //     a lie.
   const claimsRunning = raw ? CLAIMS_RUNNING.test(raw) : false
+
+  const claimsPreview = raw ? CLAIMS_PREVIEW.test(raw) : false
+
+  // The widget's success sentinel — when a preview has been successfully built and
+  // sent, the widget appends this exact message. We use it to avoid re-offering
+  // what has already succeeded.
+  const previewAlreadyBuilt = messages.some(
+    (m) => m.role === 'assistant' && m.content.includes('have a scroll through it')
+  )
+
+  if (claimsPreview && !previewAlreadyBuilt) offerPreview = true
 
   // The model is not reliable enough to be the trigger. Handed a message
   // containing both a website and an email it has, in testing, replied "what's
