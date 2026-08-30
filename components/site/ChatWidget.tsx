@@ -112,7 +112,9 @@ const BUBBLE_TEXT = 'Chat with us — we reply instantly'
 const BUBBLE_DISMISSED_KEY = 'ms-chat-bubble-dismissed'
 const BUBBLE_DELAY_MS = 1600
 
-const PREVIEW_READY = "That's it — have a scroll through it. What do you think? Anything you'd change?"
+const PREVIEW_READY =
+  "That's it — have a scroll through it. The layout is the real part; the photos and the wording " +
+  "are stand-ins until your own go in. Does it feel about right for you?"
 
 interface Message {
   role: 'user' | 'assistant'
