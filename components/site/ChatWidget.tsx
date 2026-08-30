@@ -150,6 +150,9 @@ interface Stored {
 export default function ChatWidget() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  // Mobile only: the sheet sits low so the page behind it stays visible, and
+  // lifts while they are actually typing. Desktop ignores this entirely.
+  const [composing, setComposing] = useState(false)
   const [bubble, setBubble] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
   const [leadId, setLeadId] = useState<string | null>(null)
@@ -602,7 +605,12 @@ export default function ChatWidget() {
 
       {open && (
         <div
-          className="ms-chat-panel"
+          className={
+            // The input autofocuses on open, so focus alone would lift the sheet
+            // every time and the low resting state would never be seen. It lifts
+            // once there is something to compose, and drops again on send.
+            composing && input.trim() ? "ms-chat-panel is-composing" : "ms-chat-panel"
+          }
           role="dialog"
           aria-modal="false"
           aria-label="Chat with Mountain Studios"
@@ -730,6 +738,8 @@ export default function ChatWidget() {
               placeholder="Type your question"
               aria-label="Your message"
               onChange={(e) => setInput(e.target.value)}
+              onFocus={() => setComposing(true)}
+              onBlur={() => setComposing(false)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
@@ -967,13 +977,50 @@ const CSS = `
 }
 
 @media (max-width: 480px) {
+  /* A sheet held to the bottom of the screen, not a takeover. The whole point of
+     the preview is that they can see their own site — covering it to ask a
+     question about it defeats the exercise. */
   .ms-chat-panel {
     left: 0; right: 0; bottom: 0; width: 100vw; max-width: 100vw;
-    height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0;
+    height: auto; max-height: 52dvh;
+    border: 0; border-bottom: 0; border-radius: 20px 20px 0 0;
+    background: rgba(244, 242, 250, .86);
+    backdrop-filter: blur(18px) saturate(120%);
+    -webkit-backdrop-filter: blur(18px) saturate(120%);
+    box-shadow: 0 -12px 40px rgba(26, 26, 46, .28);
+    transition: max-height .22s cubic-bezier(.2,.8,.2,1);
   }
+
+  /* Typing needs room; reading the page behind it does not. */
+  .ms-chat-panel.is-composing { max-height: 78dvh; }
+
+  .ms-chat-head {
+    background: rgba(26, 26, 46, .88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .ms-chat-foot { background: rgba(236, 234, 242, .72); }
+
+  /* The way out has to be obvious and thumb-sized, or the sheet feels like a trap. */
+  .ms-chat-close {
+    width: 44px; height: 44px; margin: -8px -10px 0 0;
+    background: rgba(244, 242, 250, .14);
+    border: 1px solid rgba(244, 242, 250, .28);
+    color: #f4f2fa; font-size: 24px;
+  }
+
   .ms-chat-launcher { right: 16px; bottom: 16px; }
   .ms-chat-bubble { right: 16px; bottom: 88px; }
   .ms-chat-bubble::before, .ms-chat-bubble::after { right: 20px; }
+}
+
+/* Without blur the tint alone is not enough to read 15px body copy over a photo
+   hero, so legibility wins and the sheet goes nearly solid. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @media (max-width: 480px) {
+    .ms-chat-panel { background: rgba(244, 242, 250, .96); }
+    .ms-chat-head { background: rgba(26, 26, 46, .97); }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
