@@ -1,6 +1,17 @@
 # Status
 
-Last updated: 29 August 2026 (chatbot previews were always the generic template and are now per-industry; chatbot rewritten for length, register and two missing conversation branches; the business-name repeat is fixed in code because the prompt could not fix it; funnel tracking schema applied and the emitters built)
+Last updated: 31 August 2026 (AEO/GEO pass shipped — schema graph, llms.txt, six unlisted
+`/answers` pages, per-page metadata and an OG card; two client-state bugs were hiding the
+FAQ answers and half the case studies from crawlers; the Calendly booking link was dead in
+three of its four consumers)
+
+The site has had **no real traffic yet**, so nothing here has been proven by a live
+prospect. "Deployed" and "works" are different claims, and a bug found now costs nothing.
+
+Working index for this project is `~/Desktop/Claude/Projects/Mountain Studios/mds/` —
+Status.md there carries the 31 August detail.
+
+Previously updated: 29 August 2026 (chatbot previews were always the generic template and are now per-industry; chatbot rewritten for length, register and two missing conversation branches; the business-name repeat is fixed in code because the prompt could not fix it; funnel tracking schema applied and the emitters built)
 
 ## Where things stand
 

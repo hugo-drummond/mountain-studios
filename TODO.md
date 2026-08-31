@@ -193,8 +193,16 @@ values live in `.env.local` locally, never in this file.
 - [x] `CRON_SECRET` — gates `/api/audit/sweep` and `/api/audit/diagnose`. Vercel Cron sends it
       automatically as a bearer token once the variable exists. The sweep refuses to run at all
       when it is unset, rather than running unauthenticated.
-- [ ] `CALENDLY_URL` — optional. Defaults in code to `https://calendly.com/hugodrum6/30min`;
-      set the variable only to point the report's CTA somewhere else.
+- [ ] `CALENDLY_URL` — optional, and normally leave it unset. The booking link lives in
+      `lib/calendly.ts`, which is the single source for all four consumers (chat widget,
+      preview offer block, audit email, audit PDF). Default is
+      `https://calendly.com/hugodrum6/introduction-call`.
+      **Setting this variable does NOT change the chat widget** — a client component cannot
+      read a non-`NEXT_PUBLIC_` variable — so a new booking link goes in the file, not here,
+      or the chatbot keeps sending people to the old one.
+      Until 31 Aug 2026 the default was `/30min`, which does not exist. Note that a dead
+      Calendly event still returns **HTTP 200** and renders its error client-side, so curl
+      and link checkers call it healthy — open it in a browser.
 
 **Blocking for funnel tracking, once events matter**
 
