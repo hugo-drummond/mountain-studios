@@ -160,8 +160,10 @@ interface Stored {
 export default function ChatWidget() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  // Mobile only: the sheet sits low so the page behind it stays visible, and
-  // lifts while they are actually typing. Desktop ignores this entirely.
+  // Mobile panel is now a full-height takeover (see .ms-chat-panel's mobile
+  // media query), so this no longer changes panel height on mobile. Left in
+  // place — the "is-composing" class is still applied and harmless, and
+  // removing the state is outside this fix's scope.
   const [composing, setComposing] = useState(false)
   const [bubble, setBubble] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -432,6 +434,13 @@ export default function ChatWidget() {
 
   const submitPreview = useCallback(
     async (transcript: Message[]) => {
+      // iOS Safari's zoom scale belongs to the whole tab, not to a frame — a
+      // correct viewport meta inside the preview iframe cannot un-zoom it if
+      // the outer page is still zoomed in (e.g. from the message textarea
+      // having just been focused). Blur whatever is focused now, before the
+      // several-second build starts, so any lingering zoom has time to
+      // release before the full-screen overlay appears.
+      ;(document.activeElement as HTMLElement | null)?.blur?.()
       try {
         const res = await fetch('/api/preview/chat', {
           method: 'POST',
@@ -451,6 +460,12 @@ export default function ChatWidget() {
           } catch {
             // Private mode or quota.
           }
+          // Collapse the chat to the launcher as the preview comes up. On mobile
+          // the panel is a full-height takeover and would otherwise bury the very
+          // thing they asked to see. The launcher and its bubble sit above the
+          // preview overlay, so tapping either brings the conversation back —
+          // full size, with the preview still mounted behind it.
+          setOpen(false)
           setPreviewOpen(true)
           return { ok: true }
         }
@@ -1002,22 +1017,19 @@ const CSS = `
 }
 
 @media (max-width: 480px) {
-  /* A sheet held to the bottom of the screen, not a takeover. The whole point of
-     the preview is that they can see their own site — covering it to ask a
-     question about it defeats the exercise. */
+  /* Full-height takeover from the top of the viewport — nothing of the page
+     behind it (e.g. the reviews card) stays visible above it. 100dvh, not
+     100vh: iOS Safari's collapsing URL bar makes 100vh taller than the true
+     visible area, so a 100vh panel overflows off-screen. */
   .ms-chat-panel {
-    left: 0; right: 0; bottom: 0; width: 100vw; max-width: 100vw;
-    height: auto; max-height: 52dvh;
-    border: 0; border-bottom: 0; border-radius: 20px 20px 0 0;
+    top: 0; left: 0; right: 0; bottom: 0; width: 100vw; max-width: 100vw;
+    height: 100dvh; max-height: 100dvh;
+    border: 0; border-radius: 0;
     background: rgba(244, 242, 250, .86);
     backdrop-filter: blur(18px) saturate(120%);
     -webkit-backdrop-filter: blur(18px) saturate(120%);
-    box-shadow: 0 -12px 40px rgba(26, 26, 46, .28);
-    transition: max-height .22s cubic-bezier(.2,.8,.2,1);
+    box-shadow: none;
   }
-
-  /* Typing needs room; reading the page behind it does not. */
-  .ms-chat-panel.is-composing { max-height: 78dvh; }
 
   .ms-chat-head {
     background: rgba(26, 26, 46, .88);
@@ -1037,6 +1049,11 @@ const CSS = `
   .ms-chat-launcher { right: 16px; bottom: 16px; }
   .ms-chat-bubble { right: 16px; bottom: 88px; }
   .ms-chat-bubble::before, .ms-chat-bubble::after { right: 20px; }
+
+  /* iOS Safari zooms the whole page in on focus of any form control whose
+     computed font-size is under 16px, and the zoom sticks. The desktop value
+     is 15px, so this control alone needs the mobile floor. */
+  .ms-chat-input { font-size: 16px; }
 }
 
 /* Without blur the tint alone is not enough to read 15px body copy over a photo
