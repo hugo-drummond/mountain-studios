@@ -146,6 +146,21 @@ export default function Contact() {
         }} className="page-shell-grid contact-card-grid">
           {/* LEFT COLUMN - CONTACT INFO */}
           <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column' }}>
+            {/* This page had no heading at all below the hero h1, so nothing on
+                it read as a section to a crawler and there was no passage
+                naming the hours or the number. */}
+            <h2 style={{
+              fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+              fontSize: '1.35rem',
+              fontWeight: 700,
+              color: '#1a1a2e',
+              margin: '0 0 0.4rem',
+            }}>How to reach us</h2>
+            <p style={{ fontSize: '1.02rem', color: '#5d6478', lineHeight: 1.7, margin: '0 0 0.5rem' }}>
+              WhatsApp on +27 64 532 2093 is the fastest way to reach us. Email
+              hello@mountainstudios.co.za works too. We reply within one business day.
+            </p>
+
             {/* INFO ROWS — kept together and pushed to the bottom, level with the form's textarea */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', gap: '2rem', paddingBottom: '0.5rem' }}>
             {/* WhatsApp */}
@@ -156,7 +171,7 @@ export default function Contact() {
                 </svg>
               </CircleIcon>
               <div>
-                <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>WHATSAPP</p>
+                <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>WHATSAPP</h3>
                 <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Message us — fastest reply</p>
               </div>
             </div>
@@ -169,7 +184,7 @@ export default function Contact() {
                 </svg>
               </CircleIcon>
               <div>
-                <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>EMAIL</p>
+                <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>EMAIL</h3>
                 <a href="mailto:hello@mountainstudios.co.za" style={{ fontSize: '1rem', color: '#5d6478', margin: 0, textDecoration: 'none' }}>hello@mountainstudios.co.za</a>
               </div>
             </div>
@@ -183,7 +198,7 @@ export default function Contact() {
                 </svg>
               </CircleIcon>
               <div>
-                <p style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>HOURS</p>
+                <h3 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#1a1a2e', margin: '0 0 0.4rem' }}>HOURS</h3>
                 <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Mon–Fri 9:00–17:00 SAST</p>
               </div>
             </div>
@@ -222,6 +237,13 @@ export default function Contact() {
             paddingTop: '2rem',
             paddingBottom: '2rem',
           }}>
+            <h2 style={{
+              fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+              fontSize: '1.35rem',
+              fontWeight: 700,
+              color: '#1a1a2e',
+              margin: '0 0 0.4rem',
+            }}>Send a message</h2>
               {submitted ? (
                 <div style={{ textAlign: 'center', padding: '2rem 0' }}>
                   <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Thanks — we&apos;ll reply within one business day.</p>

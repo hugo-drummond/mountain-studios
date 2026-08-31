@@ -8,7 +8,9 @@ import type { MetadataRoute } from 'next'
 // The list is written out by hand rather than read off the filesystem. A glob
 // would happily publish `/admin`, `/temp` and every `/brief/[id]`, and the
 // failure would be silent — a sitemap is not rendered anywhere a person looks.
-// Adding a public page means adding a line here.
+// Adding a public page means adding a line here — and in two other hand-written
+// places: the "Pages on this site" section of lib/chatbot/knowledge.ts, and
+// public/llms.txt. All three are hand-written on purpose.
 //
 // Deliberately absent, and they must stay absent:
 //   /admin/*     — admin screens
@@ -32,6 +34,13 @@ const PAGES: Entry[] = [
   { path: '/services/paid-ads', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/aeo', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/business-automation', changeFrequency: 'monthly', priority: 0.9 },
+  { path: '/answers', changeFrequency: 'monthly', priority: 0.8 },
+  { path: '/answers/website-cost-south-africa', changeFrequency: 'monthly', priority: 0.8 },
+  { path: '/answers/how-long-to-build-a-website', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/answers/who-owns-my-website', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/answers/google-ads-seo-or-aeo-first', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/answers/what-is-aeo', changeFrequency: 'monthly', priority: 0.7 },
+  { path: '/answers/do-i-need-a-website', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/work', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/start-your-project', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.7 },

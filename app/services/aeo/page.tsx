@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
+import { OG_IMAGES, TWITTER_IMAGES } from '@/lib/og'
 import PageShell from '@/components/site/PageShell'
+import JsonLd from '@/components/site/JsonLd'
+import { serviceSchema, breadcrumbSchema } from '@/lib/schema'
 import DeviceMockup from '@/components/site/DeviceMockup'
 
 const TITLE = 'AEO — Answer Engine Optimisation — Mountain Studios'
@@ -10,9 +13,21 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: '/services/aeo' },
-  openGraph: { title: TITLE, description: DESCRIPTION },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
+  openGraph: { title: TITLE, description: DESCRIPTION , images: OG_IMAGES },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION , images: TWITTER_IMAGES },
 }
+
+const SCHEMA = serviceSchema({
+  name: 'Answer engine optimisation',
+  description: DESCRIPTION,
+  path: '/services/aeo',
+  serviceType: 'Answer engine optimisation',
+})
+
+const BREADCRUMBS = breadcrumbSchema([
+  { name: 'Services', path: '/services' },
+  { name: 'AEO', path: '/services/aeo' },
+])
 
 const features = [
   {
@@ -122,6 +137,8 @@ export default function AeoPage() {
           ))}
         </div>
       </div>
+      <JsonLd data={SCHEMA} />
+      <JsonLd data={BREADCRUMBS} />
     </PageShell>
   )
 }

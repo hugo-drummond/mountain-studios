@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { OG_IMAGES, TWITTER_IMAGES } from '@/lib/og'
 
 // The page itself is a client component, so its metadata lives here. This is
 // the card people see when the LinkedIn post is shared.
@@ -17,11 +18,13 @@ export const metadata: Metadata = {
     siteName: 'Mountain Studios',
     locale: 'en_ZA',
     type: 'website',
+    images: OG_IMAGES,
   },
   twitter: {
     card: 'summary_large_image',
     title: TITLE,
     description: DESCRIPTION,
+    images: TWITTER_IMAGES,
   },
 }
 

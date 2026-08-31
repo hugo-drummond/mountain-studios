@@ -67,6 +67,23 @@ export default function Services() {
         background: '#f4f2fa',
         padding: '4rem 2rem',
       }}>
+        {/* The heading level used to jump straight from the hero h1 to the
+            card h3s, and the page carried no sentence a search engine or an AI
+            assistant could quote. Both fixed by one real h2 and a direct
+            answer under it. */}
+        <div style={{ maxWidth: '900px', margin: '0 auto 2.5rem' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+            fontSize: '1.35rem',
+            fontWeight: 700,
+            color: '#1a1a2e',
+            margin: '0 0 0.9rem',
+          }}>What does Mountain Studios do?</h2>
+          <p style={{ fontSize: '1.02rem', color: '#5d6478', lineHeight: 1.7, margin: 0 }}>
+            Four things: we build websites, run Google and Meta ad campaigns, do answer engine optimisation so AI assistants can find and name a business, and automate the bookings, invoices and follow-ups behind it. Most people come for the website and add the rest as they grow.
+          </p>
+        </div>
+
         <div style={{
           maxWidth: '900px',
           margin: '0 auto',

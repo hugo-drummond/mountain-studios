@@ -15,7 +15,6 @@ const portfolioItems = [
 
 export default function Work() {
   const [showAll, setShowAll] = useState(false)
-  const displayedItems = showAll ? portfolioItems : portfolioItems.slice(0, 3)
 
   return (
     <PageShell
@@ -27,17 +26,45 @@ export default function Work() {
         background: '#f4f2fa',
         padding: '4rem 2rem',
       }}>
-        <div style={{
-          maxWidth: '900px',
-          margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: '1fr',
-          gap: '2rem',
-        }}>
-          {displayedItems.map((item) => (
+        {/* The heading level used to jump straight from the hero h1 to the
+            card h3s, and the page carried no sentence a search engine or an AI
+            assistant could quote. Both fixed by one real h2 and a direct
+            answer under it. */}
+        <div style={{ maxWidth: '900px', margin: '0 auto 2.5rem' }}>
+          <h2 style={{
+            fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif',
+            fontSize: '1.35rem',
+            fontWeight: 700,
+            color: '#1a1a2e',
+            margin: '0 0 0.9rem',
+          }}>What kind of businesses do we build for?</h2>
+          <p style={{ fontSize: '1.02rem', color: '#5d6478', lineHeight: 1.7, margin: 0 }}>
+            Any South African business or organisation, of any size. The sites below are live right now and cover architecture, bakeries and food, curtains and blinds, and aluminium and glass awnings — and we build for churches, clubs, schools and community groups too. A website does not have to be for a business.
+          </p>
+        </div>
+
+        <div
+          className={`ms-work-grid${showAll ? ' ms-work-grid--all' : ''}`}
+          style={{
+            maxWidth: '900px',
+            margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '2rem',
+          }}
+        >
+          {/* Every item is rendered, always. This used to slice the array to
+              three, which meant half the case studies — names, trades and
+              descriptions, the most concrete evidence on the site — never
+              reached the served HTML at all. "See More" now reveals what is
+              already in the document rather than fetching it into existence.
+
+              Which three are hidden is a CSS concern, so it is expressed as one
+              class on the grid plus an :nth-child rule in globals.css rather
+              than a `display` recomputed per item on every render. */}
+          {portfolioItems.map((item) => (
             <a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" style={{
               textDecoration: 'none',
-              display: 'block',
               transition: 'transform 0.3s ease',
             }}>
               <div style={{

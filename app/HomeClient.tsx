@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import SiteHeaderNav from '../components/site/SiteHeaderNav'
 import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
+import JsonLd from '@/components/site/JsonLd'
+import { faqSchema } from '@/lib/schema'
 
 const WHATSAPP_NUMBER = '27645322093'
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`
@@ -68,7 +70,6 @@ export default function HomeClient() {
   const [referLoading, setReferLoading] = useState(false)
   const [referHoneypot, setReferHoneypot] = useState('')
   const [referCode, setReferCode] = useState('')
-  const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [referEmailError, setReferEmailError] = useState('')
   const [referPhoneError, setReferPhoneError] = useState('')
   const [referTouched, setReferTouched] = useState({ email: false, phone: false })
@@ -167,6 +168,10 @@ export default function HomeClient() {
 
   return (
     <div style={{ background: '#f4f2fa', fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0, overflow: 'hidden' }}>
+      {/* Generated from the same faqItems the accordion renders. Never hand a
+          second copy of these answers to the crawler — marked-up text that
+          does not appear on the page is what Google treats as spam. */}
+      <JsonLd data={faqSchema(faqItems)} />
       <main>
 
       {/* TOP BAR + HERO — grouped in a flex column that fills exactly one
@@ -804,44 +809,26 @@ export default function HomeClient() {
 
           <div>
             {faqItems.map((item, i) => (
-              <div key={i} style={{
-                marginBottom: '2px',
-                background: openFaq === i ? '#f0e6ec' : '#fff',
-                borderRadius: openFaq === i ? '8px' : '0',
-              }}>
-                <button
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  style={{
-                    width: '100%',
-                    textAlign: 'left',
-                    background: 'transparent',
-                    border: 'none',
-                    cursor: 'pointer',
-                    padding: '1.15rem 1.4rem',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontSize: '0.95rem',
-                    fontWeight: 600,
-                    color: '#2e333a',
-                  }}
-                >
-                  {item.q}
-                  <span>{openFaq === i ? '−' : '+'}</span>
-                </button>
-                {openFaq === i && (
-                  <div style={{
-                    background: 'transparent',
-                    padding: '0 1.4rem 1.25rem',
-                    fontSize: '0.9rem',
-                    color: '#5d6478',
-                    lineHeight: 1.6,
-                  }}>
-                    {item.a}
-                  </div>
-                )}
-              </div>
+              /* `name` makes the group exclusive, which is what the old
+                 single-index state did — opening one closes the rest. A
+                 browser too old to support it just allows several open at
+                 once, which is a fine way to fail.
+
+                 `open` is an uncontrolled hint, not React state: it sets the
+                 first item open on first paint and the browser owns it from
+                 then on. */
+              <details key={item.q} name="faq" className="ms-faq-item" open={i === 0}>
+                <summary className="ms-faq-q">{item.q}</summary>
+                <p className="ms-faq-a">{item.a}</p>
+              </details>
             ))}
           </div>
+
+          <p style={{ textAlign: 'center', marginTop: '2.25rem', fontSize: '0.95rem' }}>
+            <a href="/answers" style={{ color: '#7d3d4f', textDecoration: 'none', fontWeight: 600 }}>
+              Longer answers — prices, timelines and who owns what →
+            </a>
+          </p>
         </div>
       </div>
 
@@ -940,6 +927,7 @@ export default function HomeClient() {
             }}>PAGES</p>
             <a href="/work" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Work</a>
             <a href="/refer/terms" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Refer</a>
+            <a href="/answers" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Answers</a>
             <a href="/about" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>About</a>
             <a href="/careers/sales-rep" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Careers</a>
           </div>

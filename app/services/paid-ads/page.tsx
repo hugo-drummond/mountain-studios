@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
+import { OG_IMAGES, TWITTER_IMAGES } from '@/lib/og'
 import PageShell from '@/components/site/PageShell'
+import JsonLd from '@/components/site/JsonLd'
+import { serviceSchema, breadcrumbSchema } from '@/lib/schema'
 import DeviceMockup from '@/components/site/DeviceMockup'
 
 const TITLE = 'Paid Ads — Mountain Studios'
@@ -10,9 +13,21 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: '/services/paid-ads' },
-  openGraph: { title: TITLE, description: DESCRIPTION },
-  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
+  openGraph: { title: TITLE, description: DESCRIPTION , images: OG_IMAGES },
+  twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION , images: TWITTER_IMAGES },
 }
+
+const SCHEMA = serviceSchema({
+  name: 'Paid ads',
+  description: DESCRIPTION,
+  path: '/services/paid-ads',
+  serviceType: 'Search and social advertising management',
+})
+
+const BREADCRUMBS = breadcrumbSchema([
+  { name: 'Services', path: '/services' },
+  { name: 'Paid ads', path: '/services/paid-ads' },
+])
 
 const features = [
   {
@@ -123,6 +138,8 @@ export default function PaidAdsPage() {
           ))}
         </div>
       </div>
+      <JsonLd data={SCHEMA} />
+      <JsonLd data={BREADCRUMBS} />
     </PageShell>
   )
 }

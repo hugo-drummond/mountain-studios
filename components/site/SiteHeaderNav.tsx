@@ -41,6 +41,7 @@ const menus: NavMenu[] = [
   {
     label: 'RESOURCES',
     items: [
+      { label: 'Answers — prices, timelines, ownership', href: '/answers' },
       { label: 'Refer & earn up to R1000', href: '/refer/terms' },
       { label: 'Free site audit', event: AUDIT_EVENT },
       { label: 'See your site free', href: '/start-your-project' },

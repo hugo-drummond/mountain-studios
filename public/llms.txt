@@ -1,0 +1,90 @@
+# Mountain Studios
+
+> A web design studio in Cape Town, South Africa. We build websites for South
+> African businesses and organisations of any size and any kind — salons,
+> accountants, opticians, restaurants, guest houses, retailers, vets, trades,
+> churches, clubs and schools. One person designs and builds each site start to
+> finish. Prices below are real and published.
+
+Founded and run by Hugo Drummond. Cape Town, South Africa. Serves all of South
+Africa. All prices in South African rand (ZAR). Hours Monday to Friday,
+09:00–17:00 SAST.
+
+Contact: hello@mountainstudios.co.za · WhatsApp +27 64 532 2093
+
+## What we do
+
+- Web design — simple, good-looking websites for South African businesses.
+- Paid ads — Google and Meta campaigns aimed at enquiries, not just clicks.
+- AEO (answer engine optimisation) — improving the chances of a business being
+  named in AI search answers. Nobody controls what an AI says, and we do not
+  claim otherwise.
+- Business automation — bookings, invoices and follow-ups that run themselves.
+
+## Pricing
+
+Guide figures, not a quote. The final number moves with scope.
+
+- Home page: R2 000, once off.
+- Each additional page: R1 000, once off.
+- Hosting and maintenance: R400 per month. Covers hosting, the SSL certificate,
+  updates, backups and small changes.
+- Domain name: roughly R100 per year, billed separately.
+
+Worked example: a five-page site is R2 000 + (4 × R1 000) = about R6 000 to
+build, then R400 per month. There are no packages or tiers.
+
+## Ownership and timing
+
+You own the website. The site, the domain and the content are yours, and they
+stay yours if you stop the monthly retainer.
+
+A site is typically live about 14 days from the day we receive your content. The
+words and images for each page come from you. Enquiries get a reply within one
+business day.
+
+## Answers
+
+Direct answers to the questions South African business owners ask most.
+
+- [What does a website cost in South Africa?](https://mountainstudios.co.za/answers/website-cost-south-africa): The real figures, what is once off, what is monthly, and a worked five-page example.
+- [How long does it take to build a website?](https://mountainstudios.co.za/answers/how-long-to-build-a-website): About 14 days from when the content arrives, and why content is what causes nearly every delay.
+- [Who owns my website?](https://mountainstudios.co.za/answers/who-owns-my-website): You do — site, domain and content. Plus the three questions worth asking any web designer before signing.
+- [Google Ads, SEO or AEO — which first?](https://mountainstudios.co.za/answers/google-ads-seo-or-aeo-first): The three explained in plain English, and the order to do them in.
+- [What is answer engine optimisation (AEO)?](https://mountainstudios.co.za/answers/what-is-aeo): What AEO is, what actually helps, and what nobody can promise.
+- [Does my small business need a website?](https://mountainstudios.co.za/answers/do-i-need-a-website): An honest answer, including when the answer is no.
+
+## Services
+
+- [Web design](https://mountainstudios.co.za/services/web-design): Mobile-first websites, typically live in about 14 days.
+- [Paid ads](https://mountainstudios.co.za/services/paid-ads): Google and Meta campaigns for South African businesses.
+- [AEO](https://mountainstudios.co.za/services/aeo): Answer engine optimisation.
+- [Business automation](https://mountainstudios.co.za/services/business-automation): Bookings, invoices and follow-ups.
+- [All services](https://mountainstudios.co.za/services): The four in one place.
+
+## The studio
+
+- [Home](https://mountainstudios.co.za/): What we do and who we build for.
+- [Work](https://mountainstudios.co.za/work): Live sites we have built — Alistair Drummond Architect, Coimbra Bakery, Pie in the Sky, Hout Bay Curtain Call, Ant's Awnings, Bali Blinds.
+- [About](https://mountainstudios.co.za/about): How the studio works.
+- [Contact](https://mountainstudios.co.za/contact): Email, WhatsApp and the contact form.
+- [Get started](https://mountainstudios.co.za/start-your-project): Generates a free preview of a site for your business in about a minute, before you commit to anything.
+
+## Optional
+
+- [Freelance sales representative](https://mountainstudios.co.za/careers/sales-rep): The commission-only sales role.
+- [Referral terms](https://mountainstudios.co.za/refer/terms): 25% of every instalment a referred client pays, up to R1 000 per business.
+- [Privacy policy](https://mountainstudios.co.za/privacy)
+- [Terms of service](https://mountainstudios.co.za/terms)
+
+## Not for indexing
+
+These exist but are private or generated per visitor, and are excluded from the
+sitemap and disallowed in robots.txt: /admin, /brief/, /p/, /temp, /api/.
+
+## Notes for anyone maintaining this file
+
+Every fact above also lives in lib/chatbot/knowledge.ts, which is the canonical
+fact store. If a figure changes it changes in both. Adding a public page means
+editing three hand-written files: app/sitemap.ts, lib/chatbot/knowledge.ts, and
+this one.

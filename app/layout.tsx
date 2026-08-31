@@ -3,9 +3,12 @@ import Script from 'next/script'
 import { Source_Sans_3, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import ChatWidget from '../components/site/ChatWidget'
+import JsonLd from '../components/site/JsonLd'
 import AuditPopup from '../components/site/AuditPopup'
 import RefCapture from '../components/site/RefCapture'
 import SiteEvents from '../components/site/SiteEvents'
+import { ORGANISATION_GRAPH } from '../lib/schema'
+import { OG_IMAGES, TWITTER_IMAGES } from '../lib/og'
 
 const sourceSans = Source_Sans_3({
   subsets: ['latin'],
@@ -37,33 +40,14 @@ export const metadata: Metadata = {
     siteName: 'Mountain Studios',
     locale: 'en_ZA',
     type: 'website',
+    images: OG_IMAGES,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Mountain Studios — Web Design, Cape Town',
     description: DESCRIPTION,
+    images: TWITTER_IMAGES,
   },
-}
-
-// Names the market explicitly: any South African business, not a trades niche.
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  name: 'Mountain Studios',
-  description: DESCRIPTION,
-  url: SITE_URL,
-  email: 'hello@mountainstudios.co.za',
-  areaServed: { '@type': 'Country', name: 'South Africa' },
-  address: { '@type': 'PostalAddress', addressLocality: 'Cape Town', addressCountry: 'ZA' },
-  serviceType: 'Web design and development',
-  audience: {
-    '@type': 'BusinessAudience',
-    name: 'South African small and medium businesses across all industries',
-  },
-  sameAs: [
-    'https://www.linkedin.com/company/mountainstudioss/',
-    'https://www.facebook.com/profile.php?id=61593052667215',
-  ],
 }
 
 export default function RootLayout({
@@ -127,10 +111,10 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${sourceSans.variable} ${playfair.variable}`} style={{ fontFamily: 'var(--font-source-sans), "Source Sans 3", sans-serif', margin: 0 }}>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {/* The site-wide graph: Organization, Person, WebSite and
+            ProfessionalService, @id-linked so every per-page node can point at
+            the organisation instead of restating it. Lives in lib/schema.ts. */}
+        <JsonLd data={ORGANISATION_GRAPH} />
         {/* Outside the reCAPTCHA provider: it calls no protected endpoint, and
             a partner's link must be counted whether or not Google loads. Same
             for SiteEvents — the tracking beacon must work on every page. */}

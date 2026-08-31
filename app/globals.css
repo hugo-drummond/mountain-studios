@@ -103,3 +103,75 @@
   .ms-shell-hero { padding-bottom: 3rem !important; }
   .page-shell-grid { padding-bottom: 2.5rem !important; }
 }
+
+/* ---------------------------------------------------------------------------
+   FAQ accordion.
+
+   Native <details>/<summary>, not React state. The accordion used to render
+   an answer only while its item was open, so five of the six answers were
+   absent from the served HTML entirely — invisible to Google and to every AI
+   crawler robots.txt deliberately lets in. These are the most quotable
+   passages on the site, so that was the single largest AEO defect here.
+
+   All six answers are now always in the document and the browser does the
+   showing and hiding. It also works with JavaScript off.
+
+   The rules live here rather than inline because ::-webkit-details-marker,
+   [open] and :focus-visible cannot be expressed as a style prop.
+--------------------------------------------------------------------------- */
+.ms-faq-item {
+  margin-bottom: 2px;
+  background: #fff;
+  border-radius: 0;
+}
+.ms-faq-item[open] {
+  background: #f0e6ec;
+  border-radius: 8px;
+}
+.ms-faq-q {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.15rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2e333a;
+}
+/* Safari draws its own disclosure triangle and ignores list-style. */
+.ms-faq-q::-webkit-details-marker { display: none; }
+.ms-faq-q:focus-visible {
+  outline: 2px solid #7d3d4f;
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+/* The +/− is drawn from the open state rather than held in the markup, so
+   there is no second source of truth to fall out of sync. */
+.ms-faq-q::after {
+  content: '+';
+  flex: none;
+}
+.ms-faq-item[open] .ms-faq-q::after { content: '−'; }
+
+.ms-faq-a {
+  padding: 0 1.4rem 1.25rem;
+  font-size: 0.9rem;
+  color: #5d6478;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   /work — the case study grid.
+
+   All six case studies are always in the document; "See More" reveals the last
+   three. They used to be sliced out of the array before render, so half the
+   most concrete evidence on the site — the client names, their trades and the
+   live URLs — never reached the served HTML at all.
+
+   Which three are hidden is a CSS concern, so it is one class on the grid
+   rather than a `display` recomputed per item on every render.
+--------------------------------------------------------------------------- */
+.ms-work-grid > a:nth-child(n + 4) { display: none; }
+.ms-work-grid--all > a:nth-child(n + 4) { display: block; }
