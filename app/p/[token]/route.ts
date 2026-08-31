@@ -38,6 +38,7 @@ interface PreviewRow {
   first_viewed_at: string | null
   claimed_at: string | null
   created_by: string | null
+  template: string | null
 }
 
 export async function GET(req: NextRequest, { params }: { params: { token: string } }) {
@@ -48,7 +49,7 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
   try {
     const { data, error } = await crmAdmin()
       .from('shared_previews')
-      .select('id, business_name, html_path, expires_at, revoked, view_count, first_viewed_at, claimed_at, created_by')
+      .select('id, business_name, html_path, expires_at, revoked, view_count, first_viewed_at, claimed_at, created_by, template')
       .eq('token', token)
       .single()
 
@@ -104,6 +105,7 @@ export async function GET(req: NextRequest, { params }: { params: { token: strin
       // move together — the offer card's button lives inside the CTA block's script.
       offer: !fromChatbot,
       cta: !fromChatbot,
+      template: preview.template,
     }),
   )
 }

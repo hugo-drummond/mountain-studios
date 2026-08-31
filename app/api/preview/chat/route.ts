@@ -109,6 +109,7 @@ export async function POST(req: NextRequest) {
 
     // Call the preview generator endpoint
     let html: string
+    let templateName: string | undefined
     try {
       // The token is not forwarded. A reCAPTCHA v3 token can be verified once, and
       // this route already spent it above — /api/preview/generate would get
@@ -137,6 +138,7 @@ export async function POST(req: NextRequest) {
 
       const generateData = await generateRes.json()
       html = generateData?.data?.html
+      templateName = generateData?.data?.templateName
       if (!html) {
         console.error('[preview/chat] generate returned no html')
         return NextResponse.json(
@@ -170,6 +172,7 @@ export async function POST(req: NextRequest) {
         html_path: path,
         created_by: 'chatbot',
         expires_at: expiresAt,
+        template: templateName ?? null,
       })
       if (error) {
         // Don't leave an orphaned file behind if the row failed.

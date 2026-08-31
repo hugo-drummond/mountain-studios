@@ -70,7 +70,7 @@ function escapeHtml(value: string): string {
  * generator produced — the CTA can be changed later without rewriting every
  * preview ever saved.
  */
-export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean; offer?: boolean; cta?: boolean }): string {
+export function decorate(html: string, opts: { token: string; businessName: string; claimed: boolean; offer?: boolean; cta?: boolean; template?: string | null }): string {
   const name = escapeHtml(opts.businessName)
   const showOffer = opts.offer !== false
   const showCta = opts.cta !== false
@@ -292,6 +292,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
 (function(){
   try{
     var token='${opts.token}';
+    var template=${JSON.stringify(opts.template)};
     function msRead(store,key){
       try{
         var raw=store.getItem(key);
@@ -325,7 +326,7 @@ export function decorate(html: string, opts: { token: string; businessName: stri
     }
     function track(event,fields){
       try{
-        var payload={source:'preview',events:[{event:event}]};
+        var payload={source:'preview',events:[{event:event,label:template}]};
         if(fields){
           if(fields.value_num!==undefined)payload.events[0].value_num=fields.value_num;
           if(fields.props)payload.events[0].props=fields.props;

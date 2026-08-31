@@ -6802,6 +6802,7 @@ export async function POST(req: NextRequest) {
     }
 
     let htmlString: string
+    let templateName: string
     // Design studio routing for architects/interior designers
     const DESIGN_STUDIO_TYPES = new Set(['Architect', 'Interior Designer'])
     // Screen-based work (reels, motion, audio) reads better in the dark
@@ -6810,47 +6811,66 @@ export async function POST(req: NextRequest) {
     const PORTFOLIO_TYPES = new Set(['Videographer', 'Animator / Motion Design', 'Music Producer / Studio'])
     if (DESIGN_STUDIO_TYPES.has(effectiveBusinessType)) {
       htmlString = buildDesignStudioTemplate(templateData)
+      templateName = 'design-studio'
     } else if (PORTFOLIO_TYPES.has(effectiveBusinessType)) {
       htmlString = buildPortfolioTemplate(templateData)
+      templateName = 'portfolio'
     } else if (category === 'property') {
       htmlString = buildPropertyTemplate(templateData)
+      templateName = 'property'
     } else if (category === 'tech-digital') {
       htmlString = buildTechDigitalTemplate(templateData)
+      templateName = 'tech-digital'
     } else if (category === 'retail') {
       htmlString = buildRetailTemplate(templateData)
+      templateName = 'retail'
     } else if (category === 'trades-construction') {
       htmlString = buildTradesTemplate(templateData)
+      templateName = 'trades-construction'
     } else if (category === 'home-services') {
       htmlString = buildHomeServicesTemplate(templateData)
+      templateName = 'home-services'
     } else if (category === 'health-wellness') {
       htmlString = buildHealthWellnessTemplate(templateData)
+      templateName = 'health-wellness'
     } else if (category === 'food-hospitality') {
       htmlString = buildFoodHospitalityTemplate(templateData)
+      templateName = 'food-hospitality'
     } else if (category === 'pets') {
       htmlString = buildPetsTemplate(templateData)
+      templateName = 'pets'
     } else if (category === 'automotive') {
       htmlString = buildAutomotiveTemplate(templateData)
+      templateName = 'automotive'
     } else if (category === 'fitness-sport') {
       htmlString = buildFitnessTemplate(templateData)
+      templateName = 'fitness-sport'
     } else if (category === 'events-entertainment') {
       htmlString = buildEventsTemplate(templateData)
+      templateName = 'events-entertainment'
     } else if (category === 'creative') {
       htmlString = buildCreativeTemplate(templateData)
+      templateName = 'creative'
     } else if (category === 'education') {
       htmlString = buildEducationTemplate(templateData)
+      templateName = 'education'
     } else if (category === 'professional') {
       htmlString = buildProfessionalTemplate(templateData)
+      templateName = 'professional'
     } else {
       switch (variant) {
         case 'visual':
           htmlString = buildVisualTemplate(templateData)
+          templateName = 'visual'
           break
         case 'portfolio':
           htmlString = buildPortfolioTemplate(templateData)
+          templateName = 'portfolio'
           break
         case 'service':
         default:
           htmlString = buildServiceTemplate(templateData)
+          templateName = 'service'
           break
       }
     }
@@ -6867,8 +6887,8 @@ export async function POST(req: NextRequest) {
           path: req.nextUrl.pathname,
           device_type: deviceType,
           occurred_at: new Date(),
-          label: variant,
-          props: { category: category },
+          label: templateName,
+          props: { category: category, variant: variant },
           source: 'server',
         },
       ])
@@ -6879,7 +6899,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: { html: htmlString },
+      data: { html: htmlString, templateName: templateName },
     })
   } catch (err) {
     console.error('[preview/generate] error:', err)

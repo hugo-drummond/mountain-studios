@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
   let businessName: string
   let leadId: string | null
   let createdBy: string | null
+  let templateName: string | null
   let ttlDays: number
   try {
     const body = await req.json()
@@ -62,6 +63,7 @@ export async function POST(req: NextRequest) {
     businessName = typeof body.businessName === 'string' ? body.businessName.trim() : ''
     leadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
     createdBy = typeof body.createdBy === 'string' && body.createdBy ? body.createdBy.slice(0, 120) : null
+    templateName = typeof body.templateName === 'string' && body.templateName ? body.templateName : null
     ttlDays = Number.isFinite(body.ttlDays) ? Math.min(365, Math.max(1, Math.round(body.ttlDays))) : DEFAULT_TTL_DAYS
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 })
@@ -91,6 +93,7 @@ export async function POST(req: NextRequest) {
       html_path: path,
       created_by: createdBy,
       expires_at: expiresAt,
+      template: templateName,
     })
     if (error) {
       // Don't leave an orphaned file behind if the row failed.

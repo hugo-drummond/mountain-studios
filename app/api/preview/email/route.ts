@@ -100,6 +100,7 @@ export async function POST(req: NextRequest) {
   let businessName: string
   let email: string
   let leadId: string | null
+  let templateName: string | null
   let recaptchaToken: string | undefined
   try {
     const body = await req.json()
@@ -107,6 +108,12 @@ export async function POST(req: NextRequest) {
     businessName = typeof body.businessName === 'string' ? body.businessName.trim() : ''
     email = typeof body.email === 'string' ? body.email.trim() : ''
     leadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
+    // Client-supplied, so clamp it to the kebab-case shape the generator emits.
+    // Free text here would land straight on the /funnel template breakdown.
+    templateName =
+      typeof body.templateName === 'string' && /^[a-z][a-z-]{0,31}$/.test(body.templateName)
+        ? body.templateName
+        : null
     recaptchaToken = typeof body.recaptchaToken === 'string' ? body.recaptchaToken : undefined
   } catch {
     return NextResponse.json({ success: false, error: 'Invalid JSON body' }, { status: 400 })
@@ -159,6 +166,7 @@ export async function POST(req: NextRequest) {
       html_path: path,
       created_by: 'wizard',
       expires_at: expiresAt,
+      template: templateName,
     })
     if (error) {
       // Don't leave an orphaned file behind if the row failed.

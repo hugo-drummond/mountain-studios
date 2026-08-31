@@ -412,6 +412,7 @@ function StartYourProjectInner() {
                     businessName,
                     email: gateEmail,
                     leadId,
+                    templateName: res.data.templateName,
                     recaptchaToken: emailToken,
                   }),
                 })

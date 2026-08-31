@@ -65,6 +65,13 @@ function client(): SESv2Client {
   return _client
 }
 
+// SES publishes bounce and complaint events per configuration set. Naming a set
+// that does not exist rejects the send outright, so this stays undefined until
+// the set and its event destination are wired in AWS. Do not add OPEN or CLICK
+// to that destination: subscribing to them makes SES rewrite every link, which
+// is what cost Primary placement on 23 Aug.
+const CONFIG_SET = process.env.SES_CONFIGURATION_SET
+
 export async function sendMail({
   to,
   subject,
@@ -91,6 +98,7 @@ export async function sendMail({
 
   const res = await client().send(
     new SendEmailCommand({
+      ConfigurationSetName: CONFIG_SET,
       FromEmailAddress: from ?? FROM,
       Destination: { ToAddresses: [to] },
       ReplyToAddresses: replyTo ? [replyTo] : undefined,
@@ -191,6 +199,7 @@ export async function sendMailWithAttachment(opts: {
   // Send via Raw content
   const res = await client().send(
     new SendEmailCommand({
+      ConfigurationSetName: CONFIG_SET,
       FromEmailAddress: FROM,
       Destination: { ToAddresses: [opts.to] },
       Content: {
