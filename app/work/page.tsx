@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import PageShell from '@/components/site/PageShell'
 
 const portfolioItems = [
@@ -55,14 +56,15 @@ export default function Work() {
                   borderRadius: '8px',
                   aspectRatio: '16/9',
                   overflow: 'hidden',
+                  position: 'relative',
                 }}>
-                  <img src={item.img} alt={item.name} style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'top center',
-                    display: 'block',
-                  }} />
+                  <Image
+                    src={item.img}
+                    alt={item.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    style={{ objectFit: 'cover', objectPosition: 'top center' }}
+                  />
                 </div>
 
                 {/* CONTENT AREA */}

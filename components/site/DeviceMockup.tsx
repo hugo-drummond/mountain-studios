@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 export default function DeviceMockup({ src, alt }: { src: string; alt: string }) {
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: '560px', margin: '0 auto' }}>
@@ -22,11 +24,14 @@ export default function DeviceMockup({ src, alt }: { src: string; alt: string })
           borderRadius: '6px 6px 0 0',
           overflow: 'hidden',
           aspectRatio: '16/10',
+          position: 'relative',
         }}>
-          <img
+          <Image
             src={src}
             alt={alt}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            style={{ objectFit: 'cover', objectPosition: 'top center' }}
           />
         </div>
       </div>

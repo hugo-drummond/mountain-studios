@@ -426,7 +426,7 @@ export default function ChatWidget() {
         return { ok: false, retryable: true, message: "I couldn't get that started just now." }
       }
     },
-    [executeRecaptcha],
+    [],
   )
 
   const submitPreview = useCallback(
@@ -561,7 +561,7 @@ export default function ChatWidget() {
         inputRef.current?.focus()
       }
     },
-    [messages, leadId, previewToken, sending, executeRecaptcha, submitAudit],
+    [messages, leadId, previewToken, sending, submitAudit],
   )
 
   // After every hook, so the rules of hooks hold on the routes that hide it.

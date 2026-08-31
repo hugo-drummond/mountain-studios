@@ -447,7 +447,7 @@ function StartYourProjectInner() {
         setPreviewLoading(false)
       }
     })()
-  }, [step, gateEmail, businessName, businessType, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, executeRecaptcha])
+  }, [step, gateEmail, businessName, businessType, businessCategory, selectedPages, customPages, selectedStyle, primaryColor, secondaryColor, visualBalance, noColors, uploadedImages, leadId])
 
   // Capture email at step 6 before the preview generates
   async function handleSubmitGateEmail(e: React.FormEvent<HTMLFormElement>) {
