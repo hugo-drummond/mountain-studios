@@ -311,8 +311,16 @@ const CLAIMS_RUNNING =
 // signal among several. If the reply claims a preview is coming or already on
 // screen, the button is rendered so the claim can be made true rather than left
 // a lie — unless one has already been built, which the sentinel below catches.
+// Measured against live replies: the model routinely writes "put a FREE preview
+// together" and "show you a FREE preview", and the old pattern — which required
+// "a preview together" contiguous — missed both. One adjective defeated it, so
+// the button did not render and the visitor read an offer with nothing to click.
+// Hence the optional adjective slot and the show/send/get and reversed
+// ("put together a preview") word orders. The adjective list is closed rather
+// than \w+ so this cannot start firing on "the preview is free" or "what did you
+// think of the preview", which must stay silent.
 const CLAIMS_PREVIEW =
-  /\b(put(?:ting)? a preview together|build you a preview|building your preview|preview (?:should be|is) on screen|preview is ready|have a look at the preview|give me a minute and I['’]ll|take a look at it now)\b/i
+  /\b(put(?:ting)?\s+(?:you\s+)?(?:a|the)\s+(?:(?:free|quick|rough|first|short|simple|basic)\s+)?preview\s+together|put(?:ting)?\s+together\s+(?:you\s+)?(?:a|the)\s+(?:(?:free|quick|rough|first|short|simple|basic)\s+)?preview|(?:show|send|get)\s+you\s+(?:a|the)\s+(?:(?:free|quick|rough|first|short|simple|basic)\s+)?preview|build(?:ing)?\s+(?:you\s+|your\s+)?(?:a|the)?\s*(?:(?:free|quick|rough|first|short|simple|basic)\s+)?preview|preview (?:should be|is) on screen|preview is ready|have a look at the preview|give me a minute and I['’]ll|take a look at it now)\b/i
 
 // A website in the visitor's own words. Emails are removed first, or the domain
 // half of "hugo@gmail.com" reads as a perfectly good website and every visitor
