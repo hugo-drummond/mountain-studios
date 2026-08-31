@@ -181,10 +181,12 @@ async function callDeepSeek(messages: Message[], turnDirective?: string): Promis
       },
       body: JSON.stringify({
         model: MODEL,
-        // Low but not zero. The bot is allowed to sound like a person; it is
-        // not allowed to be creative about the facts, and the prompt handles
-        // that far better than the temperature does.
-        temperature: 0.3,
+        // Zero. Measured across three identical runs at 0.3, the same prompt
+        // and the same persona produced replies ranging 39 to 73 words — the
+        // reply length was being set by sampling noise, not by the rule asking
+        // for thirty words. Determinism matters more here than sounding varied;
+        // the prompt carries the personality.
+        temperature: 0,
         max_tokens: MAX_TOKENS,
         messages: [
           {
