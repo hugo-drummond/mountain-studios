@@ -233,7 +233,7 @@ export default function HomeClient() {
             maxWidth: '640px',
             margin: '0 auto 2rem',
           }}>
-            Type your business name. We'll build you a real preview, free, in about a minute.
+            Type your business name. We&apos;ll build you a real preview, free, in about a minute.
           </p>
 
           <form style={{
@@ -489,7 +489,7 @@ export default function HomeClient() {
             color: '#2e333a',
             textAlign: 'center',
             margin: '0 0 2rem',
-          }}>SEE THE BRANDS WE'VE BUILT</h2>
+          }}>SEE THE BRANDS WE&apos;VE BUILT</h2>
           <div style={{
             textAlign: 'center',
             marginBottom: '2.5rem',
@@ -588,7 +588,7 @@ export default function HomeClient() {
             margin: '0 0 1rem',
             lineHeight: 1.2,
           }}>
-            Know a business that needs a website?<br />We'll pay you up to <em style={{ fontStyle: 'italic' }}>R1000</em>.
+            Know a business that needs a website?<br />We&apos;ll pay you up to <em style={{ fontStyle: 'italic' }}>R1000</em>.
           </h2>
 
           <div className="ms-cards-3" style={{
@@ -632,7 +632,7 @@ export default function HomeClient() {
                 fontSize: '0.9rem',
                 color: '#3d4358',
                 margin: '0 0 1rem',
-              }}>Got it. We'll send your link shortly.</p>
+              }}>Got it. We&apos;ll send your link shortly.</p>
               {referCode && (
                 <div style={{
                   background: 'rgba(255,255,255,0.3)',
@@ -856,7 +856,7 @@ export default function HomeClient() {
             fontWeight: 400,
             margin: '0 0 2rem',
           }}>
-            See what yours could look like. <em style={{ fontStyle: 'italic' }}>It's free.</em>
+            See what yours could look like. <em style={{ fontStyle: 'italic' }}>It&apos;s free.</em>
           </h2>
           <form style={{
             display: 'flex',

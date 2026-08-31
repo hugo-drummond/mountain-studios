@@ -62,10 +62,10 @@ export default function ReferTerms() {
               <strong style={{ color: '#1a1a2e' }}>Payout.</strong> A referral only counts once the business books a meeting with Hugo — passing on a name or a number earns nothing on its own. From there you earn 25% of every instalment they pay, up to R1000 total per referred business, paid via EFT as each instalment comes in. For example, a R400 build paid in three R200, R100, R100 instalments earns you R50, then R25, then R25.
             </li>
             <li style={{ marginBottom: '1rem' }}>
-              <strong style={{ color: '#1a1a2e' }}>No limit.</strong> Refer as many businesses as you like — there's no cap on how much you can earn.
+              <strong style={{ color: '#1a1a2e' }}>No limit.</strong> Refer as many businesses as you like — there&apos;s no cap on how much you can earn.
             </li>
             <li style={{ marginBottom: '1rem' }}>
-              <strong style={{ color: '#1a1a2e' }}>Your link doesn't expire.</strong> Use it whenever a referral comes up.
+              <strong style={{ color: '#1a1a2e' }}>Your link doesn&apos;t expire.</strong> Use it whenever a referral comes up.
             </li>
             <li>
               <strong style={{ color: '#1a1a2e' }}>Questions?</strong> Email <a href="mailto:hello@mountainstudios.co.za" style={{ color: '#7d3d4f' }}>hello@mountainstudios.co.za</a>.

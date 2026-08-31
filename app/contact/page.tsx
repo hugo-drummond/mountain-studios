@@ -224,7 +224,7 @@ export default function Contact() {
           }}>
               {submitted ? (
                 <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-                  <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Thanks — we'll reply within one business day.</p>
+                  <p style={{ fontSize: '1rem', color: '#5d6478', margin: 0 }}>Thanks — we&apos;ll reply within one business day.</p>
                 </div>
               ) : (
                 <form onFocusCapture={() => prewarmRecaptcha()} onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

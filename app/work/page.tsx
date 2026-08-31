@@ -19,7 +19,7 @@ export default function Work() {
   return (
     <PageShell
       eyebrow="CASE STUDIES"
-      title={<>The brands <em style={{ fontStyle: 'italic' }}>we've</em> built.</>}
+      title={<>The brands <em style={{ fontStyle: 'italic' }}>we&apos;ve</em> built.</>}
       sub="Real businesses. Real sites. Go and look at them."
     >
       <div style={{

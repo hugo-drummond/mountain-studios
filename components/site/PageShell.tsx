@@ -207,11 +207,11 @@ export default function PageShell({
                 fontWeight: 400,
                 margin: '0 0 2rem',
               }}>
-                See what yours could look like. <em style={{ fontStyle: 'italic' }}>It's free.</em>
+                See what yours could look like. <em style={{ fontStyle: 'italic' }}>It&apos;s free.</em>
               </h2>
 
               {submitted ? (
-                <p style={{ fontSize: '0.9rem', color: '#3d4358', marginBottom: '2rem' }}>Thanks — we'll be in touch shortly.</p>
+                <p style={{ fontSize: '0.9rem', color: '#3d4358', marginBottom: '2rem' }}>Thanks — we&apos;ll be in touch shortly.</p>
               ) : (
                 <form style={{
                   display: 'flex',
