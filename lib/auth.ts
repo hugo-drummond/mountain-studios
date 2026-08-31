@@ -35,6 +35,18 @@ export async function verifyPassword(plain: string, hash: string): Promise<boole
 // ─── Session validation ───────────────────────────────────────────────────────
 
 /**
+ * Constant-time string comparison. `===` short-circuits on the first differing
+ * character, which leaks the shared secret one byte at a time to anyone who can
+ * time the response. Mirrors the helper in middleware.ts.
+ */
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let diff = 0
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return diff === 0
+}
+
+/**
  * Validate the admin session from a raw Request object.
  *
  * Strategy:
@@ -53,13 +65,13 @@ export async function getAdminSession(req: Request): Promise<boolean> {
 
   // Header-based bearer token (API routes from dashboard)
   const token = req.headers.get('x-admin-token')
-  if (token && token === adminPassword) return true
+  if (token && safeEqual(token, adminPassword)) return true
 
   // Authorization: Bearer <token>
   const authHeader = req.headers.get('authorization')
   if (authHeader?.startsWith('Bearer ')) {
     const bearer = authHeader.slice(7)
-    if (bearer === adminPassword) return true
+    if (safeEqual(bearer, adminPassword)) return true
   }
 
   return false
@@ -111,13 +123,13 @@ export function requireAdmin(req: NextRequest): NextResponse | null {
 
   // x-admin-token header
   const token = req.headers.get('x-admin-token')
-  if (token && token === adminPassword) return null
+  if (token && safeEqual(token, adminPassword)) return null
 
   // Authorization: Bearer <token>
   const authHeader = req.headers.get('authorization')
   if (authHeader?.startsWith('Bearer ')) {
     const bearer = authHeader.slice(7)
-    if (bearer === adminPassword) return null
+    if (safeEqual(bearer, adminPassword)) return null
   }
 
   return NextResponse.json(

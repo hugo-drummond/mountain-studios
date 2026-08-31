@@ -5,6 +5,11 @@ import { recordEvents, deviceFromUserAgent } from '@/lib/site-events-server'
 
 import { presetContent, PresetContent } from './content'
 
+// The heaviest route on the site. Its siblings under /api/audit and
+// /api/preview/chat all declare 60; without one this takes the platform
+// default and a cold start with images attached can be cut off mid-render.
+export const maxDuration = 60
+
 type BusinessCategory =
   | 'food-hospitality' | 'retail' | 'trades-construction' | 'health-wellness'
   | 'professional' | 'creative' | 'fitness-sport' | 'home-services'

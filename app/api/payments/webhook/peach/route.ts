@@ -19,21 +19,21 @@ export async function POST(req: NextRequest) {
       body[key] = value
     })
 
-    // ── 2. Verify HMAC signature if present ───────────────────────────────────
+    // ── 2. Verify HMAC signature ─────────────────────────────────────────────
     const signature =
       req.headers.get('x-authentication-tag') ??
       req.headers.get('x-initialization-vector') ??
       null
 
-    if (signature) {
-      const isValid = verifyWebhookSignature(text, signature)
-      if (!isValid) {
-        console.warn('[payments/webhook/peach] Invalid HMAC signature')
-        return NextResponse.json(
-          { success: false, error: 'Invalid signature' },
-          { status: 400 },
-        )
-      }
+    // Verifying only when a signature happens to be present means an unsigned
+    // request skips the check entirely. A missing header is a failed
+    // verification, not an exemption from one.
+    if (!signature || !verifyWebhookSignature(text, signature)) {
+      console.warn('[payments/webhook/peach] Missing or invalid HMAC signature')
+      return NextResponse.json(
+        { success: false, error: 'Invalid signature' },
+        { status: 400 },
+      )
     }
 
     // ── 3 & 4. Parse payload ──────────────────────────────────────────────────

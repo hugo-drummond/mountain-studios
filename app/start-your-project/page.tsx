@@ -987,6 +987,15 @@ function StartYourProjectInner() {
                   autoFocus
                   placeholder="your@email.com"
                   className="ms-wizard-input"
+                  // Clearing on blur alone strands the visitor: the error stays
+                  // on screen after they fix the typo, the submit button stays
+                  // disabled, and the first press only blurs the field.
+                  onChange={(e) => {
+                    if (!gateEmailError) return
+                    if (!e.target.value.trim() || isValidEmail(e.target.value)) {
+                      setGateEmailError('')
+                    }
+                  }}
                   onBlur={() => {
                     setGateTouched(true)
                     const input = document.querySelector('input[type="email"]') as HTMLInputElement

@@ -156,33 +156,34 @@ export default function SiteHeaderNav() {
                   </svg>
                 </button>
 
-                {openMenu === menu.label && (
-                  <div className="ms-hdr-drop" role="menu">
-                    {menu.items.map(item =>
-                      item.event ? (
-                        <button
-                          key={item.label}
-                          type="button"
-                          className="ms-hdr-drop-item"
-                          role="menuitem"
-                          onClick={() => fire(item.event as string)}
-                        >
-                          {item.label}
-                        </button>
-                      ) : (
-                        <a
-                          key={item.label}
-                          href={item.href}
-                          className="ms-hdr-drop-item"
-                          role="menuitem"
-                          onClick={() => setOpenMenu(null)}
-                        >
-                          {item.label}
-                        </a>
-                      ),
-                    )}
-                  </div>
-                )}
+                <div
+                  className={openMenu === menu.label ? 'ms-hdr-drop is-open' : 'ms-hdr-drop'}
+                  role="menu"
+                >
+                  {menu.items.map(item =>
+                    item.event ? (
+                      <button
+                        key={item.label}
+                        type="button"
+                        className="ms-hdr-drop-item"
+                        role="menuitem"
+                        onClick={() => fire(item.event as string)}
+                      >
+                        {item.label}
+                      </button>
+                    ) : (
+                      <a
+                        key={item.label}
+                        href={item.href}
+                        className="ms-hdr-drop-item"
+                        role="menuitem"
+                        onClick={() => setOpenMenu(null)}
+                      >
+                        {item.label}
+                      </a>
+                    ),
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -331,7 +332,7 @@ const CSS = `
           min-width: 208px; padding: 0.5rem;
           background: #fff; border: 1px solid #e3e0ea; border-radius: 14px;
           box-shadow: 0 18px 40px -18px rgba(26,26,46,0.45);
-          display: flex; flex-direction: column;
+          display: none; flex-direction: column;
           animation: ms-hdr-drop-in 0.18s ease-out;
         }
         /* Bridges the 0.6rem gap under the trigger. Without it the pointer
@@ -344,6 +345,10 @@ const CSS = `
           from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
           to   { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
+        /* Mounted always, hidden with CSS. Conditionally mounting these links
+           kept them out of the server HTML entirely, so nothing crawling the
+           site could see the link to /services. */
+        .ms-hdr-drop.is-open { display: flex; }
         .ms-hdr-drop-item {
           display: block; width: 100%; padding: 0.6rem 0.85rem;
           border: 0; border-radius: 9px; background: transparent;
