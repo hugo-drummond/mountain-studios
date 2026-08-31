@@ -1046,6 +1046,14 @@ function buildHead(businessName: string, fonts: { heading: string; headingFamily
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="${fontImportUrl}" rel="stylesheet" />
   <style>${buildCssVars(fonts, primaryColor, secondaryColor, theme)}
+  /* iOS Safari zooms the whole tab in when a form control under 16px takes
+     focus, and the zoom sticks — the prospect is then looking at a corner of
+     their own preview with no obvious way back. Every builder sets its input
+     font-size inline (0.95rem, ~15.2px), and inline styles beat a stylesheet,
+     so overriding it needs !important. Mobile only; desktop keeps the design. */
+  @media (max-width: 768px) {
+    input, textarea, select { font-size: 16px !important; }
+  }
   </style>
 </head>
 <body>`
