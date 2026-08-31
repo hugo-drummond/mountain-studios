@@ -9,6 +9,7 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
+  alternates: { canonical: '/services/business-automation' },
   openGraph: { title: TITLE, description: DESCRIPTION },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION },
 }
