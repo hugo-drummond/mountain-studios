@@ -35,6 +35,10 @@ export interface PreviewBrief {
   matchedPreset: boolean
 }
 
+export type BriefResult =
+  | { ok: true; brief: PreviewBrief }
+  | { ok: false; reason: 'missing-details' | 'unavailable' }
+
 // The nine page labels the wizard offers, in order.
 const WIZARD_LABELS = ['Home', 'About', 'Services', 'Portfolio / Gallery', 'Contact', 'Booking / Appointments', 'Blog', 'Shop / Products', 'Testimonials']
 
@@ -177,18 +181,18 @@ function mapPagesToLabels(rawPages: string): string[] {
   return result.length > 0 ? result : ['Home', 'About', 'Services', 'Contact']
 }
 
-export async function extractPreviewBrief(messages: Message[]): Promise<PreviewBrief | null> {
+export async function extractPreviewBrief(messages: Message[]): Promise<BriefResult> {
   try {
     const apiKey = process.env.DEEPSEEK_API_KEY
     if (!apiKey) {
       console.error('[preview-brief] Missing DEEPSEEK_API_KEY')
-      return null
+      return { ok: false, reason: 'unavailable' }
     }
 
     const transcript = messages
       .map((m) => `${m.role === 'user' ? 'Visitor' : 'Bot'}: ${m.content}`)
       .join('\n')
-    if (!transcript.trim()) return null
+    if (!transcript.trim()) return { ok: false, reason: 'missing-details' }
 
     const systemPrompt = `You are extracting structured preview details from a website chatbot conversation. Read the transcript below and output exactly three lines and nothing else:
 
@@ -230,12 +234,12 @@ Strict rules:
 
       if (!res.ok) {
         console.error('[preview-brief] DeepSeek returned', res.status, await res.text().catch(() => ''))
-        return null
+        return { ok: false, reason: 'unavailable' }
       }
 
       const data = await res.json()
       const content = data?.choices?.[0]?.message?.content
-      if (typeof content !== 'string' || !content.trim()) return null
+      if (typeof content !== 'string' || !content.trim()) return { ok: false, reason: 'unavailable' }
 
       // Parse the three lines
       const lines = content.trim().split('\n').map((l) => l.trim())
@@ -255,24 +259,27 @@ Strict rules:
       }
 
       // Both name and type are required
-      if (!parsed.businessName || !parsed.businessType) return null
+      if (!parsed.businessName || !parsed.businessType) return { ok: false, reason: 'missing-details' }
 
       // Try to match the business type to a preset
       const presetKey = nearestPresetKey(parsed.businessType)
       const matchedPreset = presetKey !== null
 
       return {
-        businessName: parsed.businessName,
-        businessType: matchedPreset ? presetKey : parsed.businessType,
-        businessCategory: matchedPreset && presetKey ? categoryForType(presetKey) : 'other',
-        pages: mapPagesToLabels(parsed.pages || ''),
-        matchedPreset,
+        ok: true,
+        brief: {
+          businessName: parsed.businessName,
+          businessType: matchedPreset ? presetKey : parsed.businessType,
+          businessCategory: matchedPreset && presetKey ? categoryForType(presetKey) : 'other',
+          pages: mapPagesToLabels(parsed.pages || ''),
+          matchedPreset,
+        },
       }
     } finally {
       clearTimeout(timer)
     }
   } catch (err) {
     console.error('[preview-brief] extraction failed:', err instanceof Error ? err.message : err)
-    return null
+    return { ok: false, reason: 'unavailable' }
   }
 }

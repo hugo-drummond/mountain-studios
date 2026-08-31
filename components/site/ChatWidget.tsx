@@ -449,7 +449,11 @@ export default function ChatWidget() {
         })
 
         if (!res.ok) {
-          return { ok: false }
+          const data = await res.json().catch(() => null)
+          if (data?.error === 'need_business_name') {
+            return { ok: false, reason: 'need-name' }
+          }
+          return { ok: false, reason: 'failed' }
         }
 
         const data = await res.json().catch(() => null)
@@ -470,9 +474,9 @@ export default function ChatWidget() {
           return { ok: true }
         }
 
-        return { ok: false }
+        return { ok: false, reason: 'failed' }
       } catch {
-        return { ok: false }
+        return { ok: false, reason: 'failed' }
       }
     },
     [leadId],
@@ -726,12 +730,14 @@ export default function ChatWidget() {
                           setBuildingPreview(false)
 
                           if (!result.ok) {
+                            const errorMessage = result.reason === 'need-name'
+                              ? "Before I build it — what's the business called?"
+                              : "Your preview couldn't be built right now. Try visiting the Get Started page instead."
                             setMessages([
                               ...messages,
                               {
                                 role: 'assistant',
-                                content:
-                                  "Your preview couldn't be built right now. Try visiting the Get Started page instead.",
+                                content: errorMessage,
                               },
                             ])
                           }

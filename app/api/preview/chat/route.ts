@@ -90,13 +90,21 @@ export async function POST(req: NextRequest) {
     }
 
     // Extract preview brief from the conversation
-    const brief = await extractPreviewBrief(messages)
-    if (!brief) {
+    const result = await extractPreviewBrief(messages)
+    if (!result.ok) {
+      if (result.reason === 'missing-details') {
+        return NextResponse.json(
+          { error: 'need_business_name' },
+          { status: 400 },
+        )
+      }
       return NextResponse.json(
-        { error: 'not enough detail yet' },
-        { status: 400 },
+        { error: 'could not build the preview' },
+        { status: 502 },
       )
     }
+
+    const brief = result.brief
 
     // Verify reCAPTCHA (missing token is not a bot signal, only a real negative verdict blocks)
     const recaptchaResult = await verifyRecaptcha(recaptchaToken)
