@@ -117,7 +117,15 @@ export async function POST(req: NextRequest) {
       // silently killed the wizard preview email for two days in August.
       const generateRes = await fetch(new URL('/api/preview/generate', req.url), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          // Forward the real visitor's IP. Without it this server-to-server call
+          // arrives with no x-forwarded-for, clientKey() falls back to 'unknown',
+          // and every chat preview on the site shares ONE bucket of 8 per hour —
+          // so the ninth visitor in an hour is told their preview could not be
+          // built, with nothing wrong at their end.
+          'x-forwarded-for': clientKey(req),
+        },
         body: JSON.stringify({
           businessName: brief.businessName,
           businessType: brief.businessType,
