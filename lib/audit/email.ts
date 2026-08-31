@@ -1,4 +1,5 @@
 import type { AuditReport } from './types';
+import { calendlyUrl } from '../calendly'
 
 function escapeHtml(value: string): string {
   return value
@@ -291,7 +292,7 @@ export function renderAuditCoverEmail(
           <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:0 0 24px;">
             Attached is your website audit. It checks the items that turn website visitors into paying customers. If there&rsquo;s anything you need explained book in a free 15 minute call with our team and we&rsquo;ll talk you through it.
           </p>
-          <a href="${escapeHtml(process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min')}" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
+          <a href="${escapeHtml(calendlyUrl())}" style="display:inline-block;background:#7d3d4f;color:#ffffff;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:14px 28px;border-radius:999px;">Book a free 15-min call</a>
           <p style="font-size:15px;line-height:1.65;color:#3a3f4d;margin:24px 0 0;">Hugo</p>
         </td></tr>
         <tr><td style="padding:24px 32px 32px;">

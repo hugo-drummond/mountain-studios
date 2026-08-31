@@ -1,4 +1,5 @@
 import { randomBytes } from 'crypto'
+import { calendlyUrl } from './calendly'
 
 // ---------------------------------------------------------------------------
 // Shared client previews.
@@ -18,7 +19,7 @@ export const PREVIEW_BUCKET = 'previews'
 // The offer block's booking link. Kept out of the preview email on purpose —
 // a bare Calendly URL in the body pushed that mail out of Gmail's Primary tab
 // on its own. On the page it costs nothing.
-const CALENDLY_URL = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min'
+const CALENDLY_URL = calendlyUrl()
 
 // Base58: no 0/O/I/l, so a token read aloud down a phone line survives.
 const ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'

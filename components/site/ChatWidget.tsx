@@ -6,6 +6,7 @@ import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
 import { visitorId, track, flush } from '@/lib/site-events'
 import { trackMeta } from '@/lib/analytics'
+import { CALENDLY_DEFAULT_URL } from '@/lib/calendly'
 
 // ---------------------------------------------------------------------------
 // The chat widget: a launcher pill in the bottom-right corner and the panel it
@@ -91,7 +92,7 @@ const MAX_INPUT = 1000
 
 // Where the "book a call" button sends people. A single named constant so the
 // link is easy to swap later without hunting through the render tree.
-const CALENDLY_URL = 'https://calendly.com/hugodrum6/introduction-call'
+const CALENDLY_URL = CALENDLY_DEFAULT_URL
 
 // The widget is mounted in the root layout, which also wraps things that are
 // not the marketing site. It must not appear on the admin screens, and it must

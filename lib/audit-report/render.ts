@@ -2,6 +2,7 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import type { AuditReport, Bucket, SecurityHeader } from '../audit/types';
 import { FONT_FACE_CSS } from './fonts';
+import { calendlyUrl } from '../calendly';
 
 // Color mapping for buckets
 const BUCKET_COLORS: Record<Bucket | 'grey', string> = {
@@ -202,8 +203,8 @@ export function fillTemplate(report: AuditReport, opts: { businessName: string }
   // Fill Calendly URL
   // Default rather than required: an unset env var must not silently turn the
   // report's only call to action into a dead link. CALENDLY_URL still overrides.
-  const calendlyUrl = process.env.CALENDLY_URL || 'https://calendly.com/hugodrum6/30min';
-  template = template.replace('{{calendly_url}}', escapeHtml(calendlyUrl));
+  const bookingUrl = calendlyUrl();
+  template = template.replace('{{calendly_url}}', escapeHtml(bookingUrl));
 
   // Fill protection missing headers
   if (report.checks.headers.status === 'ok' && report.checks.headers.missing) {
