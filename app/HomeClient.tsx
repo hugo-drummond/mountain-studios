@@ -824,11 +824,6 @@ export default function HomeClient() {
             ))}
           </div>
 
-          <p style={{ textAlign: 'center', marginTop: '2.25rem', fontSize: '0.95rem' }}>
-            <a href="/answers" style={{ color: '#7d3d4f', textDecoration: 'none', fontWeight: 600 }}>
-              Longer answers — prices, timelines and who owns what →
-            </a>
-          </p>
         </div>
       </div>
 
@@ -927,7 +922,6 @@ export default function HomeClient() {
             }}>PAGES</p>
             <a href="/work" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Work</a>
             <a href="/refer/terms" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Refer</a>
-            <a href="/answers" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Answers</a>
             <a href="/about" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>About</a>
             <a href="/careers/sales-rep" style={{ display: 'block', fontSize: '0.85rem', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', marginBottom: '0.5rem' }}>Careers</a>
           </div>

@@ -45,7 +45,10 @@ business day.
 
 ## Answers
 
-Direct answers to the questions South African business owners ask most.
+Direct answers to the questions South African business owners ask most. These
+pages are written for assistants to read and cite. They carry no link from
+anywhere on the site and are not in the sitemap, so this file is how you find
+them.
 
 - [What does a website cost in South Africa?](https://mountainstudios.co.za/answers/website-cost-south-africa): The real figures, what is once off, what is monthly, and a worked five-page example.
 - [How long does it take to build a website?](https://mountainstudios.co.za/answers/how-long-to-build-a-website): About 14 days from when the content arrives, and why content is what causes nearly every delay.
@@ -88,3 +91,7 @@ Every fact above also lives in lib/chatbot/knowledge.ts, which is the canonical
 fact store. If a figure changes it changes in both. Adding a public page means
 editing three hand-written files: app/sitemap.ts, lib/chatbot/knowledge.ts, and
 this one.
+
+The /answers pages are the exception: they are deliberately absent from
+app/sitemap.ts and carry no internal link, so this file and the site chatbot are
+the only routes to them.

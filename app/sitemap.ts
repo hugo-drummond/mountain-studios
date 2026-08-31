@@ -17,6 +17,25 @@ import type { MetadataRoute } from 'next'
 //   /brief/[id]  — one per lead, private
 //   /p/*         — generated client previews, served as raw documents
 //   /temp        — scratch route
+//   /answers/*   — see below
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// /answers is deliberately NOT in this list.
+//
+// Those pages publish the real price ladder, and the decision (31 Aug 2026) is
+// that they are for AI assistants to read and cite, not for a prospect to find
+// by browsing the site or by searching Google. They carry no internal link from
+// anywhere on the site either — nav, footers and the homepage FAQ link were all
+// removed.
+//
+// They stay listed in public/llms.txt and stay crawlable in robots.txt, which
+// is the whole point: an assistant can still read and cite them.
+//
+// Understand what this does NOT do. When an assistant cites one of these pages
+// it hands the reader the URL, and the reader is often the prospect. Keeping
+// them out of the sitemap stops people stumbling onto the prices; it does not
+// keep the prices private.
 // ---------------------------------------------------------------------------
 
 const SITE_URL = 'https://mountainstudios.co.za'
@@ -34,13 +53,6 @@ const PAGES: Entry[] = [
   { path: '/services/paid-ads', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/aeo', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/business-automation', changeFrequency: 'monthly', priority: 0.9 },
-  { path: '/answers', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/answers/website-cost-south-africa', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/answers/how-long-to-build-a-website', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/answers/who-owns-my-website', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/answers/google-ads-seo-or-aeo-first', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/answers/what-is-aeo', changeFrequency: 'monthly', priority: 0.7 },
-  { path: '/answers/do-i-need-a-website', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/work', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/start-your-project', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
