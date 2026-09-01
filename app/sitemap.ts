@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { ANSWERS } from './answers/answers'
 
 // ---------------------------------------------------------------------------
 // Served at /sitemap.xml by Next's App Router. There was no sitemap of any kind
@@ -17,25 +18,36 @@ import type { MetadataRoute } from 'next'
 //   /brief/[id]  — one per lead, private
 //   /p/*         — generated client previews, served as raw documents
 //   /temp        — scratch route
-//   /answers/*   — see below
 // ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
-// /answers is deliberately NOT in this list.
+// /answers IS in this list, as of 1 Sep 2026. It was pulled out on 31 Aug and
+// that was a mistake, so read this before pulling it out again.
 //
-// Those pages publish the real price ladder, and the decision (31 Aug 2026) is
-// that they are for AI assistants to read and cite, not for a prospect to find
-// by browsing the site or by searching Google. They carry no internal link from
-// anywhere on the site either — nav, footers and the homepage FAQ link were all
-// removed.
+// The intent was that those pages are for AI assistants to read and cite, not
+// for a prospect to browse into. Removing them from the sitemap did nothing for
+// the second half and quietly broke the first. Nobody browses a sitemap — it is
+// a crawler file. What actually keeps a prospect out is the absence of any
+// internal link, and that stays true: no nav entry, no footer entry, no
+// homepage FAQ link, nothing.
 //
-// They stay listed in public/llms.txt and stay crawlable in robots.txt, which
-// is the whole point: an assistant can still read and cite them.
+// What it broke: with no sitemap entry and no inbound link, a crawler had no
+// path to these pages at all. public/llms.txt lists them, but llms.txt is not a
+// discovery mechanism — no search engine uses it to find pages, it is read by
+// some assistants once they are already on the domain. Google AI Overviews
+// draws on the Google index, and ChatGPT and Perplexity search on top of search
+// indexes. Not indexed means not citable, so the pages built for AEO were
+// invisible to the exact systems they exist for.
 //
-// Understand what this does NOT do. When an assistant cites one of these pages
-// it hands the reader the URL, and the reader is often the prospect. Keeping
-// them out of the sitemap stops people stumbling onto the prices; it does not
-// keep the prices private.
+// The trade-off, stated plainly: they can now surface in an ordinary Google
+// search for something like "website cost south africa". That is the same coin
+// as being citable — both come from the index. You cannot have one without the
+// other. The only thing genuinely in our control is browsability from our own
+// site, and that is still shut.
+//
+// The individual answer pages go in; the /answers hub does not. The hub is a
+// browsable index and nothing cites it — a crawler reaches it from the
+// breadcrumb on any answer page if it ever matters.
 // ---------------------------------------------------------------------------
 
 const SITE_URL = 'https://mountainstudios.co.za'
@@ -61,6 +73,15 @@ const PAGES: Entry[] = [
   { path: '/refer/terms', changeFrequency: 'yearly', priority: 0.3 },
   { path: '/privacy', changeFrequency: 'yearly', priority: 0.2 },
   { path: '/terms', changeFrequency: 'yearly', priority: 0.2 },
+  // Read off ANSWERS rather than retyped. This is not the glob the note above
+  // warns against — it is one curated, typed array — and it means a new answer
+  // page cannot be published without its sitemap entry, which is exactly the
+  // drift that hid these pages in the first place.
+  ...ANSWERS.map((a): Entry => ({
+    path: `/answers/${a.slug}`,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  })),
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {
