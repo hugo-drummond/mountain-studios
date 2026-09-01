@@ -16,7 +16,10 @@ type BusinessCategory =
   | 'education' | 'automotive' | 'property' | 'events-entertainment'
   | 'tech-digital' | 'pets' | 'other'
 
-type TemplateVariant = 'visual' | 'service' | 'portfolio'
+// 'service' was a third variant until 1 Sep 2026. Its builder was unreachable —
+// every category that pointed at it is caught by its own explicit branch in the
+// dispatch chain below — so the builder and the variant both went.
+type TemplateVariant = 'visual' | 'portfolio'
 
 const categoryVariant: Record<BusinessCategory, TemplateVariant> = {
   'food-hospitality': 'visual',
@@ -25,12 +28,14 @@ const categoryVariant: Record<BusinessCategory, TemplateVariant> = {
   'fitness-sport': 'visual',
   'pets': 'visual',
   'events-entertainment': 'visual',
-  'tech-digital': 'service',
-  'professional': 'service',
-  'trades-construction': 'service',
-  'home-services': 'service',
-  'education': 'service',
-  'automotive': 'service',
+  // These six each have an explicit branch in the dispatch chain, so this value
+  // is never actually read for them. It is what they would fall back to.
+  'tech-digital': 'visual',
+  'professional': 'visual',
+  'trades-construction': 'visual',
+  'home-services': 'visual',
+  'education': 'visual',
+  'automotive': 'visual',
   // 'other' has no bespoke builder; buildVisualTemplate is the strongest generic.
   'other': 'visual',
   'creative': 'portfolio',
@@ -1330,321 +1335,7 @@ ${buildFooter(businessName, content)}
 </html>`
 }
 
-// ---------- Service Template (icon cards, process section) ----------
-// Light theme for most service businesses; dark for tech-digital
-
-function buildServiceTemplate(data: TemplateData): string {
-  const { content, businessName, businessCategory, primaryColor, secondaryColor, pages, images, stockImages, locationInfo } = data
-  const fonts = fontPairings[businessCategory] || fontPairings['other']
-  const navFlags = resolveNavLinks(pages)
-  const theme: Theme = businessCategory === 'tech-digital' ? 'dark' : 'light'
-
-  const defaultServiceIcons = ['&#9670;', '&#9674;', '&#9656;', '&#9632;', '&#9678;', '&#9733;']
-  const iconMap: Record<string, string> = {
-    droplet: '&#128167;', flame: '&#128293;', tool: '&#9874;', zap: '&#9889;', cpu: '&#9881;',
-    sun: '&#9728;', home: '&#8962;', shield: '&#128737;', layers: '&#9776;', grid: '&#9638;',
-    box: '&#9634;', star: '&#9733;', maximize: '&#10697;', map: '&#9873;', edit: '&#9998;',
-    'edit-2': '&#9998;', square: '&#9633;', key: '&#128273;', lock: '&#128274;', truck: '&#128666;',
-    'trash-2': '&#9249;', wind: '&#127788;', settings: '&#9881;', 'chevrons-down': '&#8650;',
-    'cloud-rain': '&#127783;', 'battery-charging': '&#128267;', 'align-left': '&#9776;',
-    'file-text': '&#128196;', book: '&#128214;', users: '&#128101;', target: '&#9678;',
-    'trending-up': '&#8599;', 'trending-down': '&#8600;', clock: '&#128336;', briefcase: '&#128188;',
-    camera: '&#128247;', mic: '&#127908;', user: '&#128100;', 'user-check': '&#128100;',
-    award: '&#127942;', 'check-square': '&#9745;', 'check-circle': '&#10004;', stamp: '&#128203;',
-    package: '&#128230;', send: '&#10148;', scissors: '&#9986;', feather: '&#10047;',
-    thermometer: '&#127777;', video: '&#128249;', 'alert-triangle': '&#9888;',
-    activity: '&#9829;', 'bar-chart-2': '&#128200;', circle: '&#9679;', 'credit-card': '&#128179;',
-    'edit-3': '&#9998;', globe: '&#127760;', 'message-circle': '&#128172;', monitor: '&#128187;',
-    repeat: '&#128257;', 'shopping-cart': '&#128722;', smartphone: '&#128241;',
-    clipboard: '&#128203;', film: '&#127902;', play: '&#9654;', radio: '&#128251;',
-    'refresh-cw': '&#128260;', sliders: '&#9776;',
-  }
-
-  const pr = parseInt(primaryColor.slice(1, 3), 16)
-  const pg = parseInt(primaryColor.slice(3, 5), 16)
-  const pb = parseInt(primaryColor.slice(5, 7), 16)
-
-  const stockPool = buildImagePool(images, stockImages, businessName)
-  const fallbackTestimonials = getFallbackTestimonials(content, businessCategory)
-
-  const isProfessionalCategory = businessCategory === 'professional'
-  const showProcessSection = !isProfessionalCategory
-
-  const steps = content.processSteps || [
-    { step: '1', title: 'Get in Touch', description: 'Reach out and tell us what you need' },
-    { step: '2', title: 'We Plan', description: 'We create a tailored approach for your project' },
-    { step: '3', title: 'We Deliver', description: 'Professional execution with quality guaranteed' },
-  ]
-
-  const tileLabels = ['Who We Are', 'Our Approach', 'Our Work', 'Our Team']
-  const tileImgs = [
-    stockPool[14] || stockImages.cards[7] || stockImages.hero,
-    stockPool[15] || stockImages.cards[8] || stockImages.cards[0],
-    stockPool[16] || stockImages.cards[9] || stockImages.cards[1],
-    stockPool[17] || stockImages.cards[10] || stockImages.cards[2],
-  ]
-  const statIcons = ['&#9878;', '&#9734;', '&#9823;']
-
-  const svcAccent = ensureContrast(primaryColor, '#ffffff', 4.5)
-
-  const servicesSection = `
-    <style>
-      .svc-card { transition:transform 0.3s ease,box-shadow 0.3s ease }
-      .svc-card:hover { transform:translateY(-4px);box-shadow:0 12px 40px rgba(${pr},${pg},${pb},0.15) !important }
-    </style>
-    <section id="services" style="padding:120px 0;background:var(--bg-alt)">
-      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
-        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-          <div style="width:32px;height:2px;background:${svcAccent};border-radius:1px"></div>
-          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${svcAccent};font-weight:700;margin:0">${content.heroEyebrow}</p>
-        </div>
-        <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3.5rem;gap:2rem">
-          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:550px">${content.servicesHeading}</h2>
-          <a href="#contact" style="font-family:var(--body-font);font-size:0.8rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:${svcAccent};text-decoration:none;white-space:nowrap;flex-shrink:0">${content.ctaPrimary} &rarr;</a>
-        </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${content.services.length === 4 ? 2 : 3},1fr);gap:2rem">
-          ${content.services.slice(0, 6).map((s, i) => `
-            <div style="padding:0;position:relative">
-              <div style="width:32px;height:2px;background:${svcAccent};margin-bottom:1.5rem"></div>
-              <div style="font-family:var(--body-font);font-size:0.78rem;letter-spacing:0.14em;color:${svcAccent};font-weight:700;text-transform:uppercase;margin-bottom:0.75rem">0${i + 1}</div>
-              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text);margin:0 0 0.85rem;line-height:1.25">${s.name}</h3>
-              <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.8;margin:0">${s.description}</p>
-            </div>`).join('')}
-        </div>
-      </div>
-    </section>`
-
-  const professionalSection = !isProfessionalCategory ? '' : `
-    <section style="padding:0;background:var(--bg)">
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3px;background:var(--border)">
-        ${tileImgs.map((img, i) => `
-        <div class="ms-img" style="position:relative;height:300px;overflow:hidden">
-          <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'" />
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 60%)"></div>
-          <div style="position:absolute;bottom:1.5rem;left:1.75rem;font-family:var(--body-font);font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#fff;padding:0.5rem 1rem;background:rgba(${pr},${pg},${pb},0.9);border-radius:2px">${tileLabels[i]}</div>
-        </div>`).join('')}
-      </div>
-      <div style="background:var(--bg-alt);border-top:3px solid var(--primary);padding:70px 2rem">
-        <div class="ms-grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(${Math.min(content.stats.length, 3)},1fr);gap:0">
-          ${content.stats.slice(0, 3).map((s, i) => `
-          <div style="text-align:center;padding:2rem 3rem;${i > 0 ? 'border-left:1px solid var(--border)' : ''}">
-            <div style="font-size:1.75rem;color:var(--primary);margin-bottom:0.75rem">${statIcons[i % statIcons.length]}</div>
-            <div style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:400;color:var(--text);margin-bottom:0.4rem;line-height:1">${s.value}</div>
-            <div style="font-family:var(--body-font);font-size:0.82rem;font-weight:600;color:var(--text);letter-spacing:0.05em">${s.label}</div>
-            ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.75rem;color:var(--text-muted);margin-top:0.3rem">${s.sublabel}</div>` : ''}
-          </div>`).join('')}
-        </div>
-      </div>
-    </section>`
-
-  const processAccent = accentOnDark(primaryColor, secondaryColor, '#6C5CE7')
-
-  const processSection = isProfessionalCategory ? professionalSection : !showProcessSection ? '' : `
-    <section style="padding:120px 0;background:var(--bg)">
-      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
-        <div style="text-align:center;margin-bottom:4rem">
-          <div style="display:inline-flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
-            <div style="width:32px;height:1px;background:${processAccent}"></div>
-            <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${processAccent};font-weight:600;margin:0">${content.stepsHeading || 'How It Works'}</p>
-            <div style="width:32px;height:1px;background:${processAccent}"></div>
-          </div>
-          <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,3.5vw,2.75rem);font-weight:400;color:var(--text);margin:0 0 1rem;line-height:1.2">A Simple, Proven Process</h2>
-          <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);max-width:460px;margin:0 auto;line-height:1.7">Straightforward from first contact to final delivery — no surprises.</p>
-        </div>
-        <div class="ms-flex" style="display:flex;align-items:flex-start;gap:2rem;position:relative">
-          <div style="position:absolute;top:20px;left:0;right:0;height:1px;background:rgba(0,0,0,0.14);z-index:0;pointer-events:none"></div>
-          ${steps.map((s, i) => `
-            <div style="flex:1;text-align:center;position:relative;z-index:1">
-              <div style="width:80px;height:80px;margin:0 auto 1.5rem;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:50%;position:relative;z-index:2">
-                <span style="font-family:var(--heading-font);font-size:2.6rem;font-weight:400;color:${processAccent};line-height:1">${s.step}</span>
-              </div>
-              <h3 style="font-family:var(--heading-font);font-size:1.15rem;font-weight:600;color:var(--text);margin:0 0 0.75rem">${s.title}</h3>
-              <p style="font-family:var(--body-font);font-size:0.88rem;color:var(--text-muted);line-height:1.75;margin:0">${s.description}</p>
-            </div>`).join('')}
-        </div>
-      </div>
-    </section>`
-
-  const testimonialsAccent = ensureContrast(primaryColor, '#f0f0f0', 3.0)
-
-  const testimonialsSection = `
-    <section style="padding:120px 0;background:var(--bg-alt)">
-      <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
-        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:3rem">
-          <div style="width:32px;height:2px;background:${testimonialsAccent};border-radius:1px"></div>
-          <p style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:${testimonialsAccent};font-weight:700;margin:0">Client Feedback</p>
-        </div>
-        <div class="ms-grid" style="display:grid;grid-template-columns:repeat(${Math.min(fallbackTestimonials.length + (content.testimonial ? 1 : 0), 3)},1fr);gap:2rem">
-          ${content.testimonial ? `
-          <div style="padding:0;position:relative;border-top:1px solid rgba(0,0,0,0.12)">
-            <div style="font-size:0.9rem;color:${testimonialsAccent};letter-spacing:0.15em;margin:1.5rem 0">${'&#9733;'.repeat(content.testimonial.rating || 5)}</div>
-            <p style="font-family:var(--heading-font);font-size:1rem;color:var(--text);line-height:1.75;font-style:italic;margin:0 0 1.5rem">"${content.testimonial.quote}"</p>
-            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${content.testimonial.author}</p>
-          </div>` : ''}
-          ${fallbackTestimonials.slice(0, 2).map(t => `
-          <div style="padding:0;position:relative;border-top:1px solid rgba(0,0,0,0.12)">
-            <div style="font-size:0.9rem;color:${testimonialsAccent};letter-spacing:0.15em;margin:1.5rem 0">${'&#9733;'.repeat(t.rating)}</div>
-            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text);line-height:1.8;font-style:italic;margin:0 0 1.5rem">"${t.quote}"</p>
-            <p style="font-family:var(--body-font);font-size:0.78rem;color:var(--text-muted);letter-spacing:0.06em;font-weight:600;margin:0;text-transform:uppercase">${t.author}</p>
-          </div>`).join('')}
-        </div>
-      </div>
-    </section>`
-
-  const headHtml = buildHead(businessName, fonts, primaryColor, secondaryColor, theme)
-
-  return `${headHtml}
-<style>
-  @keyframes svc-fadeup { from { opacity:0;transform:translateY(24px) } to { opacity:1;transform:translateY(0) } }
-  .svc-fade-1 { animation:svc-fadeup 0.8s ease 0.1s both }
-  .svc-fade-2 { animation:svc-fadeup 0.8s ease 0.25s both }
-  .svc-fade-3 { animation:svc-fadeup 0.8s ease 0.4s both }
-  .svc-fade-4 { animation:svc-fadeup 0.8s ease 0.55s both }
-  .svc-fade-5 { animation:svc-fadeup 0.8s ease 0.7s both }
-  body::before { content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:0.35 }
-  .reveal { opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease }
-  .reveal.visible { opacity:1;transform:translateY(0) }
-  #custom-cursor-dot { width:5px;height:5px;background:var(--primary);border-radius:50%;position:fixed;pointer-events:none;z-index:10000;transform:translate(-50%,-50%) }
-  #custom-cursor-ring { width:28px;height:28px;border:1.5px solid rgba(${pr},${pg},${pb},0.45);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s }
-  @media(max-width:768px){.hero-ab{display:none}.svc-badge,.svc-eyebrow{display:none!important}.svc-hero-stats>div{flex:1!important;padding-left:0!important;margin-left:0!important;text-align:center!important;border-left:none!important}.svc-hero-stats>div+div{border-left:1px solid rgba(255,255,255,0.08)!important}.svc-hero-stats>div:nth-child(n+4){display:none!important}}
-</style>
-<div id="custom-cursor-dot"></div>
-<div id="custom-cursor-ring"></div>
-
-${buildStandardNav(businessName, content, navFlags)}
-
-  <!-- Hero -->
-  <section style="position:relative;min-height:calc(92vh - 64px);display:flex;align-items:center;overflow:hidden;background:${theme === 'dark' ? 'var(--bg)' : '#0a0a0a'}">
-    <div style="position:absolute;inset:0">
-      <img src="${images[0] || stockImages.hero}" alt="" style="width:100%;height:100%;object-fit:cover" />
-      <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(10,12,16,0.88) 0%, rgba(10,12,16,0.62) 48%, rgba(10,12,16,0.32) 100%)"></div>
-    </div>
-    <!-- Left accent bar -->
-    <div class="hero-ab" style="position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--primary)"></div>
-    <div style="position:relative;max-width:1200px;margin:0 auto;padding:7rem 2rem 5rem;width:100%">
-      ${content.badge ? `<div class="svc-fade-1 svc-badge" style="display:inline-flex;align-items:center;gap:0.5rem;font-family:var(--body-font);font-size:0.7rem;letter-spacing:0.15em;padding:0.4rem 1rem;border-radius:2px;background:rgba(${pr},${pg},${pb},0.12);border:1px solid rgba(${pr},${pg},${pb},0.3);color:var(--on-photo);margin-bottom:2rem;text-transform:uppercase;font-weight:600">${content.badge}</div>` : ''}
-      <p class="svc-fade-1 svc-eyebrow" style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--on-photo);margin-bottom:1.5rem;font-weight:700">${content.heroEyebrow}</p>
-      <h1 class="svc-fade-2" style="font-family:var(--heading-font);font-size:clamp(3rem,6.5vw,5.5rem);font-weight:400;color:var(--on-photo);line-height:1.02;margin:0 0 1.75rem;max-width:750px">${content.tagline}</h1>
-      <p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:var(--on-photo-muted);max-width:500px;line-height:1.82;margin:0 0 ${content.heroAccent ? '1.25rem' : '2.75rem'}">${content.heroSubtitle}</p>
-      ${content.heroAccent ? `<p class="svc-fade-3" style="font-family:var(--body-font);font-size:1.05rem;color:${accentOnDark(primaryColor, secondaryColor, '#6C5CE7')};font-weight:600;margin:0 0 2.75rem">${content.heroAccent}</p>` : ''}
-      <div class="svc-fade-4" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:${content.ctaNote ? '0.75rem' : '0'}">
-        <a href="#contact" style="font-family:var(--body-font);font-size:0.88rem;font-weight:700;padding:1rem 2.75rem;background:${svcAccent};color:${bestTextColor(svcAccent)};border-radius:2px;text-decoration:none;letter-spacing:0.05em;text-transform:uppercase;transition:opacity 0.2s">${content.ctaPrimary}</a>
-        <a href="#services" style="font-family:var(--body-font);font-size:0.88rem;font-weight:500;padding:1rem 2.25rem;background:transparent;color:var(--on-photo);border:1px solid var(--on-photo-border);border-radius:2px;text-decoration:none;transition:all 0.2s">${content.ctaSecondary}</a>
-      </div>
-      ${content.ctaNote ? `<p class="svc-fade-5 ms-cta-note" style="font-family:var(--body-font);font-size:0.78rem;color:var(--on-photo-muted);margin-bottom:0">${content.ctaNote}</p>` : ''}
-      <!-- Stats strip -->
-      <div class="svc-hero-stats" style="display:flex;gap:0;margin-top:4rem;border-top:1px solid rgba(255,255,255,0.1);padding-top:2.5rem">
-        ${content.stats.slice(0, 4).map((s, i) => `
-        <div style="flex:1;${i > 0 ? 'padding-left:2.5rem;border-left:1px solid rgba(255,255,255,0.08);margin-left:2.5rem' : ''}">
-          <div style="font-family:var(--heading-font);font-size:2.25rem;font-weight:400;color:#f5f5f0;line-height:1">${s.value}</div>
-          <div style="font-family:var(--body-font);font-size:0.78rem;color:rgba(245,245,240,0.5);margin-top:0.35rem;letter-spacing:0.04em">${s.label}</div>
-          ${s.sublabel ? `<div style="font-family:var(--body-font);font-size:0.7rem;color:rgba(245,245,240,0.28);margin-top:0.15rem">${s.sublabel}</div>` : ''}
-        </div>`).join('')}
-      </div>
-    </div>
-  </section>
-
-  ${servicesSection}
-  ${processSection}
-  ${buildAboutSection(content)}
-
-  ${stockPool.length > 0 ? `
-  <section id="gallery" style="padding:0;background:var(--bg)">
-    <div style="max-width:1200px;margin:0 auto;padding:80px 2rem 0">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:3rem">
-        <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,3rem);font-weight:400;color:var(--text);line-height:1.15;margin:0;max-width:500px">${content.galleryHeading || 'Our Work'}</h2>
-      </div>
-    </div>
-    <div style="max-width:1200px;margin:0 auto;padding:0 2rem 80px">
-      ${(() => {
-        const galleryCount = 1 + Math.min(stockPool.slice(5, 8).length, 3);
-        let gridStyle = 'display:grid;gap:14px';
-        let firstTileSpan = '';
-
-        if (galleryCount >= 6) {
-          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
-          firstTileSpan = 'grid-column:span 2;grid-row:span 2;';
-        } else if (galleryCount === 5) {
-          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
-          firstTileSpan = 'grid-column:span 2;';
-        } else if (galleryCount === 4) {
-          gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:260px';
-          firstTileSpan = '';
-        } else if (galleryCount === 3) {
-          gridStyle += ';grid-template-columns:repeat(3,1fr);grid-auto-rows:260px';
-          firstTileSpan = '';
-        } else {
-          gridStyle += ';grid-template-columns:repeat(2,1fr);grid-auto-rows:300px';
-          firstTileSpan = '';
-        }
-
-        return `<div class="ms-grid" style="${gridStyle}">
-        <div style="${firstTileSpan}position:relative;overflow:hidden;border-radius:2px">
-          <img src="${stockPool[4] || stockImages.cards[0]}" alt="Gallery" style="width:100%;height:100%;object-fit:cover;display:block" />
-        </div>
-        ${stockPool.slice(5, 8).map((img, i) => `
-        <div style="position:relative;overflow:hidden;border-radius:2px">
-          <img src="${img}" alt="Gallery" style="width:100%;height:100%;object-fit:cover;display:block" />
-        </div>`).join('')}
-      </div>`;
-      })()}
-    </div>
-  </section>` : ''}
-
-  ${testimonialsSection}
-
-  <section id="contact" style="padding:120px 0;background:var(--bg)">
-    <div style="max-width:1200px;margin:0 auto;padding:0 2rem">
-      <h2 style="font-family:var(--heading-font);font-size:clamp(2rem,4vw,2.5rem);font-weight:400;color:var(--text);margin-bottom:3rem;line-height:1.2">${content.contactHeading}</h2>
-      <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:start">
-        <div>
-          <div style="margin-bottom:2rem">
-            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Address</div>
-            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${locationInfo.address}, ${locationInfo.city}, ${locationInfo.postcode}</p>
-          </div>
-          <div style="margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)">
-            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Phone</div>
-            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${locationInfo.phone}</p>
-          </div>
-          <div style="margin-bottom:2rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.08)">
-            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Get in Touch</div>
-            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">hello@yourbusiness.com</p>
-          </div>
-          ${content.contactHours ? `
-          <div>
-            <div style="font-family:var(--body-font);font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);font-weight:600;margin-bottom:0.75rem">Trading Hours</div>
-            <p style="font-family:var(--body-font);font-size:0.95rem;color:var(--text-muted);line-height:1.7;margin:0">${content.contactHours?.replace(/ · /g, '<br />') ?? ''}</p>
-          </div>` : ''}
-        </div>
-        <form style="display:flex;flex-direction:column;gap:1.25rem" onsubmit="return false">
-          <div class="ms-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-            <input type="text" placeholder="Name" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
-            <input type="email" placeholder="Email" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
-          </div>
-          <input type="text" placeholder="Phone" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none" />
-          <textarea placeholder="Your message" rows="4" style="font-family:var(--body-font);padding:0.9rem 1.25rem;background:var(--card-bg);border:1px solid var(--border);border-radius:2px;color:var(--text);font-size:0.95rem;outline:none;resize:none"></textarea>
-          <button type="submit" style="font-family:var(--body-font);padding:1rem 2.5rem;background:${svcAccent};color:${bestTextColor(svcAccent)};border:none;border-radius:2px;font-size:1rem;font-weight:600;cursor:pointer;transition:opacity 0.2s">Send Message</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-${buildFooter(businessName, content, theme)}
-
-<script>
-  const revealEls = document.querySelectorAll('.reveal');
-  const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), { threshold: 0.1 });
-  revealEls.forEach(el => obs.observe(el));
-  setTimeout(function(){ document.querySelectorAll('.reveal,.tr-reveal').forEach(function(el){ el.classList.add('visible'); }); }, 600);
-  const dot = document.getElementById('custom-cursor-dot');
-  const ring = document.getElementById('custom-cursor-ring');
-  let rx = 0, ry = 0;
-  document.addEventListener('mousemove', e => { dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px'; });
-  requestAnimationFrame(function loop() { rx += (parseFloat(dot.style.left||0) - rx) * 0.1; ry += (parseFloat(dot.style.top||0) - ry) * 0.1; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); });
-</script>
-</body>
-</html>`
-}
+// ---------- Portfolio Template (gallery-focused) ----------
 
 // ---------- Portfolio Template (gallery-focused) ----------
 
@@ -6598,7 +6289,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, scrapeId, scrapeData: bodyScrapedData, recaptchaToken } = body
+    const { businessName, businessType, businessCategory, pages, primaryColor, secondaryColor, noColors, images, scrapeData: bodyScrapedData, recaptchaToken } = body
     const locationInfo = getLocationInfo()
 
     // Bot check — refuse requests from visitors Google scored as bots. Generation is
@@ -6612,25 +6303,12 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Use scrape data from body (direct pass-through) or pull from Supabase via scrapeId
-    let scrapeData: Record<string, unknown> | null = bodyScrapedData || null
-    if (!scrapeData && scrapeId) {
-      try {
-        const { supabaseAdmin } = await import('@/lib/supabase-admin')
-        const { data } = await supabaseAdmin
-          .from('prospect_scrapes')
-          .select('extracted_data')
-          .eq('id', scrapeId)
-          .single()
-        if (data?.extracted_data) {
-          scrapeData = data.extracted_data as Record<string, unknown>
-          // Update status
-          await supabaseAdmin.from('prospect_scrapes').update({ status: 'preview_generated' }).eq('id', scrapeId)
-        }
-      } catch {
-        // Failed to load scrape — fall through to normal flow
-      }
-    }
+    // Scrape data arrives in the body or not at all. There used to be a second
+    // path here that looked the row up by scrapeId on the legacy database, but
+    // that database never had credentials in production and the table does not
+    // exist on the CRM one, so the lookup could only ever throw into its own
+    // catch. Nothing in this repo ever sent a scrapeId either.
+    const scrapeData: Record<string, unknown> | null = bodyScrapedData || null
 
     const effectiveBusinessName = (scrapeData?.businessName as string) || businessName
     const effectiveBusinessType = (scrapeData?.businessType as string) || businessType
@@ -6654,7 +6332,7 @@ export async function POST(req: NextRequest) {
     const scrapedSecondary = (scrapeData?.brandColors as Record<string, string>)?.secondary
     const secondary = noColors ? '#10B981' : (scrapedSecondary || secondaryColor || '#00CEC9')
     const category: BusinessCategory = businessCategory || 'other'
-    const variant = categoryVariant[category] || 'service'
+    const variant = categoryVariant[category] || 'visual'
 
     // Check for pre-written content first
     const preset: PresetContent | undefined = presetContent[effectiveBusinessType]
@@ -6880,10 +6558,9 @@ export async function POST(req: NextRequest) {
           htmlString = buildPortfolioTemplate(templateData)
           templateName = 'portfolio'
           break
-        case 'service':
         default:
-          htmlString = buildServiceTemplate(templateData)
-          templateName = 'service'
+          htmlString = buildVisualTemplate(templateData)
+          templateName = 'visual'
           break
       }
     }

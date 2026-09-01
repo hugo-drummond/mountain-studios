@@ -490,7 +490,7 @@ async function main() {
             pages: pageSet.pages,
             images: imgSet.images,
             stockImages: makeStockImages(`${builderName}-${colors.label}-${pageSet.label}-${imgSet.label}`),
-            variant: 'service',
+            variant: 'visual',
             locationInfo,
           }
 

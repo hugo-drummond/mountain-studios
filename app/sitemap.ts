@@ -65,8 +65,12 @@ const PAGES: Entry[] = [
   { path: '/services/paid-ads', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/aeo', changeFrequency: 'monthly', priority: 0.9 },
   { path: '/services/business-automation', changeFrequency: 'monthly', priority: 0.9 },
+  // /start-your-project is deliberately absent. It is the wizard: every word on
+  // it is drawn by JavaScript after load, so the served HTML is 10 words of
+  // <title> and nothing else. The homepage carries the same offer in 567
+  // crawlable words and is the page that should rank for it. A blank page in
+  // the sitemap is worth less than no entry at all.
   { path: '/work', changeFrequency: 'monthly', priority: 0.8 },
-  { path: '/start-your-project', changeFrequency: 'monthly', priority: 0.8 },
   { path: '/about', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/contact', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/careers/sales-rep', changeFrequency: 'monthly', priority: 0.5 },

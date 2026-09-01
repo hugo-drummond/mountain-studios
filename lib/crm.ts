@@ -3,11 +3,14 @@ import { createClient } from '@supabase/supabase-js'
 // The CRM at crm.mountainstudios.co.za, which is the Frankies Supabase project,
 // schema `mountainstudios`.
 //
-// Deliberately NOT lib/supabase-admin.ts. That client is the legacy
-// agency-backend database behind app/admin and app/api/leads/create, and it has
-// no environment variables set in production at all. Repointing it here would
-// silently aim every one of those routes at a database that has none of their
-// tables. Separate names, separate client, no collision.
+// This is now the only database client in the repo. There used to be a second,
+// lib/supabase-admin.ts, pointing at an older agency-backend database whose
+// credentials were never set in production — so every route behind it returned
+// 500 for months without anyone noticing. It and the routes that used it were
+// deleted on 1 Sep 2026. The workflow they implemented is written up in Notion
+// under "Archive — Legacy lead-to-delivery pipeline". If leads, briefs,
+// bookings or payments are ever rebuilt, build them on this client rather than
+// standing up a second one; two clients over two databases was the whole fault.
 const CRM_SCHEMA = 'mountainstudios'
 
 function build() {
