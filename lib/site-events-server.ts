@@ -50,8 +50,8 @@ export function eventHash(ip: string, ua: string): string {
  */
 export async function recordEvents(
   rows: Array<{
-    visitor_id: string
-    session_id: string
+    visitor_id: string | null
+    session_id: string | null
     lead_id?: string | null
     event: string
     path?: string

@@ -265,15 +265,15 @@ export default function ChatWidget() {
       const msg = messages[i]
       if (msg.role === 'assistant') {
         if (msg.offerAudit && !offersTrackedRef.current.has(`${i}-audit`)) {
-          track('chat_offer_shown', { props: { offer: 'audit' } })
+          track('chat_offer_shown', { label: 'audit', props: { offer: 'audit' } })
           offersTrackedRef.current.add(`${i}-audit`)
         }
         if (msg.offerPreview && !offersTrackedRef.current.has(`${i}-preview`)) {
-          track('chat_offer_shown', { props: { offer: 'preview' } })
+          track('chat_offer_shown', { label: 'preview', props: { offer: 'preview' } })
           offersTrackedRef.current.add(`${i}-preview`)
         }
         if (msg.offerBooking && !offersTrackedRef.current.has(`${i}-book`)) {
-          track('chat_offer_shown', { props: { offer: 'book' } })
+          track('chat_offer_shown', { label: 'book', props: { offer: 'book' } })
           offersTrackedRef.current.add(`${i}-book`)
         }
       }
@@ -327,7 +327,7 @@ export default function ChatWidget() {
   // Hands over to AuditPopup. The chat panel closes first — the popup is a
   // modal and would otherwise land on top of an open conversation.
   const openAudit = useCallback(() => {
-    track('chat_offer_taken', { props: { offer: 'audit' } })
+    track('chat_offer_taken', { label: 'audit', props: { offer: 'audit' } })
     setOpen(false)
     window.dispatchEvent(new Event('ms-audit:open'))
   }, [])
@@ -335,8 +335,8 @@ export default function ChatWidget() {
   // Opens Calendly in a new tab. No visitor data is ever appended to the URL.
   const openBooking = useCallback(() => {
     // Track the click with sendBeacon before opening, since the tab switch races the fetch
-    track('calendly_click', { props: { from: 'chat' } })
-    track('chat_offer_taken', { props: { offer: 'book' } })
+    track('calendly_click', { label: 'chat', props: { from: 'chat' } })
+    track('chat_offer_taken', { label: 'book', props: { offer: 'book' } })
     flush()
     window.open(CALENDLY_URL, '_blank', 'noopener,noreferrer')
   }, [])
@@ -520,7 +520,7 @@ export default function ChatWidget() {
           setMessages([...next, { role: 'assistant', content: data.error }])
           if (typeof data?.leadId === 'string') {
             setLeadId(data.leadId)
-            track('lead_identified', { props: { leadId: data.leadId, via: 'chat' } })
+            track('lead_identified', { label: 'chat', props: { leadId: data.leadId, via: 'chat' } })
           }
         } else {
           // The route answers with a usable `reply` on every path it controls,
@@ -564,7 +564,7 @@ export default function ChatWidget() {
           ])
           if (typeof data?.leadId === 'string') {
             setLeadId(data.leadId)
-            track('lead_identified', { props: { leadId: data.leadId, via: 'chat_audit' } })
+            track('lead_identified', { label: 'chat_audit', props: { leadId: data.leadId, via: 'chat_audit' } })
           }
         }
       } catch {
@@ -708,7 +708,7 @@ export default function ChatWidget() {
                         type="button"
                         className="ms-chat-audit"
                         onClick={async () => {
-                          track('chat_offer_taken', { props: { offer: 'preview' } })
+                          track('chat_offer_taken', { label: 'preview', props: { offer: 'preview' } })
                           setBuildingPreview(true)
                           setPreviewStage(0)
                           const result = await submitPreview(messages)

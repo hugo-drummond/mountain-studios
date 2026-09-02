@@ -87,11 +87,13 @@ interface EventPayload {
 let _visitorId: string | null = null
 let _sessionId: string | null = null
 let _attributionSent = false
+let _pendingAttribution: Record<string, unknown> | null = null
 let _eventQueue: QueuedEvent[] = []
 let _flushTimeout: NodeJS.Timeout | null = null
 let _maxScrollDepth = 0
 let _pageStartTime = 0
 let _currentPath: string = typeof window !== 'undefined' ? window.location.pathname : '/'
+let _exitEmitted = false
 
 /**
  * Get or mint the visitor ID (localStorage, UUIDv4).
@@ -203,7 +205,7 @@ export function trackScroll(): void {
 
     if (docHeight <= 0) return
 
-    const scrollPercent = Math.round((scrollTop / docHeight) * 100)
+    const scrollPercent = Math.min(100, Math.max(0, Math.round((scrollTop / docHeight) * 100)))
     _maxScrollDepth = Math.max(_maxScrollDepth, scrollPercent)
   } catch {
     // Never surface.
@@ -237,17 +239,19 @@ export function flush(): void {
     const payload: EventPayload = {
       visitorId: vid,
       sessionId: sid,
+      attribution: _pendingAttribution,
       events: batch.map((e) => ({
         event: e.event,
         step_num: e.step ?? null,
         value_num: e.value ?? null,
         label: e.label ?? null,
         props: {
-          ...(e.props ?? {}),
           path: _currentPath,
+          ...(e.props ?? {}),
         },
       })),
     }
+    _pendingAttribution = null
 
     // Send via sendBeacon if available, else fetch with keepalive
     const endpoint = '/api/site-event'
@@ -321,6 +325,7 @@ export function captureAttribution(): Record<string, unknown> | null {
     }
 
     _attributionSent = true
+    if (hasAny) _pendingAttribution = attribution
     return hasAny ? attribution : null
   } catch {
     _attributionSent = true
@@ -334,6 +339,7 @@ export function captureAttribution(): Record<string, unknown> | null {
 export function markPageStart(): void {
   _pageStartTime = Date.now()
   _maxScrollDepth = 0
+  _exitEmitted = false
   if (typeof window !== 'undefined') {
     _currentPath = window.location.pathname
   }
@@ -352,4 +358,33 @@ export function getPageDurationSeconds(): number {
  */
 export function getMaxScrollDepth(): number {
   return _maxScrollDepth
+}
+
+/**
+ * Fire page_exit exactly once for the page being left.
+ *
+ * Called from two places: the route-change cleanup in SiteEvents.tsx, and the
+ * pagehide listener for the last page of a session. Before this existed only
+ * pagehide fired, so a single event covered everything from the last
+ * markPageStart() until the tab closed -- one page reported a 2h13m dwell and
+ * 131 page views produced only 95 exits.
+ *
+ * `path` must be passed on route change: by the time the cleanup runs,
+ * window.location has already moved to the next page.
+ */
+export function emitPageExit(path?: string): void {
+  try {
+    if (_exitEmitted) return
+    _exitEmitted = true
+
+    track('page_exit', {
+      value: getPageDurationSeconds(),
+      props: {
+        max_scroll: getMaxScrollDepth(),
+        path: path ?? _currentPath,
+      },
+    })
+  } catch {
+    // Never surface.
+  }
 }

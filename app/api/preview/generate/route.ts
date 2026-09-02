@@ -6567,12 +6567,18 @@ export async function POST(req: NextRequest) {
 
     // Track preview generation server-side
     try {
+      // Empty string is not NULL, so a '' here defeats the dashboard's
+      // coalesce(session_id, ip_ua_hash) fallback and collapses every
+      // server-emitted preview into one bogus session.
+      const evVisitorId = typeof body.visitorId === 'string' && body.visitorId.trim() ? body.visitorId.trim() : null
+      const evSessionId = typeof body.sessionId === 'string' && body.sessionId.trim() ? body.sessionId.trim() : null
+
       const userAgent = req.headers.get('user-agent') || 'unknown'
       const deviceType = deviceFromUserAgent(userAgent)
       await recordEvents([
         {
-          visitor_id: '',
-          session_id: '',
+          visitor_id: evVisitorId,
+          session_id: evSessionId,
           event: 'preview_generated',
           path: req.nextUrl.pathname,
           device_type: deviceType,

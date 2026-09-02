@@ -104,6 +104,12 @@ export default function AuditPopup() {
   const urlRef = useRef<HTMLInputElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
 
+  // Which trigger opened the popup, and when. Read by the dismiss and submit
+  // handlers so the drop-off is attributable: a popup ignored after 30 seconds
+  // of dwell and one dismissed instantly on exit intent are different problems.
+  const triggerRef = useRef<'dwell' | 'exit_intent' | 'chat' | null>(null)
+  const shownAtRef = useRef(0)
+
   // Read inside the handlers rather than through state: the trigger effect runs
   // once and must not be town down and rebuilt every time the route changes.
   const pathRef = useRef(pathname)
@@ -122,6 +128,12 @@ export default function AuditPopup() {
     if (document.querySelector('.ms-chat-panel')) return true
     if (document.querySelector('.ms-chat-preview-overlay')) return true
     return false
+  }, [])
+
+  const markShown = useCallback((trigger: 'dwell' | 'exit_intent' | 'chat') => {
+    triggerRef.current = trigger
+    shownAtRef.current = Date.now()
+    track('audit_popup_shown', { label: trigger, props: { trigger } })
   }, [])
 
   useEffect(() => {
@@ -143,6 +155,7 @@ export default function AuditPopup() {
       }
       fired = true
       remember('session', SEEN_KEY)
+      markShown(fromExitIntent ? 'exit_intent' : 'dwell')
       setOpen(true)
     }
 
@@ -161,7 +174,7 @@ export default function AuditPopup() {
       clearTimeout(retryTimer)
       document.removeEventListener('mouseout', onMouseOut)
     }
-  }, [canShow, isEngaged])
+  }, [canShow, isEngaged, markShown])
 
   // Asked for deliberately — currently the chatbot's "Run my free audit"
   // button. This bypasses every guard on the automatic triggers: someone who
@@ -174,13 +187,25 @@ export default function AuditPopup() {
       remember('session', SEEN_KEY)
       setDone(false)
       setError('')
+      markShown('chat')
       setOpen(true)
     }
     window.addEventListener('ms-audit:open', onOpen)
     return () => window.removeEventListener('ms-audit:open', onOpen)
-  }, [])
+  }, [markShown])
 
-  const close = useCallback(() => setOpen(false), [])
+  const close = useCallback(() => {
+    // Only a dismissal if they never completed it. `done` means they submitted
+    // and are looking at the confirmation, which is a success, not a drop-off.
+    if (!done && triggerRef.current) {
+      track('audit_popup_dismissed', {
+        label: triggerRef.current,
+        value: Math.round((Date.now() - shownAtRef.current) / 1000),
+        props: { trigger: triggerRef.current },
+      })
+    }
+    setOpen(false)
+  }, [done])
 
   useEffect(() => {
     if (!open) return
@@ -211,6 +236,7 @@ export default function AuditPopup() {
 
     // Validate email
     if (!isValidEmail(email)) {
+      track('audit_submit_failed', { label: 'email_invalid' })
       setEmailError(EMAIL_ERROR)
       setEmailTouched(true)
       return
@@ -222,6 +248,15 @@ export default function AuditPopup() {
     // manager filling the hidden field showed the visitor a success screen and
     // never sent the request — no row, no email, no trace anywhere.
     try {
+      const secondsToSubmit = shownAtRef.current
+        ? Math.round((Date.now() - shownAtRef.current) / 1000)
+        : 0
+      track('audit_submitted', {
+        label: triggerRef.current ?? 'unknown',
+        value: secondsToSubmit,
+        props: { trigger: triggerRef.current ?? 'unknown' },
+      })
+
       let recaptchaToken: string | undefined
       if (executeRecaptcha) {
         try {
@@ -256,7 +291,7 @@ export default function AuditPopup() {
         setEmail('')
         remember('local', DONE_KEY)
         if (typeof responseData?.leadId === 'string') {
-          track('lead_identified', { props: { leadId: responseData.leadId, via: 'audit_popup' } })
+          track('lead_identified', { label: 'audit_popup', props: { leadId: responseData.leadId, via: 'audit_popup' } })
         }
         trackMeta('Lead', { content_name: 'Free website audit' })
       } else {
@@ -264,9 +299,14 @@ export default function AuditPopup() {
         // parse, the email was malformed, or they have simply tried too many
         // times — "something went wrong" tells someone with a typo nothing, and
         // they retype the same thing and fail again.
+        track('audit_submit_failed', {
+          label: 'server',
+          props: { status: res.status },
+        })
         setError(typeof data?.error === 'string' ? data.error : 'Something went wrong. Please try again.')
       }
     } catch {
+      track('audit_submit_failed', { label: 'network' })
       setError('Something went wrong. Please try again.')
     } finally {
       setLoading(false)

@@ -1,6 +1,6 @@
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
-import { attachVisitorToLead } from '@/lib/site-events-server'
+import { attachVisitorToLead, recordEvents } from '@/lib/site-events-server'
 import { sendMail, NOTIFY_EMAIL } from '@/lib/ses'
 import { runAudit } from '@/lib/audit/run'
 import { waitUntil } from '@vercel/functions'
@@ -238,6 +238,20 @@ export async function startAudit(input: StartAuditInput): Promise<StartAuditResu
       replyTo: storedEmail,
     })
     emailed = true
+    // Server-side: the visitor is not on the page when this fires. lead_id is
+    // set here rather than left to the visitor stitch, so the event is
+    // joinable even if the visitor never returns.
+    await recordEvents([
+      {
+        visitor_id: input.visitorId ?? null,
+        session_id: null,
+        lead_id: leadId,
+        event: 'audit_report_emailed',
+        device_type: 'unknown',
+        occurred_at: new Date(),
+        source: 'server',
+      },
+    ])
   } catch (err) {
     console.error('[audit/start] notification email failed:', err instanceof Error ? err.message : err)
   }

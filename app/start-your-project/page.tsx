@@ -15,7 +15,7 @@ import {
 } from '../../constants/business-types'
 import SiteHeaderNav from '../../components/site/SiteHeaderNav'
 import { storedRefCode } from '../../components/site/RefCapture'
-import { visitorId, track } from '../../lib/site-events'
+import { visitorId, sessionId, track } from '../../lib/site-events'
 import { isValidEmail, normalizePhone, EMAIL_ERROR, PHONE_ERROR } from '@/lib/validation'
 // Supabase import removed — images now use browser object URLs for preview
 
@@ -373,6 +373,8 @@ function StartYourProjectInner() {
             noColors,
             images: uploadedImages.map(img => img.url),
             recaptchaToken,
+            visitorId: visitorId(),
+            sessionId: sessionId(),
           }),
         })
         const res = await r.json()
@@ -508,7 +510,7 @@ function StartYourProjectInner() {
         // lead rather than creating one, so this can fire twice for one person.
         // That is the correct trade: under-reporting a real capture would cost
         // the optimiser more than an occasional duplicate.
-        track('lead_identified', { props: { leadId: data.leadId, via: 'wizard_gate' } })
+        track('lead_identified', { label: 'wizard_gate', props: { leadId: data.leadId, via: 'wizard_gate' } })
         trackMeta('Lead', { content_name: 'Get Started wizard — email step' })
       }
     } catch {
@@ -572,7 +574,7 @@ function StartYourProjectInner() {
       }
       setContactSubmitted(true)
       if (res.leadId) {
-        track('lead_identified', { props: { leadId: res.leadId, via: 'wizard_submit' } })
+        track('lead_identified', { label: 'wizard_submit', props: { leadId: res.leadId, via: 'wizard_submit' } })
       }
       trackMeta('SubmitApplication', { content_name: 'Get Started wizard — full brief' })
       // Clear sessionStorage on successful submit
