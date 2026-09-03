@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { executeRecaptcha, prewarmRecaptcha } from '@/lib/recaptcha-client'
 import { storedRefCode } from './RefCapture'
-import { visitorId, track, flush } from '@/lib/site-events'
+import { visitorId, sessionId, track, flush } from '@/lib/site-events'
 import { trackMeta } from '@/lib/analytics'
 import { CALENDLY_DEFAULT_URL } from '@/lib/calendly'
 
@@ -511,7 +511,7 @@ export default function ChatWidget() {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ messages: next, leadId, previewToken, recaptchaToken, refCode: storedRefCode(), visitorId: visitorId() }),
+          body: JSON.stringify({ messages: next, leadId, previewToken, recaptchaToken, refCode: storedRefCode(), visitorId: visitorId(), sessionId: sessionId() }),
         })
         const data = await res.json().catch(() => null)
 

@@ -115,11 +115,11 @@ export async function attachVisitorToLead(
     }
 
     // Called from here rather than from each route. Every lead-creating route
-    // has to remember one call instead of two, and a route that forgets the
-    // second one loses the entire pre-email half of that lead's funnel — the
-    // page views and the wizard steps that happened before we knew who they
-    // were. It is bounded and it never throws.
+    // has to remember one call instead of three, and a route that forgets one
+    // loses half the lead's context — the page views and chat messages that
+    // happened before we knew who they were. Both are bounded and never throw.
     await stitchEventsToLead(visitorId, leadId)
+    await stitchTranscriptsToLead(visitorId, leadId)
   } catch (err) {
     console.error('[site-events] attachVisitorToLead failed:', err instanceof Error ? err.message : err)
   }
@@ -149,5 +149,31 @@ export async function stitchEventsToLead(
     if (error) throw error
   } catch (err) {
     console.error('[site-events] stitchEventsToLead failed:', err instanceof Error ? err.message : err)
+  }
+}
+
+/**
+ * Backfill lead_id onto this visitor's existing chat transcripts.
+ *
+ * A visitor can chat anonymously in one session and give an email days later in
+ * another — or convert through the audit popup or the wizard rather than
+ * through chat at all. Bounded by visitor_id and 90 days, same as
+ * stitchEventsToLead. Never throws.
+ */
+export async function stitchTranscriptsToLead(
+  visitorId: string,
+  leadId: string,
+): Promise<void> {
+  try {
+    const { error } = await crmAdmin()
+      .from('chat_transcripts')
+      .update({ lead_id: leadId })
+      .eq('visitor_id', visitorId)
+      .is('lead_id', null)
+      .gt('occurred_at', new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString())
+
+    if (error) throw error
+  } catch (err) {
+    console.error('[site-events] stitchTranscriptsToLead failed:', err instanceof Error ? err.message : err)
   }
 }

@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { waitUntil } from '@vercel/functions'
 import { crmAdmin } from '@/lib/crm'
 import { attachReferralToLead } from '@/lib/referral'
-import { attachVisitorToLead } from '@/lib/site-events-server'
+import { attachVisitorToLead, eventHash } from '@/lib/site-events-server'
 import { SYSTEM_PROMPT, FALLBACK_REPLY } from '@/lib/chatbot/knowledge'
 import { bumpAskedCount, findApprovedAnswer, logQuestion } from '@/lib/chatbot/questions'
 import { extractLeadProfile } from '@/lib/chatbot/lead-profile'
 import { normaliseWebsiteUrl } from '@/lib/audit/start'
-import { rateLimit } from '@/lib/rate-limit'
+import { rateLimit, clientKey } from '@/lib/rate-limit'
 import { verifyRecaptcha, blockedAsBot } from '@/lib/recaptcha'
+import { saveChatTranscript, type TranscriptRow } from '@/lib/chatbot/transcript'
 
 // ---------------------------------------------------------------------------
 // POST /api/chat
@@ -106,6 +107,7 @@ interface Payload {
   refCode?: unknown
   previewToken?: unknown
   visitorId?: unknown
+  sessionId?: unknown
 }
 
 const EMAIL_RE = /[^\s@<>()[\],;:]+@[^\s@<>()[\],;:]+\.[a-z]{2,}/gi
@@ -490,6 +492,7 @@ export async function POST(req: NextRequest) {
 
   const incomingLeadId = typeof body.leadId === 'string' && body.leadId ? body.leadId : null
   const previewToken = typeof body.previewToken === 'string' && body.previewToken ? body.previewToken : null
+  const sessionId = typeof body.sessionId === 'string' && body.sessionId ? body.sessionId : null
 
   // reCAPTCHA check only on the opening message — the first turn of a conversation.
   // Once they're engaged, throwing them out over a low score is worse than the cost
@@ -725,6 +728,36 @@ export async function POST(req: NextRequest) {
       else run()
     }
   }
+
+  // Store the conversation itself. chat_questions is a deduplicated cache and
+  // the chat_message events carry no text, so without this the words are gone.
+  // Fire-and-forget behind waitUntil, exactly like the enrichment above: the
+  // reply is already built and must never wait on a write.
+  const ua = req.headers.get('user-agent')
+  const ipUaHash = eventHash(clientKey(req), ua || '')
+  const userTurnCount = messages.filter((m) => m.role === 'user').length
+  const transcriptRows: TranscriptRow[] = [
+    {
+      session_id: sessionId ?? `ip:${ipUaHash}`,
+      visitor_id: typeof body.visitorId === 'string' ? body.visitorId : null,
+      lead_id: leadId,
+      turn: userTurnCount,
+      role: 'user',
+      content: question,
+      ip_ua_hash: ipUaHash,
+    },
+    {
+      session_id: sessionId ?? `ip:${ipUaHash}`,
+      visitor_id: typeof body.visitorId === 'string' ? body.visitorId : null,
+      lead_id: leadId,
+      turn: userTurnCount,
+      role: 'assistant',
+      content: correctedReply ?? FALLBACK_REPLY,
+      ip_ua_hash: ipUaHash,
+    },
+  ]
+  if (process.env.VERCEL) waitUntil(saveChatTranscript(transcriptRows))
+  else void saveChatTranscript(transcriptRows)
 
   return NextResponse.json({
     reply: correctedReply ?? FALLBACK_REPLY,
